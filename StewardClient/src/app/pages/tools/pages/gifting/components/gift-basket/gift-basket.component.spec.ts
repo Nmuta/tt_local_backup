@@ -19,6 +19,7 @@ import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { toDateTime } from '@helpers/luxon';
+import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<
@@ -41,7 +42,7 @@ describe('GiftBasketBaseComponent', () => {
       ],
       declarations: [GiftBasketBaseComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
+      providers: [createMockPermAttributesService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(
@@ -114,17 +115,14 @@ describe('GiftBasketBaseComponent', () => {
         const testUserModel2: UserModel = {
           name: faker.name.firstName(),
           emailAddress: 'fakeemail2@microsoft.com',
-          role: UserRole.SupportAgentAdmin,
+          role: UserRole.GeneralUser,
           objectId: `${faker.datatype.uuid()}`,
         };
-
         beforeEach(() => {
           component.profile = testUserModel2;
         });
-
         it('should not call and set profile', () => {
           component.giftReasonChanged(giftReasonEvent);
-
           expect(component.profile).not.toBeUndefined();
           expect(component.profile).toEqual(testUserModel2);
           expect(mockStore.selectSnapshot).not.toHaveBeenCalled();
@@ -137,14 +135,14 @@ describe('GiftBasketBaseComponent', () => {
           component.profile = {
             name: faker.name.firstName(),
             emailAddress: 'fakeemail@microsoft.com',
-            role: UserRole.LiveOpsAdmin,
+            role: UserRole.GeneralUser,
             objectId: `${faker.datatype.uuid()}`,
           };
         });
 
-        describe('And when user role is LiveOpsAdmin', () => {
+        describe('And when allowedToExceedCreditLimit is true', () => {
           beforeEach(() => {
-            component.profile.role = UserRole.LiveOpsAdmin;
+            component.allowedToExceedCreditLimit = true;
           });
 
           it('should set ignoreMaxCreditLimit to true', () => {
@@ -154,21 +152,9 @@ describe('GiftBasketBaseComponent', () => {
           });
         });
 
-        describe('And when user role is SupportAgentAdmin', () => {
+        describe('And when allowedToExceedCreditLimit is false', () => {
           beforeEach(() => {
-            component.profile.role = UserRole.SupportAgentAdmin;
-          });
-
-          it('should set ignoreMaxCreditLimit to true', () => {
-            component.giftReasonChanged(giftReasonEvent);
-
-            expect(component.ignoreMaxCreditLimit).toBeTruthy();
-          });
-        });
-
-        describe('And when user role is SupportAgent', () => {
-          beforeEach(() => {
-            component.profile.role = UserRole.SupportAgent;
+            component.allowedToExceedCreditLimit = false;
           });
 
           it('should set ignoreMaxCreditLimit to false', () => {

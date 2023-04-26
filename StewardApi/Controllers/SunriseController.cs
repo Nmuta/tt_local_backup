@@ -41,14 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam,
-        UserRole.MotorsportDesigner,
-        UserRole.HorizonDesigner)]
+        UserRole.LiveOpsAdmin)]
     [SuppressMessage(
         "Microsoft.Maintainability",
         "CA1506:AvoidExcessiveClassCoupling",
@@ -80,6 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISunriseStorefrontProvider storefrontProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
+        private readonly IStewardUserProvider userProvider;
         private readonly IScheduler scheduler;
         private readonly IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator;
         private readonly IRequestValidator<SunriseGift> giftRequestValidator;
@@ -108,6 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IScheduler scheduler,
             IJobTracker jobTracker,
             IMapper mapper,
+            IStewardUserProvider userProvider,
             IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SunriseGift> giftRequestValidator,
             IRequestValidator<SunriseGroupGift> groupGiftRequestValidator,
@@ -131,6 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             mapper.ShouldNotBeNull(nameof(mapper));
+            userProvider.ShouldNotBeNull(nameof(userProvider));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
@@ -153,6 +149,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
             this.mapper = mapper;
+            this.userProvider = userProvider;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
@@ -335,10 +332,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
@@ -417,8 +411,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("player/xuid({xuid})/profileNotes")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
@@ -775,9 +768,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
@@ -894,10 +885,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.SupportAgentNew)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
@@ -974,10 +962,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.SupportAgentNew)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
@@ -1025,9 +1010,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("ban/{banEntryId}/expire")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -1056,9 +1039,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("ban/{banEntryId}/delete")]
         [SwaggerResponse(201, type: typeof(UnbanResult))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -1142,10 +1123,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.SupportAgentNew)]
+            UserRole.LiveOpsAdmin)]
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
@@ -1344,18 +1322,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
                 // Throwing within the hosting environment background worker seems to have significant consequences.
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit =
-                        userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
                     var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(
                         groupGift,
                         requesterObjectId,
-                        allowedToExceedCreditLimit,
+                        hasPermissionsToExceedCreditLimit,
                         endpoint).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
@@ -1432,12 +1410,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit =
-                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+
             var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(
                 groupGift,
                 requesterObjectId,
-                allowedToExceedCreditLimit,
+                hasPermissionsToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
 
             var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
@@ -1453,9 +1431,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
@@ -1485,13 +1461,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit =
-                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+
             var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(
                 groupId,
                 gift,
                 requesterObjectId,
-                allowedToExceedCreditLimit,
+                hasPermissionsToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
             return this.Ok(response);
         }
@@ -1501,10 +1477,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager,
-            UserRole.MediaTeam)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
@@ -1577,9 +1550,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
@@ -1723,9 +1694,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("notifications/send")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
         [Authorize(Policy = UserAttribute.MessagePlayer)]
@@ -1781,9 +1750,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("notifications/send/groupId({groupId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
         [Authorize(Policy = UserAttribute.MessageGroup)]
@@ -1824,9 +1791,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("player/xuid({xuid})/notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
         [Authorize(Policy = UserAttribute.MessagePlayer)]
@@ -1868,9 +1833,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
         [Authorize(Policy = UserAttribute.MessageGroup)]
@@ -1913,9 +1876,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpDelete("player/xuid({xuid})/notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
         [Authorize(Policy = UserAttribute.MessagePlayer)]
@@ -1948,9 +1909,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpDelete("notifications/notificationId({notificationId})")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.GroupMessages)]
         [Authorize(Policy = UserAttribute.MessageGroup)]

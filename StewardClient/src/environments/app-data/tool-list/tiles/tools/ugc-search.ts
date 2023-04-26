@@ -1,12 +1,11 @@
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const ugcSearchTile = <HomeTileInfoInternal>{
   icon: AppIcon.PlayerInfo,
   tool: NavbarTool.SearchUGC,
   oldToolRoutes: ['ugc'],
-  accessList: CommonAccessLevels.Gifting,
   title: 'UGC Search',
   subtitle: 'Search User Generated Content',
   supportedTitles: [GameTitle.FH5, GameTitle.FM8],

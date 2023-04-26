@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
@@ -48,5 +49,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Gets all Steward users.
         /// </summary>
         Task<IEnumerable<StewardUserInternal>> GetAllStewardUsersAsync();
+
+        /// <summary>
+        ///     Checks if a steward has a specific permission.
+        /// </summary>
+        Task<bool> HasPermissionsForAsync(HttpContext httpContext, string objectId, string attribute);
     }
 }

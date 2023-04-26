@@ -43,10 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.Players, Topic.Gifting)]
     public class GiftController : V2WoodstockControllerBase
@@ -59,6 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
         private readonly ILoggingService loggingService;
         private readonly IScheduler scheduler;
         private readonly IMapper mapper;
+        private readonly IStewardUserProvider userProvider;
         private readonly IWoodstockPlayerInventoryProvider playerInventoryProvider;
         private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
         private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
@@ -74,6 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             ILoggingService loggingService,
             IScheduler scheduler,
             IMapper mapper,
+            IStewardUserProvider userProvider,
             IWoodstockPlayerInventoryProvider playerInventoryProvider,
             IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<WoodstockGift> giftRequestValidator,
@@ -85,6 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             loggingService.ShouldNotBeNull(nameof(loggingService));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             mapper.ShouldNotBeNull(nameof(mapper));
+            userProvider.ShouldNotBeNull(nameof(userProvider));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
@@ -96,6 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             this.loggingService = loggingService;
             this.scheduler = scheduler;
             this.mapper = mapper;
+            this.userProvider = userProvider;
             this.playerInventoryProvider = playerInventoryProvider;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
@@ -151,19 +152,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 
             var proxyBundle = this.ServicesWithProdLiveStewardCms;
 
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
                 // Throwing within the hosting environment background worker seems to have significant consequences.
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit =
-                        userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
                     // Before refactoring, please check the repo ReadMe -> Steward -> Docs -> Background Jobs and Race Conditions
                     var response = await this.playerInventoryProvider.UpdatePlayerInventoriesAsync(
                         groupGift,
                         requesterObjectId,
-                        allowedToExceedCreditLimit,
+                        hasPermissionsToExceedCreditLimit,
                         proxyBundle).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);

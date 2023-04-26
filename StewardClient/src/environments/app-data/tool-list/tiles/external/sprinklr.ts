@@ -1,17 +1,10 @@
 import { GameTitle } from '@models/enums';
-import {
-  AppIcon,
-  NavbarTool,
-  CommonAccessLevels,
-  ExtraIcon,
-  HomeTileInfoExternal,
-} from '../../helpers';
+import { AppIcon, NavbarTool, ExtraIcon, HomeTileInfoExternal } from '../../helpers';
 
 export const sprinklrExternalTile = <HomeTileInfoExternal>{
   icon: AppIcon.ZendeskTool,
   extraIcon: ExtraIcon.External,
   tool: NavbarTool.Sprinklr,
-  accessList: CommonAccessLevels.OldCommunityAppOnly,
   title: 'Sprinklr',
   subtitle: 'Social Media Tools',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM8],

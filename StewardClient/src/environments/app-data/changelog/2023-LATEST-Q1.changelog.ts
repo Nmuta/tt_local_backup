@@ -70,6 +70,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Added Services Table Storage view for FH5',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'd7e55959-8d9c-4295-a32c-23f3b1de9485',
+      shortText: 'Remove all v1 auth functionality',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
       uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
       shortText: 'New way of banning implemented',

@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using System.Threading.Tasks;
 using System;
 using FluentAssertions;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Group
 {
@@ -75,8 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Group
             public IRequestValidator<WoodstockGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockGift>>();
             public IRequestValidator<WoodstockMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockMasterInventory>>();
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
-
-
+            public IStewardUserProvider UserProvider { get; set; } = Substitute.For<IStewardUserProvider>();
 
             public Dependencies()
             {
@@ -100,6 +100,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Group
 
             public GiftController Build() => new GiftController(
                 this.Mapper,
+                this.UserProvider,
                 this.PlayerInventoryProvider,
                 this.ItemsProvider,
                 this.GiftRequestValidator,

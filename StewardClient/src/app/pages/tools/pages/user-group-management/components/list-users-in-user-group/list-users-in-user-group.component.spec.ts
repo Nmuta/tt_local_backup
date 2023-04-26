@@ -105,21 +105,6 @@ describe('ListUsersInGroupComponent', () => {
       });
     });
 
-    describe('When user does not have write perms', () => {
-      beforeEach(() => {
-        baseUserModel.role = UserRole.SupportAgentNew;
-        mockStore.selectSnapshot = jasmine
-          .createSpy('selectSnapshot')
-          .and.returnValue(baseUserModel);
-      });
-
-      it('should set userHasWritePerms to false', () => {
-        component.ngOnInit();
-
-        expect(component.userHasWritePerms).toBeFalsy();
-      });
-    });
-
     describe('When user has remove all perms', () => {
       beforeEach(() => {
         baseUserModel.role = UserRole.LiveOpsAdmin;
@@ -132,21 +117,6 @@ describe('ListUsersInGroupComponent', () => {
         component.ngOnInit();
 
         expect(component.userHasRemoveAllPerms).toBeTruthy();
-      });
-    });
-
-    describe('When user does not have remove all perms', () => {
-      beforeEach(() => {
-        baseUserModel.role = UserRole.SupportAgentNew;
-        mockStore.selectSnapshot = jasmine
-          .createSpy('selectSnapshot')
-          .and.returnValue(baseUserModel);
-      });
-
-      it('should set userHasRemoveAllPerms to false', () => {
-        component.ngOnInit();
-
-        expect(component.userHasRemoveAllPerms).toBeFalsy();
       });
     });
   });

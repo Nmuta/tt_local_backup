@@ -23,11 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.MediaTeam)]
+        UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.TitleAgnostic)]
     public class KustoController : Controller
     {
@@ -132,12 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("player/{xuid}/entitlements")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.CommunityManager,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.SupportAgentNew,
-            UserRole.MediaTeam)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(IEnumerable<Entitlement>))]
         public async Task<IActionResult> GetPlayerEntitlements(ulong xuid)
         {

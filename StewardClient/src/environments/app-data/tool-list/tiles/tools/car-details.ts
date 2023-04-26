@@ -1,10 +1,9 @@
 import { GameTitle } from '@models/enums';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const carDetailsTile = <HomeTileInfoInternal>{
   icon: AppIcon.CarDetails,
   tool: NavbarTool.CarDetails,
-  accessList: CommonAccessLevels.Everyone,
   title: 'Car Details',
   subtitle: 'View full car details',
   supportedTitles: [GameTitle.FH5],
