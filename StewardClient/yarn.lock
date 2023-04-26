@@ -1530,6 +1530,18 @@
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@faker-js/faker/-/faker-6.0.0.tgz#b613ebf5f5ebb2ab987afb567d8b7fe860199c13"
   integrity sha1-thPr9fXrsquYevtWfYt/6GAZnBM=
 
+"@floating-ui/core@^1.2.6":
+  version "1.2.6"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@floating-ui/core/-/core-1.2.6.tgz#d21ace437cc919cdd8f1640302fa8851e65e75c0"
+  integrity sha1-0hrOQ3zJGc3Y8WQDAvqIUeZedcA=
+
+"@floating-ui/dom@^1.2.5":
+  version "1.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@floating-ui/dom/-/dom-1.2.7.tgz#c123e4db014b07b97e996cd459245fa217049c6b"
+  integrity sha1-wSPk2wFLB7l+mWzUWSRfohcEnGs=
+  dependencies:
+    "@floating-ui/core" "^1.2.6"
+
 "@fortawesome/angular-fontawesome@^0.10.1":
   version "0.10.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@fortawesome/angular-fontawesome/-/angular-fontawesome-0.10.2.tgz#de12845cf5e8d7bc5df3ee8f1f16d497ef21e675"
@@ -2825,6 +2837,14 @@ angular-resizable-element@^5.0.0:
   integrity sha1-wpLP1Teo6MOFC23Bpm/8wUYoZNE=
   dependencies:
     tslib "^2.2.0"
+
+angular-shepherd@^15.0.0:
+  version "15.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/angular-shepherd/-/angular-shepherd-15.0.0.tgz#2b7a3f637a9bef924a4f63ccf3d56903a796b207"
+  integrity sha1-K3o/Y3qb75JKT2PM89VpA6eWsgc=
+  dependencies:
+    shepherd.js "^11.0.0"
+    tslib "^2.3.0"
 
 ansi-colors@4.1.1, ansi-colors@^4.1.1:
   version "4.1.1"
@@ -4236,6 +4256,11 @@ deep-is@^0.1.3, deep-is@~0.1.3:
   version "0.1.4"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/deep-is/-/deep-is-0.1.4.tgz#a6f2dce612fadd2ef1f519b73551f17e85199831"
   integrity sha1-pvLc5hL63S7x9Rm3NVHxfoUZmDE=
+
+deepmerge@^4.3.1:
+  version "4.3.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/deepmerge/-/deepmerge-4.3.1.tgz#44b5f2147cd3b00d4b56137685966f26fd25dd4a"
+  integrity sha1-RLXyFHzTsA1LVhN2hZZvJv0l3Uo=
 
 default-gateway@^6.0.3:
   version "6.0.3"
@@ -8872,6 +8897,14 @@ shebang-regex@^3.0.0:
   version "3.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha1-rhbxZE2HPsrYQ7AwexQzYtTEIXI=
+
+shepherd.js@^11.0.0:
+  version "11.1.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/shepherd.js/-/shepherd.js-11.1.1.tgz#70ce0e1c7605a389863dd3360e4ec8f88b24e79f"
+  integrity sha1-cM4OHHYFo4mGPdM2Dk7I+Isk558=
+  dependencies:
+    "@floating-ui/dom" "^1.2.5"
+    deepmerge "^4.3.1"
 
 side-channel@^1.0.4:
   version "1.0.4"
