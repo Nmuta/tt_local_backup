@@ -8,6 +8,21 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'e3702108-3edd-4f7c-9b56-9440c3b78a68',
+      shortText: 'Add year to displayed car info',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '6070292d-ff07-4d31-b72a-f0f0e2c98330',
+      shortText: 'Rework verification checkbox into an icon button',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a3150781-c8a1-4415-9379-d4f09cee9701',
+      shortText: 'Convert player inventory component to use composition',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'a34b9712-384e-4e93-aff6-d0a9760adf4a',
       shortText: 'Fix sync state component for cypress tests',
@@ -53,6 +68,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: { title: [GameTitle.FH5], tool: [NavbarTool.ServicesTableStorage] },
       uuid: 'eddbd7a1-5db5-4853-95b6-531bb7780539',
       shortText: 'Added Services Table Storage view for FH5',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'd7e55959-8d9c-4295-a32c-23f3b1de9485',
+      shortText: 'Remove all v1 auth functionality',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },

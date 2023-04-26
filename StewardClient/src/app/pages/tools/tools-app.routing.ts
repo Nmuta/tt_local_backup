@@ -6,13 +6,11 @@ import { AuthGuard } from 'app/route-guards/auth.guard';
 import { ToolsAppComponent } from './tools-app.component';
 import { ToolsAppHomeComponent } from './pages/home/home.component';
 import {
-  CommonAccessLevels,
   environment,
   HomeTileInfo,
   isHomeTileInfoExternal,
   isHomeTileInfoInternal,
 } from '@environments/environment';
-import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { HomeTileInfoExternal, HomeTileInfoInternal } from '@environments/environment.dev';
 import { chain } from 'lodash';
 import { AuthV2Guard } from 'app/route-guards/auth-v2.guard';
@@ -20,7 +18,7 @@ import { AuthV2Guard } from 'app/route-guards/auth-v2.guard';
 const routes: Routes = [
   {
     path: 'tools',
-    canActivate: [AuthGuard, FindUserRoleGuard(CommonAccessLevels.Everyone)],
+    canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
     component: ToolsAppComponent,
     children: [
@@ -40,7 +38,7 @@ const routes: Routes = [
           return <Route>{
             path: tool.tool,
             loadChildren: tool.loadChildren,
-            canActivate: [AuthGuard, AuthV2Guard, FindUserRoleGuard(tool.accessList)],
+            canActivate: [AuthGuard, AuthV2Guard],
             canActivateChild: [AuthGuard, AuthV2Guard],
           };
         }),
@@ -64,7 +62,7 @@ const routes: Routes = [
             path: tool.tool,
             resolve: { url: 'externalUrlRedirectResolver' },
             data: { externalUrl: tool.externalUrl },
-            canActivate: [AuthGuard, AuthV2Guard, FindUserRoleGuard(tool.accessList)],
+            canActivate: [AuthGuard, AuthV2Guard],
             canActivateChild: [AuthGuard, AuthV2Guard],
           };
         }),

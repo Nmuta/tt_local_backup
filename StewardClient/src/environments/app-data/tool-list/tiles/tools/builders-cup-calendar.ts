@@ -1,10 +1,9 @@
 import { GameTitle } from '@models/enums';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const buildersCupCalendarTile = <HomeTileInfoInternal>{
   icon: AppIcon.BuildersCupCalendar,
   tool: NavbarTool.BuildersCupCalendar,
-  accessList: CommonAccessLevels.AdminAndGeneralUsers,
   title: 'Builders Cup Calendar',
   subtitle: "View featured Builder's Cup content on a day-by-day basis.",
   supportedTitles: [GameTitle.FM8],

@@ -12,10 +12,12 @@ import { ApolloPlayerInventoryComponent } from './apollo/apollo-player-inventory
 import { InventoryItemListDisplayModule } from '@views/inventory-item-list-display/inventory-item-list-display.module';
 import { SteelheadPlayerInventoryComponent } from './steelhead/steelhead-player-inventory.component';
 import { WoodstockPlayerInventoryComponent } from './woodstock/woodstock-player-inventory.component';
+import { PlayerInventoryComponent } from './player-inventory.component';
 
 /** Feature module containing cards that display player inventory. */
 @NgModule({
   declarations: [
+    PlayerInventoryComponent,
     WoodstockPlayerInventoryComponent,
     SteelheadPlayerInventoryComponent,
     SunrisePlayerInventoryComponent,

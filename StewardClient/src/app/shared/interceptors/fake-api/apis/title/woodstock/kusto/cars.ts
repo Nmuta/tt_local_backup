@@ -29,13 +29,17 @@ export class WoodstockSimpleCarsFakeApi extends FakeApiBase {
       return Array(faker.datatype.number({ min: 5, max: count }))
         .fill(undefined)
         .map(() => {
-          return {
+          const tempCar = {
             id: fakeBigNumber(),
             makeId: fakeBigNumber(),
             make: faker.random.word(),
             model: faker.random.words(3),
+            year: (Math.random() * (new Date().getFullYear() - 1908) + 1908).toString(),
+            displayName: '',
             makeOnly: false,
           };
+          tempCar.displayName = `${tempCar.make} ${tempCar.model} (${tempCar.year})`;
+          return tempCar;
         });
     }
 

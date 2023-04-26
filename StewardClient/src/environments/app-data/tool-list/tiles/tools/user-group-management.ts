@@ -1,11 +1,10 @@
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const userGroupManagementTile = <HomeTileInfoInternal>{
   icon: AppIcon.UserGroupManagement,
   tool: NavbarTool.UserGroupManagement,
-  accessList: CommonAccessLevels.UserGroupManagement,
   title: 'User Group Management',
   subtitle: 'Create & Edit User Groups',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],

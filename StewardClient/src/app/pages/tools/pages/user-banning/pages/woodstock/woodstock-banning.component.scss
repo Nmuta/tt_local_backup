@@ -10,10 +10,6 @@
 
 .ban-action-container {
   margin-top: $gap-medium;
-
-  .mat-checkbox {
-    margin-left: $gap-small;
-  }
 }
 
 .ban-area {
@@ -30,4 +26,9 @@
 
 .warn {
   color: app-color-default($app-warn);
+}
+
+button {
+  max-width: $button-min-size;
+  width: 100%;
 }

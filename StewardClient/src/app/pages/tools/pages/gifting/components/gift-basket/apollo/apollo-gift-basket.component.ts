@@ -19,6 +19,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 import { ZERO } from '@helpers/bignumbers';
 import { cloneDeep } from 'lodash';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 /** Apollo gift basket. */
 @Component({
@@ -45,9 +46,10 @@ export class ApolloGiftBasketComponent
   constructor(
     private readonly apolloService: ApolloService,
     backgroundJobService: BackgroundJobService,
+    permAttributesService: PermAttributesService,
     store: Store,
   ) {
-    super(backgroundJobService, store);
+    super(backgroundJobService, permAttributesService, store);
   }
 
   /** Angular lifecycle hook. */

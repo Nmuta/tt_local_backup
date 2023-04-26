@@ -13,6 +13,7 @@ import {
   EndpointKeyMemoryState,
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import {
+  ConfigureShowVerifyCheckboxPopup,
   SetApolloEndpointKey,
   SetFakeApi,
   SetForteEndpointKey,
@@ -49,6 +50,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public woodstockEndpointKey: string;
   public steelheadEndpointKey: string;
   public forteEndpointKey: string;
+  public showVerifyCheckboxPopup: boolean;
   public showProfileOverrideOptions: boolean;
   public showFakeApiToggle: boolean; // Only show on dev or if user is a live ops admin
   public showStagingApiToggle: boolean; // Only show on staging slot
@@ -103,6 +105,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
       });
 
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
+      this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
       this.enableFakeApi = latest.enableFakeApi;
       this.enableStagingApi = latest.enableStagingApi;
       this.apolloEndpointKey = latest.apolloEndpointKey;
@@ -172,5 +175,10 @@ export class SettingsComponent extends BaseComponent implements OnInit {
       .subscribe(() => {
         this.windowService.location().reload();
       });
+  }
+
+  /** Sets the show verify checkbox popup value in settings. */
+  public setShowVerifyCheckboxPopup(): void {
+    this.store.dispatch(new ConfigureShowVerifyCheckboxPopup(this.showVerifyCheckboxPopup));
   }
 }

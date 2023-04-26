@@ -83,10 +83,8 @@ This should open up the API's local swagger page on: https://localhost:44321/swa
 ### UI
 You have multiple options to run client unit tests.
 
-1) `npm run local:test:chrome` - Run using Chrome
-2) `npm run local:test:ff` - Run using Firefox
-3) `npm run vsts:test` - Run using headless browser
-3) `npm run vsts:test:ncc` - Run using headless browser without code coverage results:
+1) `yarn test:chrome` - Run using Chrome
+2) `yarn test:ff` - Run using Firefox
 
 ### API
 API testing is simple and can all be done through Visual Studio's **Test Explorer**

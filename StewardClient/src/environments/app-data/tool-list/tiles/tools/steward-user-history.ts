@@ -1,9 +1,8 @@
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const stewardUserHistoryTile = <HomeTileInfoInternal>{
   icon: AppIcon.AdminInfo,
   tool: NavbarTool.StewardUserHistory,
-  accessList: CommonAccessLevels.OldNavbarAppAdminOnly,
   title: 'Job History',
   subtitle: 'Past actions',
   supportedTitles: [],

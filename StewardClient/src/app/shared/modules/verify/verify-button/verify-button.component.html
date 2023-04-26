@@ -1,0 +1,35 @@
+<button
+  mat-icon-button
+  [class.has-help-icon]="showVerifyCheckboxPopup && hasPermission"
+  [disabled]="disabled"
+  (click)="changeVerifyStatus(!isVerified)"
+  stateManager
+  [permissionAttribute]="permissionAttribute"
+  [permissionTitle]="permissionTitle"
+  (permissionChange)="permissionAllowedChange($event)"
+  clickStop
+>
+  <mat-icon *ngIf="!isVerified" id="verify-button-icon">lock_open</mat-icon>
+  <mat-icon *ngIf="isVerified">lock</mat-icon>
+  <ng-container *ngIf="showVerifyCheckboxPopup">
+    <help-popover-icon cardTitle="Verify Button" matTooltipPosition="right">
+      <div>
+        The <b>Verify button</b> adds an extra step to confirm an action to prevent errors and
+        accidental usage of more "high-risk" tools, such as banning.<br /><br />If the Verify button
+        appears disabled, you must add more information to proceed. Check that you have correctly
+        filled in all required details.<br /><br />
+      </div>
+      <div class="sf-wrapper">
+        <button
+          mat-flat-button
+          class="sf-button sf-full-width"
+          color="warn"
+          (click)="setShowVerifyCheckboxPopup(!showVerifyCheckboxPopup)"
+        >
+          Hide Verify Help Icon
+        </button>
+        <div>* Can be re-enabled in settings sidebar</div>
+      </div>
+    </help-popover-icon>
+  </ng-container>
+</button>
