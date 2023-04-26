@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '302f1349-eb3b-421c-971d-c52d84d3985d',
+      shortText: 'Add Load All button for credit history in player details deep dive',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'e3702108-3edd-4f7c-9b56-9440c3b78a68',
       shortText: 'Add year to displayed car info',
