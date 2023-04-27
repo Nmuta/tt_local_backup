@@ -30,14 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [LogTagTitle(TitleLogTags.Steelhead)]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam,
-        UserRole.MotorsportDesigner,
-        UserRole.HorizonDesigner)]
+        UserRole.LiveOpsAdmin)]
     [ApiController]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Topic.Auctions, Target.Details, Dev.ReviseTags)]
@@ -90,9 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [HttpDelete("{auctionId}")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Auctions)]

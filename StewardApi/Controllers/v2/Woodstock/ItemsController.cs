@@ -26,14 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam,
-        UserRole.MotorsportDesigner,
-        UserRole.HorizonDesigner)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [Tags(Title.Woodstock)]
     public sealed class ItemsController : V2WoodstockControllerBase

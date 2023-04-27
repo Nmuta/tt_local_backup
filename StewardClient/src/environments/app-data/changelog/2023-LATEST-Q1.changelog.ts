@@ -13,6 +13,50 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Allow UGC to be featured without an end date',
     },
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '302f1349-eb3b-421c-971d-c52d84d3985d',
+      shortText: 'Add Load All button for credit history in player details deep dive',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'e3702108-3edd-4f7c-9b56-9440c3b78a68',
+      shortText: 'Add year to displayed car info',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '6070292d-ff07-4d31-b72a-f0f0e2c98330',
+      shortText: 'Rework verification checkbox into an icon button',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a3150781-c8a1-4415-9379-d4f09cee9701',
+      shortText: 'Convert player inventory component to use composition',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a34b9712-384e-4e93-aff6-d0a9760adf4a',
+      shortText: 'Fix sync state component for cypress tests',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '06533eea-f7b6-4dc4-99f9-dc52934452e1',
+      shortText: 'Fix team lead permission error',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'f8e3de26-fa91-4f56-8aff-faab4843bce1',
+      shortText: 'Fix leaderboard scores',
+      longText: [
+        'Adjusted speed traps and speed zones to be treated as meters per second.',
+        'Miles per hour conversion updated to match adjustement.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '5949f9c4-e40b-4f13-9c4f-7c1f657e4400',
+      shortText: "Added 'Breaching NDA' ban reason",
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '26bcd504-40bb-4045-be76-00c9f6d0872e',
       shortText: 'Update Ban Reasons',
@@ -34,6 +78,21 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: { title: [GameTitle.FH5], tool: [NavbarTool.ServicesTableStorage] },
       uuid: 'eddbd7a1-5db5-4853-95b6-531bb7780539',
       shortText: 'Added Services Table Storage view for FH5',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'd7e55959-8d9c-4295-a32c-23f3b1de9485',
+      shortText: 'Remove all v1 auth functionality',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: 'b977e558-41d7-4c73-890b-9b55837844ef',
+      shortText: 'Display player next ban duration',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: 'b977e558-41d7-4c73-890b-9b55837844ef',
+      shortText: 'Display player next ban duration',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
@@ -63,8 +122,18 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'f382179c-2d6c-469b-93b7-94c3cbb2b015',
+      shortText: 'Add display condition field',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '863574f3-2026-4477-9e75-0e4ecfae5cb2',
       shortText: 'Add timer field',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '99394a85-7ac3-40af-a23d-e7367fedb39f',
+      shortText: 'Change DeepLink category to manufacturer',
     },
     {
       tag: { title: 'all', tool: NavbarTool.UserDetails },

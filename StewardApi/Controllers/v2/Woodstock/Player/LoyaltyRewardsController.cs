@@ -37,14 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.HorizonDesigner,
-        UserRole.MotorsportDesigner,
-        UserRole.MediaTeam)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.Player, Topic.LoyaltyRewards)]
     public class LoyaltyRewardsController : V2WoodstockControllerBase
@@ -103,10 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         [SwaggerResponse(200, type: typeof(Dictionary<WoodstockLoyaltyRewardsTitle, bool>))]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]

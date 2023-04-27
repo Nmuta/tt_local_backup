@@ -13,6 +13,8 @@ import { UserState } from '@shared/state/user/user.state';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RequestAccessToken } from '@shared/state/user/user.actions';
+import { includes } from 'lodash';
+import { ValidUserRoles } from '@models/enums';
 
 /** A guard for preventing unauthenticated access and directing users to the auth flow. */
 @Injectable({
@@ -37,10 +39,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     return UserState.latestValidProfile$(this.profile$).pipe(
       catchError(_e => {
         this.store.dispatch(redirectAction);
-        return of(false);
+        return of(null);
       }),
       map(profile => {
-        if (profile) {
+        if (profile && includes(ValidUserRoles, profile?.role)) {
           return true;
         }
 

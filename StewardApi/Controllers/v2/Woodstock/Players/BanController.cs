@@ -62,7 +62,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Sexual/Nude imagery",
                     "Credit/XP/Wheelspin hacking",
                     "Ban dodging",
-                    "Employee harassment"
+                    "Employee harassment",
+                    "Breaching NDA"
                 },
                 BanConfigurationId = new Guid("1b1d4b1e-4111-49be-82e3-74335052338c"),
                 FeatureAreas = new List<FeatureAreas>

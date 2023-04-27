@@ -137,6 +137,7 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
       tileTitle: genericPopupTile.tileTitle,
       tileType: genericPopupTile.tileType,
       timer: genericPopupTile.timer,
+      displayConditions: genericPopupTile.displayConditions,
     } as WelcomeCenterTile;
 
     this.formControls.baseTile.setValue(baseTile);

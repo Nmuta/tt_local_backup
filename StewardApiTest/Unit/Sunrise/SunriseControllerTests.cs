@@ -1969,6 +1969,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 mc.AllowNullCollections = true;
             }));
 
+            public IStewardUserProvider UserProvider { get; set; } = Substitute.For<IStewardUserProvider>();
+
             public IRequestValidator<SunriseMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseMasterInventory>>();
 
             public IRequestValidator<SunriseGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseGift>>();
@@ -1997,6 +1999,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Scheduler,
                 this.JobTracker,
                 this.Mapper,
+                this.UserProvider,
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,

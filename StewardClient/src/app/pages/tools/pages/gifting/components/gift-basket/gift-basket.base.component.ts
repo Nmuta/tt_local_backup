@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { GameTitle, UserRole } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -28,6 +28,7 @@ import { SteelheadGift } from '@models/steelhead';
 import { WoodstockGift } from '@models/woodstock';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 export type InventoryItemGroup = {
   category: string;
@@ -116,6 +117,8 @@ export abstract class GiftBasketBaseComponent<
 
   public activePermAttribute = PermAttributeName.GiftPlayer;
 
+  public allowedToExceedCreditLimit = false;
+
   /**
    * Item groups used to populate item selection dropdown.
    * NOTE:  Due to master inventory items being so different per title, I am leaving this
@@ -140,6 +143,7 @@ export abstract class GiftBasketBaseComponent<
 
   constructor(
     private readonly backgroundJobService: BackgroundJobService,
+    private readonly permAttributesService: PermAttributesService,
     protected readonly store: Store,
   ) {
     super();
@@ -168,6 +172,15 @@ export abstract class GiftBasketBaseComponent<
       this.formControls.localizedTitleMessageInfo.updateValueAndValidity();
       this.formControls.localizedBodyMessageInfo.updateValueAndValidity();
     }
+
+    this.permAttributesService.initializationGuard$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.allowedToExceedCreditLimit = this.permAttributesService.hasFeaturePermission(
+          PermAttributeName.AllowedToExceedCreditLimit,
+          this.title,
+        );
+      });
   }
 
   /** Lifecycle hook. */
@@ -198,9 +211,7 @@ export abstract class GiftBasketBaseComponent<
     }
 
     this.ignoreMaxCreditLimit =
-      event?.value === GiftReason.LostSave &&
-      (this.profile.role === UserRole.LiveOpsAdmin ||
-        this.profile.role === UserRole.SupportAgentAdmin);
+      event?.value === GiftReason.LostSave && this.allowedToExceedCreditLimit;
     this.setStateGiftBasket(this.giftBasket.data);
   }
 

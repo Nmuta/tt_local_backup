@@ -39,6 +39,7 @@ export enum PermAttributeName {
   GrantPaidEntitlements = 'GrantPaidEntitlements',
   SetDriverLevel = 'SetDriverLevel',
   ManageStewardTeam = 'ManageStewardTeam',
+  AllowedToExceedCreditLimit = 'AllowedToExceedCreditLimit',
 }
 
 /** Full perm attribute details. */

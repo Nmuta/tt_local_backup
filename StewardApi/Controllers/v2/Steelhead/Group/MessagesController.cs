@@ -39,9 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.CommunityManager)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Target.LspGroup, Topic.Messaging)]
     public class MessagesController : V2SteelheadControllerBase

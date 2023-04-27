@@ -36,11 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Topic.Localization, Target.Details, Dev.ReviseTags)]
     public class LocalizationController : V2SteelheadControllerBase

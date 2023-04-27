@@ -61,12 +61,12 @@ export class PermAttributesService extends BaseService {
     );
   }
 
-  /** Gets all perm attributes. Utilize service.hasFeaturePermission to check if a specific perm attribute exists. */
+  /** Gets all perm attributes. */
   public get permAttributes(): PermAttribute[] {
     return this.allPermAttributes;
   }
 
-  /** Gets all perm attribute names. Utilize service.hasFeaturePermission to check if a specific perm attribute exists. */
+  /** Gets all perm attribute names. */
   public get permAttributeNames(): PermAttributeName[] {
     return this.allPermAttributeNames;
   }
@@ -83,35 +83,19 @@ export class PermAttributesService extends BaseService {
     return this.userRole === UserRole.LiveOpsAdmin;
   }
 
-  public get isUsingV1Auth(): boolean {
-    return this.userRole !== UserRole.GeneralUser;
-  }
-
   public get hasSteelheadAccess(): boolean {
-    if (this.isUsingV1Auth) {
-      return true;
-    }
     return this.availableTitlesAndEnvironments[GameTitle.FM8].length > 0;
   }
 
   public get hasApolloAccess(): boolean {
-    if (this.isUsingV1Auth) {
-      return true;
-    }
     return this.availableTitlesAndEnvironments[GameTitle.FM7].length > 0;
   }
 
   public get hasWoodstockAccess(): boolean {
-    if (this.isUsingV1Auth) {
-      return true;
-    }
     return this.availableTitlesAndEnvironments[GameTitle.FH5].length > 0;
   }
 
   public get hasSunriseAccess(): boolean {
-    if (this.isUsingV1Auth) {
-      return true;
-    }
     return this.availableTitlesAndEnvironments[GameTitle.FH4].length > 0;
   }
 
@@ -177,17 +161,9 @@ export class PermAttributesService extends BaseService {
   }
 
   /** Returns true if user has permission to feature attribute. */
-  public hasFeaturePermission(
-    attr: PermAttributeName,
-    title?: GameTitle,
-    allowV1Auth?: boolean,
-  ): boolean {
+  public hasFeaturePermission(attr: PermAttributeName, title?: GameTitle): boolean {
     if (this.isAdmin) {
       return true;
-    }
-
-    if (this.isUsingV1Auth) {
-      return allowV1Auth;
     }
 
     const titleToCheck = title ?? '';

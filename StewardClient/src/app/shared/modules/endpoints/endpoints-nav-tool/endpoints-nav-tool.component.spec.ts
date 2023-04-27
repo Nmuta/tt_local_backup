@@ -1,12 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  AppIcon,
-  CommonAccessLevels,
-  ExtraIcon,
-  HomeTileInfoCustomTile,
-  NavbarTool,
-} from '@environments/environment';
+import { AppIcon, ExtraIcon, HomeTileInfoCustomTile, NavbarTool } from '@environments/environment';
 import { NgxsModule } from '@ngxs/store';
 
 import { EndpointsNavToolComponent } from './endpoints-nav-tool.component';
@@ -31,7 +25,6 @@ describe('EndpointsNavToolComponent', () => {
       icon: AppIcon.DeveloperTool,
       extraIcon: ExtraIcon.External,
       tool: NavbarTool.AdminPagesSelector,
-      accessList: CommonAccessLevels.AdminPageAccess,
       title: 'Admin Pages',
       subtitle: 'Production / Flight / Dev',
       imageUrl: undefined,

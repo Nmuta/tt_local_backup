@@ -1,10 +1,9 @@
 import { GameTitle } from '@models/enums';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const welcomeCenterCalendarTile = <HomeTileInfoInternal>{
   icon: AppIcon.WelcomeCenterCalendar,
   tool: NavbarTool.WelcomeCenterCalendar,
-  accessList: CommonAccessLevels.AdminAndGeneralUsers,
   title: 'Welcome Center Calendar',
   subtitle: 'View Welcome Center tiles on a day-by-day basis',
   supportedTitles: [GameTitle.FM8],

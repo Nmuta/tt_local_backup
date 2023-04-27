@@ -17,8 +17,8 @@
       <mat-option [disabled]="true">Showing item types</mat-option>
       <mat-optgroup *ngFor="let group of stateGroupOptions$ | async" [label]="group.category">
         <mat-option *ngFor="let item of group.items" [value]="item">
-          <span *ngIf="!item?.makeOnly"> {{ item.make }} {{ item.model }} [{{ item?.id }}]</span>
-          <span *ngIf="item?.makeOnly"> {{ item.make }} [{{ item?.id }}]</span>
+          <span *ngIf="!item?.makeOnly"> {{ item.displayName }} [{{ item?.id }}]</span>
+          <span *ngIf="item?.makeOnly"> {{ item.make }}</span>
         </mat-option>
       </mat-optgroup>
     </mat-autocomplete>

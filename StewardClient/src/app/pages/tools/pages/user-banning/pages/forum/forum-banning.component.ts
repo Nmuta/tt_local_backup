@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
-import { chain, Dictionary, filter, keyBy } from 'lodash';
+import { chain, Dictionary, filter, keyBy, min } from 'lodash';
 import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { ForumBanRequest } from '@models/forum-ban-request.model';
@@ -37,6 +37,14 @@ const STANDARD_BAN_REASONS: StandardBanReasons = [
     ],
   },
 ];
+const ForumBanDuration = {
+  1: 'Warning Message',
+  2: '24 hours (Silence)',
+  3: '3 days (Silence)',
+  4: '1 week (Silence)',
+  5: '1 month (Silence)',
+  6: 'Permanent (Suspend)',
+};
 
 /** Routed Component; Forum Banning Tool. */
 @Component({
@@ -58,6 +66,7 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
   public summaryLookup: Dictionary<ForumBanSummary> = {};
   public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
+  public nextBanDuration: string = null;
 
   public identitySortFn = null;
 
@@ -79,7 +88,10 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
     summaries$
       .pipe(map(summaries => keyBy(summaries, e => e.xuid) as Dictionary<ForumBanSummary>))
       .subscribe(summaryLookup$);
-    summaryLookup$.subscribe(summaryLookup => (this.summaryLookup = summaryLookup));
+    summaryLookup$.subscribe(summaryLookup => {
+      this.summaryLookup = summaryLookup;
+      this.updateNextBanDuration();
+    });
     summaries$
       .pipe(
         map(summaries => filter(summaries, summary => summary.banCount > new BigNumber(0))), // only banned identities
@@ -165,6 +177,7 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
     if (identity?.general && identity.general.error == null) {
       this.selectedPlayer = identity.general;
     }
+    this.updateNextBanDuration();
   }
 
   /** True when the form can be submitted. */
@@ -179,5 +192,20 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
     }
 
     return null;
+  }
+
+  /** Update the ban duration label based on the appropriate player. */
+  private updateNextBanDuration() {
+    const targetPlayer =
+      this.playerIdentities.length == 1 ? this.playerIdentities[0] : this.selectedPlayer;
+
+    // If no player is selected
+    if (!targetPlayer || !this.summaryLookup[targetPlayer.xuid.toNumber()]) {
+      this.nextBanDuration = null;
+      return;
+    }
+    const playerBanCount =
+      this.summaryLookup[targetPlayer.xuid.toNumber()].adjustedBanCount.toNumber();
+    this.nextBanDuration = ForumBanDuration[min([playerBanCount + 1, 6])];
   }
 }

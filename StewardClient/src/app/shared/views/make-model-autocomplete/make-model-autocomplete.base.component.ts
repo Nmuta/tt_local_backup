@@ -125,7 +125,7 @@ export abstract class MakeModelAutocompleteBaseComponent
 
   /** Mat autocomplete display */
   public autoCompleteDisplayFn(item: SimpleCar): string {
-    return !!item ? (!item?.makeOnly ? `${item.make} ${item.model} [${item.id}]` : item.make) : '';
+    return !!item ? (!item?.makeOnly ? `${item.displayName} [${item.id}]` : item.make) : '';
   }
 
   /** Clears the make model input and resubmits the search filters. */

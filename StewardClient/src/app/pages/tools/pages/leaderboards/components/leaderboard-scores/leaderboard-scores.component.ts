@@ -546,7 +546,7 @@ export class LeaderboardScoresComponent
           entry.alternateScoreRepresentations = entry.alternateScoreRepresentations ?? [];
           entry.alternateScoreRepresentations.push({
             label: 'mph',
-            value: entry.score.dividedBy(1.609344),
+            value: entry.score.multipliedBy(2.2369),
           });
         });
         break;

@@ -44,14 +44,6 @@
             [navAnchor]="item.tileContentComponent"
             [navAnchorDisabled]="!item.hasAccess"
           ></div>
-          <div *ngIf="!item.hasAccess" class="no-access-warning">
-            <ng-container *ngIf="isLiveOpsAdmin; else noAccessTemplate">
-              <span><mat-icon>gpp_bad</mat-icon>Allowed Roles<mat-icon>gpp_bad</mat-icon></span>
-              <ul>
-                <li *ngFor="let role of item.accessList">{{ role | humanize }}</li>
-              </ul>
-            </ng-container>
-          </div>
         </mat-card-content>
         <mat-card-actions align="end">
           <mat-checkbox

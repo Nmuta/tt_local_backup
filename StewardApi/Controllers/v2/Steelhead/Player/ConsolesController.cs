@@ -31,14 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam,
-        UserRole.MotorsportDesigner,
-        UserRole.HorizonDesigner)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Target.Player, Topic.Consoles)]
     public class ConsolesController : V2SteelheadControllerBase
