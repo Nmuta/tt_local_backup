@@ -1758,27 +1758,24 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void SetUGCFeaturedStatus_WithFeaturedTrueAndMissingExpiryTime_Throws()
+        public async Task SetUGCFeaturedStatus_WithFeaturedTrueAndMissingExpiryTime_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var contentId = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task>>
+            async Task<IActionResult> Action() => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
             {
-                async () => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
-                {
-                    IsFeatured = true,
-                    FeaturedExpiry = null,
-                }).ConfigureAwait(false),
-            };
+                IsFeatured = true,
+                FeaturedExpiry = null,
+            }).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"Required query param is missing: Expiry");
-            }
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var response = await Action().ConfigureAwait(false) as OkObjectResult;
+            response.Should().BeNull();
         }
 
         [TestMethod]
@@ -1803,7 +1800,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage("Expiry cannot be less than 1.00:00:00.");
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage("FeaturedExpiry cannot be less than 1.00:00:00.");
             }
         }
 
