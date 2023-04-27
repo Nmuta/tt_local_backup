@@ -82,6 +82,11 @@ export function getPlayFabRoute(gameTitle: GameTitle) {
   return ['/app/tools/playfab/', gameTitle];
 }
 
+/** Make Unified Calendar route. */
+export function getUnifiedCalendarRoute(gameTitle: GameTitle) {
+  return ['/app/tools/unified-calendar/', gameTitle];
+}
+
 /** Make user details route. gameTitle is string to accommodate the General tab. */
 export function getUserDetailsRoute(gameTitle: string) {
   return ['/app/tools/user-details/', gameTitle];

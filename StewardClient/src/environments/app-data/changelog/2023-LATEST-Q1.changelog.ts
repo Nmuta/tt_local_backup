@@ -8,6 +8,19 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [
+          NavbarTool.UnifiedCalendar,
+          NavbarTool.RacersCup,
+          NavbarTool.BuildersCupCalendar,
+          NavbarTool.WelcomeCenterCalendar,
+        ],
+      },
+      uuid: '5fa53d45-178a-477c-a327-2650fb309569',
+      shortText: 'Combine Steelhead calendars into single tabbed view',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: 'de3a997a-31d3-426e-ac40-663a0a0fc0da',
       shortText: 'Allow UGC to be featured without an end date',

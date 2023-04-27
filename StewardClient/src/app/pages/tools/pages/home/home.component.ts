@@ -124,6 +124,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       .subscribe(profile => {
         this.userRole = profile.role;
         const toolsList = environment.tools as HomeTileInfoForNav[];
+
         toolsList.forEach(tile => {
           const hasPermissions = hasRequiredPermissions(tile, this.permAttributesService);
           tile.hasAccess = hasPermissions;

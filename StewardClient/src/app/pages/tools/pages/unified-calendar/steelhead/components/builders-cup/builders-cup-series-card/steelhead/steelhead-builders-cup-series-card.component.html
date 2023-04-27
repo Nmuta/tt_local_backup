@@ -1,0 +1,22 @@
+<mat-card>
+  <mat-card-title>
+    <span>{{ event?.meta?.seriesName }}</span>
+  </mat-card-title>
+  <mat-card-subtitle> {{ event?.meta?.tourName }} </mat-card-subtitle>
+  <table class="info-table full-width">
+    <tr>
+      <th>Start</th>
+      <td>
+        <standard-absolute-time [timeUtc]="event?.meta?.seriesOpenTimeUtc"></standard-absolute-time>
+      </td>
+    </tr>
+    <tr>
+      <th>End</th>
+      <td>
+        <standard-absolute-time
+          [timeUtc]="event?.meta?.seriesCloseTimeUtc"
+        ></standard-absolute-time>
+      </td>
+    </tr>
+  </table>
+</mat-card>
