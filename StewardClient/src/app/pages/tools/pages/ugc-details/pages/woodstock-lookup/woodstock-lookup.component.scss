@@ -1,9 +1,15 @@
+@import '/src/styles/mixins';
+
 model-dump {
   display: flex;
   flex-flow: row wrap;
   & > * {
     flex-grow: 1;
   }
+}
+
+model-dump-flags {
+  margin-bottom: $gap-medium;
 }
 
 :host ::ng-deep .images {

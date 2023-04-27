@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'de3a997a-31d3-426e-ac40-663a0a0fc0da',
+      shortText: 'Allow UGC to be featured without an end date',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserDetails },
       uuid: '302f1349-eb3b-421c-971d-c52d84d3985d',
       shortText: 'Add Load All button for credit history in player details deep dive',

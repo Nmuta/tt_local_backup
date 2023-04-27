@@ -59,12 +59,12 @@ describe('WoodstockFeatureUgcModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: featureUgc', () => {
+  describe('Method: setUgcfeatureStatus', () => {
     const item = fakePlayerUgcItem();
 
     beforeEach(() => {
-      component.setFeaturedStatus$ = jasmine
-        .createSpy('setFeaturedStatus$')
+      component.changeFeaturedStatus$ = jasmine
+        .createSpy('changeFeaturedStatus$')
         .and.returnValue(of(item));
     });
 
@@ -73,53 +73,38 @@ describe('WoodstockFeatureUgcModalComponent', () => {
         component.formControls.featuredDate.setValue(DateTime.local().plus(100));
       });
 
-      it('should call component.setFeaturedStatus$()', () => {
-        component.featureUgc();
+      it('should call component.changeFeaturedStatus$()', () => {
+        component.setUgcfeatureStatus();
 
-        expect(component.setFeaturedStatus$).toHaveBeenCalled();
+        expect(component.changeFeaturedStatus$).toHaveBeenCalled();
       });
     });
 
     describe('When formGroup is invalid', () => {
       beforeEach(() => {
-        component.formControls.featuredDate.setValue(null);
+        component.formControls.featuredDate.setValue(DateTime.utc().minus(10_000));
       });
 
-      it('should not call component.setFeaturedStatus$()', () => {
-        component.featureUgc();
+      it('should not call component.changeFeaturedStatus$()', () => {
+        component.setUgcfeatureStatus();
 
-        expect(component.setFeaturedStatus$).not.toHaveBeenCalled();
+        expect(component.changeFeaturedStatus$).not.toHaveBeenCalled();
       });
     });
   });
 
-  describe('Method: setFeaturedStatus$', () => {
+  describe('Method: changeFeaturedStatus$', () => {
     const itemId = faker.datatype.uuid().toString();
     const expireDate = DateTime.local().plus(Duration.fromMillis(10_000));
     const expireDuration = expireDate.diff(DateTime.local().startOf('day'));
 
     it('should call WoodstockService.setUgcItemFeatureStatus() with correct params', () => {
-      component.setFeaturedStatus$(itemId, expireDate);
+      component.changeFeaturedStatus$(itemId, true, expireDate);
 
       expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: true,
-        expiry: expireDuration,
-      } as UgcFeaturedStatus);
-    });
-  });
-
-  describe('Method: deleteFeaturedStatus$', () => {
-    const itemId = faker.datatype.uuid().toString();
-    const expireDate = DateTime.local();
-    expireDate.plus(1);
-
-    it('should call WoodstockService.setUgcItemFeatureStatus() with correct params', () => {
-      component.deleteFeaturedStatus$(itemId);
-
-      expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
-        itemId: itemId,
-        isFeatured: false,
+        featuredExpiry: expireDuration,
       } as UgcFeaturedStatus);
     });
   });
