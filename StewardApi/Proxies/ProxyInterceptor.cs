@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Castle.DynamicProxy;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.Services.Orm.SqlGen;
 
 namespace Turn10.LiveOps.StewardApi.Proxies
 {
@@ -11,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies
     ///     Matches method-names 1:1.
     /// </summary>
     /// <typeparam name="TClass">The target class instance.</typeparam>
-    public class ProxyInterceptor<TClass> : IInterceptor
+    public class ProxyInterceptor<TClass> : IAsyncInterceptor
         where TClass : class
     {
         /// <summary>
@@ -47,7 +49,39 @@ namespace Turn10.LiveOps.StewardApi.Proxies
         }
 
         /// <inheritdoc/>
-        public void Intercept(IInvocation invocation)
+        public void InterceptSynchronous(IInvocation invocation)
+        {
+            var method = this.FindMethodOrThrow(invocation);
+            try
+            {
+                if (method.ReturnType != null)
+                {
+                    invocation.ReturnValue = method.Invoke(this.Target, invocation.Arguments);
+                }
+                else
+                {
+                    method.Invoke(this.Target, invocation.Arguments);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new LspFailureStewardException($"Failed to invoke LSP call: {method.Name}", ex);
+            }
+        }
+
+        /// <inheritdoc/>
+        public async void InterceptAsynchronous(IInvocation invocation)
+        {
+            invocation.ReturnValue = this.InternalInterceptAsynchronous(invocation);
+        }
+
+        /// <inheritdoc/>
+        public void InterceptAsynchronous<TResult>(IInvocation invocation)
+        {
+            invocation.ReturnValue = this.InternalInterceptAsynchronous<TResult>(invocation);
+        }
+
+        private MethodInfo FindMethodOrThrow(IInvocation invocation)
         {
             var method = this.FindMethod(invocation);
             if (method == null)
@@ -55,27 +89,36 @@ namespace Turn10.LiveOps.StewardApi.Proxies
                 throw new InvalidOperationException("Proxy: Could not find matching method");
             }
 
-            if (method.ReturnType != null)
+            return method;
+        }
+
+        private async Task InternalInterceptAsynchronous(IInvocation invocation)
+        {
+            var method = this.FindMethodOrThrow(invocation);
+            try
             {
-                try
-                {
-                    invocation.ReturnValue = method.Invoke(this.Target, invocation.Arguments);
-                }
-                catch (Exception ex)
-                {
-                    throw new LspFailureStewardException($"Failed to invoke LSP call: {method.Name}", ex);
-                }
+                invocation.ReturnValue = method.Invoke(this.Target, invocation.Arguments);
+                var task = (Task)invocation.ReturnValue;
+                await task;
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    method.Invoke(this.Target, invocation.Arguments);
-                }
-                catch (Exception ex)
-                {
-                    throw new LspFailureStewardException($"Failed to invoke LSP call: {method.Name}", ex);
-                }
+                throw new LspFailureStewardException($"Failed to invoke LSP call: {method.Name}", ex);
+            }
+        }
+
+        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
+        {
+            var method = this.FindMethodOrThrow(invocation);
+            try
+            {
+                invocation.ReturnValue = method.Invoke(this.Target, invocation.Arguments);
+                var task = (Task<TResult>)invocation.ReturnValue;
+                return await task;
+            }
+            catch (Exception ex)
+            {
+                throw new LspFailureStewardException($"Failed to invoke LSP call: {method.Name}", ex);
             }
         }
 
