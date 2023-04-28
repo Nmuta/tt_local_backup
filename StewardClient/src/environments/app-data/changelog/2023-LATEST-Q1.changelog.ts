@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'f5b00f0d-835b-45e7-ac51-aefd916b96a1',
+      shortText: 'Improve error message when non-xuid is entered in xuid search field',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: 'de3a997a-31d3-426e-ac40-663a0a0fc0da',
       shortText: 'Allow UGC to be featured without an end date',
