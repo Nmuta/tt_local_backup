@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: ChangelogTag.General,
       uuid: '3d2b3e80-7804-48cf-a444-5fcbc875ad24',
-      shortText: 'Added id to NavBar mat-icons for use in Cypress testing',
+      shortText: 'Removed hasAccess param from navbar component',
     },
     {
       tag: {

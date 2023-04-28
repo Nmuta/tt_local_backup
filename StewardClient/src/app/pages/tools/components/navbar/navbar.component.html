@@ -7,21 +7,21 @@
     [ngSwitch]="environmentWarningOption"
     class="home-icon"
   >
-    <mat-icon id="home-icon"
+    <mat-icon
       *ngSwitchCase="'warn'"
       [matBadge]="environmentWarningLabel"
       matBadgeColor="warn"
       matBadgePosition="before"
       >home</mat-icon
     >
-    <mat-icon id="home-icon"
+    <mat-icon
       *ngSwitchCase="'accent'"
       [matBadge]="environmentWarningLabel"
       matBadgeColor="accent"
       matBadgePosition="before"
       >home</mat-icon
     >
-    <mat-icon id="home-icon" *ngSwitchDefault>home</mat-icon>
+    <mat-icon *ngSwitchDefault>home</mat-icon>
   </a>
   <div *ngIf="!inEditMode" class="link-list-wrapper">
     <ng-container *ngFor="let item of listedTools">
@@ -46,7 +46,6 @@
         ><span
           [navAnchor]="item.navComponent"
           [navItem]="item"
-          [navAnchorDisabled]="!hasAccess[item.tool]"
         ></span
       ></span>
     </ng-container>

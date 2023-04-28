@@ -4,6 +4,7 @@ import { verifyPlayerIdentityResults } from '@support/steward/component/player-i
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid, selectWoodstock } from './page';
+import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { luke } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Woodstock', () => {
@@ -54,7 +55,8 @@ function foundUserDataTest(): void {
     // found related gamertags
     cy.contains('mat-card', 'Related Gamertags').within(() => {
       //This specific component takes a very long time to run; so if it fails, it's likely the timeout on the spinner will just need to be increased to pass the test
-      cy.get('mat-progress-spinner', { timeout: 30000 }).should('not.exist');
+      waitForProgressSpinners(30000, 'mat-progress-spinner');
+      //cy.get('mat-progress-spinner', { timeout: 30000 }).should('not.exist');
       tableHasEntry('xuid', '2535424453525895');
     });
 

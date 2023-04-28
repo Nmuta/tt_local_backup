@@ -2,6 +2,7 @@ import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, selectLspGroup, searchByXuid, selectWoodstock, verifyChip } from './page';
 import { luke } from '@support/steward/common/account-info';
+import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { DateTime } from 'luxon';
 import { stewardUrls } from '@support/steward/urls';
 
@@ -112,10 +113,8 @@ function verifyMessageSent(): void {
     cy.contains('mat-form-field', 'Date Range').click().clear().type(expiryString);
     cy.contains('button', 'Review', { matchCase: false }).click();
     cy.contains('button', 'Send Message', { matchCase: false }).click();
-    cy.get('mat-progress-spinner', { timeout: 20000 }).should('not.exist');
+    waitForProgressSpinners(20000, 'mat-progress-spinner');
+    //cy.get('mat-progress-spinner', { timeout: 20000 }).should('not.exist');
     cy.contains('button', 'Send Another Message', { matchCase: false }).should('exist');
   });
 }
-// function cleanUpTestAccounts() {
-//   throw new Error('Function not implemented.');
-// }
