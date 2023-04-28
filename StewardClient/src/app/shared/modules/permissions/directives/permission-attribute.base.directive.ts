@@ -1,9 +1,11 @@
 import {
   Directive,
   ElementRef,
+  EventEmitter,
   forwardRef,
   Input,
   Optional,
+  Output,
   ViewContainerRef,
 } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -39,6 +41,9 @@ export abstract class BasePermissionAttributeDirective
   extends BaseDirective
   implements DisableStateProvider
 {
+  /** Outputs if permission is allowed. */
+  @Output() public permissionChange = new EventEmitter<boolean>();
+
   public overrideDisable: boolean = undefined;
   public overrideDisable$ = new BehaviorSubject<boolean | undefined>(this.overrideDisable);
 
@@ -65,20 +70,15 @@ export abstract class BasePermissionAttributeDirective
     this.checkPermission$.next();
   }
 
-  /** Determines how V1 auth roles are allowed to poss. If false, V1 auth roles will NEVER have permissions. */
-  @Input() public set permissionSupportV1Auth(allowV1Auth: boolean) {
-    this.allowV1Auth = allowV1Auth;
-    this.checkPermission$.next();
-  }
-
   private checkPermission$ = new Subject<void>();
   private attributeName: PermAttributeName;
   private gameTitle: GameTitle;
   private actionType: InvalidPermActionType = InvalidPermActionType.Disable;
+  protected hideChildElement: boolean = false;
   private allowV1Auth: boolean = true;
 
   constructor(
-    private readonly element: ElementRef,
+    protected readonly element: ElementRef,
     private readonly permAttributesService: PermAttributesService,
     private readonly viewContainerRef: ViewContainerRef,
     @Optional() private readonly tooltip: MatTooltip,
@@ -103,7 +103,6 @@ export abstract class BasePermissionAttributeDirective
         const hasPerm = this.permAttributesService.hasFeaturePermission(
           this.attributeName,
           this.gameTitle,
-          this.allowV1Auth,
         );
 
         if (hasPerm) {
@@ -125,6 +124,8 @@ export abstract class BasePermissionAttributeDirective
               break;
           }
         }
+
+        this.permissionChange.emit(hasPerm);
       });
   }
 
@@ -134,11 +135,14 @@ export abstract class BasePermissionAttributeDirective
     const host = this.element.nativeElement;
     // If host element doesnt have the invalid permissions component as a child, add it
     if (host.firstChild.localName !== 'invalid-permissions') {
+      if (this.hideChildElement) {
+        host.firstChild.style.visibility = 'hidden';
+      }
+
       const invalidPermissionComponent = this.viewContainerRef.createComponent(
         InvalidPermissionsComponent,
       );
       invalidPermissionComponent.instance.setPermAttributeName(this.attributeName);
-      const host = this.element.nativeElement;
       host.insertBefore(invalidPermissionComponent.location.nativeElement, host.firstChild);
     }
   }
@@ -151,6 +155,10 @@ export abstract class BasePermissionAttributeDirective
     // If hasPerm is true and host element has the invalid permissions component as a child, remove it
     if (host.firstChild.localName === 'invalid-permissions') {
       host.firstChild.remove();
+
+      if (this.hideChildElement) {
+        host.firstChild.style.visibility = 'visible';
+      }
     }
 
     if (!!this.tooltip) {

@@ -11,7 +11,7 @@ export const powerBIExternalDropdownTile = <HomeTileInfoMultiExternal>{
   icon: AppIcon.PowerBiTools,
   extraIcon: ExtraIcon.External,
   tool: NavbarTool.PowerBiTools,
-  accessList: [UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin, UserRole.GeneralUser],
+  accessList: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
   title: 'Power BI',
   subtitle: 'Various Dashboards',
   supportedTitles: [GameTitle.FH5],

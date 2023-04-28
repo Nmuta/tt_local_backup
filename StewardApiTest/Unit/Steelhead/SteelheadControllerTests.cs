@@ -1403,6 +1403,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 mc.AllowNullCollections = true;
             }));
 
+            public IStewardUserProvider UserProvider { get; set; } = Substitute.For<IStewardUserProvider>();
+
             public IRequestValidator<SteelheadMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadMasterInventory>>();
 
             public IRequestValidator<SteelheadGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadGift>>();
@@ -1428,6 +1430,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.Scheduler,
                 this.JobTracker,
                 this.Mapper,
+                this.UserProvider,
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,

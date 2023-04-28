@@ -24,6 +24,7 @@ import { HCI } from '@environments/environment';
 import { pluralize, PLURALIZE_CONFIG } from '@helpers/pluralize';
 import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 /** Woodstock gift basket. */
 @Component({
@@ -52,9 +53,10 @@ export class WoodstockGiftBasketComponent
     private readonly woodstockGroupGiftService: WoodstockGroupGiftService,
     private readonly snackBar: MatSnackBar,
     backgroundJobService: BackgroundJobService,
+    permAttributesService: PermAttributesService,
     store: Store,
   ) {
-    super(backgroundJobService, store);
+    super(backgroundJobService, permAttributesService, store);
   }
 
   /** Angular lifecycle hook. */

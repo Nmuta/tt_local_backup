@@ -20,8 +20,7 @@ import {
   permissionManagementInternalTile,
   playerInfoTile,
   powerBIExternalDropdownTile,
-  racersCupTile,
-  buildersCupCalendarTile,
+  unifiedCalendarTile,
   salusExternalTile,
   sprinklrExternalTile,
   stewardUserHistoryTile,
@@ -29,7 +28,6 @@ import {
   ugcDetailsTile,
   ugcSearchTile,
   userGroupManagementTile,
-  welcomeCenterCalendarTile,
   welcomeCenterTile,
   zendeskExternalTile,
   servicesTableStorageTile,
@@ -66,9 +64,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   obligationsTile,
 
   leaderboardsTile,
-  racersCupTile,
-  buildersCupCalendarTile,
-  welcomeCenterCalendarTile,
+  unifiedCalendarTile,
 
   userGroupManagementTile,
 

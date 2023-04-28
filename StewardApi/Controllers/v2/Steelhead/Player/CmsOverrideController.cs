@@ -36,8 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.MotorsportDesigner)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [DangerousTags(Title.Steelhead, Target.Player, Topic.CmsOverride)]
 

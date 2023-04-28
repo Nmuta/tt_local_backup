@@ -1,11 +1,10 @@
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const leaderboardsTile = <HomeTileInfoInternal>{
   icon: AppIcon.Leaderboards,
   tool: NavbarTool.Leaderboards,
-  accessList: CommonAccessLevels.Leaderboards,
   title: 'Leaderboards',
   subtitle: 'Manage leaderboards',
   supportedTitles: [GameTitle.FH5],

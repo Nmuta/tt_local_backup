@@ -1,17 +1,10 @@
 import { GameTitle } from '@models/enums';
-import {
-  AppIcon,
-  NavbarTool,
-  CommonAccessLevels,
-  HomeTileInfoCustomTile,
-  ExtraIcon,
-} from '../../helpers';
+import { AppIcon, NavbarTool, HomeTileInfoCustomTile, ExtraIcon } from '../../helpers';
 
 export const endpointsWidgetTile = <HomeTileInfoCustomTile>{
   icon: AppIcon.Endpoints,
   extraIcon: ExtraIcon.Custom,
   tool: NavbarTool.Endpoints,
-  accessList: CommonAccessLevels.Everyone,
   title: 'Current Endpoints',
   subtitle: 'Navbar widget',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],

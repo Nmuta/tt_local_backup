@@ -62,6 +62,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     An error occured in a service proxy.
         /// </summary>
-        ServiceProxyError
+        ServiceProxyError,
+
+        /// <summary>
+        ///     Access is forbidden.
+        /// </summary>
+        Forbidden
     }
 }

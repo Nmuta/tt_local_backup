@@ -190,7 +190,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> act = async () => await provider.SetUgcFeaturedStatusAsync(contentId, featured, null, endpoint).ConfigureAwait(false);
+            Func<Task> act = async () => await provider.SetUgcFeaturedStatusAsync(contentId, featured, null, null, endpoint).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();

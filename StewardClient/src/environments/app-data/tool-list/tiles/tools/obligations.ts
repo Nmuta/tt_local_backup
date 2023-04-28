@@ -1,17 +1,10 @@
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import {
-  HomeTileInfoInternal,
-  AppIcon,
-  NavbarTool,
-  CommonAccessLevels,
-  HomeTileRestrictionType,
-} from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } from '../../helpers';
 
 export const obligationsTile = <HomeTileInfoInternal>{
   icon: AppIcon.DeveloperTool,
   tool: NavbarTool.DataObligation,
   oldToolRoutes: ['data-pipeline-obligation'],
-  accessList: CommonAccessLevels.DataPipelineAppOnly,
   title: 'Obligation',
   subtitle: 'A data pipeline tool',
   supportedTitles: [],

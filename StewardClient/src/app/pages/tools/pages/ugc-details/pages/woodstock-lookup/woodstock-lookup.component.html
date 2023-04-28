@@ -6,8 +6,9 @@
         <mat-card-subtitle>IDs and other text</mat-card-subtitle>
       </mat-card-header>
       <div class="sf-wrapper">
-        <div class="sf-horizontal">
+        <div class="sf-horizontal do-not-align-items">
           <div class="sf-vertical">
+            <model-dump-flags></model-dump-flags>
             <model-dump-xuids></model-dump-xuids>
             <model-dump-simple-table
               [values]="source.processedModel.extractedStrings.ids"
@@ -21,7 +22,6 @@
             <model-dump-simple-table
               [values]="source.processedModel.extractedNumbers.ids"
             ></model-dump-simple-table>
-            <model-dump-flags></model-dump-flags>
           </div>
           <div class="sf-vertical">
             <ugc-download-button
@@ -38,9 +38,7 @@
               [permissionAttribute]="featurePermAttribute"
               [permissionTitle]="gameTitle"
             >
-              <span [matTooltip]="featureMatTooltip">{{
-                ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
-              }}</span>
+              <span [matTooltip]="featureMatTooltip">Update Featured Status</span>
             </button>
             <div *waitForMonitor="getReportReasonsMonitor">
               <mat-form-field

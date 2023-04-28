@@ -67,58 +67,6 @@ describe('AvailableAppsComponent', () => {
         expect(component.areZendeskAppsAccessible).toBeTruthy();
       });
     });
-
-    describe('When user role is SupportAgent', () => {
-      beforeEach(() => {
-        const name = faker.name.firstName();
-        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
-          emailAddress: `${name}@testemail.com`,
-          name: name,
-          role: UserRole.SupportAgent,
-        } as UserModel);
-      });
-
-      it('should set correct app availability', () => {
-        component.ngOnInit();
-
-        expect(component.areAnyAppsAccessible).toBeTruthy();
-        expect(component.areZendeskAppsAccessible).toBeTruthy();
-      });
-    });
-    describe('When user role is DataPipeline', () => {
-      beforeEach(() => {
-        const name = faker.name.firstName();
-        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
-          emailAddress: `${name}@testemail.com`,
-          name: name,
-          role: UserRole.DataPipelineAdmin,
-        } as UserModel);
-      });
-
-      it('should set correct app availability', () => {
-        component.ngOnInit();
-
-        expect(component.areAnyAppsAccessible).toBeTruthy();
-        expect(component.areZendeskAppsAccessible).toBeFalsy();
-      });
-    });
-    describe('When user role is CommunityManager', () => {
-      beforeEach(() => {
-        const name = faker.name.firstName();
-        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
-          emailAddress: `${name}@testemail.com`,
-          name: name,
-          role: UserRole.CommunityManager,
-        } as UserModel);
-      });
-
-      it('should set correct app availability', () => {
-        component.ngOnInit();
-
-        expect(component.areAnyAppsAccessible).toBeTruthy();
-        expect(component.areZendeskAppsAccessible).toBeFalsy();
-      });
-    });
   });
 
   describe('Method: syncStagingApiSettings', () => {

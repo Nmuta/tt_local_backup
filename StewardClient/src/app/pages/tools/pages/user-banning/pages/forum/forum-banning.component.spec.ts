@@ -6,6 +6,8 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ForumBanService } from '@services/api-v2/forum/ban/forum-ban.service';
 import { createMockForumBanService } from '@services/api-v2/forum/ban/forum-ban.service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgxsModule } from '@ngxs/store';
 
 describe('ForumBanningComponent', () => {
   let component: ForumBanningComponent;
@@ -14,6 +16,7 @@ describe('ForumBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
       declarations: [ForumBanningComponent],
       providers: [createMockForumBanService(), createMockForumBanService()],
       schemas: [NO_ERRORS_SCHEMA],
@@ -39,6 +42,7 @@ describe('ForumBanningComponent', () => {
   });
   describe('When subscribing to the banning observable', () => {
     const generalIdentity: IdentityResultAlpha = {
+      xuid: fakeBigNumber(),
       query: { xuid: fakeBigNumber() },
       error: null,
     };

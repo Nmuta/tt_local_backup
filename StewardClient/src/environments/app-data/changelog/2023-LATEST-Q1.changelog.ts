@@ -14,6 +14,49 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       longText: ['Display car featured showcase and car sales in a calendar'],
     },
     {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [
+          NavbarTool.UnifiedCalendar,
+          NavbarTool.RacersCup,
+          NavbarTool.BuildersCupCalendar,
+          NavbarTool.WelcomeCenterCalendar,
+        ],
+      },
+      uuid: '5fa53d45-178a-477c-a327-2650fb309569',
+      shortText: 'Combine Steelhead calendars into single tabbed view',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'de3a997a-31d3-426e-ac40-663a0a0fc0da',
+      shortText: 'Allow UGC to be featured without an end date',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '302f1349-eb3b-421c-971d-c52d84d3985d',
+      shortText: 'Add Load All button for credit history in player details deep dive',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'e3702108-3edd-4f7c-9b56-9440c3b78a68',
+      shortText: 'Add year to displayed car info',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '6070292d-ff07-4d31-b72a-f0f0e2c98330',
+      shortText: 'Rework verification checkbox into an icon button',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a3150781-c8a1-4415-9379-d4f09cee9701',
+      shortText: 'Convert player inventory component to use composition',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a34b9712-384e-4e93-aff6-d0a9760adf4a',
+      shortText: 'Fix sync state component for cypress tests',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '06533eea-f7b6-4dc4-99f9-dc52934452e1',
       shortText: 'Fix team lead permission error',
@@ -56,6 +99,21 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Added Services Table Storage view for FH5',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'd7e55959-8d9c-4295-a32c-23f3b1de9485',
+      shortText: 'Remove all v1 auth functionality',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: 'b977e558-41d7-4c73-890b-9b55837844ef',
+      shortText: 'Display player next ban duration',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
+      uuid: 'b977e558-41d7-4c73-890b-9b55837844ef',
+      shortText: 'Display player next ban duration',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserBanning },
       uuid: '55c578c6-55e9-4d21-98ae-7117d9255597',
       shortText: 'New way of banning implemented',
@@ -83,8 +141,18 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'f382179c-2d6c-469b-93b7-94c3cbb2b015',
+      shortText: 'Add display condition field',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '863574f3-2026-4477-9e75-0e4ecfae5cb2',
       shortText: 'Add timer field',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '99394a85-7ac3-40af-a23d-e7367fedb39f',
+      shortText: 'Change DeepLink category to manufacturer',
     },
     {
       tag: { title: 'all', tool: NavbarTool.UserDetails },

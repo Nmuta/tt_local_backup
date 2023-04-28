@@ -42,9 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.CommunityManager)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.LspGroup, Topic.Gifting)]
     public class GiftController : V2WoodstockControllerBase
@@ -52,6 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
         private readonly IMapper mapper;
+        private readonly IStewardUserProvider userProvider;
         private readonly IWoodstockPlayerInventoryProvider playerInventoryProvider;
         private readonly IWoodstockItemsProvider itemsProvider;
         private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
@@ -62,18 +61,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         /// </summary>
         public GiftController(
             IMapper mapper,
+            IStewardUserProvider userProvider,
             IWoodstockPlayerInventoryProvider playerInventoryProvider,
             IWoodstockItemsProvider itemsProvider,
             IRequestValidator<WoodstockGift> giftRequestValidator,
             IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
+            userProvider.ShouldNotBeNull(nameof(userProvider));
             playerInventoryProvider.ShouldNotBeNull(nameof(playerInventoryProvider));
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
 
             this.mapper = mapper;
+            this.userProvider = userProvider;
             this.playerInventoryProvider = playerInventoryProvider;
             this.itemsProvider = itemsProvider;
             this.giftRequestValidator = giftRequestValidator;
@@ -113,13 +115,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit =
-                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+
             var response = await this.playerInventoryProvider.UpdateGroupInventoriesAsync(
                 groupId,
                 gift,
                 requesterObjectId,
-                allowedToExceedCreditLimit,
+                hasPermissionsToExceedCreditLimit,
                 this.ServicesWithProdLiveStewardCms).ConfigureAwait(true);
             return this.Ok(response);
         }

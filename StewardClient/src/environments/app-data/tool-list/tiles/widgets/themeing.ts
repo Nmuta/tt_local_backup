@@ -1,16 +1,9 @@
-import {
-  AppIcon,
-  NavbarTool,
-  CommonAccessLevels,
-  HomeTileInfoCustomTile,
-  ExtraIcon,
-} from '../../helpers';
+import { AppIcon, NavbarTool, HomeTileInfoCustomTile, ExtraIcon } from '../../helpers';
 
 export const themeingWidgetTile = <HomeTileInfoCustomTile>{
   icon: AppIcon.DeveloperTool,
   extraIcon: ExtraIcon.Custom,
   tool: NavbarTool.Theming,
-  accessList: CommonAccessLevels.Everyone,
   title: 'Theming',
   subtitle: 'Darkmode Toggle, etc',
   supportedTitles: [],

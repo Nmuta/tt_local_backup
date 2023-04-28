@@ -29,14 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.HorizonDesigner,
-        UserRole.MotorsportDesigner,
-        UserRole.MediaTeam)]
+        UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.Player, Topic.ReportWeight)]
     public class ReportWeightController : V2ControllerBase
@@ -77,10 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         [HttpPost]
         [AuthorizeRoles(
             UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin,
-            UserRole.SupportAgentAdmin,
-            UserRole.SupportAgent,
-            UserRole.CommunityManager)]
+            UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(UserReportWeight))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]

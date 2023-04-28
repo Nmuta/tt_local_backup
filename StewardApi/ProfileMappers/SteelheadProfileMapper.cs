@@ -188,10 +188,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
                 .ForMember(
                     dest => dest.ForceFeaturedEndDateUtc,
-                    opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
+                    opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate.CovertToNullIfMin()))
                 .ForMember(
                     dest => dest.FeaturedEndDateUtc,
-                    opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
+                    opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate.CovertToNullIfMin()))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
                 .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
@@ -220,8 +220,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
                 .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
-                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
-                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
+                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate.CovertToNullIfMin()))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
                 .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
@@ -246,8 +246,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
                 .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
-                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
-                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
+                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate.CovertToNullIfMin()))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
                 .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
@@ -271,8 +271,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
                 .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
-                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
-                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
+                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate.CovertToNullIfMin()))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
                 .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
@@ -357,7 +357,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Championship, opt => opt.MapFrom(src => src.Destination.Setting.Championship.@ref))
                 .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.Destination.Setting.Series.@ref))
                 .ForMember(dest => dest.Ladder, opt => opt.MapFrom(src => src.Destination.Setting.Ladder.@ref))
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Destination.Category.@ref))
+                .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.Destination.Manufacturer.@ref))
                 .ForMember(dest => dest.DestinationType, opt => opt.MapFrom(src => this.PrepareDestinationType(src.Destination.type)))
                 .ForMember(dest => dest.BuildersCupSettingType, opt => opt.MapFrom(src => this.PrepareBuildersCupSettingType(src.Destination.Setting)));
 
@@ -519,7 +519,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             {
                 return new WofBaseDestination()
                 {
-                    Category = new WorldOfForzaWoFTileDeeplinkDestinationCategory() { @ref = deeplinkBridge.Category },
+                    Manufacturer = new WorldOfForzaWoFTileDeeplinkDestinationManufacturer() { @ref = deeplinkBridge.Manufacturer },
                     type = "WorldOfForza.WoFToShowroomConfig",
                     CategoryId = new WorldOfForzaWoFTileDeeplinkDestinationCategoryId()
                 };

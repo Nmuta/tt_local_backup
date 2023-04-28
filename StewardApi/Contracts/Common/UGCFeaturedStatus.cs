@@ -15,6 +15,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the featured expiry time.
         /// </summary>
-        public TimeSpan? Expiry { get; set; }
+        public TimeSpan? FeaturedExpiry { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the force featured expiry time.
+        /// </summary>
+        public TimeSpan? ForceFeaturedExpiry { get; set; }
     }
 }

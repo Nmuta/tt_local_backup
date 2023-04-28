@@ -1,0 +1,15 @@
+<div class="container">
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    <a
+      mat-tab-link
+      *ngFor="let tab of tabs"
+      [active]="activeTab === tab"
+      [routerLink]="'.' + tab.path"
+    >
+      {{ tab.name }}
+    </a>
+  </nav>
+  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+
+  <router-outlet></router-outlet>
+</div>

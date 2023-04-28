@@ -1,17 +1,10 @@
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import {
-  HomeTileInfoInternal,
-  AppIcon,
-  NavbarTool,
-  CommonAccessLevels,
-  HomeTileRestrictionType,
-} from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool, HomeTileRestrictionType } from '../../helpers';
 
 export const auctionCreateTile = <HomeTileInfoInternal>{
   icon: AppIcon.CreateAuction,
   tool: NavbarTool.CreateAuction,
-  accessList: CommonAccessLevels.AdminAndGeneralUsers,
   title: 'Create Auction',
   subtitle: 'Create auction',
   supportedTitles: [GameTitle.FH5],

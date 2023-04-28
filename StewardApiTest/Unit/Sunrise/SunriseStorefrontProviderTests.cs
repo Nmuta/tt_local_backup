@@ -194,7 +194,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpointKey = Fixture.Create<string>();
 
             // Act.
-            Func<Task> act = async () => await provider.SetUgcFeaturedStatusAsync(contentId, featured, null, endpointKey).ConfigureAwait(false);
+            Func<Task> act = async () => await provider.SetUgcFeaturedStatusAsync(contentId, featured, null, null, endpointKey).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();

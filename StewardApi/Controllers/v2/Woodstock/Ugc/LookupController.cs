@@ -24,14 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [LogTagTitle(TitleLogTags.Woodstock)]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.HorizonDesigner,
-        UserRole.MotorsportDesigner,
-        UserRole.MediaTeam)]
+        UserRole.LiveOpsAdmin)]
     [ApiController]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.Details, Topic.Ugc)]

@@ -30,6 +30,7 @@ export enum AppIcon {
   CarDetails = 'minor_crash',
   PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',
+  UnifiedCalendar = 'calendar_today',
   MessageOfTheDay = 'waving_hand',
   CreateAuction = 'sell',
   WelcomeCenterTile = 'grid_view',

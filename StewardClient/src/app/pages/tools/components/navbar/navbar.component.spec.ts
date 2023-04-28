@@ -72,12 +72,6 @@ describe('ToolsNavbarComponent', () => {
 
         expect(component.role).toEqual(role);
       });
-
-      it('should set standardTools', () => {
-        component.ngOnInit();
-
-        expect(component.standardTools).not.toBeNull();
-      });
     });
 
     describe('When settings$ provides a value', () => {

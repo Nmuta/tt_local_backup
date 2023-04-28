@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WofBaseDestination
     {
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationCategory Category { get; set; }
+        public WorldOfForzaWoFTileDeeplinkDestinationManufacturer Manufacturer { get; set; }
 
         [WriteToPegasus]
         public WorldOfForzaWoFTileDeeplinkDestinationCategoryId CategoryId { get; set; }
@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationCategory
+    public partial class WorldOfForzaWoFTileDeeplinkDestinationManufacturer
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]

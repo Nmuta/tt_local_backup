@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Players
 
             public IRequestValidator<WoodstockGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockGroupGift>>();
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
-
+            public IStewardUserProvider UserProvider { get; set; } = Substitute.For<IStewardUserProvider>();
 
             public Dependencies()
             {
@@ -161,6 +161,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Players
                 this.LoggingService,
                 this.Scheduler,
                 this.Mapper,
+                this.UserProvider,
                 this.PlayerInventoryProvider,
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,

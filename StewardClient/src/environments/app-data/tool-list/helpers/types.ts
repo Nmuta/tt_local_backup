@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { LoadChildren } from '@angular/router';
-import { GameTitle, UserRole } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { NavbarTool } from './navbar-tool';
@@ -42,16 +42,6 @@ export interface HomeTileInfoBase {
 
   /** A short description for the home page. Each element is a paragraph. */
   readonly shortDescription: string[];
-
-  /**
-   * The list of roles allowed access to this tool.
-   *
-   * Must be from {@link CommonAccessLevels} or a single-element-array.
-   */
-  readonly accessList: UserRole[];
-
-  /** Hides the tool on home page from unauthroized users. */
-  readonly hideFromUnauthorized?: boolean;
 
   /** V2 Auth Restriction: */
   readonly restriction?: HomeTileRestriction;
