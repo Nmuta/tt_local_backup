@@ -1,0 +1,36 @@
+<mat-chip-list
+  aria-label="Profile selection"
+  *ngIf="!!profiles?.length"
+  selectable="true"
+  multiple="false"
+  (change)="onSelectionChange($event)"
+>
+  <mat-chip
+    *ngFor="let profile of profiles"
+    color="primary"
+    #chip="matChip"
+    [value]="profile"
+    (click)="chip.toggleSelected(true)"
+    [selected]="profile?.isCurrent"
+  >
+    <mat-icon *ngIf="profile.isCurrent" class="leading-icon" matTooltip="Profile Active">
+      person
+    </mat-icon>
+    <mat-icon *ngIf="!profile.isCurrent" class="leading-icon" matTooltip="Profile Inactive">
+      person_off
+    </mat-icon>
+    <span class="id" [matTooltip]="'Profile ID: ' + profile.profileId">{{
+      profile.profileId
+    }}</span>
+    <span class="device-type" [matTooltip]="'Device Type: ' + profile.deviceType">{{
+      profile.deviceType
+    }}</span>
+    <mat-icon
+      *ngIf="profile.externalProfileId"
+      class="external-id trailing-icon"
+      [matTooltip]="'External ID: ' + profile.externalProfileId"
+    >
+      badge
+    </mat-icon>
+  </mat-chip>
+</mat-chip-list>
