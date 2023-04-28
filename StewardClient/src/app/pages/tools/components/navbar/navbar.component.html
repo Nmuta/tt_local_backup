@@ -43,10 +43,7 @@
         <span *ngIf="!item.extraIcon">{{ item.title }}</span>
       </a>
       <span *ngIf="item.navComponent"
-        ><span
-          [navAnchor]="item.navComponent"
-          [navItem]="item"
-        ></span
+        ><span [navAnchor]="item.navComponent" [navItem]="item"></span
       ></span>
     </ng-container>
   </div>

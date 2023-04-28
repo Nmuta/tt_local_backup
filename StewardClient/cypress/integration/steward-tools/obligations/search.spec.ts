@@ -21,7 +21,7 @@ context('Steward / Tools / Obligation / Search', () => {
 
     // do the get
     cy.contains('button', 'sync').click().should('be.enabled');
-    
+
     clickTopLeftOfBody();
 
     // verify we got the item
