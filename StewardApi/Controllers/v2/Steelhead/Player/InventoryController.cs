@@ -124,13 +124,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             IList<SteelheadInventoryProfile> inventoryProfileSummary;
-            var service = this.Services.UserInventoryManagementService;
+            var service = this.Services.LiveOpsService;
 
-            Services.LiveOps.FM8.Generated.UserInventoryManagementService.GetAdminUserProfilesOutput response = null;
+            Forza.WebServices.FM8.Generated.LiveOpsService.GetPlayerProfilesOutput response = null;
 
             try
             {
-                 response = await service.GetAdminUserProfiles(
+                 response = await service.GetPlayerProfiles(
                     xuid,
                     MaxProfileResults).ConfigureAwait(false);
             }
