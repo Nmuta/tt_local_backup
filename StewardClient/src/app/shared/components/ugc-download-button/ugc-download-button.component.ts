@@ -53,7 +53,7 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
         clickFn: () => this.downloadCLivery(this.item),
       });
     }
-    
+
     if (!!this.item?.tuneblobDownloadDataBase64) {
       this.downloadOptions.push({
         label: 'Tune blob data',

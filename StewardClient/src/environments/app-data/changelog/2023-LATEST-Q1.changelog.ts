@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: 'caff6395-2f19-4080-bbd9-58b9e6390883',
+      shortText: 'Tuneblob can now be downloaded',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '6070292d-ff07-4d31-b72a-f0f0e2c98330',
       shortText: 'Rework verification checkbox into an icon button',
