@@ -1746,7 +1746,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             async Task<IActionResult> Action() => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
             {
                 IsFeatured = false,
-                Expiry = expiry,
+                FeaturedExpiry = expiry,
             }).ConfigureAwait(false);
 
             // Assert.
@@ -1758,27 +1758,24 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void SetUGCFeaturedStatus_WithFeaturedTrueAndMissingExpiryTime_Throws()
+        public async Task SetUGCFeaturedStatus_WithFeaturedTrueAndMissingExpiryTime_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var contentId = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task>>
+            async Task<IActionResult> Action() => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
             {
-                async () => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
-                {
-                    IsFeatured = true,
-                    Expiry = null,
-                }).ConfigureAwait(false),
-            };
+                IsFeatured = true,
+                FeaturedExpiry = null,
+            }).ConfigureAwait(false);
 
             // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"Required query param is missing: Expiry");
-            }
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var response = await Action().ConfigureAwait(false) as OkObjectResult;
+            response.Should().BeNull();
         }
 
         [TestMethod]
@@ -1796,14 +1793,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 async () => await controller.SetUgcFeaturedStatus(contentId, new UgcFeaturedStatus()
                 {
                     IsFeatured = true,
-                    Expiry = expiry,
+                    FeaturedExpiry = expiry,
                 }).ConfigureAwait(false),
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage("Expiry cannot be less than 1.00:00:00.");
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage("FeaturedExpiry cannot be less than 1.00:00:00.");
             }
         }
 
@@ -1926,7 +1923,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.StorefrontProvider.GetUgcLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcLiveryItem>());
                 this.StorefrontProvider.GetUgcPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
                 this.StorefrontProvider.GetUgcTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UgcItem>());
-                this.StorefrontProvider.SetUgcFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
+                this.StorefrontProvider.SetUgcFeaturedStatusAsync(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<HttpResponse>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>(), Arg.Any<DateTimeOffset>(), Arg.Any<DateTimeOffset>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
@@ -1969,6 +1966,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 mc.AllowNullCollections = true;
             }));
 
+            public IStewardUserProvider UserProvider { get; set; } = Substitute.For<IStewardUserProvider>();
+
             public IRequestValidator<SunriseMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseMasterInventory>>();
 
             public IRequestValidator<SunriseGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseGift>>();
@@ -1997,6 +1996,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Scheduler,
                 this.JobTracker,
                 this.Mapper,
+                this.UserProvider,
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,

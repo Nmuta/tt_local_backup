@@ -4,7 +4,6 @@ import {
   NavbarTool,
   ExtraIcon,
   HomeTileInfoMultiExternal,
-  CommonAccessLevels,
   LOAD_EXTERNAL_DROPDOWN_MENU,
 } from '../../helpers';
 
@@ -24,7 +23,6 @@ export const adminPagesExternalDropdownTile = <HomeTileInfoMultiExternal>{
   icon: AppIcon.DeveloperTool,
   extraIcon: ExtraIcon.External,
   tool: NavbarTool.AdminPagesSelector,
-  accessList: CommonAccessLevels.AdminPageAccess,
   title: 'Admin Pages',
   subtitle: 'Production / Flight / Dev',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],

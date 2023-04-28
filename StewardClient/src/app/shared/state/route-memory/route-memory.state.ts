@@ -17,7 +17,7 @@ import { RouteMemoryModel } from './route-memory.model';
     carDetails: `${GameTitleCodeName.FH5}`,
     gifting: `${GameTitleCodeName.FH5}`,
     playfab: `${GameTitleCodeName.FH5}`,
-    buildersCupCalendar: `${GameTitleCodeName.FM8}`,
+    unifiedCalendar: `${GameTitleCodeName.FM8}`,
   },
 })
 @Injectable()

@@ -70,12 +70,6 @@ export abstract class BasePermissionAttributeDirective
     this.checkPermission$.next();
   }
 
-  /** Determines how V1 auth roles are allowed to poss. If false, V1 auth roles will NEVER have permissions. */
-  @Input() public set permissionSupportV1Auth(allowV1Auth: boolean) {
-    this.allowV1Auth = allowV1Auth;
-    this.checkPermission$.next();
-  }
-
   private checkPermission$ = new Subject<void>();
   private attributeName: PermAttributeName;
   private gameTitle: GameTitle;
@@ -109,7 +103,6 @@ export abstract class BasePermissionAttributeDirective
         const hasPerm = this.permAttributesService.hasFeaturePermission(
           this.attributeName,
           this.gameTitle,
-          this.allowV1Auth,
         );
 
         if (hasPerm) {

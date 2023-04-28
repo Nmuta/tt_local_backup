@@ -7,6 +7,8 @@ export interface SimpleCar {
   makeId: BigNumber;
   make: string;
   model: string;
+  year?: string;
+  displayName: string;
 
   // Client only property that is used to to define a car make only and ignore model properties.
   makeOnly: boolean;

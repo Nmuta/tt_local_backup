@@ -33,10 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     [Route("api/v{version:apiVersion}/title/woodstock/leaderboard/talent")]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.CommunityManager,
-        UserRole.HorizonDesigner)]
+        UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]

@@ -9,7 +9,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockBanHistoryComponent } from '@shared/views/ban-history/woodstock/woodstock-ban-history.component';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
-import { EMPTY, Observable, of, ReplaySubject, Subject, combineLatest } from 'rxjs';
+import { EMPTY, Observable, of, ReplaySubject, Subject, combineLatest, Subscription } from 'rxjs';
 import {
   catchError,
   debounceTime,
@@ -28,6 +28,9 @@ import { requireReasonListMatch } from '@helpers/validations';
 import { BanReasonGroup } from '@models/ban-reason-group';
 import { MatOptionSelectionChange } from '@angular/material/core/option';
 import { HCI } from '@environments/environment';
+import { WoodstockPlayerBanService } from '@services/api-v2/woodstock/player/ban/woodstock-player-ban.service';
+import { BanDuration } from '@models/ban-duration';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
@@ -61,6 +64,10 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public selectedBanReasonGroup: BanReasonGroup = null;
   public selectedBanConfiguration: BanConfiguration = null;
   public selectedBanAreasLabel: string = '';
+  public nextBanDuration: BanDuration = null;
+  public nextBanDurationUser: string = '';
+  public nextBanDurationMonitor: ActionMonitor = new ActionMonitor('GET next ban duration');
+  public nextBanDurationSubscription: Subscription;
 
   public identitySortFn = null;
 
@@ -70,6 +77,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
     backgroundJobService: BackgroundJobService,
     private readonly woodstock: WoodstockService,
     private readonly woodstockPlayersBanService: WoodstockPlayersBanService,
+    private readonly woodstockPlayerBanService: WoodstockPlayerBanService,
   ) {
     super(backgroundJobService);
 
@@ -199,11 +207,13 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
     const newIdentities = identities.filter(i => i?.extra?.hasWoodstock).map(i => i.woodstock);
     this.playerIdentities = newIdentities;
     this.playerIdentities$.next(this.playerIdentities);
+    this.updateNextBanDuration();
   }
 
   /** Player identity selected */
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
     this.selectedPlayer = identity?.extra?.hasWoodstock ? identity.woodstock : null;
+    this.updateNextBanDuration();
   }
 
   /** True when the form can be submitted. */
@@ -222,6 +232,9 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
 
   /** Event when a ban reason is changed. */
   public banReasonChanged(event: MatOptionSelectionChange, banReasonGroup: BanReasonGroup): void {
+    this.selectedBanReasonGroup = null;
+    this.selectedBanConfiguration = null;
+    this.selectedBanAreasLabel = '';
     if (!event.isUserInput) {
       return;
     }
@@ -231,5 +244,32 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
       x => x.banConfigurationId == banReasonGroup.banConfigurationId,
     );
     this.selectedBanAreasLabel = banReasonGroup.featureAreas.join(',');
+    this.updateNextBanDuration();
+  }
+
+  /** Update the ban duration label based on the appropriate player and ban configuration. */
+  private updateNextBanDuration() {
+    if (this.nextBanDurationSubscription) {
+      this.nextBanDurationSubscription.unsubscribe();
+    }
+    const targetPlayer =
+      this.playerIdentities.length == 1 ? this.playerIdentities[0] : this.selectedPlayer;
+
+    // If no player is selected or no reason is selected
+    if (!targetPlayer || !this.selectedBanConfiguration) {
+      this.nextBanDuration = null;
+      return;
+    }
+
+    this.nextBanDurationUser = targetPlayer.query['gamertag']
+      ? targetPlayer.query['gamertag']
+      : targetPlayer.query['xuid'];
+    this.nextBanDurationMonitor = this.nextBanDurationMonitor.repeat();
+    this.nextBanDurationSubscription = this.woodstockPlayerBanService
+      .getNextBanDuration$(targetPlayer.xuid, this.selectedBanConfiguration.banConfigurationId)
+      .pipe(this.nextBanDurationMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(banDuration => {
+        this.nextBanDuration = banDuration;
+      });
   }
 }

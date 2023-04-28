@@ -24,14 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam,
-        UserRole.MotorsportDesigner,
-        UserRole.HorizonDesigner)]
+        UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Opus)]
     public sealed class OpusController : ControllerBase
     {

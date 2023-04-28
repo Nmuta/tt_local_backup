@@ -10,12 +10,7 @@ import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { UserRole } from '@models/enums';
 import { ThemePalette } from '@angular/material/core';
-import {
-  environment,
-  HomeTileInfo,
-  NavbarTool,
-  standardRoleTools,
-} from '@environments/environment';
+import { environment, HomeTileInfo, NavbarTool } from '@environments/environment';
 import {
   UserSettingsState,
   UserSettingsStateModel,
@@ -43,8 +38,13 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
   public role: UserRole = undefined;
   public listedTools: HomeTileInfoForNav[] = [];
-  public standardTools: Partial<Record<NavbarTool, number>> = undefined;
-  public hasAccess: Partial<Record<NavbarTool, boolean>> = {};
+  public standardTools: Partial<Record<NavbarTool, number>> = {
+    [NavbarTool.UserDetails]: 1,
+    [NavbarTool.Gifting]: 2,
+    [NavbarTool.Messaging]: 3,
+    [NavbarTool.Endpoints]: 4,
+    [NavbarTool.Theming]: 5,
+  };
 
   public parentRoute: string = '/app/tools/';
 
@@ -82,17 +82,12 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     this.role = profile?.role;
     this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
       this.role = profile?.role;
-      this.standardTools = standardRoleTools[this.role];
     });
 
     const settings = this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState);
     this.settings$.pipe(startWith(settings), takeUntil(this.onDestroy$)).subscribe(settings => {
       this.environmentWarningLabel = this.determineWarningLabel(settings);
       const navbarTools = settings.navbarTools || {};
-      this.hasAccess = chain(environment.tools)
-        .map(v => [v.tool, v.accessList.includes(profile?.role)])
-        .fromPairs()
-        .value();
 
       this.listedTools = chain(environment.tools)
         .filter(tool => !!navbarTools[tool.tool])

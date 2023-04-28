@@ -177,17 +177,25 @@
           ></tr>
         </table>
 
-        <div class="no-more-results" *ngIf="!showLoadMore">All credit events loaded</div>
+        <div class="no-more-results" *ngIf="!showLoadMoreAndLoadAll">All credit events loaded</div>
       </cdk-virtual-scroll-viewport>
 
       <div class="load-more-container">
         <button
           mat-raised-button
           color="primary"
-          *ngIf="showLoadMore && !loadingMore"
+          *ngIf="showLoadMoreAndLoadAll && !loadingMore"
           (click)="loadMoreCreditUpdates()"
         >
           Load More
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          *ngIf="showLoadMoreAndLoadAll && !loadingMore"
+          (click)="loadAllCreditUpdates()"
+        >
+          Load All
         </button>
         <mat-progress-spinner *ngIf="loadingMore" mode="indeterminate"></mat-progress-spinner>
       </div>

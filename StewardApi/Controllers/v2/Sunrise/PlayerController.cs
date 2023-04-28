@@ -24,14 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise
     [Route("api/v{version:apiVersion}/title/sunrise/player")]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.MediaTeam,
-        UserRole.MotorsportDesigner,
-        UserRole.HorizonDesigner)]
+        UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.Sunrise)]
     [ApiController]
     [ApiVersion("2.0")]

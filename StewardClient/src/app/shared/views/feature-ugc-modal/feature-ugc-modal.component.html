@@ -2,11 +2,11 @@
   Feature {{ gameTitle | humanize }} Ugc Content
   <br />
   <span class="mat-subheading-2">
-    {{
-      ugcItem.featuredByT10
-        ? 'Featured until: ' + (ugcItem.featuredEndDateUtc | utcDate: 'short')
-        : 'Not currently featured'
-    }}
+    <ng-container *ngIf="!!ugcItem.featuredByT10; else notFeaturedTemplate">
+      <ng-container *ngIf="!!ugcItem.featuredEndDateUtc; else noFeaturedEndDateTemplate">
+        Featured until: {{ ugcItem.featuredEndDateUtc | utcDate: 'short' }}
+      </ng-container>
+    </ng-container>
   </span>
 </h2>
 
@@ -20,49 +20,35 @@
   </ul>
   <img #modelImage [src]="ugcItem.thumbnailOneImageBase64" />
 
-  <ng-container *ngIf="!postMonitor?.isActive && !postMonitor?.status?.error; else failstate">
-    <form [formGroup]="formGroup">
-      <mat-form-field appearance="fill" class="expiry-date">
-        <mat-label>Featured End Date</mat-label>
-        <input matInput [matDatepicker]="picker" [formControl]="formControls.featuredDate" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="formGroup.controls['featuredDate'].hasError('is-after')"
-          >Expiry time must be in the future</mat-error
-        >
-        <mat-error *ngIf="formGroup.controls['featuredDate'].hasError('invalid-format')"
-          >Unrecognized Date (expected mm/dd/yyyy)</mat-error
-        >
-      </mat-form-field>
-    </form>
-  </ng-container>
+  <form [formGroup]="formGroup">
+    <mat-checkbox [formControl]="formControls.isFeatured" (click)="changedFeatureStatus()"
+      >Feature UGC Item</mat-checkbox
+    >
+    <mat-form-field appearance="fill" class="expiry-date">
+      <mat-label>Featured End Date</mat-label>
+      <input
+        matInput
+        [disabled]="!formControls.isFeatured.value"
+        [matDatepicker]="picker"
+        [formControl]="formControls.featuredDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-hint *ngIf="!formControls.isFeatured.value"
+        >Cannot select end date when UGC is not featured</mat-hint
+      >
+      <mat-hint *ngIf="formControls.isFeatured.value">Optional</mat-hint>
+      <mat-error *ngIf="formGroup.controls['featuredDate'].hasError('is-after')"
+        >Expiry time must be in the future</mat-error
+      >
+      <mat-error *ngIf="formGroup.controls['featuredDate'].hasError('invalid-format')"
+        >Unrecognized Date (expected mm/dd/yyyy)</mat-error
+      >
+    </mat-form-field>
+  </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button
-    [disabled]="!formGroup.valid"
-    stateManager
-    [monitor]="postMonitor"
-    monitorDisable
-    mat-raised-button
-    color="primary"
-    (click)="featureUgc()"
-  >
-    Feature Content
-  </button>
-
-  <button
-    *ngIf="ugcItem.featuredByT10"
-    stateManager
-    [monitor]="postMonitor"
-    monitorDisable
-    mat-raised-button
-    color="warn"
-    (click)="deleteFeatureUgcStatus()"
-  >
-    Delete Featured Status
-  </button>
-
   <button
     stateManager
     [monitor]="postMonitor"
@@ -73,11 +59,30 @@
   >
     Close
   </button>
+  <button
+    [disabled]="!formGroup.valid"
+    stateManager
+    [monitor]="postMonitor"
+    [verifyWith]="verify"
+    monitorDisable
+    mat-raised-button
+    color="primary"
+    (click)="setUgcfeatureStatus()"
+  >
+    Update Feature Status
+    <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+  </button>
+  <mat-checkbox
+    class="sf-verify-checkbox"
+    #verify
+    stateManager
+    [permissionAttribute]="featureUgcPermAttribute"
+    [permissionTitle]="gameTitle"
+    matTooltip="Verify"
+    >Verify</mat-checkbox
+  >
 </mat-dialog-actions>
 
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="postMonitor?.isActive" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="!!postMonitor?.status?.error" [input]="postMonitor?.status?.error"
-    >Failed to get backstage pass history.</json-dump
-  >
-</ng-template>
+<ng-template #noFeaturedEndDateTemplate> Featured with no end date </ng-template>
+
+<ng-template #notFeaturedTemplate> Not currently featured </ng-template>

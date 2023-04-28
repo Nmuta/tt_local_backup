@@ -23,6 +23,7 @@ import { SUNRISE_UNIQUE_CAR_IDS_LOOKUP } from '@environments/app-data/item-lists
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HCI } from '@environments/environment';
 import { pluralize, PLURALIZE_CONFIG } from '@helpers/pluralize';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 /** Sunrise gift basket. */
 @Component({
@@ -50,9 +51,10 @@ export class SunriseGiftBasketComponent
     private readonly sunriseService: SunriseService,
     private readonly snackBar: MatSnackBar,
     backgroundJobService: BackgroundJobService,
+    permAttributesService: PermAttributesService,
     store: Store,
   ) {
-    super(backgroundJobService, store);
+    super(backgroundJobService, permAttributesService, store);
   }
 
   /** Angular lifecycle hook. */

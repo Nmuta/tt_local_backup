@@ -124,13 +124,13 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       .subscribe(profile => {
         this.userRole = profile.role;
         const toolsList = environment.tools as HomeTileInfoForNav[];
-        toolsList.forEach(tile => {
-          tile.hasAccess = tile.accessList.includes(profile?.role);
 
+        toolsList.forEach(tile => {
           const hasPermissions = hasRequiredPermissions(tile, this.permAttributesService);
+          tile.hasAccess = hasPermissions;
+
           if (!hasPermissions) {
             tile.processedRestriction = tile.restriction.action;
-            tile.hasAccess = false;
           }
         });
 
@@ -139,8 +139,6 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
           if (this.userRole === UserRole.GeneralUser) {
             shouldHide =
               !tool.hasAccess && tool.processedRestriction === HomeTileRestrictionType.Hide;
-          } else {
-            shouldHide = !tool.hasAccess && tool.hideFromUnauthorized;
           }
 
           return !tool.hasAccess && !shouldHide;

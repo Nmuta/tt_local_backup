@@ -30,14 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [LogTagTitle(TitleLogTags.Woodstock)]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.SupportAgentAdmin,
-        UserRole.SupportAgent,
-        UserRole.SupportAgentNew,
-        UserRole.CommunityManager,
-        UserRole.HorizonDesigner,
-        UserRole.MotorsportDesigner,
-        UserRole.MediaTeam)]
+        UserRole.LiveOpsAdmin)]
     [ApiController]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.Details, Topic.Ugc)]
@@ -96,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 
             foreach (var item in ugcItems)
             {
-                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.Make} {car.Model}" : "No car name in Pegasus.";
+                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";
             }
 
             return this.Ok(ugcItems);

@@ -4,4 +4,5 @@ import BigNumber from 'bignumber.js';
 export interface ForumBanSummary {
   xuid: BigNumber;
   banCount: BigNumber;
+  adjustedBanCount: BigNumber;
 }

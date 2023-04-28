@@ -1,17 +1,10 @@
 import { GameTitle } from '@models/enums';
-import {
-  AppIcon,
-  NavbarTool,
-  CommonAccessLevels,
-  ExtraIcon,
-  HomeTileInfoExternal,
-} from '../../helpers';
+import { AppIcon, NavbarTool, ExtraIcon, HomeTileInfoExternal } from '../../helpers';
 
 export const salusExternalTile = <HomeTileInfoExternal>{
   icon: AppIcon.DeveloperTool,
   extraIcon: ExtraIcon.External,
   tool: NavbarTool.Salus,
-  accessList: CommonAccessLevels.OldNavbarAppOnly,
   title: 'Salus',
   subtitle: 'An external UGC moderation tool',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM8],

@@ -13,6 +13,7 @@ import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-me
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
 describe('SunriseGiftBasketComponent', () => {
   let fixture: ComponentFixture<SunriseGiftBasketComponent>;
@@ -33,6 +34,7 @@ describe('SunriseGiftBasketComponent', () => {
           ReactiveFormsModule,
           PipesModule,
         ],
+        providers: [createMockPermAttributesService()],
       }),
     );
     const injector = getTestBed();
@@ -451,6 +453,47 @@ describe('SunriseGiftBasketComponent', () => {
         expect(response.length).toEqual(1);
         expect(response[0]).not.toBeUndefined();
         expect(response[0].error).toBeUndefined();
+      });
+    });
+
+    describe('When ignoreMaxCreditLimit is set to true and reward is over 500,000,000', () => {
+      it('should not set item error ', () => {
+        component.ignoreMaxCreditLimit = true;
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Credits',
+            quantity: 500_000_001,
+            id: new BigNumber(-1),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(component.giftBasketHasErrors).toBeFalsy();
+        expect(response[0].restriction).toBeUndefined();
+      });
+    });
+
+    describe('When ignoreMaxCreditLimit is set to false and reward is over 500,000,000', () => {
+      it('should set item error ', () => {
+        component.ignoreMaxCreditLimit = false;
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Credits',
+            quantity: 500_000_001,
+            id: new BigNumber(-1),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].restriction).toEqual('Credit limit for a gift is 500,000,000.');
       });
     });
   });

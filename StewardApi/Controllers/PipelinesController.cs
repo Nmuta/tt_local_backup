@@ -21,10 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
-        UserRole.LiveOpsAdmin,
-        UserRole.DataPipelineAdmin,
-        UserRole.DataPipelineContributor,
-        UserRole.DataPipelineRead)]
+        UserRole.LiveOpsAdmin)]
     [LogTagTitle(TitleLogTags.TitleAgnostic)]
     public sealed class PipelinesController : ControllerBase
     {

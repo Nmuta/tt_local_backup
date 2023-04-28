@@ -1,12 +1,11 @@
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const messagingTile = <HomeTileInfoInternal>{
   icon: AppIcon.Messaging,
   tool: NavbarTool.Messaging,
   oldToolRoutes: ['notifications'],
-  accessList: CommonAccessLevels.CommunityManagersAndAdmins,
   title: 'Messaging',
   subtitle: 'Manage player messages',
   supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM8],

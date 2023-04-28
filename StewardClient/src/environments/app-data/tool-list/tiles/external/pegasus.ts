@@ -1,4 +1,4 @@
-import { GameTitle, UserRole } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import {
   AppIcon,
@@ -12,7 +12,6 @@ export const pegasusExternalTile = <HomeTileInfoExternal>{
   icon: AppIcon.DeveloperTool,
   extraIcon: ExtraIcon.External,
   tool: NavbarTool.Pegasus,
-  accessList: [UserRole.LiveOpsAdmin],
   title: 'Pegasus',
   subtitle: 'Forza CMS',
   supportedTitles: [GameTitle.FH5, GameTitle.FM8],
@@ -21,7 +20,6 @@ export const pegasusExternalTile = <HomeTileInfoExternal>{
   tooltipDescription: 'Web Services for CMS authoring, snapshotting and publishing',
   shortDescription: [`Web Services for CMS authoring, snapshotting and publishing`],
   externalUrl: 'https://cms.services.forzamotorsport.net/',
-  hideFromUnauthorized: true,
   restriction: {
     requiredPermissions: [PermAttributeName.AdminFeature],
     action: HomeTileRestrictionType.Disable,

@@ -23,55 +23,15 @@ export enum OldPermissionServiceTool {
 })
 export class OldPermissionsService {
   private readonly writePermissions: Record<OldPermissionServiceTool, UserRole[]> = {
-    [OldPermissionServiceTool.SetUserFlags]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-      UserRole.SupportAgentNew,
-      UserRole.CommunityManager,
-    ],
-    [OldPermissionServiceTool.ConsoleBan]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-      UserRole.SupportAgentNew,
-    ],
-    [OldPermissionServiceTool.UnhideUgc]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-    ],
-    [OldPermissionServiceTool.HideUgc]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-      UserRole.CommunityManager,
-    ],
-    [OldPermissionServiceTool.FeatureUgc]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.CommunityManager,
-    ],
-    [OldPermissionServiceTool.Unban]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-    ],
-    [OldPermissionServiceTool.SetUgcGeoFlags]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.SupportAgentAdmin,
-      UserRole.SupportAgent,
-    ],
-    [OldPermissionServiceTool.CloneUgc]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.GeneralUser,
-      UserRole.HorizonDesigner,
-    ],
-    [OldPermissionServiceTool.PersistUgc]: [
-      UserRole.LiveOpsAdmin,
-      UserRole.GeneralUser,
-      UserRole.HorizonDesigner,
-    ],
+    [OldPermissionServiceTool.SetUserFlags]: [UserRole.LiveOpsAdmin],
+    [OldPermissionServiceTool.ConsoleBan]: [UserRole.LiveOpsAdmin],
+    [OldPermissionServiceTool.UnhideUgc]: [UserRole.LiveOpsAdmin],
+    [OldPermissionServiceTool.HideUgc]: [UserRole.LiveOpsAdmin],
+    [OldPermissionServiceTool.FeatureUgc]: [UserRole.LiveOpsAdmin],
+    [OldPermissionServiceTool.Unban]: [UserRole.LiveOpsAdmin],
+    [OldPermissionServiceTool.SetUgcGeoFlags]: [UserRole.LiveOpsAdmin],
+    [OldPermissionServiceTool.CloneUgc]: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
+    [OldPermissionServiceTool.PersistUgc]: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
   };
 
   constructor(private readonly store: Store) {}

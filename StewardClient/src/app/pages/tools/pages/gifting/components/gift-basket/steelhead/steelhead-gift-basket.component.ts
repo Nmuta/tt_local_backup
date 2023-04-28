@@ -23,6 +23,7 @@ import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localiz
 import { SteelheadPlayersGiftService } from '@services/api-v2/steelhead/players/gift/steelhead-players-gift.service';
 import { SteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 
 /** Steelhead gift basket. */
 @Component({
@@ -51,9 +52,10 @@ export class SteelheadGiftBasketComponent
     private readonly steelheadGroupGiftService: SteelheadGroupGiftService,
     steelheadLocalizationService: SteelheadLocalizationService,
     backgroundJobService: BackgroundJobService,
+    permAttributesService: PermAttributesService,
     store: Store,
   ) {
-    super(backgroundJobService, store);
+    super(backgroundJobService, permAttributesService, store);
 
     this.selectLocalizedStringService = {
       gameTitle: this.title,
