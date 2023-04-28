@@ -458,6 +458,31 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExperiencePoints, opt => opt.MapFrom(source => source.driverExperiencePoints));
 
             this.CreateMap<SteelheadLoyaltyRewardsTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
+
+            this.CreateMap<(PlayerInventoryItem item, InventoryItemType itemType), ForzaUserInventoryItemWrapper>()
+                .ForMember(dest => dest.ItemType, opt => opt.MapFrom(source => source.itemType))
+                .ForPath(dest => dest.Item.quantity, opt => opt.MapFrom(source => source.item.Quantity))
+                .ForPath(dest => dest.Item.itemId, opt => opt.MapFrom(source => source.item.Id))
+                .ForPath(dest => dest.Item.itemSource, opt => opt.MapFrom(source => ForzaInventoryItemSource.Steward))
+                .ForPath(dest => dest.Item.acquisitionTime, opt => opt.MapFrom(source => DateTime.UtcNow))
+                .ForPath(dest => dest.Item.lastUsedTime, opt => opt.MapFrom(source => DateTime.UtcNow));
+
+            this.CreateMap<ForzaUserInventoryItemWrapper, PlayerInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Item.itemId))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(source => source.Item.quantity))
+                .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(source => source.Item.acquisitionTime));
+
+            this.CreateMap<CarInventoryItem, ForzaCarUserInventoryItem>()
+                .ForMember(dest => dest.itemSource, opt => opt.MapFrom(source => ForzaInventoryItemSource.Steward))
+                .ForMember(dest => dest.acquisitionType, opt => opt.MapFrom(source => ForzaItemAcquisitionType.NA))
+                .ForMember(dest => dest.itemId, opt => opt.MapFrom(source => source.CarId))
+                .ForMember(dest => dest.clientCarInfo, opt => opt.MapFrom(source => Array.Empty<byte>()))
+                .ForMember(dest => dest.versionedLiveryId, opt => opt.MapFrom(source => source.VersionedLiveryId.HasValue ? source.VersionedLiveryId.Value : Guid.Empty))
+                .ForMember(dest => dest.versionedTuneId, opt => opt.MapFrom(source => source.VersionedTuneId.HasValue ? source.VersionedTuneId.Value : Guid.Empty));
+
+            this.CreateMap<ForzaCarUserInventoryItem, CarInventoryItem>()
+                .ForMember(dest => dest.VersionedLiveryId, opt => opt.MapFrom(source => source.versionedLiveryId))
+                .ForMember(dest => dest.VersionedTuneId, opt => opt.MapFrom(source => source.versionedTuneId));
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)
