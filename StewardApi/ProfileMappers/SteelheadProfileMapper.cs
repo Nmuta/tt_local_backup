@@ -458,6 +458,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExperiencePoints, opt => opt.MapFrom(source => source.driverExperiencePoints));
 
             this.CreateMap<SteelheadLoyaltyRewardsTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
+
+            this.CreateMap<ForzaProfile, SteelheadInventoryProfile>();
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)

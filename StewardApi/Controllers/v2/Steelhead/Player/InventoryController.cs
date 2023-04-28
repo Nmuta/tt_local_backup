@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.Inventory)]
     public class InventoryController : V2SteelheadControllerBase
     {
-        private const int MaxProfileResults = 50;
+        private const int MaxProfileResults = 100;
         private readonly IMapper mapper;
         private readonly ILoggingService loggingService;
         private readonly ISteelheadItemsProvider itemsProvider;

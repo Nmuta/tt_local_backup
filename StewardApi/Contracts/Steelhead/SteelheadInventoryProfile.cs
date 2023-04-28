@@ -18,8 +18,23 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         public Guid ExternalProfileId { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether profile is current.
+        ///     Gets or sets a value indicating whether profile is current for a given environment.
         /// </summary>
-        public bool IsCurrent { get; set; }
+        public bool IsCurrentByTItleId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether profile is the most recently used.
+        /// </summary>
+        public bool IsLastLoggedInProfile { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the device type of the profile.
+        /// </summary>
+        public string DeviceType { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Title ID.
+        /// </summary>
+        public int TitleId { get; set; }
     }
 }
