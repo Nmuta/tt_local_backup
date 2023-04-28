@@ -20,6 +20,8 @@ context('Steward / Tools / Obligation / Search', () => {
 
     // do the get
     cy.contains('button', 'sync').click().should('be.enabled');
+    
+    cy.get('body').click('topLeft');
 
     // verify we got the item
     const $firstActivity = cy

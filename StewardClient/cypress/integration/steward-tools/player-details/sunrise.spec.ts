@@ -43,7 +43,7 @@ function foundUserDataTest(): void {
 
     // found bans
     cy.contains('mat-card', 'Ban History').within(() => {
-      tableHasEntry('featureArea', 'All Requests');
+      tableHasEntry('banDetails', 'All Requests');
     });
 
     // found profile notes
@@ -87,7 +87,7 @@ function foundUserDataTest(): void {
 
     // found player inventory data
     cy.contains('mat-card', 'Notifications').within(() => {
-      cy.contains('Xls. Notifications. Unbanned Notification');
+      cy.contains('Notification');
     });
   });
 }

@@ -8,7 +8,8 @@ export interface KnownUser {
 
 /** The account info to verify. */
 export interface AccountInfo {
-  title: 'Woodstock' | 'Steelhead' | 'Sunrise' | 'Apollo' | 'Opus';
+  //title: 'Woodstock' | 'Steelhead' | 'Sunrise' | 'Apollo' | 'Opus';
+  title: 'FH5' | 'FM' | 'FH4' | 'FM7' | 'FH3';
   hasAccount: boolean;
 }
 
@@ -17,11 +18,11 @@ export const jordan: KnownUser = {
   xuid: '2535435129485725',
   t10Id: '2535435129485725',
   accountInfo: [
-    { title: 'Woodstock', hasAccount: false },
-    { title: 'Steelhead', hasAccount: false },
-    { title: 'Sunrise', hasAccount: true },
-    { title: 'Apollo', hasAccount: true },
-    { title: 'Opus', hasAccount: false },
+    { title: 'FH5', hasAccount: false },
+    { title: 'FM', hasAccount: false },
+    { title: 'FH4', hasAccount: true },
+    { title: 'FM7', hasAccount: true },
+    { title: 'FH3', hasAccount: false },
   ],
 };
 
@@ -30,11 +31,24 @@ export const luke: KnownUser = {
   xuid: '2535405314408422',
   t10Id: undefined,
   accountInfo: [
-    { title: 'Woodstock', hasAccount: true },
-    { title: 'Steelhead', hasAccount: false },
-    { title: 'Sunrise', hasAccount: true },
-    { title: 'Apollo', hasAccount: true },
-    { title: 'Opus', hasAccount: false },
+    { title: 'FH5', hasAccount: true },
+    { title: 'FM', hasAccount: false },
+    { title: 'FH4', hasAccount: true },
+    { title: 'FM7', hasAccount: true },
+    { title: 'FH3', hasAccount: false },
+  ],
+};
+
+export const chad: KnownUser = {
+  gtag: 'Plink',
+  xuid: '2675352635783107',
+  t10Id: undefined,
+  accountInfo: [
+    { title: 'FH5', hasAccount: true },
+    { title: 'FM', hasAccount: true },
+    { title: 'FH4', hasAccount: true },
+    { title: 'FM7', hasAccount: true },
+    { title: 'FH3', hasAccount: true },
   ],
 };
 

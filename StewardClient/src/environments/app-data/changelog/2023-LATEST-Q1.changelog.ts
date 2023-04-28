@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '3d2b3e80-7804-48cf-a444-5fcbc875ad24',
+      shortText: 'Added id to NavBar mat-icons for use in Cypress testing',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [

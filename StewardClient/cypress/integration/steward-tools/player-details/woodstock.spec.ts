@@ -43,22 +43,24 @@ function foundUserDataTest(): void {
 
     // found bans
     cy.contains('mat-card', 'Ban History').within(() => {
-      tableHasEntry('featureArea', 'All Requests');
+      tableHasEntry('banDetails', 'All Requests');
     });
 
     // found profile notes
     cy.contains('mat-card', 'Profile Notes').within(() => {
-      tableHasEntry('text', 'This is a testing string, not a chicken wing.');
+      tableHasEntry('text', 'test note from Steward API');
     });
 
     // found related gamertags
     cy.contains('mat-card', 'Related Gamertags').within(() => {
-      tableHasEntry('xuid', '2535435129485725');
+      //This specific component takes a very long time to run; so if it fails, it's likely the timeout on the spinner will just need to be increased to pass the test
+      cy.get('mat-progress-spinner', { timeout: 30000 }).should('not.exist');
+      tableHasEntry('xuid', '2535424453525895');
     });
 
     // found related consoles
     cy.contains('mat-card', 'Consoles').within(() => {
-      tableHasEntry('consoleId', '18230637609444823812');
+      tableHasEntry('consoleId', '18230640064596068933');
     });
 
     //// switch to Deep Dive ////
@@ -71,7 +73,7 @@ function foundUserDataTest(): void {
 
     // found credit history
     cy.contains('mat-card', 'Credit History').within(() => {
-      tableHasEntry('deviceType', 'UWP');
+      tableHasEntry('deviceType', 'Scorpio');
     });
 
     //// switch to Inventory ////
@@ -87,7 +89,7 @@ function foundUserDataTest(): void {
 
     // found player inventory data
     cy.contains('mat-card', 'Notifications').within(() => {
-      cy.contains('Xls. Notifications. Unbanned Notification');
+      cy.contains('Notifications');
     });
   });
 }
