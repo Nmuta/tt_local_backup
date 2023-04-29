@@ -11,7 +11,7 @@ import { sortBy } from 'lodash';
 
 export interface PlayerInventoryProfile {
   profileId: BigNumber;
-  externalProfileId: GuidLikeString;
+  externalProfileId?: GuidLikeString;
   isCurrent: boolean;
 }
 

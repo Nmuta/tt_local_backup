@@ -4,7 +4,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { UgcType } from '@models/ugc-filters';
-import { ApolloPlayerInventoryProfile } from '@models/apollo';
+import { ExtendedPlayerInventoryProfile } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.component';
 
 /** Component for displaying routed Apollo user details. */
 @Component({
@@ -37,7 +37,7 @@ export class ApolloUserDetailsComponent {
   ) {}
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ApolloPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
     this.profileId = newProfile?.profileId;
   }
 }

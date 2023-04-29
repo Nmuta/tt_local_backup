@@ -18,14 +18,21 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { PlayerInventoryProfilePickerComponent } from './player-inventory-profile-picker.component';
-import { SteelheadPlayerInventoryProfilePickerCompositionComponent } from './steelhead/steelhead-player-inventory-profile-picker.component';
+import { OpusPlayerInventoryProfilePickerCompositionComponent } from './opus/opus-player-inventory-profile-picker.component';
 import { ApolloPlayerInventoryProfilePickerCompositionComponent } from './apollo/apollo-player-inventory-profile-picker.component';
+import { SunrisePlayerInventoryProfilePickerCompositionComponent } from './sunrise/sunrise-player-inventory-profile-picker.component';
+import { WoodstockPlayerInventoryProfilePickerCompositionComponent } from './woodstock/woodstock-player-inventory-profile-picker.component';
+import { SteelheadPlayerInventoryProfilePickerCompositionComponent } from './steelhead/steelhead-player-inventory-profile-picker.component';
+
 
 /** Module for getting player's inventory profiles. */
 @NgModule({
   declarations: [
     PlayerInventoryProfilePickerComponent,
+    OpusPlayerInventoryProfilePickerCompositionComponent,
     ApolloPlayerInventoryProfilePickerCompositionComponent,
+    SunrisePlayerInventoryProfilePickerCompositionComponent,
+    WoodstockPlayerInventoryProfilePickerCompositionComponent,
     SteelheadPlayerInventoryProfilePickerCompositionComponent,
   ],
   imports: [
@@ -51,7 +58,10 @@ import { ApolloPlayerInventoryProfilePickerCompositionComponent } from './apollo
     ErrorSpinnerModule,
   ],
   exports: [
+    OpusPlayerInventoryProfilePickerCompositionComponent,
     ApolloPlayerInventoryProfilePickerCompositionComponent,
+    SunrisePlayerInventoryProfilePickerCompositionComponent,
+    WoodstockPlayerInventoryProfilePickerCompositionComponent,
     SteelheadPlayerInventoryProfilePickerCompositionComponent
   ],
 })

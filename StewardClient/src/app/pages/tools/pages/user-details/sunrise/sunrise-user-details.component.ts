@@ -5,7 +5,7 @@ import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UgcType } from '@models/ugc-filters';
-import { SunrisePlayerInventoryProfile } from '@models/sunrise';
+import { ExtendedPlayerInventoryProfile } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.component';
 
 /** Component for displaying routed Sunrise user details. */
 @Component({
@@ -37,7 +37,7 @@ export class SunriseUserDetailsComponent {
   ) {}
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: SunrisePlayerInventoryProfile): void {
+  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
     this.profileId = newProfile?.profileId;
   }
 
