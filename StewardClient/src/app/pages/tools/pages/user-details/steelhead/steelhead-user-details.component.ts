@@ -6,6 +6,7 @@ import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { UgcType } from '@models/ugc-filters';
 import { GuidLikeString } from '@models/extended-types';
 import { SteelheadPlayerProfileManagementComponent } from '@views/player-profile-management/steelhead/steelhead-player-profile-management.component';
+import { ExtendedPlayerInventoryProfile } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.component';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
@@ -45,8 +46,8 @@ export class SteelheadUserDetailsComponent {
   ) {}
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: SteelheadPlayerInventoryProfile): void {
-    this.profile = newProfile;
+  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+    this.profile = newProfile as SteelheadPlayerInventoryProfile;
   }
 
   /** Called when external profile id changes due to loading/reseting profile. */

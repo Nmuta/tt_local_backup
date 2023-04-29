@@ -24,7 +24,7 @@ export interface SteelheadPlayerInventoryProfile extends PlayerInventoryProfile{
   titleId: number
 }
 
-type ExtendedPlayerInventoryProfile = PlayerInventoryProfile & Partial<SteelheadPlayerInventoryProfile>;
+export type ExtendedPlayerInventoryProfile = PlayerInventoryProfile & Partial<SteelheadPlayerInventoryProfile>;
 
 export interface PlayerInventoryProfilePickerServiceContract {
   /** Game title the service contract is associated with. */

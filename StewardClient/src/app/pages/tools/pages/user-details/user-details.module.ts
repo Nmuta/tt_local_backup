@@ -52,6 +52,7 @@ import { CmsOverrideModule } from '@views/cms-override/cms-override.module';
 import { PaidEntitlementsModule } from '@views/paid-entitlements/paid-entitlements.module';
 import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-history.module';
 import { DriverLevelModule } from '@views/driver-level/driver-level.module';
+import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -113,6 +114,7 @@ import { DriverLevelModule } from '@views/driver-level/driver-level.module';
     PaidEntitlementsModule,
     ForumBanHistoryModule,
     DriverLevelModule,
+    PlayerInventoryProfilesCompositionModule,
   ],
 })
 export class UserDetailsModule {}
