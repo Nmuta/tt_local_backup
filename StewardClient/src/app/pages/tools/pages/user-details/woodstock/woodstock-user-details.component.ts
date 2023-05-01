@@ -8,7 +8,7 @@ import { UgcType } from '@models/ugc-filters';
 import { SpecialXuid1 } from '@models/special-identity';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({
@@ -51,7 +51,7 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.profileId = newProfile?.profileId;
   }
 

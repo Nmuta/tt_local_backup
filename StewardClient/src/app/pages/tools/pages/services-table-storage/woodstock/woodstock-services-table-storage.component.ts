@@ -12,7 +12,7 @@ import {
   WoodstockServicesTableStorageService,
   ServicesTableStorageEntity,
 } from '@services/api-v2/woodstock/services-table-storage/services-table-storage.service';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying Woodstock services table storage. */
 @Component({
@@ -22,7 +22,7 @@ import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile
 })
 export class WoodstockServicesTableStorageComponent extends BaseComponent {
   public title: GameTitle.FH5;
-  public profile: ExtendedPlayerInventoryProfile;
+  public profile: PlayerInventoryProfile;
   public data: ServicesTableStorageEntity[] = null;
   public serviceContract: ServicesTableStorageContract;
 
@@ -67,7 +67,7 @@ export class WoodstockServicesTableStorageComponent extends BaseComponent {
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.profile = newProfile;
     this.serviceContract.xuid = this.identity.xuid;
     this.serviceContract.externalProfileId = this.profile.externalProfileId;

@@ -16,7 +16,7 @@ import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { WoodstockLoyaltyRewardsService } from '@services/api-v2/woodstock/player/loyalty-rewards/woodstock-loyalty-rewards.service';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 type LoyaltyRewardsDataInterface = {
   label: string;
@@ -150,7 +150,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.externalProfileId = newProfile?.externalProfileId;
 
     this.getHasPlayedRecord$.next();

@@ -12,7 +12,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ServicesTableStorageContract } from '../components/services-filterable-table/services-filterable-table.component';
 import BigNumber from 'bignumber.js';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
@@ -22,7 +22,7 @@ import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile
 })
 export class SteelheadServicesTableStorageComponent extends BaseComponent {
   public title: GameTitle.FM8;
-  public profile: ExtendedPlayerInventoryProfile;
+  public profile: FullPlayerInventoryProfile;
   public data: ServicesTableStorageEntity[] = null;
   public serviceContract: ServicesTableStorageContract;
 
@@ -67,7 +67,7 @@ export class SteelheadServicesTableStorageComponent extends BaseComponent {
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: FullPlayerInventoryProfile): void {
     this.profile = newProfile;
     this.serviceContract.xuid = this.identity.xuid;
     this.serviceContract.externalProfileId = this.profile.externalProfileId;

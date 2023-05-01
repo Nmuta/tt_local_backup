@@ -22,7 +22,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DateTimeRange } from '@models/datetime-range';
 import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime-range-picker/datetime-range-toggle-defaults';
 import { DateRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/date-range-picker/date-range-picker.component';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** The gift history page for the Navbar app. */
 @Component({
@@ -127,7 +127,7 @@ export class SteelheadGiftHistoryComponent
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: FullPlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

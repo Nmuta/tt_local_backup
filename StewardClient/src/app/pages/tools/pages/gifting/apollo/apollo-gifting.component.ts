@@ -16,7 +16,7 @@ import { AugmentedCompositeIdentity } from '@views/player-selection/player-selec
 import BigNumber from 'bignumber.js';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -32,7 +32,7 @@ export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> impl
   public selectedLspGroup: LspGroup;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: ExtendedPlayerInventoryProfile;
+  public selectedPlayerInventoryProfile: PlayerInventoryProfile;
   public selectedPlayerInventory: ApolloMasterInventory;
 
   public giftingTypeMatTabSelectedIndex: number = 0;
@@ -97,7 +97,7 @@ export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> impl
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

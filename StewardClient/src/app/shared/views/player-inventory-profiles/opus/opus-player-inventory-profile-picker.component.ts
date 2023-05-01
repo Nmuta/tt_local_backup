@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 import { OpusService } from '@services/opus';
 import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 
@@ -16,7 +16,7 @@ export class OpusPlayerInventoryProfilePickerComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
   /** Output when profile change happens. */
-  @Output() public profileChange = new EventEmitter<ExtendedPlayerInventoryProfile>();
+  @Output() public profileChange = new EventEmitter<PlayerInventoryProfile>();
   public service: PlayerInventoryProfilePickerServiceContract;
 
   constructor(playerInventoryService: OpusService) {

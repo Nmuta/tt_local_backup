@@ -27,7 +27,7 @@ import { DefaultGiftExpireTimeSpanInDays } from '@helpers/bignumbers';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /**
  * List of special liveries from Community team.
@@ -71,7 +71,7 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
   public selectedLspGroup: LspGroup;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: ExtendedPlayerInventoryProfile;
+  public selectedPlayerInventoryProfile: PlayerInventoryProfile;
   public selectedPlayerInventory: WoodstockMasterInventory;
 
   public specialLiveriesContract: GiftSpecialLiveriesContract;
@@ -179,7 +179,7 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

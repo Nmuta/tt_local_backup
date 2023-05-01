@@ -16,7 +16,7 @@ import {
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
-import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** The sunrise gifting page. */
 @Component({
@@ -34,7 +34,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   public selectedLspGroup: LspGroup;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: ExtendedPlayerInventoryProfile;
+  public selectedPlayerInventoryProfile: PlayerInventoryProfile;
   public selectedPlayerInventory: SunriseMasterInventory;
 
   public giftingTypeMatTabSelectedIndex: number = 0;
@@ -99,7 +99,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

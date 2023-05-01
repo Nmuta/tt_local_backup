@@ -18,8 +18,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { sortBy } from 'lodash';
 import { GameTitle } from '@models/enums';
 import {
-  ExtendedPlayerInventoryProfile,
-  PlayerInventoryProfile,
+  FullPlayerInventoryProfile,
 } from '@models/player-inventory-profile';
 
 export interface PlayerInventoryProfilePickerServiceContract {
@@ -27,7 +26,7 @@ export interface PlayerInventoryProfilePickerServiceContract {
   gameTitle: GameTitle;
 
   /** Gets a player's report weight. */
-  getPlayerInventoryProfiles$(xuid: BigNumber): Observable<PlayerInventoryProfile[]>;
+  getPlayerInventoryProfiles$(xuid: BigNumber): Observable<FullPlayerInventoryProfile[]>;
 }
 
 /** Component to get and set a player's report weight. */
@@ -45,9 +44,9 @@ export class PlayerInventoryProfilePickerComponent
   /** The player identity. */
   @Input() public identity: IdentityResultAlpha;
   /** Output when profile change happens. */
-  @Output() public profileChange = new EventEmitter<ExtendedPlayerInventoryProfile>();
+  @Output() public profileChange = new EventEmitter<FullPlayerInventoryProfile>();
 
-  public profiles: ExtendedPlayerInventoryProfile[] = [];
+  public profiles: FullPlayerInventoryProfile[] = [];
 
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultAlpha>();
@@ -99,7 +98,7 @@ export class PlayerInventoryProfilePickerComponent
 
   /** Handle chip-list selection change. */
   public onSelectionChange(newSelection: MatChipListChange): void {
-    const newProfile = newSelection?.value as ExtendedPlayerInventoryProfile;
+    const newProfile = newSelection?.value as FullPlayerInventoryProfile;
     this.profileChange.emit(newProfile);
   }
 }
