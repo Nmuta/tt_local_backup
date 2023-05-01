@@ -24,4 +24,9 @@ export class ApolloPlayerInventoryProfilePickerCompositionComponent {
       getPlayerInventoryProfiles$: xuid => playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
     };
   }
+
+  /** Handle profile change. */
+  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
+    this.profileChange.emit(newProfile);
+  }
 }
