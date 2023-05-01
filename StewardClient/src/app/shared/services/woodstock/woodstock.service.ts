@@ -12,7 +12,6 @@ import {
   WoodstockBanSummary,
   WoodstockConsoleDetailsEntry,
   WoodstockGiftHistory,
-  WoodstockMasterInventory,
   WoodstockPlayerAccountInventory,
   WoodstockPlayerDetails,
   WoodstockPlayerInventory,
@@ -153,11 +152,6 @@ export class WoodstockService {
   /** Gets the woodstock lsp groups. */
   public getLspGroups$(): Observable<LspGroups> {
     return this.apiService.getRequest$<LspGroups>(`${this.basePath}/groups`);
-  }
-
-  /** Gets the woodstock master inventory. */
-  public getMasterInventory$(): Observable<WoodstockMasterInventory> {
-    return this.apiService.getRequest$<WoodstockMasterInventory>(`${this.basePath}/items`);
   }
 
   /** Gets woodstock player details with a gamertag. This can be used to retrieve a XUID. */

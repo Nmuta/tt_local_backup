@@ -34,27 +34,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets car makes.
         /// </summary>
-        Task<IEnumerable<ListCarMake>> GetCarMakesAsync();
+        Task<IEnumerable<ListCarMake>> GetCarMakesAsync(string slotId = WoodstockPegasusSlot.Live);
 
         /// <summary>
         ///     Gets car horns.
         /// </summary>
-        Task<IEnumerable<CarHorn>> GetCarHornsAsync();
+        Task<IEnumerable<CarHorn>> GetCarHornsAsync(string slotId = WoodstockPegasusSlot.Live);
 
         /// <summary>
         ///     Gets vanity items.
         /// </summary>
-        Task<IEnumerable<VanityItem>> GetVanityItemsAsync();
+        Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = WoodstockPegasusSlot.Live);
 
         /// <summary>
         ///     Gets emotes.
         /// </summary>
-        Task<IEnumerable<EmoteData>> GetEmotesAsync();
+        Task<IEnumerable<EmoteData>> GetEmotesAsync(string slotId = WoodstockPegasusSlot.Live);
 
         /// <summary>
         ///     Gets quick chat lines.
         /// </summary>
-        Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync();
+        Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync(string slotId = WoodstockPegasusSlot.Live);
 
         /// <summary>
         ///     Gets Ugc reporting reasons.
