@@ -6,10 +6,10 @@
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents a UGC Tuneblob item.
+    ///     Represents a UGC Tune Blob item.
     /// </summary>
-    public class UgcTuneblobItem : UgcItem
+    public class UgcTuneBlobItem : UgcItem
     {
-        public byte[] TuneblobDownloadDataBase64 { get; set; }
+        public byte[] TuneBlobDownloadDataBase64 { get; set; }
     }
 }

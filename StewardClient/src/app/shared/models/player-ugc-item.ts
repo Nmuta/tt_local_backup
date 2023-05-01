@@ -36,8 +36,8 @@ export interface PlayerUgcItem {
   /** Only for livery type UGC items.  */
   liveryDownloadDataBase64?: string;
 
-  /** Only for tuneblob type UGC items.  */
-  tuneblobDownloadDataBase64?: string;
+  /** Only for tune blob type UGC items.  */
+  tuneBlobDownloadDataBase64?: string;
 }
 
 /** Geoflags that are valid in Woodstock. */

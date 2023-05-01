@@ -229,7 +229,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("tuneblob/{ugcId}")]
-        [SwaggerResponse(200, type: typeof(UgcTuneblobItem))]
+        [SwaggerResponse(200, type: typeof(UgcTuneBlobItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcTune(string ugcId)
@@ -239,7 +239,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            async Task<UgcTuneblobItem> GetTuneAsync()
+            async Task<UgcTuneBlobItem> GetTuneAsync()
             {
                 ForzaTuneBlob tuneOutput = null;
 
@@ -253,7 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     throw new UnknownFailureStewardException($"No tune found. (ugcId: {parsedUgcId}).", ex);
                 }
 
-                var tune = this.mapper.SafeMap<UgcTuneblobItem>(tuneOutput);
+                var tune = this.mapper.SafeMap<UgcTuneBlobItem>(tuneOutput);
 
                 if (tune.GameTitle != (int)GameTitle.FM8)
                 {

@@ -50,14 +50,16 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
     if (!!this.item?.liveryDownloadDataBase64) {
       this.downloadOptions.push({
         label: 'C Livery',
-        clickFn: () => this.downloadCLivery(this.item),
+        clickFn: () =>
+          this.downloadData(this.item.liveryDownloadDataBase64, `${this.item.id}_C_Livery`),
       });
     }
 
-    if (!!this.item?.tuneblobDownloadDataBase64) {
+    if (!!this.item?.tuneBlobDownloadDataBase64) {
       this.downloadOptions.push({
         label: 'Tune blob data',
-        clickFn: () => this.downloadTuneblobData(this.item),
+        clickFn: () =>
+          this.downloadData(this.item.tuneBlobDownloadDataBase64, `${this.item.id}_TuneBlob_Data`),
       });
     }
   }
@@ -76,35 +78,10 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
     downloadLink.remove();
   }
 
-  /** Downloads the UGC C Livery. */
-  public downloadCLivery(item: PlayerUgcItem): void {
+  private downloadData(base64Data: string, title: string) {
     this.menuTrigger.closeMenu();
-    const title = `${item.id}_C_Livery`;
-    const liveryData = item.liveryDownloadDataBase64;
 
-    const binaryString = window.atob(liveryData);
-    const binaryLen = binaryString.length;
-    const bytes = new Uint8Array(binaryLen);
-    for (let i = 0; i < binaryLen; i++) {
-      const ascii = binaryString.charCodeAt(i);
-      bytes[i] = ascii;
-    }
-
-    const blob = new Blob([bytes], { type: 'application/octet-stream' });
-    const downloadLink = document.createElement('a');
-    downloadLink.href = window.URL.createObjectURL(blob);
-    downloadLink.download = title;
-    downloadLink.click();
-    downloadLink.remove();
-  }
-
-  /** Downloads the UGC Tune Blob Data. */
-  public downloadTuneblobData(item: PlayerUgcItem): void {
-    this.menuTrigger.closeMenu();
-    const title = `${item.id}_Tuneblob_Data`;
-    const tuneblobData = item.tuneblobDownloadDataBase64;
-
-    const binaryString = window.atob(tuneblobData);
+    const binaryString = window.atob(base64Data);
     const binaryLen = binaryString.length;
     const bytes = new Uint8Array(binaryLen);
     for (let i = 0; i < binaryLen; i++) {
