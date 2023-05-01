@@ -34,6 +34,9 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -57,6 +60,11 @@ export const sidebarRoutes = [
     component: NotificationsComponent,
     outlet: 'sidebar',
   },
+  {
+    path: 'contactus',
+    component: ContactUsComponent,
+    outlet: 'sidebar',
+  },
 ];
 
 /** Module containing all routable sidebar components. */
@@ -68,6 +76,7 @@ export const sidebarRoutes = [
     ChangelogComponent,
     ChangelogGroupComponent,
     ChangelogTagDetailsComponent,
+    ContactUsComponent,
   ],
   imports: [
     ChangelogModule,
@@ -102,6 +111,8 @@ export const sidebarRoutes = [
     StateManagersModule,
     PermissionsModule,
     StandardCopyModule,
+    MatButtonToggleModule,
+    HelpModule,
   ],
   exports: [RouterModule],
 })

@@ -1,0 +1,16 @@
+@import '/src/styles/mixins/';
+
+$xuidTextAreaMinSizePx: 100px;
+
+.mat-button-toggle-checked.mat-button-toggle-checked {
+  background-color: app-color-default($app-primary);
+  color: app-color-default-contrast($app-primary);
+}
+
+textarea {
+  min-height: $xuidTextAreaMinSizePx;
+}
+
+.large-icon {
+  font-size: 100px;
+}

@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: '0fbcfd56-f8bb-4e8e-9f29-5f1d54a56b30',
+      shortText: 'New Contact Us component',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'e3702108-3edd-4f7c-9b56-9440c3b78a68',
       shortText: 'Add year to displayed car info',
     },

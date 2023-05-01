@@ -42,6 +42,17 @@
   </a>
 </span>
 <span>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'contactus' } }]"
+    queryParamsHandling="preserve"
+    mat-icon-button
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Contact Us"
+  >
+    <mat-icon>contact_support</mat-icon>
+  </a>
+</span>
+<span>
   <button mat-button [matMenuTriggerFor]="contactUsMenu" matTooltip="Contact Us">
     <mat-icon>contact_support</mat-icon>
   </button>
