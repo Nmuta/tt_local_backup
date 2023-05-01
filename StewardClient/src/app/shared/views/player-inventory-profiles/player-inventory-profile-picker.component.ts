@@ -40,11 +40,11 @@ export class PlayerInventoryProfilePickerComponent
   extends BaseComponent
   implements OnInit, OnChanges
 {
-  /** REVIEW-COMMENT: The report weight service. */
+  /** The player inventory profile picker service contract. */
   @Input() service: PlayerInventoryProfilePickerServiceContract;
-  /** REVIEW-COMMENT: Player identity. */
+  /** The player identity. */
   @Input() public identity: IdentityResultAlpha;
-  /** REVIEW-COMMENT: Output when profile change happens. */
+  /** Output when profile change happens. */
   @Output() public profileChange = new EventEmitter<ExtendedPlayerInventoryProfile>();
 
   public profiles: ExtendedPlayerInventoryProfile[] = [];
@@ -57,16 +57,8 @@ export class PlayerInventoryProfilePickerComponent
     return this.service.gameTitle;
   }
 
-  constructor() {
-    super();
-  }
-
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    if (!this.service) {
-      throw new Error('No service is defined for player inventory profiles component.');
-    }
-
     this.identity$
       .pipe(
         tap(_ => {
@@ -96,6 +88,10 @@ export class PlayerInventoryProfilePickerComponent
 
   /** Lifecycle hook. */
   public ngOnChanges(changes: BetterSimpleChanges<PlayerInventoryProfilePickerComponent>): void {
+    if (!this.service) {
+      throw new Error('No service is defined for player inventory profiles component.');
+    }
+
     if (!!changes.identity) {
       this.identity$.next(this.identity);
     }
