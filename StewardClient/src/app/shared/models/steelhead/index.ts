@@ -2,7 +2,6 @@ export * from './steelhead-player-details.model';
 export * from './steelhead-player-inventory.model';
 export * from './steelhead-gift-history.model';
 export * from './steelhead-master-inventory.model';
-export * from './steelhead-player-inventory-profile.model';
 export * from './steelhead-gift.model';
 export * from './steelhead-group-gift.model';
 export * from './steelhead-ban-request.model';

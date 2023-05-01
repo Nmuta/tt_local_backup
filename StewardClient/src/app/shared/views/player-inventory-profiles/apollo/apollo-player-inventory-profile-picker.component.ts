@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { PlayerInventoryProfile} from '@models/player-inventory-profile';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 import { ApolloService } from '@services/apollo';
 import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 

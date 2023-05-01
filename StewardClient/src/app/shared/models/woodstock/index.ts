@@ -10,7 +10,6 @@ export * from './woodstock-gift-history.model';
 export * from './woodstock-ban-result.model';
 export * from './woodstock-ban-summary.model';
 export * from './woodstock-ban-request.model';
-export * from './woodstock-player-inventory-profile.model';
 export * from './woodstock-gift.model';
 export * from './woodstock-group-gift.model';
 export * from './woodstock-master-inventory.model';

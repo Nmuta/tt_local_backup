@@ -17,9 +17,7 @@ import { MatChipListChange } from '@angular/material/chips';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { sortBy } from 'lodash';
 import { GameTitle } from '@models/enums';
-import {
-  FullPlayerInventoryProfile,
-} from '@models/player-inventory-profile';
+import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 export interface PlayerInventoryProfilePickerServiceContract {
   /** Game title the service contract is associated with. */
