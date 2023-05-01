@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Gets the Woodstock master inventory.
         /// </summary>
-        Task<WoodstockMasterInventory> GetMasterInventoryAsync();
+        Task<WoodstockMasterInventory> GetMasterInventoryAsync(string slotId = "live");
 
         /// <summary>
         ///     Gets the Woodstock cars detailed.

@@ -76,6 +76,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         }
 
         /// <inheritdoc />
+        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily)
+        {
+            IEnumerable<VanityItem> vanityItems;
+            try
+            {
+                vanityItems = await this.pegasusService.GetVanityItemsAsync(slotId).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Failed to get Steelhead Pegasus cars.", ex);
+            }
+
+            return vanityItems;
+        }
+
+        /// <inheritdoc />
         public async Task<IEnumerable<SimpleCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Daily)
         {
             IEnumerable<DataCar> cars;

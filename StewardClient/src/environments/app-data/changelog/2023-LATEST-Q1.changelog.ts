@@ -10,7 +10,12 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: 'caff6395-2f19-4080-bbd9-58b9e6390883',
-      shortText: 'Tuneblob can now be downloaded',
+      shortText: 'Tune blob can now be downloaded',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
+      uuid: '8d1e6edc-8506-440e-9652-c886a4a387b3',
+      shortText: 'Utilize live-steward CMS slot to pull in next series content',
     },
     {
       tag: {
