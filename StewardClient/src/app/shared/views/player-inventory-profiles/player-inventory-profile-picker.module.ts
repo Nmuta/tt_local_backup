@@ -24,7 +24,6 @@ import { SunrisePlayerInventoryProfilePickerComponent } from './sunrise/sunrise-
 import { WoodstockPlayerInventoryProfilePickerComponent } from './woodstock/woodstock-player-inventory-profile-picker.component';
 import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead/steelhead-player-inventory-profile-picker.component';
 
-
 /** Module for getting player's inventory profiles. */
 @NgModule({
   declarations: [
@@ -62,7 +61,7 @@ import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead/stee
     ApolloPlayerInventoryProfilePickerComponent,
     SunrisePlayerInventoryProfilePickerComponent,
     WoodstockPlayerInventoryProfilePickerComponent,
-    SteelheadPlayerInventoryProfilePickerComponent
+    SteelheadPlayerInventoryProfilePickerComponent,
   ],
 })
 export class PlayerInventoryProfilesModule {}

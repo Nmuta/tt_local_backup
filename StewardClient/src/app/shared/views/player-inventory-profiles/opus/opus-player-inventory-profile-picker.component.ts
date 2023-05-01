@@ -22,7 +22,8 @@ export class OpusPlayerInventoryProfilePickerComponent {
   constructor(playerInventoryService: OpusService) {
     this.service = {
       gameTitle: GameTitle.FH3,
-      getPlayerInventoryProfiles$: xuid => playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
+      getPlayerInventoryProfiles$: xuid =>
+        playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
     };
   }
 

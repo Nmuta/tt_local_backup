@@ -2,27 +2,28 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
-import { ApolloService } from '@services/apollo';
+import { SunriseService } from '@services/sunrise';
 import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 
 /**
- *  Apollo player inventory profiles component.
+ *  Sunrise player inventory profiles component.
  */
 @Component({
-  selector: 'apollo-player-inventory-profile-picker',
-  templateUrl: './apollo-player-inventory-profile-picker.component.html',
+  selector: 'sunrise-player-inventory-profile-picker',
+  templateUrl: './sunrise-player-inventory-profile-picker.component.html',
 })
-export class ApolloPlayerInventoryProfilePickerComponent {
+export class SunrisePlayerInventoryProfilePickerComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
   /** Output when profile change happens. */
   @Output() public profileChange = new EventEmitter<ExtendedPlayerInventoryProfile>();
   public service: PlayerInventoryProfilePickerServiceContract;
 
-  constructor(playerInventoryService: ApolloService) {
+  constructor(playerInventoryService: SunriseService) {
     this.service = {
-      gameTitle: GameTitle.FM7,
-      getPlayerInventoryProfiles$: xuid => playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
+      gameTitle: GameTitle.FH4,
+      getPlayerInventoryProfiles$: xuid =>
+        playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
     };
   }
 

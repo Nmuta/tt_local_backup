@@ -1,13 +1,26 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import BigNumber from 'bignumber.js';
-import { catchError, EMPTY, filter, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  filter,
+  map,
+  Observable,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { MatChipListChange } from '@angular/material/chips';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { sortBy } from 'lodash';
 import { GameTitle } from '@models/enums';
-import { ExtendedPlayerInventoryProfile, PlayerInventoryProfile } from '@models/player-inventory-profile';
+import {
+  ExtendedPlayerInventoryProfile,
+  PlayerInventoryProfile,
+} from '@models/player-inventory-profile';
 
 export interface PlayerInventoryProfilePickerServiceContract {
   /** Game title the service contract is associated with. */
@@ -23,19 +36,22 @@ export interface PlayerInventoryProfilePickerServiceContract {
   templateUrl: './player-inventory-profile-picker.component.html',
   styleUrls: ['./player-inventory-profile-picker.component.scss'],
 })
-export class PlayerInventoryProfilePickerComponent extends BaseComponent implements OnInit, OnChanges {
+export class PlayerInventoryProfilePickerComponent
+  extends BaseComponent
+  implements OnInit, OnChanges
+{
   /** REVIEW-COMMENT: The report weight service. */
   @Input() service: PlayerInventoryProfilePickerServiceContract;
   /** REVIEW-COMMENT: Player identity. */
   @Input() public identity: IdentityResultAlpha;
   /** REVIEW-COMMENT: Output when profile change happens. */
   @Output() public profileChange = new EventEmitter<ExtendedPlayerInventoryProfile>();
-  
+
   public profiles: ExtendedPlayerInventoryProfile[] = [];
 
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultAlpha>();
-  
+
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
     return this.service.gameTitle;

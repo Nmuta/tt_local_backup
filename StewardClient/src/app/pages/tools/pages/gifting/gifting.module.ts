@@ -39,7 +39,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
-import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
+import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
 
 /** The feature module for the User Details route. */
 @NgModule({

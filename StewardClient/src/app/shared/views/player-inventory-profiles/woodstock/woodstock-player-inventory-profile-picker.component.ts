@@ -22,7 +22,8 @@ export class WoodstockPlayerInventoryProfilePickerComponent {
   constructor(playerInventoryService: WoodstockService) {
     this.service = {
       gameTitle: GameTitle.FH5,
-      getPlayerInventoryProfiles$: xuid => playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
+      getPlayerInventoryProfiles$: xuid =>
+        playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
     };
   }
 

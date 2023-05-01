@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '370da96a-bce2-4159-a6c6-d4348f8d8842',
+      shortText: 'Convert player profile selection component to use composition',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [

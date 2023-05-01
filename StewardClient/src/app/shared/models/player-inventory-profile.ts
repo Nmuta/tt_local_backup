@@ -8,13 +8,14 @@ export interface PlayerInventoryProfile {
   isCurrent: boolean;
 }
 
-export interface SteelheadPlayerInventoryProfile extends PlayerInventoryProfile{
+export interface SteelheadPlayerInventoryProfile extends PlayerInventoryProfile {
   profileId: BigNumber;
   externalProfileId: GuidLikeString;
   isCurrent: boolean;
   isCurrentByTitleId: boolean;
   deviceType: DeviceType;
-  titleId: number
+  titleId: number;
 }
 
-export type ExtendedPlayerInventoryProfile = PlayerInventoryProfile & Partial<SteelheadPlayerInventoryProfile>;
+export type ExtendedPlayerInventoryProfile = PlayerInventoryProfile &
+  Partial<SteelheadPlayerInventoryProfile>;
