@@ -26,9 +26,4 @@ export class SunrisePlayerInventoryProfilePickerComponent {
         playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
     };
   }
-
-  /** Handle profile change. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
-    this.profileChange.emit(newProfile);
-  }
 }

@@ -25,9 +25,4 @@ export class SteelheadPlayerInventoryProfilePickerComponent {
       getPlayerInventoryProfiles$: xuid => playerInventoryService.getInventoryProfilesByXuid$(xuid),
     };
   }
-
-  /** Handle profile change. */
-  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
-    this.profileChange.emit(newProfile);
-  }
 }
