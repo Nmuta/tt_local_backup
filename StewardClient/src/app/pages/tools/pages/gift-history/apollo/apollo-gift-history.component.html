@@ -43,10 +43,10 @@
         </mat-card-header>
         <mat-card-content>
           <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
-            <apollo-player-inventory-profile-picker-composition
+            <apollo-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
               (profileChange)="onProfileChange($event)"
-            ></apollo-player-inventory-profile-picker-composition>
+            ></apollo-player-inventory-profile-picker>
 
             <div class="inventory-div">
               <apollo-player-inventory

@@ -35,7 +35,7 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { ServicesTableResultsComponent } from './components/services-table-results/services-table-results.component';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { WoodstockServicesTableStorageComponent } from './woodstock/woodstock-services-table-storage.component';
-import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
+import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
 /** The feature module for the Services Table Storage route. */
 @NgModule({
   declarations: [
@@ -63,7 +63,7 @@ import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventor
     GamertagsModule,
     OverviewModule,
     JsonDumpModule,
-    PlayerInventoryProfilesCompositionModule,
+    PlayerInventoryProfilesModule,
     PlayerSelectionModule,
     MatTooltipModule,
     PlayerIdentityResultsModule,

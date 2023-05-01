@@ -20,7 +20,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
 import { WoodstockLoyaltyRewardsComponent } from './woodstock/woodstock-loyalty-rewards.component';
 import { SteelheadLoyaltyRewardsComponent } from './steelhead/steelhead-loyalty-rewards.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
+import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
 
 /** Module for player entitlements data. */
 @NgModule({
@@ -39,7 +39,7 @@ import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventor
     MatCardModule,
     MatTableModule,
     ErrorSpinnerModule,
-    PlayerInventoryProfilesCompositionModule,
+    PlayerInventoryProfilesModule,
     MatButtonModule,
     MatCheckboxModule,
     VerifyCheckboxModule,

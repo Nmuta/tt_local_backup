@@ -9,10 +9,10 @@ import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory
  *  Woodstock player inventory profiles component.
  */
 @Component({
-  selector: 'woodstock-player-inventory-profile-picker-composition',
+  selector: 'woodstock-player-inventory-profile-picker',
   templateUrl: './woodstock-player-inventory-profile-picker.component.html',
 })
-export class WoodstockPlayerInventoryProfilePickerCompositionComponent {
+export class WoodstockPlayerInventoryProfilePickerComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
   /** Output when profile change happens. */

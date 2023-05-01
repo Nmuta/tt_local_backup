@@ -9,10 +9,10 @@ import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory
  *  Steelhead player inventory profiles component.
  */
 @Component({
-  selector: 'steelhead-player-inventory-profile-picker-composition',
+  selector: 'steelhead-player-inventory-profile-picker',
   templateUrl: './steelhead-player-inventory-profile-picker.component.html',
 })
-export class SteelheadPlayerInventoryProfilePickerCompositionComponent {
+export class SteelheadPlayerInventoryProfilePickerComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
   /** Output when profile change happens. */

@@ -8,10 +8,10 @@
           <mat-card-subtitle>{{ title | humanize }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <woodstock-player-inventory-profile-picker-composition
+          <woodstock-player-inventory-profile-picker
             [identity]="identity"
             (profileChange)="onProfileChange($event)"
-          ></woodstock-player-inventory-profile-picker-composition>
+          ></woodstock-player-inventory-profile-picker>
         </mat-card-content>
       </mat-card>
       <services-filterable-table [contract]="serviceContract"></services-filterable-table>

@@ -9,10 +9,10 @@ import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory
  *  Sunrise player inventory profiles component.
  */
 @Component({
-  selector: 'sunrise-player-inventory-profile-picker-composition',
+  selector: 'sunrise-player-inventory-profile-picker',
   templateUrl: './sunrise-player-inventory-profile-picker.component.html',
 })
-export class SunrisePlayerInventoryProfilePickerCompositionComponent {
+export class SunrisePlayerInventoryProfilePickerComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
   /** Output when profile change happens. */

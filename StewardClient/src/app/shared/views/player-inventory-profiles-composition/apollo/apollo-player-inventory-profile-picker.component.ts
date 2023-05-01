@@ -9,10 +9,10 @@ import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory
  *  Apollo player inventory profiles component.
  */
 @Component({
-  selector: 'apollo-player-inventory-profile-picker-composition',
+  selector: 'apollo-player-inventory-profile-picker',
   templateUrl: './apollo-player-inventory-profile-picker.component.html',
 })
-export class ApolloPlayerInventoryProfilePickerCompositionComponent {
+export class ApolloPlayerInventoryProfilePickerComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
   /** Output when profile change happens. */

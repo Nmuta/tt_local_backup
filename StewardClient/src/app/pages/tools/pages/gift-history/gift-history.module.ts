@@ -25,7 +25,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
-import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
+import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -54,7 +54,7 @@ import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventor
     LspGroupSelectionModule,
     MatTabsModule,
     PlayerInventoryModule,
-    PlayerInventoryProfilesCompositionModule,
+    PlayerInventoryProfilesModule,
     EndpointSelectionModule,
     DateTimePickersModule,
     FormsModule,

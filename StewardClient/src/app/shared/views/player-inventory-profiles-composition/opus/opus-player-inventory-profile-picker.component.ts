@@ -9,10 +9,10 @@ import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory
  *  Opus player inventory profiles component.
  */
 @Component({
-  selector: 'opus-player-inventory-profile-picker-composition',
+  selector: 'opus-player-inventory-profile-picker',
   templateUrl: './opus-player-inventory-profile-picker.component.html',
 })
-export class OpusPlayerInventoryProfilePickerCompositionComponent {
+export class OpusPlayerInventoryProfilePickerComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
   /** Output when profile change happens. */

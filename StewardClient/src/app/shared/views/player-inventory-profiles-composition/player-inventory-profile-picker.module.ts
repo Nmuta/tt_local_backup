@@ -18,22 +18,22 @@ import { MatChipsModule } from '@angular/material/chips';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { PlayerInventoryProfilePickerComponent } from './player-inventory-profile-picker.component';
-import { OpusPlayerInventoryProfilePickerCompositionComponent } from './opus/opus-player-inventory-profile-picker.component';
-import { ApolloPlayerInventoryProfilePickerCompositionComponent } from './apollo/apollo-player-inventory-profile-picker.component';
-import { SunrisePlayerInventoryProfilePickerCompositionComponent } from './sunrise/sunrise-player-inventory-profile-picker.component';
-import { WoodstockPlayerInventoryProfilePickerCompositionComponent } from './woodstock/woodstock-player-inventory-profile-picker.component';
-import { SteelheadPlayerInventoryProfilePickerCompositionComponent } from './steelhead/steelhead-player-inventory-profile-picker.component';
+import { OpusPlayerInventoryProfilePickerComponent } from './opus/opus-player-inventory-profile-picker.component';
+import { ApolloPlayerInventoryProfilePickerComponent } from './apollo/apollo-player-inventory-profile-picker.component';
+import { SunrisePlayerInventoryProfilePickerComponent } from './sunrise/sunrise-player-inventory-profile-picker.component';
+import { WoodstockPlayerInventoryProfilePickerComponent } from './woodstock/woodstock-player-inventory-profile-picker.component';
+import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead/steelhead-player-inventory-profile-picker.component';
 
 
 /** Module for getting player's inventory profiles. */
 @NgModule({
   declarations: [
     PlayerInventoryProfilePickerComponent,
-    OpusPlayerInventoryProfilePickerCompositionComponent,
-    ApolloPlayerInventoryProfilePickerCompositionComponent,
-    SunrisePlayerInventoryProfilePickerCompositionComponent,
-    WoodstockPlayerInventoryProfilePickerCompositionComponent,
-    SteelheadPlayerInventoryProfilePickerCompositionComponent,
+    OpusPlayerInventoryProfilePickerComponent,
+    ApolloPlayerInventoryProfilePickerComponent,
+    SunrisePlayerInventoryProfilePickerComponent,
+    WoodstockPlayerInventoryProfilePickerComponent,
+    SteelheadPlayerInventoryProfilePickerComponent,
   ],
   imports: [
     CommonModule,
@@ -58,11 +58,11 @@ import { SteelheadPlayerInventoryProfilePickerCompositionComponent } from './ste
     ErrorSpinnerModule,
   ],
   exports: [
-    OpusPlayerInventoryProfilePickerCompositionComponent,
-    ApolloPlayerInventoryProfilePickerCompositionComponent,
-    SunrisePlayerInventoryProfilePickerCompositionComponent,
-    WoodstockPlayerInventoryProfilePickerCompositionComponent,
-    SteelheadPlayerInventoryProfilePickerCompositionComponent
+    OpusPlayerInventoryProfilePickerComponent,
+    ApolloPlayerInventoryProfilePickerComponent,
+    SunrisePlayerInventoryProfilePickerComponent,
+    WoodstockPlayerInventoryProfilePickerComponent,
+    SteelheadPlayerInventoryProfilePickerComponent
   ],
 })
-export class PlayerInventoryProfilesCompositionModule {}
+export class PlayerInventoryProfilesModule {}
