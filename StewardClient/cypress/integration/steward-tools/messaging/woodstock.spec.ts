@@ -113,8 +113,7 @@ function verifyMessageSent(): void {
     cy.contains('mat-form-field', 'Date Range').click().clear().type(expiryString);
     cy.contains('button', 'Review', { matchCase: false }).click();
     cy.contains('button', 'Send Message', { matchCase: false }).click();
-    waitForProgressSpinners(20000, 'mat-progress-spinner');
-    //cy.get('mat-progress-spinner', { timeout: 20000 }).should('not.exist');
+    waitForProgressSpinners();
     cy.contains('button', 'Send Another Message', { matchCase: false }).should('exist');
   });
 }
