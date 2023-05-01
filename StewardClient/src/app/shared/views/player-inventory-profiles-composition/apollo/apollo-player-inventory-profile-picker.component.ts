@@ -14,11 +14,11 @@ import { ExtendedPlayerInventoryProfile, PlayerInventoryProfilePickerServiceCont
 export class ApolloPlayerInventoryProfilePickerCompositionComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
-  /** REVIEW-COMMENT: Output when profile change happens. */
+  /** Output when profile change happens. */
   @Output() public profileChange = new EventEmitter<ExtendedPlayerInventoryProfile>();
   public service: PlayerInventoryProfilePickerServiceContract;
 
-  constructor(private readonly playerInventoryService: ApolloService) {
+  constructor(playerInventoryService: ApolloService) {
     this.service = {
       gameTitle: GameTitle.FM7,
       getPlayerInventoryProfiles$: xuid => playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),

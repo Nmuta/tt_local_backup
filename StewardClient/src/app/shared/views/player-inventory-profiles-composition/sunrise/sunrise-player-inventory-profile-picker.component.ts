@@ -14,11 +14,11 @@ import { ExtendedPlayerInventoryProfile, PlayerInventoryProfilePickerServiceCont
 export class SunrisePlayerInventoryProfilePickerCompositionComponent {
   /** Player identity. */
   @Input() identity: IdentityResultAlpha;
-  /** REVIEW-COMMENT: Output when profile change happens. */
+  /** Output when profile change happens. */
   @Output() public profileChange = new EventEmitter<ExtendedPlayerInventoryProfile>();
   public service: PlayerInventoryProfilePickerServiceContract;
 
-  constructor(private readonly playerInventoryService: SunriseService) {
+  constructor(playerInventoryService: SunriseService) {
     this.service = {
       gameTitle: GameTitle.FH4,
       getPlayerInventoryProfiles$: xuid => playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
