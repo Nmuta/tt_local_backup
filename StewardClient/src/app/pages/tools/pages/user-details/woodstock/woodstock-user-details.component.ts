@@ -8,7 +8,7 @@ import { UgcType } from '@models/ugc-filters';
 import { SpecialXuid1 } from '@models/special-identity';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
-import { ExtendedPlayerInventoryProfile } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.component';
+import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({

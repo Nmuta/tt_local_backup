@@ -43,10 +43,10 @@
         </mat-card-header>
         <mat-card-content>
           <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
-            <sunrise-player-inventory-profile-picker
+            <sunrise-player-inventory-profile-picker-composition
               [identity]="selectedPlayerIdentity"
               (profileChange)="onProfileChange($event)"
-            ></sunrise-player-inventory-profile-picker>
+            ></sunrise-player-inventory-profile-picker-composition>
 
             <div class="inventory-div">
               <sunrise-player-inventory

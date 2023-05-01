@@ -25,7 +25,6 @@ import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inv
 import { PlayerNotificationsModule } from '@shared/views/player-notifications/player-notifications.module';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerIdentityResultsModule } from '@shared/views/player-identity-results/player-identity-results.module';
 import { ProfileNotesModule } from '@views/profile-notes/profile-notes.module';
 import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
@@ -91,7 +90,6 @@ import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventor
     JsonDumpModule,
     PlayerNotificationsModule,
     PlayerInventoryModule,
-    PlayerInventoryProfilesModule,
     PlayerSelectionModule,
     MatTooltipModule,
     PlayerIdentityResultsModule,

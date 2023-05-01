@@ -15,7 +15,6 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { GamertagsModule } from '@shared/views/gamertags/gamertags.module';
 import { OverviewModule } from '@shared/views/overview/overview.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerIdentityResultsModule } from '@shared/views/player-identity-results/player-identity-results.module';
 import { MatCardModule } from '@angular/material/card';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
@@ -36,6 +35,7 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { ServicesTableResultsComponent } from './components/services-table-results/services-table-results.component';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { WoodstockServicesTableStorageComponent } from './woodstock/woodstock-services-table-storage.component';
+import { PlayerInventoryProfilesCompositionModule } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.module';
 /** The feature module for the Services Table Storage route. */
 @NgModule({
   declarations: [
@@ -63,7 +63,7 @@ import { WoodstockServicesTableStorageComponent } from './woodstock/woodstock-se
     GamertagsModule,
     OverviewModule,
     JsonDumpModule,
-    PlayerInventoryProfilesModule,
+    PlayerInventoryProfilesCompositionModule,
     PlayerSelectionModule,
     MatTooltipModule,
     PlayerIdentityResultsModule,

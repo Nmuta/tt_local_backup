@@ -10,10 +10,10 @@
     </help-popover-icon>
   </mat-card-header>
   <mat-card-content>
-    <woodstock-player-inventory-profile-picker
+    <woodstock-player-inventory-profile-picker-composition
       [identity]="identity"
       (profileChange)="onProfileChange($event)"
-    ></woodstock-player-inventory-profile-picker>
+    ></woodstock-player-inventory-profile-picker-composition>
 
     <ng-container *waitForMonitor="getMonitor">
       <ng-container *ngIf="hasPlayedRecordTable?.data?.length > 0; else noDataTemplate">

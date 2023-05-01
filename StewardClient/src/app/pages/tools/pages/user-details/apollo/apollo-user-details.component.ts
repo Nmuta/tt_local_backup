@@ -4,7 +4,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { UgcType } from '@models/ugc-filters';
-import { ExtendedPlayerInventoryProfile } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.component';
+import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying routed Apollo user details. */
 @Component({

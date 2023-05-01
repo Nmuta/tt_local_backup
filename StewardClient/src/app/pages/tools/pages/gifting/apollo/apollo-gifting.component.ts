@@ -11,11 +11,12 @@ import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
-import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
+import { ApolloMasterInventory } from '@models/apollo';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import BigNumber from 'bignumber.js';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
+import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -31,7 +32,7 @@ export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> impl
   public selectedLspGroup: LspGroup;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: ApolloPlayerInventoryProfile;
+  public selectedPlayerInventoryProfile: ExtendedPlayerInventoryProfile;
   public selectedPlayerInventory: ApolloMasterInventory;
 
   public giftingTypeMatTabSelectedIndex: number = 0;
@@ -96,7 +97,7 @@ export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> impl
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: ApolloPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

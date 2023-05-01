@@ -45,10 +45,10 @@
         </mat-card-header>
         <mat-card-content>
           <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
-            <woodstock-player-inventory-profile-picker
+            <woodstock-player-inventory-profile-picker-composition
               [identity]="selectedPlayerIdentity"
               (profileChange)="onProfileChange($event)"
-            ></woodstock-player-inventory-profile-picker>
+            ></woodstock-player-inventory-profile-picker-composition>
 
             <div class="inventory-div">
               <woodstock-player-inventory

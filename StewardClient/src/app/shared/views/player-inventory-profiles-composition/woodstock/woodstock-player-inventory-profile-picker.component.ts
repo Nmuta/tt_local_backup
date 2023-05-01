@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
+import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { WoodstockService } from '@services/woodstock';
-import { ExtendedPlayerInventoryProfile, PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
+import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 
 /**
  *  Woodstock player inventory profiles component.

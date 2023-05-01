@@ -1,7 +1,6 @@
 import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { cloneDeep, first } from 'lodash';
-import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { GuidLikeString } from '@models/extended-types';
 import { ServicesTableStorageComponent } from '../services-table-storage.component';
 import {
@@ -13,6 +12,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ServicesTableStorageContract } from '../components/services-filterable-table/services-filterable-table.component';
 import BigNumber from 'bignumber.js';
+import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
@@ -22,7 +22,7 @@ import BigNumber from 'bignumber.js';
 })
 export class SteelheadServicesTableStorageComponent extends BaseComponent {
   public title: GameTitle.FM8;
-  public profile: SteelheadPlayerInventoryProfile;
+  public profile: ExtendedPlayerInventoryProfile;
   public data: ServicesTableStorageEntity[] = null;
   public serviceContract: ServicesTableStorageContract;
 
@@ -67,7 +67,7 @@ export class SteelheadServicesTableStorageComponent extends BaseComponent {
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: SteelheadPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: ExtendedPlayerInventoryProfile): void {
     this.profile = newProfile;
     this.serviceContract.xuid = this.identity.xuid;
     this.serviceContract.externalProfileId = this.profile.externalProfileId;

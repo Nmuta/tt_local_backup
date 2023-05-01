@@ -5,7 +5,7 @@ import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UgcType } from '@models/ugc-filters';
-import { ExtendedPlayerInventoryProfile } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.component';
+import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying routed Sunrise user details. */
 @Component({

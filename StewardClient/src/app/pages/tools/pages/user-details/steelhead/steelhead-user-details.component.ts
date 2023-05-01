@@ -6,7 +6,7 @@ import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { UgcType } from '@models/ugc-filters';
 import { GuidLikeString } from '@models/extended-types';
 import { SteelheadPlayerProfileManagementComponent } from '@views/player-profile-management/steelhead/steelhead-player-profile-management.component';
-import { ExtendedPlayerInventoryProfile } from '@views/player-inventory-profiles-composition/player-inventory-profile-picker.component';
+import { ExtendedPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({

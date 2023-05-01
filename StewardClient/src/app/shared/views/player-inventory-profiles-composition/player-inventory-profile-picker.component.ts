@@ -1,30 +1,13 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { DeviceType, GameTitle } from '@models/enums';
 import BigNumber from 'bignumber.js';
 import { catchError, EMPTY, filter, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
-import { GuidLikeString } from '@models/extended-types';
 import { MatChipListChange } from '@angular/material/chips';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { sortBy } from 'lodash';
-
-export interface PlayerInventoryProfile {
-  profileId: BigNumber;
-  externalProfileId?: GuidLikeString;
-  isCurrent: boolean;
-}
-
-export interface SteelheadPlayerInventoryProfile extends PlayerInventoryProfile{
-  profileId: BigNumber;
-  externalProfileId: GuidLikeString;
-  isCurrent: boolean;
-  isCurrentByTitleId: boolean;
-  deviceType: DeviceType;
-  titleId: number
-}
-
-export type ExtendedPlayerInventoryProfile = PlayerInventoryProfile & Partial<SteelheadPlayerInventoryProfile>;
+import { GameTitle } from '@models/enums';
+import { ExtendedPlayerInventoryProfile, PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 export interface PlayerInventoryProfilePickerServiceContract {
   /** Game title the service contract is associated with. */
