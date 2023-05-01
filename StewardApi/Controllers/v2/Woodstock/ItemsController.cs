@@ -50,9 +50,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetMasterInventoryList()
+        public async Task<IActionResult> GetMasterInventoryList([FromQuery] string slotId = WoodstockPegasusSlot.Live)
         {
-            var masterInventory = await this.itemsProvider.GetMasterInventoryAsync().ConfigureAwait(true);
+            slotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(slotId));
+
+            var masterInventory = await this.itemsProvider.GetMasterInventoryAsync(slotId).ConfigureAwait(true);
             return this.Ok(masterInventory);
         }
     }

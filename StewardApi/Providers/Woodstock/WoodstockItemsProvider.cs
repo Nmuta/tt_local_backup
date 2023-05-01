@@ -41,25 +41,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
         /// <inheritdoc />
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
-        public async Task<WoodstockMasterInventory> GetMasterInventoryAsync()
+        public async Task<WoodstockMasterInventory> GetMasterInventoryAsync(string slotId = WoodstockPegasusSlot.Live)
         {
-            var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<DataCar>(), new Action<Exception>(ex =>
+            var getCars = this.pegasusService.GetCarsAsync(slotId).SuccessOrDefault(Array.Empty<DataCar>(), new Action<Exception>(ex =>
             {
                 this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus cars.", ex));
             }));
-            var getCarHorns = this.pegasusService.GetCarHornsAsync().SuccessOrDefault(Array.Empty<CarHorn>(), new Action<Exception>(ex =>
+            var getCarHorns = this.pegasusService.GetCarHornsAsync(slotId).SuccessOrDefault(Array.Empty<CarHorn>(), new Action<Exception>(ex =>
             {
                 this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus car horns.", ex));
             }));
-            var getVanityItems = this.pegasusService.GetVanityItemsAsync().SuccessOrDefault(Array.Empty<VanityItem>(), new Action<Exception>(ex =>
+            var getVanityItems = this.pegasusService.GetVanityItemsAsync(slotId).SuccessOrDefault(Array.Empty<VanityItem>(), new Action<Exception>(ex =>
             {
                 this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus vanity items.", ex));
             }));
-            var getEmotes = this.pegasusService.GetEmotesAsync().SuccessOrDefault(Array.Empty<EmoteData>(), new Action<Exception>(ex =>
+            var getEmotes = this.pegasusService.GetEmotesAsync(slotId).SuccessOrDefault(Array.Empty<EmoteData>(), new Action<Exception>(ex =>
             {
                 this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus emotes.", ex));
             }));
-            var getQuickChatLines = this.pegasusService.GetQuickChatLinesAsync().SuccessOrDefault(Array.Empty<QuickChat>(), new Action<Exception>(ex =>
+            var getQuickChatLines = this.pegasusService.GetQuickChatLinesAsync(slotId).SuccessOrDefault(Array.Empty<QuickChat>(), new Action<Exception>(ex =>
             {
                 this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Woodstock Pegasus quick chat lines.", ex));
             }));
