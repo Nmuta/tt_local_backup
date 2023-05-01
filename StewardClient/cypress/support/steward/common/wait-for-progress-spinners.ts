@@ -4,6 +4,6 @@ export function waitForProgressSpinners(
 ): Cypress.Chainable<JQuery<HTMLElement>> {
   return (
     cy.get('mat-spinner', { timeout }).should('not.exist') &&
-    cy.get('mat-progress-spinner', { timeout: 30_000 }).should('not.exist')
+    cy.get('mat-progress-spinner', { timeout }).should('not.exist')
   );
 }
