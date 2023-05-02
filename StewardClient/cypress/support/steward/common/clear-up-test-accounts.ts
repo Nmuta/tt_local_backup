@@ -12,6 +12,6 @@ export function cleanUpTestAccounts(): void {
     cy.contains('mat-card-title', 'Dev Tools').should('exist');
     cy.contains('mat-form-field', 'Player Xuid').click().type(user.xuid);
     cy.contains('button', 'Delete Player Notifications').click();
-    waitForProgressSpinners(20_000);
+    waitForProgressSpinners(30_000);
   });
 }
