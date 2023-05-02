@@ -17,7 +17,7 @@ context('Steward / Tools / Player Details', () => {
     });
 
     it('should be on Sunrise', () => {
-      cy.contains('a', 'FH4').should('have.class', 'mat-stroked-button');
+      cy.contains('a', 'FH5').should('have.class', 'mat-stroked-button');
     });
 
     it('gamertag should be empty', () => {
@@ -29,7 +29,7 @@ context('Steward / Tools / Player Details', () => {
       cy.contains('a', 'FM7').should('exist');
       cy.contains('a', 'FH3').should('exist');
       cy.contains('a', 'FH5').should(env.testTitle.woodstock ? 'exist' : 'not.exist');
-      cy.contains('a', 'Steelhead').should(env.testTitle.steelhead ? 'exist' : 'not.exist');
+      cy.contains('a', 'FM').should(env.testTitle.steelhead ? 'exist' : 'not.exist');
     });
 
     it('should have lookup type buttons', () => {

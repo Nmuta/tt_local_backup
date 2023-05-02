@@ -72,7 +72,7 @@ function verifyValidInputsTest(): void {
 
   it('should be reviewable with proper inputs', () => {
     cy.contains('mat-form-field', 'Community Message').click().type('This is a test string.');
-    cy.contains('mat-form-field', 'Expiry Time (mm/dd/yyyy)').click().type(expiryString);
+    cy.contains('mat-form-field', 'Date Range').click().clear().type(expiryString);
     cy.contains('button', 'Review', { matchCase: false }).should(
       'not.have.class',
       'mat-button-disabled',
@@ -83,7 +83,7 @@ function verifyValidInputsTest(): void {
 function verifyInvalidDateInputTest(): void {
   it('should not be reviewable with invalid date input', () => {
     cy.contains('mat-form-field', 'Community Message').click().type('This is a test string.');
-    cy.contains('mat-form-field', 'Expiry Time (mm/dd/yyyy)').click().type('1/1/2001');
+    cy.contains('mat-form-field', 'Date Range').click().clear().type('1/1/2001');
     cy.contains('button', 'Review', { matchCase: false }).should(
       'have.class',
       'mat-button-disabled',
@@ -97,7 +97,7 @@ function verifyInvalidMessageInputTest(): void {
 
   it('should not be reviewable with invalid message input', () => {
     cy.contains('mat-form-field', 'Community Message').click().type(longString);
-    cy.contains('mat-form-field', 'Expiry Time (mm/dd/yyyy)').click().type(expiryString);
+    cy.contains('mat-form-field', 'Date Range').click().clear().type(expiryString);
     cy.contains('button', 'Review', { matchCase: false }).should(
       'have.class',
       'mat-button-disabled',
@@ -110,7 +110,7 @@ function verifyMessageSent(): void {
 
   it('should send with proper inputs', () => {
     cy.contains('mat-form-field', 'Community Message').click().type('This is a test string.');
-    cy.contains('mat-form-field', 'Expiry Time (mm/dd/yyyy)').click().type(expiryString);
+    cy.contains('mat-form-field', 'Date Range').click().clear().type(expiryString);
     cy.contains('button', 'Review', { matchCase: false }).click();
     cy.contains('button', 'Send Message', { matchCase: false }).click();
     waitForProgressSpinners();

@@ -2,6 +2,7 @@ import { inputHasValue } from '@support/mat-form/input-has-value';
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 
 context('Steward / Tools / Obligation / Search', () => {
   beforeEach(() => {
@@ -20,6 +21,8 @@ context('Steward / Tools / Obligation / Search', () => {
 
     // do the get
     cy.contains('button', 'sync').click().should('be.enabled');
+
+    clickTopLeftOfBody();
 
     // verify we got the item
     const $firstActivity = cy
