@@ -50,6 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string ManageStewardTeam = nameof(ManageStewardTeam);
         public const string GrantPaidEntitlements = nameof(GrantPaidEntitlements);
         public const string AllowedToExceedGiftingCreditLimit = nameof(AllowedToExceedGiftingCreditLimit);
+        public const string AddAndEditPlayerInventory = nameof(AddAndEditPlayerInventory);
 
         public static IEnumerable<string> AllAttributes()
         {

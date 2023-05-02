@@ -23,8 +23,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public int MakeId { get; set; }
         public int CarId { get; set; }
         public ForzaReportingState ReportingState { get; set; }
-        public DateTime ForceFeaturedEndDateUtc { get; set; }
-        public DateTime FeaturedEndDateUtc { get; set; }
+        public DateTime? ForceFeaturedEndDateUtc { get; set; }
+        public DateTime? FeaturedEndDateUtc { get; set; }
         public bool FeaturedByT10 { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

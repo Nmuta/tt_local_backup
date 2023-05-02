@@ -462,6 +462,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid contentId,
             bool isFeatured,
             DateTime featureEndDate,
+            DateTime forceFeatureEndDate,
             string endpoint);
 
         /// <summary>

@@ -1,10 +1,11 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DateValidators } from '@shared/validators/date-validators';
 import { cloneDeep } from 'lodash';
@@ -21,13 +22,12 @@ export type FeatureUgcModalComponentUnion =
 /** Base modal component to set featured status of a UGC item. */
 @Component({
   template: '',
+  providers: [],
 })
 export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
   public formControls = {
-    featuredDate: new FormControl('', [
-      Validators.required,
-      DateValidators.isAfter(DateTime.local()),
-    ]),
+    isFeatured: new FormControl(''),
+    featuredDate: new FormControl('', [DateValidators.isAfter(DateTime.local())]),
   };
   public formGroup = new FormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Set Featured Status');
@@ -41,7 +41,9 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
     UgcType.CommunityChallenge,
   ];
 
-  public abstract gameTitle: GameTitleCodeName;
+  public featureUgcPermAttribute = PermAttributeName.FeatureUgc;
+
+  public abstract gameTitle: GameTitle;
 
   constructor(
     protected dialogRef: MatDialogRef<FeatureUgcModalComponentUnion>,
@@ -77,27 +79,34 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
     if (data.featuredByT10) {
       this.formControls.featuredDate.setValue(data.featuredEndDateUtc);
     }
+
+    this.formControls.isFeatured.setValue(data.featuredByT10);
+    this.changedFeatureStatus();
   }
 
-  public abstract setFeaturedStatus$(itemId: string, expireDate: DateTime): Observable<void>;
-  public abstract deleteFeaturedStatus$(itemId: string): Observable<void>;
+  public abstract changeFeaturedStatus$(
+    itemId: string,
+    isFeatured: boolean,
+    expireDate?: DateTime,
+  ): Observable<void>;
 
   public abstract getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem>;
 
   /** Sets featured status. */
-  public featureUgc(): void {
+  public setUgcfeatureStatus(): void {
     if (!this.formGroup.valid) {
       return;
     }
 
-    const setFeaturedStatus$ = this.setFeaturedStatus$(
+    const changeFeaturedStatus$ = this.changeFeaturedStatus$(
       this.ugcItem.id,
+      this.formControls.isFeatured.value,
       this.formControls.featuredDate.value,
     );
     this.postMonitor = this.postMonitor.repeat();
     this.dialogRef.disableClose = true;
 
-    setFeaturedStatus$
+    changeFeaturedStatus$
       .pipe(
         this.postMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
@@ -112,28 +121,8 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
       });
   }
 
-  /** Deletes featured status. */
-  public deleteFeatureUgcStatus(): void {
-    if (!this.ugcItem.featuredByT10) {
-      return;
-    }
-
-    const deleteFeaturedStatus$ = this.deleteFeaturedStatus$(this.ugcItem.id);
-    this.postMonitor = this.postMonitor.repeat();
-    this.dialogRef.disableClose = true;
-
-    deleteFeaturedStatus$
-      .pipe(
-        this.postMonitor.monitorSingleFire(),
-        catchError(() => EMPTY),
-        switchMap(() => {
-          return this.getUgcItem$(this.ugcItem.id, this.ugcItem.type);
-        }),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe((ugcItem: PlayerUgcItem) => {
-        this.dialogRef.disableClose = false;
-        this.ugcItem = ugcItem;
-      });
+  /** Logic when changing the feature status checbox. */
+  public changedFeatureStatus(): void {
+    this.formControls.featuredDate.setValue(null);
   }
 }

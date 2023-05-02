@@ -14,6 +14,44 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: '3d2b3e80-7804-48cf-a444-5fcbc875ad24',
+      shortText: 'Removed hasAccess param from navbar component',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
+      uuid: '8d1e6edc-8506-440e-9652-c886a4a387b3',
+      shortText: 'Utilize live-steward CMS slot to pull in next series content',
+    },
+    {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [
+          NavbarTool.UnifiedCalendar,
+          NavbarTool.RacersCup,
+          NavbarTool.BuildersCupCalendar,
+          NavbarTool.WelcomeCenterCalendar,
+        ],
+      },
+      uuid: '5fa53d45-178a-477c-a327-2650fb309569',
+      shortText: 'Combine Steelhead calendars into single tabbed view',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'f5b00f0d-835b-45e7-ac51-aefd916b96a1',
+      shortText: 'Improve error message when non-xuid is entered in xuid search field',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'de3a997a-31d3-426e-ac40-663a0a0fc0da',
+      shortText: 'Allow UGC to be featured without an end date',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '302f1349-eb3b-421c-971d-c52d84d3985d',
+      shortText: 'Add Load All button for credit history in player details deep dive',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'e3702108-3edd-4f7c-9b56-9440c3b78a68',
       shortText: 'Add year to displayed car info',
     },

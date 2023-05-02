@@ -172,8 +172,9 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public getCreditUpdates$ = new Subject<void>();
   public startIndex = 0;
   public maxResultsPerRequest = 5000;
+  public shouldLoadAllCreditUpdates = false;
   public loadingMore = false;
-  public showLoadMore: boolean;
+  public showLoadMoreAndLoadAll: boolean;
   public displayTrendAnalysisDisabled: boolean;
 
   public xpAnalysisDates: (CreditDetailsEntryUnion & CreditDetailsEntryMixin)[] = null;
@@ -243,7 +244,13 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
         }
 
         this.startIndex = this.creditHistory.data.length;
-        this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
+        this.showLoadMoreAndLoadAll = creditUpdates.length >= this.maxResultsPerRequest;
+
+        if (this.shouldLoadAllCreditUpdates && creditUpdates.length >= this.maxResultsPerRequest) {
+          this.getCreditUpdates$.next();
+        } else {
+          this.shouldLoadAllCreditUpdates = false;
+        }
       });
 
     if (!!this.identity?.xuid) {
@@ -274,6 +281,13 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 
   /** Load more credit updates */
   public loadMoreCreditUpdates(): void {
+    this.getCreditUpdates$.next();
+  }
+
+  /** Load all credit updates */
+  public loadAllCreditUpdates(): void {
+    this.shouldLoadAllCreditUpdates = true;
+
     this.getCreditUpdates$.next();
   }
 

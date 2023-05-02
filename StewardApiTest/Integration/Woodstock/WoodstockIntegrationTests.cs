@@ -711,7 +711,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
-            Assert.IsFalse(result[0].BannedAreas.Any());
+            Assert.IsTrue(result[0].BannedAreas.Any());
+            Assert.IsTrue(result[0].BannedAreas[0] == "");
         }
 
         [TestMethod]

@@ -43,7 +43,7 @@ function foundUserData(): void {
 
     // found bans
     cy.contains('mat-card', 'Ban History').within(() => {
-      tableHasEntry('featureArea', 'All Requests');
+      tableHasEntry('banDetails', 'All Requests');
     });
 
     // found related gamertags

@@ -65,23 +65,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetMasterInventoryList_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-
-            // Act.
-            async Task<IActionResult> action() => await controller.GetMasterInventoryList().ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false);
-            result.Should().BeOfType<OkObjectResult>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task GetCarsAsync_ReturnsCorrectType()
         {
             // Arrange.
