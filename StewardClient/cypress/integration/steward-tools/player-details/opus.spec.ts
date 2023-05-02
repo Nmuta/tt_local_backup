@@ -3,7 +3,7 @@ import { verifyPlayerIdentityResults } from '@support/steward/component/player-i
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid, selectOpus } from './page';
-import { luke } from '@support/steward/common/account-info';
+import { chad } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Opus', () => {
   beforeEach(() => {
@@ -14,7 +14,7 @@ context('Steward / Tools / Player Details / Opus', () => {
 
   context('GTAG Lookup', () => {
     beforeEach(() => {
-      searchByGtag(luke.gtag);
+      searchByGtag(chad.gtag);
       selectOpus();
     });
 
@@ -23,7 +23,7 @@ context('Steward / Tools / Player Details / Opus', () => {
 
   context('XUID Lookup', () => {
     beforeEach(() => {
-      searchByXuid(luke.xuid);
+      searchByXuid(chad.xuid);
       selectOpus();
     });
 
@@ -33,7 +33,7 @@ context('Steward / Tools / Player Details / Opus', () => {
 
 function foundUserDataTest(): void {
   it('should have found data', () => {
-    verifyPlayerIdentityResults({ gtag: luke.gtag, xuid: luke.xuid, t10Id: false });
+    verifyPlayerIdentityResults({ gtag: chad.gtag, xuid: chad.xuid, t10Id: false });
 
     //// switch to Inventory ////
     cy.contains('.mat-tab-label', 'Inventory').click();

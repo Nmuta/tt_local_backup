@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '3d2b3e80-7804-48cf-a444-5fcbc875ad24',
+      shortText: 'Removed hasAccess param from navbar component',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
       uuid: '8d1e6edc-8506-440e-9652-c886a4a387b3',
       shortText: 'Utilize live-steward CMS slot to pull in next series content',
