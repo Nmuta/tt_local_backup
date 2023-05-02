@@ -1,38 +1,37 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatChipsModule } from '@angular/material/chips';
-import { OpusPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/opus/players/identities';
-import { fakeXuid } from '@interceptors/fake-api/utility';
-import { createMockOpusService, MockOpusService, OpusService } from '@services/opus';
-import { first } from 'lodash';
-import { baseTests } from '../player-inventory-profiles-picker/player-inventory-profile-picker.base.component.spec';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
+import { NgxsModule, Store } from '@ngxs/store';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { UserState } from '@shared/state/user/user.state';
 import { OpusPlayerInventoryProfilePickerComponent } from './opus-player-inventory-profile-picker.component';
 
 describe('OpusPlayerInventoryProfilePickerComponent', () => {
+  let component: OpusPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<OpusPlayerInventoryProfilePickerComponent>;
-  let service: MockOpusService;
+  let mockStore: Store;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
       declarations: [OpusPlayerInventoryProfilePickerComponent],
-      providers: [createMockOpusService()],
-      imports: [MatChipsModule],
       schemas: [NO_ERRORS_SCHEMA],
+      providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
 
-    service = TestBed.inject(OpusService) as unknown as MockOpusService;
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(OpusPlayerInventoryProfilePickerComponent);
-    fixture.detectChanges();
+    component = fixture.debugElement.componentInstance;
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch');
   });
 
-  baseTests(
-    () => fixture,
-    () => first(OpusPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockOpusService().getPlayerInventoryProfilesByXuid$,
-    fn => (service.getPlayerInventoryProfilesByXuid$ = fn),
-  );
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

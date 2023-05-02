@@ -11,9 +11,10 @@ import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
-import { SteelheadMasterInventory, SteelheadPlayerInventoryProfile } from '@models/steelhead';
+import { SteelheadMasterInventory } from '@models/steelhead';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import BigNumber from 'bignumber.js';
+import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -29,7 +30,7 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
   public selectedLspGroup: LspGroup;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: SteelheadPlayerInventoryProfile;
+  public selectedPlayerInventoryProfile: FullPlayerInventoryProfile;
   public selectedPlayerInventory: SteelheadMasterInventory;
 
   constructor(protected readonly store: Store) {
@@ -82,7 +83,7 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: SteelheadPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: FullPlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

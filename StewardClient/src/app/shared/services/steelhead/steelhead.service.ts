@@ -9,7 +9,6 @@ import {
   SteelheadGiftHistory,
   SteelheadPlayerDetails,
   SteelheadPlayerInventory,
-  SteelheadPlayerInventoryProfile,
   SteelheadSharedConsoleUser,
 } from '@models/steelhead';
 import { BackgroundJob } from '@models/background-job';
@@ -37,6 +36,7 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { DateTime } from 'luxon';
 import { RacersCupSchedule } from '@models/racers-cup.model';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
+import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -200,9 +200,9 @@ export class SteelheadService {
   /** Gets a player's profile list  by XUID. */
   public getPlayerInventoryProfilesByXuid$(
     xuid: BigNumber,
-  ): Observable<SteelheadPlayerInventoryProfile[]> {
+  ): Observable<FullPlayerInventoryProfile[]> {
     return this.apiService
-      .getRequest$<SteelheadPlayerInventoryProfile[]>(
+      .getRequest$<FullPlayerInventoryProfile[]>(
         `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
       )
       .pipe(

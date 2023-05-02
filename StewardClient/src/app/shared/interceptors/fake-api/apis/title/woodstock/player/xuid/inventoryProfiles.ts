@@ -2,7 +2,8 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
+import { PlayerInventoryProfileWithDeviceType } from '@models/player-inventory-profile';
+import { DeviceType } from '@models/enums';
 
 /** Fake API for woodstock player inventory profiles. */
 export class WoodstockPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
@@ -19,12 +20,12 @@ export class WoodstockPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): WoodstockPlayerInventoryProfile[] {
+  public handle(): PlayerInventoryProfileWithDeviceType[] {
     return WoodstockPlayerXuidInventoryProfilesFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): WoodstockPlayerInventoryProfile[] {
+  public static make(): PlayerInventoryProfileWithDeviceType[] {
     const items = Array(faker.datatype.number({ min: 1, max: 5 }))
       .fill(undefined)
       .map(() => {
@@ -32,7 +33,7 @@ export class WoodstockPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
           profileId: fakeBigNumber(),
           externalProfileId: faker.datatype.uuid(),
           isCurrent: false,
-          deviceType: faker.random.arrayElement(['Invalid']),
+          deviceType: DeviceType.Steam,
         };
       });
 

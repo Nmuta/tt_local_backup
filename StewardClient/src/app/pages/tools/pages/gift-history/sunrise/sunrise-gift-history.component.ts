@@ -13,7 +13,7 @@ import {
 } from './state/sunrise-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
-import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
+import { SunriseMasterInventory } from '@models/sunrise';
 import BigNumber from 'bignumber.js';
 import { FormControl } from '@angular/forms';
 import { DateTimeRange } from '@models/datetime-range';
@@ -22,6 +22,7 @@ import { HCI } from '@environments/environment';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime-range-picker/datetime-range-toggle-defaults';
 import { DateRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/date-range-picker/date-range-picker.component';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** The gift history page for the Navbar app. */
 @Component({
@@ -126,7 +127,7 @@ export class SunriseGiftHistoryComponent
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: SunrisePlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

@@ -13,7 +13,7 @@ import {
 } from './state/woodstock-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
-import { WoodstockMasterInventory, WoodstockPlayerInventoryProfile } from '@models/woodstock';
+import { WoodstockMasterInventory } from '@models/woodstock';
 import BigNumber from 'bignumber.js';
 import { FormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
@@ -22,6 +22,7 @@ import { DateTimeRange } from '@models/datetime-range';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime-range-picker/datetime-range-toggle-defaults';
 import { DateRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/date-range-picker/date-range-picker.component';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** The gift history page for the Navbar app. */
 @Component({
@@ -39,7 +40,7 @@ export class WoodstockGiftHistoryComponent
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: WoodstockPlayerInventoryProfile;
+  public selectedPlayerInventoryProfile: PlayerInventoryProfile;
   public selectedPlayerInventory: WoodstockMasterInventory;
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;
@@ -127,7 +128,7 @@ export class WoodstockGiftHistoryComponent
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: WoodstockPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

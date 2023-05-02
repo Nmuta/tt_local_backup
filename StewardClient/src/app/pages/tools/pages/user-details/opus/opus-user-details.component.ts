@@ -3,7 +3,7 @@ import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
-import { OpusPlayerInventoryProfile } from '@models/opus';
+import { OldPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Component for displaying routed Opus user details. */
 @Component({
@@ -33,7 +33,7 @@ export class OpusUserDetailsComponent {
   ) {}
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: OpusPlayerInventoryProfile): void {
+  public onProfileChange(newProfile: OldPlayerInventoryProfile): void {
     this.profileId = newProfile?.profileId;
   }
 }
