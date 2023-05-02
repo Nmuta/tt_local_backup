@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, PegasusProjectionSlot } from '@models/enums';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
 import { SunriseService } from '@services/sunrise';
 import { Observable, of } from 'rxjs';
@@ -16,8 +16,8 @@ import { clone } from 'lodash';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { SteelheadMasterInventory } from '@models/steelhead';
 import { WoodstockMasterInventory } from '@models/woodstock';
-import { WoodstockService } from '@services/woodstock';
 import { SteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service';
+import { WoodstockItemsService } from '@services/api-v2/woodstock/items/woodstock-items.service';
 
 /**
  * Defines the master inventory list memory model.
@@ -48,7 +48,7 @@ export class MasterInventoryListMemoryState {
     private readonly sunriseService: SunriseService,
     private readonly apolloService: ApolloService,
     private readonly steelheadItemsService: SteelheadItemsService,
-    private readonly woodstockService: WoodstockService,
+    private readonly woodstockItemService: WoodstockItemsService,
   ) {}
 
   /** Gets woodstocks's master inventory list. */
@@ -64,7 +64,9 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.woodstockService.getMasterInventory$();
+    const request$ = this.woodstockItemService.getMasterInventory$(
+      PegasusProjectionSlot.LiveSteward,
+    );
     return request$.pipe(
       tap(data => {
         ctx.patchState({ [GameTitleCodeName.FH5]: clone(data) });

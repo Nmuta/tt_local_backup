@@ -103,5 +103,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// </summary>
         /// <remarks>When added, a user should expect to recieve legacy rewards on next login.</remarks>
         Task AddToTitlesUserPlayed(ulong xuid, ForzaLoyaltyRewardsSupportedTitles titleToAdd);
+
+        /// <summary>
+        ///     Adds or edits non-car inventory items in user's profile.
+        /// </summary>
+        Task<LiveOpsAddInventoryItemsOutput> LiveOpsAddInventoryItems(ulong xuid, Guid externalProfileId, ForzaUserInventoryItemWrapper[] items);
+
+        /// <summary>
+        ///     Adds or edits car type inventory items in user's profile.
+        /// </summary>
+        Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, Guid externalProfileId, ForzaCarUserInventoryItem[] clientCars, ForzaCarDataUpdateAccessLevel accessLevel);
     }
 }

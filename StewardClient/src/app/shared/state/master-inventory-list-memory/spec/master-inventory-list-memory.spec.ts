@@ -14,9 +14,10 @@ import {
 } from '../master-inventory-list-memory.actions';
 import { EMPTY } from 'rxjs';
 import { ApolloService, createMockApolloService } from '@services/apollo';
-import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { SteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service';
 import { createMockSteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service.mock';
+import { WoodstockItemsService } from '@services/api-v2/woodstock/items/woodstock-items.service';
+import { createMockWoodstockItemsService } from '@services/api-v2/woodstock/items/woodstock-items.service.mock';
 
 describe('State: MasterInventoryListMemoryState', () => {
   let service: MasterInventoryListMemoryState;
@@ -25,7 +26,7 @@ describe('State: MasterInventoryListMemoryState', () => {
   let mockSunriseService: SunriseService;
   let mockApolloService: ApolloService;
   let mockSteelheadItemsService: SteelheadItemsService;
-  let mockWoodstockService: WoodstockService;
+  let mockWoodstockService: WoodstockItemsService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -34,7 +35,7 @@ describe('State: MasterInventoryListMemoryState', () => {
         createMockSunriseService(),
         createMockApolloService(),
         createMockSteelheadItemsService(),
-        createMockWoodstockService(),
+        createMockWoodstockItemsService(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -45,7 +46,7 @@ describe('State: MasterInventoryListMemoryState', () => {
     mockSunriseService = TestBed.inject(SunriseService);
     mockApolloService = TestBed.inject(ApolloService);
     mockSteelheadItemsService = TestBed.inject(SteelheadItemsService);
-    mockWoodstockService = TestBed.inject(WoodstockService);
+    mockWoodstockService = TestBed.inject(WoodstockItemsService);
 
     store.reset({
       giftingMasterListMemory: {
