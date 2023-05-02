@@ -6,11 +6,12 @@ import {
   IdentityResultAlpha,
   IdentityResultAlphaBatch,
 } from '@models/identity-query.model';
-import { OpusPlayerDetails, OpusPlayerInventory, OpusPlayerInventoryProfile } from '@models/opus';
+import { OpusPlayerDetails, OpusPlayerInventory } from '@models/opus';
 import { ApiService } from '@services/api';
 import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { OldPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -66,9 +67,9 @@ export class OpusService {
   /** Gets a player's profile list  by XUID. */
   public getPlayerInventoryProfilesByXuid$(
     xuid: BigNumber,
-  ): Observable<OpusPlayerInventoryProfile[]> {
+  ): Observable<OldPlayerInventoryProfile[]> {
     return this.apiService
-      .getRequest$<OpusPlayerInventoryProfile[]>(
+      .getRequest$<OldPlayerInventoryProfile[]>(
         `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
       )
       .pipe(

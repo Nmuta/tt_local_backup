@@ -1,31 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 import { WoodstockService } from '@services/woodstock';
-import { Observable } from 'rxjs';
-import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
+import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 
-/** Displays a Woodstock player's inventory. */
+/**
+ *  Woodstock player inventory profiles component.
+ */
 @Component({
   selector: 'woodstock-player-inventory-profile-picker',
-  templateUrl:
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: [
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
-  ],
+  templateUrl: './woodstock-player-inventory-profile-picker.component.html',
 })
-export class WoodstockPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
-  IdentityResultAlpha,
-  WoodstockPlayerInventoryProfile
-> {
-  constructor(private readonly woodstock: WoodstockService) {
-    super();
-  }
+export class WoodstockPlayerInventoryProfilePickerComponent {
+  /** Player identity. */
+  @Input() identity: IdentityResultAlpha;
+  /** Output when profile change happens. */
+  @Output() public profileChange = new EventEmitter<PlayerInventoryProfile>();
+  public service: PlayerInventoryProfilePickerServiceContract;
 
-  /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity$(
-    identity: IdentityResultAlpha,
-  ): Observable<WoodstockPlayerInventoryProfile[]> {
-    return this.woodstock.getPlayerInventoryProfilesByXuid$(identity.xuid);
+  constructor(playerInventoryService: WoodstockService) {
+    this.service = {
+      gameTitle: GameTitle.FH5,
+      getPlayerInventoryProfiles$: xuid =>
+        playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
+    };
   }
 }

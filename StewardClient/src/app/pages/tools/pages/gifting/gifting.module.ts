@@ -18,7 +18,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { GiftBasketModule } from './components/gift-basket/gift-basket.module';
 import { ItemSelectionModule } from './components/item-selection/item-selection.module';
 import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
-import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
 import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
@@ -40,6 +39,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
 
 /** The feature module for the User Details route. */
 @NgModule({

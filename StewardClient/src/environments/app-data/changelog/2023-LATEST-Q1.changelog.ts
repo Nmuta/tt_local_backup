@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Tune blob can now be downloaded',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '370da96a-bce2-4159-a6c6-d4348f8d8842',
+      shortText: 'Convert player profile selection component to use composition',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '3d2b3e80-7804-48cf-a444-5fcbc875ad24',
       shortText: 'Removed hasAccess param from navbar component',
@@ -34,6 +39,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       },
       uuid: '5fa53d45-178a-477c-a327-2650fb309569',
       shortText: 'Combine Steelhead calendars into single tabbed view',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'f5b00f0d-835b-45e7-ac51-aefd916b96a1',
+      shortText: 'Improve error message when non-xuid is entered in xuid search field',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },

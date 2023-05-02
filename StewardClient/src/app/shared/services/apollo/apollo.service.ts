@@ -12,7 +12,6 @@ import {
   ApolloMasterInventory,
   ApolloPlayerDetails,
   ApolloPlayerInventory,
-  ApolloPlayerInventoryProfile,
   ApolloSharedConsoleUser,
 } from '@models/apollo';
 import { BackgroundJob } from '@models/background-job';
@@ -36,6 +35,7 @@ import { UgcType } from '@models/ugc-filters';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { SimpleCar } from '@models/cars';
 import { UnbanResult } from '@models/unban-result';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -226,11 +226,9 @@ export class ApolloService {
   }
 
   /** Gets a player's profile list  by XUID. */
-  public getPlayerInventoryProfilesByXuid$(
-    xuid: BigNumber,
-  ): Observable<ApolloPlayerInventoryProfile[]> {
+  public getPlayerInventoryProfilesByXuid$(xuid: BigNumber): Observable<PlayerInventoryProfile[]> {
     return this.apiService
-      .getRequest$<ApolloPlayerInventoryProfile[]>(
+      .getRequest$<PlayerInventoryProfile[]>(
         `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
       )
       .pipe(

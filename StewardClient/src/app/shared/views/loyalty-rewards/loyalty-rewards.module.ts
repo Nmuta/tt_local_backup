@@ -10,7 +10,6 @@ import { LuxonModule } from 'luxon-angular';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profiles.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
@@ -21,6 +20,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
 import { WoodstockLoyaltyRewardsComponent } from './woodstock/woodstock-loyalty-rewards.component';
 import { SteelheadLoyaltyRewardsComponent } from './steelhead/steelhead-loyalty-rewards.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
 
 /** Module for player entitlements data. */
 @NgModule({

@@ -24,6 +24,7 @@ import { MakeModelAutocompleteServiceContract } from '@views/make-model-autocomp
 import { OnChanges } from '@angular/core';
 import { renderDelay } from '@helpers/rxjs';
 import { SpecialIdentity } from '@models/special-identity';
+import { getUserDetailsRoute } from '@helpers/route-links';
 
 /** Outputted form value of the UGC search filters. */
 export type UgcSearchFiltersFormValue = UgcSearchFilters;
@@ -76,6 +77,8 @@ export class UgcSearchFiltersComponent
 
   public playerNotFound: boolean = false;
 
+  public ugcDetailsRoute = null;
+
   /** UGC filters form group. */
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
@@ -100,6 +103,8 @@ export class UgcSearchFiltersComponent
       orderBy: string;
       isFeatured: string;
     } = null;
+
+    this.ugcDetailsRoute = getUserDetailsRoute(this.serviceContract.gameTitle);
 
     this.onChanges$
       .pipe(

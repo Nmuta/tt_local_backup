@@ -20,7 +20,6 @@ import {
   SunrisePlayerAccountInventory,
   SunrisePlayerDetails,
   SunrisePlayerInventory,
-  SunrisePlayerInventoryProfile,
   SunriseProfileSummary,
   SunriseSharedConsoleUser,
   SunriseUserFlags,
@@ -55,6 +54,7 @@ import { GroupNotification, PlayerNotification } from '@models/notifications.mod
 import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
 import { DateTime } from 'luxon';
 import { UnbanResult } from '@models/unban-result';
+import { PlayerInventoryProfileWithDeviceType } from '@models/player-inventory-profile';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -432,9 +432,9 @@ export class SunriseService {
   /** Gets a player's profile list  by XUID. */
   public getPlayerInventoryProfilesByXuid$(
     xuid: BigNumber,
-  ): Observable<SunrisePlayerInventoryProfile[]> {
+  ): Observable<PlayerInventoryProfileWithDeviceType[]> {
     return this.apiService
-      .getRequest$<SunrisePlayerInventoryProfile[]>(
+      .getRequest$<PlayerInventoryProfileWithDeviceType[]>(
         `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
       )
       .pipe(

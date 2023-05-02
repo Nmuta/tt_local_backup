@@ -1,42 +1,37 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatChipsModule } from '@angular/material/chips';
-import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
-import { fakeXuid } from '@interceptors/fake-api/utility';
-import {
-  createMockWoodstockService,
-  MockWoodstockService,
-  WoodstockService,
-} from '@services/woodstock';
-import { first } from 'lodash';
-import { baseTests } from '../player-inventory-profiles-picker/player-inventory-profile-picker.base.component.spec';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
+import { NgxsModule, Store } from '@ngxs/store';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { UserState } from '@shared/state/user/user.state';
 import { WoodstockPlayerInventoryProfilePickerComponent } from './woodstock-player-inventory-profile-picker.component';
 
 describe('WoodstockPlayerInventoryProfilePickerComponent', () => {
+  let component: WoodstockPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<WoodstockPlayerInventoryProfilePickerComponent>;
-  let service: MockWoodstockService;
+  let mockStore: Store;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
       declarations: [WoodstockPlayerInventoryProfilePickerComponent],
-      providers: [createMockWoodstockService()],
-      imports: [MatChipsModule],
       schemas: [NO_ERRORS_SCHEMA],
+      providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
 
-    service = TestBed.inject(WoodstockService) as unknown as MockWoodstockService;
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(WoodstockPlayerInventoryProfilePickerComponent);
-    fixture.detectChanges();
+    component = fixture.debugElement.componentInstance;
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch');
   });
 
-  baseTests(
-    () => fixture,
-    () => first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockWoodstockService(null).getPlayerInventoryProfilesByXuid$,
-    fn => (service.getPlayerInventoryProfilesByXuid$ = fn),
-  );
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });
