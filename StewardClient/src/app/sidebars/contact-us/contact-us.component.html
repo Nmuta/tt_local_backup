@@ -1,13 +1,4 @@
-<section *ngIf="isSubmitted">
-  <mat-icon class="large-icon">check_circle</mat-icon>
-  <h1>Team's link was generated for your feature/bug.</h1>
-  <h3>
-    Please be sure to click the submit button on teams and someone will get back to you shortly
-  </h3>
-  <button mat-raised-button color="accent" (click)="resetForm()">Submit Another Feature/Bug</button>
-</section>
-
-<section *ngIf="!isSubmitted">
+<section *ngIf="!isSubmitted; else submitted">
   <h2>Contact Us</h2>
   <div class="sf-wrapper">
     <div class="sf-horizontal">
@@ -157,6 +148,15 @@
     </form>
   </div>
 </section>
+
+<ng-template #submitted>
+  <mat-icon class="large-icon">check_circle</mat-icon>
+  <h1>Team's link was generated for your feature/bug.</h1>
+  <h3>
+    Please be sure to click the submit button on teams and someone will get back to you shortly
+  </h3>
+  <button mat-raised-button color="accent" (click)="resetForm()">Submit Another Feature/Bug</button>
+</ng-template>
 
 <ng-template #isBusinessCriticalTooltip>
   <help-popover-icon [cardTitle]="">
