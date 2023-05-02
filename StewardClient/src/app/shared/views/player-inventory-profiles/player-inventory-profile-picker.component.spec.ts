@@ -34,4 +34,40 @@ describe('PlayerInventoryProfilePickerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('Method: ngOnChanges', () => {
+    describe('When service is null', () => {
+      beforeEach(() => {
+        component.service = null;
+      });
+
+      it('should throw error', () => {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          component.ngOnChanges(<any>{});
+
+          expect(false).toBeTruthy();
+        } catch (e) {
+          expect(true).toBeTruthy();
+          expect(e.message).toEqual(
+            'No service is defined for player inventory profiles component.',
+          );
+        }
+      });
+    });
+
+    describe('When service is provided', () => {
+      // Provided by default in the test component
+      it('should not throw error', () => {
+        try {
+          fixture.detectChanges();
+
+          expect(true).toBeTruthy();
+        } catch (e) {
+          expect(e).toEqual(null);
+          expect(false).toBeTruthy();
+        }
+      });
+    });
+  });
 });
