@@ -223,6 +223,44 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         }
 
         /// <summary>
+        ///     Removes inventory items.
+        /// </summary>
+        [HttpDelete("externalProfileId/{externalProfileId}/items")]
+        [SwaggerResponse(200, type: typeof(PlayerInventoryItem[]))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Inventory)]
+        [Authorize(Policy = UserAttribute.AddAndEditPlayerInventory)]
+        public async Task<IActionResult> RemovePlayerProfileItems(ulong xuid, string externalProfileId, [FromBody] SteelheadPlayerInventory inventoryUpdates)
+        {
+            var externalProfileIdGuid = externalProfileId.TryParseGuidElseThrow("External Profile ID could no be parsed as GUID.");
+
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
+            // Basic validation of all items
+            this.steelheadPlayerInventoryItemUpdateRequestValidator.Validate(inventoryUpdates, this.ModelState);
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.steelheadPlayerInventoryItemUpdateRequestValidator.GenerateErrorResponse(this.ModelState);
+                throw new InvalidArgumentsStewardException(result);
+            }
+
+            var removeCredits = inventoryUpdates.CreditRewards.Select(credit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((credit, InventoryItemType.Credits)));
+            var removeVanityItems = inventoryUpdates.VanityItems.Select(vanityItem => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((vanityItem, InventoryItemType.VanityItem)));
+            var removeItems = removeCredits.Concat(removeVanityItems);
+
+            try
+            {
+                await this.Services.LiveOpsService.LiveOpsRemoveInventoryItems(xuid, externalProfileIdGuid, removeItems.ToArray()).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to update inventory items. (XUID: {xuid}) (External Profile ID: {externalProfileIdGuid})", ex);
+            }
+
+            return this.Ok();
+        }
+
+        /// <summary>
         ///     Adds or edits cars.
         /// </summary>
         [HttpPost("externalProfileId/{externalProfileId}/cars")]

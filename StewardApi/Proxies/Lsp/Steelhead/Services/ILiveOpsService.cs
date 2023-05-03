@@ -115,6 +115,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, Guid externalProfileId, ForzaCarUserInventoryItem[] clientCars, ForzaCarDataUpdateAccessLevel accessLevel);
 
         /// <summary>
+        ///     Removes non-car type inventory items from user's profile.
+        /// </summary>
+        Task LiveOpsRemoveInventoryItems(ulong xuid, Guid externalProfileId, ForzaUserInventoryItemWrapper[] items);
+
+        /// <summary>
         ///     Get tune blob data.
         /// </summary>
         Task<LiveOpsGetUGCTuneBlobsOutput> LiveOpsGetUGCTuneBlobs(Guid[] ids);

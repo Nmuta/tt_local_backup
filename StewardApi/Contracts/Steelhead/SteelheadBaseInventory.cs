@@ -6,23 +6,25 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// <summary>
     ///     Represents a Steelhead base inventory.
     /// </summary>
-    /// <typeparam name="T">Type of item for use in the inventory.</typeparam>
-    public class SteelheadBaseInventory<T>
-        where T : MasterInventoryItem
+    /// <typeparam name="TItem">Type of item for use in the inventory.</typeparam>
+    /// <typeparam name="TCar">Type of car item for use in the inventory.</typeparam>
+    public class SteelheadBaseInventory<TItem, TCar>
+        where TItem : MasterInventoryItem
+        where TCar : MasterInventoryItem
     {
         /// <summary>
         ///     Gets or sets the credit reward options.
         /// </summary>
-        public IList<T> CreditRewards { get; set; }
+        public IList<TItem> CreditRewards { get; set; }
 
         /// <summary>
         ///     Gets or sets the cars.
         /// </summary>
-        public IList<T> Cars { get; set; }
+        public IList<TCar> Cars { get; set; }
 
         /// <summary>
         ///     Gets or sets the vanity items.
         /// </summary>
-        public IList<T> VanityItems { get; set; }
+        public IList<TItem> VanityItems { get; set; }
     }
 }
