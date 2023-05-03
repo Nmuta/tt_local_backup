@@ -113,5 +113,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Adds or edits car type inventory items in user's profile.
         /// </summary>
         Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, Guid externalProfileId, ForzaCarUserInventoryItem[] clientCars, ForzaCarDataUpdateAccessLevel accessLevel);
+
+        /// <summary>
+        ///     Removes non-car type inventory items from user's profile.
+        /// </summary>
+        Task LiveOpsRemoveInventoryItems(ulong xuid, Guid externalProfileId, ForzaUserInventoryItemWrapper[] items);
     }
 }
