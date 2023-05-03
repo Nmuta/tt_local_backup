@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
             ILoggingService loggingService)
         {
             var title = TitleConstants.SteelheadCodeName;
-            playerInventory.Cars.SetPlayerInventoryItemDescription(masterInventory.Cars, $"{title} Car", logMetadata, loggingService);
+            playerInventory.Cars.SetPlayerInventoryCarItemDescription(masterInventory.Cars, $"{title} Car", logMetadata, loggingService);
             playerInventory.VanityItems.SetPlayerInventoryItemDescription(masterInventory.VanityItems, $"{title} VanityItem", logMetadata, loggingService);
         }
     }

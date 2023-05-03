@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public SteelheadProfileMapper()
         {
-            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
+            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryCarItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
