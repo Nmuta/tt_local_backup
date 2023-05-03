@@ -10,10 +10,12 @@
 
     <form [formGroup]="formGroupFeature" *ngIf="selectedRequestType === RequestType.Feature">
       <div class="sf-horizontal">
-        <mat-label appearance="fill"
-          >Please include the following in the description:
+        <mat-label
+          >If you have an idea for a new tool or a suggestion for how to make an existing tool
+          better, please fill out the form below and be sure to include the following in the
+          description:
           <ul>
-            <li>New tool/Existing tool</li>
+            <li>New tool / Existing tool</li>
             <li>Game Title(s)</li>
           </ul>
         </mat-label>
@@ -42,7 +44,13 @@
           <mat-button-toggle [value]="RequestImpact.Low">Low</mat-button-toggle>
           <mat-button-toggle [value]="RequestImpact.High">High</mat-button-toggle>
         </mat-button-toggle-group>
-        <ng-container [ngTemplateOutlet]="internalImpactTooltip"></ng-container>
+        <help-popover-icon>
+          Internal impact refers to the ability of an employee to perform their job. <br />
+          For example, a new tool that can drastically reduce the time it takes for the support team
+          to perform a specific task has a High impact, as it significantly affects their
+          productivity. A Low impact would be a suggestion for a minor UX adjustment, as it has
+          little effect on their ability to use the tool effectively.
+        </help-popover-icon>
       </div>
       <div class="sf-horizontal">
         <mat-label appearance="fill">Estimated external impact (players)</mat-label>
@@ -50,7 +58,14 @@
           <mat-button-toggle [value]="RequestImpact.Low">Low</mat-button-toggle>
           <mat-button-toggle [value]="RequestImpact.High">High</mat-button-toggle>
         </mat-button-toggle-group>
-        <ng-container [ngTemplateOutlet]="externalImpactTooltip"></ng-container>
+        <help-popover-icon>
+          External impact refers to a player's ability to play the game or do something within the
+          game as a service. <br />
+          For example, adjusting a tool that allows players to recover lost inventory data more
+          quickly would have a High impact, as it can significantly impact gameplay and overall
+          enjoyment of the game. A Low impact would be an alteration to the Messaging tool, which
+          does not affect gameplay or user experience.
+        </help-popover-icon>
       </div>
       <div class="sf-horizontal">
         <button
@@ -71,12 +86,15 @@
     >
       <div class="sf-horizontal">
         <mat-label appearance="fill"
-          >Please include the following in the description:
+          >If you need to report a bug to the dev team, please fill out the form below and be sure
+          to include the following in the description:
           <ul>
             <li>Tool</li>
             <li>Game Title</li>
             <li>Environment</li>
           </ul>
+          Be sure to be as detailed as possible, as every bit of information helps resolve the
+          issue.
         </mat-label>
       </div>
       <div class="sf-horizontal">
@@ -113,7 +131,13 @@
           <mat-button-toggle [value]="RequestImpact.Low">Low</mat-button-toggle>
           <mat-button-toggle [value]="RequestImpact.High">High</mat-button-toggle>
         </mat-button-toggle-group>
-        <ng-container [ngTemplateOutlet]="internalImpactTooltip"></ng-container>
+        <help-popover-icon>
+          Internal impact refers to the ability of an employee to perform their job. <br />
+          For example, a bug that breaks an API and prevents someone from using a tool has a High
+          impact, as it significantly affects productivity. A Low impact would be a minor cosmetic
+          error that is causing text to display improperly, as it is inconvenient but has little
+          effect on someone's ability to use the tool effectively.
+        </help-popover-icon>
       </div>
       <div class="sf-horizontal">
         <mat-label appearance="fill">Estimated external impact (players)</mat-label>
@@ -121,7 +145,14 @@
           <mat-button-toggle [value]="RequestImpact.Low">Low</mat-button-toggle>
           <mat-button-toggle [value]="RequestImpact.High">High</mat-button-toggle>
         </mat-button-toggle-group>
-        <ng-container [ngTemplateOutlet]="externalImpactTooltip"></ng-container>
+        <help-popover-icon>
+          External impact refers to a player's ability to play or do something within the game as a
+          service. <br />
+          For example, a bug that hides all of a player's UGC when another flag gets adjusted has a
+          High impact, as it can significantly impact gameplay and overall enjoyment of the game. A
+          Low impact would be a minor bug that won't allow players to be gifted a minor item, which
+          does not significantly affect gameplay or user experience.
+        </help-popover-icon>
       </div>
       <div class="sf-horizontal">
         <mat-label appearance="fill">Is there a workaround?</mat-label>
@@ -130,9 +161,9 @@
           <mat-button-toggle [value]="true">Yes</mat-button-toggle>
         </mat-button-toggle-group>
         <help-popover-icon [cardTitle]="">
-          Test <br />
-          <br />
-          <b>Test</b>
+          A workaround is a temporary or alternative solution to a bug that can help get the job
+          done while the team investigates the issue. Knowing if workarounds exist can help
+          determine the severity and impact of a bug.
         </help-popover-icon>
       </div>
       <div class="sf-horizontal">
@@ -159,10 +190,10 @@
 </ng-template>
 
 <ng-template #isBusinessCriticalTooltip>
-  <help-popover-icon [cardTitle]="">
-    Test <br />
-    <br />
-    <b>Test</b>
+  <help-popover-icon>
+    The team places a high priority on issues that are considered business critical, which have a
+    significant impact on essential day-to-day operations, disrupt workflows, and may prevent you or
+    others from completing necessary tasks.
   </help-popover-icon>
 </ng-template>
 
