@@ -1,16 +1,25 @@
 @import '/src/styles/mixins/';
 
-$xuidTextAreaMinSizePx: 100px;
+$textAreaMinSizePx: 100px;
+$labelMaxSizePx: 500px;
 
 .mat-button-toggle-checked.mat-button-toggle-checked {
   background-color: app-color-default($app-primary);
   color: app-color-default-contrast($app-primary);
 }
 
+mat-label {
+  max-width: $labelMaxSizePx;
+}
+
 textarea {
-  min-height: $xuidTextAreaMinSizePx;
+  min-height: $textAreaMinSizePx;
 }
 
 .large-icon {
   font-size: 100px;
+}
+
+mat-drawer {
+  max-width: 30% !important;
 }
