@@ -260,7 +260,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
-            this.CreateMap<ForzaTuneData, UgcItem>()
+            this.CreateMap<ForzaTuneBlob, UgcTuneBlobItem>()
+                .ForMember(dest => dest.TuneBlobDownloadDataBase64, opt => opt.MapFrom(source => source.TuneData))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.TuneBlob))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
