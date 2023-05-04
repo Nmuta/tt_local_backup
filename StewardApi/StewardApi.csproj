@@ -144,6 +144,10 @@
     <ProjectReference Include="..\StewardGitApi\StewardGitApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Executables\" />
+  </ItemGroup>
+
   <Target Name="RealClean" AfterTargets="Clean">
     <RemoveDir Directories="$(OutDir)" ContinueOnError="true" />
   </Target>

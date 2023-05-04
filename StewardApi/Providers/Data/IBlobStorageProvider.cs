@@ -9,6 +9,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     public interface IBlobStorageProvider
     {
         /// <summary>
+        ///     Gets Hello World executable.
+        /// </summary>
+        Task<string> GetHelloWorldAsync(string path, string fileName);
+
+        /// <summary>
         ///     Gets tools availability.
         /// </summary>
         Task<ToolsAvailability> GetToolsAvailabilityAsync();

@@ -152,6 +152,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string PaidEntitlements = "Topic: Paid Entitlements";
             public const string DriverLevel = "Topic: Driver Level";
             public const string TableStorage = "Topic: Table Storage";
+            public const string Executables = "Topic: Executables";
         }
 
         /// <summary>
