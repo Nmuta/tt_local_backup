@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.Forum], tool: NavbarTool.UserBanning },
+      uuid: 'cf8b1612-9c51-496e-9687-b9b86336d3f7',
+      shortText: 'Fix forum banning',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: 'caff6395-2f19-4080-bbd9-58b9e6390883',
       shortText: 'Tune blob can now be downloaded',
