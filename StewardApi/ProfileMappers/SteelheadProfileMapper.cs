@@ -61,7 +61,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 }))
                 .ReverseMap();
             this.CreateMap<AdminForzaProfile, SteelheadInventoryProfile>().ReverseMap();
-
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
