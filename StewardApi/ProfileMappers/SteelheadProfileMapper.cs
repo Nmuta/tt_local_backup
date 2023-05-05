@@ -61,6 +61,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 }))
                 .ReverseMap();
             this.CreateMap<AdminForzaProfile, SteelheadInventoryProfile>().ReverseMap();
+
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
@@ -484,7 +485,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.VersionedLiveryId, opt => opt.MapFrom(source => source.versionedLiveryId))
                 .ForMember(dest => dest.VersionedTuneId, opt => opt.MapFrom(source => source.versionedTuneId));
 
-            this.CreateMap<ForzaProfile, SteelheadInventoryProfile>();
+            this.CreateMap<ForzaProfile, SteelheadInventoryProfile>()
+                .ForMember(dest => dest.IsCurrent, opt => opt.MapFrom(source => source.isLastLoggedInProfile));
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)

@@ -20,12 +20,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         /// <summary>
         ///     Gets or sets a value indicating whether profile is current for a given environment.
         /// </summary>
-        public bool IsCurrentByTItleId { get; set; }
+        public bool IsCurrentByTitleId { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether profile is the most recently used.
         /// </summary>
-        public bool IsLastLoggedInProfile { get; set; }
+        public bool IsCurrent { get; set; }
 
         /// <summary>
         ///     Gets or sets the device type of the profile.
