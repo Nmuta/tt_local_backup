@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { OpusPlayerInventoryProfile } from '@models/opus';
+import { OldPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Fake API for apollo player inventory profiles. */
 export class OpusPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
@@ -23,12 +23,12 @@ export class OpusPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): OpusPlayerInventoryProfile[] {
+  public handle(): OldPlayerInventoryProfile[] {
     return OpusPlayerXuidInventoryProfilesFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): OpusPlayerInventoryProfile[] {
+  public static make(): OldPlayerInventoryProfile[] {
     const items = Array(faker.datatype.number({ min: 1, max: 5 }))
       .fill(undefined)
       .map(() => {

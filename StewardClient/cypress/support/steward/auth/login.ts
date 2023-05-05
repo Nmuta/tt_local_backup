@@ -24,5 +24,9 @@ export function login(): Cypress.Chainable<unknown> {
 
       // Wait for sync state component to display that the profile was synced
       cy.get('#is-synced', { timeout: 20000 }).should('exist');
+
+      cy.visit('/');
+
+      cy.get('.mat-card-title', { timeout: 20000 }).contains('Player Details').should('exist');
     });
 }

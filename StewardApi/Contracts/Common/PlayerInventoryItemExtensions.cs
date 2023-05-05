@@ -40,5 +40,35 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
             return playerInventoryItems;
         }
+
+        /// <summary>
+        ///     Sets player inventory item descriptions based on matching master inventory items.
+        /// </summary>
+        public static IList<PlayerInventoryCarItem> SetPlayerInventoryCarItemDescription(
+            this IList<PlayerInventoryCarItem> playerInventoryCarItems,
+            IList<MasterInventoryItem> masterInventoryItems,
+            string logName,
+            string logMetadata,
+            ILoggingService loggingService)
+        {
+            foreach (var item in playerInventoryCarItems)
+            {
+                try
+                {
+                    item.Description = masterInventoryItems.First(masterItem => masterItem.Id == item.Id).Description;
+                    if (string.IsNullOrWhiteSpace(item.Description))
+                    {
+                        throw new InvalidOperationException();
+                    }
+                }
+                catch
+                {
+                    item.Description = "No item name";
+                    loggingService.LogInventoryEvent("Missing Description", logName, item, logMetadata);
+                }
+            }
+
+            return playerInventoryCarItems;
+        }
     }
 }

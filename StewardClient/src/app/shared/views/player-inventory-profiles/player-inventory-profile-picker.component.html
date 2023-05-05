@@ -1,6 +1,6 @@
 <mat-chip-list
   aria-label="Profile selection"
-  *ngIf="!!profiles?.length; else failstate"
+  *ngIf="!!profiles?.length"
   selectable="true"
   multiple="false"
   (change)="onSelectionChange($event)"
@@ -34,8 +34,3 @@
     </mat-icon>
   </mat-chip>
 </mat-chip-list>
-
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="error" [input]="error">Failed to load.</json-dump>
-</ng-template>

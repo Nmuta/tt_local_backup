@@ -8,11 +8,11 @@ export const stewardUrls = {
       sunrise: '/app/tools/gifting/sunrise',
       apollo: '/app/tools/gifting/apollo',
     },
-    ugc: {
-      default: '/app/tools/ugc',
-      woodstock: '/app/tools/ugc/woodstock',
-      steelhead: '/app/tools/ugc/steelhead',
-      sunrise: '/app/tools/ugc/sunrise',
+    search_ugc: {
+      default: '/app/tools/search-ugc',
+      woodstock: '/app/tools/search-ugc/woodstock',
+      steelhead: '/app/tools/search-ugc/steelhead',
+      sunrise: '/app/tools/search-ugc/sunrise',
     },
     auctionBlocklist: {
       default: '/app/tools/auction-blocklist',
@@ -46,9 +46,9 @@ export const stewardUrls = {
       default: '/app/tools/messaging',
       sunrise: '/app/tools/messaging/sunrise',
     },
-    obligation: '/app/tools/data-pipeline-obligation',
+    obligation: '/app/tools/obligation',
     jobHistory: '/app/tools/steward-user-history',
     salus: '/app/tools/salus',
-    bulkBanHistory: '/app/tools/bulk-ban-history',
+    bulkBanHistory: '/app/tools/ban-review',
   },
 };

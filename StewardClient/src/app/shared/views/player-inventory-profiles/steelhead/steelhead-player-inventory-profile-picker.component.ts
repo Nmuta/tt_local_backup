@@ -1,31 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
+import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { SteelheadPlayerInventoryService } from '@services/api-v2/steelhead/player/inventory/steelhead-player-inventory.service';
-import { Observable } from 'rxjs';
-import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
+import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 
-/** Displays a Steelhead player's inventory. */
+/**
+ *  Steelhead player inventory profiles component.
+ */
 @Component({
   selector: 'steelhead-player-inventory-profile-picker',
-  templateUrl:
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: [
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
-  ],
+  templateUrl: './steelhead-player-inventory-profile-picker.component.html',
 })
-export class SteelheadPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
-  IdentityResultAlpha,
-  SteelheadPlayerInventoryProfile
-> {
-  constructor(private readonly playerInventoryService: SteelheadPlayerInventoryService) {
-    super();
-  }
+export class SteelheadPlayerInventoryProfilePickerComponent {
+  /** Player identity. */
+  @Input() identity: IdentityResultAlpha;
+  /** Output when profile change happens. */
+  @Output() public profileChange = new EventEmitter<FullPlayerInventoryProfile>();
+  public service: PlayerInventoryProfilePickerServiceContract;
 
-  /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity$(
-    identity: IdentityResultAlpha,
-  ): Observable<SteelheadPlayerInventoryProfile[]> {
-    return this.playerInventoryService.getInventoryProfilesByXuid$(identity.xuid);
+  constructor(playerInventoryService: SteelheadPlayerInventoryService) {
+    this.service = {
+      gameTitle: GameTitle.FM8,
+      getPlayerInventoryProfiles$: xuid => playerInventoryService.getInventoryProfilesByXuid$(xuid),
+    };
   }
 }

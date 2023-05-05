@@ -198,7 +198,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         /// </summary>
         private async Task<string> VerifyGiftAgainstMasterInventoryAsync(WoodstockMasterInventory gift)
         {
-            var masterInventoryItem = await this.itemsProvider.GetMasterInventoryAsync().ConfigureAwait(true);
+            var masterInventoryItem = await this.itemsProvider.GetMasterInventoryAsync(WoodstockPegasusSlot.LiveSteward).ConfigureAwait(true);
             var error = string.Empty;
 
             foreach (var car in gift.Cars)

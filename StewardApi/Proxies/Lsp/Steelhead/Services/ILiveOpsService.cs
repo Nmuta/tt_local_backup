@@ -105,6 +105,21 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task AddToTitlesUserPlayed(ulong xuid, ForzaLoyaltyRewardsSupportedTitles titleToAdd);
 
         /// <summary>
+        ///     Adds or edits non-car inventory items in user's profile.
+        /// </summary>
+        Task<LiveOpsAddInventoryItemsOutput> LiveOpsAddInventoryItems(ulong xuid, Guid externalProfileId, ForzaUserInventoryItemWrapper[] items);
+
+        /// <summary>
+        ///     Adds or edits car type inventory items in user's profile.
+        /// </summary>
+        Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, Guid externalProfileId, ForzaCarUserInventoryItem[] clientCars, ForzaCarDataUpdateAccessLevel accessLevel);
+
+        /// <summary>
+        ///     Removes non-car type inventory items from user's profile.
+        /// </summary>
+        Task LiveOpsRemoveInventoryItems(ulong xuid, Guid externalProfileId, ForzaUserInventoryItemWrapper[] items);
+
+        /// <summary>
         ///     Retrieves play profiles for a given xuid.
         /// </summary>
         Task<GetPlayerProfilesOutput> GetPlayerProfiles(ulong xuid, uint maxProfiles);

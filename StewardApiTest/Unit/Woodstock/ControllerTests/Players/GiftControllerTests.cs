@@ -148,7 +148,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Players
 
                 this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };
                 this.ItemsProvider.GetCarsAsync<SimpleCar>().Returns(Fixture.Create<IEnumerable<SimpleCar>>());
-                this.ItemsProvider.GetMasterInventoryAsync().Returns(fakeMasterInventory);
+                this.ItemsProvider.GetMasterInventoryAsync(Arg.Any<string>()).Returns(fakeMasterInventory);
                 this.PlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.PlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.PlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<WoodstockProxyBundle>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());

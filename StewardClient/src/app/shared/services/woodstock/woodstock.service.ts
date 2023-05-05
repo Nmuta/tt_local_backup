@@ -12,11 +12,9 @@ import {
   WoodstockBanSummary,
   WoodstockConsoleDetailsEntry,
   WoodstockGiftHistory,
-  WoodstockMasterInventory,
   WoodstockPlayerAccountInventory,
   WoodstockPlayerDetails,
   WoodstockPlayerInventory,
-  WoodstockPlayerInventoryProfile,
   WoodstockProfileRollback,
   WoodstockProfileSummary,
   WoodstockSharedConsoleUser,
@@ -63,6 +61,7 @@ import { HideableUgcFileType } from '@models/hideable-ugc.model';
 import { DeviceType, PegasusProjectionSlot } from '@models/enums';
 import { addQueryParamArray } from '@helpers/add-query-param-array';
 import { UnbanResult } from '@models/unban-result';
+import { PlayerInventoryProfileWithDeviceType } from '@models/player-inventory-profile';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -153,11 +152,6 @@ export class WoodstockService {
   /** Gets the woodstock lsp groups. */
   public getLspGroups$(): Observable<LspGroups> {
     return this.apiService.getRequest$<LspGroups>(`${this.basePath}/groups`);
-  }
-
-  /** Gets the woodstock master inventory. */
-  public getMasterInventory$(): Observable<WoodstockMasterInventory> {
-    return this.apiService.getRequest$<WoodstockMasterInventory>(`${this.basePath}/items`);
   }
 
   /** Gets woodstock player details with a gamertag. This can be used to retrieve a XUID. */
@@ -364,9 +358,9 @@ export class WoodstockService {
   /** Gets a player's profile list  by XUID. */
   public getPlayerInventoryProfilesByXuid$(
     xuid: BigNumber,
-  ): Observable<WoodstockPlayerInventoryProfile[]> {
+  ): Observable<PlayerInventoryProfileWithDeviceType[]> {
     return this.apiService
-      .getRequest$<WoodstockPlayerInventoryProfile[]>(
+      .getRequest$<PlayerInventoryProfileWithDeviceType[]>(
         `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
       )
       .pipe(
