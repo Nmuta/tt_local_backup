@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
+      uuid: 'c286609b-718b-4d70-a8c8-70501b8b3c15',
+      shortText: 'Display number of duplicates when adding/removing users to user groups',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: 'caff6395-2f19-4080-bbd9-58b9e6390883',
       shortText: 'Tune blob can now be downloaded',
