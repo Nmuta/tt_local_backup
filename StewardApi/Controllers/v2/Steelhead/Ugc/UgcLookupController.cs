@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -228,7 +229,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("tuneblob/{ugcId}")]
-        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [SwaggerResponse(200, type: typeof(UgcTuneBlobItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcTune(string ugcId)
@@ -238,20 +239,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            async Task<UgcItem> GetTuneAsync()
+            async Task<UgcTuneBlobItem> GetTuneAsync()
             {
-                StorefrontManagementService.GetUGCTuneOutput tuneOutput = null;
+                ForzaTuneBlob tuneOutput = null;
 
                 try
                 {
-                    tuneOutput = await this.Services.StorefrontManagementService.GetUGCTune(parsedUgcId).ConfigureAwait(false);
+                    var tuneOutputResponse = await this.Services.LiveOpsService.LiveOpsGetUGCTuneBlobs(new[] { parsedUgcId }).ConfigureAwait(false);
+                    tuneOutput = tuneOutputResponse.results.First();
                 }
                 catch (Exception ex)
                 {
                     throw new UnknownFailureStewardException($"No tune found. (ugcId: {parsedUgcId}).", ex);
                 }
 
-                var tune = this.mapper.SafeMap<UgcItem>(tuneOutput.result);
+                var tune = this.mapper.SafeMap<UgcTuneBlobItem>(tuneOutput);
 
                 if (tune.GameTitle != (int)GameTitle.FM8)
                 {
