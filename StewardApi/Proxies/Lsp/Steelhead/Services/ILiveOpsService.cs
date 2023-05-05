@@ -123,5 +123,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Get tune blob data.
         /// </summary>
         Task<LiveOpsGetUGCTuneBlobsOutput> LiveOpsGetUGCTuneBlobs(Guid[] ids);
+
+        /// <summary>
+        ///     Retrieves player profiles for a given xuid.
+        /// </summary>
+        Task<GetPlayerProfilesOutput> GetPlayerProfiles(ulong xuid, uint maxProfiles);
     }
 }

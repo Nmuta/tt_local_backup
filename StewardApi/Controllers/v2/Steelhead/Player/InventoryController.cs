@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.Inventory)]
     public class InventoryController : V2SteelheadControllerBase
     {
-        private const int MaxProfileResults = 50;
+        private const int MaxProfileResults = 100;
         private readonly IMapper mapper;
         private readonly ILoggingService loggingService;
         private readonly ISteelheadItemsProvider itemsProvider;
@@ -148,13 +148,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             IList<SteelheadInventoryProfile> inventoryProfileSummary;
-            var service = this.Services.UserInventoryManagementService;
+            var service = this.Services.LiveOpsService;
 
-            Services.LiveOps.FM8.Generated.UserInventoryManagementService.GetAdminUserProfilesOutput response = null;
+            Forza.WebServices.FM8.Generated.LiveOpsService.GetPlayerProfilesOutput response = null;
 
             try
             {
-                 response = await service.GetAdminUserProfiles(
+                 response = await service.GetPlayerProfiles(
                     xuid,
                     MaxProfileResults).ConfigureAwait(false);
             }

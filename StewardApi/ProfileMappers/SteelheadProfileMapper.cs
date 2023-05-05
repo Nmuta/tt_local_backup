@@ -484,6 +484,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaCarUserInventoryItem, CarInventoryItem>()
                 .ForMember(dest => dest.VersionedLiveryId, opt => opt.MapFrom(source => source.versionedLiveryId))
                 .ForMember(dest => dest.VersionedTuneId, opt => opt.MapFrom(source => source.versionedTuneId));
+
+            this.CreateMap<ForzaProfile, SteelheadInventoryProfile>()
+                .ForMember(dest => dest.IsCurrent, opt => opt.MapFrom(source => source.isLastLoggedInProfile));
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)
