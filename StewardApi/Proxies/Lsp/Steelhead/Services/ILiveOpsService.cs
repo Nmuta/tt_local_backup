@@ -120,7 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task LiveOpsRemoveInventoryItems(ulong xuid, Guid externalProfileId, ForzaUserInventoryItemWrapper[] items);
 
         /// <summary>
-        ///     Retrieves play profiles for a given xuid.
+        ///     Retrieves player profiles for a given xuid.
         /// </summary>
         Task<GetPlayerProfilesOutput> GetPlayerProfiles(ulong xuid, uint maxProfiles);
     }
