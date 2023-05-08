@@ -19,6 +19,16 @@ export class SteelheadPlayerInventoryService {
     return this.api.getRequest$<SteelheadPlayerInventory>(`${this.basePath}/${xuid}/inventory`);
   }
 
+  /** Gets user inventory by a profile ID. */
+  public getInventoryByProfileId$(
+    xuid: BigNumber,
+    profileId: BigNumber,
+  ): Observable<SteelheadPlayerInventory> {
+    return this.api.getRequest$<SteelheadPlayerInventory>(
+      `${this.basePath}/${xuid}/inventory/profile/${profileId}`,
+    );
+  }
+
   /** Gets user inventory profiles by a XUID. */
   public getInventoryProfilesByXuid$(xuid: BigNumber): Observable<FullPlayerInventoryProfile[]> {
     return this.api.getRequest$<FullPlayerInventoryProfile[]>(

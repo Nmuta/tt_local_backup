@@ -96,6 +96,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             {
                 results = await this.Services.NotificationManagementService.SendMessage(
                     communityMessage.Xuids.ToArray(),
+                    // TODO: Update from test string (https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1491290)
+                    Guid.Parse("3b7e0ead-0631-4e7a-8e65-6d27fec35e7c"),
                     localizedMessageGuid,
                     communityMessage.StartTimeUtc,
                     communityMessage.ExpireTimeUtc,

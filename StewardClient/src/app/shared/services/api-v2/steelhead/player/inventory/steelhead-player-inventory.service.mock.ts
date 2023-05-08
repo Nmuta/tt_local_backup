@@ -15,6 +15,12 @@ export class MockSteelheadPlayerInventoryService {
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerInventoryFakeApi.make()))),
     );
 
+  public getInventoryByProfileId$ = jasmine
+    .createSpy('getInventoryByProfileId$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerInventoryFakeApi.make()))),
+    );
+
   public getInventoryProfilesByXuid$ = jasmine
     .createSpy('getInventoryProfilesByXuid$')
     .and.callFake(() =>

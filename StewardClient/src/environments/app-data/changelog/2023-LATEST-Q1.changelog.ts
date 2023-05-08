@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'f59e984b-e171-443f-9679-a2359c0b0a3f',
+      shortText: 'Update Steelhead LSP nuget',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
       uuid: 'c286609b-718b-4d70-a8c8-70501b8b3c15',
       shortText: 'Display number of duplicates when adding/removing users to user groups',

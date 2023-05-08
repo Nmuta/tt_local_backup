@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Gets specific user inventory by Profile ID.
         /// </summary>
-        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
+        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId, ulong xuid);
 
         /// <summary>
         ///     Gets purchased entitlements by Profile ID.
@@ -127,6 +127,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Retrieves player profiles for a given xuid.
         /// </summary>
-        Task<GetPlayerProfilesOutput> GetPlayerProfiles(ulong xuid, uint maxProfiles);
+        Task<GetPlayerProfilesOutput> GetPlayerProfiles(ulong xuid, int maxProfiles);
     }
 }
