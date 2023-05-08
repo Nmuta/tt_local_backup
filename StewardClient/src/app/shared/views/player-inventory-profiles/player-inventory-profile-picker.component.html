@@ -13,10 +13,14 @@
     (click)="chip.toggleSelected(true)"
     [selected]="profile?.isCurrent"
   >
-    <mat-icon *ngIf="profile.isCurrent" class="leading-icon" matTooltip="Profile Active">
+    <mat-icon
+      *ngIf="profile.isCurrentByTitleId"
+      class="leading-icon"
+      [matTooltip]="'Profile active for title ID: ' + profile.titleId">
       person
     </mat-icon>
-    <mat-icon *ngIf="!profile.isCurrent" class="leading-icon" matTooltip="Profile Inactive">
+    <mat-icon
+      *ngIf="!profile.isCurrentByTitleId" class="leading-icon" matTooltip="Profile Inactive">
       person_off
     </mat-icon>
     <span class="id" [matTooltip]="'Profile ID: ' + profile.profileId">{{
