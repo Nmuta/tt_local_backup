@@ -52,12 +52,3 @@
     <mat-icon>contact_support</mat-icon>
   </a>
 </span>
-<span>
-  <button mat-button [matMenuTriggerFor]="contactUsMenu" matTooltip="Contact Us">
-    <mat-icon>contact_support</mat-icon>
-  </button>
-  <mat-menu #contactUsMenu="matMenu">
-    <a mat-menu-item [routerLink]="['/external/teams']" target="_blank">Chat on Teams</a>
-    <a mat-menu-item [routerLink]="['/external/email']" target="_blank">Send Email</a>
-  </mat-menu>
-</span>
