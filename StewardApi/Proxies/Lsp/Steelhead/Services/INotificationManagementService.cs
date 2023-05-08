@@ -95,6 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 
         Task<NotificationManagementService.SendMessageOutput> SendMessage(
             ulong[] recipients,
+            Guid titleId,
             Guid messageId,
             DateTime sentDate,
             DateTime expirationTime,
@@ -102,6 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 
         Task<NotificationManagementService.SendGroupMessageOutput> SendGroupMessage(
             int userGroupId,
+            Guid titleId,
             Guid messageId,
             bool hasDeviceType,
             ForzaLiveDeviceType deviceType,

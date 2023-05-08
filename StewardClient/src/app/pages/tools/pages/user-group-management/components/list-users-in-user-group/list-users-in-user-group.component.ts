@@ -126,6 +126,7 @@ export class ListUsersInGroupComponent
   public failedActionForUsers: UserGroupManagementFailures;
   public isAllUsersGroup: boolean = false;
   public disallowDeleteAllUsers: boolean = false;
+  public duplicatesCount: number = 0;
 
   public readonly updatePermAttribute = PermAttributeName.UpdateUserGroup;
   public readonly removeAllPermAttribute = PermAttributeName.RemoveAllUsersFromGroup;
@@ -383,19 +384,23 @@ export class ListUsersInGroupComponent
   }
 
   private getBasicPlayerList(userIdentifications: string, useGamertags: boolean): BasicPlayerList {
+    const inputSplit = userIdentifications.split(/[,\n\r]/); // split on anything we consider a separator
+    const totalBeforeParse = inputSplit.length;
+
     if (useGamertags) {
-      const inputSplit = userIdentifications.split(/[,\n\r]/); // split on anything we consider a separator
       const gamertags = chain(inputSplit) // start a lodash chain
         .map(v => v.trim()) // get rid of surrounding white space
         .compact() // drop falsy values (empty strings) to save on parse time
         .uniq() // drop dupes now so we dodge string manipulation later
         .value();
+      this.duplicatesCount = totalBeforeParse - gamertags.length;
       return {
         xuids: null,
         gamertags: gamertags,
       };
     } else {
       const xuids = tryParseBigNumbers(userIdentifications);
+      this.duplicatesCount = totalBeforeParse - xuids.length;
       return {
         xuids: xuids,
         gamertags: null,

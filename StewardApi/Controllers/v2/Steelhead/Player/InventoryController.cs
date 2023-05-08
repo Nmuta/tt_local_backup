@@ -135,6 +135,61 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         }
 
         /// <summary>
+        ///     Gets the player inventory based on profile id.
+        /// </summary>
+        [HttpGet("profile/{profileId}")]
+        [SwaggerResponse(200, type: typeof(SteelheadPlayerInventory))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
+        public async Task<IActionResult> GetPlayerInventory(
+            ulong xuid,
+            int profileId)
+        {
+            profileId.ShouldBeGreaterThanValue(-1);
+
+            async Task<SteelheadPlayerInventory> GetInventory()
+            {
+                var service = this.Services.LiveOpsService;
+
+                Forza.WebServices.FM8.Generated.LiveOpsService.GetAdminUserInventoryByProfileIdOutput response = null;
+
+                try
+                {
+                    response = await service.GetAdminUserInventoryByProfileId(profileId, xuid)
+                        .ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    throw new UnknownFailureStewardException($"Failed to retrieve player inventory. (profileId: {profileId})", ex);
+                }
+
+                var playerInventoryDetails = this.mapper.SafeMap<SteelheadPlayerInventory>(response.summary);
+
+                return playerInventoryDetails;
+            }
+
+            var getPlayerInventory = GetInventory();
+            var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
+
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
+            var masterInventory = await getMasterInventory.ConfigureAwait(true);
+
+            if (playerInventory == null)
+            {
+                throw new NotFoundStewardException($"No inventory found for profileId: {profileId}.");
+            }
+
+            playerInventory.SetItemDescriptions(
+                masterInventory,
+                $"Profile Id: {profileId}",
+                this.loggingService);
+
+            return this.Ok(playerInventory);
+        }
+
+        /// <summary>
         ///     Gets the player inventory profiles.
         /// </summary>
         [HttpGet("profiles")]

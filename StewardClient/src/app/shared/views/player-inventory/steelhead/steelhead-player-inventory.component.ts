@@ -4,7 +4,6 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { GameTitle } from '@models/enums';
 import { SteelheadPlayerInventoryService } from '@services/api-v2/steelhead/player/inventory/steelhead-player-inventory.service';
-import { SteelheadInventoryService } from '@services/api-v2/steelhead/inventory/steelhead-inventory.service';
 import { PlayerInventoryComponentContract } from '../player-inventory.component';
 import BigNumber from 'bignumber.js';
 import { makeItemList } from '../player-inventory-helpers';
@@ -25,16 +24,13 @@ export class SteelheadPlayerInventoryComponent {
 
   public service: PlayerInventoryComponentContract<SteelheadMasterInventory, IdentityResultAlpha>;
 
-  constructor(
-    private readonly inventoryService: SteelheadInventoryService,
-    private readonly playerInventoryService: SteelheadPlayerInventoryService,
-  ) {
+  constructor(private readonly playerInventoryService: SteelheadPlayerInventoryService) {
     this.service = {
       gameTitle: GameTitle.FM8,
       getPlayerInventoryByIdentity$: identity =>
         this.playerInventoryService.getInventoryByXuid$(identity.xuid),
-      getPlayerInventoryByIdentityAndProfileId$: (_identity, profileId) =>
-        this.inventoryService.getInventoryByProfileId$(profileId as BigNumber),
+      getPlayerInventoryByIdentityAndProfileId$: (identity, profileId) =>
+        this.playerInventoryService.getInventoryByProfileId$(identity.xuid, profileId as BigNumber),
       makewhatToShowList: inventory => this.makewhatToShowList(inventory),
       inventoryFound: inventory => this.inventoryFound.emit(inventory),
     };

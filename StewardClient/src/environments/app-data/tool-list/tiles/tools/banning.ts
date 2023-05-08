@@ -7,7 +7,7 @@ export const banningTile = <HomeTileInfoInternal>{
   tool: NavbarTool.UserBanning,
   title: 'Banning',
   subtitle: 'Ban players',
-  supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8],
+  supportedTitles: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7, GameTitle.FM8, GameTitle.Forum],
   allPermissions: [PermAttributeName.BanPlayer],
   imageUrl: undefined,
   imageAlt: undefined,
