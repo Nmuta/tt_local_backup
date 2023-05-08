@@ -43,6 +43,7 @@ export class PermAttributesService extends BaseService {
     [GameTitle.FM7]: null,
     [GameTitle.FH5]: null,
     [GameTitle.FH4]: null,
+    [GameTitle.Forum]: null,
   };
 
   private tryInitialization$ = new ReplaySubject<void>(1);
@@ -125,6 +126,7 @@ export class PermAttributesService extends BaseService {
         [GameTitle.FM7]: latest.apolloEndpointKey,
         [GameTitle.FH5]: latest.woodstockEndpointKey,
         [GameTitle.FH4]: latest.sunriseEndpointKey,
+        [GameTitle.Forum]: 'Retail',
       };
     });
 
@@ -136,7 +138,7 @@ export class PermAttributesService extends BaseService {
       });
   }
 
-  /** Initiallizes the parm attributes service. */
+  /** Initializes the perm attributes service. */
   public initialize(attributes: PermAttribute[]): void {
     this.allPermAttributes = attributes;
     this.allPermAttributeNames = uniq(attributes.map(x => x.attribute));
@@ -168,6 +170,7 @@ export class PermAttributesService extends BaseService {
 
     const titleToCheck = title ?? '';
     const environmentToCheck = !!title ? this.selectedEndpoints[title] : '';
+
     return !!find(this.allPermAttributes, {
       attribute: attr,
       title: titleToCheck,
