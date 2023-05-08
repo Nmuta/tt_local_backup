@@ -34,6 +34,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: '0fbcfd56-f8bb-4e8e-9f29-5f1d54a56b30',
+      shortText: 'New Contact Us component',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: '3d2b3e80-7804-48cf-a444-5fcbc875ad24',
       shortText: 'Removed hasAccess param from navbar component',
     },
