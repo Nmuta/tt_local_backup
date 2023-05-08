@@ -1,7 +1,7 @@
 @import '/src/styles/mixins/';
 
 $textAreaMinSizePx: 100px;
-$labelMaxSizePx: 500px;
+$labelMaxSizePx: 700px;
 
 .mat-button-toggle-checked.mat-button-toggle-checked {
   background-color: app-color-default($app-primary);
@@ -20,6 +20,6 @@ textarea {
   font-size: 100px;
 }
 
-mat-drawer {
-  max-width: 30% !important;
+mat-button-toggle {
+  min-width: $button-min-size;
 }
