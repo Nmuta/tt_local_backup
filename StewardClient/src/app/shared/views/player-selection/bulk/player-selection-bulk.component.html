@@ -17,6 +17,12 @@
     value="xuid"
     >XUID</mat-button-toggle
   >
+  <mat-button-toggle
+    *ngIf="!disableLookupTypes.includes('t10Id')"
+    [disabled]="lookupIdentitiesMonitor.isActive"
+    value="t10Id"
+    >T10</mat-button-toggle
+  >
 </mat-button-toggle-group>
 
 <div class="player-chip-list-constraint">
