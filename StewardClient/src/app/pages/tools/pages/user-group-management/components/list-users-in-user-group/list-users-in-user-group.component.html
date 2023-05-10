@@ -120,11 +120,14 @@
       </div>
     </form>
 
-    <div class="failed-action-for-users" *ngIf="failedActionForUsers?.players?.length > 0">
+    <div class="warning-for-users" *ngIf="failedActionForUsers?.players?.length > 0">
       <standard-copy [text]="failedActionForUsers.copyToClipboard" [alwaysShowIcon]="true">
         Failed to {{ failedActionForUsers?.action }}
         {{ failedActionForUsers?.players?.length }} player(s)
       </standard-copy>
+    </div>
+    <div class="warning-for-users" *ngIf="duplicatesCount > 0">
+      There were {{ duplicatesCount }} duplicate values in the list
     </div>
 
     <table *ngIf="!!userGroup && getMonitor.isSuccess" class="info-table">

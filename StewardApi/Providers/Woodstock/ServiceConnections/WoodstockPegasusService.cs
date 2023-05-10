@@ -131,13 +131,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ListCarMake>> GetCarMakesAsync()
+        public async Task<IEnumerable<ListCarMake>> GetCarMakesAsync(string slotId = WoodstockPegasusSlot.Live)
         {
-            var carMakesKey = $"{PegasusBaseCacheKey}CarMakes";
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.WoodstockCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+            }
+
+            var carMakesKey = $"{PegasusBaseCacheKey}{slotId}_CarMakes";
 
             async Task<IEnumerable<ListCarMake>> GetCarMakes()
             {
-                var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<ListCarMake>>(CMSFileNames.ListCarMake, this.cmsEnvironment).ConfigureAwait(false);
+                var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<ListCarMake>>(CMSFileNames.ListCarMake, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
                 this.refreshableCacheStore.PutItem(carMakesKey, TimeSpan.FromDays(1), pegasusResults);
 
                 return pegasusResults;
@@ -148,13 +156,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<CarHorn>> GetCarHornsAsync()
+        public async Task<IEnumerable<CarHorn>> GetCarHornsAsync(string slotId = WoodstockPegasusSlot.Live)
         {
-            var carHornsKey = $"{PegasusBaseCacheKey}CarHorns";
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.WoodstockCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+            }
+
+            var carHornsKey = $"{PegasusBaseCacheKey}{slotId}_CarHorns";
 
             async Task<IEnumerable<CarHorn>> GetCarHorns()
             {
-                var carHorns = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<CarHorn>>(CMSFileNames.CarHorns, this.cmsEnvironment).ConfigureAwait(false);
+                var carHorns = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<CarHorn>>(CMSFileNames.CarHorns, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(carHornsKey, TimeSpan.FromDays(1), carHorns);
 
@@ -166,13 +182,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync()
+        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = WoodstockPegasusSlot.Live)
         {
-            var vanityItemsKey = $"{PegasusBaseCacheKey}VanityItems";
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.WoodstockCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+            }
+
+            var vanityItemsKey = $"{PegasusBaseCacheKey}{slotId}_VanityItems";
 
             async Task<IEnumerable<VanityItem>> GetVanityItems()
             {
-                var vanityItems = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<VanityItem>>(CMSFileNames.VanityItems, this.cmsEnvironment).ConfigureAwait(false);
+                var vanityItems = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<VanityItem>>(CMSFileNames.VanityItems, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(vanityItemsKey, TimeSpan.FromDays(1), vanityItems);
 
@@ -184,13 +208,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<EmoteData>> GetEmotesAsync()
+        public async Task<IEnumerable<EmoteData>> GetEmotesAsync(string slotId = WoodstockPegasusSlot.Live)
         {
-            var emotesKey = $"{PegasusBaseCacheKey}Emotes";
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.WoodstockCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+            }
+
+            var emotesKey = $"{PegasusBaseCacheKey}{slotId}_Emotes";
 
             async Task<IEnumerable<EmoteData>> GetEmotes()
             {
-                var emotes = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<EmoteData>>(CMSFileNames.EmoteData, this.cmsEnvironment).ConfigureAwait(false);
+                var emotes = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<EmoteData>>(CMSFileNames.EmoteData, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(emotesKey, TimeSpan.FromDays(1), emotes);
 
@@ -202,13 +234,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync()
+        public async Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync(string slotId = WoodstockPegasusSlot.Live)
         {
-            var quickChatLinesKey = $"{PegasusBaseCacheKey}QuickChatLines";
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.WoodstockCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+            }
+
+            var quickChatLinesKey = $"{PegasusBaseCacheKey}{slotId}_QuickChatLines";
 
             async Task<IEnumerable<QuickChat>> GetQuickChatLines()
             {
-                var quickChatLines = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<QuickChat>>(CMSFileNames.QuickChatData, this.cmsEnvironment).ConfigureAwait(false);
+                var quickChatLines = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<QuickChat>>(CMSFileNames.QuickChatData, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(quickChatLinesKey, TimeSpan.FromDays(1), quickChatLines);
 

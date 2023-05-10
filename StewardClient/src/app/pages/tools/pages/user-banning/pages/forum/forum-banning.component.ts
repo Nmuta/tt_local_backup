@@ -13,6 +13,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { DateTime } from 'luxon';
 import { ForumBanService } from '@services/api-v2/forum/ban/forum-ban.service';
+import { GameTitle } from '@models/enums';
 
 type BanReasonGroup = { group: string; values: string[] };
 type StandardBanReasons = BanReasonGroup[];
@@ -73,6 +74,7 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
   public banActionMonitor = new ActionMonitor('POST Ban players');
   public getBanHistoryMonitor = new ActionMonitor('GET Ban history');
   public readonly permAttribute = PermAttributeName.BanPlayer;
+  public readonly permTitle = GameTitle.Forum;
 
   constructor(private readonly forumBanService: ForumBanService) {
     super();

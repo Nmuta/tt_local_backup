@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Gets specific user inventory by Profile ID.
         /// </summary>
-        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
+        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId, ulong xuid);
 
         /// <summary>
         ///     Gets purchased entitlements by Profile ID.
@@ -103,5 +103,30 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// </summary>
         /// <remarks>When added, a user should expect to recieve legacy rewards on next login.</remarks>
         Task AddToTitlesUserPlayed(ulong xuid, ForzaLoyaltyRewardsSupportedTitles titleToAdd);
+
+        /// <summary>
+        ///     Adds or edits non-car inventory items in user's profile.
+        /// </summary>
+        Task<LiveOpsAddInventoryItemsOutput> LiveOpsAddInventoryItems(ulong xuid, Guid externalProfileId, ForzaUserInventoryItemWrapper[] items);
+
+        /// <summary>
+        ///     Adds or edits car type inventory items in user's profile.
+        /// </summary>
+        Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, Guid externalProfileId, ForzaCarUserInventoryItem[] clientCars, ForzaCarDataUpdateAccessLevel accessLevel);
+
+        /// <summary>
+        ///     Removes non-car type inventory items from user's profile.
+        /// </summary>
+        Task LiveOpsRemoveInventoryItems(ulong xuid, Guid externalProfileId, ForzaUserInventoryItemWrapper[] items);
+
+        /// <summary>
+        ///     Get tune blob data.
+        /// </summary>
+        Task<LiveOpsGetUGCTuneBlobsOutput> LiveOpsGetUGCTuneBlobs(Guid[] ids);
+
+        /// <summary>
+        ///     Retrieves player profiles for a given xuid.
+        /// </summary>
+        Task<GetPlayerProfilesOutput> GetPlayerProfiles(ulong xuid, int maxProfiles);
     }
 }

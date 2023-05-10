@@ -14,6 +14,46 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       longText: ['Display car featured showcase and car sales in a calendar'],
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'f59e984b-e171-443f-9679-a2359c0b0a3f',
+      shortText: 'Update Steelhead LSP nuget',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
+      uuid: 'c286609b-718b-4d70-a8c8-70501b8b3c15',
+      shortText: 'Display number of duplicates when adding/removing users to user groups',
+    },
+    {
+      tag: { title: [GameTitle.Forum], tool: NavbarTool.UserBanning },
+      uuid: 'cf8b1612-9c51-496e-9687-b9b86336d3f7',
+      shortText: 'Fix forum banning',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: 'caff6395-2f19-4080-bbd9-58b9e6390883',
+      shortText: 'Tune blob can now be downloaded',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '370da96a-bce2-4159-a6c6-d4348f8d8842',
+      shortText: 'Convert player profile selection component to use composition',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '0fbcfd56-f8bb-4e8e-9f29-5f1d54a56b30',
+      shortText: 'New Contact Us component',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '3d2b3e80-7804-48cf-a444-5fcbc875ad24',
+      shortText: 'Removed hasAccess param from navbar component',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
+      uuid: '8d1e6edc-8506-440e-9652-c886a4a387b3',
+      shortText: 'Utilize live-steward CMS slot to pull in next series content',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [
@@ -25,6 +65,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       },
       uuid: '5fa53d45-178a-477c-a327-2650fb309569',
       shortText: 'Combine Steelhead calendars into single tabbed view',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'f5b00f0d-835b-45e7-ac51-aefd916b96a1',
+      shortText: 'Improve error message when non-xuid is entered in xuid search field',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },

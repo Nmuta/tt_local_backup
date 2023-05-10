@@ -1,31 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { SunrisePlayerInventoryProfile } from '@models/sunrise';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 import { SunriseService } from '@services/sunrise';
-import { Observable } from 'rxjs';
-import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
+import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 
-/** Displays a Sunrise player's inventory. */
+/**
+ *  Sunrise player inventory profiles component.
+ */
 @Component({
   selector: 'sunrise-player-inventory-profile-picker',
-  templateUrl:
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: [
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
-  ],
+  templateUrl: './sunrise-player-inventory-profile-picker.component.html',
 })
-export class SunrisePlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
-  IdentityResultAlpha,
-  SunrisePlayerInventoryProfile
-> {
-  constructor(private readonly sunrise: SunriseService) {
-    super();
-  }
+export class SunrisePlayerInventoryProfilePickerComponent {
+  /** Player identity. */
+  @Input() identity: IdentityResultAlpha;
+  /** Output when profile change happens. */
+  @Output() public profileChange = new EventEmitter<PlayerInventoryProfile>();
+  public service: PlayerInventoryProfilePickerServiceContract;
 
-  /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity$(
-    identity: IdentityResultAlpha,
-  ): Observable<SunrisePlayerInventoryProfile[]> {
-    return this.sunrise.getPlayerInventoryProfilesByXuid$(identity.xuid);
+  constructor(playerInventoryService: SunriseService) {
+    this.service = {
+      gameTitle: GameTitle.FH4,
+      getPlayerInventoryProfiles$: xuid =>
+        playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
+    };
   }
 }

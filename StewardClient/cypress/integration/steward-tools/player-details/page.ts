@@ -1,7 +1,7 @@
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
 
-const timeoutOverride = 20_000; /*ms*/
+const timeoutOverride = 45_000; /*ms*/
 
 /** Performs a search by gtag and waits for the search to complete. */
 export function searchByGtag(gtag: string): void {

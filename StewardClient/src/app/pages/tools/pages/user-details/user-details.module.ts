@@ -25,7 +25,6 @@ import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inv
 import { PlayerNotificationsModule } from '@shared/views/player-notifications/player-notifications.module';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerIdentityResultsModule } from '@shared/views/player-identity-results/player-identity-results.module';
 import { ProfileNotesModule } from '@views/profile-notes/profile-notes.module';
 import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
@@ -52,6 +51,7 @@ import { CmsOverrideModule } from '@views/cms-override/cms-override.module';
 import { PaidEntitlementsModule } from '@views/paid-entitlements/paid-entitlements.module';
 import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-history.module';
 import { DriverLevelModule } from '@views/driver-level/driver-level.module';
+import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -90,7 +90,6 @@ import { DriverLevelModule } from '@views/driver-level/driver-level.module';
     JsonDumpModule,
     PlayerNotificationsModule,
     PlayerInventoryModule,
-    PlayerInventoryProfilesModule,
     PlayerSelectionModule,
     MatTooltipModule,
     PlayerIdentityResultsModule,
@@ -113,6 +112,7 @@ import { DriverLevelModule } from '@views/driver-level/driver-level.module';
     PaidEntitlementsModule,
     ForumBanHistoryModule,
     DriverLevelModule,
+    PlayerInventoryProfilesModule,
   ],
 })
 export class UserDetailsModule {}

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
-import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
+import { SunriseMasterInventory } from '@models/sunrise';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
 import BigNumber from 'bignumber.js';
@@ -16,6 +16,7 @@ import {
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** The sunrise gifting page. */
 @Component({
@@ -33,7 +34,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   public selectedLspGroup: LspGroup;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: SunrisePlayerInventoryProfile;
+  public selectedPlayerInventoryProfile: PlayerInventoryProfile;
   public selectedPlayerInventory: SunriseMasterInventory;
 
   public giftingTypeMatTabSelectedIndex: number = 0;
@@ -98,7 +99,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   }
 
   /** Called when a new profile is picked. */
-  public onProfileChange(newProfile: SunrisePlayerInventoryProfile): void {
+  public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.selectedPlayerInventoryProfileId = newProfile?.profileId;
   }
 }

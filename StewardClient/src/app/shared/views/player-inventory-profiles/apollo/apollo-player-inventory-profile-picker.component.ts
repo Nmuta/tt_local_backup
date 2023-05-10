@@ -1,31 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { ApolloPlayerInventoryProfile } from '@models/apollo';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 import { ApolloService } from '@services/apollo';
-import { Observable } from 'rxjs';
-import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
+import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 
-/** Displays a Apollo player's inventory. */
+/**
+ *  Apollo player inventory profiles component.
+ */
 @Component({
   selector: 'apollo-player-inventory-profile-picker',
-  templateUrl:
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: [
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
-  ],
+  templateUrl: './apollo-player-inventory-profile-picker.component.html',
 })
-export class ApolloPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
-  IdentityResultAlpha,
-  ApolloPlayerInventoryProfile
-> {
-  constructor(private readonly apollo: ApolloService) {
-    super();
-  }
+export class ApolloPlayerInventoryProfilePickerComponent {
+  /** Player identity. */
+  @Input() identity: IdentityResultAlpha;
+  /** Output when profile change happens. */
+  @Output() public profileChange = new EventEmitter<PlayerInventoryProfile>();
+  public service: PlayerInventoryProfilePickerServiceContract;
 
-  /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity$(
-    identity: IdentityResultAlpha,
-  ): Observable<ApolloPlayerInventoryProfile[]> {
-    return this.apollo.getPlayerInventoryProfilesByXuid$(identity.xuid);
+  constructor(playerInventoryService: ApolloService) {
+    this.service = {
+      gameTitle: GameTitle.FM7,
+      getPlayerInventoryProfiles$: xuid =>
+        playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
+    };
   }
 }

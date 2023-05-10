@@ -1,31 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { OpusPlayerInventoryProfile } from '@models/opus';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 import { OpusService } from '@services/opus';
-import { Observable } from 'rxjs';
-import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
+import { PlayerInventoryProfilePickerServiceContract } from '../player-inventory-profile-picker.component';
 
-/** Displays a Opus player's inventory. */
+/**
+ *  Opus player inventory profiles component.
+ */
 @Component({
   selector: 'opus-player-inventory-profile-picker',
-  templateUrl:
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: [
-    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
-  ],
+  templateUrl: './opus-player-inventory-profile-picker.component.html',
 })
-export class OpusPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
-  IdentityResultAlpha,
-  OpusPlayerInventoryProfile
-> {
-  constructor(private readonly opus: OpusService) {
-    super();
-  }
+export class OpusPlayerInventoryProfilePickerComponent {
+  /** Player identity. */
+  @Input() identity: IdentityResultAlpha;
+  /** Output when profile change happens. */
+  @Output() public profileChange = new EventEmitter<PlayerInventoryProfile>();
+  public service: PlayerInventoryProfilePickerServiceContract;
 
-  /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity$(
-    identity: IdentityResultAlpha,
-  ): Observable<OpusPlayerInventoryProfile[]> {
-    return this.opus.getPlayerInventoryProfilesByXuid$(identity.xuid);
+  constructor(playerInventoryService: OpusService) {
+    this.service = {
+      gameTitle: GameTitle.FH3,
+      getPlayerInventoryProfiles$: xuid =>
+        playerInventoryService.getPlayerInventoryProfilesByXuid$(xuid),
+    };
   }
 }

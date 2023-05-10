@@ -21,7 +21,7 @@ context('Steward / Tools', () => {
         .first()
         .should('exist')
         .contains('a', 'Open')
-        .should('have.attr', 'href', stewardUrls.tools.ugc.default);
+        .should('have.attr', 'href', stewardUrls.tools.search_ugc.default);
 
       cy.get('mat-card')
         .contains('mat-card-title', 'Player Details')
@@ -64,7 +64,7 @@ context('Steward / Tools', () => {
         .should('have.attr', 'href', stewardUrls.tools.kusto);
 
       cy.get('mat-card')
-        .contains('mat-card-title', 'Auction House Blocklist')
+        .contains('mat-card-title', 'Auction Blocklist')
         .parents('mat-card')
         .first()
         .should('exist')

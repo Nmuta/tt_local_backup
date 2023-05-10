@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
-import { SteelheadPlayerInventory, SteelheadPlayerInventoryProfile } from '@models/steelhead';
+import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { SteelheadPlayerInventory } from '@models/steelhead';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable, of } from 'rxjs';
@@ -18,11 +19,19 @@ export class SteelheadPlayerInventoryService {
     return this.api.getRequest$<SteelheadPlayerInventory>(`${this.basePath}/${xuid}/inventory`);
   }
 
-  /** Gets user inventory profiles by a XUID. */
-  public getInventoryProfilesByXuid$(
+  /** Gets user inventory by a profile ID. */
+  public getInventoryByProfileId$(
     xuid: BigNumber,
-  ): Observable<SteelheadPlayerInventoryProfile[]> {
-    return this.api.getRequest$<SteelheadPlayerInventoryProfile[]>(
+    profileId: BigNumber,
+  ): Observable<SteelheadPlayerInventory> {
+    return this.api.getRequest$<SteelheadPlayerInventory>(
+      `${this.basePath}/${xuid}/inventory/profile/${profileId}`,
+    );
+  }
+
+  /** Gets user inventory profiles by a XUID. */
+  public getInventoryProfilesByXuid$(xuid: BigNumber): Observable<FullPlayerInventoryProfile[]> {
+    return this.api.getRequest$<FullPlayerInventoryProfile[]>(
       `${this.basePath}/${xuid}/inventory/profiles`,
     );
   }

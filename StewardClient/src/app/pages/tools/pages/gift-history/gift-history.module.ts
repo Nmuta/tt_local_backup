@@ -18,7 +18,6 @@ import { LspGroupSelectionModule } from '@shared/views/lsp-group-selection/lsp-g
 import { MatTabsModule } from '@angular/material/tabs';
 import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
 import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
-import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { SteelheadGiftHistoryComponent } from './steelhead/steelhead-gift-history.component';
 import { WoodstockGiftHistoryComponent } from './woodstock/woodstock-gift-history.component';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
@@ -26,6 +25,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
+import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
