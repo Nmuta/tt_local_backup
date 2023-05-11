@@ -16,21 +16,21 @@ export function humanizeAndHandleAcronyms(value: string): string {
     return value;
   }
 
+  let humanized = humanize(value);
+
   const acronyms: string[] = ['UGC', 'VIN', 'ID'];
 
   acronyms.forEach(a => {
-    let i = value.toLocaleLowerCase().indexOf(a.toLocaleLowerCase());
+    let i = humanized.toLocaleLowerCase().indexOf(a.toLocaleLowerCase());
 
     while (i !== -1) {
-      const nextChar = value[i + a.length];
+      const nextChar = humanized[i + a.length];
       if (!nextChar || !nextChar.match(/[a-zA-Z]/)) {
-        value = value.slice(0, i) + a.toUpperCase() + value.slice(i + a.length);
+        humanized = humanized.slice(0, i) + a.toUpperCase() + humanized.slice(i + a.length);
       }
-      i = value.indexOf(a, i + 1);
+      i = humanized.indexOf(a, i + 1);
     }
   });
-
-  const humanized = humanize(value);
 
   return humanized;
 }
