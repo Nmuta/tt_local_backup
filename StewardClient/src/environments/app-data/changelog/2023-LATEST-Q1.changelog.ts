@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '9cea5390-12ef-4eb4-9f87-beedd5b09db3',
+      shortText: 'Remove T10Id lookup from player details',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'f59e984b-e171-443f-9679-a2359c0b0a3f',
       shortText: 'Update Steelhead LSP nuget',
