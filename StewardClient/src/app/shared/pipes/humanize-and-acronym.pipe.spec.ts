@@ -33,7 +33,9 @@ describe('HumanizeAndAcronymPipe', () => {
     expect(pipe.transform('ugc')).toBe('UGC');
     expect(pipe.transform('vin')).toBe('VIN');
     expect(pipe.transform('id')).toBe('ID');
-    expect(pipe.transform('this id should be ugc and also a vin')).toBe('This ID should be UGC and also a VIN');
+    expect(pipe.transform('this id should be ugc and also a vin')).toBe(
+      'This ID should be UGC and also a VIN',
+    );
   });
 
   it('passes through non-strings', () => {
