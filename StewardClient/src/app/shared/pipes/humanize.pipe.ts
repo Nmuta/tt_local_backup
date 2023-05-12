@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { isString } from 'lodash';
+import { AcronymPipe } from './acronym.pipe';
 
 /**
  * Transform CamelCase strings to Space Case.
@@ -10,13 +11,17 @@ export function humanize(value: string): string {
     return value;
   }
 
+  const acronymPipe = new AcronymPipe();
+
   // https://regexr.com/5f43f
   const split = value.split(/(?=_)|(?=[A-Z_\-](?!(?:[A-Z_\-]|\s|$)))/);
   value = split.join(' ');
   value = value.replace('_', '-');
   value = value[0].toUpperCase() + value.slice(1);
 
-  return value;
+  const acronymized = acronymPipe.transform(value);
+
+  return acronymized;
 }
 
 /**

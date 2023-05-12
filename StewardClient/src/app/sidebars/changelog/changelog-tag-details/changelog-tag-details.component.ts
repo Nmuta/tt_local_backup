@@ -6,7 +6,6 @@ import { GameTitle } from '@models/enums';
 import { GameTitleAbbreviationPipe } from '@shared/pipes/game-title-abbreviation.pipe';
 import { GameTitleFullNamePipe } from '@shared/pipes/game-title-full-name.pipe';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
-import { HumanizeAndAcronymPipe } from '@shared/pipes/humanize-and-acronym.pipe';
 
 interface ChanglogEntryChip {
   title: string;
@@ -19,12 +18,7 @@ interface ChanglogEntryChip {
   selector: 'changelog-tag-details',
   templateUrl: './changelog-tag-details.component.html',
   styleUrls: ['./changelog-tag-details.component.scss'],
-  providers: [
-    GameTitleAbbreviationPipe,
-    GameTitleFullNamePipe,
-    HumanizePipe,
-    HumanizeAndAcronymPipe,
-  ],
+  providers: [GameTitleAbbreviationPipe, GameTitleFullNamePipe, HumanizePipe],
 })
 export class ChangelogTagDetailsComponent extends BaseComponent implements OnChanges {
   /** Changelog entry to be displayed. */
@@ -37,7 +31,6 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
     private readonly gameTitleAbbreviationPipe: GameTitleAbbreviationPipe,
     private readonly gameTitleFullNamePipe: GameTitleFullNamePipe,
     private readonly humanizePipe: HumanizePipe,
-    private readonly humanizeAndAcronymPipe: HumanizeAndAcronymPipe,
   ) {
     super();
   }
@@ -61,7 +54,7 @@ export class ChangelogTagDetailsComponent extends BaseComponent implements OnCha
       return tools.map(
         tool =>
           ({
-            title: this.humanizeAndAcronymPipe.transform(tool.split('-').join(' ')), // Navtool is a hyphen separate string
+            title: this.humanizePipe.transform(tool.split('-').join(' ')), // Navtool is a hyphen separate string
             type: 'tag target',
             tooltip: null,
           } as ChanglogEntryChip),
