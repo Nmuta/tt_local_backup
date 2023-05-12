@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Remove T10Id lookup from player details',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: '33bfbd2a-83c6-4fa5-b4ad-8dc723454e2f',
+      shortText: 'Implement handling for capitalizing acronyms and apply it to changelog tags',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'f59e984b-e171-443f-9679-a2359c0b0a3f',
       shortText: 'Update Steelhead LSP nuget',
