@@ -18,6 +18,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '9cea5390-12ef-4eb4-9f87-beedd5b09db3',
+      shortText: 'Remove T10Id lookup from player details',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '33bfbd2a-83c6-4fa5-b4ad-8dc723454e2f',
+      shortText: 'Implement handling for capitalizing acronyms and apply it to changelog tags',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'f59e984b-e171-443f-9679-a2359c0b0a3f',
       shortText: 'Update Steelhead LSP nuget',
@@ -41,6 +51,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       tag: ChangelogTag.Internal,
       uuid: '370da96a-bce2-4159-a6c6-d4348f8d8842',
       shortText: 'Convert player profile selection component to use composition',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '0fbcfd56-f8bb-4e8e-9f29-5f1d54a56b30',
+      shortText: 'New Contact Us component',
     },
     {
       tag: ChangelogTag.General,
