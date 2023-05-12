@@ -11,17 +11,13 @@ export function humanize(value: string): string {
     return value;
   }
 
-  const acronymPipe = new AcronymPipe();
-
   // https://regexr.com/5f43f
   const split = value.split(/(?=_)|(?=[A-Z_\-](?!(?:[A-Z_\-]|\s|$)))/);
   value = split.join(' ');
   value = value.replace('_', '-');
   value = value[0].toUpperCase() + value.slice(1);
 
-  const acronymized = acronymPipe.transform(value);
-
-  return acronymized;
+  return value;
 }
 
 /**
@@ -32,8 +28,13 @@ export function humanize(value: string): string {
   name: 'humanize',
 })
 export class HumanizePipe implements PipeTransform {
+  private acronymPipe = new AcronymPipe();
+
   /** The transform hook. */
   public transform(value: string): string {
-    return humanize(value);
+    const humanized = humanize(value);
+    const acronymized = this.acronymPipe.transform(humanized);
+
+    return acronymized;
   }
 }
