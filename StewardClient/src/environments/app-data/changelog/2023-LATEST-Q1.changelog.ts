@@ -8,6 +8,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '3341b310-081c-4363-8696-8f18d95f4db8',
+      shortText: 'Display Title ID as tooltip in player profile chip',
+      longText: [
+        'For each Title ID a xuid has played on, there will be an active profile',
+        'for that Title ID. Profiles are now sorted with most recently logged in',
+        'as the first profile, and then all active profiles following.',
+      ],
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.UserDetails },
       uuid: '9cea5390-12ef-4eb4-9f87-beedd5b09db3',
       shortText: 'Remove T10Id lookup from player details',
