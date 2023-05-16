@@ -9,11 +9,16 @@
     >
       Unselect all
     </button>
+    <verify-button
+      #verifyCheckboxHideBtn
+      [permissionAttribute]="hideUgcPermission"
+      [permissionTitle]="gameTitle"
+    ></verify-button>
     <button
       mat-raised-button
       color="warn"
       [disabled]="selectedUgcs?.length <= 0"
-      [verifyWith]="verifyCheckboxHide"
+      [verifyWithV2]="verifyCheckboxHideBtn"
       (click)="hideMultipleUgc(selectedUgcs)"
       stateManager
       [monitor]="hideUgcMonitor"
@@ -32,15 +37,6 @@
         [matTooltip]="hideUgcMonitor.label + ' in progress'"
       ></mat-spinner>
     </button>
-    <mat-checkbox
-      #verifyCheckboxHide
-      stateManager
-      [permissionAttribute]="hideUgcPermission"
-      [permissionTitle]="gameTitle"
-      matTooltip="Check to enable multi hide"
-    >
-      Verify Hide
-    </mat-checkbox>
   </div>
 </div>
 <div class="table-wide-actions" *ngIf="displayTableWideActions">

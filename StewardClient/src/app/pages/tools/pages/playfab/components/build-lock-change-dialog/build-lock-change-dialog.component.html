@@ -15,10 +15,16 @@
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="undefined">Go Back</button>
+  <verify-button
+    [disabled]="formGroup.invalid"
+    #verifyActionBtn
+    [permissionAttribute]="playFabBuildsPermAttribute"
+    [permissionTitle]="data.gameTitle"
+  ></verify-button>
   <button
     mat-raised-button
     [color]="buttonColor"
-    [verifyWith]="verifyAction"
+    [verifyWithV2]="verifyActionBtn"
     cdkFocusInitial
     (click)="commitAction()"
     stateManager
@@ -30,18 +36,6 @@
     {{ buttonText }}
     <button-spinner [monitor]="actionMonitor" [defaultIcon]="buttonIcon"></button-spinner>
   </button>
-  <mat-checkbox
-    #verifyAction
-    stateManager
-    [monitor]="actionMonitor"
-    [permissionAttribute]="playFabBuildsPermAttribute"
-    [permissionTitle]="data.gameTitle"
-    [disabled]="formGroup.invalid"
-    monitorDisable
-    matTooltip="Verify"
-    aria-label="Verify"
-    >Verify</mat-checkbox
-  >
 </div>
 
 <ng-template #unlockBuildContentTemplate>

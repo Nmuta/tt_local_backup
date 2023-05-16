@@ -59,11 +59,17 @@
   >
     Close
   </button>
+  <verify-button
+    [disabled]="!formGroup.valid"
+    #verifyBtn
+    [permissionAttribute]="featureUgcPermAttribute"
+    [permissionTitle]="gameTitle"
+  ></verify-button>
   <button
     [disabled]="!formGroup.valid"
     stateManager
     [monitor]="postMonitor"
-    [verifyWith]="verify"
+    [verifyWithV2]="verifyBtn"
     monitorDisable
     mat-raised-button
     color="primary"
@@ -72,15 +78,6 @@
     Update Feature Status
     <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
   </button>
-  <mat-checkbox
-    class="sf-verify-checkbox"
-    #verify
-    stateManager
-    [permissionAttribute]="featureUgcPermAttribute"
-    [permissionTitle]="gameTitle"
-    matTooltip="Verify"
-    >Verify</mat-checkbox
-  >
 </mat-dialog-actions>
 
 <ng-template #noFeaturedEndDateTemplate> Featured with no end date </ng-template>

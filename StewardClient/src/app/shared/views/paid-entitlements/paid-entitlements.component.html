@@ -21,6 +21,11 @@
           </mat-select>
         </mat-form-field>
         <div class="sf-horizontal">
+          <verify-button
+            #verifySubmissionButton
+            [permissionAttribute]="grantPaidEntitlementAttribute"
+            [permissionTitle]="serviceContract.gameTitle"
+          ></verify-button>
           <button
             mat-raised-button
             color="primary"
@@ -31,7 +36,7 @@
             monitorDisable
             monitorWarnSnackbar
             monitorCompleteSnackbar
-            [verifyWith]="verifySubmission"
+            [verifyWithV2]="verifySubmissionButton"
           >
             Send Entitlement
             <button-spinner
@@ -39,14 +44,6 @@
               defaultIcon="arrow_circle_right"
             ></button-spinner>
           </button>
-          <mat-checkbox
-            #verifySubmission
-            stateManager
-            [permissionAttribute]="grantPaidEntitlementAttribute"
-            [permissionTitle]="serviceContract.gameTitle"
-            [monitor]="putMonitor"
-            >Verify</mat-checkbox
-          >
         </div>
       </div>
     </form>
