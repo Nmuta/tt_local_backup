@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { PersistedItemResult, PlayerUgcItem, UgcOperationResult } from '@models/player-ugc-item';
-import { UgcType } from '@models/ugc-filters';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UgcOperationSnackbarComponent } from '@tools-app/pages/ugc-details/components/ugc-action-snackbar/ugc-operation-snackbar.component';
@@ -12,7 +11,6 @@ import { map, takeUntil } from 'rxjs/operators';
 
 export interface PersistUgcService {
   title: GameTitle,
-  getUgcItem$: (itemId: string, type: UgcType) => Observable<PlayerUgcItem>
   persistUgc$: (
     itemId: string,
     title: string,

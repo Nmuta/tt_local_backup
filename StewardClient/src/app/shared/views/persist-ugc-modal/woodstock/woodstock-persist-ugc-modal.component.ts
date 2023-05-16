@@ -23,7 +23,6 @@ export class WoodstockPersistUgcModalComponent {
   ) {
     this.service = {
       title: GameTitle.FH5,
-      getUgcItem$: (itemId, type) => woodstockService.getPlayerUgcItem$(itemId, type),
       persistUgc$: (itemId, title, description) => woodstockService.persistUgc$(itemId, title, description),
     }
   }
