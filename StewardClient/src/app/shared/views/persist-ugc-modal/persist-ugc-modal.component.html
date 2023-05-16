@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>
+  Persist {{ service.title | humanize }} Ugc Content
+  <br />
+</h2>
+
+<mat-dialog-content>
+  <ul>
+    <li><b>Id: </b> {{ ugcItem.id }}</li>
+    <li><b>Type: </b> {{ ugcItem.type }}</li>
+    <li><b>Description: </b> {{ ugcItem.description }}</li>
+    <li><b>Car Description: </b> {{ ugcItem.carDescription }}</li>
+    <li><b>Owner: </b> {{ ugcItem.ownerXuid }}</li>
+  </ul>
+  <img #modelImage [src]="ugcItem.thumbnailOneImageBase64" />
+
+  <form [formGroup]="formGroup">
+    <mat-form-field appearance="fill">
+      <mat-label>Persisted UGC Title Override</mat-label>
+      <input matInput [formControl]="formControls.title" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Persisted UGC Description Override</mat-label>
+      <input matInput [formControl]="formControls.description" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    stateManager
+    [monitor]="postMonitor"
+    monitorDisable
+    mat-stroked-button
+    color="warn"
+    mat-dialog-close
+  >
+    Close
+  </button>
+  <button
+    [disabled]="!formGroup.valid"
+    stateManager
+    [monitor]="postMonitor"
+    [verifyWith]="verify"
+    monitorWarn
+    monitorWarnSnackbar
+    [monitorCompleteSnackbar]="ugcOperationSnackbarComponent"
+    monitorSnackbarDuration="forever"
+    mat-raised-button
+    color="primary"
+    (click)="persistUgc()"
+  >
+    Persist UGC
+    <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+  </button>
+  <mat-checkbox
+    class="sf-verify-checkbox"
+    #verify
+    stateManager
+    [permissionAttribute]="persistUgcPermAttribute"
+    [permissionTitle]="service.title"
+    matTooltip="Verify"
+    >Verify</mat-checkbox
+  >
+</mat-dialog-actions>

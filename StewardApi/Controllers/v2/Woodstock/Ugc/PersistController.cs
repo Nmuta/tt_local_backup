@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -31,16 +32,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [Tags("UGC", "Woodstock")]
     public class PersistController : V2WoodstockControllerBase
     {
-        private readonly IWoodstockStorefrontProvider storefrontProvider;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="PersistController"/> class.
         /// </summary>
-        public PersistController(IWoodstockStorefrontProvider storefrontProvider)
+        public PersistController()
         {
-            storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
-
-            this.storefrontProvider = storefrontProvider;
         }
 
         /// <summary>
@@ -51,15 +47,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.UgcItem, ActionAreaLogTags.Action | ActionAreaLogTags.Ugc)]
         [Authorize(Policy = UserAttribute.PersistUgc)]
-        public async Task<IActionResult> Post(string id)
+        public async Task<IActionResult> Post(string id, [FromBody] PersistUgcOverrides overrides)
         {
+            // The overrides object should not be null, but it's fine for the strings inside to be empty.
+            // TODO are there length limits to title or description when persisting UGC?
+            overrides.ShouldNotBeNull(nameof(overrides));
+
             if (!Guid.TryParse(id, out var ugcId))
             {
                 throw new BadRequestStewardException($"'{id}' was not parseable as a GUID.");
             }
 
             var liveOps = this.WoodstockServices.Value.LiveOpsService;
-            var result = await liveOps.PersistUgcFile(ugcId, string.Empty, string.Empty).ConfigureAwait(true);
+            var result = await liveOps.PersistUgcFile(ugcId, overrides.Title, overrides.Description).ConfigureAwait(true);
 
             // TODO: Clean up this output model.
             return this.Ok(result);

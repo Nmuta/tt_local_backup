@@ -483,11 +483,14 @@ export class WoodstockService {
     );
   }
 
-  /** Persist UGC item to the system user. */
-  public persistUgc$(ugcId: string): Observable<PersistedItemResult> {
+  /**
+   * Persist UGC item to the system user. 
+   * Can optionally pas in title and description to override on persisted item.
+   */
+  public persistUgc$(ugcId: string, title: string = '', description: string = ''): Observable<PersistedItemResult> {
     return this.apiService.postRequest$<PersistedItemResult>(
       `${this.basePathV2}/ugc/${ugcId}/persist`,
-      null,
+      {title: title, description: description},
     );
   }
 
