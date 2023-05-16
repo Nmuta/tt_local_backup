@@ -156,7 +156,7 @@
                 <td mat-cell *matCellDef="let entry">
                   <div *waitForMonitor="entry.monitor">
                     <verify-button
-                      #verifyBtn
+                      #verifyAbandonBtn
                       [permissionAttribute]="permAttribute"
                       [permissionTitle]="gameTitle"
                     ></verify-button>
@@ -166,7 +166,7 @@
                       (click)="abandonPullRequest(entry)"
                       clickStop
                       stateManager
-                      [verifyWithV2]="verifyBtn"
+                      [verifyWithV2]="verifyAbandonBtn"
                     >
                       Abandon
                       <mat-icon>delete</mat-icon>

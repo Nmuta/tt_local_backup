@@ -92,7 +92,7 @@
           Unselect all
         </button>
         <verify-button
-          #verifyBtnMultiDelete
+          #verifyMultiDeleteScoresBtn
           [permissionAttribute]="permAttribute"
           [permissionTitle]="gameTitle"
         ></verify-button>
@@ -100,7 +100,7 @@
           mat-raised-button
           color="warn"
           [disabled]="selectedScores?.length <= 0"
-          [verifyWithV2]="verifyBtnMultiDelete"
+          [verifyWithV2]="verifyMultiDeleteScoresBtn"
           (click)="deleteScores(selectedScores)"
           clickStop
           stateManager
@@ -237,7 +237,7 @@
 
               <div class="delete-score">
                 <verify-button
-                  #verifyBtn
+                  #verifyDeleteScoresBtn
                   [permissionAttribute]="permAttribute"
                   [permissionTitle]="gameTitle"
                 ></verify-button>
@@ -245,7 +245,7 @@
                   mat-raised-button
                   color="warn"
                   [disabled]="selectedScores?.length > 0"
-                  [verifyWithV2]="verifyBtn"
+                  [verifyWithV2]="verifyDeleteScoresBtn"
                   (click)="deleteScores([entry])"
                   clickStop
                   stateManager

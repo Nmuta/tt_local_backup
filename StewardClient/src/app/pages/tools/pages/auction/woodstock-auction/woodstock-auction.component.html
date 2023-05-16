@@ -14,7 +14,7 @@
   </help-popover-icon>
   <mat-card-actions align="end">
     <verify-button
-      #verifyBtn
+      #verifyDeleteBtn
       [permissionAttribute]="deletePermAttribute"
       [permissionTitle]="gameTitle"
     ></verify-button>
@@ -23,7 +23,7 @@
       color="warn"
       clickStop
       stateManager
-      [verifyWithV2]="verifyBtn"
+      [verifyWithV2]="verifyDeleteBtn"
       [monitor]="postCancelMonitor"
       monitorDisable
       (click)="onCancel()"

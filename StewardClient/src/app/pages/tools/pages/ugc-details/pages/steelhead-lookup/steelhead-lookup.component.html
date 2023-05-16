@@ -44,7 +44,7 @@
             </button>
             <div class="sf-horizontal">
               <verify-button
-                #verifyBtn
+                #verifyReportBtn
                 [permissionAttribute]="reportPermAttribute"
                 [permissionTitle]="gameTitle"
               ></verify-button>
@@ -52,7 +52,7 @@
                 class="sf-action-list-margins sf-grow-1"
                 mat-raised-button
                 color="warn"
-                [verifyWithV2]="verifyBtn"
+                [verifyWithV2]="verifyReportBtn"
                 (click)="reportUgcItem()"
                 stateManager
                 [monitor]="reportMonitor"

@@ -61,7 +61,7 @@
   </button>
   <verify-button
     [disabled]="!formGroup.valid"
-    #verifyBtn
+    #verifyUpdateBtn
     [permissionAttribute]="featureUgcPermAttribute"
     [permissionTitle]="gameTitle"
   ></verify-button>
@@ -69,7 +69,7 @@
     [disabled]="!formGroup.valid"
     stateManager
     [monitor]="postMonitor"
-    [verifyWithV2]="verifyBtn"
+    [verifyWithV2]="verifyUpdateBtn"
     monitorDisable
     mat-raised-button
     color="primary"

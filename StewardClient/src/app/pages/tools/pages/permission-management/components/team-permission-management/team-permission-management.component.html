@@ -13,13 +13,13 @@
         <mat-card-title>Manage Team</mat-card-title>
         <mat-card-subtitle>Add and remove users within as team</mat-card-subtitle>
         <div class="sf-spacer"></div>
-        <verify-button [disabled]="!selectedTeam" #verifyBtnDelete></verify-button>
+        <verify-button [disabled]="!selectedTeam" #verifyDeleteBtn></verify-button>
         <button
           mat-raised-button
           color="warn"
           (click)="deleteTeam()"
           stateManager
-          [verifyWithV2]="verifyBtnDelete"
+          [verifyWithV2]="verifyDeleteBtn"
           [monitor]="deleteTeamMonitor"
           monitorDisable
         >

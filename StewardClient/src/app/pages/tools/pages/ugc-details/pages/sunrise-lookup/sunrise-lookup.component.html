@@ -44,7 +44,7 @@
             <div class="sf-horizontal">
               <verify-button
                 [disabled]="!canHideUgc"
-                #verifyBtn
+                #verifyHideBtn
                 [permissionAttribute]="hidePermAttribute"
                 [permissionTitle]="gameTitle"
               ></verify-button>
@@ -52,7 +52,7 @@
                 class="sf-action-list-margins sf-grow-1"
                 mat-raised-button
                 color="warn"
-                [verifyWithV2]="verifyBtn"
+                [verifyWithV2]="verifyHideBtn"
                 (click)="hideUgcItem()"
                 stateManager
                 [monitor]="hideMonitor"

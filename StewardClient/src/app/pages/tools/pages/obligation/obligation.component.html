@@ -90,7 +90,7 @@
 
       <div>
         <verify-button
-          #verifyBtnConfirmPost
+          #verifyConfirmPostBtn
           [permissionAttribute]="permAttribute"
           matTooltip="This operation is UNSAFE. It can force replace a pipeline into a bad state. Check to acknowledge."
         ></verify-button>
@@ -101,7 +101,7 @@
           clickStop
           stateManager
           [disabled]="!formGroup.valid"
-          [verifyWithV2]="verifyBtnConfirmPost"
+          [verifyWithV2]="verifyConfirmPostBtn"
           [monitor]="postMonitor"
           [waitOnMonitors]="allMonitors"
           monitorDisable
@@ -116,7 +116,7 @@
 
       <div>
         <verify-button
-          #verifyBtnConfirmDelete
+          #verifyConfirmDeleteBtn
           [permissionAttribute]="permAttribute"
           matTooltip="This operation is UNSAFE. It permanently deletes a pipeline. Check to acknowledge."
         ></verify-button>
@@ -127,7 +127,7 @@
           clickStop
           stateManager
           [disabled]="!formGroup.valid"
-          [verifyWithV2]="verifyBtnConfirmDelete"
+          [verifyWithV2]="verifyConfirmDeleteBtn"
           [monitor]="deleteMonitor"
           [waitOnMonitors]="allMonitors"
           monitorDisable
