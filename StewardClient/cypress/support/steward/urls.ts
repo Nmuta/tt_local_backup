@@ -53,6 +53,10 @@ export const stewardUrls = {
     carDetails: {
       default: '/app/tools/car-details',
       woodstock: '/app/tools/car-details/woodstock',
+    leaderboards: {
+      default: '/app/tools/leaderboards',
+      steelhead: '/app/tools/leaderboards/steelhead',
+      woodstock: '/app/tools/leaderboards/woodstock',
     },
   },
 };
