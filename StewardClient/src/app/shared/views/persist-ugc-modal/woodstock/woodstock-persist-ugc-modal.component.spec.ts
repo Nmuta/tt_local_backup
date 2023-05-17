@@ -27,7 +27,9 @@ describe('WoodstockPersistUgcModalComponent', () => {
       ],
       declarations: [WoodstockPersistUgcModalComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService(),         
+      providers: [
+        ...createMockMsalServices(),
+        createMockLoggerService(),
         {
           provide: MatDialogRef,
           useValue: { close: () => null, beforeClosed: () => of() },
@@ -35,7 +37,8 @@ describe('WoodstockPersistUgcModalComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: { id: faker.datatype.uuid() } as PlayerUgcItem,
-        },],
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPersistUgcModalComponent);

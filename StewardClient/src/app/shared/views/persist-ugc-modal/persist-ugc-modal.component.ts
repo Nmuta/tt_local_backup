@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { PersistedItemResult, PlayerUgcItem, UgcOperationResult } from '@models/player-ugc-item';
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
 export interface PersistUgcService {
-  title: GameTitle,
+  title: GameTitle;
   persistUgc$: (
     itemId: string,
     title: string,
@@ -24,8 +25,7 @@ export interface PersistUgcService {
   templateUrl: './persist-ugc-modal.component.html',
   styleUrls: ['./persist-ugc-modal.component.scss'],
 })
-
-export class PersistUgcModalComponent extends BaseComponent{
+export class PersistUgcModalComponent extends BaseComponent {
   /** Service used to persist UGC. */
   @Input() service: PersistUgcService;
 
@@ -42,38 +42,39 @@ export class PersistUgcModalComponent extends BaseComponent{
 
   public ugcOperationSnackbarComponent = UgcOperationSnackbarComponent;
 
-  constructor(
-  ) {
+  constructor(protected dialogRef: MatDialogRef<PersistUgcModalComponent>) {
     super();
   }
 
-  /** Sets featured status. */
+  /** Persist the UGC item. */
   public persistUgc(): void {
     if (!this.formGroup.valid) {
       return;
     }
 
     this.postMonitor = this.postMonitor.repeat();
+    this.dialogRef.disableClose = true;
 
-    this.service.persistUgc$(
-      this.ugcItem.id,
-      this.formControls.title.value,
-      this.formControls.description.value,
-    )
-    .pipe(
-      // The custom success snackbar expects a UgcOperationResult as the monitor value
-      // Mapping must be done above the monitor single fire for it to use mapped result
-      map(
-        result =>
-          ({
-            gameTitle: GameTitle.FH5,
-            fileId: result.newFileId,
-            allowOpenInNewTab: true,
-          } as UgcOperationResult),
-      ),
-      this.postMonitor.monitorSingleFire(),
-      takeUntil(this.onDestroy$),
-    )
-    .subscribe();
+    this.service
+      .persistUgc$(
+        this.ugcItem.id,
+        this.formControls.title.value,
+        this.formControls.description.value,
+      )
+      .pipe(
+        // The custom success snackbar expects a UgcOperationResult as the monitor value
+        // Mapping must be done above the monitor single fire for it to use mapped result
+        map(
+          result =>
+            ({
+              gameTitle: GameTitle.FH5,
+              fileId: result.newFileId,
+              allowOpenInNewTab: true,
+            } as UgcOperationResult),
+        ),
+        this.postMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(_ => (this.dialogRef.disableClose = false));
   }
 }

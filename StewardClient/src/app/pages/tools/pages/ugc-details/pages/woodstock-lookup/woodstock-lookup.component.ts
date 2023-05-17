@@ -250,17 +250,17 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     }
 
     this.dialog
-    .open(WoodstockPersistUgcModalComponent, {
-      data: this.ugcItem,
-    })
-    .afterClosed()
-    .pipe(
-      filter(data => !!data),
-      takeUntil(this.onDestroy$),
-    )
-    .subscribe((response: WoodstockPlayerUgcItem) => {
-      this.ugcItem = response;
-    });
+      .open(WoodstockPersistUgcModalComponent, {
+        data: this.ugcItem,
+      })
+      .afterClosed()
+      .pipe(
+        filter(data => !!data),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((response: WoodstockPlayerUgcItem) => {
+        this.ugcItem = response;
+      });
 
     // this.persistMonitor = this.persistMonitor.repeat();
 
