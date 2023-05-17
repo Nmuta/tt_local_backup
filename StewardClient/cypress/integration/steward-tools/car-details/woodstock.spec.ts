@@ -20,7 +20,7 @@ context('Steward / Support / Car Details / Woodstock', () => {
       cy.contains('mat-card-header', 'Car Flags').should('exist');
     });
 
-    it('Should redirect to the default page when pressing the "clear input" button', () =>{
+    it('Should redirect to the default page when pressing the "clear input" button', () => {
       cy.visit(stewardUrls.tools.carDetails.woodstock + '/1006');
       cy.contains('mat-icon', 'close').click();
       cy.contains('mat-card-header', 'Car Details').should('not.exist');
