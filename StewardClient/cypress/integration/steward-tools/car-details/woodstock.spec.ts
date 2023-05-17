@@ -17,6 +17,14 @@ context('Steward / Support / Car Details / Woodstock', () => {
       cy.contains('mat-option', 'Ferrari FXX (2005) [1006]').wait(5000).click();
       waitForProgressSpinners();
       cy.contains('mat-card-header', 'Car Details').should('exist');
+      cy.contains('mat-card-header', 'Car Flags').should('exist');
+    });
+
+    it('Should redirect to the default page when pressing the "clear input" button', () =>{
+      cy.visit(stewardUrls.tools.carDetails.woodstock + '/1006');
+      cy.contains('mat-icon', 'close').click();
+      cy.contains('mat-card-header', 'Car Details').should('not.exist');
+      cy.contains('mat-card-header', 'Car Flags').should('not.exist');
     });
   });
 
@@ -32,6 +40,7 @@ context('Steward / Support / Car Details / Woodstock', () => {
       cy.visit(stewardUrls.tools.carDetails.woodstock + '/1006');
       waitForProgressSpinners();
       cy.contains('mat-card-header', 'Car Details').should('exist');
+      cy.contains('mat-card-header', 'Car Flags').should('exist');
     });
   });
 });
