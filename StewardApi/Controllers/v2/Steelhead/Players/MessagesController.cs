@@ -76,14 +76,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             //communityMessage.Xuids.EnsureValidXuids();
+            communityMessage.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.LocalizedTitleID));
             communityMessage.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.LocalizedMessageID));
             communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
-            await this.EnsurePlayersExist(this.Services, communityMessage.Xuids).ConfigureAwait(true);
+            await this.Services.EnsurePlayersExistAsync(communityMessage.Xuids).ConfigureAwait(true);
 
-            if (!Guid.TryParse(communityMessage.LocalizedMessageID, out var localizedMessageGuid))
-            {
-                throw new BadRequestStewardException("Message could not be parsed as GUID.");
-            }
+            var localizedTitleGuid = communityMessage.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
+            var localizedMessageGuid = communityMessage.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -96,8 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             {
                 results = await this.Services.NotificationManagementService.SendMessage(
                     communityMessage.Xuids.ToArray(),
-                    // TODO: Update from test string (https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1491290)
-                    Guid.Parse("3b7e0ead-0631-4e7a-8e65-6d27fec35e7c"),
+                    localizedTitleGuid,
                     localizedMessageGuid,
                     communityMessage.StartTimeUtc,
                     communityMessage.ExpireTimeUtc,
