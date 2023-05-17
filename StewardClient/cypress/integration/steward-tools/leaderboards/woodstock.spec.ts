@@ -27,7 +27,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.visit(stewardUrls.tools.leaderboards.default);
     });
 
-    it('should be on Sunrise', () => {
+    it('should be on Woodstock', () => {
       cy.contains('a', 'FH5').should('have.class', 'mat-stroked-button');
     });
 

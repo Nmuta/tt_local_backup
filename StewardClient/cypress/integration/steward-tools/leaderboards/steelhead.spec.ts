@@ -25,7 +25,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.visit(stewardUrls.tools.leaderboards.steelhead);
     });
 
-    it('should be on Woodstock', () => {
+    it('should be on Steelhead', () => {
       cy.contains('a', 'FM').should('have.class', 'mat-stroked-button');
     });
 
