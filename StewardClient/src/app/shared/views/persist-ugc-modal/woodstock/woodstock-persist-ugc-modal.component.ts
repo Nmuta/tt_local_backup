@@ -18,7 +18,7 @@ export class WoodstockPersistUgcModalComponent {
 
   constructor(
     private readonly woodstockService: WoodstockService,
-    @Inject(MAT_DIALOG_DATA) protected data: PlayerUgcItem,
+    @Inject(MAT_DIALOG_DATA) public data: PlayerUgcItem,
   ) {
     this.service = {
       title: GameTitle.FH5,
