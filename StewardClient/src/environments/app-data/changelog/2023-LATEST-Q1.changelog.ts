@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Allow override of persisted UGC title and description',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
+      uuid: 'b831d4f8-7321-496e-a5d5-165886940756',
+      shortText: 'Allow selection of localized string for message title',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '3341b310-081c-4363-8696-8f18d95f4db8',
       shortText: 'Display Title ID as tooltip in player profile chip',

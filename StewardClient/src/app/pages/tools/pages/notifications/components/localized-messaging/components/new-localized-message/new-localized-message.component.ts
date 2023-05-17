@@ -9,7 +9,10 @@ import { values } from 'lodash';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 
-export type LocalizedMessageWithEnglishPreview = LocalizedMessage & { englishText: string };
+export type LocalizedMessageWithEnglishPreview = LocalizedMessage & {
+  englishMessageText: string;
+  englishTitleText: string;
+};
 
 /** Outputs a new localized message. */
 @Component({
@@ -48,6 +51,7 @@ export class NewLocalizedMessageComponent implements OnChanges {
   public notificationTypes: string[] = values(NotificationType);
 
   public formControls = {
+    localizedTitleInfo: new FormControl({}, [Validators.required]),
     localizedMessageInfo: new FormControl({}, [Validators.required]),
     dateRange: new FormControl(this.dateRange, [Validators.required]),
     deviceType: new FormControl(DeviceType.All, [Validators.required]),
@@ -67,9 +71,13 @@ export class NewLocalizedMessageComponent implements OnChanges {
     }
 
     if (!!this.pendingLocalizedMessage) {
+      this.formControls.localizedTitleInfo.setValue({
+        id: this.pendingLocalizedMessage.localizedTitleId,
+        englishText: this.pendingLocalizedMessage.englishTitleText,
+      });
       this.formControls.localizedMessageInfo.setValue({
         id: this.pendingLocalizedMessage.localizedMessageId,
-        englishText: this.pendingLocalizedMessage.englishText,
+        englishText: this.pendingLocalizedMessage.englishMessageText,
       });
       this.formControls.dateRange.setValue({
         start: this.pendingLocalizedMessage.startTimeUtc,
@@ -86,8 +94,10 @@ export class NewLocalizedMessageComponent implements OnChanges {
 
   /** Create message */
   public createMessage(): void {
+    const title = this.formControls.localizedTitleInfo.value.id;
+    const englishTitleText = this.formControls.localizedTitleInfo.value.englishText;
     const message = this.formControls.localizedMessageInfo.value.id;
-    const englishText = this.formControls.localizedMessageInfo.value.englishText;
+    const englishMessageText = this.formControls.localizedMessageInfo.value.englishText;
     const range = this.formControls.dateRange.value as DatetimeRangePickerFormValue;
     const startTime = range?.start;
     const endTime = range?.end;
@@ -95,12 +105,14 @@ export class NewLocalizedMessageComponent implements OnChanges {
     const deviceType = this.allowDeviceTypeFilter ? this.formControls.deviceType.value : null;
 
     this.emitNewLocalizedMessage.emit({
+      localizedTitleId: title,
+      englishTitleText: englishTitleText,
       localizedMessageId: message,
+      englishMessageText: englishMessageText,
       startTimeUtc: startTime,
       expireTimeUtc: endTime,
       deviceType: deviceType,
       notificationType: notificationType,
-      englishText: englishText,
     } as LocalizedMessageWithEnglishPreview);
   }
 }

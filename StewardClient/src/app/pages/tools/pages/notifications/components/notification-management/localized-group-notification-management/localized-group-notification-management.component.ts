@@ -10,7 +10,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { chain, max } from 'lodash';
 import { LspGroup } from '@models/lsp-group';
 import { GuidLikeString } from '@models/extended-types';
-import { GroupNotification } from '@models/notifications.model';
+import { LocalizedGroupNotification } from '@models/notifications.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { renderDelay } from '@helpers/rxjs';
 import { DateValidators } from '@shared/validators/date-validators';
@@ -23,7 +23,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 export interface LocalizedGroupMessagingManagementContract {
   gameTitle: GameTitle;
   selectLocalizedStringService: SelectLocalizedStringContract;
-  getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]>;
+  getGroupNotifications$(lspGroupId: BigNumber): Observable<LocalizedGroupNotification[]>;
   postEditLspGroupCommunityMessage$(
     lspGroupId: BigNumber,
     notificationId: string,
@@ -39,7 +39,7 @@ export interface FormGroupNotificationEntry {
   edit?: boolean;
   postMonitor: ActionMonitor;
   deleteMonitor: ActionMonitor;
-  notification: GroupNotification;
+  notification: LocalizedGroupNotification;
   isEditable: boolean;
   tooltip: string;
 }
@@ -66,7 +66,7 @@ export class LocalizedGroupNotificationManagementComponent
   public readonly messageMaxLength: number = 512;
 
   public deviceTypes: string[] = Object.values(DeviceType);
-  public rawNotifications: GroupNotification[];
+  public rawNotifications: LocalizedGroupNotification[];
   public notifications = new MatTableDataSource<FormGroupNotificationEntry>();
 
   public columnsToDisplay = ['message', 'metadata', 'actions'];
@@ -139,7 +139,7 @@ export class LocalizedGroupNotificationManagementComponent
   }
 
   /** Checks if GroupNotification is of an editable type */
-  public isEditable(entry: GroupNotification): boolean {
+  public isEditable(entry: LocalizedGroupNotification): boolean {
     switch (entry?.notificationType) {
       case 'CommunityMessageNotificationV2':
       case 'PatchNotesMessageNotification':
@@ -150,7 +150,7 @@ export class LocalizedGroupNotificationManagementComponent
   }
 
   /** Generates Edit Tooltip */
-  public generateEditTooltip(entry: GroupNotification): string {
+  public generateEditTooltip(entry: LocalizedGroupNotification): string {
     if (this.isEditable(entry)) {
       return 'Edit message properties';
     } else {
@@ -162,6 +162,7 @@ export class LocalizedGroupNotificationManagementComponent
   public updateNotificationEntry(entry: FormGroupNotificationEntry): void {
     const notificationId = entry.notification.notificationId as string;
     const entryMessage: LocalizedMessage = {
+      localizedTitleId: entry.formGroup.controls.localizedTitleInfo.value?.id as string,
       localizedMessageId: entry.formGroup.controls.localizedMessageInfo.value?.id as string,
       deviceType: entry.formGroup.controls.deviceType.value as string,
       startTimeUtc: entry.notification.sentDateUtc,
@@ -206,6 +207,7 @@ export class LocalizedGroupNotificationManagementComponent
       v => v.notificationId == entry.notification.notificationId,
     );
     entry.formGroup.controls.expireDateUtc.setValue(rawEntry.expirationDateUtc);
+    entry.formGroup.controls.localizedTitleInfo.setValue(null);
     entry.formGroup.controls.localizedMessageInfo.setValue(null);
     entry.formGroup.controls.deviceType.setValue(rawEntry.deviceType);
     entry.postMonitor = new ActionMonitor('Edit Notification');
@@ -217,9 +219,13 @@ export class LocalizedGroupNotificationManagementComponent
     entry.edit = true;
   }
 
-  private prepareNotifications(groupNotification: GroupNotification): FormGroupNotificationEntry {
+  private prepareNotifications(
+    groupNotification: LocalizedGroupNotification,
+  ): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), groupNotification.sentDateUtc]);
     const formControls = {
+      localizedTitleInfo: new FormControl({ id: '', englishText: groupNotification.title }), //Replace with line below once we have working title editing
+      //localizedTitleInfo: new FormControl({}, [Validators.required]),
       localizedMessageInfo: new FormControl({}, [Validators.required]),
       deviceType: new FormControl(groupNotification.deviceType),
       expireDateUtc: new FormControl(groupNotification.expirationDateUtc, [
@@ -251,9 +257,10 @@ export class LocalizedGroupNotificationManagementComponent
   }
 
   private replaceEntry(entry: FormGroupNotificationEntry): void {
-    const newEntry: GroupNotification = {
+    const newEntry: LocalizedGroupNotification = {
       notificationId: entry.notification.notificationId,
       groupId: this.selectedLspGroup.id,
+      title: entry.formGroup.controls.localizedTitleInfo.value?.englishText,
       message: entry.formGroup.controls.localizedMessageInfo.value?.englishText,
       hasDeviceType: false,
       deviceType: entry.formGroup.controls.deviceType.value,

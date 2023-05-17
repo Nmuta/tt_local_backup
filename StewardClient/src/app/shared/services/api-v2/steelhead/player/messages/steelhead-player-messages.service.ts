@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LocalizedMessage } from '@models/community-message';
-import { PlayerNotification } from '@models/notifications.model';
+import { LocalizedPlayerNotification } from '@models/notifications.model';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ export class SteelheadPlayerMessagesService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the status of a player's notifications. */
-  public getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {
+  public getPlayerNotifications$(xuid: BigNumber): Observable<LocalizedPlayerNotification[]> {
     return this.api.getRequest$(`${this.basePath}/${xuid}/messages`);
   }
 

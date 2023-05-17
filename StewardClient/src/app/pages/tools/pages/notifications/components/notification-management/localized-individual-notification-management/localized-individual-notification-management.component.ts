@@ -8,7 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DateTime } from 'luxon';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { chain, max } from 'lodash';
-import { PlayerNotification } from '@models/notifications.model';
+import { LocalizedPlayerNotification } from '@models/notifications.model';
 import { MatPaginator } from '@angular/material/paginator';
 import BigNumber from 'bignumber.js';
 import { DateValidators } from '@shared/validators/date-validators';
@@ -27,7 +27,7 @@ export interface LocalizedIndividualMessagingManagementContract {
     notificationId: string,
     localizedMessage: LocalizedMessage,
   ): Observable<void>;
-  getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]>;
+  getPlayerNotifications$(xuid: BigNumber): Observable<LocalizedPlayerNotification[]>;
   deletePlayerCommunityMessage$(xuid: BigNumber, notificationId: string): Observable<void>;
 }
 
@@ -38,7 +38,7 @@ export interface FormGroupNotificationEntry {
   edit?: boolean;
   postMonitor: ActionMonitor;
   deleteMonitor: ActionMonitor;
-  notification: PlayerNotification;
+  notification: LocalizedPlayerNotification;
   isEditable: boolean;
   tooltip: string;
 }
@@ -64,10 +64,10 @@ export class LocalizedIndividualNotificationManagementComponent
   private readonly getNotifications$ = new Subject<void>();
   public readonly messageMaxLength: number = 512;
 
-  public rawNotifications: PlayerNotification[];
+  public rawNotifications: LocalizedPlayerNotification[];
   public notifications = new MatTableDataSource<FormGroupNotificationEntry>();
 
-  public columnsToDisplay = ['message', 'metadata', 'actions'];
+  public columnsToDisplay = ['title', 'message', 'metadata', 'actions'];
 
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public allMonitors = [this.getMonitor];
@@ -137,7 +137,7 @@ export class LocalizedIndividualNotificationManagementComponent
   }
 
   /** Checks if PlayerNotification is of an editable type */
-  public isEditable(entry: PlayerNotification): boolean {
+  public isEditable(entry: LocalizedPlayerNotification): boolean {
     switch (entry?.notificationType) {
       case 'CommunityMessageNotificationV2':
       case 'PatchNotesMessageNotification':
@@ -148,7 +148,7 @@ export class LocalizedIndividualNotificationManagementComponent
   }
 
   /** Generates Edit Tooltip */
-  public generateEditTooltip(entry: PlayerNotification): string {
+  public generateEditTooltip(entry: LocalizedPlayerNotification): string {
     if (this.isEditable(entry)) {
       return 'Edit message properties';
     } else {
@@ -160,6 +160,7 @@ export class LocalizedIndividualNotificationManagementComponent
   public updateNotificationEntry(entry: FormGroupNotificationEntry): void {
     const notificationId = entry.notification.notificationId as string;
     const entryMessage: LocalizedMessage = {
+      localizedTitleId: entry.formGroup.controls.localizedTitleInfo.value?.id as string,
       localizedMessageId: entry.formGroup.controls.localizedMessageInfo.value?.id as string,
       startTimeUtc: entry.notification.sentDateUtc,
       expireTimeUtc: entry.formGroup.controls.expireDateUtc.value,
@@ -204,6 +205,7 @@ export class LocalizedIndividualNotificationManagementComponent
     );
 
     entry.formGroup.controls.expireDateUtc.setValue(rawEntry.expirationDateUtc);
+    entry.formGroup.controls.localizedTitleInfo.setValue(null);
     entry.formGroup.controls.localizedMessageInfo.setValue(null);
     entry.postMonitor = new ActionMonitor('Edit Notification');
     entry.deleteMonitor = new ActionMonitor('Delete Notification');
@@ -214,9 +216,13 @@ export class LocalizedIndividualNotificationManagementComponent
     entry.edit = true;
   }
 
-  private prepareNotifications(playerNotification: PlayerNotification): FormGroupNotificationEntry {
+  private prepareNotifications(
+    playerNotification: LocalizedPlayerNotification,
+  ): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), playerNotification.sentDateUtc]);
     const formControls = {
+      localizedTitleInfo: new FormControl({ id: '', englishText: playerNotification.title }), //Replace with line below once we have working title editing
+      //localizedTitleInfo: new FormControl({}, [Validators.required]),
       localizedMessageInfo: new FormControl({}, [Validators.required]),
       expireDateUtc: new FormControl(playerNotification.expirationDateUtc, [
         Validators.required,
@@ -248,8 +254,9 @@ export class LocalizedIndividualNotificationManagementComponent
   }
 
   private replaceEntry(entry: FormGroupNotificationEntry): void {
-    const newEntry: PlayerNotification = {
+    const newEntry: LocalizedPlayerNotification = {
       notificationId: entry.notification.notificationId,
+      title: entry.formGroup.controls.localizedTitleInfo.value?.englishText,
       message: entry.formGroup.controls.localizedMessageInfo.value?.englishText,
       isRead: entry.notification.isRead,
       notificationType: entry.notification.notificationType,
