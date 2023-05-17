@@ -1,9 +1,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
+import faker from '@faker-js/faker';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
+import { PlayerUgcItem } from '@models/player-ugc-item';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
@@ -31,6 +33,10 @@ describe('PersistUgcModalComponent', () => {
         {
           provide: MatDialogRef,
           useValue: { close: () => null, beforeClosed: () => of() },
+        },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: { id: faker.datatype.uuid() } as PlayerUgcItem,
         },
       ],
     }).compileComponents();

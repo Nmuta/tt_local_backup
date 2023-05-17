@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import faker from '@faker-js/faker';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
@@ -9,6 +9,7 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
+import { of } from 'rxjs';
 import { WoodstockPersistUgcModalComponent } from './woodstock-persist-ugc-modal.component';
 
 describe('WoodstockPersistUgcModalComponent', () => {
@@ -29,6 +30,10 @@ describe('WoodstockPersistUgcModalComponent', () => {
       providers: [
         ...createMockMsalServices(),
         createMockLoggerService(),
+        {
+          provide: MatDialogRef,
+          useValue: { close: () => null, beforeClosed: () => of() },
+        },
         {
           provide: MAT_DIALOG_DATA,
           useValue: { id: faker.datatype.uuid() } as PlayerUgcItem,
