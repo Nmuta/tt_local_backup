@@ -28,49 +28,39 @@
           </tr>
           <tr>
             <th>Car Id</th>
-            <td>{{ data.car.carId }}</td>
+            <td>{{ data.carId }}</td>
           </tr>
           <tr>
             <th>Car Name</th>
-            <td>{{ data.car.modelShort }}</td>
+            <td>{{ data.modelShort }}</td>
           </tr>
           <tr>
             <th>Car Media Name</th>
-            <td>{{ data.car.mediaName }}</td>
+            <td>{{ data.mediaName }}</td>
           </tr>
-          <ng-container *waitForMonitor="getActionMonitor">
+          <tr>
+            <th>Initial Price</th>
+            <td>{{ data.baseCost }}</td>
+          </tr>
+          <ng-container *ngIf="data.salePrice === null; else saleInformation">
             <tr>
-              <th>Initial Price</th>
-              <td>{{ data.car.baseCost }}</td>
+              <th></th>
+              <td>No Discounts</td>
             </tr>
-            <ng-container *ngIf="carSale.saleInformation.length === 0; else saleInformation">
-              <tr>
-                <th></th>
-                <td>No Discounts</td>
-              </tr>
-            </ng-container>
-            <ng-template #saleInformation>
-              <tr>
-                <th>Sale Price</th>
-                <td>
-                  {{ carSale.saleInformation[0].salePrice }} ({{
-                    carSale.saleInformation[0].salePercentOff
-                  }}%)
-                </td>
-              </tr>
-              <tr>
-                <th>VIP Sale Price</th>
-                <td *ngIf="carSale.saleInformation[0].vipSalePrice > 0">
-                  {{
-                    carSale.saleInformation[0].vipSalePrice > 0
-                      ? carSale.saleInformation[0].vipSalePrice
-                      : 'N/A'
-                  }}
-                  ({{ carSale.saleInformation[0].vipSalePercentOff }}%)
-                </td>
-              </tr>
-            </ng-template>
           </ng-container>
+          <ng-template #saleInformation>
+            <tr>
+              <th>Sale Price</th>
+              <td>{{ data.salePrice }} ({{ data.salePercentOff }}%)</td>
+            </tr>
+            <tr>
+              <th>VIP Sale Price</th>
+              <td *ngIf="data.vipSalePrice > 0">
+                {{ data.vipSalePrice > 0 ? data.vipSalePrice : 'N/A' }}
+                ({{ data.vipSalePercentOff }}%)
+              </td>
+            </tr>
+          </ng-template>
         </table>
       </div>
     </div>

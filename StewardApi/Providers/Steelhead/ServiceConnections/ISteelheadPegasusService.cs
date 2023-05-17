@@ -228,16 +228,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets Car Featured Showcases.
         /// </summary>
-        Task<SteelheadLiveOpsContent.CarFeaturedShowcase[]> GetCarFeaturedShowcasesAsync();
+        Task<IEnumerable<LiveOpsContracts.CarFeaturedShowcase>> GetCarFeaturedShowcasesAsync();
 
         /// <summary>
         ///     Gets Car Sales.
         /// </summary>
-        Task<SteelheadLiveOpsContent.CarListingCategoryV2[]> GetCarSalesAsync();
+        Task<IEnumerable<LiveOpsContracts.CarSale>> GetCarSalesAsync();
 
-        /// <summary>
-        ///     Gets Car Listings.
-        /// </summary>
-        Task<SteelheadLiveOpsContent.CarListingV2[]> GetCarListingsAsync();
     }
 }

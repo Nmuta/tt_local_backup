@@ -23,19 +23,19 @@
     </table>
     <div class="scroll-pane grid">
       <mat-card *ngFor="let carSale of data.cars">
-        <mat-card-title>{{ carSale.car.carId }} - {{ carSale.car.modelShort }}</mat-card-title>
+        <mat-card-title>{{ carSale.carId }} - {{ carSale.modelShort }}</mat-card-title>
         <mat-card-content class="respect-newline">
           <table class="info-table">
             <tr>
               <th>Media Name</th>
               <td>
-                {{ carSale.car.mediaName }}
+                {{ carSale.mediaName }}
               </td>
             </tr>
             <tr>
               <th>Initial Price</th>
               <td>
-                {{ carSale.car.baseCost }}
+                {{ carSale.baseCost }}
               </td>
             </tr>
             <tr>

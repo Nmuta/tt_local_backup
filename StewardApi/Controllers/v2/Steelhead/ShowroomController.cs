@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
@@ -52,35 +53,35 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets showroom featured car showcase.
         /// </summary>
         [HttpGet("carFeatured")]
-        [SwaggerResponse(200, type: typeof(CarFeaturedShowcase[]))]
+        [SwaggerResponse(200, type: typeof(IEnumerable<LiveOpsContracts.CarFeaturedShowcase>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarFeaturedShowcases()
         {
-            CarFeaturedShowcase[] carFeaturedShowcase;
+            IEnumerable<LiveOpsContracts.CarFeaturedShowcase> carFeaturedShowcases;
 
             try
             {
-                carFeaturedShowcase = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync().ConfigureAwait(true);
+                carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync().ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to get car featured showcases.", ex);
             }
 
-            return this.Ok(carFeaturedShowcase);
+            return this.Ok(carFeaturedShowcases);
         }
 
         /// <summary>
         ///     Gets showroom car sales.
         /// </summary>
         [HttpGet("carSales")]
-        [SwaggerResponse(200, type: typeof(CarListingCategoryV2[]))]
+        [SwaggerResponse(200, type: typeof(IEnumerable<LiveOpsContracts.CarSale>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarSales()
         {
-            CarListingCategoryV2[] carSales;
+            IEnumerable<LiveOpsContracts.CarSale> carSales;
 
             try
             {
@@ -92,30 +93,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             return this.Ok(carSales);
-        }
-
-        /// <summary>
-        ///     Gets showroom car listing.
-        /// </summary>
-        [HttpGet("carListing/{carId}")]
-        [SwaggerResponse(200, type: typeof(CarListingV2))]
-        [LogTagDependency(DependencyLogTags.Pegasus)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetCarListings(int carId)
-        {
-            CarListingV2 carListingByCarId;
-
-            try
-            {
-                var carListings = await this.steelheadPegasusService.GetCarListingsAsync().ConfigureAwait(true);
-                carListingByCarId = carListings.First(x => x.CarId == carId);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to find car listing by car ID. (carId: {carId})", ex);
-            }
-
-            return this.Ok(carListingByCarId);
         }
     }
 }

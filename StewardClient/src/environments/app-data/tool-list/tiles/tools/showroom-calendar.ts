@@ -1,10 +1,10 @@
-import { GameTitle } from '@models/enums';
-import { HomeTileInfoInternal, AppIcon, NavbarTool, CommonAccessLevels } from '../../helpers';
+import { GameTitle, UserRole } from '@models/enums';
+import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const showroomCalendarTile = <HomeTileInfoInternal>{
   icon: AppIcon.ShowroomCalendarTile,
   tool: NavbarTool.ShowroomCalendar,
-  accessList: CommonAccessLevels.AdminAndGeneralUsers,
+  accessList: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
   title: 'Showroom Calendar',
   subtitle: 'View Showroom information on a day-by-day basis',
   supportedTitles: [GameTitle.FM8],

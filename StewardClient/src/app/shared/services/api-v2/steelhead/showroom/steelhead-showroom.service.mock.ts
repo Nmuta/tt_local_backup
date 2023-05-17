@@ -10,8 +10,6 @@ export class MockSteelheadShowroomService {
 
   public getSales$ = jasmine.createSpy('getCarSales').and.returnValue(of(null));
 
-  public getCarListing$ = jasmine.createSpy('getCarListing').and.returnValue(of(null));
-
   constructor(private readonly generator$: () => unknown) {}
 }
 
