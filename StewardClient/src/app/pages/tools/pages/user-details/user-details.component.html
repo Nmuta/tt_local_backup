@@ -73,6 +73,7 @@
   >
   <span class="icon-spacer"></span>
   <player-selection-single
+    [disableLookupTypes]="['t10Id']"
     [displayInSingleLine]="true"
     [specialIdentitiesAllowed]="specialIdentitiesAllowed"
     (found)="found($event)"

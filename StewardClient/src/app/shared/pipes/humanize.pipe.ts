@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { isString } from 'lodash';
+import { AcronymPipe } from './acronym.pipe';
 
 /**
  * Transform CamelCase strings to Space Case.
@@ -27,8 +28,13 @@ export function humanize(value: string): string {
   name: 'humanize',
 })
 export class HumanizePipe implements PipeTransform {
+  private acronymPipe = new AcronymPipe();
+
   /** The transform hook. */
   public transform(value: string): string {
-    return humanize(value);
+    const humanized = humanize(value);
+    const acronymized = this.acronymPipe.transform(humanized);
+
+    return acronymized;
   }
 }

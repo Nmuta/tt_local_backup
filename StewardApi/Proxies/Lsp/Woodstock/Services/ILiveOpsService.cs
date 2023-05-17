@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using LiveOpsService = Forza.WebServices.FH5_main.Generated.LiveOpsService;
 using Turn10.Services.LiveOps.FH5_main.Generated;
-using static Forza.WebServices.FM8.Generated.LiveOpsService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
 #pragma warning disable SA1516 // Blank lines
@@ -35,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// <summary>
         ///     Gets player inventory by profile id.
         /// </summary>
-        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId, ulong xuid);
+        Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileId(int profileId);
 
         /// <summary>
         ///     Persist is a mechanism to allow Community to save a player UGC file for later user. Instead of pointing
@@ -62,10 +61,5 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         ///     Gets user data by gamertag.
         /// </summary>
         Task<LiveOpsService.GetLiveOpsUserDataByGamerTagV2Output> GetLiveOpsUserDataByGamerTagV2(string gamertag);
-
-        /// <summary>
-        ///     Get player profiles.
-        /// </summary>
-        Task<GetPlayerProfilesOutput> GetPlayerProfiles(ulong xuid, int maxProfiles);
     }
 }
