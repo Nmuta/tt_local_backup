@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.Inventory)]
     public class InventoryController : V2SteelheadControllerBase
     {
-        private const int MaxProfileResults = 50;
+        private const int MaxProfileResults = 100;
         private readonly IMapper mapper;
         private readonly ILoggingService loggingService;
         private readonly ISteelheadItemsProvider itemsProvider;
@@ -135,6 +135,61 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         }
 
         /// <summary>
+        ///     Gets the player inventory based on profile id.
+        /// </summary>
+        [HttpGet("profile/{profileId}")]
+        [SwaggerResponse(200, type: typeof(SteelheadPlayerInventory))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
+        public async Task<IActionResult> GetPlayerInventory(
+            ulong xuid,
+            int profileId)
+        {
+            profileId.ShouldBeGreaterThanValue(-1);
+
+            async Task<SteelheadPlayerInventory> GetInventory()
+            {
+                var service = this.Services.LiveOpsService;
+
+                Forza.WebServices.FM8.Generated.LiveOpsService.GetAdminUserInventoryByProfileIdOutput response = null;
+
+                try
+                {
+                    response = await service.GetAdminUserInventoryByProfileId(profileId, xuid)
+                        .ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    throw new UnknownFailureStewardException($"Failed to retrieve player inventory. (profileId: {profileId})", ex);
+                }
+
+                var playerInventoryDetails = this.mapper.SafeMap<SteelheadPlayerInventory>(response.summary);
+
+                return playerInventoryDetails;
+            }
+
+            var getPlayerInventory = GetInventory();
+            var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
+
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
+            var masterInventory = await getMasterInventory.ConfigureAwait(true);
+
+            if (playerInventory == null)
+            {
+                throw new NotFoundStewardException($"No inventory found for profileId: {profileId}.");
+            }
+
+            playerInventory.SetItemDescriptions(
+                masterInventory,
+                $"Profile Id: {profileId}",
+                this.loggingService);
+
+            return this.Ok(playerInventory);
+        }
+
+        /// <summary>
         ///     Gets the player inventory profiles.
         /// </summary>
         [HttpGet("profiles")]
@@ -148,13 +203,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             IList<SteelheadInventoryProfile> inventoryProfileSummary;
-            var service = this.Services.UserInventoryManagementService;
+            var service = this.Services.LiveOpsService;
 
-            Services.LiveOps.FM8.Generated.UserInventoryManagementService.GetAdminUserProfilesOutput response = null;
+            Forza.WebServices.FM8.Generated.LiveOpsService.GetPlayerProfilesOutput response = null;
 
             try
             {
-                 response = await service.GetAdminUserProfiles(
+                 response = await service.GetPlayerProfiles(
                     xuid,
                     MaxProfileResults).ConfigureAwait(false);
             }
@@ -220,6 +275,44 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             };
 
             return this.Ok(results);
+        }
+
+        /// <summary>
+        ///     Removes inventory items.
+        /// </summary>
+        [HttpDelete("externalProfileId/{externalProfileId}/items")]
+        [SwaggerResponse(200, type: typeof(PlayerInventoryItem[]))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Inventory)]
+        [Authorize(Policy = UserAttribute.AddAndEditPlayerInventory)]
+        public async Task<IActionResult> RemovePlayerProfileItems(ulong xuid, string externalProfileId, [FromBody] SteelheadPlayerInventory inventoryUpdates)
+        {
+            var externalProfileIdGuid = externalProfileId.TryParseGuidElseThrow("External Profile ID could no be parsed as GUID.");
+
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
+            // Basic validation of all items
+            this.steelheadPlayerInventoryItemUpdateRequestValidator.Validate(inventoryUpdates, this.ModelState);
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.steelheadPlayerInventoryItemUpdateRequestValidator.GenerateErrorResponse(this.ModelState);
+                throw new InvalidArgumentsStewardException(result);
+            }
+
+            var removeCredits = inventoryUpdates.CreditRewards.Select(credit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((credit, InventoryItemType.Credits)));
+            var removeVanityItems = inventoryUpdates.VanityItems.Select(vanityItem => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((vanityItem, InventoryItemType.VanityItem)));
+            var removeItems = removeCredits.Concat(removeVanityItems);
+
+            try
+            {
+                await this.Services.LiveOpsService.LiveOpsRemoveInventoryItems(xuid, externalProfileIdGuid, removeItems.ToArray()).ConfigureAwait(true);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to update inventory items. (XUID: {xuid}) (External Profile ID: {externalProfileIdGuid})", ex);
+            }
+
+            return this.Ok();
         }
 
         /// <summary>

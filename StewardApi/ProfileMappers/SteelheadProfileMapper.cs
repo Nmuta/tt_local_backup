@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public SteelheadProfileMapper()
         {
-            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
+            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryCarItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
@@ -207,7 +207,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
             this.CreateMap<ForzaLiveryData, UgcLiveryItem>()
-                .ForMember(dest => dest.LiveryDownloadDataBase64, opt => opt.MapFrom(source => source.LiveryData))
+                //.ForMember(dest => dest.LiveryDownloadDataBase64, opt => opt.MapFrom(source => source.LiveryData))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
                 .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
@@ -260,7 +260,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
-            this.CreateMap<ForzaTuneData, UgcItem>()
+            this.CreateMap<ForzaTuneBlob, UgcTuneBlobItem>()
+                .ForMember(dest => dest.TuneBlobDownloadDataBase64, opt => opt.MapFrom(source => source.TuneData))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.TuneBlob))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
@@ -483,6 +484,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaCarUserInventoryItem, CarInventoryItem>()
                 .ForMember(dest => dest.VersionedLiveryId, opt => opt.MapFrom(source => source.versionedLiveryId))
                 .ForMember(dest => dest.VersionedTuneId, opt => opt.MapFrom(source => source.versionedTuneId));
+
+            this.CreateMap<ForzaProfile, SteelheadInventoryProfile>()
+                .ForMember(dest => dest.IsCurrent, opt => opt.MapFrom(source => source.isLastLoggedInProfile));
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)

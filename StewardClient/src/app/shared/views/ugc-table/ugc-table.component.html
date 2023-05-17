@@ -61,7 +61,7 @@
 </div>
 <mat-paginator
   [pageSizeOptions]="[5, 10, 20]"
-  (page)="getUgcThumbnailsForActiveDataset()"
+  (page)="getExtraDataForActiveDataset()"
   showFirstLastButtons
 ></mat-paginator>
 <table mat-table [dataSource]="ugcTableDataSource" multiTemplateDataRows #matTable>

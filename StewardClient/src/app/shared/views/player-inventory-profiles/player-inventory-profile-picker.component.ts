@@ -69,7 +69,9 @@ export class PlayerInventoryProfilePickerComponent
             }),
           ),
         ),
-        map(profiles => sortBy(profiles, profile => profile.isCurrent).reverse()),
+        map(profiles =>
+          sortBy(profiles, profile => [profile.isCurrent, profile.isCurrentByTitleId]).reverse(),
+        ),
         takeUntil(this.onDestroy$),
       )
       .subscribe(profiles => {
