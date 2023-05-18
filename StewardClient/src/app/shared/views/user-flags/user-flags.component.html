@@ -19,16 +19,12 @@
         </button>
         <div class="sf-spacer"></div>
 
-        <mat-checkbox
-          #verifyApply
-          stateManager
-          monitorDisable
-          [monitor]="setFlagsActionMonitor"
+        <verify-button
           [disabled]="!formGroup.dirty"
+          #verifyApplyBtn
           [permissionAttribute]="permAttribute"
           [permissionTitle]="gameTitle"
-          >Verify</mat-checkbox
-        >
+        ></verify-button>
         <button
           mat-raised-button
           color="primary"
@@ -38,7 +34,7 @@
           monitorDisable
           [monitor]="setFlagsActionMonitor"
           [disabled]="!formGroup.dirty"
-          [verifyWith]="verifyApply"
+          [verifyWithV2]="verifyApplyBtn"
         >
           Apply
           <button-spinner [monitor]="setFlagsActionMonitor" defaultIcon="save"></button-spinner>

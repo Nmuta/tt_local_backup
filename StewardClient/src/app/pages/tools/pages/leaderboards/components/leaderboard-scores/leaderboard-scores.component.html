@@ -91,11 +91,17 @@
         >
           Unselect all
         </button>
+        <verify-button
+          #verifyMultiDeleteScoresBtn
+          [disabled]="selectedScores?.length <= 0"
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
         <button
           mat-raised-button
           color="warn"
           [disabled]="selectedScores?.length <= 0"
-          [verifyWith]="verifyCheckboxMultiDelete"
+          [verifyWithV2]="verifyMultiDeleteScoresBtn"
           (click)="deleteScores(selectedScores)"
           clickStop
           stateManager
@@ -110,18 +116,6 @@
             <ng-template ngPluralCase="other">scores</ng-template>
           </span>
         </button>
-        <mat-checkbox
-          clickStop
-          #verifyCheckboxMultiDelete
-          [(ngModel)]="isMultiDeleteActive"
-          ngDefaultControl
-          stateManager
-          [permissionAttribute]="permAttribute"
-          [permissionTitle]="gameTitle"
-          matTooltip="Check to enable deletion"
-        >
-          Verify Multi-Delete
-        </mat-checkbox>
         <button
           mat-raised-button
           color="primary"
@@ -243,11 +237,17 @@
               </button>
 
               <div class="delete-score">
+                <verify-button
+                  #verifyDeleteScoresBtn
+                  [disabled]="selectedScores?.length > 0"
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="gameTitle"
+                ></verify-button>
                 <button
                   mat-raised-button
                   color="warn"
                   [disabled]="selectedScores?.length > 0"
-                  [verifyWith]="verifyCheckbox"
+                  [verifyWithV2]="verifyDeleteScoresBtn"
                   (click)="deleteScores([entry])"
                   clickStop
                   stateManager
@@ -258,16 +258,6 @@
                 >
                   Delete
                 </button>
-                <mat-checkbox
-                  stateManager
-                  [permissionAttribute]="permAttribute"
-                  [permissionTitle]="gameTitle"
-                  clickStop
-                  #verifyCheckbox
-                  matTooltip="Check to enable deletion"
-                >
-                  Verify
-                </mat-checkbox>
               </div>
             </td>
           </ng-container>

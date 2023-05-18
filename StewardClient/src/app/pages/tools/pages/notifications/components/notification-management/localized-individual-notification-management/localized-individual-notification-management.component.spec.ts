@@ -11,7 +11,7 @@ import {
   LocalizedIndividualNotificationManagementComponent,
 } from './localized-individual-notification-management.component';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { GroupNotification, PlayerNotification } from '@models/notifications.model';
+import { GroupNotification, LocalizedPlayerNotification } from '@models/notifications.model';
 import BigNumber from 'bignumber.js';
 import { LocalizedMessage } from '@models/community-message';
 import { LocalizedStringsMap } from '@models/localization';
@@ -28,7 +28,7 @@ class TestNotificationManagementService implements LocalizedIndividualMessagingM
     },
   };
   /** Get player notifications. */
-  public getPlayerNotifications$(): Observable<PlayerNotification[]> {
+  public getPlayerNotifications$(): Observable<LocalizedPlayerNotification[]> {
     return of([]);
   }
   /** Edit player notification. */
@@ -77,7 +77,7 @@ describe('LocalizedIndividualNotificationManagementComponent', () => {
   describe('Method: retrieveNotifications', () => {
     beforeEach(() => {
       mockService.getPlayerNotifications$ = jasmine
-        .createSpy('getGroupNotifications$')
+        .createSpy('getPlayerNotifications$')
         .and.returnValue(of(testGroupNotifications));
       component.getMonitor.monitorSingleFire = jasmine.createSpy('monitorSingleFire');
       component.selectedXuid = fakeBigNumber();
@@ -86,7 +86,7 @@ describe('LocalizedIndividualNotificationManagementComponent', () => {
       component.ngOnChanges();
     });
 
-    it('Should call getGroupNotifications$', () => {
+    it('Should call getPlayerNotifications$', () => {
       expect(mockService.getPlayerNotifications$).toHaveBeenCalled();
     });
 

@@ -24,6 +24,12 @@
         <mat-icon>undo</mat-icon>
       </button>
 
+      <verify-button
+        [disabled]="!!contract.error || formControl.disabled"
+        #verifyDeleteBtn
+        [permissionAttribute]="contract.permAttribute"
+        [permissionTitle]="contract.gameTitle"
+      ></verify-button>
       <button
         mat-mini-fab
         color="primary"
@@ -36,20 +42,11 @@
         monitorWarn
         monitorWarnSnackbar
         monitorCompleteSnackbar
-        [verifyWith]="verifyDelete"
+        [verifyWithV2]="verifyDeleteBtn"
         [disabled]="!!contract.error || formControl.disabled"
       >
         <mat-icon>done</mat-icon>
       </button>
-      <mat-checkbox
-        #verifyDelete
-        matTooltip="Verify Submit"
-        stateManager
-        [permissionAttribute]="contract.permAttribute"
-        [permissionTitle]="contract.gameTitle"
-        [disabled]="!!contract.error || formControl.disabled"
-        >Verify</mat-checkbox
-      >
       <inline-spinner [monitor]="submitMonitor"></inline-spinner>
     </div>
   </mat-card-title-group>

@@ -50,5 +50,14 @@ export const stewardUrls = {
     jobHistory: '/app/tools/steward-user-history',
     salus: '/app/tools/salus',
     bulkBanHistory: '/app/tools/ban-review',
+    carDetails: {
+      default: '/app/tools/car-details',
+      woodstock: '/app/tools/car-details/woodstock',
+    },
+    leaderboards: {
+      default: '/app/tools/leaderboards',
+      steelhead: '/app/tools/leaderboards/steelhead',
+      woodstock: '/app/tools/leaderboards/woodstock',
+    },
   },
 };

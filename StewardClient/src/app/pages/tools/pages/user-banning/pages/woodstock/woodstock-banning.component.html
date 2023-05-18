@@ -154,7 +154,7 @@
                 <div class="ban-action-container">
                   <verify-button
                     [disabled]="!canBan()"
-                    #verifyBtn
+                    #verifyConfirmBanBtn
                     [permissionAttribute]="permAttribute"
                     [permissionTitle]="gameTitle"
                   ></verify-button>
@@ -167,7 +167,7 @@
                     monitorDisable
                     [monitor]="banActionMonitor"
                     [disabled]="!canBan()"
-                    [verifyWithV2]="verifyBtn"
+                    [verifyWithV2]="verifyConfirmBanBtn"
                     matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
                   >
                     Ban
