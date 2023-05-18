@@ -29,6 +29,11 @@
         </mat-form-field>
       </div>
       <div class="sf-horizontal">
+        <verify-button
+          #verifyCmsOverrideBtn
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
         <button
           mat-raised-button
           color="primary"
@@ -38,21 +43,17 @@
           monitorDisable
           monitorWarnSnackbar
           monitorCompleteSnackbar
-          [verifyWith]="verifyCmsOverride"
+          [verifyWithV2]="verifyCmsOverrideBtn"
         >
           Submit CMS Override
         </button>
-        <mat-checkbox
-          #verifyCmsOverride
-          stateManager
-          [monitor]="postMonitor"
-          [permissionAttribute]="permAttribute"
-          [permissionTitle]="gameTitle"
-          matTooltip="Verify Cms Override"
-          >Verify CMS Override</mat-checkbox
-        >
       </div>
       <div class="sf-horizontal" *ngIf="hasCmsOverride">
+        <verify-button
+          #verifyDeleteCmsOverrideBtn
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
         <button
           mat-raised-button
           color="warn"
@@ -62,19 +63,10 @@
           monitorDisable
           monitorWarnSnackbar
           monitorCompleteSnackbar
-          [verifyWith]="verifyDeleteCmsOverride"
+          [verifyWithV2]="verifyDeleteCmsOverrideBtn"
         >
           Delete CMS Override
         </button>
-        <mat-checkbox
-          #verifyDeleteCmsOverride
-          stateManager
-          [monitor]="deleteMonitor"
-          [permissionAttribute]="permAttribute"
-          [permissionTitle]="gameTitle"
-          matTooltip="Verify Cms Override Removal"
-          >Verify CMS Override Removal</mat-checkbox
-        >
       </div>
     </div>
   </form>
