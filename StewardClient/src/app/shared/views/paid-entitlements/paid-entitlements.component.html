@@ -23,6 +23,7 @@
         <div class="sf-horizontal">
           <verify-button
             #verifySubmissionButton
+            [disabled]="!this.paidEntitlementFormGroup.valid"
             [permissionAttribute]="grantPaidEntitlementAttribute"
             [permissionTitle]="serviceContract.gameTitle"
           ></verify-button>

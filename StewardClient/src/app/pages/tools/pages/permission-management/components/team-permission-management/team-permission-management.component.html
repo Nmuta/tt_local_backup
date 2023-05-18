@@ -18,6 +18,7 @@
           mat-raised-button
           color="warn"
           (click)="deleteTeam()"
+          [disabled]="!selectedTeam"
           stateManager
           [verifyWithV2]="verifyDeleteBtn"
           [monitor]="deleteTeamMonitor"

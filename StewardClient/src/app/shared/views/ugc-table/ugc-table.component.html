@@ -11,6 +11,7 @@
     </button>
     <verify-button
       #verifyCheckboxHideBtn
+      [disabled]="selectedUgcs?.length <= 0"
       [permissionAttribute]="hideUgcPermission"
       [permissionTitle]="gameTitle"
     ></verify-button>

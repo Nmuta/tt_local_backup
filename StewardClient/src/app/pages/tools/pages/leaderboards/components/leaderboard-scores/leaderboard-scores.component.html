@@ -93,6 +93,7 @@
         </button>
         <verify-button
           #verifyMultiDeleteScoresBtn
+          [disabled]="selectedScores?.length <= 0"
           [permissionAttribute]="permAttribute"
           [permissionTitle]="gameTitle"
         ></verify-button>
@@ -238,6 +239,7 @@
               <div class="delete-score">
                 <verify-button
                   #verifyDeleteScoresBtn
+                  [disabled]="selectedScores?.length > 0"
                   [permissionAttribute]="permAttribute"
                   [permissionTitle]="gameTitle"
                 ></verify-button>

@@ -27,6 +27,7 @@
     [verifyWithV2]="verifyActionBtn"
     cdkFocusInitial
     (click)="commitAction()"
+    [disabled]="formGroup.invalid"
     stateManager
     [monitor]="actionMonitor"
     monitorDisable

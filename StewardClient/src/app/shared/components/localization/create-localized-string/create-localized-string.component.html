@@ -55,6 +55,7 @@
         <div class="sf-horizontal">
           <verify-button
             #verifySubmissionBtn
+            [disabled]="!formGroup.valid"
             [permissionAttribute]="permAttribute"
             [permissionTitle]="service?.gameTitle"
           ></verify-button>

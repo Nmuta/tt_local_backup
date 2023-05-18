@@ -6,8 +6,8 @@
     <div class="sf-spacer"></div>
 
     <verify-button
-      [disabled]="!formGroup.dirty || !formGroup.valid"
       #verifyApplyBtn
+      [disabled]="!formGroup.dirty || !formGroup.valid"
       [permissionAttribute]="permAttribute"
       [permissionTitle]="gameTitle"
     ></verify-button>
