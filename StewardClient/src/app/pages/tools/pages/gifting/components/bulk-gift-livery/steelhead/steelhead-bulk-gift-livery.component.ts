@@ -1,30 +1,32 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GameTitle } from '@models/enums';
+import { GuidLikeString } from '@models/extended-types';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { UgcType } from '@models/ugc-filters';
-import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';
-import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/gift/woodstock-players-gift.service';
-import { WoodstockService } from '@services/woodstock';
+import { SteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service';
+import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
+import { SteelheadPlayersGiftService } from '@services/api-v2/steelhead/players/gift/steelhead-players-gift.service';
+import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import BigNumber from 'bignumber.js';
 import { throwError } from 'rxjs';
 import { BulkGiftLiveryContract } from '../bulk-gift-livery.component';
 
-/** Woodstock gift livery. */
+/** Steelhead gift livery. */
 @Component({
-  selector: 'woodstock-bulk-gift-livery',
-  templateUrl: 'woodstock-bulk-gift-livery.component.html',
-  styleUrls: ['woodstock-bulk-gift-livery.component.scss'],
+  selector: 'steelhead-bulk-gift-livery',
+  templateUrl: 'steelhead-bulk-gift-livery.component.html',
+  styleUrls: ['steelhead-bulk-gift-livery.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => WoodstockBulkGiftLiveryComponent),
+      useExisting: forwardRef(() => SteelheadBulkGiftLiveryComponent),
       multi: true,
     },
   ],
 })
-export class WoodstockBulkGiftLiveryComponent {
+export class SteelheadBulkGiftLiveryComponent {
   /** Player identities to gift the liveries to. */
   @Input() public playerIdentities: IdentityResultAlpha[];
   /** Lsp Group to gift the liveries to. */
@@ -35,27 +37,27 @@ export class WoodstockBulkGiftLiveryComponent {
   public service: BulkGiftLiveryContract;
 
   constructor(
-    woodstockService: WoodstockService,
-    playersGiftService: WoodstockPlayersGiftService,
-    groupGiftService: WoodstockGroupGiftService,
+    private readonly steelheadLocalizationService: SteelheadLocalizationService,
+    steelheadUgcLookupService: SteelheadUgcLookupService,
+    playersGiftService: SteelheadPlayersGiftService,
+    groupGiftService: SteelheadGroupGiftService,
   ) {
     this.service = {
-      gameTitle: GameTitle.FH5,
+      gameTitle: GameTitle.FM8,
       allowSettingExpireDate: true,
-      allowSettingLocalizedMessage: false,
-      getLocalizedStrings$: () => {
-        return throwError(new Error('getLocalizedStrings$ is not supported in Woodstock'));
-      },
+      allowSettingLocalizedMessage: true,
+      getLocalizedStrings$: () => steelheadLocalizationService.getLocalizedStrings$(),
       /** Gets a player's livery. */
-      getLivery$: (liveryId: string) => {
-        return woodstockService.getPlayerUgcItem$(liveryId, UgcType.Livery);
-      },
+      getLivery$: (liveryId: string) =>
+        steelheadUgcLookupService.getPlayerUgcItem$(liveryId, UgcType.Livery),
       /** Gifts liveries to group of players. */
       giftLiveriesToPlayers$: (
         liveryIds: string[],
         xuids: BigNumber[],
         giftReason: string,
         expireAfterDays: BigNumber,
+        titleMessageId: GuidLikeString,
+        bodyMessageId: GuidLikeString,
       ) => {
         if (!xuids || xuids.length <= 0) {
           return throwError(
@@ -68,6 +70,8 @@ export class WoodstockBulkGiftLiveryComponent {
           liveryIds,
           xuids,
           expireAfterDays,
+          titleMessageId,
+          bodyMessageId,
         );
       },
       /** Gifts liveries to a LSP user group. */
@@ -76,6 +80,8 @@ export class WoodstockBulkGiftLiveryComponent {
         lspGroup: LspGroup,
         giftReason: string,
         expireAfterDays: BigNumber,
+        titleMessageId: GuidLikeString,
+        bodyMessageId: GuidLikeString,
       ) => {
         if (!lspGroup) {
           return throwError(new Error('Failed to gift livery: user group was not provided'));
@@ -86,6 +92,8 @@ export class WoodstockBulkGiftLiveryComponent {
           liveryIds,
           lspGroup.id,
           expireAfterDays,
+          titleMessageId,
+          bodyMessageId,
         );
       },
     };

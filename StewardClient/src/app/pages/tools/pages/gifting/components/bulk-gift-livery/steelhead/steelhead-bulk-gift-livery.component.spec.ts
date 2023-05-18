@@ -4,21 +4,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
-import { WoodstockBulkGiftLiveryComponent } from './woodstock-bulk-gift-livery.component';
+import { SteelheadBulkGiftLiveryComponent } from './steelhead-bulk-gift-livery.component';
 
-describe('WoodstockBulkGiftLiveryComponent', () => {
-  let component: WoodstockBulkGiftLiveryComponent;
-  let fixture: ComponentFixture<WoodstockBulkGiftLiveryComponent>;
+describe('SteelheadBulkGiftLiveryComponent', () => {
+  let component: SteelheadBulkGiftLiveryComponent;
+  let fixture: ComponentFixture<SteelheadBulkGiftLiveryComponent>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      declarations: [WoodstockBulkGiftLiveryComponent],
+      declarations: [SteelheadBulkGiftLiveryComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(WoodstockBulkGiftLiveryComponent);
+    fixture = TestBed.createComponent(SteelheadBulkGiftLiveryComponent);
     component = fixture.debugElement.componentInstance;
   });
 
