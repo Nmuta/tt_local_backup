@@ -487,6 +487,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<ForzaProfile, SteelheadInventoryProfile>()
                 .ForMember(dest => dest.IsCurrent, opt => opt.MapFrom(source => source.isLastLoggedInProfile));
+
+            this.CreateMap<ServicesLiveOps.ForzaLiveryGiftResult, GiftResponse<ulong>>()
+                .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.xuid))
+                .ForMember(dest => dest.TargetXuid, opt => opt.MapFrom(source => source.xuid))
+                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid))
+                .ForMember(dest => dest.Errors, opt => opt.MapFrom(source =>
+                    source.Success
+                        ? new List<StewardError>()
+                        : new List<StewardError>
+                        {
+                                        new ServicesFailureStewardError(
+                                            $"LSP failed to gift livery to player with XUID: {source.xuid}")
+                        }));
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)

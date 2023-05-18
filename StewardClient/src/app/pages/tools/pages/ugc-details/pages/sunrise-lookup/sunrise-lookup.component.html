@@ -42,11 +42,17 @@
               <span [matTooltip]="featureMatTooltip">Update Featured Status</span>
             </button>
             <div class="sf-horizontal">
+              <verify-button
+                [disabled]="!canHideUgc"
+                #verifyHideBtn
+                [permissionAttribute]="hidePermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
               <button
                 class="sf-action-list-margins sf-grow-1"
                 mat-raised-button
                 color="warn"
-                [verifyWith]="verifyHide"
+                [verifyWithV2]="verifyHideBtn"
                 (click)="hideUgcItem()"
                 stateManager
                 [monitor]="hideMonitor"
@@ -61,15 +67,6 @@
                 </help-popover-icon>
                 Hide UGC
               </button>
-              <mat-checkbox
-                #verifyHide
-                stateManager
-                [permissionAttribute]="hidePermAttribute"
-                [permissionTitle]="gameTitle"
-                matTooltip="Verify Deletion"
-                [disabled]="!canHideUgc"
-                >Verify</mat-checkbox
-              >
             </div>
           </div>
         </div>

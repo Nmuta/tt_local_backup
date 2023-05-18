@@ -59,10 +59,15 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let lock">
+            <verify-button
+              #verifyDeleteBtn
+              [permissionAttribute]="playFabBuildsPermAttribute"
+              [permissionTitle]="service.gameTitle"
+            ></verify-button>
             <button
               mat-raised-button
               color="warn"
-              [verifyWith]="verifyDelete"
+              [verifyWithV2]="verifyDeleteBtn"
               cdkFocusInitial
               (click)="deleteUncorrelatedBuildLock(lock)"
               stateManager
@@ -74,17 +79,6 @@
               Delete Lock
               <button-spinner [monitor]="lock.monitor" defaultIcon="delete"></button-spinner>
             </button>
-            <mat-checkbox
-              #verifyDelete
-              stateManager
-              [monitor]="lock.monitor"
-              [permissionAttribute]="playFabBuildsPermAttribute"
-              [permissionTitle]="service.gameTitle"
-              monitorDisable
-              matTooltip="Verify"
-              aria-label="Verify"
-              >Verify</mat-checkbox
-            >
           </td>
         </ng-container>
 

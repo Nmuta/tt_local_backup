@@ -13,9 +13,19 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Fix not being able to load Car Details after loading it once',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
+      uuid: '112d828e-2d37-4c76-bcfd-f5ef45619e35',
+      shortText: 'Add livery gifting for Steelhead',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
       uuid: 'b831d4f8-7321-496e-a5d5-165886940756',
       shortText: 'Allow selection of localized string for message title',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '6b040c41-8d91-44d0-b24e-347dd7dd3327',
+      shortText: 'Replace all old confirm checkboxes with V2 confirm',
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },

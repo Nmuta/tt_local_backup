@@ -1,8 +1,7 @@
 import {
   BulkLiveryGift,
-  ExpirableGift,
-  ExpirableGroupGift,
   LocalizedMessageExpirableGift,
+  LocalizedMessageExpirableGroupGift,
 } from '@models/gift';
 import { SteelheadMasterInventory } from './steelhead-master-inventory.model';
 
@@ -12,7 +11,7 @@ export interface SteelheadGift extends LocalizedMessageExpirableGift {
 }
 
 /** Model for multi-player multi-livery gift. */
-export type SteelheadBulkPlayerBulkLiveryGift = BulkLiveryGift<ExpirableGroupGift>;
+export type SteelheadBulkPlayerBulkLiveryGift = BulkLiveryGift<LocalizedMessageExpirableGroupGift>;
 
 /** Model for user group multi-livery gift. */
-export type SteelheadUserGroupBulkLiveryGift = BulkLiveryGift<ExpirableGift>;
+export type SteelheadUserGroupBulkLiveryGift = BulkLiveryGift<LocalizedMessageExpirableGift>;

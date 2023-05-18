@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
+import { GuidLikeString } from '@models/extended-types';
 import { SteelheadBulkPlayerBulkLiveryGift, SteelheadGroupGift } from '@models/steelhead';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { BigNumber } from 'bignumber.js';
@@ -29,10 +30,12 @@ export class SteelheadPlayersGiftService {
     liveryIds: string[],
     xuids: BigNumber[],
     expireAfterDays: BigNumber,
+    titleMessageId: GuidLikeString,
+    bodyMessageId: GuidLikeString,
   ): Observable<BackgroundJob<unknown>> {
     const model: SteelheadBulkPlayerBulkLiveryGift = {
       liveryIds,
-      target: { xuids, giftReason, expireAfterDays },
+      target: { xuids, giftReason, expireAfterDays, titleMessageId, bodyMessageId },
     };
 
     return this.api.postRequest$(`${this.basePath}/livery/useBackgroundProcessing`, model);

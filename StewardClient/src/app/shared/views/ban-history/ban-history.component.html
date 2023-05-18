@@ -72,19 +72,17 @@
           <td mat-cell *matCellDef="let entry">
             <span *ngIf="allowActions; else noActions">
               <span clickStop class="actions" *ngIf="!entry?.isDeleted; else deletedEntry">
-                <mat-checkbox
-                  #verifyAction
-                  matTooltip="Verify Expire/Delete"
-                  stateManager
+                <verify-button
+                  #verifyActionBtn
                   [permissionAttribute]="permAttribute"
                   [permissionTitle]="gameTitle"
-                ></mat-checkbox>
+                ></verify-button>
                 <button
                   *ngIf="!entry.isDeleted"
                   mat-mini-fab
                   color="warn"
                   matTooltip="Delete ban (Permanent)"
-                  [verifyWith]="verifyAction"
+                  [verifyWithV2]="verifyActionBtn"
                   (click)="deleteEntry(entry)"
                   [monitor]="entry.monitor"
                   stateManager
@@ -97,7 +95,7 @@
                   *ngIf="entry.isActive"
                   mat-mini-fab
                   matTooltip="Expire ban (Permanent)"
-                  [verifyWith]="verifyAction"
+                  [verifyWithV2]="verifyActionBtn"
                   (click)="expireEntry(entry)"
                   [monitor]="entry.monitor"
                   stateManager
