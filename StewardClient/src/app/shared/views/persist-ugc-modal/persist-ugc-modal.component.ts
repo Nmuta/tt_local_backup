@@ -10,6 +10,7 @@ import { UgcOperationSnackbarComponent } from '@tools-app/pages/ugc-details/comp
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
+/** Service contract for persisting UGC. */
 export interface PersistUgcService {
   title: GameTitle;
   persistUgc$: (

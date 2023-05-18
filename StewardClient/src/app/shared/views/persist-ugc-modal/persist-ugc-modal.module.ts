@@ -48,6 +48,6 @@ import { PersistUgcModalComponent } from './persist-ugc-modal.component';
     VerifyCheckboxModule,
     PermissionsModule,
   ],
-  exports: [WoodstockPersistUgcModalComponent, PersistUgcModalComponent],
+  exports: [WoodstockPersistUgcModalComponent],
 })
 export class PersistUgcModalModule {}

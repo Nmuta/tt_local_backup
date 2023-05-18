@@ -261,26 +261,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .subscribe((response: WoodstockPlayerUgcItem) => {
         this.ugcItem = response;
       });
-
-    // this.persistMonitor = this.persistMonitor.repeat();
-
-    // this.service
-    //   .persistUgc$(this.ugcItem.id)
-    //   .pipe(
-    //     // The custom success snackbar expects a UgcOperationResult as the monitor value
-    //     // Mapping must be done above the monitor single fire for it to use mapped result
-    //     map(
-    //       result =>
-    //         ({
-    //           gameTitle: GameTitle.FH5,
-    //           fileId: result.newFileId,
-    //           allowOpenInNewTab: true,
-    //         } as UgcOperationResult),
-    //     ),
-    //     this.persistMonitor.monitorSingleFire(),
-    //     takeUntil(this.onDestroy$),
-    //   )
-    //   .subscribe();
   }
 
   /** Persist a UGC item to the system user in Woodstock */

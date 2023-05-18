@@ -17,7 +17,7 @@ export class WoodstockPersistUgcModalComponent {
   public persistUgcPermAttribute = PermAttributeName.PersistUgc;
 
   constructor(
-    private readonly woodstockService: WoodstockService,
+    woodstockService: WoodstockService,
     @Inject(MAT_DIALOG_DATA) public data: PlayerUgcItem,
   ) {
     this.service = {
