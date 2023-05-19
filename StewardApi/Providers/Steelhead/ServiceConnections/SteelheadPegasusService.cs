@@ -129,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    "LiveOps_ShowcaseCalendar-en-US",
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -173,7 +173,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    "LiveOps_ShowcaseCalendar-en-US",
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
