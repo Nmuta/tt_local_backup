@@ -1,4 +1,5 @@
 import { login } from '@support/steward/auth/login';
+import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
@@ -13,7 +14,7 @@ context('Steward / Support / Auction Blocklist / Sunrise', () => {
   context('Auction House Blocklist lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.auctionBlocklist.sunrise);
-      cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
+      waitForProgressSpinners(10000);
     });
 
     it('should create table in ready state', () => {

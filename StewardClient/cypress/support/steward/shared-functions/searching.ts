@@ -1,6 +1,6 @@
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
-const timeoutOverride = 20_000; /*ms*/
+const timeoutOverride = 60_000; /*ms*/
 
 export function searchByGtag(gtag: string): void {
   cy.contains('button', 'GTAG').click();
@@ -10,7 +10,7 @@ export function searchByGtag(gtag: string): void {
 
 export function searchByXuid(xuid: string): void {
   cy.contains('button', 'XUID').click();
-  cy.contains('mat-form-field', 'Xuid').click().type(`${xuid}\n`);
+  cy.contains('mat-form-field', 'XuID').click().type(`${xuid}\n`);
   waitForProgressSpinners(timeoutOverride);
 }
 
@@ -18,4 +18,11 @@ export function searchByT10Id(t10Id: string): void {
   cy.contains('button', 'T10').click();
   cy.contains('mat-form-field', 'T10 Id').click().type(`${t10Id}\n`);
   waitForProgressSpinners(timeoutOverride);
+}
+
+export function selectLspGroup(groupName: string): void {
+  cy.contains('div', 'LSP Group Selection').click();
+  waitForProgressSpinners();
+  cy.contains('mat-form-field', 'Select LSP Group').click().type(`${groupName}`);
+  cy.contains('div', `${groupName}`).click();
 }

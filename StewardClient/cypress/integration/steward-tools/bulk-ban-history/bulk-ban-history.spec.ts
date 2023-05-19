@@ -2,6 +2,7 @@ import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { jordan, luke } from '@support/steward/common/account-info';
+import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
 context('Steward / Tools / Ban Review', () => {
@@ -11,7 +12,7 @@ context('Steward / Tools / Ban Review', () => {
     disableFakeApi();
 
     cy.visit(stewardUrls.tools.bulkBanHistory);
-    cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
+    waitForProgressSpinners(10000);
   });
 
   context('Initialization', () => {
