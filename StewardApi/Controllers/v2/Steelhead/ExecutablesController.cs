@@ -25,6 +25,15 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
+    public class Info
+    {
+        public string result { get; set; }
+
+        public string path { get; set; }
+
+        public Exception error { get; set; }
+    }
+
     /// <summary>
     ///     Controller texting executable stuff.
     /// </summary>
@@ -91,11 +100,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 //System.IO.File.Delete(executable);
                 //System.IO.Directory.Delete(path + exeDirectory);
 
-                return this.Ok(eOut);
+                var result = new Info()
+                {
+                    result = oOut,
+                    path = path,
+                };
+
+                return this.Ok(result);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Running EXE failed", ex);
+                var result = new Info()
+                {
+                    result = eOut,
+                    error = ex,
+                    path = path,
+                };
+
+                return this.Ok(result)
+
+                //throw new UnknownFailureStewardException($"Running EXE failed", ex);
             }
         }
     }
