@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             description.ShouldBeUnderMaxLength(128, nameof(description));
 
             var ugcId = id.TryParseGuidElseThrow($"'{id}' was not parseable as a GUID.");
-  
+
             var liveOps = this.WoodstockServices.Value.LiveOpsService;
             var result = await liveOps.PersistUgcFile(ugcId, title, description).ConfigureAwait(true);
 
