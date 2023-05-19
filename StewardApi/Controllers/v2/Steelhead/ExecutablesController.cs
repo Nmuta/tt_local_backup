@@ -112,12 +112,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             {
                 var result = new Info()
                 {
-                    result = eOut,
                     error = ex,
                     path = path,
                 };
 
-                return this.Ok(result)
+                return this.Ok(result);
 
                 //throw new UnknownFailureStewardException($"Running EXE failed", ex);
             }
