@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
+      uuid: 'f75bfce5-a32a-4c61-925c-9b6e24624cd3',
+      shortText: 'New Showroom Calendar component',
+      longText: ['Display car featured showcase and car sales in a calendar'],
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
       uuid: 'd0c7ed47-5e88-4de8-be8b-d691d38644d8',
       shortText: 'Fix not being able to load Car Details after loading it once',
