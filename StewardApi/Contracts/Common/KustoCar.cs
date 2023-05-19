@@ -17,6 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
             this.MakeId = makeId;
             this.Make = make;
             this.Model = model;
+            this.DisplayName = $"{make} {model}";
         }
 
         /// <summary>
@@ -40,6 +41,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets car model description.
         /// </summary>
         public string Model { get; set; }
+
+        /// <summary>
+        ///     Gets or sets car display name.
+        /// </summary>
+        public string DisplayName { get; set; }
 
         /// <summary>
         ///     Parses query results into a Kusto car object.
