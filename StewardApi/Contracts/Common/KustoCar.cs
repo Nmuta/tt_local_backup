@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Microsoft.VisualBasic;
+using System.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
@@ -11,13 +12,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Initializes a new instance of the <see cref="KustoCar"/> class.
         /// </summary>
-        public KustoCar(long id, long makeId, string make, string model)
+        public KustoCar(long id, long makeId, string make, string model, long year)
         {
             this.Id = id;
             this.MakeId = makeId;
             this.Make = make;
             this.Model = model;
-            this.DisplayName = $"{make} {model}";
+            this.DisplayName = $"{make} {model} ({(year == default(long) ? "No Year" : year)})";
         }
 
         /// <summary>
@@ -56,7 +57,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
                 reader.Get<long>(nameof(Id)),
                 reader.Get<long>(nameof(MakeId)),
                 reader.Get<string>(nameof(Make)),
-                reader.Get<string>(nameof(Model)));
+                reader.Get<string>(nameof(Model)),
+                reader.Get<long>("Year"));
         }
     }
 }
