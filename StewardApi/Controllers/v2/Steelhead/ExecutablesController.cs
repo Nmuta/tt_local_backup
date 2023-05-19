@@ -66,8 +66,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                var executable = await this.blobStorageProvider.GetHelloWorldAsync(path + exeDirectory, exeName).ConfigureAwait(true);
-                System.IO.Directory.CreateDirectory(path);
+                // var executable = await this.blobStorageProvider.GetHelloWorldAsync(path + exeDirectory, exeName).ConfigureAwait(true);
+                // System.IO.Directory.CreateDirectory(path);
 
                 var p = new Process();
                 p.StartInfo.UseShellExecute = false;
@@ -77,7 +77,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 string eOut = null;
                 p.StartInfo.RedirectStandardError = true;
                 p.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => { eOut += e.Data; });
-                p.StartInfo.FileName = executable;
+                //p.StartInfo.FileName = $"C:\\TestEXE\\{exeName}";
+                p.StartInfo.FileName = $"{path}\\{exeName}";
                 p.StartInfo.Arguments = arguments1;
                 var used = p.Start();
 
@@ -87,8 +88,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 p.BeginErrorReadLine();
                 p.WaitForExit();
 
-                System.IO.File.Delete(executable);
-                System.IO.Directory.Delete(path + exeDirectory);
+                //System.IO.File.Delete(executable);
+                //System.IO.Directory.Delete(path + exeDirectory);
 
                 return this.Ok(oOut);
             }
