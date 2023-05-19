@@ -26,6 +26,10 @@ export class SteelheadUnifiedCalendarComponent extends BaseComponent implements 
       name: 'Welcome Center Calendar',
       path: `/welcome-center-calendar`,
     },
+    {
+      name: 'Rivals Calendar',
+      path: `/rivals-calendar`,
+    },
   ];
   public activeTab: MatRoutedTabData;
 

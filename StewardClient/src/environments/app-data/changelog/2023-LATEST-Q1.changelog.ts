@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '14b2aa22-2a72-4398-8bd5-f794db91b3d0',
+      shortText: 'New Rivals Calendar added to Calendar component',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
       uuid: 'f75bfce5-a32a-4c61-925c-9b6e24624cd3',
       shortText: 'New Showroom Calendar component',
