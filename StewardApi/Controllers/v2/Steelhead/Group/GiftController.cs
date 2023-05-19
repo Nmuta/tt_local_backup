@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -26,6 +28,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using static Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
 {
@@ -125,33 +128,33 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         /// <summary>
         ///     Gifts livery to a LSP user group.
         /// </summary>
-        [HttpPost("livery/{liveryId}")]
+        [HttpPost("livery")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
         [Authorize(Policy = UserAttribute.GiftGroup)]
-        public async Task<IActionResult> GiftLiveryToUserGroup(string liveryId, int groupId, [FromBody] LocalizedMessageExpirableGift gift)
+        public async Task<IActionResult> GiftLiveryToUserGroup(int groupId, [FromBody] BulkLiveryGift<LocalizedMessageExpirableGift> gift)
         {
-            if (!Guid.TryParse(liveryId, out var liveryIdAsGuid))
-            {
-                throw new BadRequestStewardException($"Livery ID could not be parsed as GUID. (liveryId: {liveryId})");
-            }
-
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
+            gift.ShouldNotBeNull(nameof(gift));
             groupId.ShouldNotBeNull(nameof(groupId));
+            gift.Target.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.Target.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryIdAsGuid).ConfigureAwait(true);
-            var mappedLivery = this.mapper.SafeMap<UgcItem>(livery);
-            if (livery == null)
-            {
-                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryIdAsGuid}");
-            }
+            var liveries = await LiveryLookupHelpers.LookupSteelheadLiveriesAsync(
+                gift.LiveryIds,
+                this.mapper,
+                this.Services.StorefrontManagementService).ConfigureAwait(true);
 
-            var response = await this.playerInventoryProvider.SendCarLiveryAsync(this.Services, gift, groupId, mappedLivery, requesterObjectId).ConfigureAwait(true);
+            var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(this.Services, gift.Target, groupId, livery, requesterObjectId)).ToList();
+            await Task.WhenAll(jobs).ConfigureAwait(false);
+
+            var responses = jobs.Select(j => j.GetAwaiter().GetResult()).ToList();
+            var response = responses.MergeGiftResponse();
+
             return this.Ok(response);
         }
 

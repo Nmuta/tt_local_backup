@@ -33,6 +33,9 @@ import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 import { max, round } from 'lodash';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { LocalizedStringsMap } from '@models/localization';
+import { GuidLikeString } from '@models/extended-types';
 
 enum BackgroundJobRetryStatus {
   InProgress = 'Still in progress',
@@ -46,6 +49,17 @@ export interface BulkGiftLiveryContract {
   /** Sets whether the title supports expiration date on gift. */
   allowSettingExpireDate: boolean;
 
+  /**
+   * Sets whether the title supports localized title and body ids.
+   * If this is set to true, be sure getLocalizedStrings is correctly set up.
+   */
+  allowSettingLocalizedMessage: boolean;
+
+  /**
+   * API for retrieving localized strings.
+   */
+  getLocalizedStrings$(): Observable<LocalizedStringsMap>;
+
   /** API for retrieving livery information. */
   getLivery$(liveryId: string): Observable<PlayerUgcItem>;
 
@@ -55,6 +69,8 @@ export interface BulkGiftLiveryContract {
     xuids: BigNumber[],
     giftReason: string,
     expireAfterDays: BigNumber,
+    titleMessageId: GuidLikeString,
+    bodyMessageId: GuidLikeString,
   ): Observable<BackgroundJob<unknown>>;
 
   /** API for gifting liveries to an LSP group. */
@@ -63,16 +79,18 @@ export interface BulkGiftLiveryContract {
     lspGroup: LspGroup,
     giftReason: string,
     expireAfterDays: BigNumber,
+    titleMessageId: GuidLikeString,
+    bodyMessageId: GuidLikeString,
   ): Observable<GiftResponse<BigNumber>>;
 }
 
-/** The base gift-livery component. */
+/** The gift-livery component. */
 @Component({
   selector: 'bulk-gift-livery',
   templateUrl: './bulk-gift-livery.component.html',
   styleUrls: ['./bulk-gift-livery.component.scss'],
 })
-export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
+export class BulkGiftLiveryComponent<IdentityT extends IdentityResultUnion>
   extends BaseComponent
   implements OnInit, OnChanges
 {
@@ -89,6 +107,8 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
 
   public matErrors = { invalidId: 'Invalid Livery ID' };
   public formControls = {
+    localizedTitleMessageInfo: new FormControl({}, [Validators.required]),
+    localizedBodyMessageInfo: new FormControl({}, [Validators.required]),
     livery: new FormControl(null, [Validators.required]),
     giftReason: new FormControl('', [Validators.required]),
     expireDate: new FormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
@@ -111,6 +131,9 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
 
   /** Gets the liveries to be sent. */
   public liveries: PlayerUgcItem[] = [];
+
+  /** The localized string service. */
+  public selectLocalizedStringService: SelectLocalizedStringContract;
 
   /** Gets if the livery form control has error. */
   public get liveryHasError(): boolean {
@@ -145,7 +168,21 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(changes: BetterSimpleChanges<BulkGiftLiveryBaseComponent<IdentityT>>): void {
+  public ngOnChanges(changes: BetterSimpleChanges<BulkGiftLiveryComponent<IdentityT>>): void {
+    if (changes.service) {
+      if (this.service.allowSettingLocalizedMessage) {
+        this.selectLocalizedStringService = {
+          gameTitle: this.service.gameTitle,
+          getLocalizedStrings$: () => this.service.getLocalizedStrings$(),
+        };
+      } else {
+        this.formControls.localizedTitleMessageInfo.removeValidators(Validators.required);
+        this.formControls.localizedBodyMessageInfo.removeValidators(Validators.required);
+        this.formControls.localizedTitleMessageInfo.updateValueAndValidity();
+        this.formControls.localizedBodyMessageInfo.updateValueAndValidity();
+      }
+    }
+
     if (changes.usingPlayerIdentities) {
       this.activePermAttribute = this.usingPlayerIdentities
         ? PermAttributeName.GiftPlayer
@@ -270,7 +307,9 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
     if (!this.formControls.hasExpirationDate.value) {
       return new BigNumber(0);
     }
-    let numberOfDays = round(this.formControls.expireDate.value.diffNow('days').days);
+    let numberOfDays = round(
+      DateTime.fromJSDate(this.formControls.expireDate.value).diffNow('days').days,
+    );
     // Replace negative values by 0 to avoid sending negative values to API which takes a uint
     numberOfDays = max([0, numberOfDays]);
     return tryParseBigNumber(numberOfDays).integerValue();
@@ -303,6 +342,8 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
         this.playerIdentities.map(identity => identity.xuid),
         this.formControls.giftReason.value,
         this.getExpireDateInDays(),
+        this.formControls.localizedTitleMessageInfo.value.id,
+        this.formControls.localizedBodyMessageInfo.value.id,
       );
     } else {
       return this.service.giftLiveriesToLspGroup$(
@@ -310,6 +351,8 @@ export class BulkGiftLiveryBaseComponent<IdentityT extends IdentityResultUnion>
         this.lspGroup,
         this.formControls.giftReason.value,
         this.getExpireDateInDays(),
+        this.formControls.localizedTitleMessageInfo.value.id,
+        this.formControls.localizedBodyMessageInfo.value.id,
       );
     }
   }

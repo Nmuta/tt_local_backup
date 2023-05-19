@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GuidLikeString } from '@models/extended-types';
 import { GiftResponse } from '@models/gift-response';
 import { SteelheadGift, SteelheadUserGroupBulkLiveryGift } from '@models/steelhead';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
@@ -30,10 +31,12 @@ export class SteelheadGroupGiftService {
     liveryIds: string[],
     userGroupId: BigNumber,
     expireAfterDays: BigNumber,
+    titleMessageId: GuidLikeString,
+    bodyMessageId: GuidLikeString,
   ): Observable<GiftResponse<BigNumber>> {
     const model: SteelheadUserGroupBulkLiveryGift = {
       liveryIds,
-      target: { giftReason, expireAfterDays },
+      target: { giftReason, expireAfterDays, titleMessageId, bodyMessageId },
     };
 
     return this.api.postRequest$(`${this.basePath}/${userGroupId}/gift/livery`, model);

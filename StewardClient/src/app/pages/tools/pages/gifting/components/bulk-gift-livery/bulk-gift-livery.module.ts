@@ -21,16 +21,22 @@ import { PastableSingleInputModule } from '@views/pastable-single-input/pastable
 import { MatExpansionModule } from '@angular/material/expansion';
 import { WoodstockBulkGiftLiveryComponent } from './woodstock/woodstock-bulk-gift-livery.component';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { BulkGiftLiveryBaseComponent } from './bulk-gift-livery.base.component';
+import { BulkGiftLiveryComponent } from './bulk-gift-livery.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { SteelheadBulkGiftLiveryComponent } from './steelhead/steelhead-bulk-gift-livery.component';
+import { LocalizationModule } from '@components/localization/localization.module';
 
 /** The gift livery module. */
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [WoodstockBulkGiftLiveryComponent, BulkGiftLiveryBaseComponent],
+  declarations: [
+    SteelheadBulkGiftLiveryComponent,
+    WoodstockBulkGiftLiveryComponent,
+    BulkGiftLiveryComponent,
+  ],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
@@ -60,7 +66,8 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     MatCheckboxModule,
     StateManagersModule,
     PermissionsModule,
+    LocalizationModule,
   ],
-  exports: [WoodstockBulkGiftLiveryComponent],
+  exports: [SteelheadBulkGiftLiveryComponent, WoodstockBulkGiftLiveryComponent],
 })
 export class BulkGiftLiveryModule {}

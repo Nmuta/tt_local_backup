@@ -24,12 +24,6 @@ const routes: Routes = [
         component: WoodstockSelectCarDetailsComponent,
         children: [
           {
-            path: '',
-            canActivate: [RouteMemorySetGuard],
-            component: WoodstockCarDetailsComponent,
-            pathMatch: 'full',
-          },
-          {
             path: `:${PathParams.CarId}`,
             canActivate: [RouteMemorySetGuard],
             component: WoodstockCarDetailsComponent,
