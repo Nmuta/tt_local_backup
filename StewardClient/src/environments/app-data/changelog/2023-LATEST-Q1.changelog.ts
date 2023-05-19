@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'd0c7ed47-5e88-4de8-be8b-d691d38644d8',
+      shortText: 'Fix not being able to load Car Details after loading it once',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
       uuid: '112d828e-2d37-4c76-bcfd-f5ef45619e35',
       shortText: 'Add livery gifting for Steelhead',
