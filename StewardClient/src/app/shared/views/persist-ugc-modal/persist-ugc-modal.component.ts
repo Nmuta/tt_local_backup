@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
@@ -7,8 +7,8 @@ import { PersistedItemResult, PlayerUgcItem, UgcOperationResult } from '@models/
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UgcOperationSnackbarComponent } from '@tools-app/pages/ugc-details/components/ugc-action-snackbar/ugc-operation-snackbar.component';
-import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, map, takeUntil } from 'rxjs/operators';
 
 /** Service contract for persisting UGC. */
 export interface PersistUgcService {
@@ -34,8 +34,8 @@ export class PersistUgcModalComponent extends BaseComponent {
   @Input() ugcItem: PlayerUgcItem;
 
   public formControls = {
-    title: new FormControl(''),
-    description: new FormControl(''),
+    title: new FormControl(null, Validators.maxLength(32)),
+    description: new FormControl(null, Validators.max(128)),
   };
   public formGroup = new FormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Persist UGC');
@@ -74,6 +74,7 @@ export class PersistUgcModalComponent extends BaseComponent {
             } as UgcOperationResult),
         ),
         this.postMonitor.monitorSingleFire(),
+        catchError(() => EMPTY),
         takeUntil(this.onDestroy$),
       )
       .subscribe(_ => (this.dialogRef.disableClose = false));
