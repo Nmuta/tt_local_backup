@@ -10,6 +10,7 @@ import {
   SteelheadRivalsService,
 } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
 import { RivalsTileDetailsModalComponent } from '../rivals-tile-details-modal/rivals-tile-details-modal.component';
+import { indexOf, uniq } from 'lodash';
 
 /** The Steelhead Rivals Calendar View page. */
 @Component({
@@ -66,12 +67,16 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
   private makeRivalsEventsCalendarEvent(rivalsEvents: RivalsEvent[]): CalendarEvent[] {
     const events: CalendarEvent<RivalsEvent>[] = [];
 
+    const uniqueEvents = uniq(rivalsEvents.map(rivalsEvent => rivalsEvent.name));
+
     for (const rivalsEvent of rivalsEvents) {
       const newEvent: CalendarEvent<RivalsEvent> = {
         start: new Date(rivalsEvent.startTime),
         end: new Date(rivalsEvent.endTime),
         title: `${rivalsEvent.name}`,
-        cssClass: `unique-left-border-color-1-of-5`,
+        cssClass: `unique-left-border-color-${indexOf(uniqueEvents, rivalsEvent.name) + 1}-of-${
+          uniqueEvents.length
+        }`,
         meta: rivalsEvent,
         allDay: false,
         resizable: {

@@ -2,18 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { of } from 'rxjs';
-import { ShowroomFeaturedTileDetailsModalComponent } from './showroom-featured-tile-details-modal.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import faker from '@faker-js/faker';
-import { CarFeaturedShowcase } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
+import { RivalsTileDetailsModalComponent } from './rivals-tile-details-modal.component';
+import { RivalsEvent } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
 
-describe('ShowroomFeaturedTileDetailsModalComponent', () => {
-  let component: ShowroomFeaturedTileDetailsModalComponent;
-  let fixture: ComponentFixture<ShowroomFeaturedTileDetailsModalComponent>;
+describe('RivalsTileDetailsModalComponent', () => {
+  let component: RivalsTileDetailsModalComponent;
+  let fixture: ComponentFixture<RivalsTileDetailsModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ShowroomFeaturedTileDetailsModalComponent],
+      declarations: [RivalsTileDetailsModalComponent],
       imports: [MatDialogModule, PipesModule, HttpClientTestingModule],
       providers: [
         {
@@ -23,22 +23,21 @@ describe('ShowroomFeaturedTileDetailsModalComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
+            name: faker.datatype.string(),
+            description: faker.datatype.string(),
+            category: faker.datatype.string(),
             startTime: faker.datatype.datetime().toISOString(),
             endTime: faker.datatype.datetime().toISOString(),
-            car: {
-              carId: faker.datatype.number(),
-              baseCost: faker.datatype.number(),
-              mediaName: faker.datatype.string(),
-              modelShort: faker.datatype.string(),
-            },
-          } as CarFeaturedShowcase,
+            scoreType: undefined,
+            trackName: faker.datatype.string(),
+          } as RivalsEvent,
         },
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShowroomFeaturedTileDetailsModalComponent);
+    fixture = TestBed.createComponent(RivalsTileDetailsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

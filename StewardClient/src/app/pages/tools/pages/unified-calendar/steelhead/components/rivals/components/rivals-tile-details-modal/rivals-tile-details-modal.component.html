@@ -1,6 +1,6 @@
 <section>
   <h2 mat-dialog-title>
-    <span>Banner Details</span>
+    <span>Rivals Event Details</span>
     <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
   </h2>
 
@@ -41,9 +41,7 @@
           <tr>
             <th>Car Restrictions</th>
             <td>
-              <ul>
-                <li *ngFor="let carRestriction of data.carRestrictions">{{ carRestriction }}</li>
-              </ul>
+              <div *ngFor="let carRestriction of data.carRestrictions">{{ carRestriction }}</div>
             </td>
           </tr>
         </table>
