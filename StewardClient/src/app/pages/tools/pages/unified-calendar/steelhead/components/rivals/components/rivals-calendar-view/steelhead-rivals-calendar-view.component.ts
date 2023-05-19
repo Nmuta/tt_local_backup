@@ -5,7 +5,10 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DomainEnumPrettyPrintOrHumanizePipe } from '@shared/pipes/domain-enum-pretty-print-or-humanize.pipe';
 import { CalendarEvent, CalendarView, collapseAnimation } from 'angular-calendar';
 import { takeUntil } from 'rxjs';
-import { RivalsEvent, SteelheadRivalsService } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
+import {
+  RivalsEvent,
+  SteelheadRivalsService,
+} from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
 import { RivalsTileDetailsModalComponent } from '../rivals-tile-details-modal/rivals-tile-details-modal.component';
 
 /** The Steelhead Rivals Calendar View page. */
@@ -39,8 +42,8 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
 
     this.getActionMonitor = this.getActionMonitor.repeat();
 
-
-    this.steelheadRivalsService.getRivalsEvents$()
+    this.steelheadRivalsService
+      .getRivalsEvents$()
       .pipe(this.getActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(rivalsEvents => {
         this.events = this.makeRivalsEventsCalendarEvent(rivalsEvents);
