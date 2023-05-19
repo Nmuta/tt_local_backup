@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     path = path,
                 };
 
-                return this.Ok(oOut);
+                return this.Ok(result);
             }
             catch (Exception ex)
             {
