@@ -31,6 +31,7 @@ import {
   welcomeCenterTile,
   zendeskExternalTile,
   servicesTableStorageTile,
+  acLogReaderTile,
 } from './tiles';
 import { playFabTile } from './tiles/tools/playfab';
 import { showroomCalendarTile } from './tiles/tools/showroom-calendar';
@@ -71,6 +72,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   showroomCalendarTile,
 
   playFabTile,
+  acLogReaderTile,
 
   salusExternalTile,
   zendeskExternalTile,

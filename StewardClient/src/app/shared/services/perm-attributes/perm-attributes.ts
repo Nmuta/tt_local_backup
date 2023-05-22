@@ -40,6 +40,7 @@ export enum PermAttributeName {
   SetDriverLevel = 'SetDriverLevel',
   ManageStewardTeam = 'ManageStewardTeam',
   AllowedToExceedCreditLimit = 'AllowedToExceedCreditLimit',
+  DecodeAcLogs = 'DecodeAcLogs',
 }
 
 /** Full perm attribute details. */

@@ -1,0 +1,6 @@
+@import '/src/styles/mixins';
+
+mat-card {
+  margin: $gap-medium;
+  flex-grow: unset;
+}

@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     /// <summary>
     ///     Controller texting executable stuff.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/executable")]
+    [Route("api/v{version:apiVersion}/title/steelhead/acLogReader")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
@@ -45,22 +45,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Topic.Executables, Target.Details)]
-    public class ExecutablesController : V2SteelheadControllerBase
+    public class AcLogReaderController : V2SteelheadControllerBase
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ExecutablesController"/> class.
+        ///     Initializes a new instance of the <see cref="AcLogReaderController"/> class.
         /// </summary>
-        public ExecutablesController()
-        {
+        public AcLogReaderController()
+        { }
 
         /// <summary>
         ///     Set console ban status for Steelhead.
         /// </summary>
-        [HttpGet]
+        [HttpPost]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Console, ActionAreaLogTags.Banning)]
         [Authorize(Policy = UserAttribute.BanConsole)]
+        //[AutoActionLogging(TitleCodeName.Steelhead, Contracts.Data.StewardAction.Add, Contracts.Data.StewardSubject.)] TODO: We want to log this? It's sort of a glorified GET.
         public async Task<IActionResult> RunExe(string arguments1)
         {
             var SB = new StringBuilder();
@@ -125,7 +126,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     path = path,
                 };
 
-                return this.Ok(SB.ToString());
+                var fakeResult = new Info()
+                {
+                    result = SB.ToString(),
+                };
+
+                return this.Ok(fakeResult);
             }
             catch (Exception ex)
             {
