@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'c3b3dc75-cf69-4590-8a6d-e1ae09966f93',
+      shortText: 'Remove message column from auctionLog',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
       uuid: 'f75bfce5-a32a-4c61-925c-9b6e24624cd3',
       shortText: 'New Showroom Calendar component',
