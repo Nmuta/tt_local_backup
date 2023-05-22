@@ -75,7 +75,6 @@ export class AuctionActionLogTableComponent
     'isSuccess',
     'action',
     'auctionId',
-    'message',
     'bidAmount',
     'spendAmount',
   ];

@@ -301,7 +301,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<SteelheadLiveOpsContent.DataCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} {src.Year}"));
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} ({src.Year})"));
             this.CreateMap<SteelheadLiveOpsContent.DataCar, SimpleCar>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))

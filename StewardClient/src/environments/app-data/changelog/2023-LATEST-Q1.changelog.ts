@@ -13,10 +13,25 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'New Rivals Calendar added to Calendar component',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'c3b3dc75-cf69-4590-8a6d-e1ae09966f93',
+      shortText: 'Remove message column from auctionLog',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
       uuid: 'f75bfce5-a32a-4c61-925c-9b6e24624cd3',
       shortText: 'New Showroom Calendar component',
       longText: ['Display car featured showcase and car sales in a calendar'],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.CarDetails },
+      uuid: 'aa46faef-3d05-4ae4-92b3-f401c4c053c1',
+      shortText: 'Ensure year exists everywhere a car title is shown',
+    },
+    {
+      tag: { title: [GameTitle.FH4], tool: NavbarTool.CarDetails },
+      uuid: 'da4122e0-c2e6-4f2b-9705-b06d04f6f8a7',
+      shortText: 'Fix car names missing in auction log',
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
