@@ -89,6 +89,11 @@
       <mat-divider vertical></mat-divider>
 
       <div>
+        <verify-button
+          #verifyConfirmPostBtn
+          [disabled]="!formGroup.valid"
+          [permissionAttribute]="permAttribute"
+        ></verify-button>
         <button
           mat-stroked-button
           color="warn"
@@ -96,7 +101,7 @@
           clickStop
           stateManager
           [disabled]="!formGroup.valid"
-          [verifyWith]="confirmPost"
+          [verifyWithV2]="verifyConfirmPostBtn"
           [monitor]="postMonitor"
           [waitOnMonitors]="allMonitors"
           monitorDisable
@@ -107,17 +112,14 @@
         >
           POST
         </button>
-        <mat-checkbox
-          #confirmPost
-          stateManager
-          [permissionAttribute]="permAttribute"
-          [monitor]="deleteMonitor"
-          [waitOnMonitors]="allMonitors"
-          matTooltip="This operation is UNSAFE. It can force replace a pipeline into a bad state. Check to acknowledge."
-        ></mat-checkbox>
       </div>
 
       <div>
+        <verify-button
+          #verifyConfirmDeleteBtn
+          [disabled]="!formGroup.valid"
+          [permissionAttribute]="permAttribute"
+        ></verify-button>
         <button
           mat-raised-button
           color="warn"
@@ -125,7 +127,7 @@
           clickStop
           stateManager
           [disabled]="!formGroup.valid"
-          [verifyWith]="confirmDelete"
+          [verifyWithV2]="verifyConfirmDeleteBtn"
           [monitor]="deleteMonitor"
           [waitOnMonitors]="allMonitors"
           monitorDisable
@@ -136,14 +138,6 @@
         >
           DELETE
         </button>
-        <mat-checkbox
-          #confirmDelete
-          stateManager
-          [permissionAttribute]="permAttribute"
-          [monitor]="deleteMonitor"
-          [waitOnMonitors]="allMonitors"
-          matTooltip="This operation is UNSAFE. It permanently deletes a pipeline. Check to acknowledge."
-        ></mat-checkbox>
       </div>
     </mat-card-actions>
   </mat-card>

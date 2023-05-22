@@ -43,11 +43,16 @@
               }}</span>
             </button>
             <div class="sf-horizontal">
+              <verify-button
+                #verifyReportBtn
+                [permissionAttribute]="reportPermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
               <button
                 class="sf-action-list-margins sf-grow-1"
                 mat-raised-button
                 color="warn"
-                [verifyWith]="verifyReport"
+                [verifyWithV2]="verifyReportBtn"
                 (click)="reportUgcItem()"
                 stateManager
                 [monitor]="reportMonitor"
@@ -58,16 +63,6 @@
               >
                 <span>Report</span>
               </button>
-              <mat-checkbox
-                clickStop
-                #verifyReport
-                stateManager
-                [permissionAttribute]="reportPermAttribute"
-                [permissionTitle]="gameTitle"
-                matTooltip="Check to enable report UGC."
-              >
-                Verify
-              </mat-checkbox>
             </div>
           </div>
         </div>

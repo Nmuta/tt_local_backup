@@ -11,6 +11,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     {
         public string LocalizedMessageID { get; set; }
 
+        public string LocalizedTitleID { get; set; }
+
         /// <summary>
         ///     Gets or sets the Start Time UTC.
         /// </summary>

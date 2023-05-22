@@ -32,6 +32,7 @@ using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using static Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 {
@@ -192,39 +193,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         /// <summary>
         ///     Gifts livery to players using background job processing.
         /// </summary>
-        [HttpPost("livery/{liveryId}/useBackgroundProcessing")]
+        [HttpPost("livery/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto | DependencyLogTags.BackgroundProcessing)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
         [Authorize(Policy = UserAttribute.GiftPlayer)]
-        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(string liveryId, [FromBody] LocalizedMessageExpirableGroupGift groupGift)
+        public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing([FromBody] BulkLiveryGift<LocalizedMessageExpirableGroupGift> gift)
         {
-            if (!Guid.TryParse(liveryId, out var liveryIdAsGuid))
-            {
-                throw new BadRequestStewardException($"Livery ID could not be parsed as GUID. (liveryId: {liveryId})");
-            }
-
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
+            var groupGift = gift.Target;
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Xuids.EnsureValidXuids();
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            //groupGift.Xuids.EnsureValidXuids();
 
-            await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
+            await this.Services.EnsurePlayersExistAsync(groupGift.Xuids).ConfigureAwait(true);
 
-            var livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryIdAsGuid).ConfigureAwait(true);
-            var mappedLivery = this.mapper.SafeMap<UgcItem>(livery);
-            if (livery == null)
-            {
-                throw new InvalidArgumentsStewardException($"Invalid livery id: {liveryIdAsGuid}");
-            }
+            var liveries = await LiveryLookupHelpers.LookupSteelheadLiveriesAsync(
+                gift.LiveryIds,
+                this.mapper,
+                this.Services.StorefrontManagementService).ConfigureAwait(true);
 
-            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Steelhead Gifting Livery: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Steelhead Gifting Liveries: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
+
+            var proxyBundle = this.Services;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -233,12 +229,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 try
                 {
                     // When replacing the player inventory provider, be careful of race conditions
-                    var response = await this.playerInventoryProvider.SendCarLiveryAsync(this.Services, groupGift, mappedLivery, requesterObjectId).ConfigureAwait(true);
+                    var jobs = liveries.Select(livery => this.playerInventoryProvider.SendCarLiveryAsync(proxyBundle, groupGift, livery, requesterObjectId)).ToList();
+                    await Task.WhenAll(jobs).ConfigureAwait(false);
 
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus<ulong>(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+                    var responses = jobs.Select(j => j.GetAwaiter().GetResult()).ToList();
+                    var collapsedResponses = BackgroundJobHelpers.MergeResponses(responses);
 
-                    var giftedXuids = response.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(collapsedResponses);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, collapsedResponses).ConfigureAwait(true);
+
+                    var giftedXuids = collapsedResponses.Select(successfulResponse => Invariant($"{successfulResponse.PlayerOrLspGroup}")).ToList();
 
                     await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, giftedXuids)
                         .ConfigureAwait(true);

@@ -97,6 +97,12 @@
                 </ng-container>
               </p>
               <div>
+                <verify-button
+                  [disabled]="!canBan()"
+                  #verifyConfirmBanBtn
+                  [permissionAttribute]="permAttribute"
+                  [permissionTitle]="permTitle"
+                ></verify-button>
                 <button
                   mat-raised-button
                   color="warn"
@@ -108,20 +114,11 @@
                   monitorCompleteSnackbar
                   [monitor]="banActionMonitor"
                   [disabled]="!canBan()"
-                  [verifyWith]="confirmBan"
+                  [verifyWithV2]="verifyConfirmBanBtn"
                 >
                   Ban
                   <button-spinner [monitor]="banActionMonitor" defaultIcon="gavel"></button-spinner>
                 </button>
-                <mat-checkbox
-                  #confirmBan
-                  stateManager
-                  [monitor]="banActionMonitor"
-                  monitorDisable
-                  [permissionAttribute]="permAttribute"
-                >
-                  Verify ban
-                </mat-checkbox>
               </div>
             </div>
           </form>

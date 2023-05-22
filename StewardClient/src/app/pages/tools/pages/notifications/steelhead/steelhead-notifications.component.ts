@@ -14,7 +14,10 @@ import { CreateLocalizedStringContract } from '@components/localization/create-l
 import { LocalizedStringsMap, LocalizedStringData } from '@models/localization';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { SteelheadPlayerMessagesService } from '@services/api-v2/steelhead/player/messages/steelhead-player-messages.service';
-import { GroupNotification, PlayerNotification } from '@models/notifications.model';
+import {
+  LocalizedGroupNotification,
+  LocalizedPlayerNotification,
+} from '@models/notifications.model';
 import { renderGuard } from '@helpers/rxjs';
 import {
   LocalizedGroupMessagingManagementContract,
@@ -108,7 +111,7 @@ export class SteelheadNotificationsComponent {
     this.localizedIndividualMessagingManagementServiceContract = {
       gameTitle: this.gameTitle,
       selectLocalizedStringService: this.localizationSelectionServiceContract,
-      getPlayerNotifications$(xuid: BigNumber): Observable<PlayerNotification[]> {
+      getPlayerNotifications$(xuid: BigNumber): Observable<LocalizedPlayerNotification[]> {
         return steelheadPlayerMessagesService.getPlayerNotifications$(xuid);
       },
       postEditPlayerCommunityMessage$(
@@ -130,7 +133,7 @@ export class SteelheadNotificationsComponent {
     this.localizedGroupMessagingManagementServiceContract = {
       gameTitle: this.gameTitle,
       selectLocalizedStringService: this.localizationSelectionServiceContract,
-      getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
+      getGroupNotifications$(lspGroupId: BigNumber): Observable<LocalizedGroupNotification[]> {
         return steelheadGroupMessagesService.getGroupNotifications$(lspGroupId);
       },
       postEditLspGroupCommunityMessage$(

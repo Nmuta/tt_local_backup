@@ -1,15 +1,15 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { SteelheadInventoryService } from './steelhead-inventory.service';
+import { SteelheadShowroomService } from './steelhead-showroom.service';
 
-describe('SteelheadInventoryService', () => {
-  let service: SteelheadInventoryService;
+describe('SteelheadShowroomService', () => {
+  let service: SteelheadShowroomService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(SteelheadInventoryService);
+    service = TestBed.inject(SteelheadShowroomService);
   });
 
   it('should be created', () => {

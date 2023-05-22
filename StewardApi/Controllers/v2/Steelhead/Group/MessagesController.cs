@@ -117,13 +117,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             [FromBody] LspGroupLocalizedMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
+            communityMessage.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.LocalizedTitleID));
             communityMessage.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.LocalizedMessageID));
             communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
 
-            if (!Guid.TryParse(communityMessage.LocalizedMessageID, out var localizedMessageGuid))
-            {
-                throw new BadRequestStewardException("Message could not be parsed as GUID.");
-            }
+            var localizedTitleGuid = communityMessage.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
+            var localizedMessageGuid = communityMessage.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -147,6 +146,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             {
                 var response = await this.Services.NotificationManagementService.SendGroupMessage(
                     groupId,
+                    // TODO: Update from test string (https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1491290)
+                    Guid.Parse("3b7e0ead-0631-4e7a-8e65-6d27fec35e7c"),
                     localizedMessageGuid,
                     forzaDeviceType != ForzaLiveDeviceType.Invalid,
                     forzaDeviceType,
@@ -215,6 +216,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         {
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedMessageID));
+            // TODO: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1495466/
+            // editParameters.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedTitleID));
             editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
@@ -222,10 +225,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
             }
 
-            if (!Guid.TryParse(editParameters.LocalizedMessageID, out var localizedStringIdAsGuid))
-            {
-                throw new BadRequestStewardException($"Localized message ID could not be parsed as GUID. (LocalizedMessageID: {editParameters.LocalizedMessageID})");
-            }
+            // TODO: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1495466/
+            //var localizedTitleIdAsGuid = editParameters.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
+            var localizedMessageIdAsGuid = editParameters.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -242,7 +244,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
-                MessageStringId = localizedStringIdAsGuid,
+                MessageStringId = localizedMessageIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = forzaDeviceType != ForzaLiveDeviceType.Invalid,
                 DeviceType = forzaDeviceType

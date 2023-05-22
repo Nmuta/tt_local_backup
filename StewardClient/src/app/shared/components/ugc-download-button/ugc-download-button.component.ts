@@ -50,7 +50,16 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
     if (!!this.item?.liveryDownloadDataBase64) {
       this.downloadOptions.push({
         label: 'C Livery',
-        clickFn: () => this.downloadCLivery(this.item),
+        clickFn: () =>
+          this.downloadData(this.item.liveryDownloadDataBase64, `${this.item.id}_C_Livery`),
+      });
+    }
+
+    if (!!this.item?.tuneBlobDownloadDataBase64) {
+      this.downloadOptions.push({
+        label: 'Tune blob data',
+        clickFn: () =>
+          this.downloadData(this.item.tuneBlobDownloadDataBase64, `${this.item.id}_TuneBlob_Data`),
       });
     }
   }
@@ -69,13 +78,10 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
     downloadLink.remove();
   }
 
-  /** Downloads the UGC C Livery. */
-  public downloadCLivery(item: PlayerUgcItem): void {
+  private downloadData(base64Data: string, title: string) {
     this.menuTrigger.closeMenu();
-    const title = `${item.id}_C_Livery`;
-    const liveryData = item.liveryDownloadDataBase64;
 
-    const binaryString = window.atob(liveryData);
+    const binaryString = window.atob(base64Data);
     const binaryLen = binaryString.length;
     const bytes = new Uint8Array(binaryLen);
     for (let i = 0; i < binaryLen; i++) {

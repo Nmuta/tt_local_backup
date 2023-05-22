@@ -159,7 +159,7 @@ export abstract class UgcTableBaseComponent
 
       // Check paginator for page length and get thumbnails for first 'X' amount of content
       if (this.ugcTableDataSource.data.length > 0) {
-        this.getUgcThumbnailsForActiveDataset();
+        this.getExtraDataForActiveDataset();
       }
     }
   }
@@ -169,8 +169,8 @@ export abstract class UgcTableBaseComponent
     this.ugcTableDataSource.paginator = this.paginator;
   }
 
-  /** Looks up thumbnails for items in the active paginated page. Ignores items with thumbnails already present. */
-  public async getUgcThumbnailsForActiveDataset(): Promise<void> {
+  /** Looks up extra data for items in the active paginated page. Ignores items with extra data already present. */
+  public async getExtraDataForActiveDataset(): Promise<void> {
     const activeLength = this.paginator.pageSize;
     const activeIndex = this.paginator.pageIndex * activeLength;
     const dataSource = this.ugcTableDataSource.data;
@@ -185,6 +185,12 @@ export abstract class UgcTableBaseComponent
         dataSource[i].thumbnailOneImageBase64 = fullUgcItem.thumbnailOneImageBase64;
         dataSource[i].thumbnailTwoImageBase64 = fullUgcItem.thumbnailTwoImageBase64;
         dataSource[i].liveryDownloadDataBase64 = fullUgcItem.liveryDownloadDataBase64;
+      }
+      if (this.shouldLookupTuneBlobData(ugcItem)) {
+        const tuneBlobData = await this.getUgcItem(ugcItem.id, ugcItem.type).toPromise();
+        // Deep clone so object is considered new within NgOnChanges
+        dataSource[i] = cloneDeep(dataSource[i]);
+        dataSource[i].tuneBlobDownloadDataBase64 = tuneBlobData.tuneBlobDownloadDataBase64;
       }
     }
 
@@ -327,6 +333,11 @@ export abstract class UgcTableBaseComponent
     const typesWithThumbnails = [UgcType.Livery, UgcType.Photo, UgcType.LayerGroup];
     const shouldLookupThumbnails = !!typesWithThumbnails.find(type => type === item?.type);
     return !!item && !item.thumbnailOneImageBase64 && shouldLookupThumbnails;
+  }
+
+  private shouldLookupTuneBlobData(item: PlayerUgcItem): boolean {
+    const shouldLookupTuneBlobData = item?.type == UgcType.TuneBlob;
+    return !!item && !item.tuneBlobDownloadDataBase64 && shouldLookupTuneBlobData;
   }
 
   private shouldUseCondensedTableView(): boolean {

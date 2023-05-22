@@ -2,8 +2,16 @@
   <div class="sf-vertical">
     <select-localized-string
       [service]="service"
+      [formControl]="formControls.localizedTitleInfo"
+      formControlName="localizedTitleInfo"
+      label="Select localized title"
+    ></select-localized-string>
+
+    <select-localized-string
+      [service]="service"
       [formControl]="formControls.localizedMessageInfo"
       formControlName="localizedMessageInfo"
+      label="Select localized message"
     ></select-localized-string>
 
     <datetime-range-picker

@@ -13,12 +13,17 @@
     </ul>
   </help-popover-icon>
   <mat-card-actions align="end">
+    <verify-button
+      #verifyDeleteBtn
+      [permissionAttribute]="deletePermAttribute"
+      [permissionTitle]="gameTitle"
+    ></verify-button>
     <button
       mat-flat-button
       color="warn"
       clickStop
       stateManager
-      [verifyWith]="verifyDelete"
+      [verifyWithV2]="verifyDeleteBtn"
       [monitor]="postCancelMonitor"
       monitorDisable
       (click)="onCancel()"
@@ -26,14 +31,5 @@
       Delete
       <button-spinner [monitor]="postCancelMonitor" defaultIcon="delete"></button-spinner>
     </button>
-    <mat-checkbox
-      class="sf-verify-checkbox"
-      #verifyDelete
-      stateManager
-      [permissionAttribute]="deletePermAttribute"
-      [permissionTitle]="gameTitle"
-      matTooltip="Verify Deletion"
-      >Verify</mat-checkbox
-    >
   </mat-card-actions>
 </page-auction-data>

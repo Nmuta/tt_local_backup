@@ -34,6 +34,7 @@ export enum AppIcon {
   MessageOfTheDay = 'waving_hand',
   CreateAuction = 'sell',
   WelcomeCenterTile = 'grid_view',
+  ShowroomCalendarTile = 'calendar_today',
   PlayFab = 'hexagon',
   ServicesTableStorage = 'table_rows',
 }

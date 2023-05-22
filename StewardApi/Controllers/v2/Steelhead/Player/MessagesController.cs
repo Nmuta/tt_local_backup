@@ -175,6 +175,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedMessageID));
+            // TODO: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1495466/
+            //editParameters.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedTitleID));
             editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
@@ -182,13 +184,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
             }
 
-            if (!Guid.TryParse(editParameters.LocalizedMessageID, out var localizedStringIdAsGuid))
-            {
-                throw new BadRequestStewardException($"Localized message ID could not be parsed as GUID. (LocalizedMessageID: {editParameters.LocalizedMessageID})");
-            }
+            // TODO: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1495466/
+            //var localizedTitleIdAsGuid = editParameters.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
+            var localizedMessageIdAsGuid = editParameters.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
 
             //xuid.EnsureValidXuid();
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             /* TODO: Verify notification exists and is a CommunityMessageNotification before allowing edit.
             // Tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903790
@@ -196,7 +197,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
-                MessageStringId = localizedStringIdAsGuid,
+                MessageStringId = localizedMessageIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = false,
                 DeviceType = ForzaLiveDeviceType.Invalid

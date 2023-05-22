@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { GuidLikeString } from '@models/extended-types';
 import { SteelheadInventoryItem } from './steelhead-inventory-item.model';
+import { DateTime } from 'luxon';
 
 /** Interface for steelhead car item. */
 export interface SteelheadCar extends SteelheadInventoryItem {

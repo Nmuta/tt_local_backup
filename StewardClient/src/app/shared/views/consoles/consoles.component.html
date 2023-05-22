@@ -28,6 +28,11 @@
             <ng-container *ngIf="supportsConsoleBanning; else banUnsupportedTemplate">
               <ng-container *ngIf="!disabled; else banRestrictedTemplate">
                 <ng-container *ngIf="entry.isBannable && !entry.isBanned">
+                  <verify-button
+                    #verifyBanBtn
+                    [permissionAttribute]="permAttribute"
+                    [permissionTitle]="gameTitle"
+                  ></verify-button>
                   <button
                     mat-raised-button
                     color="warn"
@@ -38,7 +43,7 @@
                     monitorWarnSnackbar
                     monitorCompleteSnackbar
                     [monitor]="entry.banActionMonitor"
-                    [verifyWith]="verifyBan"
+                    [verifyWithV2]="verifyBanBtn"
                   >
                     Ban
                     <button-spinner
@@ -46,17 +51,13 @@
                       defaultIcon="gavel"
                     ></button-spinner>
                   </button>
-                  <mat-checkbox
-                    #verifyBan
-                    stateManager
-                    monitorDisable
-                    [monitor]="entry.banActionMonitor"
-                    [permissionAttribute]="permAttribute"
-                    [permissionTitle]="gameTitle"
-                    >Verify ban</mat-checkbox
-                  >
                 </ng-container>
                 <ng-container *ngIf="entry.isBannable && entry.isBanned">
+                  <verify-button
+                    #verifyUnbanBtn
+                    [permissionAttribute]="permAttribute"
+                    [permissionTitle]="gameTitle"
+                  ></verify-button>
                   <button
                     mat-raised-button
                     color="warn"
@@ -67,7 +68,7 @@
                     monitorWarnSnackbar
                     monitorCompleteSnackbar
                     [monitor]="entry.unbanActionMonitor"
-                    [verifyWith]="verifyUnban"
+                    [verifyWithV2]="verifyUnbanBtn"
                   >
                     Unban
                     <button-spinner
@@ -75,15 +76,6 @@
                       defaultIcon="lock_open"
                     ></button-spinner>
                   </button>
-                  <mat-checkbox
-                    #verifyUnban
-                    stateManager
-                    monitorDisable
-                    [monitor]="entry.unbanActionMonitor"
-                    [permissionAttribute]="permAttribute"
-                    [permissionTitle]="gameTitle"
-                    >Verify</mat-checkbox
-                  >
                 </ng-container>
 
                 <ng-container *ngIf="!entry.isBannable">Ban Locked.</ng-container>
