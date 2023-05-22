@@ -23,19 +23,19 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Basic query for getting the details FH4 Car data.
         /// </summary>
         public const string GetFH4CarsDetailed =
-            "FH4_DataCars | join kind = leftouter(FH4_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, MakeID, Make = MakeDisplayName, Model = DisplayName";
+            "FH4_DataCars | join kind = leftouter(FH4_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, MakeID, Make = MakeDisplayName, Model = DisplayName, Year = Year";
 
         /// <summary>
         ///     Basic query for getting the details FM7 Car data.
         /// </summary>
         public const string GetFM7CarsDetailed =
-            "FM7_DataCars | join kind = leftouter(database('T10Analytics').FM7_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = Id, MakeID, Make = MakeDisplayName, Model = DisplayName";
+            "FM7_DataCars | join kind = leftouter(database('T10Analytics').FM7_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = Id, MakeID, Make = MakeDisplayName, Model = DisplayName, Year = Year";
 
         /// <summary>
         ///     Basic query for getting the details FM8 Car data.
         /// </summary>
         public const string GetFM8CarsDetailed =
-            "FM8_DataCars | join kind = leftouter(FM8_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = ModelId, MakeID, Make = MakeDisplayName, Model = DisplayName";
+            "FM8_DataCars | join kind = leftouter(FM8_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = ModelId, MakeID, Make = MakeDisplayName, Model = DisplayName, Year = Year";
 
         /// <summary>
         ///     Basic query for getting the FH4 CarHorn data.

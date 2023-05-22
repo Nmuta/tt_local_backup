@@ -95,7 +95,7 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PlayFabAllSDK" Version="1.144.230123" />
-    <PackageReference Include="SteelheadLiveOpsContent" Version="1.7.4" />
+    <PackageReference Include="SteelheadLiveOpsContent" Version="1.7.9" />
 	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
