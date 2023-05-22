@@ -35,7 +35,7 @@ export class PersistUgcModalComponent extends BaseComponent {
 
   public formControls = {
     title: new FormControl(null, Validators.maxLength(32)),
-    description: new FormControl(null, Validators.max(128)),
+    description: new FormControl(null, Validators.maxLength(128)),
   };
   public formGroup = new FormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Persist UGC');
