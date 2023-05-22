@@ -3,6 +3,7 @@
     <mat-card-title>AC Log Reader</mat-card-title>
     <mat-card-subtitle>{{ service?.gameTitle | titlecase }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
+    <input type="file" class="file-upload" onchange="console.log(event.target.files)">
   </mat-card-header>
   <mat-card-content class="decoded-content">
     <p>{{ decodedLog }}</p>
