@@ -47,17 +47,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [StandardTags(Title.Steelhead, Topic.Executables, Target.Details)]
     public class ExecutablesController : V2SteelheadControllerBase
     {
-        private readonly IBlobStorageProvider blobStorageProvider;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExecutablesController"/> class.
         /// </summary>
-        public ExecutablesController(IBlobStorageProvider blobStorageProvider)
+        public ExecutablesController()
         {
-            blobStorageProvider.ShouldNotBeNull(nameof(blobStorageProvider));
-
-            this.blobStorageProvider = blobStorageProvider;
-        }
 
         /// <summary>
         ///     Set console ban status for Steelhead.
@@ -103,9 +97,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                // var executable = await this.blobStorageProvider.GetHelloWorldAsync(path + exeDirectory, exeName).ConfigureAwait(true);
-                // System.IO.Directory.CreateDirectory(path);
-
                 var p = new Process();
                 p.StartInfo.UseShellExecute = false;
                 string oOut = null;

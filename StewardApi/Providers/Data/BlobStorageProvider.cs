@@ -23,14 +23,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     public sealed class BlobStorageProvider : IBlobStorageProvider
     {
         private const string SettingsContainerName = "settings";
-        private const string ExecutablesContainerName = "executables";
         private const string ToolsAvailabilityBlobName = "tool-availability.json";
         private const string PlayFabSettingsBlobName = "playfab.json";
-        private const string HelloWorldExeBlobName = "HelloWorld.exe";
 
         private readonly BlobClient toolsBlobClient;
         private readonly BlobClient playFabBlobClient;
-        private readonly BlobClient executablesBlobClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BlobStorageProvider"/> class.
@@ -49,42 +46,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             var containerClient = serviceClient.GetBlobContainerClient(SettingsContainerName);
             this.toolsBlobClient = containerClient.GetBlobClient(ToolsAvailabilityBlobName);
             this.playFabBlobClient = containerClient.GetBlobClient(PlayFabSettingsBlobName);
-
-            var exeContainerClient = serviceClient.GetBlobContainerClient(ExecutablesContainerName);
-            this.executablesBlobClient = exeContainerClient.GetBlobClient(HelloWorldExeBlobName);
-        }
-
-        /// <inheritdoc />
-        public async Task<string> GetHelloWorldAsync(string path, string fileName)
-        {
-            if (!await this.EnsureBlobClientExistsAsync(this.executablesBlobClient).ConfigureAwait(false))
-            {
-                throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {ExecutablesContainerName}. Blob name: {HelloWorldExeBlobName}.");
-            }
-
-            try
-            {
-                var response = await this.executablesBlobClient.DownloadAsync().ConfigureAwait(false);
-                var download = response.Value;
-
-                
-                using (var fileStream = File.Create(path + fileName))
-                {
-                    //download.Content.Seek(0, SeekOrigin.Begin);
-                    await download.Content.CopyToAsync(fileStream).ConfigureAwait(false);
-                }
-
-
-                //var result = await download.DeserializeAsync<byte[]>().ConfigureAwait(false);
-
-                //var a = Assembly.Load(result);
-
-                return path + fileName;
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Could not retrieve tools availability JSON from blob storage. Container name: {SettingsContainerName}. Blob name: {ToolsAvailabilityBlobName}.", ex);
-            }
         }
 
         /// <inheritdoc />
