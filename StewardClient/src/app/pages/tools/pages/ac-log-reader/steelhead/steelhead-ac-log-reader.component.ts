@@ -17,8 +17,8 @@ export class SteelheadAcLogReaderComponent{
   constructor(private readonly steelheadService: SteelheadAcLogReaderService) {
     this.serviceContract = {
       gameTitle: GameTitle.FM8,
-      processGameLog$: () =>
-        steelheadService.postAcLogReader$(),
+      processGameLog$: (log) =>
+        steelheadService.postAcLogReader$(log),
     };
   }
 }

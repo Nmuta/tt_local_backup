@@ -28,6 +28,7 @@ import { AcLogReaderComponent } from './ac-log-reader.component';
 import { AcLogReaderRouterModule } from './ac-log-reader.routing';
 import { SteelheadAcLogReaderComponent } from './steelhead/steelhead-ac-log-reader.component';
 import { AcLogReaderBaseComponent } from './base/ac-log-reader.base.component';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 /** The feature module for the AC Log Reader route. */
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { AcLogReaderBaseComponent } from './base/ac-log-reader.base.component';
     RouterModule,
     DirectivesModule,
     MatTableModule,
+    PermissionsModule,
   ],
 })
 export class AcLogReaderModule {}

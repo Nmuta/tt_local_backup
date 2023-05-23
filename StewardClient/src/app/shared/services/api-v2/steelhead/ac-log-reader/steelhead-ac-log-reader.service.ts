@@ -16,7 +16,7 @@ export class SteelheadAcLogReaderService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Uploads a file for AC Log Reader to parse. */
-  public postAcLogReader$(): Observable<ProcessedAcLog> {
-    return this.api.postRequest$<ProcessedAcLog>(`${this.basePath}`, null);
+  public postAcLogReader$(log: ArrayBuffer): Observable<ProcessedAcLog> {
+    return this.api.postRequest$<ProcessedAcLog>(`${this.basePath}`, log);
   }
 }
