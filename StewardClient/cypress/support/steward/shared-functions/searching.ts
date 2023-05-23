@@ -10,7 +10,7 @@ export function searchByGtag(gtag: string): void {
 
 export function searchByXuid(xuid: string): void {
   cy.contains('button', 'XUID').click();
-  cy.contains('mat-form-field', 'XuID').click().type(`${xuid}\n`);
+  cy.contains('mat-form-field', 'XuID', { matchCase: false }).click().type(`${xuid}\n`);
   waitForProgressSpinners(timeoutOverride);
 }
 
@@ -23,6 +23,11 @@ export function searchByT10Id(t10Id: string): void {
 export function selectLspGroup(groupName: string): void {
   cy.contains('div', 'LSP Group Selection').click();
   waitForProgressSpinners();
-  cy.contains('mat-form-field', 'Select LSP Group').click().type(`${groupName}`);
-  cy.contains('div', `${groupName}`).click();
+  if (groupName == 'All Users') {
+    cy.contains('mat-form-field', 'Select LSP Group').click().type('Live Ops Developers');
+    cy.contains('div', 'Live Ops Developers').click();
+  } else {
+    cy.contains('mat-form-field', 'Select LSP Group').click().type(`${groupName}`);
+    cy.contains('div', `${groupName}`).click();
+  }
 }
