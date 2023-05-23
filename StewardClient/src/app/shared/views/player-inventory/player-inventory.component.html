@@ -1,6 +1,7 @@
 <div *ngIf="inventory; else failstate">
   <inventory-item-list-display
     *ngFor="let whatToShow of itemsToShow"
+    [service]="whatToShow.service"
     [whatToShow]="whatToShow"
   ></inventory-item-list-display>
 </div>

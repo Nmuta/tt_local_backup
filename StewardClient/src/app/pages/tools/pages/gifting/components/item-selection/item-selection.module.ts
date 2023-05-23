@@ -13,6 +13,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { ItemSelectionComponent } from './item-selection.component';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { MatIconModule } from '@angular/material/icon';
 
 /** The feature module for the item selection component. */
 @NgModule({
@@ -26,12 +30,16 @@ import { ItemSelectionComponent } from './item-selection.component';
     MatAutocompleteModule,
     MatOptionModule,
     MatSelectModule,
+    MatIconModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     PipesModule,
     JsonDumpModule,
+    StateManagersModule,
+    PermissionsModule,
+    MonitorActionModule,
   ],
   exports: [ItemSelectionComponent],
 })

@@ -8,10 +8,11 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 
 import { GiftHistoryBaseComponent } from './gift-history.base.component';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 describe('GiftHistoryBaseComponent', () => {
-  let component: GiftHistoryBaseComponent<string>;
-  let fixture: ComponentFixture<GiftHistoryBaseComponent<string>>;
+  let component: GiftHistoryBaseComponent<PlayerInventoryProfile>;
+  let fixture: ComponentFixture<GiftHistoryBaseComponent<PlayerInventoryProfile>>;
 
   let mockStore: Store;
 
@@ -28,7 +29,7 @@ describe('GiftHistoryBaseComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(
-      GiftHistoryBaseComponent as Type<GiftHistoryBaseComponent<string>>,
+      GiftHistoryBaseComponent as Type<GiftHistoryBaseComponent<PlayerInventoryProfile>>,
     );
     component = fixture.debugElement.componentInstance;
 

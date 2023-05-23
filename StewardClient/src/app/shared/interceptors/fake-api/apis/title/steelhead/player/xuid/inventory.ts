@@ -4,7 +4,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SteelheadPlayerInventory } from '@models/steelhead';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
 import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for steelhead player inventory. */
@@ -52,6 +52,18 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
         });
     }
 
+    const carsAsBasicInventoryItems = makeFakeItems(200);
+    const cars = carsAsBasicInventoryItems.map(car => {
+      return {
+        ...car,
+        vin: faker.datatype.uuid(),
+        versionedLiveryId: faker.datatype.uuid(),
+        versionedTuneId: faker.datatype.uuid(),
+        currentLevel: new BigNumber(faker.datatype.number()),
+        experiencePoints: new BigNumber(faker.datatype.number()),
+      } as PlayerInventoryCarItem;
+    });
+
     return {
       creditRewards: [
         {
@@ -62,7 +74,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
           error: undefined,
         },
       ],
-      cars: makeFakeItems(200),
+      cars: cars,
       vanityItems: makeFakeItems(200),
     };
   }

@@ -14,7 +14,6 @@ import {
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { SunriseMasterInventory } from '@models/sunrise';
-import BigNumber from 'bignumber.js';
 import { FormControl } from '@angular/forms';
 import { DateTimeRange } from '@models/datetime-range';
 import { DateTime } from 'luxon';
@@ -30,7 +29,7 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
   styleUrls: ['./sunrise-gift-history.component.scss'],
 })
 export class SunriseGiftHistoryComponent
-  extends GiftHistoryBaseComponent<BigNumber>
+  extends GiftHistoryBaseComponent<PlayerInventoryProfile>
   implements OnInit
 {
   @Select(SunriseGiftHistoryState.selectedPlayerIdentities)
@@ -128,6 +127,6 @@ export class SunriseGiftHistoryComponent
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
-    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+    this.selectedPlayerInventoryProfile = newProfile;
   }
 }

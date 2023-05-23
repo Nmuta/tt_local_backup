@@ -14,7 +14,6 @@ import {
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { SteelheadMasterInventory } from '@models/steelhead';
-import BigNumber from 'bignumber.js';
 import { FormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { HCI } from '@environments/environment';
@@ -30,7 +29,7 @@ import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
   styleUrls: ['./steelhead-gift-history.component.scss'],
 })
 export class SteelheadGiftHistoryComponent
-  extends GiftHistoryBaseComponent<BigNumber>
+  extends GiftHistoryBaseComponent<FullPlayerInventoryProfile>
   implements OnInit
 {
   @Select(SteelheadGiftHistoryState.selectedPlayerIdentities)
@@ -128,6 +127,6 @@ export class SteelheadGiftHistoryComponent
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: FullPlayerInventoryProfile): void {
-    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+    this.selectedPlayerInventoryProfile = newProfile;
   }
 }

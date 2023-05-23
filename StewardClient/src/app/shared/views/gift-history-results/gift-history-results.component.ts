@@ -18,6 +18,7 @@ import { makeItemList } from './helpers/make-item-list';
 import { NEGATIVE_ONE } from '@helpers/bignumbers';
 import { DateTime } from 'luxon';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { InventoryItemListDisplayComponentContract } from '@views/inventory-item-list-display/inventory-item-list-display.component';
 
 export type GiftHistoryResultsServiceContract = {
   getGiftHistoryByPlayer$: () => Observable<GiftHistoryResultUnion[]>;
@@ -64,6 +65,12 @@ export class GiftHistoryResultsComponent extends BaseComponent implements OnChan
   public get usingDateFilters(): boolean {
     return !!this.startDate && !!this.endDate;
   }
+
+  public itemListService: InventoryItemListDisplayComponentContract = {
+    openCarEditModal$: undefined,
+    editItemQuantity$: undefined,
+    deleteItem$: undefined,
+  };
 
   constructor(private readonly humanizePipe: HumanizePipe) {
     super();

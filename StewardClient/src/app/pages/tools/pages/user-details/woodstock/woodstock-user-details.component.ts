@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
@@ -16,7 +15,7 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
   styleUrls: ['./woodstock-user-details.component.scss'],
 })
 export class WoodstockUserDetailsComponent extends BaseComponent {
-  public profileId: BigNumber;
+  public profile: PlayerInventoryProfile;
   /** Used to hide unwanted tab when dealing with a special xuid. */
   public isSpecialXuid: boolean;
 
@@ -52,7 +51,7 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
-    this.profileId = newProfile?.profileId;
+    this.profile = newProfile;
   }
 
   /** Hook when mat-tab changes. */

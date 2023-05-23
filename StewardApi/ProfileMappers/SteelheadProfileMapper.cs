@@ -57,10 +57,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
-                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
+                    new PlayerInventoryItem { Id = 0, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
-            this.CreateMap<AdminForzaProfile, SteelheadInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
@@ -497,8 +496,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         ? new List<StewardError>()
                         : new List<StewardError>
                         {
-                                        new ServicesFailureStewardError(
-                                            $"LSP failed to gift livery to player with XUID: {source.xuid}")
+                            new ServicesFailureStewardError(
+                                $"LSP failed to gift livery to player with XUID: {source.xuid}")
                         }));
         }
 

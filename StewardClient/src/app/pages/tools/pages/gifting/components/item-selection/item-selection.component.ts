@@ -8,20 +8,23 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  Validators,
-} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 import { InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import _ from 'lodash';
 import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { GameTitle } from '@models/enums';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { clone } from 'lodash';
+
+/** Service contract for the ItemSelectionComponent. */
+export interface ItemSelectionComponentContract {
+  /** Optional: Adds an item to player inventory. */
+  addItemToInventory$(item: MasterInventoryItem): Observable<unknown>;
+}
 
 /** The item-selection component. */
 @Component({
@@ -31,12 +34,18 @@ import { BetterSimpleChanges } from '@helpers/simple-changes';
 })
 export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   @ViewChild('quantity') quantityElement: ElementRef;
-
-  /** REVIEW-COMMENT: Master inventory. */
+  /** Service contract for the component. */
+  @Input() public service: ItemSelectionComponentContract;
+  /** Master inventory to build item selection autocomplete. */
   @Input() public masterInventory: MasterInventoryUnion;
-  /** REVIEW-COMMENT: Output when a master inventory item is selected. */
+  /** Optional: Permission attribute to stop verification if permissions are missing. */
+  @Input() public permissionAttribute: PermAttributeName;
+  /** Optional: Permission game title to stop verification if permissions are missing. */
+  @Input() public permissionTitle: GameTitle;
+  /** Output when a master inventory item is selected. */
   @Output() public addItemEvent = new EventEmitter<MasterInventoryItem>();
 
+  public addItemMonitor = new ActionMonitor('Add item');
   public inventoryItemGroups: InventoryItemGroup[];
   public selectedItem: MasterInventoryItem;
   public itemInputValue: string = '';
@@ -48,8 +57,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
 
   public questionIcon = faQuestionCircle;
 
-  /** Master Inventory autocomplete varsiables */
-  public itemSelectionForm: FormGroup = this.formBuilder.group({
+  public formControls = {
     itemInput: new FormControl('', Validators.required),
     quantity: new FormControl(1, [
       Validators.required,
@@ -57,10 +65,11 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
       Validators.max(999_999_999),
       Validators.pattern('^(0|[1-9][0-9]*)$'),
     ]),
-  });
+  };
+  public formGroup = new FormGroup(this.formControls);
   public stateGroupOptions$: Observable<InventoryItemGroup[]>;
 
-  constructor(private readonly formBuilder: FormBuilder) {
+  constructor() {
     super();
   }
 
@@ -68,7 +77,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   public ngOnChanges(_changes: BetterSimpleChanges<ItemSelectionComponent>): void {
     if (!!this.masterInventory) {
       this.inventoryItemGroups = this.buildMatAutocompleteState();
-      this.stateGroupOptions$ = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
+      this.stateGroupOptions$ = this.formGroup.get('itemInput')?.valueChanges.pipe(
         startWith(''),
         map(value => this.filterGroup(value)),
         takeUntil(this.onDestroy$),
@@ -100,18 +109,24 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
     return inventoryItemGroups;
   }
 
-  /** New item selected. */
-  public addItemEmitter(formDirective: FormGroupDirective): void {
+  /** Emits add item event. If service contract is defined, will also add the item to a player's inventory. */
+  public addItemButtonClick(): void {
     if (!this.selectedItem) {
       return;
     }
 
-    this.selectedItem.quantity = this.itemSelectionForm.value['quantity'];
-    this.addItemEvent.emit(_.clone(this.selectedItem));
+    const itemToAdd = clone(this.selectedItem);
+    itemToAdd.quantity = this.formControls.quantity.value;
+    const obs$ = !!this.service ? this.service.addItemToInventory$(itemToAdd) : of(null);
 
-    this.selectedItem = undefined;
-    this.itemSelectionForm.reset();
-    formDirective.resetForm();
+    this.addItemMonitor = this.addItemMonitor.repeat();
+    obs$.pipe(this.addItemMonitor.monitorSingleFire(), takeUntil(this.onDestroy$)).subscribe(() => {
+      this.addItemEvent.emit(itemToAdd);
+
+      this.selectedItem = undefined;
+      this.formControls.itemInput.setValue('');
+      this.formControls.quantity.setValue(1);
+    });
   }
 
   /** New item is selected from the dropdown. */
