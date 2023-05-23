@@ -14,7 +14,7 @@ context('Steward / Support / Auction Blocklist / Sunrise', () => {
   context('Auction House Blocklist lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.auctionBlocklist.sunrise);
-      waitForProgressSpinners(10000);
+      waitForProgressSpinners(10_000);
     });
 
     it('should create table in ready state', () => {
