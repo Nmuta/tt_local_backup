@@ -44,6 +44,7 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
   public teamLead: UserModel;
   public RequestType = RequestType;
   public RequestImpact = RequestImpact;
+  public isMessageTooLong = false;
 
   public formControlsFeature = {
     description: new FormControl('', [Validators.required]),
@@ -87,8 +88,6 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
 
   /** Submit bug request. */
   public submitBug(): void {
-    this.isSubmitted = true;
-
     const message =
       `Bug Report\n\n` +
       `Description: ${this.formControlsBug.description.value}\n` +
@@ -100,14 +99,11 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
       `Estimated internal impact: ${RequestImpact[this.formControlsBug.externalImpact.value]}\n` +
       `Estimated external impact: ${RequestImpact[this.formControlsBug.internalImpact.value]}\n`;
 
-    const externalHref = this.generateTeamUrl(message);
-    window.open(encodeURI(externalHref), '_blank');
+    this.sendTeamsMessage(message);
   }
 
   /** Submit feature request. */
   public submitFeature(): void {
-    this.isSubmitted = true;
-
     const message =
       `Feature Request\n\n` +
       `Description: ${this.formControlsFeature.description.value}\n` +
@@ -121,8 +117,7 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
         RequestImpact[this.formControlsFeature.internalImpact.value]
       }\n`;
 
-    const externalHref = this.generateTeamUrl(message);
-    window.open(encodeURI(externalHref), '_blank');
+    this.sendTeamsMessage(message);
   }
 
   /** Reset the contact us form. */
@@ -130,23 +125,36 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
     this.formGroupBug.reset();
     this.formGroupFeature.reset();
     this.isSubmitted = false;
+    this.isMessageTooLong = false;
   }
 
-  /** Generates Team's href. */
-  private generateTeamUrl(message: string): string {
+  /** Generates and sends Team's message. */
+  private sendTeamsMessage(message: string) {
+    this.isMessageTooLong = false;
+    this.isSubmitted = false;
     const teamName = !!this.teamLead ? this.teamLead?.team?.name : this.adminTeamLead;
     const teamLeadName = !!this.teamLead ? this.teamLead?.name : this.adminTeamLead;
     const teamLeadEmail = !!this.teamLead ? this.teamLead?.emailAddress : this.adminTeamLeadEmail;
 
-    return (
+    const formattedMessage =
+      `${message}\n` +
+      `Email: ${this.userProfile?.emailAddress}\n` +
+      `Role: ${this.userProfile?.role}\n` +
+      `Team: ${teamName}\n` +
+      `Team Lead: ${teamLeadName} (${teamLeadEmail})`;
+
+    if (formattedMessage.length >= 400) {
+      this.isMessageTooLong = true;
+      return;
+    }
+
+    this.isSubmitted = true;
+    const externalHref =
       'https://teams.microsoft.com/l/chat/0/0' +
       `?users=${this.stewardTeamContacts.join(',')}` +
       '&topicName=Steward - Contact Us' +
-      `&message=${message}\n` +
-      `Email: ${this.userProfile?.emailAddress}\n` +
-      `Role:  ${this.userProfile?.role}\n` +
-      `Team:  ${teamName}\n` +
-      `Team Lead:  ${teamLeadName} (${teamLeadEmail})`
-    );
+      `&message=${formattedMessage}`;
+
+    window.open(encodeURI(externalHref), '_blank');
   }
 }

@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'New Rivals Calendar added to Calendar component',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: 'f4a43980-8235-40d7-b49c-111cab0db8dc',
+      shortText: 'Add character limit validation to contact us form',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: 'f28ad86e-9adb-4b51-ab52-b0e2e68035d7',
       shortText: 'Allow override of persisted UGC title and description',
