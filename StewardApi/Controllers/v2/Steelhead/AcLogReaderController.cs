@@ -54,10 +54,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         public async Task<IActionResult> RunAcLogReaderAsync([FromBody] string fileContents)
         {
             var path = System.AppContext.BaseDirectory;
+
             var exeName = "AcLogReader.exe";
 
+            var safeFolderPath = Environment.GetEnvironmentVariable("TEMP");
             var uniqueFileName = $"{Guid.NewGuid()}.Crash_Info";
-            var uniqueFullPath = path + uniqueFileName;
+            var uniqueFullPath = safeFolderPath + "\\" + uniqueFileName;
             System.IO.File.WriteAllBytes(uniqueFullPath, Convert.FromBase64String(fileContents)); // Coerce the binary string into bytes?
 
             try
