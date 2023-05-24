@@ -10,7 +10,7 @@ import { Observable, takeUntil } from 'rxjs';
 
 export interface AcLogReaderServiceContract {
   gameTitle: GameTitle;
-  processGameLog$(log: any): Observable<ProcessedAcLog>;
+  processGameLog$(log: string): Observable<ProcessedAcLog>;
 }
 
 /** Component for displayingAC Log Reader. */
@@ -31,7 +31,6 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
     fileName: new FormControl(null, [Validators.required]),
   };
 
-  // public fileContent: ArrayBuffer;
   public fileContent: string;
 
   public formGroup = new FormGroup(this.formControls);
@@ -50,10 +49,6 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
   /** Fires when the selected file changes. */
   public onFileSelected(event) {
     const file:File = event.target.files[0];
-
-    // const formData = new FormData();
-    // formData.append('uploadFile', file, file.name)
-    // this.fileForm = formData;
 
     if (file) {
       const fileReader = new FileReader();
