@@ -40,6 +40,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { UgcOperationSnackbarComponent } from './components/ugc-action-snackbar/ugc-operation-snackbar.component';
+import { PersistUgcModalModule } from '@views/persist-ugc-modal/persist-ugc-modal.module';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -90,6 +91,7 @@ import { UgcOperationSnackbarComponent } from './components/ugc-action-snackbar/
     PermissionsModule,
     MatIconModule,
     ClipboardModule,
+    PersistUgcModalModule,
   ],
 })
 export class UgcDetailsModule {}
