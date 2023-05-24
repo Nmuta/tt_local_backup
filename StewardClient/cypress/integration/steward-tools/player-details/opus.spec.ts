@@ -1,8 +1,9 @@
 import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
-
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid, selectOpus } from './page';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { selectOpus } from '@support/steward/shared-functions/game-nav';
+import { stewardUrls } from '@support/steward/urls';
 import { chad } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Opus', () => {
@@ -14,6 +15,7 @@ context('Steward / Tools / Player Details / Opus', () => {
 
   context('GTAG Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByGtag(chad.gtag);
       selectOpus();
     });
@@ -23,6 +25,7 @@ context('Steward / Tools / Player Details / Opus', () => {
 
   context('XUID Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByXuid(chad.xuid);
       selectOpus();
     });
