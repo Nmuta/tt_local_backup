@@ -12,7 +12,7 @@ export interface AcLogReaderServiceContract {
   processGameLog$(log: string): Observable<ProcessedAcLog>;
 }
 
-/** Component for displayingAC Log Reader. */
+/** Component for displaying AC Log Reader. */
 @Component({
   selector: 'ac-log-reader',
   templateUrl: './ac-log-reader.base.component.html',
@@ -29,9 +29,9 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
     fileName: new FormControl(null, [Validators.required]),
   };
 
-  public fileContent: string;
-
   public formGroup = new FormGroup(this.formControls);
+
+  public fileContent: string;
 
   constructor() {
     super();

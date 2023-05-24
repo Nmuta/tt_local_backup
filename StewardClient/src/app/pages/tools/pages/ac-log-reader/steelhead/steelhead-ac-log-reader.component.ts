@@ -13,7 +13,7 @@ export class SteelheadAcLogReaderComponent {
   public title: GameTitle.FM8;
   public serviceContract: AcLogReaderServiceContract;
 
-  constructor(private readonly steelheadService: SteelheadAcLogReaderService) {
+  constructor(steelheadService: SteelheadAcLogReaderService) {
     this.serviceContract = {
       gameTitle: GameTitle.FM8,
       processGameLog$: log => steelheadService.postAcLogReader$(log),
