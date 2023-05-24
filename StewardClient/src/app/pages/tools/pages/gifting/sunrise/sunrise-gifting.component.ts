@@ -5,7 +5,6 @@ import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
-import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { SunriseGiftingState } from './state/sunrise-gifting.state';
@@ -23,7 +22,10 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
   templateUrl: './sunrise-gifting.component.html',
   styleUrls: ['./sunrise-gifting.component.scss'],
 })
-export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
+export class SunriseGiftingComponent
+  extends GiftingBaseComponent<PlayerInventoryProfile>
+  implements OnInit
+{
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
@@ -100,6 +102,6 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
-    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+    this.selectedPlayerInventoryProfile = newProfile;
   }
 }

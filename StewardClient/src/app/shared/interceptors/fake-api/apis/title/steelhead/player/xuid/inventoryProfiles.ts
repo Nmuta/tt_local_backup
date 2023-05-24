@@ -2,6 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
+import { DeviceType } from '@models/enums';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Fake API for steelhead player inventory profiles. */
@@ -32,10 +33,13 @@ export class SteelheadPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
           profileId: fakeBigNumber(),
           externalProfileId: faker.datatype.uuid(),
           isCurrent: false,
-        };
+          isLastLoggedInProfile: false,
+          deviceType: DeviceType.Steam,
+          titleId: faker.datatype.number(),
+        } as FullPlayerInventoryProfile;
       });
 
-    faker.random.arrayElement(items).isCurrent = true;
+    faker.random.arrayElement(items).isCurrentByTitleId = true;
 
     return items;
   }

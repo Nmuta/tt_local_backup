@@ -34,10 +34,10 @@ export class SteelheadPlayerInventoryProfilesFakeApi extends FakeApiBase {
           externalProfileId: faker.datatype.uuid(),
           isCurrent: false,
           deviceType: DeviceType.Steam,
-        };
+        } as FullPlayerInventoryProfile;
       });
 
-    faker.random.arrayElement(items).isCurrent = true;
+    faker.random.arrayElement(items).isCurrentByTitleId = true;
 
     return items;
   }

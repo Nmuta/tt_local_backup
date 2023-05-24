@@ -106,13 +106,14 @@ export class ApiV2Service {
   }
 
   /** Sends a DELETE request. */
-  public deleteRequest$<T>(url: string, params?: HttpParams): Observable<T> {
+  public deleteRequest$<T>(url: string, params?: HttpParams, body?: any): Observable<T> {
     const apiUrl = `${this.baseUrl}/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const del = this.http.delete<T>(apiUrl, {
       headers,
       params,
+      body: body,
     });
 
     return del;

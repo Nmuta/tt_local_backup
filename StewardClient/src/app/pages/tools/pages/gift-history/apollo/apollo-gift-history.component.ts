@@ -14,7 +14,6 @@ import {
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { ApolloMasterInventory } from '@models/apollo';
-import BigNumber from 'bignumber.js';
 import { FormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { HCI } from '@environments/environment';
@@ -30,7 +29,7 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
   styleUrls: ['./apollo-gift-history.component.scss'],
 })
 export class ApolloGiftHistoryComponent
-  extends GiftHistoryBaseComponent<BigNumber>
+  extends GiftHistoryBaseComponent<PlayerInventoryProfile>
   implements OnInit
 {
   @Select(ApolloGiftHistoryState.selectedPlayerIdentities)
@@ -128,6 +127,6 @@ export class ApolloGiftHistoryComponent
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
-    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+    this.selectedPlayerInventoryProfile = newProfile;
   }
 }
