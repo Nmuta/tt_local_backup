@@ -4,7 +4,7 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
 export interface ProcessedAcLog {
-  result: string;
+  decodedLog: string;
 }
 
 /** The /v2/title/steelhead/acLogReader endpoints. */

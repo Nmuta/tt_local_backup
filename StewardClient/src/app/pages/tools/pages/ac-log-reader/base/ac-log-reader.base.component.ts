@@ -68,7 +68,7 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
       .processGameLog$(this.fileContent)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(response => {
-        this.decodedLog = response.result;
+        this.decodedLog = response.decodedLog;
       });
   }
 

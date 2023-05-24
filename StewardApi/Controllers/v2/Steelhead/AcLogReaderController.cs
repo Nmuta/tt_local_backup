@@ -15,6 +15,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -25,15 +26,6 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
-    public class Info
-    {
-        public string result { get; set; }
-
-        public string path { get; set; }
-
-        public Exception error { get; set; }
-    }
-
     /// <summary>
     ///     Controller texting executable stuff.
     /// </summary>
@@ -59,16 +51,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [HttpPost]
         [SwaggerResponse(200)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> RunAcLogReader([FromBody] string fileContents)
+        public async Task<IActionResult> RunAcLogReaderAsync([FromBody] string fileContents)
         {
             var path = System.AppContext.BaseDirectory;
-            var exeDirectory = "TestEXE\\";
             var exeName = "AcLogReader.exe";
 
             var uniqueFileName = $"{Guid.NewGuid()}.Crash_Info";
             var uniqueFullPath = path + uniqueFileName;
-            System.IO.File.WriteAllBytes(uniqueFullPath, Convert.FromBase64String( fileContents )); // Maybe we can coerce the binary string into bytes?
-            // System.IO.File.WriteAllText(uniqueFullPath, fileContents);
+            System.IO.File.WriteAllBytes(uniqueFullPath, Convert.FromBase64String(fileContents)); // Coerce the binary string into bytes?
 
             try
             {
@@ -94,26 +84,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                 System.IO.File.Delete(uniqueFullPath);
 
-                var result = new Info()
+                var result = new CrashLogResponse
                 {
-                    result = oOut,
-                    path = path,
-                    error = new Exception(eOut),
+                    DecodedLog = oOut,
                 };
 
-                return this.Ok(oOut);
+                return this.Ok(result);
             }
             catch (Exception ex)
             {
                 System.IO.File.Delete(uniqueFullPath);
-
-                var result = new Info()
-                {
-                    error = ex,
-                    path = path,
-                };
-
-                return this.Ok(result);
+                throw new BadRequestStewardException("Failed to decode Client Crash log", ex);
             }
         }
     }
