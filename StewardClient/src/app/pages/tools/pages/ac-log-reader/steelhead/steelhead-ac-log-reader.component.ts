@@ -9,16 +9,14 @@ import { AcLogReaderServiceContract } from '../base/ac-log-reader.base.component
   templateUrl: './steelhead-ac-log-reader.component.html',
   styleUrls: ['./steelhead-ac-log-reader.component.scss'],
 })
-export class SteelheadAcLogReaderComponent{
+export class SteelheadAcLogReaderComponent {
   public title: GameTitle.FM8;
   public serviceContract: AcLogReaderServiceContract;
-
 
   constructor(private readonly steelheadService: SteelheadAcLogReaderService) {
     this.serviceContract = {
       gameTitle: GameTitle.FM8,
-      processGameLog$: (log) =>
-        steelheadService.postAcLogReader$(log),
+      processGameLog$: log => steelheadService.postAcLogReader$(log),
     };
   }
 }

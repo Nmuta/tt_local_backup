@@ -31,11 +31,7 @@ import { AcLogReaderBaseComponent } from './base/ac-log-reader.base.component';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 /** The feature module for the AC Log Reader route. */
 @NgModule({
-  declarations: [
-    AcLogReaderComponent,
-    AcLogReaderBaseComponent,
-    SteelheadAcLogReaderComponent,
-  ],
+  declarations: [AcLogReaderComponent, AcLogReaderBaseComponent, SteelheadAcLogReaderComponent],
   imports: [
     CommonModule,
     ErrorSpinnerModule,

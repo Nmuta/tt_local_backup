@@ -3,23 +3,23 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
-import { ServicesTableStorageComponent } from './services-table-storage.component';
+import { AcLogReaderComponent } from './ac-log-reader.component';
 
-describe('ServicesTableStorageComponent', () => {
-  let component: ServicesTableStorageComponent;
-  let fixture: ComponentFixture<ServicesTableStorageComponent>;
+describe('AcLogReaderComponent', () => {
+  let component: AcLogReaderComponent;
+  let fixture: ComponentFixture<AcLogReaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
-      declarations: [ServicesTableStorageComponent],
+      declarations: [AcLogReaderComponent],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ServicesTableStorageComponent);
+    fixture = TestBed.createComponent(AcLogReaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -11,10 +11,8 @@ import { GameTitleCodeName } from '@models/enums';
   styleUrls: ['./ac-log-reader.component.scss'],
 })
 export class AcLogReaderComponent extends BaseComponent {
-
   public steelheadRouterLink = ['.', 'steelhead'];
   public gameTitleCodeName = GameTitleCodeName;
-
 
   constructor(router: Router) {
     super();

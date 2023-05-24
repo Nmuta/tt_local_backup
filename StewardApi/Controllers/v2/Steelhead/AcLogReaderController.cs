@@ -54,14 +54,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         { }
 
         /// <summary>
-        ///     Set console ban status for Steelhead.
+        ///     Decode client crash logs and returns the human readable result.
         /// </summary>
         [HttpPost]
         [SwaggerResponse(200)]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Console, ActionAreaLogTags.Banning)]
-        [Authorize(Policy = UserAttribute.BanConsole)]
-        //[AutoActionLogging(TitleCodeName.Steelhead, Contracts.Data.StewardAction.Add, Contracts.Data.StewardSubject.)] TODO: We want to log this? It's sort of a glorified GET.
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> RunAcLogReader([FromBody] string fileContents)
         {
             var path = System.AppContext.BaseDirectory;
@@ -104,7 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     error = new Exception(eOut),
                 };
 
-                return this.Ok(result);
+                return this.Ok(oOut);
             }
             catch (Exception ex)
             {

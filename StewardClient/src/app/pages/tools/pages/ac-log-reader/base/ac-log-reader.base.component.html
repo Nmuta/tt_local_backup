@@ -11,12 +11,12 @@
           accept=".Crash_Info"
           class="file-input"
           [formControl]="formControls.fileName"
-          (change)="onFileSelected($event)">
+          (change)="onFileSelected($event)"
+        />
         <div class="file-upload">
-          {{formControls.fileName?.value || "No file uploaded yet."}}
-          <button mat-mini-fab color="primary" class="upload-btn"
-            (click)="fileUpload.click()">
-              <mat-icon>attach_file</mat-icon>
+          {{ formControls.fileName?.value || 'No file uploaded yet.' }}
+          <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+            <mat-icon>attach_file</mat-icon>
           </button>
         </div>
         <!-- <mat-label>Upload Log</mat-label>
@@ -30,23 +30,19 @@
           aria-label="Decode AC Log"
           clickStop
           stateManager
-          [permissionAttribute]="decodeAcLogsAttribute"
-          [permissionTitle]="service?.gameTitle"
           [monitor]="getMonitor"
           monitorDisable
           monitorWarn
           monitorWarnSnackbar
           (click)="onDecodeClick()"
-      >
-        Decode
-        <button-spinner [monitor]="getMonitor" defaultIcon="document_scanner"></button-spinner>
-      </button>
+        >
+          Decode
+          <button-spinner [monitor]="getMonitor" defaultIcon="document_scanner"></button-spinner>
+        </button>
       </div>
     </form>
-    
   </mat-card-header>
   <mat-card-content class="decoded-content">
     <p>{{ decodedLog }}</p>
   </mat-card-content>
-
 </mat-card>

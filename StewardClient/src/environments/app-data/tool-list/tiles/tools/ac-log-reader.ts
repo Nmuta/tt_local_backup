@@ -1,5 +1,4 @@
 import { GameTitle } from '@models/enums';
-import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HomeTileInfoInternal, AppIcon, NavbarTool } from '../../helpers';
 
 export const acLogReaderTile = <HomeTileInfoInternal>{
@@ -8,7 +7,7 @@ export const acLogReaderTile = <HomeTileInfoInternal>{
   title: 'AC Log Reader',
   subtitle: 'Decode client logs',
   supportedTitles: [GameTitle.FM8],
-  allPermissions: [PermAttributeName.DecodeAcLogs],
+  allPermissions: [],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Decode gameplay logs.',

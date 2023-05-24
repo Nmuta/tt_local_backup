@@ -4,7 +4,6 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { GameTitle } from '@models/enums';
 import { ProcessedAcLog } from '@services/api-v2/steelhead/ac-log-reader/steelhead-ac-log-reader.service';
-import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
 
@@ -22,10 +21,9 @@ export interface AcLogReaderServiceContract {
 export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges {
   /** The AC Log Reader service. */
   @Input() service: AcLogReaderServiceContract;
-  public getMonitor = new ActionMonitor('Process Log File');
-  public decodedLog: string;
 
-  public readonly decodeAcLogsAttribute = PermAttributeName.DecodeAcLogs;
+  public getMonitor = new ActionMonitor('Process Client Crash File');
+  public decodedLog: string;
 
   public formControls = {
     fileName: new FormControl(null, [Validators.required]),
@@ -48,38 +46,39 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
 
   /** Fires when the selected file changes. */
   public onFileSelected(event) {
-    const file:File = event.target.files[0];
+    const file: File = event.target.files[0];
 
     if (file) {
       const fileReader = new FileReader();
 
-      fileReader.onload = (e) => {
+      fileReader.onload = e => {
         const bytes = this._arrayBufferToBase64(e.target.result as ArrayBuffer);
         this.fileContent = bytes;
-      }
+      };
 
       fileReader.readAsArrayBuffer(file);
     }
   }
 
   /** Fires when the Decode button is clicked. */
-  public onDecodeClick(){
+  public onDecodeClick() {
     this.getMonitor = this.getMonitor.repeat();
 
-    this.service.processGameLog$(this.fileContent)
+    this.service
+      .processGameLog$(this.fileContent)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(response => {
         this.decodedLog = response.result;
-      })
+      });
   }
 
-  private _arrayBufferToBase64( buffer ) {
+  private _arrayBufferToBase64(buffer) {
     let binary = '';
-    const bytes = new Uint8Array( buffer );
+    const bytes = new Uint8Array(buffer);
     const len = bytes.byteLength;
     for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode( bytes[ i ] );
+      binary += String.fromCharCode(bytes[i]);
     }
-    return window.btoa( binary );
-} 
+    return window.btoa(binary);
+  }
 }
