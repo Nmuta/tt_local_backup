@@ -203,8 +203,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             IList<SteelheadInventoryProfile> inventoryProfileSummary;
-            var service = this.Services.LiveOpsService;
 
+            var service = this.Services.LiveOpsService;
             Forza.WebServices.FM8.Generated.LiveOpsService.GetPlayerProfilesOutput response = null;
 
             try
@@ -219,7 +219,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
 
             inventoryProfileSummary = this.mapper.SafeMap<IList<SteelheadInventoryProfile>>(response.profiles);
-
 
             if (inventoryProfileSummary == null)
             {

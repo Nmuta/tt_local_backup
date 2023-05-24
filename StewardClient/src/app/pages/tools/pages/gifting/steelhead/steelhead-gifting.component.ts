@@ -13,7 +13,6 @@ import { LspGroup } from '@models/lsp-group';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { SteelheadMasterInventory } from '@models/steelhead';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
-import BigNumber from 'bignumber.js';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
@@ -23,7 +22,10 @@ import { ParsePathParamFunctions, PathParams } from '@models/path-params';
   templateUrl: './steelhead-gifting.component.html',
   styleUrls: ['./steelhead-gifting.component.scss'],
 })
-export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
+export class SteelheadGiftingComponent
+  extends GiftingBaseComponent<FullPlayerInventoryProfile>
+  implements OnInit
+{
   @Select(SteelheadGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
@@ -98,6 +100,6 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: FullPlayerInventoryProfile): void {
-    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+    this.selectedPlayerInventoryProfile = newProfile;
   }
 }

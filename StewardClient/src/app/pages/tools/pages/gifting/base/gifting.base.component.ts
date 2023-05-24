@@ -2,23 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { GameTitle } from '@models/enums';
+import { OldPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
-import BigNumber from 'bignumber.js';
 
 /** The sunrise gifting page for the Navbar app. */
 @Component({
   template: '',
 })
-export abstract class GiftingBaseComponent<ProfileIdType extends BigNumber | string>
+export abstract class GiftingBaseComponent<ProfileIdType extends OldPlayerInventoryProfile>
   extends BaseComponent
   implements OnInit
 {
   public matTabSelectedIndex: number = 0;
   public disableLspGroupSelection: boolean = true;
   public disableGiftingLiveries: boolean = true;
-  public selectedPlayerInventoryProfileId: ProfileIdType;
+  public selectedPlayerInventoryProfile: ProfileIdType;
   public get disableBulkGiftingLiveries(): boolean {
     return !this.isUsingPlayerIdentities;
   }

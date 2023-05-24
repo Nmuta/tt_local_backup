@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
@@ -13,7 +12,7 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
   styleUrls: ['./apollo-user-details.component.scss'],
 })
 export class ApolloUserDetailsComponent {
-  public profileId: BigNumber;
+  public profile: PlayerInventoryProfile;
 
   public readonly UgcType = UgcType;
 
@@ -38,6 +37,6 @@ export class ApolloUserDetailsComponent {
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
-    this.profileId = newProfile?.profileId;
+    this.profile = newProfile;
   }
 }

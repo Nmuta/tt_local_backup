@@ -60,7 +60,10 @@ const SPECIAL_LIVERY_TABLE = [
   templateUrl: './woodstock-gifting.component.html',
   styleUrls: ['./woodstock-gifting.component.scss'],
 })
-export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
+export class WoodstockGiftingComponent
+  extends GiftingBaseComponent<PlayerInventoryProfile>
+  implements OnInit
+{
   @Select(WoodstockGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
@@ -180,6 +183,6 @@ export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> i
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
-    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+    this.selectedPlayerInventoryProfile = newProfile;
   }
 }
