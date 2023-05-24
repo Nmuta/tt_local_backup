@@ -59,5 +59,12 @@ export const stewardUrls = {
       steelhead: '/app/tools/leaderboards/steelhead',
       woodstock: '/app/tools/leaderboards/woodstock',
     },
+    userGroupManagement: {
+      default: 'app/tools/user-group-management',
+      steelhead: 'app/tools/user-group-management/steelhead',
+      woodstock: 'app/tools/user-group-management/woodstock',
+      sunrise: 'app/tools/user-group-management/sunrise',
+      apollo: 'app/tools/user-group-management/apollo',
+    },
   },
 };
