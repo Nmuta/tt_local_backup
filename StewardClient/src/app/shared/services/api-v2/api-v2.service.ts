@@ -81,6 +81,7 @@ export class ApiV2Service {
     headers?: HttpHeaders,
   ): Observable<T> {
     const apiUrl = `${this.baseUrl}/${url}`;
+    // TODO: Fix this to not override content type if its passed in
     headers = headers || new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json');
 

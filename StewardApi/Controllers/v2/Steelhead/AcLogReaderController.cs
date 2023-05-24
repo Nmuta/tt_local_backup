@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.Console, ActionAreaLogTags.Banning)]
         [Authorize(Policy = UserAttribute.BanConsole)]
         //[AutoActionLogging(TitleCodeName.Steelhead, Contracts.Data.StewardAction.Add, Contracts.Data.StewardSubject.)] TODO: We want to log this? It's sort of a glorified GET.
-        public async Task<IActionResult> RunAcLogReader([FromBody] byte[] fileContents)
+        public async Task<IActionResult> RunAcLogReader([FromBody] string fileContents)
         {
             var path = System.AppContext.BaseDirectory;
             var exeDirectory = "TestEXE\\";
@@ -70,8 +70,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var uniqueFileName = $"{Guid.NewGuid()}.Crash_Info";
             var uniqueFullPath = path + uniqueFileName;
-            System.IO.File.WriteAllBytes(uniqueFullPath, fileContents); // Maybe we can coerce the binary string into bytes?
-            //System.IO.File.WriteAllText(uniqueFullPath, fileContents);
+            System.IO.File.WriteAllBytes(uniqueFullPath, Convert.FromBase64String( fileContents )); // Maybe we can coerce the binary string into bytes?
+            // System.IO.File.WriteAllText(uniqueFullPath, fileContents);
 
             try
             {

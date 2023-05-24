@@ -10,7 +10,7 @@ import { Observable, takeUntil } from 'rxjs';
 
 export interface AcLogReaderServiceContract {
   gameTitle: GameTitle;
-  processGameLog$(log: ArrayBuffer): Observable<ProcessedAcLog>;
+  processGameLog$(log: any): Observable<ProcessedAcLog>;
 }
 
 /** Component for displayingAC Log Reader. */
@@ -31,8 +31,8 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
     fileName: new FormControl(null, [Validators.required]),
   };
 
-  public fileContent: ArrayBuffer;
-  //public fileContent: string;
+  // public fileContent: ArrayBuffer;
+  public fileContent: string;
 
   public formGroup = new FormGroup(this.formControls);
 
@@ -58,11 +58,12 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
     if (file) {
       const fileReader = new FileReader();
 
-      fileReader.onload = () => {
-        this.fileContent = fileReader.result as ArrayBuffer;
-      };
+      fileReader.onload = (e) => {
+        const bytes = this._arrayBufferToBase64(e.target.result as ArrayBuffer);
+        this.fileContent = bytes;
+      }
 
-      fileReader.readAsBinaryString(file);
+      fileReader.readAsArrayBuffer(file);
     }
   }
 
@@ -76,4 +77,14 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
         this.decodedLog = response.result;
       })
   }
+
+  private _arrayBufferToBase64( buffer ) {
+    let binary = '';
+    const bytes = new Uint8Array( buffer );
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode( bytes[ i ] );
+    }
+    return window.btoa( binary );
+} 
 }
