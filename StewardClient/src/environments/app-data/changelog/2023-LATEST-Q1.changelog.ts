@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '14b2aa22-2a72-4398-8bd5-f794db91b3d0',
+      shortText: 'New Rivals Calendar added to Calendar component',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: 'f28ad86e-9adb-4b51-ab52-b0e2e68035d7',
       shortText: 'Allow override of persisted UGC title and description',

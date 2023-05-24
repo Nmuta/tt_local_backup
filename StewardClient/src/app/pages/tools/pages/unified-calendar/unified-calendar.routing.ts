@@ -7,6 +7,7 @@ import { RacersCupCalendarComponent } from './steelhead/components/racers-cup/ra
 import { SteelheadWelcomeCenterCalendarViewComponent } from './steelhead/components/welcome-center/welcome-center-calendar-view/steelhead/steelhead-welcome-center-calendar-view.component';
 import { SteelheadUnifiedCalendarComponent } from './steelhead/steelhead-unified-calendar.component';
 import { UnifiedCalendarComponent } from './unified-calendar.component';
+import { SteelheadRivalsCalendarViewComponent } from './steelhead/components/rivals/components/rivals-calendar-view/steelhead-rivals-calendar-view.component';
 const routes: Routes = [
   {
     path: '',
@@ -44,6 +45,12 @@ const routes: Routes = [
             path: 'welcome-center-calendar',
             canActivate: [RouteMemorySetGuard],
             component: SteelheadWelcomeCenterCalendarViewComponent,
+            pathMatch: 'full',
+          },
+          {
+            path: 'rivals-calendar',
+            canActivate: [RouteMemorySetGuard],
+            component: SteelheadRivalsCalendarViewComponent,
             pathMatch: 'full',
           },
         ],
