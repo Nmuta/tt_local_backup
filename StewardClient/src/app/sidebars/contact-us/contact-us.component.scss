@@ -23,3 +23,7 @@ textarea {
 mat-button-toggle {
   min-width: $button-min-size;
 }
+
+.message-too-long {
+  color: app-color-default($app-warn);
+}

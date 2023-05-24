@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { GameTitle } from '@models/enums';
 import { Select, Store } from '@ngxs/store';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
@@ -13,7 +14,7 @@ import { Observable, takeUntil } from 'rxjs';
   templateUrl: './verify-button.component.html',
   styleUrls: ['./verify-button.component.scss'],
 })
-export class VerifyButtonComponent extends BaseComponent implements OnInit {
+export class VerifyButtonComponent extends BaseComponent implements OnInit, OnChanges {
   @Select(UserSettingsState.showVerifyCheckboxPopup)
   public showVerifyCheckboxPopup$: Observable<boolean>;
   /** Sets the disabled state of the verify button. */
@@ -41,6 +42,19 @@ export class VerifyButtonComponent extends BaseComponent implements OnInit {
       .subscribe(
         showVerifyCheckboxPopup => (this.showVerifyCheckboxPopup = showVerifyCheckboxPopup),
       );
+
+    // If no perm attribute is provided, then user by default has permissions.
+    if (!this.permissionAttribute) {
+      this.hasPermission = true;
+    }
+  }
+
+  /** Lifecycle hook. */
+  public ngOnChanges(changes: BetterSimpleChanges<VerifyButtonComponent>): void {
+    // If no perm attribute is provided, then user by default has permissions.
+    if (!!changes.permissionAttribute && !this.permissionAttribute) {
+      this.hasPermission = true;
+    }
   }
 
   /** Sets the show verify checkbox popup value in settings. */

@@ -9,12 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.LiveOps.StewardApi.Validation;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 {
@@ -31,16 +34,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [Tags("UGC", "Woodstock")]
     public class PersistController : V2WoodstockControllerBase
     {
-        private readonly IWoodstockStorefrontProvider storefrontProvider;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="PersistController"/> class.
         /// </summary>
-        public PersistController(IWoodstockStorefrontProvider storefrontProvider)
+        public PersistController()
         {
-            storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
-
-            this.storefrontProvider = storefrontProvider;
         }
 
         /// <summary>
@@ -51,15 +49,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.UgcItem, ActionAreaLogTags.Action | ActionAreaLogTags.Ugc)]
         [Authorize(Policy = UserAttribute.PersistUgc)]
-        public async Task<IActionResult> Post(string id)
+        public async Task<IActionResult> Post(string id, [FromBody] PersistUgcOverrides overrides)
         {
-            if (!Guid.TryParse(id, out var ugcId))
-            {
-                throw new BadRequestStewardException($"'{id}' was not parseable as a GUID.");
-            }
+            // Overrides should never be null.
+            overrides.ShouldNotBeNull(nameof(overrides));
+
+            // The strings can be null, but if they are we need to coerce them into empty strings
+            // or the LSP call will throw an error.
+            var title = overrides.Title ?? string.Empty;
+            var description = overrides.Description ?? string.Empty;
+
+            title.ShouldBeUnderMaxLength(32, nameof(title));
+            description.ShouldBeUnderMaxLength(128, nameof(description));
+
+            var ugcId = id.TryParseGuidElseThrow(nameof(id));
 
             var liveOps = this.WoodstockServices.Value.LiveOpsService;
-            var result = await liveOps.PersistUgcFile(ugcId, string.Empty, string.Empty).ConfigureAwait(true);
+            var result = await liveOps.PersistUgcFile(ugcId, title, description).ConfigureAwait(true);
 
             // TODO: Clean up this output model.
             return this.Ok(result);

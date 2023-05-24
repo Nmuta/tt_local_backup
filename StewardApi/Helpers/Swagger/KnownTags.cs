@@ -153,6 +153,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string DriverLevel = "Topic: Driver Level";
             public const string TableStorage = "Topic: Table Storage";
             public const string Showroom = "Topic: Showroom";
+            public const string Rivals = "Topic: Rivals";
             public const string Executables = "Topic: Executables";
         }
 

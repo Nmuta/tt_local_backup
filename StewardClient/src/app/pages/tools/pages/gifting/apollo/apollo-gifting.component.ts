@@ -13,7 +13,6 @@ import { LspGroup } from '@models/lsp-group';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ApolloMasterInventory } from '@models/apollo';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
-import BigNumber from 'bignumber.js';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 import { PlayerInventoryProfile } from '@models/player-inventory-profile';
@@ -23,7 +22,10 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
   templateUrl: './apollo-gifting.component.html',
   styleUrls: ['./apollo-gifting.component.scss'],
 })
-export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
+export class ApolloGiftingComponent
+  extends GiftingBaseComponent<PlayerInventoryProfile>
+  implements OnInit
+{
   @Select(ApolloGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
@@ -98,6 +100,6 @@ export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> impl
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
-    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+    this.selectedPlayerInventoryProfile = newProfile;
   }
 }

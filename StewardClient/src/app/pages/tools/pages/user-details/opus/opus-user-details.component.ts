@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
@@ -11,7 +10,7 @@ import { OldPlayerInventoryProfile } from '@models/player-inventory-profile';
   styleUrls: ['./opus-user-details.component.scss'],
 })
 export class OpusUserDetailsComponent {
-  public profileId: BigNumber;
+  public profile: OldPlayerInventoryProfile;
 
   /** The lookup type. */
   public get lookupType(): string {
@@ -34,6 +33,6 @@ export class OpusUserDetailsComponent {
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: OldPlayerInventoryProfile): void {
-    this.profileId = newProfile?.profileId;
+    this.profile = newProfile;
   }
 }

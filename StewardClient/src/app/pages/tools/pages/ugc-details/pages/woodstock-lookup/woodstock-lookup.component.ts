@@ -35,6 +35,7 @@ import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { UgcOperationSnackbarComponent } from '../../components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
+import { WoodstockPersistUgcModalComponent } from '@views/persist-ugc-modal/woodstock/woodstock-persist-ugc-modal.component';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -247,25 +248,19 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     if (!this.ugcItem) {
       return;
     }
-    this.persistMonitor = this.persistMonitor.repeat();
 
-    this.service
-      .persistUgc$(this.ugcItem.id)
+    this.dialog
+      .open(WoodstockPersistUgcModalComponent, {
+        data: this.ugcItem,
+      })
+      .afterClosed()
       .pipe(
-        // The custom success snackbar expects a UgcOperationResult as the monitor value
-        // Mapping must be done above the monitor single fire for it to use mapped result
-        map(
-          result =>
-            ({
-              gameTitle: GameTitle.FH5,
-              fileId: result.newFileId,
-              allowOpenInNewTab: true,
-            } as UgcOperationResult),
-        ),
-        this.persistMonitor.monitorSingleFire(),
+        filter(data => !!data),
         takeUntil(this.onDestroy$),
       )
-      .subscribe();
+      .subscribe((response: WoodstockPlayerUgcItem) => {
+        this.ugcItem = response;
+      });
   }
 
   /** Persist a UGC item to the system user in Woodstock */

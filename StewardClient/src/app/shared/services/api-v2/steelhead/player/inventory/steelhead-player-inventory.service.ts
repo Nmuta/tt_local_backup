@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { SteelheadPlayerInventory } from '@models/steelhead';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 /** The /v2/title/steelhead/player/{xuid}/inventory endpoints. */
 @Injectable({
@@ -37,15 +38,27 @@ export class SteelheadPlayerInventoryService {
   }
 
   /** Adds item to player inventory. */
-  public addItemToInventory$(
-    _xuid: BigNumber,
-    _externalProfileId: GuidLikeString,
-  ): Observable<unknown> {
-    // TODO: Update once API is ready
-    return of(null);
-    // return this.api.postRequest$<SteelheadPlayerInventoryProfile[]>(
-    //   `${this.basePath}/${xuid}/inventory/profile/${externalProfileId}`,
-    //   null,
-    // );
+  public editPlayerProfileItems$(
+    xuid: BigNumber,
+    externalProfileId: GuidLikeString,
+    inventoryUpdate: SteelheadPlayerInventory,
+  ): Observable<PlayerInventoryItem[]> {
+    return this.api.postRequest$<PlayerInventoryItem[]>(
+      `${this.basePath}/${xuid}/inventory/externalProfileId/${externalProfileId}/items`,
+      inventoryUpdate,
+    );
+  }
+
+  /** Removes items from player inventory. */
+  public deletePlayerProfileItems$(
+    xuid: BigNumber,
+    externalProfileId: GuidLikeString,
+    inventoryUpdate: SteelheadPlayerInventory,
+  ): Observable<PlayerInventoryItem[]> {
+    return this.api.deleteRequest$<PlayerInventoryItem[]>(
+      `${this.basePath}/${xuid}/inventory/externalProfileId/${externalProfileId}/items`,
+      null,
+      inventoryUpdate,
+    );
   }
 }
