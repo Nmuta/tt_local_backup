@@ -32,8 +32,8 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
   };
 
   public fileContent: ArrayBuffer;
-
   //public fileContent: string;
+
   public formGroup = new FormGroup(this.formControls);
 
   constructor() {
@@ -45,34 +45,31 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
     if (!this.service) {
       throw new Error('Service Contract could not be found for AC Log Reader component.');
     }
-
-    // if (!!changes.service) {
-    //   this.service.processGameLog$()
-    //   .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-    //   .subscribe(response => {
-    //     this.decodedLog = response.result;
-    //   });
-    // }
   }
 
+  /** Fires when the selected file changes. */
   public onFileSelected(event) {
     const file:File = event.target.files[0];
+
+    // const formData = new FormData();
+    // formData.append('uploadFile', file, file.name)
+    // this.fileForm = formData;
 
     if (file) {
       const fileReader = new FileReader();
 
       fileReader.onload = () => {
         this.fileContent = fileReader.result as ArrayBuffer;
-        console.log(this.fileContent)
       };
 
       fileReader.readAsBinaryString(file);
     }
   }
 
+  /** Fires when the Decode button is clicked. */
   public onDecodeClick(){
     this.getMonitor = this.getMonitor.repeat();
-    console.log(this.fileContent)
+
     this.service.processGameLog$(this.fileContent)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(response => {

@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.Console, ActionAreaLogTags.Banning)]
         [Authorize(Policy = UserAttribute.BanConsole)]
         //[AutoActionLogging(TitleCodeName.Steelhead, Contracts.Data.StewardAction.Add, Contracts.Data.StewardSubject.)] TODO: We want to log this? It's sort of a glorified GET.
-        public async Task<IActionResult> RunExe([FromBody] byte[] fileContents)
+        public async Task<IActionResult> RunAcLogReader([FromBody] byte[] fileContents)
         {
             var path = System.AppContext.BaseDirectory;
             var exeDirectory = "TestEXE\\";
@@ -70,35 +70,32 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var uniqueFileName = $"{Guid.NewGuid()}.Crash_Info";
             var uniqueFullPath = path + uniqueFileName;
-            System.IO.File.WriteAllBytes(uniqueFullPath, fileContents);
+            System.IO.File.WriteAllBytes(uniqueFullPath, fileContents); // Maybe we can coerce the binary string into bytes?
             //System.IO.File.WriteAllText(uniqueFullPath, fileContents);
 
             try
             {
                 var p = new Process();
                 p.StartInfo.UseShellExecute = false;
+                p.StartInfo.FileName = $"{path}\\{exeName}";
+                p.StartInfo.Arguments = $"-f {uniqueFullPath}";
+
                 string oOut = null;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.OutputDataReceived += new DataReceivedEventHandler((sender, o) => { oOut += $"{o.Data}\r\n"; });
+
                 string eOut = null;
                 p.StartInfo.RedirectStandardError = true;
-                p.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => 
-                { 
-                    eOut += $"{e.Data}\r\n"; 
-                });
-                //p.StartInfo.FileName = $"C:\\TestEXE\\{exeName}";
-                p.StartInfo.FileName = $"{path}\\{exeName}";
-                p.StartInfo.Arguments = $"-f {uniqueFullPath}";
-                var used = p.Start();
+                p.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => { eOut += $"{e.Data}\r\n"; });
+
+                p.Start();
 
                 // To avoid deadlocks, use an asynchronous read operation on at least one of the streams.
                 p.BeginOutputReadLine();
-                //string output = p.StandardOutput.ReadToEnd();
                 p.BeginErrorReadLine();
                 p.WaitForExit();
 
                 System.IO.File.Delete(uniqueFullPath);
-                //System.IO.Directory.Delete(path + exeDirectory);
 
                 var result = new Info()
                 {
@@ -120,8 +117,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 };
 
                 return this.Ok(result);
-
-                //throw new UnknownFailureStewardException($"Running EXE failed", ex);
             }
         }
     }
