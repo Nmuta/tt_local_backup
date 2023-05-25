@@ -4,13 +4,13 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { arrayBufferToBase64 } from '@helpers/convert-array-buffer';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { GameTitle } from '@models/enums';
-import { ProcessedAcLog } from '@services/api-v2/steelhead/ac-log-reader/steelhead-ac-log-reader.service';
+import { AcLogReaderResponse } from '@services/api-v2/steelhead/ac-log-reader/steelhead-ac-log-reader.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
 
 export interface AcLogReaderServiceContract {
   gameTitle: GameTitle;
-  processGameLog$(log: string): Observable<ProcessedAcLog>;
+  processGameLog$(log: string): Observable<AcLogReaderResponse>;
 }
 
 /** Component for displaying AC Log Reader. */
@@ -52,6 +52,7 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
 
     if (file) {
       this.fileName = file.name;
+      this.decodedLog = null;
       const fileReader = new FileReader();
 
       fileReader.onload = e => {
@@ -72,6 +73,7 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(response => {
         this.decodedLog = response.decodedLog;
+        this.formControls.fileName.reset();
       });
   }
 }

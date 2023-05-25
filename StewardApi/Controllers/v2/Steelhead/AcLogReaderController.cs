@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                 System.IO.File.Delete(uniqueFullPath);
 
-                var result = new CrashLogResponse
+                var result = new AcLogReaderResponse
                 {
                     DecodedLog = oOut,
                 };

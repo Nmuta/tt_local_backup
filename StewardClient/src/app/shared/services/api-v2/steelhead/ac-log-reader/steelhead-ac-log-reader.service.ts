@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
-export interface ProcessedAcLog {
+export interface AcLogReaderResponse {
   decodedLog: string;
 }
 
@@ -15,7 +15,7 @@ export class SteelheadAcLogReaderService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Uploads a file for AC Log Reader to parse. */
-  public postAcLogReader$(log: string): Observable<ProcessedAcLog> {
-    return this.api.postRequest$<ProcessedAcLog>(`${this.basePath}`, log);
+  public postAcLogReader$(log: string): Observable<AcLogReaderResponse> {
+    return this.api.postRequest$<AcLogReaderResponse>(`${this.basePath}`, log);
   }
 }

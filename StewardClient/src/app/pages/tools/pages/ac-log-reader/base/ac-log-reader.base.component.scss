@@ -12,3 +12,11 @@ mat-card {
 .file-input {
   display: none;
 }
+
+.decode-button {
+  width: $button-min-size;
+}
+
+div.align-right {
+  align-items: end;
+}

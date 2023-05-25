@@ -4,7 +4,7 @@
     <mat-card-subtitle>{{ service?.gameTitle | titlecase }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
     <form [formGroup]="formGroup" class="sf-wrapper">
-      <div class="sf-vertical">
+      <div class="sf-vertical align-right">
         <input
           #fileUpload
           type="file"
@@ -15,13 +15,14 @@
         />
         <div class="file-upload">
           {{ fileName || 'Upload game crash log file' }}
-          <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+          <button mat-mini-fab color="accent" class="upload-btn" (click)="fileUpload.click()">
             <mat-icon>attach_file</mat-icon>
           </button>
         </div>
 
         <button
           mat-raised-button
+          class="decode-button"
           color="primary"
           [disabled]="!formGroup.valid"
           matTooltip="Decode AC Log"
