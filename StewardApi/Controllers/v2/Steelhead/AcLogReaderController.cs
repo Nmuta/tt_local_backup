@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var safeFolderPath = Environment.GetEnvironmentVariable("TEMP");
             var uniqueFileName = $"{Guid.NewGuid()}.Crash_Info";
             var uniqueFullPath = safeFolderPath + "\\" + uniqueFileName;
-            System.IO.File.WriteAllBytes(uniqueFullPath, Convert.FromBase64String(fileContents)); // Coerce the binary string into bytes?
+            System.IO.File.WriteAllBytes(uniqueFullPath, Convert.FromBase64String(fileContents));
 
             try
             {

@@ -5,7 +5,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { renderDelay } from '@helpers/rxjs';
 import { GameTitleCodeName } from '@models/enums';
 
-/** User Details page. */
+/** AC Log Reader page. */
 @Component({
   templateUrl: './ac-log-reader.component.html',
   styleUrls: ['./ac-log-reader.component.scss'],

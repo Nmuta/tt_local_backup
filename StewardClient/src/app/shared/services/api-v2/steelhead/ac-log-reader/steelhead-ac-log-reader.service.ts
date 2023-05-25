@@ -17,7 +17,6 @@ export class SteelheadAcLogReaderService {
 
   /** Uploads a file for AC Log Reader to parse. */
   public postAcLogReader$(log: string): Observable<ProcessedAcLog> {
-    const headers = new HttpHeaders();
-    return this.api.postRequest$<ProcessedAcLog>(`${this.basePath}`, log, null, headers);
+    return this.api.postRequest$<ProcessedAcLog>(`${this.basePath}`, log);
   }
 }
