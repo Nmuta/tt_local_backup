@@ -14,7 +14,7 @@
           (change)="onFileSelected($event)"
         />
         <div class="file-upload">
-          {{ formControls.fileName?.value || 'No file uploaded yet.' }}
+          {{ formControls.fileName?.value || 'Upload game crash log file' }}
           <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
             <mat-icon>attach_file</mat-icon>
           </button>

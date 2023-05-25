@@ -39,6 +39,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [StandardTags(Title.Steelhead, Topic.Executables, Target.Details)]
     public class AcLogReaderController : V2SteelheadControllerBase
     {
+        private readonly string exeName = "AcLogReader.exe";
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="AcLogReaderController"/> class.
         /// </summary>
@@ -55,8 +57,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             var path = System.AppContext.BaseDirectory;
 
-            var exeName = "AcLogReader.exe";
-
             // Temporary file directory.
             // Locally this will be in users/{alias}/AppData/Local/Temp
             // On App Service this will reference %TEMP% which resolves to d:\local and clears on app restart
@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             {
                 var p = new Process();
                 p.StartInfo.UseShellExecute = false;
-                p.StartInfo.FileName = $"{path}\\{exeName}";
+                p.StartInfo.FileName = $"{path}\\{this.exeName}";
                 p.StartInfo.Arguments = $"-f {uniqueFullPath}";
 
                 string oOut = null;

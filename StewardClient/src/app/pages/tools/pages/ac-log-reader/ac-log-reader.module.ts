@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PlayerSelectionModule } from '@shared/views/player-selection/player-selection.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { OverviewModule } from '@shared/views/overview/overview.module';
@@ -16,14 +15,8 @@ import { MatCardModule } from '@angular/material/card';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSelectModule } from '@angular/material/select';
-import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
 import { RouterModule } from '@angular/router';
 import { DirectivesModule } from '@shared/directives/directives.module';
-import { MatTableModule } from '@angular/material/table';
-import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
 import { AcLogReaderComponent } from './ac-log-reader.component';
 import { AcLogReaderRouterModule } from './ac-log-reader.routing';
 import { SteelheadAcLogReaderComponent } from './steelhead/steelhead-ac-log-reader.component';
@@ -43,26 +36,18 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     MatCardModule,
     FontAwesomeModule,
     FormsModule,
-    PlayerSelectionModule,
     CommonModule,
     PipesModule,
     OverviewModule,
     JsonDumpModule,
-    PlayerInventoryProfilesModule,
-    PlayerSelectionModule,
     MatTooltipModule,
     EndpointSelectionModule,
     MonitorActionModule,
     StateManagersModule,
-    MatChipsModule,
-    MatAutocompleteModule,
     ReactiveFormsModule,
-    MatSelectModule,
-    JsonTableResultsModule,
     CommonModule,
     RouterModule,
     DirectivesModule,
-    MatTableModule,
     PermissionsModule,
   ],
 })
