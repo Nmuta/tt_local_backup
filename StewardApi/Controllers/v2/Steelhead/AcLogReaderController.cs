@@ -57,6 +57,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var exeName = "AcLogReader.exe";
 
+            // Temporary file directory.
+            // Locally this will be in users/{alias}/AppData/Local/Temp
+            // On App Service this will reference %TEMP% which resolves to d:\local and clears on app restart
             var safeFolderPath = Environment.GetEnvironmentVariable("TEMP");
             var uniqueFileName = $"{Guid.NewGuid()}.Crash_Info";
             var uniqueFullPath = safeFolderPath + "\\" + uniqueFileName;
