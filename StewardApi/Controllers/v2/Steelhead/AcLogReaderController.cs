@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             catch (Exception ex)
             {
                 System.IO.File.Delete(uniqueFullPath);
-                throw new BadRequestStewardException("Failed to decode Client Crash log", ex);
+                throw new ConversionFailedStewardException("Failed to decode Client Crash log", ex);
             }
         }
     }
