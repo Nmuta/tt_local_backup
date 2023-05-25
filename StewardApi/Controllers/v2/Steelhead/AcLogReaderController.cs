@@ -27,7 +27,8 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
-    ///     Controller texting executable stuff.
+    ///     Controller for AC Log Reader.
+    ///     Used to decode client crash logs.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/acLogReader")]
     [LogTagTitle(TitleLogTags.Steelhead)]
@@ -36,7 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         UserRole.GeneralUser,
         UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [StandardTags(Title.Steelhead, Topic.Executables, Target.Details)]
+    [StandardTags(Title.Steelhead, Topic.AcLogReader, Target.Details)]
     public class AcLogReaderController : V2SteelheadControllerBase
     {
         private readonly string exeName = "AcLogReader.exe";
