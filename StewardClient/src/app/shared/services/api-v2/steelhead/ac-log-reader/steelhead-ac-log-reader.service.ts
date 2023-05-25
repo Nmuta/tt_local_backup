@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';

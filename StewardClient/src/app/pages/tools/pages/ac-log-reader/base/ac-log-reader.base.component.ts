@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
+import { arrayBufferToBase64 } from '@helpers/convert-array-buffer';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { GameTitle } from '@models/enums';
 import { ProcessedAcLog } from '@services/api-v2/steelhead/ac-log-reader/steelhead-ac-log-reader.service';
@@ -31,6 +32,7 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
 
   public formGroup = new FormGroup(this.formControls);
 
+  public fileName: string;
   public fileContent: string;
 
   constructor() {
@@ -49,10 +51,11 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
     const file: File = event.target.files[0];
 
     if (file) {
+      this.fileName = file.name;
       const fileReader = new FileReader();
 
       fileReader.onload = e => {
-        const bytes = this._arrayBufferToBase64(e.target.result as ArrayBuffer);
+        const bytes = arrayBufferToBase64(e.target.result as ArrayBuffer);
         this.fileContent = bytes;
       };
 
@@ -70,15 +73,5 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
       .subscribe(response => {
         this.decodedLog = response.decodedLog;
       });
-  }
-
-  private _arrayBufferToBase64(buffer) {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
   }
 }
