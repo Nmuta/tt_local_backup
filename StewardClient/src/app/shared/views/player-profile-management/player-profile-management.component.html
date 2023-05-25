@@ -100,32 +100,18 @@
       <ng-template matTabLabel>Reset Profile</ng-template>
       <ng-template matTabContent>
         <div class="tab-container save-template-container">
-          <button mat-stroked-button (click)="setAllResetOptionsToTrue()">Select All</button>
           <form [formGroup]="resetFormGroup">
-            <mat-checkbox [formControl]="resetFormControls.resetCarProgressData"
-              >Reset Car Progress Data</mat-checkbox
-            >
-            <mat-checkbox [formControl]="resetFormControls.resetLeaderboardsData"
-              >Reset Leaderboards Data</mat-checkbox
-            >
-            <mat-checkbox [formControl]="resetFormControls.resetRaceRankingData"
-              >Reset Race Ranking Data</mat-checkbox
-            >
-            <mat-checkbox [formControl]="resetFormControls.resetStatsData"
-              >Reset Stats Data</mat-checkbox
-            >
-            <mat-checkbox [formControl]="resetFormControls.resetTrueSkillData"
-              >Reset True Skill Data</mat-checkbox
-            >
-            <mat-checkbox [formControl]="resetFormControls.resetUserInventoryData"
-              >Reset User Inventory Data</mat-checkbox
-            >
-            <mat-checkbox [formControl]="resetFormControls.resetUserSafetyRatingData"
-              >Reset User Safety Rating Data</mat-checkbox
-            >
-            <mat-checkbox [formControl]="resetFormControls.resetUgcProfileData"
-              >Reset UGC Profile Data</mat-checkbox
-            >
+            <mat-label>Resetting the profile will reset the following:</mat-label>
+            <mat-list>
+              <mat-list-item> - Car Progress Data </mat-list-item>
+              <mat-list-item> - Leaderboards Data </mat-list-item>
+              <mat-list-item> - Race Ranking Data </mat-list-item>
+              <mat-list-item> - Stats Data </mat-list-item>
+              <mat-list-item> - True Skill Data </mat-list-item>
+              <mat-list-item> - User Inventory Data </mat-list-item>
+              <mat-list-item> - User Safety Rating Data </mat-list-item>
+              <mat-list-item> - UGC Profile Data</mat-list-item>
+            </mat-list>
             <button
               mat-raised-button
               color="primary"
