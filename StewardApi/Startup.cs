@@ -405,19 +405,19 @@ namespace Turn10.LiveOps.StewardApi
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
-                .WithParameter(Named("cmsInstance"), (p, c) => "dev-xlive");
+                .WithParameter(Named("cmsInstance"), (p, c) => $"dev-x{WoodstockPegasusSlot.Live}");
 
             builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
-                .WithParameter(Named("cmsInstance"), (p, c) => "prod-xlive-steward");
+                .WithParameter(Named("cmsInstance"), (p, c) => $"prod-xl{WoodstockPegasusSlot.LiveSteward}");
 
             builder.RegisterType<Client>().Named<Client>("woodstockClientDevLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
-                .WithParameter(Named("cmsInstance"), (p, c) => "dev-xlive-steward");
+                .WithParameter(Named("cmsInstance"), (p, c) => $"dev-xl{WoodstockPegasusSlot.LiveSteward}");
         }
 
         private void RegisterSteelheadTypes(ContainerBuilder builder)
