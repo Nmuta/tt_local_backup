@@ -150,7 +150,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
-            var proxyBundle = this.ServicesWithProdLiveStewardCms;
+            var proxyBundle = this.ServicesWithLiveStewardCms;
 
             var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
@@ -220,7 +220,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 
             var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Woodstock Gifting Liveries: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
-            var proxyBundle = this.ServicesWithProdLiveStewardCms;
+            var proxyBundle = this.ServicesWithLiveStewardCms;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
