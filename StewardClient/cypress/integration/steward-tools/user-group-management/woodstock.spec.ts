@@ -2,7 +2,7 @@ import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { selectLspGroup } from './shared-fucntions';
-import { chad, luke } from '@support/steward/common/account-info';
+import { ben, chad, jordan, luke, madden } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
 context('Steward / Tools / User Group Management / Woodstock', () => {
@@ -23,7 +23,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.contains('td', '2535435129485725').should('exist');
     });
 
-    it('should add users by XUID', () => {
+    it('should add a user by XUID', () => {
       selectLspGroup('Live Ops Developers');
       cy.contains('mat-form-field', 'Player XUIDs').click().type(luke.xuid);
       //this is the checkbox next to the "Add Users" button
@@ -33,7 +33,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.contains('td', luke.xuid).should('exist');
     });
 
-    it('should remove users by XUID', () => {
+    it('should remove a user by XUID', () => {
       selectLspGroup('Live Ops Developers');
       cy.contains('mat-form-field', 'Player XUIDs').click().type(luke.xuid);
       //this is the checkbox next to the "Delete Users" button
@@ -69,7 +69,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.contains('td', chad.xuid).should('not.exist');
     });
 
-    it('should add users by Gamertag', () => {
+    it('should add a user by Gamertag', () => {
       selectLspGroup('Live Ops Developers');
       cy.contains('button', 'GTAG').click();
       cy.contains('mat-form-field', 'Player Gamertags').click().type(luke.gtag);
@@ -80,7 +80,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.contains('td', luke.gtag).should('exist');
     });
 
-    it('should remove users by Gamertag', () => {
+    it('should remove a user by Gamertag', () => {
       selectLspGroup('Live Ops Developers');
       cy.contains('button', 'GTAG').click();
       cy.contains('mat-form-field', 'Player Gamertags').click().type(luke.gtag);
@@ -124,21 +124,21 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.get('[id="mat-checkbox-1"]').click();
       cy.contains('button', 'Delete All Users').click();
       waitForProgressSpinners();
-      cy.contains('td', '2533274833661814').should('not.exist');
-      cy.contains('td', '2533274879135661').should('not.exist');
-      cy.contains('td', '2535435129485725').should('not.exist');
+      cy.contains('td', ben.xuid).should('not.exist');
+      cy.contains('td', madden.xuid).should('not.exist');
+      cy.contains('td', jordan.xuid).should('not.exist');
 
       //Add the users back to the group
       cy.contains('mat-form-field', 'Player XUIDs')
         .click()
-        .type('2533274833661814, 2533274879135661, 2535435129485725');
+        .type(ben.xuid + ', ' + madden.xuid + ', ' + jordan.xuid);
       //this is the checkbox next to the "Add Users" button
       cy.get('[id="mat-checkbox-2"]').click();
       cy.contains('button', 'Add Users').click();
       waitForProgressSpinners();
-      cy.contains('td', '2533274833661814').should('exist');
-      cy.contains('td', '2533274879135661').should('exist');
-      cy.contains('td', '2535435129485725').should('exist');
+      cy.contains('td', ben.xuid).should('exist');
+      cy.contains('td', madden.xuid).should('exist');
+      cy.contains('td', jordan.xuid).should('exist');
     });
   });
 
