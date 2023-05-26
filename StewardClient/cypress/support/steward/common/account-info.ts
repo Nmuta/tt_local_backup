@@ -78,4 +78,4 @@ export const ben: KnownUser = {
   ],
 };
 
-export const AllKnownUsers: KnownUser[] = [jordan, luke];
+export const AllKnownUsers: KnownUser[] = [jordan, luke, chad, madden, ben];
