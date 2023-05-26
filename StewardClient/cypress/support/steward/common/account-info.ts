@@ -54,7 +54,7 @@ export const chad: KnownUser = {
 
 export const madden: KnownUser = {
   gtag: 'R2Dubs',
-  xuid: '533274879135661',
+  xuid: '2533274879135661',
   t10Id: undefined,
   accountInfo: [
     { title: 'FH5', hasAccount: true },
