@@ -5,5 +5,5 @@ export function selectLspGroup(groupName: string): void {
   cy.contains('div', 'Select LSP Group').click();
   waitForProgressSpinners();
   cy.contains('mat-form-field', 'Select LSP Group').click().type(`${groupName}`);
-  cy.contains('div', `${groupName}`).click();
+  cy.contains('div', `${groupName}`).click('top');
 }
