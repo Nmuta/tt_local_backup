@@ -12,13 +12,11 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
     disableFakeApi();
     cy.visit(stewardUrls.tools.userGroupManagement.steelhead);
     cy.get('[mattooltip="Settings"]').click();
-      cy.get('[id="mat-select-8"]').click();
-      //cy.contains('mat-label', 'Steelhead Endpoint').click();
-      cy.get('[ng-reflect-value="Studio"]').click();
-      //cy.contains('span', 'Studio').click();
-      cy.wait(1_000);
-      cy.get('[mattooltip="Settings"]').click();
-      cy.contains('span', 'Studio').should('exist');
+    cy.get('[id="mat-select-8"]').click();
+    cy.get('[ng-reflect-value="Studio"]').click();
+    cy.wait(1_000);
+    cy.get('[mattooltip="Settings"]').click();
+    cy.contains('span', 'Studio').should('exist');
   });
 
   context('Basic Tests', () => {
