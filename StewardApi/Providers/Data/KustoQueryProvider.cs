@@ -27,7 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="KustoQueryProvider"/> class.
         /// </summary>
-        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public KustoQueryProvider(
             ITableStorageClientFactory tableStorageClientFactory,
             IMapper mapper,

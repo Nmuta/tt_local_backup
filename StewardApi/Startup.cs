@@ -241,6 +241,8 @@ namespace Turn10.LiveOps.StewardApi
             this.RegisterApolloTypes(builder);
 
             // Kusto
+            // This is the first place we pull from KV. Errors here may be related to needing to
+            // re-verify your VS account. Click File -> Account Settings -> Check under "All Accounts"
             var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
 
             var kustoLoggerConfiguration = new KustoConfiguration();
@@ -322,10 +324,9 @@ namespace Turn10.LiveOps.StewardApi
 
             builder.RegisterType<HubManager>().SingleInstance();
             builder.RegisterType<JobTracker>().AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<PlayFabBuildLocksProvider>().As<IPlayFabBuildLocksProvider>().SingleInstance();
+            builder.RegisterType<PlayFabBuildLocksProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<KustoQueryProvider>().AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<StewardUserProvider>().As<IStewardUserProvider>().SingleInstance();
-            builder.RegisterType<StewardUserProvider>().As<IScopedStewardUserProvider>().SingleInstance();
+            builder.RegisterType<StewardUserProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
             builder.RegisterType<PolicyResultAuthorizationMiddleware>().As<IAuthorizationMiddlewareResultHandler>().SingleInstance();
             builder.RegisterType<ForumBanHistoryProvider>().As<IForumBanHistoryProvider>().SingleInstance();

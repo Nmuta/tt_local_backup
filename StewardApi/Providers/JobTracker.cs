@@ -40,7 +40,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Initializes a new instance of the <see cref="JobTracker"/> class.
         /// </summary>
-        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public JobTracker(
             HubManager hubManager,
             ITableStorageClientFactory tableStorageClientFactory,
