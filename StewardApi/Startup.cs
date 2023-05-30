@@ -321,9 +321,9 @@ namespace Turn10.LiveOps.StewardApi
             builder.Register(c => blobRepo).As<IBlobRepository>().SingleInstance();
 
             builder.RegisterType<HubManager>().SingleInstance();
-            builder.RegisterType<JobTracker>().As<IJobTracker>().SingleInstance();
+            builder.RegisterType<JobTracker>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<PlayFabBuildLocksProvider>().As<IPlayFabBuildLocksProvider>().SingleInstance();
-            builder.RegisterType<KustoQueryProvider>().As<IKustoQueryProvider>().SingleInstance();
+            builder.RegisterType<KustoQueryProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<StewardUserProvider>().As<IStewardUserProvider>().SingleInstance();
             builder.RegisterType<StewardUserProvider>().As<IScopedStewardUserProvider>().SingleInstance();
             builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();

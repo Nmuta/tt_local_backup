@@ -16,10 +16,13 @@ using Turn10.LiveOps.StewardApi.Helpers;
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
     /// <inheritdoc />
-    public sealed class KustoQueryProvider : IKustoQueryProvider
+    public sealed class KustoQueryProvider : IKustoQueryProvider, IInitializeable
     {
-        private readonly ITableStorageClient tableStorageClient;
+        private readonly ITableStorageClientFactory tableStorageClientFactory;
+        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly IConfiguration configuration;
         private readonly IMapper mapper;
+        private ITableStorageClient tableStorageClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="KustoQueryProvider"/> class.
@@ -36,14 +39,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             configuration.ShouldNotBeNull(nameof(configuration));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
 
-            var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(configuration[ConfigurationKeyConstants.KeyVaultUrl], configuration[ConfigurationKeyConstants.CosmosTableSecretName]).GetAwaiter().GetResult();
+            this.keyVaultProvider = keyVaultProvider;
+            this.configuration = configuration;
+            this.tableStorageClientFactory = tableStorageClientFactory;
+            this.mapper = mapper;
+        }
 
-            configuration.Bind("KustoQueryStorageProperties", tableStorageProperties);
+        /// <inheritdoc />
+        public async Task InitializeAsync()
+        {
+            var tableStorageProperties = new TableStorageProperties();
+            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
+                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                this.configuration[ConfigurationKeyConstants.CosmosTableSecretName]).ConfigureAwait(false);
+
+            this.configuration.Bind("KustoQueryStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
-            this.tableStorageClient = tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
-            this.mapper = mapper;
+            this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
         }
 
         /// <inheritdoc />
