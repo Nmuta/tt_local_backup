@@ -277,7 +277,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             {
                 var provider = new KustoQueryProvider(TableStorageClientFactory, Mapper, Configuration, KeyVaultProvider);
 
-                provider.InitializeAsync().Wait();
+                provider.InitializeAsync().GetAwaiter().GetResult();
 
                 return provider;
             } 
