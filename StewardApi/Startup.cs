@@ -327,7 +327,6 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<PlayFabBuildLocksProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<KustoQueryProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<StewardUserProvider>().AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<StewardUserProvider>().As<IScopedStewardUserProvider>().SingleInstance();
             builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
             builder.RegisterType<PolicyResultAuthorizationMiddleware>().As<IAuthorizationMiddlewareResultHandler>().SingleInstance();
             builder.RegisterType<ForumBanHistoryProvider>().As<IForumBanHistoryProvider>().SingleInstance();
