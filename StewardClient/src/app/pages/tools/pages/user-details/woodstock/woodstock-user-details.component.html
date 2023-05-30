@@ -56,11 +56,24 @@
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Auctions">
+        <ng-template mat-tab-label>
+          Auctions
+          <error-spinner
+            [isActive]="auctionActionLog.getMonitor.isActive | renderGuard"
+            spinnerMessage="Retrieving Data"
+          ></error-spinner>
+        </ng-template>
         <div class="sf-wrapper sf-tab-container">
           <woodstock-player-auctions [identity]="identity"></woodstock-player-auctions>
         </div>
+        <div class="sf-wrapper sf-tab-container">
+          <woodstock-player-auction-action-log
+            #auctionActionLog
+            [identity]="identity"
+          ></woodstock-player-auction-action-log>
+        </div>
       </mat-tab>
-      <mat-tab *ngIf="!isSpecialXuid">
+      <!-- <mat-tab *ngIf="!isSpecialXuid">
         <div class="sf-wrapper sf-tab-container">
           <ng-template mat-tab-label>
             Auction Log
@@ -74,7 +87,7 @@
             [identity]="identity"
           ></woodstock-player-auction-action-log>
         </div>
-      </mat-tab>
+      </mat-tab> -->
       <mat-tab>
         <ng-template mat-tab-label>
           Ugc
