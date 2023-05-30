@@ -273,7 +273,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
 
             private ITableStorageClient TableStorageClient { get; set; } = Substitute.For<ITableStorageClient>();
             
-            public KustoQueryProvider Build() => new KustoQueryProvider(TableStorageClientFactory, Mapper, Configuration, KeyVaultProvider);
+            public KustoQueryProvider Build()
+            {
+                var provider = new KustoQueryProvider(TableStorageClientFactory, Mapper, Configuration, KeyVaultProvider);
+
+                provider.InitializeAsync().Wait();
+
+                return provider;
+            } 
         }
     }
 }
