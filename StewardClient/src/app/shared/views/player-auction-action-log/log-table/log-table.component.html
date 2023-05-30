@@ -1,170 +1,173 @@
-<mat-card>
-  <mat-card-content>
-    <mat-card-header>
-      <mat-card-title>Interactions with Auction House</mat-card-title>
-    </mat-card-header>
-    <div class="search-bar">
-      <mat-form-field appearance="standard">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" #input />
-        <mat-hint>Searches row and left-column data</mat-hint>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="Start date" [formControl]="formControls.dateRangeStart" />
-          <input matEndDate placeholder="End date" [formControl]="formControls.dateRangeEnd" />
-        </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker [dateClass]="dateClass" #picker></mat-date-range-picker>
-      </mat-form-field>
-      <div class="make-model-autocomplete-container">
-        <make-model-autocomplete
-          (changes)="applyMakeModelFilter($event)"
-          [service]="service"
-          [formControl]="formControls.makeModel"
-        >
-        </make-model-autocomplete>
-      </div>
-      <div class="spacer"></div>
-      <ng-content extraControl></ng-content>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      History
+    </mat-panel-title>
+    <mat-panel-description>
+      All interactions with Auction House
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <div class="search-bar">
+    <mat-form-field appearance="standard">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" #input />
+      <mat-hint>Searches row and left-column data</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="Start date" [formControl]="formControls.dateRangeStart" />
+        <input matEndDate placeholder="End date" [formControl]="formControls.dateRangeEnd" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker [dateClass]="dateClass" #picker></mat-date-range-picker>
+    </mat-form-field>
+    <div class="make-model-autocomplete-container">
+      <make-model-autocomplete
+        (changes)="applyMakeModelFilter($event)"
+        [service]="service"
+        [formControl]="formControls.makeModel"
+      >
+      </make-model-autocomplete>
     </div>
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">
-        <ng-container matColumnDef="timeUtc">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
-          <td mat-cell *matCellDef="let a">
-            <standard-absolute-time [timeUtc]="action(a).timeUtc"></standard-absolute-time>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="isSuccess">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            <mat-icon>check</mat-icon>
-          </th>
-          <td mat-cell *matCellDef="let a">
-            <mat-icon *ngIf="action(a).isSuccess" matTooltip="Action succeeded">check</mat-icon>
-            <mat-icon *ngIf="!action(a).isSuccess" color="warn" matTooltip="Action failed"
-              >error</mat-icon
-            >
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
-          <td mat-cell *matCellDef="let a">
-            {{ action(a).action | humanize }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="auctionId">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Auction</th>
-          <td mat-cell *matCellDef="let a" class="shrink">
-            <a [routerLink]="linkGenerator.makeAuctionDetailsRoute(action(a).auctionId)">
-              <standard-copy>{{ action(a).auctionId }}</standard-copy>
-            </a>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="bidAmount">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Bid</th>
-          <td mat-cell *matCellDef="let a">
-            <standard-copy>{{ action(a).bidAmount | bignumber }}</standard-copy>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="spendAmount">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Spend</th>
-          <td mat-cell *matCellDef="let a">
-            <standard-copy>{{ action(a).spendAmount | bignumber }}</standard-copy>
-          </td>
-        </ng-container>
+    <div class="spacer"></div>
+    <ng-content extraControl></ng-content>
+  </div>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">
+      <ng-container matColumnDef="timeUtc">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+        <td mat-cell *matCellDef="let a">
+          <standard-absolute-time [timeUtc]="action(a).timeUtc"></standard-absolute-time>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="isSuccess">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <mat-icon>check</mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let a">
+          <mat-icon *ngIf="action(a).isSuccess" matTooltip="Action succeeded">check</mat-icon>
+          <mat-icon *ngIf="!action(a).isSuccess" color="warn" matTooltip="Action failed"
+            >error</mat-icon
+          >
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+        <td mat-cell *matCellDef="let a">
+          {{ action(a).action | humanize }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="auctionId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Auction</th>
+        <td mat-cell *matCellDef="let a" class="shrink">
+          <a [routerLink]="linkGenerator.makeAuctionDetailsRoute(action(a).auctionId)">
+            <standard-copy>{{ action(a).auctionId }}</standard-copy>
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="bidAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Bid</th>
+        <td mat-cell *matCellDef="let a">
+          <standard-copy>{{ action(a).bidAmount | bignumber }}</standard-copy>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="spendAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Spend</th>
+        <td mat-cell *matCellDef="let a">
+          <standard-copy>{{ action(a).spendAmount | bignumber }}</standard-copy>
+        </td>
+      </ng-container>
 
-        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        <ng-container matColumnDef="expandedDetail">
-          <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-            <div
-              class="auction-action-detail"
-              [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
-            >
-              <mat-card>
-                <table>
-                  <tr *ngIf="action(element).bidAmount">
-                    <th>Bid Amount</th>
-                    <td>
-                      <standard-copy>{{ action(element).bidAmount | bignumber }}</standard-copy>
-                    </td>
-                  </tr>
-                  <tr *ngIf="action(element).spendAmount">
-                    <th>Spend Amount</th>
-                    <td>
-                      <standard-copy>{{ action(element).spendAmount | bignumber }}</standard-copy>
-                    </td>
-                  </tr>
-                  <tr *ngIf="action(element).openingPrice">
-                    <th>Opening Price</th>
-                    <td>
-                      <standard-copy>{{ action(element).openingPrice | bignumber }}</standard-copy>
-                    </td>
-                  </tr>
-                  <tr *ngIf="action(element).buyoutPrice">
-                    <th>Buyout Price</th>
-                    <td>
-                      <standard-copy>{{ action(element).buyoutPrice | bignumber }}</standard-copy>
-                    </td>
-                  </tr>
-                  <tr *ngIf="action(element).carId">
-                    <th>Car ID</th>
-                    <td>
-                      <standard-copy>{{ action(element).carId }}</standard-copy>
-                    </td>
-                  </tr>
-                  <tr *ngIf="action(element).carMake">
-                    <th>Car Make</th>
-                    <td>
-                      <standard-copy>{{ action(element).carMake }}</standard-copy>
-                    </td>
-                  </tr>
-                  <tr *ngIf="action(element).carYear">
-                    <th>Car Year</th>
-                    <td>
-                      <standard-copy>{{ action(element).carYear }}</standard-copy>
-                    </td>
-                  </tr>
-                  <tr *ngIf="action(element).sellerXuid">
-                    <th>Seller XUID</th>
-                    <td>
-                      <standard-copy>{{ action(element).sellerXuid }}</standard-copy>
-                    </td>
-                  </tr>
-                  <tr *ngIf="action(element).carVin" class="multiline">
-                    <th>Car VIN</th>
-                    <td>
-                      <standard-copy>{{ action(element).carVin }}</standard-copy>
-                    </td>
-                  </tr>
-                </table>
-              </mat-card>
-              <mat-card>
-                <auction-data
-                  [auctionId]="action(element).auctionId"
-                  [service]="service"
-                ></auction-data>
-              </mat-card>
-            </div>
-          </td>
-        </ng-container>
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+          <div
+            class="auction-action-detail"
+            [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
+          >
+            <mat-card>
+              <table>
+                <tr *ngIf="action(element).bidAmount">
+                  <th>Bid Amount</th>
+                  <td>
+                    <standard-copy>{{ action(element).bidAmount | bignumber }}</standard-copy>
+                  </td>
+                </tr>
+                <tr *ngIf="action(element).spendAmount">
+                  <th>Spend Amount</th>
+                  <td>
+                    <standard-copy>{{ action(element).spendAmount | bignumber }}</standard-copy>
+                  </td>
+                </tr>
+                <tr *ngIf="action(element).openingPrice">
+                  <th>Opening Price</th>
+                  <td>
+                    <standard-copy>{{ action(element).openingPrice | bignumber }}</standard-copy>
+                  </td>
+                </tr>
+                <tr *ngIf="action(element).buyoutPrice">
+                  <th>Buyout Price</th>
+                  <td>
+                    <standard-copy>{{ action(element).buyoutPrice | bignumber }}</standard-copy>
+                  </td>
+                </tr>
+                <tr *ngIf="action(element).carId">
+                  <th>Car ID</th>
+                  <td>
+                    <standard-copy>{{ action(element).carId }}</standard-copy>
+                  </td>
+                </tr>
+                <tr *ngIf="action(element).carMake">
+                  <th>Car Make</th>
+                  <td>
+                    <standard-copy>{{ action(element).carMake }}</standard-copy>
+                  </td>
+                </tr>
+                <tr *ngIf="action(element).carYear">
+                  <th>Car Year</th>
+                  <td>
+                    <standard-copy>{{ action(element).carYear }}</standard-copy>
+                  </td>
+                </tr>
+                <tr *ngIf="action(element).sellerXuid">
+                  <th>Seller XUID</th>
+                  <td>
+                    <standard-copy>{{ action(element).sellerXuid }}</standard-copy>
+                  </td>
+                </tr>
+                <tr *ngIf="action(element).carVin" class="multiline">
+                  <th>Car VIN</th>
+                  <td>
+                    <standard-copy>{{ action(element).carVin }}</standard-copy>
+                  </td>
+                </tr>
+              </table>
+            </mat-card>
+            <mat-card>
+              <auction-data
+                [auctionId]="action(element).auctionId"
+                [service]="service"
+              ></auction-data>
+            </mat-card>
+          </div>
+        </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr
-          mat-row
-          *matRowDef="let element; columns: columnsToDisplay"
-          class="example-element-row"
-          [class.example-expanded-row]="expandedElement === element"
-          (click)="expandedElement = expandedElement === element ? null : element"
-        ></tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-      </table>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr
+        mat-row
+        *matRowDef="let element; columns: columnsToDisplay"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element"
+      ></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
 
-      <mat-paginator
-        [pageSizeOptions]="[10, 25, 50, 100, 250, 500]"
-        aria-label="Select page"
-      ></mat-paginator>
-    </div>
-  </mat-card-content>
-</mat-card>
+    <mat-paginator
+      [pageSizeOptions]="[10, 25, 50, 100, 250, 500]"
+      aria-label="Select page"
+    ></mat-paginator>
+  </div>
+</mat-expansion-panel>
