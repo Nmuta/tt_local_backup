@@ -36,6 +36,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { UgcOperationSnackbarComponent } from '../../components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 import { WoodstockPersistUgcModalComponent } from '@views/persist-ugc-modal/woodstock/woodstock-persist-ugc-modal.component';
+import { WoodstockUgcGenerateSharecodeService } from '@services/api-v2/woodstock/ugc/generate-sharecode/woodstock-ugc-generate-sharecode.service';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -51,6 +52,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public reportMonitor = new ActionMonitor('POST Report UGC');
   public persistMonitor = new ActionMonitor('POST Persist UGC');
   public cloneMonitor = new ActionMonitor('POST Clone UGC');
+  public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
   public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
 
   public userHasWritePerms: boolean = false;
@@ -59,6 +61,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public canHideUgc: boolean = false;
   public canCloneUgc: boolean = false;
   public canPersistUgc: boolean = false;
+  public canGenerateSharecode: boolean = false;
   public featureMatTooltip: string = null;
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
@@ -88,6 +91,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: WoodstockUgcReportService,
     private readonly ugcHideService: WoodstockUgcHideService,
+    private readonly ugcGenerateSharecodeService: WoodstockUgcGenerateSharecodeService,
     private readonly dialog: MatDialog,
   ) {
     super();
@@ -169,6 +173,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
         this.canHideUgc = this.ugcItem?.isPublic;
+        this.canGenerateSharecode = !this.ugcItem?.shareCode;
 
         if (!this.userHasWritePerms) {
           this.featureMatTooltip = this.incorrectPermsTooltip;
@@ -287,5 +292,25 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
         takeUntil(this.onDestroy$),
       )
       .subscribe();
+  }
+
+  /** Generate sharecode for a UGC item in Woodstock */
+  public generateSharecodeForUgc(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+
+    this.generateSharecodeMonitor = this.generateSharecodeMonitor.repeat();
+
+    this.ugcGenerateSharecodeService
+      .ugcGenerateSharecode$(this.ugcItem.id)
+      .pipe(this.generateSharecodeMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(newSharecode => {
+        const updatedUgcItem = cloneDeep(this.ugcItem);
+        updatedUgcItem.shareCode = newSharecode.sharecode;
+        this.ugcItem = updatedUgcItem;
+
+        this.canGenerateSharecode = false;
+      });
   }
 }

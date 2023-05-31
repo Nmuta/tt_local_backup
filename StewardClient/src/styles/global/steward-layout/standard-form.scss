@@ -40,10 +40,13 @@
     }
 
     // get the spacing right
-    margin: -1em;
-    > * {
-      margin: 1em;
+    &:not(.do-not-manipulate-margin) {
+      margin: -1em;
+      > * {
+        margin: 1em;
+      }
     }
+
 
     // fill items; override later per-control
     > * {

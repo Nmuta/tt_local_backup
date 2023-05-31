@@ -44,3 +44,7 @@ toggle-list-ez {
 p.padded {
   margin: 2rem;
 }
+
+button {
+  min-width: $button-min-size;
+}
