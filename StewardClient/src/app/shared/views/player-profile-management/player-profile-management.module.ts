@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -30,6 +31,7 @@ import { SteelheadPlayerProfileManagementComponent } from './steelhead/steelhead
     MatCheckboxModule,
     MatInputModule,
     MatTooltipModule,
+    MatListModule,
     MonitorActionModule,
     StateManagersModule,
     MatButtonToggleModule,

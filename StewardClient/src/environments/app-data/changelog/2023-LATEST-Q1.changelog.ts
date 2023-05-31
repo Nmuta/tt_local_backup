@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Added in new Client Crash log decoder tool',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '133d4379-e2e2-4adb-9e80-70afcfa419ea',
+      shortText: 'Remove configuration options from Steelhead profile reset',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
       uuid: '14b2aa22-2a72-4398-8bd5-f794db91b3d0',
       shortText: 'New Rivals Calendar added to Calendar component',
