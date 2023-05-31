@@ -50,13 +50,13 @@
               <span [matTooltip]="featureMatTooltip">Update Featured Status</span>
             </button>
             <button
-            class="sf-default-margins sf-action-list-margins"
-            [disabled]="!canGenerateSharecode"
-            mat-raised-button
-            color="primary"
-            (click)="generateSharecodeForUgc()"
+              class="sf-default-margins sf-action-list-margins"
+              [disabled]="!canGenerateSharecode"
+              mat-raised-button
+              color="primary"
+              (click)="generateSharecodeForUgc()"
             >
-              <span matTooltip='Generate sharecode for UGC'>Generate Sharecode</span>
+              <span matTooltip="Generate sharecode for UGC">Generate Sharecode</span>
             </button>
             <div *waitForMonitor="getReportReasonsMonitor">
               <mat-form-field
@@ -197,9 +197,8 @@
               </button>
             </div>
           </div>
-
-        </div> 
-      </div> 
+        </div>
+      </div>
     </mat-card>
 
     <mat-card>

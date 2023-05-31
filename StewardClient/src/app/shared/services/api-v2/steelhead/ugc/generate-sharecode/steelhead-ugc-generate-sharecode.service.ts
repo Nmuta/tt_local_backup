@@ -16,6 +16,9 @@ export class SteelheadUgcGenerateSharecodeService {
 
   /** Generate sharecode for UGC. */
   public ugcGenerateSharecode$(ugcId: string): Observable<GenerateSharecodeResponse> {
-    return this.api.postRequest$<GenerateSharecodeResponse>(`${this.basePath}/${ugcId}/generateSharecode`, undefined);
+    return this.api.postRequest$<GenerateSharecodeResponse>(
+      `${this.basePath}/${ugcId}/generateSharecode`,
+      undefined,
+    );
   }
 }

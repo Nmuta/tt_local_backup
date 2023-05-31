@@ -154,7 +154,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       .subscribe(newSharecode => {
         this.ugcItem.shareCode = newSharecode.sharecode;
         this.ugcItem = cloneDeep(this.ugcItem);
-        this.canGenerateSharecode = false;        
+        this.canGenerateSharecode = false;
       });
   }
 }
