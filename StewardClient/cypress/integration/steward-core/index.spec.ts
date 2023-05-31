@@ -22,8 +22,12 @@ context('Steward Index', () => {
   });
 
   it('should search for a specific tool', () => {
-    cy.get('mat-chip-list').click().type('Player Details');
-    cy.get('input').type('{enter}');
+    const $chipList = cy.get('mat-chip-list');
+    $chipList.within(() => {
+      const $inputChipList = cy.get('input');
+      $inputChipList.click().type('Player Details{enter}');
+    });
+
     waitForProgressSpinners();
     cy.get('.mat-card-title').contains('Player Details');
     cy.get('mat-chip').contains('1').should('exist');
@@ -31,24 +35,41 @@ context('Steward Index', () => {
   });
 
   it('should filter tools by input', () => {
-    cy.get('mat-chip-list').click().type('Player');
-    cy.get('input').type('{enter}');
+    const $chipList = cy.get('mat-chip-list');
+    $chipList.within(() => {
+      const $inputChipList = cy.get('input');
+      $inputChipList.click().type('Player{enter}');
+    });
+
     waitForProgressSpinners();
     cy.get('mat-chip').contains('7').should('exist');
     cy.get('span').contains('Tools below do not match filters').should('exist');
   });
 
   it('should filter tools by title', () => {
-    cy.get('mat-chip-list').click();
-    cy.get('mat-option').contains('span', 'FH5').click();
+    const $chipList = cy.get('mat-chip-list');
+    $chipList.within(() => {
+      const $inputChipList = cy.get('input');
+      $inputChipList.click();
+    });
+    const $optionList = cy.get('mat-option');
+    $optionList.within(() => {
+      const $option = cy.get('span').contains('FH5');
+      $option.click();
+    });
+
     waitForProgressSpinners();
     cy.get('mat-chip').contains('23').should('exist');
     cy.get('span').contains('Tools below do not match filters').should('exist');
   });
 
   it('should reset when filters are removed', () => {
-    cy.get('mat-chip-list').click().type('Player');
-    cy.get('input').type('{enter}');
+    const $chipList = cy.get('mat-chip-list');
+    $chipList.within(() => {
+      const $inputChipList = cy.get('input');
+      $inputChipList.click().type('Player{enter}');
+    });
+
     waitForProgressSpinners();
     cy.contains('mat-icon', 'close').click();
     cy.get('mat-chip').contains('33').should('exist');
