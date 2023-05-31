@@ -71,7 +71,7 @@
                 </mat-select>
               </mat-form-field>
             </div>
-            <div class="sf-horizontal">
+            <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button
                 #verifyReportBtn
                 [permissionAttribute]="reportPermAttribute"
@@ -98,7 +98,7 @@
 
             <ng-content select="button"></ng-content>
 
-            <div class="sf-horizontal">
+            <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button
                 [disabled]="!canHideUgc"
                 #verifyHideBtn
@@ -126,7 +126,7 @@
               </button>
             </div>
 
-            <div class="sf-horizontal">
+            <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button
                 [disabled]="!canPersistUgc"
                 #verifyPersistBtn
@@ -156,7 +156,7 @@
               </button>
             </div>
 
-            <div class="sf-horizontal">
+            <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button
                 [disabled]="!canCloneUgc"
                 #verifyCloneBtn
