@@ -11,11 +11,10 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
 
     disableFakeApi();
     cy.visit(stewardUrls.tools.userGroupManagement.steelhead);
-    cy.get('[mattooltip="Settings"]').click();
-    cy.get('[id="mat-select-8"]').click();
-    cy.get('[ng-reflect-value="Studio"]').click();
-    cy.wait(1_000);
-    cy.get('[mattooltip="Settings"]').click();
+    cy.get('span').contains('mat-icon', 'settings').click();
+    cy.get('mat-form-field').contains('span', 'Flight').click();
+    cy.get('mat-option').contains('span', 'Studio').click();
+    cy.get('span').contains('mat-icon', 'settings').click();
     cy.contains('span', 'Studio').should('exist');
   });
 
@@ -34,7 +33,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       selectLspGroup('LiveOpsTestingGroup');
       cy.contains('mat-form-field', 'Player XUIDs').click().type(chad.xuid);
       //this is the checkbox next to the "Add Users" button
-      cy.get('[id="mat-checkbox-2"]').click();
+      cy.get('[cyid="verifyAdd"]').click();
       cy.contains('button', 'Add Users').click();
       waitForProgressSpinners();
       cy.contains('td', chad.xuid).should('exist');
@@ -44,7 +43,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       selectLspGroup('LiveOpsTestingGroup');
       cy.contains('mat-form-field', 'Player XUIDs').click().type(chad.xuid);
       //this is the checkbox next to the "Delete Users" button
-      cy.get('[id="mat-checkbox-3"]').click();
+      cy.get('[cyid="verifyDelete"]').click();
       cy.contains('button', 'Delete Users').click();
       waitForProgressSpinners();
       cy.contains('td', chad.xuid).should('not.exist');
@@ -56,7 +55,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
         .click()
         .type(madden.xuid + ', ' + chad.xuid);
       //this is the checkbox next to the "Add Users" button
-      cy.get('[id="mat-checkbox-2"]').click();
+      cy.get('[cyid="verifyAdd"]').click();
       cy.contains('button', 'Add Users').click();
       waitForProgressSpinners();
       cy.contains('td', madden.xuid).should('exist');
@@ -69,7 +68,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
         .click()
         .type(madden.xuid + ', ' + chad.xuid);
       //this is the checkbox next to the "Delete Users" button
-      cy.get('[id="mat-checkbox-3"]').click();
+      cy.get('[cyid="verifyDelete"]').click();
       cy.contains('button', 'Delete Users').click();
       waitForProgressSpinners();
       cy.contains('td', madden.xuid).should('not.exist');
@@ -81,7 +80,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.contains('button', 'GTAG').click();
       cy.contains('mat-form-field', 'Player Gamertags').click().type(chad.gtag);
       //this is the checkbox next to the "Add Users" button
-      cy.get('[id="mat-checkbox-2"]').click();
+      cy.get('[cyid="verifyAdd"]').click();
       cy.contains('button', 'Add Users').click();
       waitForProgressSpinners();
       cy.contains('td', chad.gtag).should('exist');
@@ -92,7 +91,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.contains('button', 'GTAG').click();
       cy.contains('mat-form-field', 'Player Gamertags').click().type(chad.gtag);
       //this is the checkbox next to the "Delete Users" button
-      cy.get('[id="mat-checkbox-3"]').click();
+      cy.get('[cyid="verifyDelete"]').click();
       cy.contains('button', 'Delete Users').click();
       waitForProgressSpinners();
       cy.contains('td', chad.gtag).should('not.exist');
@@ -105,7 +104,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
         .click()
         .type(madden.gtag + ', ' + chad.gtag);
       //this is the checkbox next to the "Add Users" button
-      cy.get('[id="mat-checkbox-2"]').click();
+      cy.get('[cyid="verifyAdd"]').click();
       cy.contains('button', 'Add Users').click();
       waitForProgressSpinners();
       cy.contains('td', madden.gtag).should('exist');
@@ -119,7 +118,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
         .click()
         .type(madden.gtag + ', ' + chad.gtag);
       //this is the checkbox next to the "Delete Users" button
-      cy.get('[id="mat-checkbox-3"]').click();
+      cy.get('[cyid="verifyDelete"]').click();
       cy.contains('button', 'Delete Users').click();
       waitForProgressSpinners();
       cy.contains('td', madden.gtag).should('not.exist');
@@ -128,7 +127,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
 
     it('should remove all users (and put them back in)', () => {
       selectLspGroup('LiveOpsTestingGroup');
-      cy.get('[id="mat-checkbox-1"]').click();
+      cy.get('[cyid="verifyDeleteAll"]').click();
       cy.contains('button', 'Delete All Users').click();
       waitForProgressSpinners();
       cy.contains('td', calebStudio.xuid).should('not.exist');
@@ -136,7 +135,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       //Add the users back to the group
       cy.contains('mat-form-field', 'Player XUIDs').click().type(calebStudio.xuid);
       //this is the checkbox next to the "Add Users" button
-      cy.get('[id="mat-checkbox-2"]').click();
+      cy.get('[cyid="verifyAdd"]').click();
       cy.contains('button', 'Add Users').click();
       waitForProgressSpinners();
       cy.contains('td', calebStudio.xuid).should('exist');

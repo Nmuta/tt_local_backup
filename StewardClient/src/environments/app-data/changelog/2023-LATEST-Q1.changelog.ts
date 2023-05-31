@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'a6b2edb4-08bb-43a9-ad75-bc3ae62d938a',
+      shortText: 'Added cyids to Verify checkboxes on UGM page',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '133d4379-e2e2-4adb-9e80-70afcfa419ea',
       shortText: 'Remove configuration options from Steelhead profile reset',
