@@ -22,6 +22,7 @@ context('Steward Index', () => {
   });
 
   it('should search for a specific tool', () => {
+    waitForProgressSpinners();
     const $chipList = cy.get('mat-chip-list');
     $chipList.within(() => {
       const $inputChipList = cy.get('input');
@@ -35,6 +36,7 @@ context('Steward Index', () => {
   });
 
   it('should filter tools by input', () => {
+    waitForProgressSpinners();
     const $chipList = cy.get('mat-chip-list');
     $chipList.within(() => {
       const $inputChipList = cy.get('input');
@@ -47,6 +49,7 @@ context('Steward Index', () => {
   });
 
   it('should filter tools by title', () => {
+    waitForProgressSpinners();
     const $chipList = cy.get('mat-chip-list');
     $chipList.within(() => {
       const $inputChipList = cy.get('input');
@@ -63,11 +66,37 @@ context('Steward Index', () => {
     cy.get('span').contains('Tools below do not match filters').should('exist');
   });
 
-  it('should reset when filters are removed', () => {
+  it('should filter tools with multiple filters', () => {
+    waitForProgressSpinners();
     const $chipList = cy.get('mat-chip-list');
     $chipList.within(() => {
       const $inputChipList = cy.get('input');
       $inputChipList.click().type('Player{enter}');
+      $inputChipList.click();
+    });
+    const $optionList = cy.get('mat-option');
+    $optionList.within(() => {
+      const $option = cy.get('span').contains('FM7');
+      $option.click();
+    });
+
+    waitForProgressSpinners();
+    cy.get('mat-chip').contains('5').should('exist');
+    cy.get('span').contains('Tools below do not match filters').should('exist');
+  });
+
+  it('should reset when filters are removed', () => {
+    waitForProgressSpinners();
+    const $chipList = cy.get('mat-chip-list');
+    $chipList.within(() => {
+      const $inputChipList = cy.get('input');
+      $inputChipList.click().type('Player{enter}');
+      $inputChipList.click();
+    });
+    const $optionList = cy.get('mat-option');
+    $optionList.within(() => {
+      const $option = cy.get('span').contains('FM7');
+      $option.click();
     });
 
     waitForProgressSpinners();
