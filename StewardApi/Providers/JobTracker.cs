@@ -16,25 +16,30 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Hubs;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {
     /// <inheritdoc />
-    public sealed class JobTracker : IJobTracker
+    public sealed class JobTracker : IJobTracker, IInitializeable
     {
         private const string JobContainerName = "jobs";
         private const int LeaseLockTimeInSeconds = 30;
 
+        private readonly ITableStorageClientFactory tableStorageClientFactory;
         private readonly IBlobRepository blobRepository;
         private readonly IRefreshableCacheStore refreshableCacheStore;
-        private readonly ITableStorageClient tableStorageClient;
+        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly IConfiguration configuration;
         private readonly HubManager hubManager;
+        private ITableStorageClient tableStorageClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JobTracker"/> class.
         /// </summary>
-        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public JobTracker(
             HubManager hubManager,
             ITableStorageClientFactory tableStorageClientFactory,
@@ -50,14 +55,10 @@ namespace Turn10.LiveOps.StewardApi.Providers
             configuration.ShouldNotBeNull(nameof(configuration));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
 
+            this.keyVaultProvider = keyVaultProvider;
+            this.configuration = configuration;
+            this.tableStorageClientFactory = tableStorageClientFactory;
             this.hubManager = hubManager;
-            var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(configuration[ConfigurationKeyConstants.KeyVaultUrl], configuration[ConfigurationKeyConstants.CosmosTableSecretName]).GetAwaiter().GetResult();
-
-            configuration.Bind("BackgroundJobStorageProperties", tableStorageProperties);
-            tableStorageProperties.ConnectionString = tableStorageConnectionString;
-
-            this.tableStorageClient = tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
             this.blobRepository = blobRepository;
             this.refreshableCacheStore = refreshableCacheStore;
         }
@@ -291,6 +292,20 @@ namespace Turn10.LiveOps.StewardApi.Providers
             var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
 
             return results;
+        }
+
+        /// <inheritdoc />
+        public async Task InitializeAsync()
+        {
+            var tableStorageProperties = new TableStorageProperties();
+            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
+                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                this.configuration[ConfigurationKeyConstants.CosmosTableSecretName]).ConfigureAwait(false);
+
+            this.configuration.Bind("BackgroundJobStorageProperties", tableStorageProperties);
+            tableStorageProperties.ConnectionString = tableStorageConnectionString;
+
+            this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
         }
 
         private void AddFinalStatusToCache(BackgroundJobInternal backgroundJob, string jobId)

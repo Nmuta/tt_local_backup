@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Added cyids to Verify checkboxes on UGM page',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
+      uuid: '154e3610-9f99-437c-9127-c3363e3e1635',
+      shortText: 'Added in new Client Crash log decoder tool',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '133d4379-e2e2-4adb-9e80-70afcfa419ea',
       shortText: 'Remove configuration options from Steelhead profile reset',
