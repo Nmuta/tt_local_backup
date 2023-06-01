@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'f0f3e335-a45c-45ce-92b2-514ea1acdb63',
+      shortText: 'Update post requests to use existing content type in headers',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
       uuid: '154e3610-9f99-437c-9127-c3363e3e1635',
       shortText: 'Added in new Client Crash log decoder tool',
