@@ -59,7 +59,7 @@
               color="primary"
               (click)="generateSharecodeForUgc()"
             >
-              <span matTooltip="Generate sharecode for UGC">Generate Sharecode</span>
+              <span [matTooltip]="generateSharecodeMatTooltip">Generate Sharecode</span>
             </button>
             <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button

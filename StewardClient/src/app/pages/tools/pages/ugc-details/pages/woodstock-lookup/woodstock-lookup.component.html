@@ -57,7 +57,7 @@
               color="primary"
               (click)="generateSharecodeForUgc()"
             >
-              <span matTooltip="Generate sharecode for UGC">Generate Sharecode</span>
+              <span [matTooltip]="generateSharecodeMatTooltip">Generate Sharecode</span>
             </button>
             <div *waitForMonitor="getReportReasonsMonitor">
               <mat-form-field

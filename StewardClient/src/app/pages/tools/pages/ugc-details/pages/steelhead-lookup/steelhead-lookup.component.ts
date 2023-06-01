@@ -41,8 +41,12 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public canHideUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
   public featureMatTooltip: string = null;
+  public generateSharecodeMatTooltip: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
+  private readonly privateUgcSharecodeTooltip = 'Cannot generate Sharecode for private UGC';
+  private readonly existingSharecodeTooltip = 'Sharecode already exists for UGC';
+  private readonly generateSharecodeTooltip = '"Generate sharecode for UGC"';
 
   public featurePermAttribute = PermAttributeName.FeatureUgc;
   public reportPermAttribute = PermAttributeName.ReportUgc;
@@ -105,6 +109,16 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
           this.featureMatTooltip = this.incorrectPermsTooltip;
         } else if (!this.ugcItem?.isPublic) {
           this.featureMatTooltip = this.privateUgcTooltip;
+        }
+
+        if (!this.canGenerateSharecode) {
+          if (this.ugcItem?.shareCode) {
+            this.generateSharecodeMatTooltip = this.existingSharecodeTooltip;
+          } else if (!this.ugcItem?.isPublic) {
+            this.generateSharecodeMatTooltip = this.privateUgcSharecodeTooltip;
+          }
+        } else {
+          this.generateSharecodeMatTooltip = this.generateSharecodeTooltip;
         }
       });
   }

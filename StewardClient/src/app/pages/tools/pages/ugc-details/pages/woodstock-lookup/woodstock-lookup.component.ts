@@ -63,6 +63,8 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public canPersistUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
   public featureMatTooltip: string = null;
+  public generateSharecodeMatTooltip: string = null;
+
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
     order: GEO_FLAGS_ORDER,
@@ -75,6 +77,9 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public selectedReason: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
+  private readonly privateUgcSharecodeTooltip = 'Cannot generate Sharecode for private UGC';
+  private readonly existingSharecodeTooltip = 'Sharecode already exists for UGC';
+  private readonly generateSharecodeTooltip = '"Generate sharecode for UGC"';
 
   public featurePermAttribute = PermAttributeName.FeatureUgc;
   public reportPermAttribute = PermAttributeName.ReportUgc;
@@ -173,12 +178,22 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
         this.canHideUgc = this.ugcItem?.isPublic;
-        this.canGenerateSharecode = !this.ugcItem?.shareCode;
+        this.canGenerateSharecode = !this.ugcItem?.shareCode && this.ugcItem?.isPublic;
 
         if (!this.userHasWritePerms) {
           this.featureMatTooltip = this.incorrectPermsTooltip;
         } else if (!this.ugcItem?.isPublic) {
           this.featureMatTooltip = this.privateUgcTooltip;
+        }
+
+        if (!this.canGenerateSharecode) {
+          if (this.ugcItem?.shareCode) {
+            this.generateSharecodeMatTooltip = this.existingSharecodeTooltip;
+          } else if (!this.ugcItem?.isPublic) {
+            this.generateSharecodeMatTooltip = this.privateUgcSharecodeTooltip;
+          }
+        } else {
+          this.generateSharecodeMatTooltip = this.generateSharecodeTooltip;
         }
       });
 
