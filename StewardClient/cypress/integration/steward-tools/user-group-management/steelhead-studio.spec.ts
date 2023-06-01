@@ -147,7 +147,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       selectLspGroup('LiveOpsTestingGroup');
       cy.contains('mat-form-field', 'Player XUIDs').click().type('TotallyARealXUID');
       //this is the checkbox next to the "Add Users" button
-      cy.get('[id="mat-checkbox-2"]').click();
+      cy.get('[cyid="verifyAdd"]').click();
       cy.contains('button', 'Add Users').click();
       waitForProgressSpinners();
       cy.contains('mat-icon', 'warning').should('exist');
@@ -158,7 +158,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.contains('button', 'GTAG').click();
       cy.contains('mat-form-field', 'Player Gamertags').click().type('TotallyARealGTAG');
       //this is the checkbox next to the "Add Users" button
-      cy.get('[id="mat-checkbox-2"]').click();
+      cy.get('[cyid="verifyAdd"]').click();
       cy.contains('button', 'Add Users').click();
       waitForProgressSpinners();
       cy.contains('div', 'Failed to add').should('exist');
