@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         ///    Generate sharecode for UGC identified by UGC ID.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(SharecodeGenerationResponse))]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.UgcItem, ActionAreaLogTags.Action | ActionAreaLogTags.Ugc)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.UserGeneratedContent)]
