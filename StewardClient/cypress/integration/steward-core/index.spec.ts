@@ -1,6 +1,15 @@
 import { login } from '@support/steward/auth/login';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
+//These values may change as tools and games are added or removed from Steward
+const filterValues = {
+  allTools: '33',
+  specificTool: '1',
+  playerFilter: '7',
+  fh5Filter: '23',
+  playerFM7Filter: '5',
+};
+
 context('Steward Index', () => {
   beforeEach(() => {
     login();
@@ -31,7 +40,7 @@ context('Steward Index', () => {
 
     waitForProgressSpinners();
     cy.get('.mat-card-title').contains('Player Details');
-    cy.get('mat-chip').contains('1').should('exist');
+    cy.get('mat-chip').contains(filterValues.specificTool).should('exist');
     cy.get('span').contains('Tools below do not match filters').should('exist');
   });
 
@@ -44,7 +53,7 @@ context('Steward Index', () => {
     });
 
     waitForProgressSpinners();
-    cy.get('mat-chip').contains('7').should('exist');
+    cy.get('mat-chip').contains(filterValues.playerFilter).should('exist');
     cy.get('span').contains('Tools below do not match filters').should('exist');
   });
 
@@ -62,7 +71,7 @@ context('Steward Index', () => {
     });
 
     waitForProgressSpinners();
-    cy.get('mat-chip').contains('23').should('exist');
+    cy.get('mat-chip').contains(filterValues.fh5Filter).should('exist');
     cy.get('span').contains('Tools below do not match filters').should('exist');
   });
 
@@ -81,7 +90,7 @@ context('Steward Index', () => {
     });
 
     waitForProgressSpinners();
-    cy.get('mat-chip').contains('5').should('exist');
+    cy.get('mat-chip').contains(filterValues.playerFM7Filter).should('exist');
     cy.get('span').contains('Tools below do not match filters').should('exist');
   });
 
@@ -101,7 +110,7 @@ context('Steward Index', () => {
 
     waitForProgressSpinners();
     cy.contains('mat-icon', 'close').click();
-    cy.get('mat-chip').contains('33').should('exist');
+    cy.get('mat-chip').contains(filterValues.allTools).should('exist');
     cy.get('span').contains('Tools below do not match filters').should('not.exist');
   });
 });
