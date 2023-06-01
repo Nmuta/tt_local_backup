@@ -2,18 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { of } from 'rxjs';
-import { ShowroomFeaturedTileDetailsModalComponent } from './showroom-featured-tile-details-modal.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import faker from '@faker-js/faker';
-import { CarFeaturedShowcase } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
+import { ManufacturerFeaturedShowcase } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
+import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from './showroom-manufacturer-featured-tile-details-modal.component';
 
-describe('ShowroomFeaturedTileDetailsModalComponent', () => {
-  let component: ShowroomFeaturedTileDetailsModalComponent;
-  let fixture: ComponentFixture<ShowroomFeaturedTileDetailsModalComponent>;
+describe('ShowroomManufacturerFeaturedTileDetailsModalComponent', () => {
+  let component: ShowroomManufacturerFeaturedTileDetailsModalComponent;
+  let fixture: ComponentFixture<ShowroomManufacturerFeaturedTileDetailsModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ShowroomFeaturedTileDetailsModalComponent],
+      declarations: [ShowroomManufacturerFeaturedTileDetailsModalComponent],
       imports: [MatDialogModule, PipesModule, HttpClientTestingModule],
       providers: [
         {
@@ -27,22 +27,16 @@ describe('ShowroomFeaturedTileDetailsModalComponent', () => {
             description: faker.datatype.string(),
             startTime: faker.datatype.datetime().toISOString(),
             endTime: faker.datatype.datetime().toISOString(),
-            carId: faker.datatype.number(),
-            baseCost: faker.datatype.number(),
-            mediaName: faker.datatype.string(),
-            modelShort: faker.datatype.string(),
-            salePercentOff: faker.datatype.number(),
-            salePrice: faker.datatype.number(),
-            vipSalePercentOff: faker.datatype.number(),
-            vipSalePrice: faker.datatype.number(),
-          } as CarFeaturedShowcase,
+            manufacturerId: faker.datatype.number(),
+            manufacturerName: faker.datatype.string(),
+          } as ManufacturerFeaturedShowcase,
         },
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShowroomFeaturedTileDetailsModalComponent);
+    fixture = TestBed.createComponent(ShowroomManufacturerFeaturedTileDetailsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
