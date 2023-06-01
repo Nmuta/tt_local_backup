@@ -57,10 +57,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
-                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
+                    new PlayerInventoryItem { Id = 0, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
-            this.CreateMap<AdminForzaProfile, SteelheadInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
@@ -301,7 +300,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<SteelheadLiveOpsContent.DataCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} {src.Year}"));
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} ({src.Year})"));
             this.CreateMap<SteelheadLiveOpsContent.DataCar, SimpleCar>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
@@ -392,7 +391,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>()
                 .ForMember(dest => dest.FailedUsers, opt => opt.MapFrom(src => src.failedUsers.SelectMany(x => x.userIds).ToList()));
 
-            this.CreateMap<RivalEvent, Leaderboard>()
+            this.CreateMap<SteelheadLiveOpsContent.RivalEvent, Leaderboard>()
                 .ForMember(dest => dest.GameScoreboardId, opt => opt.MapFrom(src => src.RivalEventId))
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Track))
                 .ForMember(dest => dest.ScoreboardType, opt => opt.MapFrom(src => ScoreboardType.Rivals.ToString()))
@@ -400,6 +399,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ScoreType, opt => opt.MapFrom(src => src.ScoreType))
                 .ForMember(dest => dest.ScoreTypeId, opt => opt.MapFrom(src => src.ScoreType))
                 .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.Buckets.Select(x => x.CarRestrictions.CarClassId).First()));
+
+            this.CreateMap<SteelheadLiveOpsContent.RivalEvent, RivalsEvent>()
+                .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Track))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.EventCategory))
+                .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartEndDate.From))
+                .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.StartEndDate.To))
+                .ForMember(dest => dest.CarRestrictions, opt => opt.MapFrom(src => src.Buckets.Select(x => x.CarRestrictions.Name).ToList()));
 
             this.CreateMap<SteelheadLiveOpsContent.CarClass, CarClass>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarClassId));
@@ -487,6 +493,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<ForzaProfile, SteelheadInventoryProfile>()
                 .ForMember(dest => dest.IsCurrent, opt => opt.MapFrom(source => source.isLastLoggedInProfile));
+
+            this.CreateMap<ServicesLiveOps.ForzaLiveryGiftResult, GiftResponse<ulong>>()
+                .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.xuid))
+                .ForMember(dest => dest.TargetXuid, opt => opt.MapFrom(source => source.xuid))
+                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid))
+                .ForMember(dest => dest.Errors, opt => opt.MapFrom(source =>
+                    source.Success
+                        ? new List<StewardError>()
+                        : new List<StewardError>
+                        {
+                            new ServicesFailureStewardError(
+                                $"LSP failed to gift livery to player with XUID: {source.xuid}")
+                        }));
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)

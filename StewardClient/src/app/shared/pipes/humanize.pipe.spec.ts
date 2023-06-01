@@ -28,6 +28,11 @@ describe('HumanizePipe', () => {
     expect(pipe.transform('UWP')).toBe('UWP');
   });
 
+  it('handles humanize and acronymize', () => {
+    const pipe = new HumanizePipe();
+    expect(pipe.transform('UgcId')).toBe('UGC ID');
+  });
+
   it('passes through non-strings', () => {
     const pipe = new HumanizePipe();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

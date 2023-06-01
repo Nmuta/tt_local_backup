@@ -1,5 +1,8 @@
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { MasterInventoryItem } from './master-inventory-item';
-import { PlayerInventoryItem } from './player-inventory-item';
+import { PlayerInventoryCarItem, PlayerInventoryItem } from './player-inventory-item';
+import { AbstractControl, FormGroup } from '@angular/forms';
+import { InventoryItemListDisplayComponentContract } from '@views/inventory-item-list-display/inventory-item-list-display.component';
 
 /** Represents a warning symbol to display next to a warning */
 export interface ItemWarning {
@@ -11,10 +14,19 @@ export interface ItemWarning {
 /** Augmentations for player inventory item list. */
 export interface PlayerInventoryItemListEntryExtras {
   warnings?: ItemWarning[];
+  isInEditMode?: boolean;
+  editFormGroup?: FormGroup;
+  editFormControls?: { [key: string]: AbstractControl };
+  editMonitor?: ActionMonitor;
+  deleteMonitor?: ActionMonitor;
 }
 
 /** Composite type for player inventory item list */
-export type PlayerInventoryItemListEntry = (PlayerInventoryItem | MasterInventoryItem) &
+export type PlayerInventoryItemListEntry = (
+  | PlayerInventoryCarItem
+  | PlayerInventoryItem
+  | MasterInventoryItem
+) &
   PlayerInventoryItemListEntryExtras;
 
 /** Interface for a player inventory item list. */
@@ -23,3 +35,8 @@ export interface PlayerInventoryItemList {
   description: string;
   items: PlayerInventoryItemListEntry[];
 }
+
+/** Interface for a player inventory item list. */
+export type PlayerInventoryItemListWithService = PlayerInventoryItemList & {
+  service: InventoryItemListDisplayComponentContract;
+};

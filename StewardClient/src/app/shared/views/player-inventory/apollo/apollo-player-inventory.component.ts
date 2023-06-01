@@ -3,10 +3,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ApolloMasterInventory } from '@models/apollo';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo';
-import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemListWithService } from '@models/master-inventory-item-list';
 import { GameTitle } from '@models/enums';
 import { makeItemList } from '../player-inventory-helpers';
 import { PlayerInventoryComponentContract } from '../player-inventory.component';
+import { InventoryItemListDisplayComponentContract } from '@views/inventory-item-list-display/inventory-item-list-display.component';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Displays an Apollo player's inventory. */
 @Component({
@@ -18,11 +20,17 @@ export class ApolloPlayerInventoryComponent {
   /** Player Identity. */
   @Input() public identity: IdentityResultAlpha;
   /** Inventory profile Id. */
-  @Input() public profileId: BigNumber | string | undefined | null;
+  @Input() public profile: PlayerInventoryProfile;
   /** Outputs when player inventory is found. */
   @Output() public inventoryFound = new EventEmitter<ApolloMasterInventory>();
 
   public service: PlayerInventoryComponentContract<ApolloMasterInventory, IdentityResultAlpha>;
+
+  public emptyInventoryItemListService: InventoryItemListDisplayComponentContract = {
+    openCarEditModal$: undefined,
+    editItemQuantity$: undefined,
+    deleteItem$: undefined,
+  };
 
   constructor(private readonly apollo: ApolloService) {
     this.service = {
@@ -37,11 +45,23 @@ export class ApolloPlayerInventoryComponent {
   }
 
   /** Implement to specify the expando tables to show. */
-  protected makewhatToShowList(inventory: ApolloMasterInventory): PlayerInventoryItemList[] {
-    return [
-      makeItemList('Credit Rewards', inventory.creditRewards),
-      makeItemList('Cars', inventory.cars),
-      makeItemList('Vanity Items', inventory.vanityItems),
-    ];
+  protected makewhatToShowList(
+    inventory: ApolloMasterInventory,
+  ): PlayerInventoryItemListWithService[] {
+    const credits = makeItemList(
+      'Credit Rewards',
+      inventory.creditRewards,
+    ) as PlayerInventoryItemListWithService;
+    const cars = makeItemList('Cars', inventory.cars) as PlayerInventoryItemListWithService;
+    const vanityItems = makeItemList(
+      'Vanity Items',
+      inventory.vanityItems,
+    ) as PlayerInventoryItemListWithService;
+
+    credits.service = this.emptyInventoryItemListService;
+    cars.service = this.emptyInventoryItemListService;
+    vanityItems.service = this.emptyInventoryItemListService;
+
+    return [credits, cars, vanityItems];
   }
 }

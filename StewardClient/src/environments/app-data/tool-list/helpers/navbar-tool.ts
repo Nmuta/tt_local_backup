@@ -42,4 +42,6 @@ export enum NavbarTool {
   WelcomeCenterTiles = 'welcome-center-tiles',
   Home = 'home',
   ServicesTableStorage = 'services-table-storage',
+  ShowroomCalendar = 'showroom-calendar',
+  AcLogReader = 'ac-log-reader',
 }

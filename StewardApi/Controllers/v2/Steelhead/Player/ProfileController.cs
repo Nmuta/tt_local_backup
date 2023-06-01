@@ -100,15 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttribute.UpdateProfile)]
         public async Task<IActionResult> ResetPlayerProfile(
             ulong xuid,
-            string profileId,
-            [FromQuery] bool resetCarProgressData = true,
-            [FromQuery] bool resetLeaderboardsData = true,
-            [FromQuery] bool resetRaceRankingData = true,
-            [FromQuery] bool resetStatsData = true,
-            [FromQuery] bool resetTrueSkillData = true,
-            [FromQuery] bool resetUserInventoryData = true,
-            [FromQuery] bool resetUserSafetyRatingData = true,
-            [FromQuery] bool resetUgcProfileData = true)
+            string profileId)
         {
             var services = this.SteelheadServices.Value;
             //xuid.EnsureValidXuid();
@@ -117,14 +109,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var configuration = new ForzaProfileResetConfiguration()
             {
-                ResetCarProgressTrackerData = resetCarProgressData,
-                ResetLeaderboardsData = resetLeaderboardsData,
-                ResetRaceRankingData = resetRaceRankingData,
-                ResetStatsData = resetStatsData,
-                ResetTrueSkillTrackerData = resetTrueSkillData,
-                ResetUserInventoryData = resetUserInventoryData,
-                ResetUserSafetyRatingData = resetUserSafetyRatingData,
-                ResetUGCProfileData = resetUgcProfileData,
+                ResetCarProgressTrackerData = true,
+                ResetLeaderboardsData = true,
+                ResetRaceRankingData = true,
+                ResetStatsData = true,
+                ResetTrueSkillTrackerData = true,
+                ResetUserInventoryData = true,
+                ResetUserSafetyRatingData = true,
+                ResetUGCProfileData = true,
             };
 
             var response = await services.LiveOpsService.ResetProfile(configuration, profileIdAsGuid).ConfigureAwait(true);

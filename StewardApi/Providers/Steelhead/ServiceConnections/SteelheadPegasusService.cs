@@ -123,6 +123,124 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<IEnumerable<LiveOpsContracts.CarFeaturedShowcase>> GetCarFeaturedShowcasesAsync()
+        {
+            IEnumerable<LiveOpsContracts.CarFeaturedShowcase> carFeaturedShowcases = new List<LiveOpsContracts.CarFeaturedShowcase>();
+
+            var carListings =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            foreach (var carListing in carListings)
+            {
+                foreach (var pegasusShowcase in carListing.FeaturedShowcase)
+                {
+                    var liveOpsShowcase = new LiveOpsContracts.CarFeaturedShowcase()
+                    {
+                        Title = pegasusShowcase.Title,
+                        Description = pegasusShowcase.Description,
+                        StartTime = pegasusShowcase.StartTime,
+                        EndTime = pegasusShowcase.EndTime,
+                        BaseCost = carListing.Car.BaseCost.Value,
+                        CarId = carListing.Car.CarId,
+                        MediaName = carListing.Car.MediaName,
+                        ModelShort = carListing.Car.ModelShort
+                    };
+                    carFeaturedShowcases = carFeaturedShowcases.Append(liveOpsShowcase);
+
+                    var saleInfo = carListing.SaleInformation.FirstOrDefault(x => x.StartTime >= liveOpsShowcase.StartTime && x.StartTime <= liveOpsShowcase.EndTime);
+                    if (saleInfo == null)
+                    {
+                        continue;
+                    }
+
+                    liveOpsShowcase.SalePercentOff = saleInfo.SalePercentOff;
+                    liveOpsShowcase.SalePrice = saleInfo.SalePrice;
+                    liveOpsShowcase.VipSalePercentOff = saleInfo.VipSalePercentOff;
+                    liveOpsShowcase.VipSalePrice = saleInfo.VipSalePrice;
+                }
+            }
+
+            return carFeaturedShowcases;
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<LiveOpsContracts.CarSale>> GetCarSalesAsync()
+        {
+            IEnumerable<LiveOpsContracts.CarSale> carSales = new List<LiveOpsContracts.CarSale>();
+
+            var carListings =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            foreach (var carListing in carListings)
+            {
+                foreach (var pegasusCarSale in carListing.SaleInformation)
+                {
+                    var liveOpsCarSale = carSales.FirstOrDefault(x => x.CarSaleId == pegasusCarSale.ShowcaseListingId);
+                    if (liveOpsCarSale == null)
+                    {
+                        liveOpsCarSale = new CarSale()
+                        {
+                            CarSaleId = pegasusCarSale.ShowcaseListingId,
+                            Name = pegasusCarSale.ShowcaseListingName,
+                            StartTime = pegasusCarSale.StartTime,
+                            EndTime = pegasusCarSale.EndTime,
+                            Cars = new List<CarSaleInformation>()
+                        };
+                        carSales = carSales.Append(liveOpsCarSale);
+                    }
+
+                var carSaleInfo = new CarSaleInformation()
+                {
+                    BaseCost = carListing.Car.BaseCost.Value,
+                    MediaName = carListing.Car.MediaName,
+                    ModelShort = carListing.Car.ModelShort,
+                    CarId = carListing.Car.CarId,
+                    SalePercentOff = pegasusCarSale.SalePercentOff,
+                    SalePrice = pegasusCarSale.SalePrice,
+                    VipSalePercentOff = pegasusCarSale.VipSalePercentOff,
+                    VipSalePrice = pegasusCarSale.VipSalePrice
+                };
+                liveOpsCarSale.Cars = liveOpsCarSale.Cars.Append(carSaleInfo);
+            }
+        }
+
+            return carSales;
+        }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.Track[]> GetTracksAsync()
+        {
+            var tracks =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.Track[]>(
+                    "LiveOps_Tracks",
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            return tracks;
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync()
+        {
+            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+            var pegasusRivalEvents =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            var rivalsEvents = this.mapper.SafeMap<IEnumerable<RivalsEvent>>(pegasusRivalEvents);
+
+            return rivalsEvents;
+        }
+
+        /// <inheritdoc />
         public async Task<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>> GetDisplayConditionsAsync()
         {
             var displayConditions =

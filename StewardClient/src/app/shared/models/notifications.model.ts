@@ -12,6 +12,11 @@ export interface PlayerNotification {
   isRead: boolean;
 }
 
+/** An individual return element for endpoint `api/v1/title/{title}/player/xuid(...)/notifications` */
+export interface LocalizedPlayerNotification extends PlayerNotification {
+  title: string;
+}
+
 /** An individual return element for endpoint `api/v1/title/{title}/group/groupId(...)/notifications` */
 export interface GroupNotification {
   groupId: BigNumber;
@@ -22,4 +27,9 @@ export interface GroupNotification {
   expirationDateUtc: DateTime;
   hasDeviceType: boolean;
   deviceType: string;
+}
+
+/** An individual return element for endpoint `api/v1/title/{title}/player/xuid(...)/notifications` */
+export interface LocalizedGroupNotification extends GroupNotification {
+  title: string;
 }

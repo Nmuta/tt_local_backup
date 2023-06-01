@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CommunityMessageResult, LocalizedMessage } from '@models/community-message';
-import { GroupNotification } from '@models/notifications.model';
+import { LocalizedGroupNotification } from '@models/notifications.model';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ export class SteelheadGroupMessagesService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the status of an LSP group's notifications. */
-  public getGroupNotifications$(lspGroupId: BigNumber): Observable<GroupNotification[]> {
+  public getGroupNotifications$(lspGroupId: BigNumber): Observable<LocalizedGroupNotification[]> {
     return this.api.getRequest$(`${this.basePath}/${lspGroupId}/messages`);
   }
 

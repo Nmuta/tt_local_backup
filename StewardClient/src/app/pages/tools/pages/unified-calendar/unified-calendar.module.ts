@@ -60,6 +60,8 @@ import { SteelheadBuildersCupLadderModalComponent } from './steelhead/components
 import { BuildersCupKeyComponent } from './steelhead/components/builders-cup/builders-cup-key/builders-cup-key.component';
 import { SteelheadWelcomeCenterCalendarViewComponent } from './steelhead/components/welcome-center/welcome-center-calendar-view/steelhead/steelhead-welcome-center-calendar-view.component';
 import { WelcomeCenterTileDetailsModalComponent } from './steelhead/components/welcome-center/welcome-center-tile-details-modal/steelhead/welcome-center-tile-details-modal.component';
+import { RivalsTileDetailsModalComponent } from './steelhead/components/rivals/components/rivals-tile-details-modal/rivals-tile-details-modal.component';
+import { SteelheadRivalsCalendarViewComponent } from './steelhead/components/rivals/components/rivals-calendar-view/steelhead-rivals-calendar-view.component';
 
 /** Module for the PlayFab tool. */
 @NgModule({
@@ -80,6 +82,9 @@ import { WelcomeCenterTileDetailsModalComponent } from './steelhead/components/w
 
     SteelheadWelcomeCenterCalendarViewComponent,
     WelcomeCenterTileDetailsModalComponent,
+
+    RivalsTileDetailsModalComponent,
+    SteelheadRivalsCalendarViewComponent,
   ],
   imports: [
     UnifiedCalendarRoutingModule,

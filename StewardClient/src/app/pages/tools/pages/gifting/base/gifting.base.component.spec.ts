@@ -8,10 +8,11 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 
 import { GiftingBaseComponent } from './gifting.base.component';
+import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 describe('GiftingBaseComponent', () => {
-  let component: GiftingBaseComponent<string>;
-  let fixture: ComponentFixture<GiftingBaseComponent<string>>;
+  let component: GiftingBaseComponent<PlayerInventoryProfile>;
+  let fixture: ComponentFixture<GiftingBaseComponent<PlayerInventoryProfile>>;
 
   let mockStore: Store;
 
@@ -27,7 +28,9 @@ describe('GiftingBaseComponent', () => {
       providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(GiftingBaseComponent as Type<GiftingBaseComponent<string>>);
+    fixture = TestBed.createComponent(
+      GiftingBaseComponent as Type<GiftingBaseComponent<PlayerInventoryProfile>>,
+    );
     component = fixture.debugElement.componentInstance;
 
     mockStore = TestBed.inject(Store);

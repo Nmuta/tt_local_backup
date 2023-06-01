@@ -9,6 +9,102 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'f0f3e335-a45c-45ce-92b2-514ea1acdb63',
+      shortText: 'Update post requests to use existing content type in headers',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
+      uuid: '154e3610-9f99-437c-9127-c3363e3e1635',
+      shortText: 'Added in new Client Crash log decoder tool',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '133d4379-e2e2-4adb-9e80-70afcfa419ea',
+      shortText: 'Remove configuration options from Steelhead profile reset',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '14b2aa22-2a72-4398-8bd5-f794db91b3d0',
+      shortText: 'New Rivals Calendar added to Calendar component',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'f4a43980-8235-40d7-b49c-111cab0db8dc',
+      shortText: 'Add character limit validation to contact us form',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'f28ad86e-9adb-4b51-ab52-b0e2e68035d7',
+      shortText: 'Allow override of persisted UGC title and description',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'f68139b9-9855-4c20-9413-c98a0e0b0695',
+      shortText: 'Allow credits to be added to player inventory',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'c3b3dc75-cf69-4590-8a6d-e1ae09966f93',
+      shortText: 'Remove message column from auctionLog',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
+      uuid: 'f75bfce5-a32a-4c61-925c-9b6e24624cd3',
+      shortText: 'New Showroom Calendar component',
+      longText: ['Display car featured showcase and car sales in a calendar'],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.CarDetails },
+      uuid: 'aa46faef-3d05-4ae4-92b3-f401c4c053c1',
+      shortText: 'Ensure year exists everywhere a car title is shown',
+    },
+    {
+      tag: { title: [GameTitle.FH4], tool: NavbarTool.CarDetails },
+      uuid: 'da4122e0-c2e6-4f2b-9705-b06d04f6f8a7',
+      shortText: 'Fix car names missing in auction log',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'd0c7ed47-5e88-4de8-be8b-d691d38644d8',
+      shortText: 'Fix not being able to load Car Details after loading it once',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Gifting },
+      uuid: '112d828e-2d37-4c76-bcfd-f5ef45619e35',
+      shortText: 'Add livery gifting for Steelhead',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
+      uuid: 'b831d4f8-7321-496e-a5d5-165886940756',
+      shortText: 'Allow selection of localized string for message title',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '6b040c41-8d91-44d0-b24e-347dd7dd3327',
+      shortText: 'Replace all old confirm checkboxes with V2 confirm',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '3341b310-081c-4363-8696-8f18d95f4db8',
+      shortText: 'Display Title ID as tooltip in player profile chip',
+      longText: [
+        'For each Title ID a xuid has played on, there will be an active profile',
+        'for that Title ID. Profiles are now sorted with most recently logged in',
+        'as the first profile, and then all active profiles following.',
+      ],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '9cea5390-12ef-4eb4-9f87-beedd5b09db3',
+      shortText: 'Remove T10Id lookup from player details',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '33bfbd2a-83c6-4fa5-b4ad-8dc723454e2f',
+      shortText: 'Implement handling for capitalizing acronyms and apply it to changelog tags',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'f59e984b-e171-443f-9679-a2359c0b0a3f',
       shortText: 'Update Steelhead LSP nuget',
     },

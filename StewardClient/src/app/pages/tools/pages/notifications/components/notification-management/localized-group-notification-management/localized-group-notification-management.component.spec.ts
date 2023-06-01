@@ -1,8 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { SunriseGroupNotificationsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/notifications/groupNotifications';
-import { GameTitle } from '@models/enums';
+import { DeviceType, GameTitle } from '@models/enums';
 import { NgxsModule } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
 import {
@@ -12,11 +11,12 @@ import {
 } from './localized-group-notification-management.component';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { GroupNotification } from '@models/notifications.model';
+import { LocalizedGroupNotification } from '@models/notifications.model';
 import BigNumber from 'bignumber.js';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { LocalizedStringsMap } from '@models/localization';
 import { LocalizedMessage } from '@models/community-message';
+import { toDateTime } from '@helpers/luxon';
 
 /** Test class for {@link LocalizedGroupMessagingManagementContract}. */
 class TestNotificationManagementService implements LocalizedGroupMessagingManagementContract {
@@ -29,7 +29,7 @@ class TestNotificationManagementService implements LocalizedGroupMessagingManage
     },
   };
   /** Get group notifications. */
-  public getGroupNotifications$(): Observable<GroupNotification[]> {
+  public getGroupNotifications$(): Observable<LocalizedGroupNotification[]> {
     return of([]);
   }
   /** Edit group notification. */
@@ -52,7 +52,7 @@ class TestNotificationManagementService implements LocalizedGroupMessagingManage
 describe('LocalizedGroupNotificationManagementComponent', () => {
   let component: LocalizedGroupNotificationManagementComponent;
   let fixture: ComponentFixture<LocalizedGroupNotificationManagementComponent>;
-  let testGroupNotifications: GroupNotification[];
+  let testGroupNotifications: LocalizedGroupNotification[];
 
   const mockService: TestNotificationManagementService = new TestNotificationManagementService();
 
@@ -68,7 +68,21 @@ describe('LocalizedGroupNotificationManagementComponent', () => {
     component = fixture.debugElement.componentInstance;
     component.service = mockService;
 
-    testGroupNotifications = SunriseGroupNotificationsFakeApi.make(3);
+    testGroupNotifications = new Array(faker.datatype.number({ min: 3, max: 10 }))
+      .fill(undefined)
+      .map(
+        () =>
+          <LocalizedGroupNotification>{
+            message: faker.random.words(),
+            notificationId: faker.datatype.uuid(),
+            sentDateUtc: toDateTime(faker.date.soon()),
+            expirationDateUtc: toDateTime(faker.date.soon()),
+            hasDeviceType: faker.datatype.boolean(),
+            deviceType: faker.random.arrayElement(Object.getOwnPropertyNames(DeviceType)),
+            notificationType: 'CommunityMessageNotification',
+            groupId: fakeBigNumber(),
+          },
+      );
   }));
 
   it('should create', () => {

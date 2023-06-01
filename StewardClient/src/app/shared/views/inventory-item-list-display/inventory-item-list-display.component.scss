@@ -1,5 +1,8 @@
 @import '/src/styles/mixins';
 
+$quantity-column-width: 200px;
+$actions-column-width: 160px;
+
 table {
   width: 100%;
 
@@ -22,10 +25,6 @@ mat-panel-description {
   padding-right: 2em;
 }
 
-mat-icon {
-  padding-right: $gap-small;
-}
-
 .item-warning {
   height: 1em;
   width: 1em;
@@ -33,4 +32,18 @@ mat-icon {
   margin-left: 0.25em;
   margin-right: 0;
   padding: 0;
+}
+
+.mat-column-actions {
+  @include table-width($actions-column-width);
+  text-align: right;
+}
+
+.mat-column-quantity {
+  @include table-width($quantity-column-width);
+}
+
+.edit-button,
+.undo-button {
+  margin-left: $gap-medium;
 }

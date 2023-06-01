@@ -13,6 +13,9 @@ import { InventoryItemListDisplayModule } from '@views/inventory-item-list-displ
 import { SteelheadPlayerInventoryComponent } from './steelhead/steelhead-player-inventory.component';
 import { WoodstockPlayerInventoryComponent } from './woodstock/woodstock-player-inventory.component';
 import { PlayerInventoryComponent } from './player-inventory.component';
+import { ItemSelectionModule } from '@tools-app/pages/gifting/components/item-selection/item-selection.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 /** Feature module containing cards that display player inventory. */
 @NgModule({
@@ -33,6 +36,9 @@ import { PlayerInventoryComponent } from './player-inventory.component';
     MatExpansionModule,
     MatProgressSpinnerModule,
     InventoryItemListDisplayModule,
+    ItemSelectionModule,
+    MatDialogModule,
+    MatButtonModule,
   ],
   exports: [
     WoodstockPlayerInventoryComponent,

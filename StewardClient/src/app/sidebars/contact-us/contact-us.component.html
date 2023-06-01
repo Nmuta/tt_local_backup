@@ -177,6 +177,10 @@
         </button>
       </div>
     </form>
+
+    <div class="message-too-long" *ngIf="isMessageTooLong">
+      The text area(s) contains too many characters.
+    </div>
   </div>
 </section>
 

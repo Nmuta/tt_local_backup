@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import {
   SetSteelheadGiftingMatTabIndex,
   SetSteelheadGiftingSelectedPlayerIdentities,
@@ -13,15 +13,19 @@ import { LspGroup } from '@models/lsp-group';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { SteelheadMasterInventory } from '@models/steelhead';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
-import BigNumber from 'bignumber.js';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { ActivatedRoute } from '@angular/router';
+import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 
 /** The gifting page for the Navbar app. */
 @Component({
   templateUrl: './steelhead-gifting.component.html',
   styleUrls: ['./steelhead-gifting.component.scss'],
 })
-export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
+export class SteelheadGiftingComponent
+  extends GiftingBaseComponent<FullPlayerInventoryProfile>
+  implements OnInit
+{
   @Select(SteelheadGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
@@ -33,13 +37,25 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
   public selectedPlayerInventoryProfile: FullPlayerInventoryProfile;
   public selectedPlayerInventory: SteelheadMasterInventory;
 
-  constructor(protected readonly store: Store) {
+  public giftingTypeMatTabSelectedIndex: number = 0;
+
+  constructor(protected readonly store: Store, private readonly route: ActivatedRoute) {
     super(store);
   }
 
   /** Initialization hook */
   public ngOnInit(): void {
     super.ngOnInit();
+
+    this.route.queryParams
+      .pipe(
+        map(() => ParsePathParamFunctions[PathParams.LiveryId](this.route)),
+        filter(liveryId => !!liveryId),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.giftingTypeMatTabSelectedIndex = 1;
+      });
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SteelheadGiftingState.selectedMatTabIndex,
@@ -84,6 +100,6 @@ export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> i
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: FullPlayerInventoryProfile): void {
-    this.selectedPlayerInventoryProfileId = newProfile?.profileId;
+    this.selectedPlayerInventoryProfile = newProfile;
   }
 }

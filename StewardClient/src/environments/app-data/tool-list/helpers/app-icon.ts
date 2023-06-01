@@ -34,8 +34,10 @@ export enum AppIcon {
   MessageOfTheDay = 'waving_hand',
   CreateAuction = 'sell',
   WelcomeCenterTile = 'grid_view',
+  ShowroomCalendarTile = 'calendar_today',
   PlayFab = 'hexagon',
   ServicesTableStorage = 'table_rows',
+  AcLogReader = 'document_scanner',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */

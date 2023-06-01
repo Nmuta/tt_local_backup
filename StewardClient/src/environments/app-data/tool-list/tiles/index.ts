@@ -6,6 +6,7 @@ export * from './external/sprinklr';
 export * from './external/zendesk';
 export * from './tools-internal/meta-tools';
 export * from './tools-internal/permission-management';
+export * from './tools/ac-log-reader';
 export * from './tools/auction-blocklist';
 export * from './tools/auction-create';
 export * from './tools/auction-details';

@@ -1,5 +1,14 @@
+<item-selection
+  *ngIf="allowEditing"
+  [service]="itemSelectionService"
+  [masterInventory]="itemSelectionList"
+  [permissionAttribute]="permissionAttribute"
+  [permissionTitle]="gameTitle"
+  (addItemEvent)="addItemEvent($event)"
+></item-selection>
+
 <player-inventory
-  [service]="service"
+  [service]="playerInventoryComponentService"
   [identity]="identity"
-  [profileId]="profileId"
+  [profile]="profile"
 ></player-inventory>

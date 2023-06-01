@@ -1,0 +1,51 @@
+<section>
+  <h2 mat-dialog-title>
+    <span>Rivals Event Details</span>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="modal-wrapper">
+      <div class="scroll-pane">
+        <table class="info-table">
+          <tr>
+            <th>Name</th>
+            <td>
+              {{ data.name }}
+            </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>{{ data.description }}</td>
+          </tr>
+          <tr>
+            <th>Category</th>
+            <td>{{ data.category }}</td>
+          </tr>
+          <tr>
+            <th>Start Time</th>
+            <td>{{ data.startTime | utcDate: 'short' }}</td>
+          </tr>
+          <tr>
+            <th>End Time</th>
+            <td>{{ data.endTime | utcDate: 'short' }}</td>
+          </tr>
+          <tr>
+            <th>Score Type</th>
+            <td>{{ data.scoreType }}</td>
+          </tr>
+          <tr>
+            <th>Track Name</th>
+            <td>{{ data.trackName }}</td>
+          </tr>
+          <tr>
+            <th>Car Restrictions</th>
+            <td>
+              <div *ngFor="let carRestriction of data.carRestrictions">{{ carRestriction }}</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </mat-dialog-content>
+</section>

@@ -309,7 +309,9 @@ export abstract class GiftBasketBaseComponent<
     if (!this.formControls.hasExpirationDate.value) {
       return new BigNumber(0);
     }
-    let numberOfDays = _.round(this.formControls.expireDate.value.diffNow('days').days);
+    let numberOfDays = _.round(
+      DateTime.fromJSDate(this.formControls.expireDate.value).diffNow('days').days,
+    );
     // Replace negative values by 0 to avoid sending negative values to API which takes a uint
     numberOfDays = _.max([0, numberOfDays]);
     return tryParseBigNumber(numberOfDays).integerValue();

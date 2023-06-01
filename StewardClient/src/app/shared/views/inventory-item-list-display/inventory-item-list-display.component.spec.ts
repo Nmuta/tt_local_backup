@@ -7,10 +7,20 @@ import { PlayerInventoryItem } from '@models/player-inventory-item';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { toDateTime } from '@helpers/luxon';
+import { PlayerInventoryItemListEntry } from '@models/master-inventory-item-list';
+import BigNumber from 'bignumber.js';
 
 describe('InventoryItemListDisplayComponent', () => {
   let component: InventoryItemListDisplayComponent;
   let fixture: ComponentFixture<InventoryItemListDisplayComponent>;
+
+  const listEntry: PlayerInventoryItemListEntry = {
+    id: new BigNumber(faker.datatype.number()),
+    description: faker.datatype.string(),
+    quantity: faker.datatype.number(),
+    itemType: faker.datatype.string(),
+    error: null,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,12 +47,9 @@ describe('InventoryItemListDisplayComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    beforeEach(() => {
-      component.inventoryColumns = ['foo', 'bar'];
-    });
-
     describe('When whatToShow uses PlayerInventoryItems in items[]', () => {
       beforeEach(() => {
+        component.inventoryColumns = ['foo', 'bar', 'dateAquired'];
         component.whatToShow = {
           title: faker.random.word(),
           description: faker.random.words(10),
@@ -58,18 +65,17 @@ describe('InventoryItemListDisplayComponent', () => {
         };
       });
 
-      it('should add date aquired too the displayed table column list', () => {
+      it('should keep date aquired on the displayed table column list', () => {
         component.ngOnInit();
 
         expect(component.inventoryColumns.length).toEqual(3);
-        expect(component.inventoryColumns[0]).toEqual('foo');
-        expect(component.inventoryColumns[1]).toEqual('bar');
         expect(component.inventoryColumns[2]).toEqual('dateAquired');
       });
     });
 
     describe('When whatToShow uses MasterInventoryItems in items[]', () => {
       beforeEach(() => {
+        component.inventoryColumns = ['foo', 'bar', 'dateAquired'];
         component.whatToShow = {
           title: faker.random.word(),
           description: faker.random.words(10),
@@ -84,13 +90,58 @@ describe('InventoryItemListDisplayComponent', () => {
         };
       });
 
-      it('should not add anything to the displayed table column list', () => {
+      it('should remove date aquired from the displayed table column list', () => {
         component.ngOnInit();
 
         expect(component.inventoryColumns.length).toEqual(2);
-        expect(component.inventoryColumns[0]).toEqual('foo');
-        expect(component.inventoryColumns[1]).toEqual('bar');
       });
+    });
+  });
+
+  describe('Method: enableEditMode', () => {
+    beforeEach(() => {
+      listEntry.isInEditMode = false;
+    });
+
+    describe('If item is a car item', () => {
+      beforeEach(() => {
+        listEntry['vin'] = faker.datatype.string();
+      });
+
+      it('should throw error', () => {
+        try {
+          component.enableEditMode(listEntry);
+          expect(true).toBeFalsy();
+        } catch (e) {
+          expect(e.message).toEqual(
+            'Car items should not support item quantity changes. Verify InventoryItemListDisplayComponentContract is implementing openCarEditModal$ instead of editItemQuantity$',
+          );
+        }
+      });
+    });
+
+    describe('If item is not a car item', () => {
+      beforeEach(() => {
+        listEntry['vin'] = undefined;
+      });
+
+      it('should enable edit mode', () => {
+        component.enableEditMode(listEntry);
+
+        expect(listEntry.isInEditMode).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Method: disableEditMode', () => {
+    beforeEach(() => {
+      listEntry.isInEditMode = true;
+    });
+
+    it('should enable edit mode', () => {
+      component.disableEditMode(listEntry);
+
+      expect(listEntry.isInEditMode).toBeFalsy();
     });
   });
 });

@@ -1,0 +1,74 @@
+<h2 mat-dialog-title>
+  Persist {{ service.title | humanize }} Ugc Content
+  <br />
+</h2>
+
+<mat-dialog-content>
+  <ul>
+    <li><b>Id: </b> {{ ugcItem.id }}</li>
+    <li><b>Type: </b> {{ ugcItem.type }}</li>
+    <li><b>Description: </b> {{ ugcItem.description }}</li>
+    <li><b>Car Description: </b> {{ ugcItem.carDescription }}</li>
+    <li><b>Owner: </b> {{ ugcItem.ownerXuid }}</li>
+  </ul>
+  <img #modelImage [src]="ugcItem.thumbnailOneImageBase64" />
+
+  <form [formGroup]="formGroup">
+    <mat-form-field appearance="fill">
+      <mat-label>Persisted UGC Title Override</mat-label>
+      <input matInput [formControl]="formControls.title" />
+      <mat-hint
+        >*Optional: Persisted UGC will use existing title if this isn't filled out.</mat-hint
+      >
+      <mat-error *ngIf="formControls.title?.hasError('maxlength')">
+        Title must be 32 characters or less.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Persisted UGC Description Override</mat-label>
+      <input matInput [formControl]="formControls.description" />
+      <mat-hint
+        >*Optional: Persisted UGC will use existing description if this isn't filled out.</mat-hint
+      >
+      <mat-error *ngIf="formControls.description?.hasError('maxlength')">
+        Description must be 128 characters or less.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    stateManager
+    [monitor]="postMonitor"
+    monitorDisable
+    mat-stroked-button
+    color="warn"
+    mat-dialog-close
+  >
+    Close
+  </button>
+  <verify-button
+    [disabled]="!formGroup.valid"
+    #verifyUpdateBtn
+    [permissionAttribute]="persistUgcPermAttribute"
+    [permissionTitle]="service.title"
+  ></verify-button>
+  <button
+    [disabled]="!formGroup.valid"
+    stateManager
+    [monitor]="postMonitor"
+    [verifyWithV2]="verifyUpdateBtn"
+    monitorWarn
+    monitorWarnSnackbar
+    [monitorCompleteSnackbar]="ugcOperationSnackbarComponent"
+    monitorSnackbarDuration="forever"
+    mat-raised-button
+    color="primary"
+    (click)="persistUgc()"
+  >
+    Persist UGC
+    <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+  </button>
+</mat-dialog-actions>

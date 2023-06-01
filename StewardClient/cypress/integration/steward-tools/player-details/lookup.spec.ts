@@ -2,7 +2,8 @@ import env from '@support/env';
 import { login } from '@support/steward/auth/login';
 import { AccountInfo, jordan } from '@support/steward/common/account-info';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByT10Id, searchByXuid } from './page';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { stewardUrls } from '@support/steward/urls';
 
 context('Steward / Tools / Player Details', () => {
   beforeEach(() => {
@@ -13,6 +14,7 @@ context('Steward / Tools / Player Details', () => {
 
   context('GTAG Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByGtag(jordan.gtag);
     });
 
@@ -21,15 +23,8 @@ context('Steward / Tools / Player Details', () => {
 
   context('XUID Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByXuid(jordan.xuid);
-    });
-
-    displaysCorrectActiveTitles(jordan.accountInfo);
-  });
-
-  context('T10ID Lookup', () => {
-    beforeEach(() => {
-      searchByT10Id(jordan.t10Id);
     });
 
     displaysCorrectActiveTitles(jordan.accountInfo);

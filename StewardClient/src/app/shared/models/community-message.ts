@@ -27,6 +27,7 @@ export type CommunityMessage = Merge<GenericCommunityMessage, LspGroupCommunityM
 /** Interface for a localized message. */
 export interface GenericLocalizedMessage {
   localizedMessageId: GuidLikeString;
+  localizedTitleId: GuidLikeString;
   startTimeUtc: DateTime;
   expireTimeUtc: DateTime;
   notificationType: NotificationType;

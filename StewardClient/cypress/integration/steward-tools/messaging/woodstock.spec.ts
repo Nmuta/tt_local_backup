@@ -1,6 +1,12 @@
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, selectLspGroup, searchByXuid, selectWoodstock, verifyChip } from './page';
+import {
+  searchByGtag,
+  searchByXuid,
+  selectLspGroup,
+} from '@support/steward/shared-functions/searching';
+import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
+import { verifyChip } from '@support/steward/shared-functions/verify-chip';
 import { luke } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { DateTime } from 'luxon';
