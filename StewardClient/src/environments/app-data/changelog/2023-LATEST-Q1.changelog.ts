@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
+      uuid: 'e33f5cf3-a63e-4683-9c69-532e5a64b6eb',
+      shortText: 'Add division and manufacturer featured showcases',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '133d4379-e2e2-4adb-9e80-70afcfa419ea',
       shortText: 'Remove configuration options from Steelhead profile reset',
