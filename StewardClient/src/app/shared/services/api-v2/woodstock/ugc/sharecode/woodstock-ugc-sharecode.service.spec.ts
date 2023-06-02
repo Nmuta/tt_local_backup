@@ -1,15 +1,15 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { WoodstockUgcGenerateSharecodeService } from './woodstock-ugc-generate-sharecode.service';
+import { WoodstockUgcSharecodeService } from './woodstock-ugc-sharecode.service';
 
-describe('WoodstockUgcGenerateSharecodeService', () => {
-  let service: WoodstockUgcGenerateSharecodeService;
+describe('WoodstockUgcSharecodeService', () => {
+  let service: WoodstockUgcSharecodeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(WoodstockUgcGenerateSharecodeService);
+    service = TestBed.inject(WoodstockUgcSharecodeService);
   });
 
   it('should be created', () => {

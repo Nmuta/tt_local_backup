@@ -24,9 +24,9 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 {
     /// <summary>
-    ///     Generates sharecodes for Woodstock UGC.
+    ///     Manage sharecodes for Woodstock UGC.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/ugc/{id}/generateSharecode")]
+    [Route("api/v{version:apiVersion}/title/woodstock/ugc/{id}/sharecode")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [AuthorizeRoles(
         UserRole.GeneralUser,
@@ -34,12 +34,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [Tags(Title.Woodstock, Topic.Ugc, Target.Details)]
-    public class GenerateSharecodeController : V2WoodstockControllerBase
+    public class SharecodeController : V2WoodstockControllerBase
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GenerateSharecodeController"/> class.
+        ///     Initializes a new instance of the <see cref="SharecodeController"/> class.
         /// </summary>
-        public GenerateSharecodeController()
+        public SharecodeController()
         {
         }
 
@@ -47,16 +47,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         ///    Generate sharecode for UGC identified by UGC ID.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(200, type: typeof(SharecodeGenerationResponse))]
+        [SwaggerResponse(200, type: typeof(GenerateSharecodeResponse))]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.UgcItem, ActionAreaLogTags.Action | ActionAreaLogTags.Ugc)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize]
-        public async Task<IActionResult> Post(string id)
+        public async Task<IActionResult> GenerateSharecode(string id)
         {
             var ugcId = id.TryParseGuidElseThrow(nameof(id));
             var result = await this.WoodstockServices.Value.StorefrontManagementService.GenerateShareCode(ugcId).ConfigureAwait(true);
-            var response = new SharecodeGenerationResponse { Sharecode = result.shareCode };
+            var response = new GenerateSharecodeResponse { Sharecode = result.shareCode };
 
             return this.Ok(response);
         }

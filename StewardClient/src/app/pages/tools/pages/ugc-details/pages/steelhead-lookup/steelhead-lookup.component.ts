@@ -5,7 +5,7 @@ import { mergedParamMap$ } from '@helpers/param-map';
 import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
-import { SteelheadUgcGenerateSharecodeService } from '@services/api-v2/steelhead/ugc/generate-sharecode/steelhead-ugc-generate-sharecode.service';
+import { SteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { SteelheadUgcReportService } from '@services/api-v2/steelhead/ugc/report/steelhead-ugc-report.service';
 import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
@@ -58,7 +58,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: SteelheadUgcReportService,
-    private readonly ugcGenerateSharecodeService: SteelheadUgcGenerateSharecodeService,
+    private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
   ) {
     super();
   }
@@ -162,7 +162,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
 
     this.generateSharecodeMonitor = this.generateSharecodeMonitor.repeat();
 
-    this.ugcGenerateSharecodeService
+    this.ugcSharecodeService
       .ugcGenerateSharecode$(this.ugcItem.id)
       .pipe(this.generateSharecodeMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(newSharecode => {

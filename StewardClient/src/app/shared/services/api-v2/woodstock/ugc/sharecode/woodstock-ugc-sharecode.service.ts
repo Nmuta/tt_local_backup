@@ -6,18 +6,18 @@ export interface GenerateSharecodeResponse {
   sharecode: string;
 }
 
-/** The /v2/woodstock/generateSharecode endpoints. */
+/** The /v2/woodstock/ugc/{ugcId}/sharecode endpoints. */
 @Injectable({
   providedIn: 'root',
 })
-export class WoodstockUgcGenerateSharecodeService {
+export class WoodstockUgcSharecodeService {
   private basePath: string = 'title/woodstock/ugc';
   constructor(private readonly api: ApiV2Service) {}
 
   /** Generate sharecode for UGC. */
   public ugcGenerateSharecode$(ugcId: string): Observable<GenerateSharecodeResponse> {
     return this.api.postRequest$<GenerateSharecodeResponse>(
-      `${this.basePath}/${ugcId}/generateSharecode`,
+      `${this.basePath}/${ugcId}/sharecode`,
       undefined,
     );
   }

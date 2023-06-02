@@ -36,7 +36,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { UgcOperationSnackbarComponent } from '../../components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 import { WoodstockPersistUgcModalComponent } from '@views/persist-ugc-modal/woodstock/woodstock-persist-ugc-modal.component';
-import { WoodstockUgcGenerateSharecodeService } from '@services/api-v2/woodstock/ugc/generate-sharecode/woodstock-ugc-generate-sharecode.service';
+import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -96,7 +96,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: WoodstockUgcReportService,
     private readonly ugcHideService: WoodstockUgcHideService,
-    private readonly ugcGenerateSharecodeService: WoodstockUgcGenerateSharecodeService,
+    private readonly ugcSharecodeService: WoodstockUgcSharecodeService,
     private readonly dialog: MatDialog,
   ) {
     super();
@@ -317,7 +317,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
     this.generateSharecodeMonitor = this.generateSharecodeMonitor.repeat();
 
-    this.ugcGenerateSharecodeService
+    this.ugcSharecodeService
       .ugcGenerateSharecode$(this.ugcItem.id)
       .pipe(this.generateSharecodeMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(newSharecode => {

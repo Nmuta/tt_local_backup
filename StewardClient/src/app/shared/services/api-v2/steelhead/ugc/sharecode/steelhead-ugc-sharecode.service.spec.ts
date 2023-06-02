@@ -1,15 +1,15 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { SteelheadUgcGenerateSharecodeService } from './steelhead-ugc-generate-sharecode.service';
+import { SteelheadUgcSharecodeService } from './steelhead-ugc-sharecode.service';
 
-describe('SteelheadUgcGenerateSharecodeService', () => {
-  let service: SteelheadUgcGenerateSharecodeService;
+describe('SteelheadUgcSharecodeService', () => {
+  let service: SteelheadUgcSharecodeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(SteelheadUgcGenerateSharecodeService);
+    service = TestBed.inject(SteelheadUgcSharecodeService);
   });
 
   it('should be created', () => {

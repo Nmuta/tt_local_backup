@@ -1,10 +1,10 @@
 import { ValueProvider } from '@angular/core';
 import faker from '@faker-js/faker';
 import { Observable, of, switchMap } from 'rxjs';
-import { SteelheadUgcGenerateSharecodeService } from './steelhead-ugc-generate-sharecode.service';
+import { SteelheadUgcSharecodeService } from './steelhead-ugc-sharecode.service';
 
 /** Defines the mock for the API Service. */
-export class MockSteelheadUgcGenerateSharecodeService {
+export class MockSteelheadUgcSharecodeService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
@@ -16,11 +16,11 @@ export class MockSteelheadUgcGenerateSharecodeService {
 }
 
 /** Creates an injectable mock for Steelhead Ugc Report Service. */
-export function createMockSteelheadUgcGenerateSharecodeService(
+export function createMockSteelheadUgcSharecodeService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {
-    provide: SteelheadUgcGenerateSharecodeService,
-    useValue: new MockSteelheadUgcGenerateSharecodeService(returnValueGenerator),
+    provide: SteelheadUgcSharecodeService,
+    useValue: new MockSteelheadUgcSharecodeService(returnValueGenerator),
   };
 }
