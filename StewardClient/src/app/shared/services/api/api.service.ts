@@ -80,7 +80,10 @@ export class ApiService {
   ): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     headers = headers || new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
+
+    if (!headers.has('Content-Type')) {
+      headers = headers.set('Content-Type', 'application/json');
+    }
 
     const post = this.http.post<T>(apiUrl, object, {
       headers,

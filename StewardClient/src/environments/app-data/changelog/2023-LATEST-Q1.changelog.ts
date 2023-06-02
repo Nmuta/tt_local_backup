@@ -8,6 +8,21 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '6b023f7c-9d0c-43d9-8520-fb1713bbcb31',
+      shortText: 'Allow Live Ops Admins to modify their own permissions',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'f0f3e335-a45c-45ce-92b2-514ea1acdb63',
+      shortText: 'Update post requests to use existing content type in headers',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
+      uuid: '154e3610-9f99-437c-9127-c3363e3e1635',
+      shortText: 'Added in new Client Crash log decoder tool',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '133d4379-e2e2-4adb-9e80-70afcfa419ea',
       shortText: 'Remove configuration options from Steelhead profile reset',

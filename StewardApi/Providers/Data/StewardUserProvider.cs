@@ -21,17 +21,19 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
     /// <inheritdoc />
-    public sealed class StewardUserProvider : IStewardUserProvider, IScopedStewardUserProvider
+    public sealed class StewardUserProvider : IStewardUserProvider, IScopedStewardUserProvider, IInitializeable
     {
         private readonly string allStewardUsersCacheKey = "AllStewardUserIds";
 
-        private readonly ITableStorageClient tableStorageClient;
+        private readonly ITableStorageClientFactory tableStorageClientFactory;
+        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly IConfiguration configuration;
         private readonly IRefreshableCacheStore refreshableCacheStore;
+        private ITableStorageClient tableStorageClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardUserProvider"/> class.
         /// </summary>
-        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public StewardUserProvider(
             ITableStorageClientFactory tableStorageClientFactory,
             IConfiguration configuration,
@@ -43,16 +45,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
 
-            var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(
-                configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                configuration[ConfigurationKeyConstants.CosmosTableSecretName]).GetAwaiter().GetResult();
+            this.keyVaultProvider = keyVaultProvider;
+            this.configuration = configuration;
+            this.tableStorageClientFactory = tableStorageClientFactory;
+            this.refreshableCacheStore = refreshableCacheStore;
+        }
 
-            configuration.Bind("StewardUserStorageProperties", tableStorageProperties);
+        /// <inheritdoc />
+        public async Task InitializeAsync()
+        {
+            var tableStorageProperties = new TableStorageProperties();
+            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
+                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                this.configuration[ConfigurationKeyConstants.CosmosTableSecretName]).ConfigureAwait(false);
+
+            this.configuration.Bind("StewardUserStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
-            this.tableStorageClient = tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
-            this.refreshableCacheStore = refreshableCacheStore;
+            this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
         }
 
         /// <inheritdoc />
