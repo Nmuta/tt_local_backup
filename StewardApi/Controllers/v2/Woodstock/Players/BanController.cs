@@ -266,7 +266,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             }
             else
             {
-                var userManagementService = this.ServicesWithProdLiveStewardCms.UserManagementService;
+                var userManagementService = this.ServicesWithLiveStewardCms.UserManagementService;
                 var liveOpsService = this.Services.LiveOpsService;
                 var response = await this.BanPlayers(banInput, requesterObjectId, liveOpsService, userManagementService).ConfigureAwait(true);
                 return this.Ok(response);
@@ -282,7 +282,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 $"Woodstock Banning: {banInput.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
-            var userManagementService = this.ServicesWithProdLiveStewardCms.UserManagementService;
+            var userManagementService = this.ServicesWithLiveStewardCms.UserManagementService;
             var liveOpsService = this.Services.LiveOpsService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)

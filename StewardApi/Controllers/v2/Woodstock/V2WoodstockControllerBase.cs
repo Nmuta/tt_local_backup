@@ -25,17 +25,51 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         /// <summary>Initializes a new instance of the <see cref="V2WoodstockControllerBase"/> class.</summary>
         protected V2WoodstockControllerBase()
         {
+            this.WoodstockServicesWithDevLiveCms = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockDevLiveProxyBundle"));
             this.WoodstockServicesWithProdLiveStewardCms = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockProdLiveStewardProxyBundle"));
+            this.WoodstockServicesWithDevLiveStewardCms = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockDevLiveStewardProxyBundle"));
         }
 
         /// <summary>Gets the Woodstock proxy service with prod live CMS slot set.</summary>
-        protected WoodstockProxyBundle Services => this.WoodstockServices.Value;
+        protected WoodstockProxyBundle Services
+        {
+            get
+            {
+                // Default to prod live cms override unless provided endpoint points to studio
+                var endpoint = this.WoodstockEndpoint.Value;
+                if (endpoint == WoodstockContracts.WoodstockEndpoint.Studio)
+                {
+                    return this.WoodstockServicesWithDevLiveCms.Value;
+                }
 
-        /// <summary>Gets the Woodstock proxy service with prod live-steward CMS slot set.</summary>
-        protected WoodstockProxyBundle ServicesWithProdLiveStewardCms => this.WoodstockServicesWithProdLiveStewardCms.Value;
+                return this.WoodstockServices.Value;
+            }
+        }
 
-        /// <summary>Gets or sets the (lazily) the Woodstock services.</summary>
+        /// <summary>Gets the Woodstock proxy service with live-steward CMS slot set.</summary>
+        protected WoodstockProxyBundle ServicesWithLiveStewardCms
+        {
+            get
+            {
+                // Default to prod live-steward cms override unless provided endpoint points to studio
+                var endpoint = this.WoodstockEndpoint.Value;
+                if (endpoint == WoodstockContracts.WoodstockEndpoint.Studio)
+                {
+                    return this.WoodstockServicesWithDevLiveStewardCms.Value;
+                }
+
+                return this.WoodstockServicesWithProdLiveStewardCms.Value;
+            }
+        }
+
+        /// <summary>Gets or sets the (lazily) the Woodstock services with dev live cms override.</summary>
+        protected Lazy<WoodstockProxyBundle> WoodstockServicesWithDevLiveCms { get; set; }
+
+        /// <summary>Gets or sets the (lazily) the Woodstock services with prod live-steward cms override.</summary>
         protected Lazy<WoodstockProxyBundle> WoodstockServicesWithProdLiveStewardCms { get; set; }
+
+        /// <summary>Gets or sets the (lazily) the Woodstock services  with dev live-steward cms override.</summary>
+        protected Lazy<WoodstockProxyBundle> WoodstockServicesWithDevLiveStewardCms { get; set; }
 
         /// <summary>Ensures all provided xuids are valid, else throws error.</summary>
         [Obsolete("Use services.EnsurePlayersExistAsync(...)")]
