@@ -1,0 +1,13 @@
+<mat-toolbar>
+  <a
+    [routerLink]="steelheadRouterLink"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    queryParamsHandling="preserve"
+    >FM
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FM8"> </endpoint-selection>
+  </a>
+
+  <span class="icon-spacer"></span>
+</mat-toolbar>
+<router-outlet></router-outlet>
