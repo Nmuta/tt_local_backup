@@ -8,7 +8,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { GameTitle } from '@models/enums';
@@ -21,6 +20,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
 import { GeneralTileComponent } from '../steelhead-general-tile.component';
+import { VerifyButtonComponent } from '@shared/modules/verify/verify-button/verify-button.component';
 
 /** The image text tile component. */
 @Component({
@@ -29,15 +29,17 @@ import { GeneralTileComponent } from '../steelhead-general-tile.component';
   styleUrls: ['./steelhead-image-text-tile.component.scss'],
 })
 export class ImageTextTileComponent extends BaseComponent implements OnChanges {
-  @ViewChild(MatCheckbox) verifyCheckbox: MatCheckbox;
+  @ViewChild(VerifyButtonComponent) verifyBtn: VerifyButtonComponent;
   @ViewChild(GeneralTileComponent) generalTileComponent: GeneralTileComponent;
 
   /** The image text tile representing the currently selected tile. */
   @Input() imageTextTile: ImageTextTile;
   /** The id of the tile currently being shown/modified. */
   @Input() tileId;
-  /** If the form in edit mode. */
-  @Input() isInEditMode: boolean = false;
+  /** If the form is in edit mode. */
+  @Input() public readonly isInEditMode: boolean = false;
+  /** Event emitted when edit mode needs to be updated. */
+  @Output() changeEditMode = new EventEmitter<boolean>();
   /** Event emitted when a new pûll request was created. */
   @Output() newPullRequestCreated = new EventEmitter<PullRequest>();
 
@@ -80,8 +82,8 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
         this.formGroup.enable();
         this.pullRequestUrl = '';
       } else {
-        if (this.verifyCheckbox) {
-          this.verifyCheckbox.checked = false;
+        if (this.verifyBtn) {
+          this.verifyBtn.isVerified = false;
         }
         this.formGroup.disable();
       }
@@ -96,8 +98,7 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
   /** Submit welcome center tile modification. */
   public submitChanges(): void {
     this.submitWelcomeCenterTileMonitor = this.submitWelcomeCenterTileMonitor.repeat();
-    this.isInEditMode = false;
-    this.verifyCheckbox.checked = false;
+    this.changeEditMode.emit(false);
 
     // Image text tile specific field
     this.imageTextTile.contentImagePath = this.formControls.contentImagePath.value;
@@ -110,8 +111,6 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
       .pipe(this.submitWelcomeCenterTileMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(pullrequest => {
         this.pullRequestUrl = pullrequest.webUrl;
-        this.isInEditMode = false;
-        this.formGroup.disable();
 
         this.newPullRequestCreated.emit(pullrequest);
       });

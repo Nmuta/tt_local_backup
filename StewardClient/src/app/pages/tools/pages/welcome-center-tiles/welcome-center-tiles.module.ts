@@ -13,12 +13,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTableModule } from '@angular/material/table';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -35,6 +33,7 @@ import { GeneralTileComponent } from './steelhead/tile-components/steelhead-gene
 import { ImageTextTileComponent } from './steelhead/tile-components/image-text/steelhead-image-text-tile.component';
 import { GenericPopupTileComponent } from './steelhead/tile-components/generic-popup/steelhead-generic-popup-tile.component';
 import { DeeplinkTileComponent } from './steelhead/tile-components/deeplink/steelhead-deeplink-tile.component';
+import { ActivePullRequestsModule } from '@views/active-pull-requests/active-pull-requests.module';
 
 /** Module for displaying welcome center tiles tool. */
 @NgModule({
@@ -63,9 +62,7 @@ import { DeeplinkTileComponent } from './steelhead/tile-components/deeplink/stee
     MatTooltipModule,
     MatIconModule,
     MatInputModule,
-    MatCheckboxModule,
     MatFormFieldModule,
-    MatTableModule,
     MonitorActionModule,
     StateManagersModule,
     PipesModule,
@@ -78,6 +75,7 @@ import { DeeplinkTileComponent } from './steelhead/tile-components/deeplink/stee
     PermissionsModule,
     LuxonModule,
     VerifyCheckboxModule,
+    ActivePullRequestsModule,
   ],
   exports: [],
 })
