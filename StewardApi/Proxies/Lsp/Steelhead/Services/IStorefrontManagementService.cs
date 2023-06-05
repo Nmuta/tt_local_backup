@@ -65,5 +65,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 
         /// <summary>Generates a Sharecode for the given UGC ID.</summary>
         Task<GenerateShareCodeOutput> GenerateShareCode(Guid id);
+
+        /// <summary>Gets base UGC data.</summary>
+        Task<GetUGCObjectOutput> GetUGCObject(Guid id);
     }
 }

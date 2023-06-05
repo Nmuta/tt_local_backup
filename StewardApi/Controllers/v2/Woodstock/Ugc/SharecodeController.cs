@@ -54,6 +54,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         public async Task<IActionResult> GenerateSharecode(string id)
         {
             var ugcId = id.TryParseGuidElseThrow(nameof(id));
+
+            var lookup = await this.WoodstockServices.Value.StorefrontManagementService.GetUGCObject(ugcId).ConfigureAwait(true);
+            var ugcIsPublic = lookup.result.Metadata.Searchable;
+            var existingSharecode = lookup.result.Metadata.ShareCode;
+
+            if (!ugcIsPublic)
+            {
+                throw new FailedToSendStewardException("Cannot assign sharecode to private UGC.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(existingSharecode))
+            {
+                var existingResponse = new GenerateSharecodeResponse { Sharecode = existingSharecode };
+                return this.Ok(existingResponse);
+            }
+
             var result = await this.WoodstockServices.Value.StorefrontManagementService.GenerateShareCode(ugcId).ConfigureAwait(true);
             var response = new GenerateSharecodeResponse { Sharecode = result.shareCode };
 

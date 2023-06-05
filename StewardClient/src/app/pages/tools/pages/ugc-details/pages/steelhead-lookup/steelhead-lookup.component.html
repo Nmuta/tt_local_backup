@@ -55,8 +55,13 @@
               class="sf-default-margins sf-action-list-margins"
               [disabled]="!canGenerateSharecode"
               mat-raised-button
-              monitorCompleteSnackbar
               color="primary"
+              stateManager
+              [monitor]="generateSharecodeMonitor"
+              monitorDisable
+              monitorWarn
+              monitorWarnSnackbar
+              monitorCompleteSnackbar              
               (click)="generateSharecodeForUgc()"
             >
               <span [matTooltip]="generateSharecodeMatTooltip">Generate Sharecode</span>
