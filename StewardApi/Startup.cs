@@ -402,11 +402,28 @@ namespace Turn10.LiveOps.StewardApi
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion);
 
+            builder.RegisterType<Client>().Named<Client>("woodstockClientDevLive")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Dev, WoodstockPegasusSlot.Live));
+
             builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
-                .WithParameter(Named("cmsInstance"), (p, c) => "prod-xlive-steward");
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Prod, WoodstockPegasusSlot.LiveSteward));
+
+            builder.RegisterType<Client>().Named<Client>("woodstockClientDevLiveSteward")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Dev, WoodstockPegasusSlot.LiveSteward));
+        }
+
+        private string GenerateCmsOverrideString(string environment, string slot)
+        {
+            return $"{environment}-x{slot}";
         }
 
         private void RegisterSteelheadTypes(ContainerBuilder builder)

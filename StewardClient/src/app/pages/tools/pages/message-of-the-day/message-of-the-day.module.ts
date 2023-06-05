@@ -13,12 +13,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTableModule } from '@angular/material/table';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -31,6 +29,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { LuxonModule } from 'luxon-angular';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { ActivePullRequestsModule } from '@views/active-pull-requests/active-pull-requests.module';
 
 /** Module for displaying message of the day tool. */
 @NgModule({
@@ -52,9 +51,7 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
     MatTooltipModule,
     MatIconModule,
     MatInputModule,
-    MatCheckboxModule,
     MatFormFieldModule,
-    MatTableModule,
     MonitorActionModule,
     StateManagersModule,
     PipesModule,
@@ -67,6 +64,7 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
     PermissionsModule,
     LuxonModule,
     VerifyCheckboxModule,
+    ActivePullRequestsModule,
   ],
   exports: [],
 })
