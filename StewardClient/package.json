@@ -87,6 +87,7 @@
     "angular-shepherd": "^15.0.0",
     "bignumber.js": "^9.0.2",
     "core-js": "^3.20.2",
+    "cypress-real-events": "^1.8.1",
     "eslint-plugin-rxjs": "^4.0.4",
     "eventsource": "^1.1.1",
     "file-saver": "^2.0.5",
