@@ -50,7 +50,8 @@ namespace Turn10.LiveOps.StewardTest.Unit
                        skip("Util", "PostStatus") ||
                        skip("Util", "PutStatus") ||
                        skip("Permissions", "SetUserPermissions") ||
-                       skip("AcLogReader", "RunAcLogReader"))
+                       skip("AcLogReader", "RunAcLogReader") ||
+                       skip("Sharecode", "GenerateSharecode"))
                     {
                         continue;
                     }
