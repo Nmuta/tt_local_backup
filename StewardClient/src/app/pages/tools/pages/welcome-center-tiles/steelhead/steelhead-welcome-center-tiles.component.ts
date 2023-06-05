@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { GameTitle } from '@models/enums';
@@ -17,10 +16,6 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep } from 'lodash';
 import { combineLatest, Observable, takeUntil } from 'rxjs';
-
-type PullRequestTableData = PullRequest & {
-  monitor: ActionMonitor;
-};
 
 /** The Steelhead welcome center tile page. */
 @Component({
@@ -39,9 +34,11 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
   public friendlyNameDeeplinkList: FriendlyNameMap;
   public isInEditMode: boolean = false;
   public currentWelcomeCenterTile;
-  public existingPullRequestList = new MatTableDataSource<PullRequestTableData>();
   public tileTypes = TileType;
-  public columnsToDisplay = ['title', 'creationDate', 'actions'];
+
+  // Active PRs display
+  public newActivePullRequest: PullRequest;
+  public activePrSubject = PullRequestSubject.WorldOfForzaTile;
 
   public formControls = {
     selectedWelcomeCenterTile: new FormControl(null, [Validators.required]),
@@ -83,8 +80,6 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
         this.friendlyNameGenericPopupList = genericPopupTiles;
         this.friendlyNameDeeplinkList = deeplinkTiles;
       });
-
-    this.getActivePullRequests();
   }
 
   /** Loads the selected Welcome Center Tile data. */
@@ -125,47 +120,8 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
     this.currentWelcomeCenterTile = cloneDeep(this.currentWelcomeCenterTile);
   }
 
-  /** Toggle the form to edit mode, enabling all the fields. */
-  public toggleEditMode(): void {
-    this.isInEditMode = true;
-  }
-
-  /** Called when a child component emit a new pull request creation. Adds the pull request to the table. */
-  public addPullRequest(pullRequest: PullRequest) {
-    this.isInEditMode = false;
-    this.existingPullRequestList.data.unshift({
-      ...pullRequest,
-      monitor: new ActionMonitor(`Abandon pull request: ${pullRequest.id}`),
-    } as PullRequestTableData);
-    this.existingPullRequestList._updateChangeSubscription();
-  }
-
-  /** Send a request to github to abandon a Pull Request. */
-  public abandonPullRequest(entry: PullRequestTableData): void {
-    entry.monitor = entry.monitor.repeat();
-    this.steelheadGitOperationService
-      .abandonPullRequest$(entry.id)
-      .pipe(entry.monitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        const index = this.existingPullRequestList.data.indexOf(entry);
-        this.existingPullRequestList.data.splice(index, 1);
-        this.existingPullRequestList._updateChangeSubscription();
-      });
-  }
-
-  /** Get and display the current active pull request. */
-  private getActivePullRequests(): void {
-    this.getPullRequests = this.getPullRequests.repeat();
-    this.steelheadGitOperationService
-      .getActivePullRequests$(PullRequestSubject.WorldOfForzaTile)
-      .pipe(this.getPullRequests.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(result => {
-        this.existingPullRequestList.data = result.map(pullrequest => {
-          return {
-            ...pullrequest,
-            monitor: new ActionMonitor(`Abandon pull request: ${pullrequest.id}`),
-          } as PullRequestTableData;
-        });
-      });
+  /** Changes the form to edit mode, enabling all the fields. */
+  public changeEditMode(isInEditMode: boolean): void {
+    this.isInEditMode = isInEditMode;
   }
 }

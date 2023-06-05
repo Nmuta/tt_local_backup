@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '5809f4ce-6486-4ebb-8b25-ce5cb38824f3',
+      shortText: 'Create shared component to view Pegasus content change PRs',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '6b023f7c-9d0c-43d9-8520-fb1713bbcb31',
       shortText: 'Allow Live Ops Admins to modify their own permissions',
     },
