@@ -78,4 +78,17 @@ export const ben: KnownUser = {
   ],
 };
 
+export const calebStudio: KnownUser = {
+  gtag: '	2 Dev 046404329',
+  xuid: '2814670801628842',
+  t10Id: undefined,
+  accountInfo: [
+    { title: 'FH5', hasAccount: false },
+    { title: 'FM', hasAccount: true },
+    { title: 'FH4', hasAccount: false },
+    { title: 'FM7', hasAccount: false },
+    { title: 'FH3', hasAccount: false },
+  ],
+};
+
 export const AllKnownUsers: KnownUser[] = [jordan, luke, chad, madden, ben];

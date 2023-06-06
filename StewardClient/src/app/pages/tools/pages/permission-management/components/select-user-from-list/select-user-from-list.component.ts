@@ -146,10 +146,17 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
           users = users.filter(user => includes(team?.members ?? [], user.objectId));
         }
 
+        const selfAdminUser = users.filter(
+          user =>
+            user.role === UserRole.LiveOpsAdmin && user.objectId === this.userProfile.objectId,
+        );
         const generalUsers = users.filter(user => user.role === UserRole.GeneralUser);
+
         this.allUsers = sortBy(generalUsers, user => {
           return user.name;
         }) as UserModelWithPermissions[];
+
+        this.allUsers = selfAdminUser.concat(this.allUsers);
 
         this.filteredUsers = cloneDeep(this.allUsers);
       });

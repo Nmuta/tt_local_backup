@@ -241,6 +241,8 @@ namespace Turn10.LiveOps.StewardApi
             this.RegisterApolloTypes(builder);
 
             // Kusto
+            // This is the first place we pull from KV. Errors here may be related to needing to
+            // re-verify your VS account. Click File -> Account Settings -> Check under "All Accounts"
             var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
 
             var kustoLoggerConfiguration = new KustoConfiguration();
@@ -321,11 +323,10 @@ namespace Turn10.LiveOps.StewardApi
             builder.Register(c => blobRepo).As<IBlobRepository>().SingleInstance();
 
             builder.RegisterType<HubManager>().SingleInstance();
-            builder.RegisterType<JobTracker>().As<IJobTracker>().SingleInstance();
-            builder.RegisterType<PlayFabBuildLocksProvider>().As<IPlayFabBuildLocksProvider>().SingleInstance();
-            builder.RegisterType<KustoQueryProvider>().As<IKustoQueryProvider>().SingleInstance();
-            builder.RegisterType<StewardUserProvider>().As<IStewardUserProvider>().SingleInstance();
-            builder.RegisterType<StewardUserProvider>().As<IScopedStewardUserProvider>().SingleInstance();
+            builder.RegisterType<JobTracker>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<PlayFabBuildLocksProvider>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<KustoQueryProvider>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<StewardUserProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
             builder.RegisterType<PolicyResultAuthorizationMiddleware>().As<IAuthorizationMiddlewareResultHandler>().SingleInstance();
             builder.RegisterType<ForumBanHistoryProvider>().As<IForumBanHistoryProvider>().SingleInstance();
@@ -401,11 +402,28 @@ namespace Turn10.LiveOps.StewardApi
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion);
 
+            builder.RegisterType<Client>().Named<Client>("woodstockClientDevLive")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Dev, WoodstockPegasusSlot.Live));
+
             builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
-                .WithParameter(Named("cmsInstance"), (p, c) => "prod-xlive-steward");
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Prod, WoodstockPegasusSlot.LiveSteward));
+
+            builder.RegisterType<Client>().Named<Client>("woodstockClientDevLiveSteward")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Dev, WoodstockPegasusSlot.LiveSteward));
+        }
+
+        private string GenerateCmsOverrideString(string environment, string slot)
+        {
+            return $"{environment}-x{slot}";
         }
 
         private void RegisterSteelheadTypes(ContainerBuilder builder)

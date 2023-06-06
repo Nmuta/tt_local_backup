@@ -14,24 +14,30 @@
       label="Popup Description"
       formControlName="localizedPopupDescription"
     ></select-localized-string>
-    <div *waitForMonitor="submitWelcomeCenterTileMonitor" class="sf-horizontal">
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="submitChanges()"
-        [disabled]="!isInEditMode || !verifyModification.checked || !formGroup.valid"
-      >
-        Submit Modification
-      </button>
-      <mat-checkbox
-        #verifyModification
+    <div>
+      <verify-button
+        #verifyBtn
         stateManager
         [permissionAttribute]="permAttribute"
         [permissionTitle]="gameTitle"
         [disabled]="!isInEditMode"
-        matTooltip="Verify Modification"
-        >Verify Modification</mat-checkbox
+      ></verify-button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="submitChanges()"
+        [disabled]="!isInEditMode || !formGroup.valid"
+        stateManager
+        [monitor]="submitWelcomeCenterTileMonitor"
+        [verifyWithV2]="verifyBtn"
+        monitorDisable
       >
+        Submit Modification
+        <button-spinner
+          [monitor]="submitWelcomeCenterTileMonitor"
+          defaultIcon="save"
+        ></button-spinner>
+      </button>
     </div>
   </div>
 </form>

@@ -37,6 +37,7 @@ export enum AppIcon {
   ShowroomCalendarTile = 'calendar_today',
   PlayFab = 'hexagon',
   ServicesTableStorage = 'table_rows',
+  AcLogReader = 'document_scanner',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
