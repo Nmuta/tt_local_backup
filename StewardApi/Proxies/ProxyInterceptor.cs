@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.Services.Orm.SqlGen;
 
 namespace Turn10.LiveOps.StewardApi.Proxies
 {
