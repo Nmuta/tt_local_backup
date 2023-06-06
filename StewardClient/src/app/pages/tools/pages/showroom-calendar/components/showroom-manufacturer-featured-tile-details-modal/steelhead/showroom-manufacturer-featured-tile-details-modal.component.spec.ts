@@ -25,8 +25,8 @@ describe('ShowroomManufacturerFeaturedTileDetailsModalComponent', () => {
           useValue: {
             title: faker.datatype.string(),
             description: faker.datatype.string(),
-            startTime: faker.datatype.datetime().toISOString(),
-            endTime: faker.datatype.datetime().toISOString(),
+            startTimeUtc: faker.datatype.datetime().toISOString(),
+            endTimeUtc: faker.datatype.datetime().toISOString(),
             manufacturerId: faker.datatype.number(),
             manufacturerName: faker.datatype.string(),
           } as ManufacturerFeaturedShowcase,

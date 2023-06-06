@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
+import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 
 /** Interface that represents a Car Featured Showcase. */
 export interface CarFeaturedShowcase {
   title: string;
   description: string;
-  startTime: string;
-  endTime: string;
+  startTimeUtc: DateTime;
+  endTimeUtc: DateTime;
   baseCost: number;
   carId: number;
   modelShort: string;
@@ -22,8 +23,8 @@ export interface CarFeaturedShowcase {
 export interface DivisionFeaturedShowcase {
   title: string;
   description: string;
-  startTime: string;
-  endTime: string;
+  startTimeUtc: DateTime;
+  endTimeUtc: DateTime;
   divisionId: number;
   divisionName: string;
 }
@@ -32,8 +33,8 @@ export interface DivisionFeaturedShowcase {
 export interface ManufacturerFeaturedShowcase {
   title: string;
   description: string;
-  startTime: string;
-  endTime: string;
+  startTimeUtc: DateTime;
+  endTimeUtc: DateTime;
   manufacturerId: number;
   manufacturerName: string;
 }

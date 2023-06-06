@@ -25,8 +25,8 @@ describe('ShowroomCarFeaturedTileDetailsModalComponent', () => {
           useValue: {
             title: faker.datatype.string(),
             description: faker.datatype.string(),
-            startTime: faker.datatype.datetime().toISOString(),
-            endTime: faker.datatype.datetime().toISOString(),
+            startTimeUtc: faker.datatype.datetime().toISOString(),
+            endTimeUtc: faker.datatype.datetime().toISOString(),
             carId: faker.datatype.number(),
             baseCost: faker.datatype.number(),
             mediaName: faker.datatype.string(),

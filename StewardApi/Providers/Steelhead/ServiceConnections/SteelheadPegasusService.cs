@@ -146,8 +146,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTime = pegasusShowcase.StartTime,
-                        EndTime = pegasusShowcase.EndTime,
+                        StartTimeUtc = pegasusShowcase.StartTime,
+                        EndTimeUtc = pegasusShowcase.EndTime,
                         BaseCost = carListing.FullCarInfo.Car.BaseCost.Value,
                         CarId = carListing.FullCarInfo.Car.CarId,
                         MediaName = carListing.FullCarInfo.Car.MediaName,
@@ -155,7 +155,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     };
                     carFeaturedShowcases = carFeaturedShowcases.Append(liveOpsShowcase);
 
-                    var saleInfo = carListing.SaleInformation.FirstOrDefault(x => x.StartTime >= liveOpsShowcase.StartTime && x.StartTime <= liveOpsShowcase.EndTime);
+                    var saleInfo = carListing.SaleInformation.FirstOrDefault(x => x.StartTime >= liveOpsShowcase.StartTimeUtc && x.StartTime <= liveOpsShowcase.EndTimeUtc);
                     if (saleInfo == null)
                     {
                         continue;
@@ -195,8 +195,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTime = pegasusShowcase.StartTime,
-                        EndTime = pegasusShowcase.EndTime,
+                        StartTimeUtc = pegasusShowcase.StartTime,
+                        EndTimeUtc = pegasusShowcase.EndTime,
                         DivisionId = carListing.FullCarInfo.CarDivision.CarDivisionId,
                         DivisionName = carListing.FullCarInfo.CarDivision.Name
                     };
@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             }
 
             var uniqueDivisionFeaturedShowcases = divisionFeaturedShowcases
-                                                    .GroupBy(x => new { x.DivisionId, x.StartTime, x.EndTime })
+                                                    .GroupBy(x => new { x.DivisionId, x.StartTimeUtc, x.EndTimeUtc })
                                                     .Select(x => x.First())
                                                     .ToList();
 
@@ -235,8 +235,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTime = pegasusShowcase.StartTime,
-                        EndTime = pegasusShowcase.EndTime,
+                        StartTimeUtc = pegasusShowcase.StartTime,
+                        EndTimeUtc = pegasusShowcase.EndTime,
                         ManufacturerId = carListing.FullCarInfo.Car.MakeID.Value,
                         ManufacturerName = carListing.FullCarInfo.Car.MakeDisplayName
                     };
@@ -245,7 +245,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             }
 
             var uniqueManufacturerFeaturedShowcases = manufacturerFeaturedShowcases
-                                                        .GroupBy(x => new { x.ManufacturerId, x.StartTime, x.EndTime })
+                                                        .GroupBy(x => new { x.ManufacturerId, x.StartTimeUtc, x.EndTimeUtc })
                                                         .Select(x => x.First())
                                                         .ToList();
 

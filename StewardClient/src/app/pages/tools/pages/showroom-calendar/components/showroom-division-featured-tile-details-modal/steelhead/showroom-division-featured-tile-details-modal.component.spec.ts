@@ -25,8 +25,8 @@ describe('ShowroomDivisionFeaturedTileDetailsModalComponent', () => {
           useValue: {
             title: faker.datatype.string(),
             description: faker.datatype.string(),
-            startTime: faker.datatype.datetime().toISOString(),
-            endTime: faker.datatype.datetime().toISOString(),
+            startTimeUtc: faker.datatype.datetime().toISOString(),
+            endTimeUtc: faker.datatype.datetime().toISOString(),
             divisionId: faker.datatype.number(),
             divisionName: faker.datatype.string(),
           } as DivisionFeaturedShowcase,

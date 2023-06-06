@@ -1,35 +1,5 @@
 @import '/src/styles/mixins';
 
-$mediumTileHeight: 200px; // Modify this value to auto-size larger tiles as well
-$tilePaddingHeightAdjustment: 32px;
-$tileMarginHeightAdjustment: $gap-micro;
-$adjustedMediumTileHeight: $mediumTileHeight + $tilePaddingHeightAdjustment +
-  $tileMarginHeightAdjustment;
-$largeTileHeight: $adjustedMediumTileHeight * 2 - $tilePaddingHeightAdjustment -
-  $tileMarginHeightAdjustment;
-
-.subtitle {
-  @include modal-subtitle;
-}
-
-mat-card-content.respect-newline {
-  white-space: pre-line;
-}
-
-mat-card {
-  width: 80%;
-  margin: 0 auto;
-  margin-bottom: $tileMarginHeightAdjustment;
-
-  &.medium {
-    height: $mediumTileHeight;
-  }
-
-  &.large {
-    height: $largeTileHeight;
-  }
-}
-
 :host {
   max-width: 80vw;
 }
@@ -49,11 +19,6 @@ h2 {
   max-height: unset;
   overflow: unset;
   min-width: 60vw;
-}
-
-.center-text {
-  display: flex;
-  justify-content: center;
 }
 
 .scroll-pane {

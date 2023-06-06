@@ -114,8 +114,8 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
 
     for (const carFeaturedShowcase of carFeaturedShowcases) {
       const newEvent = this.makeCalendarEvent(
-        new Date(carFeaturedShowcase.startTime),
-        new Date(carFeaturedShowcase.endTime),
+        carFeaturedShowcase.startTimeUtc.toJSDate(),
+        carFeaturedShowcase.endTimeUtc.toJSDate(),
         carFeaturedShowcase.title,
         {
           carFeaturedShowcase: carFeaturedShowcase,
@@ -140,8 +140,8 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
 
     for (const divisionFeaturedShowcase of divisionFeaturedShowcases) {
       const newEvent = this.makeCalendarEvent(
-        new Date(divisionFeaturedShowcase.startTime),
-        new Date(divisionFeaturedShowcase.endTime),
+        divisionFeaturedShowcase.startTimeUtc.toJSDate(),
+        divisionFeaturedShowcase.endTimeUtc.toJSDate(),
         divisionFeaturedShowcase.title,
         {
           carFeaturedShowcase: undefined,
@@ -166,8 +166,8 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
 
     for (const manufacturerFeaturedShowcase of manufacturerFeaturedShowcases) {
       const newEvent = this.makeCalendarEvent(
-        new Date(manufacturerFeaturedShowcase.startTime),
-        new Date(manufacturerFeaturedShowcase.endTime),
+        manufacturerFeaturedShowcase.startTimeUtc.toJSDate(),
+        manufacturerFeaturedShowcase.endTimeUtc.toJSDate(),
         manufacturerFeaturedShowcase.title,
         {
           carFeaturedShowcase: undefined,
