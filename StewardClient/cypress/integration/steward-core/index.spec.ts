@@ -205,6 +205,7 @@ context('Steward Index', () => {
 
         cy.get('button').contains('mat-icon', 'edit').click();
 
+        // 6 June, 2023
         // Does not display mouse interactions within tests, likely interacting behind the scenes (not visible in the test ui)
         // cy.get('#cdk-drop-list-0 > :nth-child(1)').then(el => {
         //   const $drag = el[0];
