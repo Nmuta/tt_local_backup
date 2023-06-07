@@ -39,6 +39,9 @@
   <mat-card>
     <mat-card-title>
       Query Results
+      <mat-card-subtitle *ngIf="queryResultsCount > 0">
+        {{ queryResultsCount | number: '1.0':'en-US' }} items.
+      </mat-card-subtitle>
       <help-popover-icon cardTitle="Kusto Query results">
         <p>Some fields may be automatically made into links or prettified.</p>
         <ul>

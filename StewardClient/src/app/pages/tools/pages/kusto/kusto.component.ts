@@ -25,6 +25,8 @@ export class KustoComponent extends BaseComponent {
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
+  /** The number of reqults from the Kusto query */
+  public queryResultsCount = 0;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -64,6 +66,7 @@ export class KustoComponent extends BaseComponent {
       )
       .subscribe(response => {
         this.isLoading = false;
+        this.queryResultsCount = response.length;
         this.queryResponse = response.map(item => {
           const tableResult = item as JsonTableResult<unknown>;
           tableResult.showErrorInTable = false;

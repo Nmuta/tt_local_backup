@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.Kusto },
+      uuid: 'd6b1b87d-699e-4d73-9f8f-9e966e20a11c',
+      shortText: 'Display results count when running a Kusto query',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '7a39d883-6cc6-4bcf-8ad4-02e53f3e25e7',
       shortText: 'Add AC to acronym pipe',
