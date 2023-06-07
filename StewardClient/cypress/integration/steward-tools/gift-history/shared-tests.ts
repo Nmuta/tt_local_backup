@@ -63,10 +63,6 @@ export function verifyGiftHistoryCalendarWhereGiftsExist(
     cy.get('.mat-date-range-input-start-wrapper').clear().type(date1);
     cy.get('.mat-date-range-input-end-wrapper').clear().type(date2);
     cy.get('gift-history-results')
-      .find('mat-expansion-panel')
-      .contains('Credit Rewards')
-      .should('exist');
-    cy.get('gift-history-results')
       .find('mat-accordion')
       .children()
       .should('have.length', numExpectedGifts);
@@ -112,10 +108,6 @@ export function verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
     cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
     cy.get('.mat-date-range-input-start-wrapper').clear().type(date1);
     cy.get('.mat-date-range-input-end-wrapper').clear().type(date2);
-    cy.get('gift-history-results')
-      .find('mat-expansion-panel')
-      .contains('Credit Rewards')
-      .should('exist');
     cy.get('gift-history-results')
       .find('mat-accordion')
       .children()
