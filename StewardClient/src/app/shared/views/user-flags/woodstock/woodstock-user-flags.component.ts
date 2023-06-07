@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WoodstockUserFlags } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock/woodstock.service';
 import { Observable } from 'rxjs';
@@ -14,7 +14,10 @@ import { OldPermissionsService } from '@services/old-permissions';
   templateUrl: '../user-flags.component.html',
   styleUrls: ['../user-flags.component.scss'],
 })
-export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<WoodstockUserFlags> {
+export class WoodstockUserFlagsComponent
+  extends UserFlagsBaseComponent<WoodstockUserFlags>
+  implements OnInit
+{
   public gameTitle = GameTitle.FH5;
 
   public formControls = {
@@ -23,6 +26,7 @@ export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<Woodstoc
     isTurn10Employee: new FormControl(false),
     isEarlyAccess: new FormControl(false),
     isRaceMarshall: new FormControl(false),
+    isCommunityManager: new FormControl(false),
     isContentCreator: new FormControl(false),
     isUnderReview: new FormControl(false), // Keep as last form control
   };
@@ -34,6 +38,25 @@ export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<Woodstoc
     permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
+  }
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    // Community Manager in FH5 has additional feature to modertate community challenges through liking and disliking content.
+    // We need to add that text to the alternate label
+    const unbannabledSearchText = 'Unbannable';
+    const unbannableIndex = this.alteredLabels.isCommunityManager.indexOf(unbannabledSearchText);
+    if (unbannableIndex >= 0) {
+      const startString = this.alteredLabels.isCommunityManager.substring(
+        0,
+        unbannableIndex + unbannabledSearchText.length,
+      );
+      const endString = this.alteredLabels.isCommunityManager.substring(
+        unbannableIndex + unbannabledSearchText.length,
+        this.alteredLabels.isCommunityManager.length,
+      );
+      this.alteredLabels.isCommunityManager = `${startString} + Community Challenge Moderation${endString}`;
+    }
   }
 
   /** Gets Woodstock user flags. */
@@ -50,6 +73,7 @@ export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<Woodstoc
       isEarlyAccess: this.formControls.isEarlyAccess.value,
       isUnderReview: this.formControls.isUnderReview.value,
       isRaceMarshall: this.formControls.isRaceMarshall.value,
+      isCommunityManager: this.formControls.isCommunityManager.value,
       isContentCreator: this.formControls.isContentCreator.value,
     } as WoodstockUserFlags);
   }

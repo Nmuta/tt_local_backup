@@ -8,9 +8,14 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'e9168a6f-743e-4763-9dd4-204ea33136e1',
+      shortText: 'Add Community Manager as a player flag option',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'a6b2edb4-08bb-43a9-ad75-bc3ae62d938a',
-      shortText: 'Added cyids to Verify checkboxes on UGM page',
+      shortText: 'Add cyids to Verify checkboxes on UGM page',
     },
     {
       tag: ChangelogTag.Internal,
@@ -30,7 +35,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
       uuid: '154e3610-9f99-437c-9127-c3363e3e1635',
-      shortText: 'Added in new Client Crash log decoder tool',
+      shortText: 'Add in new Client Crash log decoder tool',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },

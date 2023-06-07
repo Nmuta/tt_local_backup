@@ -25,5 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         public bool? IsRaceMarshall { get; set; }
 
         public bool? IsContentCreator { get; set; }
+
+        public bool? IsCommunityManager { get; set; }
     }
 }

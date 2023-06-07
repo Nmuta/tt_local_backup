@@ -19,6 +19,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
 
         public bool IsRaceMarshall { get; set; }
 
+        public bool IsCommunityManager { get; set; }
+
         public bool IsContentCreator { get; set; }
     }
 }

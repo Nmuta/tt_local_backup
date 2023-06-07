@@ -46,6 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
         private const int RaceMarshallUserGroupId = 9;
+        private const int CommunityManagerUserGroupId = 5;
 
         private readonly IMapper mapper;
         private readonly IRequestValidator<SteelheadUserFlagsInput> userFlagsRequestValidator;
@@ -151,6 +152,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
                 IsUnderReview = suspiciousResults.isUnderReview,
                 IsRaceMarshall = userGroupResults.userGroups.Any(r => r.Id == RaceMarshallUserGroupId),
+                IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
                 IsContentCreator = userGroupResults.userGroups.Any(r => r.Id == nonStandardUserGroups.ContentCreatorId),
             };
 
@@ -169,6 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             if (userFlags.IsTurn10Employee == toggleState) { resultGroupIds.Add(T10EmployeeUserGroupId); }
             if (userFlags.IsEarlyAccess == toggleState) { resultGroupIds.Add(WhitelistUserGroupId); }
             if (userFlags.IsRaceMarshall == toggleState) { resultGroupIds.Add(RaceMarshallUserGroupId); }
+            if (userFlags.IsCommunityManager == toggleState) { resultGroupIds.Add(CommunityManagerUserGroupId); }
             if (userFlags.IsContentCreator == toggleState) { resultGroupIds.Add(nonStandardUserGroups.ContentCreatorId); }
 
             return resultGroupIds;
