@@ -27,6 +27,8 @@ import {
   LocalizedIndividualMessagingManagementContract,
   LocalizedIndividualNotificationManagementComponent,
 } from '../components/notification-management/localized-individual-notification-management/localized-individual-notification-management.component';
+import { PullRequest, PullRequestSubject } from '@models/git-operation';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /**
  *  Steelhead notification component.
@@ -59,6 +61,11 @@ export class SteelheadNotificationsComponent {
   /** True when Edit/Delete tab is selected. */
   public isInEditTab: boolean = false;
 
+  // Loc string active PRs display
+  public newLocStringActivePullRequest: PullRequest;
+  public locStringActivePrSubject = PullRequestSubject.LocalizationString;
+  public readonly permAttributeLocString = PermAttributeName.AddLocalizedString;
+
   constructor(
     steelheadPlayersMessagesService: SteelheadPlayersMessagesService,
     steelheadGroupMessagesService: SteelheadGroupMessagesService,
@@ -67,7 +74,9 @@ export class SteelheadNotificationsComponent {
   ) {
     this.localizationCreationServiceContract = {
       gameTitle: this.gameTitle,
-      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void> {
+      postStringForLocalization$(
+        localizedStringData: LocalizedStringData,
+      ): Observable<PullRequest> {
         return steelheadLocalizationService.postLocalizedString$(localizedStringData);
       },
     };

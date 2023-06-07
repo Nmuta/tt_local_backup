@@ -13,6 +13,14 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add ability to generate sharecode for UGC',
     },
     {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.Messaging, NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '6b023f7c-9d0c-43d9-8520-fb1713bbcb31',
+      shortText: 'Display active content moderation PRs to create loc string view',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'a6b2edb4-08bb-43a9-ad75-bc3ae62d938a',
       shortText: 'Added cyids to Verify checkboxes on UGM page',

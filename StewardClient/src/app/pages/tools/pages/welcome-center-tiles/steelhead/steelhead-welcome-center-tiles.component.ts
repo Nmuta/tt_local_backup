@@ -36,9 +36,14 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
   public currentWelcomeCenterTile;
   public tileTypes = TileType;
 
-  // Active PRs display
+  // Welcome Center active PRs display
   public newActivePullRequest: PullRequest;
   public activePrSubject = PullRequestSubject.WorldOfForzaTile;
+
+  // Loc string active PRs display
+  public newLocStringActivePullRequest: PullRequest;
+  public locStringActivePrSubject = PullRequestSubject.LocalizationString;
+  public readonly permAttributeLocString = PermAttributeName.AddLocalizedString;
 
   public formControls = {
     selectedWelcomeCenterTile: new FormControl(null, [Validators.required]),
@@ -59,7 +64,9 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
 
     this.localizationCreationServiceContract = {
       gameTitle: this.gameTitle,
-      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void> {
+      postStringForLocalization$(
+        localizedStringData: LocalizedStringData,
+      ): Observable<PullRequest> {
         return steelheadLocalizationService.postLocalizedString$(localizedStringData);
       },
     };

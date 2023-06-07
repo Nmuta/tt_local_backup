@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { PullRequest } from '@models/git-operation';
 import { LocalizedStringsMap, LocalizedStringData } from '@models/localization';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
@@ -19,7 +20,7 @@ export class SteelheadLocalizationService {
   }
 
   /** Submits string to Steelhead for localization. */
-  public postLocalizedString$(localizedStringData: LocalizedStringData): Observable<void> {
-    return this.api.postRequest$<void>(this.basePath, localizedStringData);
+  public postLocalizedString$(localizedStringData: LocalizedStringData): Observable<PullRequest> {
+    return this.api.postRequest$<PullRequest>(this.basePath, localizedStringData);
   }
 }
