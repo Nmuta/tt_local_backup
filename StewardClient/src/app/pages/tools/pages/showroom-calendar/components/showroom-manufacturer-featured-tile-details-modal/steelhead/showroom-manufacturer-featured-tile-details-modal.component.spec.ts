@@ -6,6 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import faker from '@faker-js/faker';
 import { ManufacturerFeaturedShowcase } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
 import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from './showroom-manufacturer-featured-tile-details-modal.component';
+import { DateTime } from 'luxon';
 
 describe('ShowroomManufacturerFeaturedTileDetailsModalComponent', () => {
   let component: ShowroomManufacturerFeaturedTileDetailsModalComponent;
@@ -25,8 +26,8 @@ describe('ShowroomManufacturerFeaturedTileDetailsModalComponent', () => {
           useValue: {
             title: faker.datatype.string(),
             description: faker.datatype.string(),
-            startTimeUtc: faker.datatype.datetime().toISOString(),
-            endTimeUtc: faker.datatype.datetime().toISOString(),
+            startTimeUtc: DateTime.fromJSDate(faker.datatype.datetime()),
+            endTimeUtc: DateTime.fromJSDate(faker.datatype.datetime()),
             manufacturerId: faker.datatype.number(),
             manufacturerName: faker.datatype.string(),
           } as ManufacturerFeaturedShowcase,
