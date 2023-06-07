@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'c852e282-602f-4380-a618-bbede51ba8cb',
+      shortText: 'Add ability to generate sharecode for UGC',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [NavbarTool.Messaging, NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],

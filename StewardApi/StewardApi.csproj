@@ -121,11 +121,11 @@
     <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.5.7">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FH5_main" Version="5.3.3" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5_main" Version="5.3.4" />
     <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.13.5">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.20.2">
+    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.20.5">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4">
