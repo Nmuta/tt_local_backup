@@ -3,7 +3,22 @@ import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { ben, chad, jordan, luke, madden } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { addManyUsersByGTag, addManyUsersByXUID, addOneUserByGTag, addOneUserByXUID, allUsersDisabledTest, findLiveOpsDevGroupTest, invalidGamerTagTest, invalidXUIDTest, noVIPLoadTest, removeManyUsersByGTag, removeManyUsersByXUID, removeOneUserByGTag, removeOneUserByXUID, selectLspGroupUGM } from './shared-fucntions';
+import {
+  addManyUsersByGTag,
+  addManyUsersByXUID,
+  addOneUserByGTag,
+  addOneUserByXUID,
+  allUsersDisabledTest,
+  findLiveOpsDevGroupTest,
+  invalidGamerTagTest,
+  invalidXUIDTest,
+  noVIPLoadTest,
+  removeManyUsersByGTag,
+  removeManyUsersByXUID,
+  removeOneUserByGTag,
+  removeOneUserByXUID,
+  selectLspGroupUGM,
+} from './shared-fucntions';
 
 context('Steward / Tools / User Group Management / Woodstock', () => {
   beforeEach(() => {
@@ -56,7 +71,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
 
   context('Edge cases', () => {
     allUsersDisabledTest();
-    
+
     noVIPLoadTest();
   });
 });

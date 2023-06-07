@@ -141,7 +141,7 @@ export function invalidXUIDTest(group): void {
     waitForProgressSpinners();
     cy.contains('mat-icon', 'warning').should('exist');
   });
-};
+}
 
 /** Checks that ivalid Gamertags won't be added to a group */
 export function invalidGamerTagTest(group): void {
@@ -156,13 +156,13 @@ export function invalidGamerTagTest(group): void {
     cy.contains('div', 'Failed to add').should('exist');
   });
 }
- /** Checks that AllUsers group can't be managed */
+/** Checks that AllUsers group can't be managed */
 export function allUsersDisabledTest(): void {
   it('should be disabled for AllUsers', () => {
     selectLspGroupUGM('AllUsers');
     cy.contains('mat-card', "Player management disabled for All User's Group").should('exist');
   });
-};
+}
 
 /** Checks the VIP group can't be loaded */
 export function noVIPLoadTest(): void {
@@ -170,7 +170,7 @@ export function noVIPLoadTest(): void {
     selectLspGroupUGM('VIP');
     cy.contains('span', 'This user group is too large to load users').should('exist');
   });
-};
+}
 
 /** Selects an LSP group from the dropdown. */
 export function selectLspGroupUGM(groupName: string): void {
