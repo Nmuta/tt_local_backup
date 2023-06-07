@@ -1,6 +1,6 @@
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { selectSunrise, goToTool } from './page';
+import { goToTool } from './page';
 import { jordan } from '@support/steward/common/account-info';
 import {
   verifySearchInvalidGtagEmptyHistoryTest,
@@ -12,6 +12,7 @@ import {
   verifySearchValidLspGroupHistoryGiftsExistsCalendarTest,
   verifySearchValidLspGroupHistoryGiftsExistsTest,
 } from './shared-tests';
+import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 
 context('Steward / Tools / Gift History / Sunrise', () => {
   beforeEach(() => {
@@ -36,7 +37,7 @@ context('Steward / Tools / Gift History / Sunrise', () => {
     });
     verifySearchInvalidXuidEmptyHistoryTest();
     verifySearchValidXuidGiftsExistsTest(jordan.xuid);
-    verifyGiftHistoryCalendarWhereGiftsExist(jordan.xuid, '12/22/2022', '5/30/2023');
+    verifyGiftHistoryCalendarWhereGiftsExist(jordan.xuid, '12/22/2022', '5/30/2023', 1);
     verifyGiftHistoryCalendarWhereGiftsDoNotExist(jordan.xuid, '1/1/2023', '1/2/2023');
   });
 
@@ -49,7 +50,8 @@ context('Steward / Tools / Gift History / Sunrise', () => {
     verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
       'Live Ops Developers',
       '3/16/2022',
-      '5/30/2023',
+      '6/1/2023',
+      1,
     );
   });
 });
