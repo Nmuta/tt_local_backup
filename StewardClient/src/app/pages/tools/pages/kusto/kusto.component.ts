@@ -25,7 +25,7 @@ export class KustoComponent extends BaseComponent {
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
-  /** The number of reqults from the Kusto query */
+  /** The number of results from the Kusto query */
   public queryResultsCount = 0;
 
   constructor(
