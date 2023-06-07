@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '7a39d883-6cc6-4bcf-8ad4-02e53f3e25e7',
+      shortText: 'Add AC to acronym pipe',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [NavbarTool.Messaging, NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
