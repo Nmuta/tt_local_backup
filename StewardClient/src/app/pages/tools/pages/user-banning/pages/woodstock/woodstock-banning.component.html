@@ -151,6 +151,57 @@
                   >Delete all leaderboard entries (Permanent)</mat-checkbox
                 >
 
+                <div class="ban-override-container sf-container sf-vertical">
+                  <mat-checkbox
+                    [formControl]="formControls.override"
+                    (change)="onBanOverrideChange($event)"
+                    >Override Ban Behavior</mat-checkbox
+                  >
+
+                  <div class="sf-horizontal">
+                    <!-- <mat-form-field class="override-field">
+                      <mat-label>Ban Duration in Days</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        [formControl]="overrideFormControls.overrideBanDuration"
+                      />
+                      <mat-hint>How many days do you want this user banned?</mat-hint>
+                      <mat-error *ngIf="overrideFormControls.overrideBanDuration?.hasError('min')"
+                        >The minimum is 1 day</mat-error
+                      >
+                    </mat-form-field> -->
+                    <!-- <duration-picker
+                      class="duration"
+                      [hideDatePreview] = "true"
+                      [formControl]="overrideFormControls.overrideBanDuration"
+                      [options]="options"
+                    ></duration-picker> -->
+                    <mat-button-toggle-group
+                      class="ban-override-duration-picker"
+                      [formControl]="overrideFormControls.overrideBanDuration"
+                    >
+                      <mat-button-toggle
+                        *ngFor="let option of options; let i = index"
+                        [value]="option.duration"
+                      >
+                        {{ option.humanized }}
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+
+                    <div class="sf-vertical">
+                      <mat-checkbox
+                        [formControl]="overrideFormControls.permaBan"
+                        (change)="onPermaBanChange($event)"
+                        >Make Ban Permanent
+                      </mat-checkbox>
+                      <mat-checkbox [formControl]="overrideFormControls.deviceBan"
+                        >Ban All Devices
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="ban-action-container">
                   <verify-button
                     [disabled]="!canBan()"
@@ -168,7 +219,6 @@
                     [monitor]="banActionMonitor"
                     [disabled]="!canBan()"
                     [verifyWithV2]="verifyConfirmBanBtn"
-                    matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
                   >
                     Ban
                     <button-spinner

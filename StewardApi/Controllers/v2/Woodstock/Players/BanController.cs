@@ -319,6 +319,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             var banResults = new List<BanResult>();
 
             const int maxXuidsPerRequest = 10;
+            var emptyDuration = new ForzaTimeSpan();
 
             foreach (var ban in banInput)
             {
@@ -360,7 +361,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                         DeleteLeaderboardEntries = x.DeleteLeaderboardEntries.Value,
                         BanEntryReason = x.Reason,
                         PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
-                        FeatureArea = calculatedBanAreas
+                        FeatureArea = calculatedBanAreas,
+                        OverrideBanDuration = x.Override,
+                        // ForzaBanDuration is completely ignored by services if OverrideBanDuration is not set to true
+                        BanDurationOverride = new ForzaBanDuration()
+                        {
+                            IsDeviceBan = x.OverrideBanConsoles.Value,
+                            IsPermaBan = x.OverrideDurationPermanent.Value,
+                            BanDuration = x.OverrideDuration.HasValue ? new ForzaTimeSpan()
+                            {
+                                Days = (uint)x.OverrideDuration.Value.Days,
+                                Hours = (uint)x.OverrideDuration.Value.Hours,
+                                Minutes = (uint)x.OverrideDuration.Value.Minutes,
+                                Seconds = (uint)x.OverrideDuration.Value.Seconds,
+                            }
+                            : emptyDuration,
+                        }
                     });
                     var result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
 
