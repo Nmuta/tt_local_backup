@@ -38,6 +38,7 @@ import { LocalizedMessagingModule } from './components/localized-messaging/local
 import { LocalizationModule } from '@components/localization/localization.module';
 import { LocalizedIndividualNotificationManagementModule } from './components/notification-management/localized-individual-notification-management/localized-individual-notification-management.module';
 import { LocalizedGroupNotificationManagementModule } from './components/notification-management/localized-group-notification-management/localized-group-notification-management.module';
+import { ActivePullRequestsModule } from '@views/active-pull-requests/active-pull-requests.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -85,6 +86,7 @@ import { LocalizedGroupNotificationManagementModule } from './components/notific
     LocalizationModule,
     LocalizedIndividualNotificationManagementModule,
     LocalizedGroupNotificationManagementModule,
+    ActivePullRequestsModule,
   ],
 })
 export class NotificationsModule {}
