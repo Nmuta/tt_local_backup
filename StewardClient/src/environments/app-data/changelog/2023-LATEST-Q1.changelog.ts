@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.Kusto },
+      uuid: '3eb1a869-5525-4f92-a56e-7a9cfe4f013d',
+      shortText: 'Display results count after running Kusto query',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [NavbarTool.Messaging, NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
