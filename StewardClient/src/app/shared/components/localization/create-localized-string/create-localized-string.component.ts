@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle, LocalizationCategory, LocalizationSubCategory } from '@models/enums';
+import { PullRequest } from '@models/git-operation';
 import { LocalizedStringData } from '@models/localization';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -9,7 +10,7 @@ import { catchError, EMPTY, Observable, takeUntil } from 'rxjs';
 
 export interface CreateLocalizedStringContract {
   gameTitle: GameTitle;
-  postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void>;
+  postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<PullRequest>;
 }
 
 /** Displays the value sent on `input` as a json blob. */
@@ -21,6 +22,9 @@ export interface CreateLocalizedStringContract {
 export class CreateLocalizedStringComponent extends BaseComponent {
   /** The service used tocreate localized text. */
   @Input() service: CreateLocalizedStringContract;
+
+  /** The service used tocreate localized text. */
+  @Output() newActivePr = new EventEmitter<PullRequest>();
 
   public postMonitor = new ActionMonitor('POST String Localization');
   public readonly messageMaxLength: number = 512;
@@ -64,7 +68,8 @@ export class CreateLocalizedStringComponent extends BaseComponent {
         }),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(() => {
+      .subscribe(pullRequest => {
+        this.newActivePr.emit(pullRequest);
         this.formControls.stringToLocalize.setValue('');
         this.formControls.description.setValue('');
         this.formControls.category.setValue(null);

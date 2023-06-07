@@ -33,9 +33,13 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   public currentMessageOfTheDay: MessageOfTheDay;
   public pullRequestUrl: string;
 
-  // Active PRs display
+  // MoTD active PRs display
   public newActivePullRequest: PullRequest;
   public activePrSubject = PullRequestSubject.MessageOfTheDay;
+
+  // Loc string active PRs display
+  public newLocStringActivePullRequest: PullRequest;
+  public locStringActivePrSubject = PullRequestSubject.LocalizationString;
 
   public formControls = {
     selectedMessageOfTheDay: new FormControl(null, [Validators.required]),
@@ -49,6 +53,7 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   public formGroup: FormGroup = new FormGroup(this.formControls);
 
   public readonly permAttribute = PermAttributeName.UpdateMessageOfTheDay;
+  public readonly permAttributeLocString = PermAttributeName.AddLocalizedString;
 
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
@@ -58,7 +63,9 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
 
     this.localizationCreationServiceContract = {
       gameTitle: this.gameTitle,
-      postStringForLocalization$(localizedStringData: LocalizedStringData): Observable<void> {
+      postStringForLocalization$(
+        localizedStringData: LocalizedStringData,
+      ): Observable<PullRequest> {
         return steelheadLocalizationService.postLocalizedString$(localizedStringData);
       },
     };
