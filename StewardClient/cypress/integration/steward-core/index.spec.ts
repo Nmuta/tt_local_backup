@@ -132,21 +132,88 @@ context('Steward Index', () => {
       });
     });
 
-    it.only('should swap between dark and light mode', () => {
+    it('should swap between dark mode, light mode, and match system', () => {
       waitForProgressSpinners();
       cy.get('button').contains('span', 'Click to set standard tools').click();
 
-      cy.get('button').contains('mat-icon', 'devices').should('exist');
-      cy.get('button').contains('mat-icon', 'light_mode').should('not.be.enabled');
-      cy.get('button').contains('mat-icon', 'dark_mode').should('be.enabled');
+      cy.get('button')
+        .contains('mat-icon', 'light_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'dark_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'devices')
+        .parent()
+        .parent()
+        .get('[aria-pressed="true"]')
+        .should('exist');
+
       cy.get('button').contains('mat-icon', 'dark_mode').click();
+      cy.get('button')
+        .contains('mat-icon', 'light_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'dark_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="true"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'devices')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
 
-      cy.get('button').contains('mat-icon', 'dark_mode').should('not.be.enabled');
-      cy.get('button').contains('mat-icon', 'light_mode').should('be.enabled');
       cy.get('button').contains('mat-icon', 'light_mode').click();
+      cy.get('button')
+        .contains('mat-icon', 'light_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="true"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'dark_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'devices')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
 
-      cy.get('button').contains('mat-icon', 'light_mode').should('not.be.enabled');
-      cy.get('button').contains('mat-icon', 'dark_mode').should('be.enabled');
+      cy.get('button').contains('mat-icon', 'devices').click();
+      cy.get('button')
+        .contains('mat-icon', 'light_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'dark_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'devices')
+        .parent()
+        .parent()
+        .get('[aria-pressed="true"]')
+        .should('exist');
     });
 
     it('should add tools to the nav bar', () => {
