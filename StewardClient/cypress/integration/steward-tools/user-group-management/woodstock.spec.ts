@@ -38,28 +38,6 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
     addManyUsersByGTag('Live Ops Developers', luke, chad);
     removeManyUsersByGTag('Live Ops Developers', luke, chad);
     removeAllUsersThenReplace('Live Ops Developers', [ben, madden, jordan]);
-
-    // it('should remove all users (and put them back in)', () => {
-    //   selectLspGroupUGM('Live Ops Developers');
-    //   cy.get('[cyid="verifyDeleteAll"]').click();
-    //   cy.contains('button', 'Delete All Users').click();
-    //   waitForProgressSpinners();
-    //   cy.contains('td', ben.xuid).should('not.exist');
-    //   cy.contains('td', madden.xuid).should('not.exist');
-    //   cy.contains('td', jordan.xuid).should('not.exist');
-
-    //   //Add the users back to the group
-    //   cy.contains('mat-form-field', 'Player XUIDs')
-    //     .click()
-    //     .type(ben.xuid + ', ' + madden.xuid + ', ' + jordan.xuid);
-    //   //this is the checkbox next to the "Add Users" button
-    //   cy.get('[cyid="verifyAdd"]').click();
-    //   cy.contains('button', 'Add Users').click();
-    //   waitForProgressSpinners();
-    //   cy.contains('td', ben.xuid).should('exist');
-    //   cy.contains('td', madden.xuid).should('exist');
-    //   cy.contains('td', jordan.xuid).should('exist');
-    // });
   });
 
   context('Invalid Input Checks', () => {
