@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'e48f3c9e-0cf1-4991-89f8-097880da44dd',
+      shortText: 'Clean up player details cards',
+      longText: [
+        'Move report weight and cms override buttons to top-right corner of card.',
+        'Move paid entitlements into flexbox container.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: 'e154d5c8-bdad-4170-b8f8-72dbc674d541',
       shortText: 'Player Profile tags now display Title Ids in their label',
