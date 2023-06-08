@@ -130,6 +130,40 @@ export function removeManyUsersByGTag(group, user1, user2): void {
   });
 }
 
+/** Checks that users can remove all accounts from a group and replaces them to return the group to how it started */
+export function removeAllUsersThenReplace(group, users): void {
+  it('should remove all users (and put them back in)', () => {
+    selectLspGroupUGM(group);
+    cy.get('[cyid="verifyDeleteAll"]').click();
+    cy.contains('button', 'Delete All Users').click();
+    waitForProgressSpinners();
+    users.forEach(user => {
+      cy.contains('td', user.xuid).should('not.exist');
+    });
+
+    // Generate the string to put users back into the group
+    let counter = 1;
+    let stringToType = '';
+    users.forEach(user => {
+      stringToType += user.xuid;
+      if (counter < users.length) {
+        stringToType += ', ';
+        counter++;
+      }
+    });
+    //Add the users back to the group
+    cy.contains('mat-form-field', 'Player XUIDs').click().type(stringToType);
+
+    //this is the checkbox next to the "Add Users" button
+    cy.get('[cyid="verifyAdd"]').click();
+    cy.contains('button', 'Add Users').click();
+    waitForProgressSpinners();
+    users.forEach(user => {
+      cy.contains('td', user.xuid).should('exist');
+    });
+  });
+}
+
 /** Checks that invalid XUIDs won't be added to a group */
 export function invalidXUIDTest(group): void {
   it('should present an error on invalid XUID', () => {
@@ -156,6 +190,7 @@ export function invalidGamerTagTest(group): void {
     cy.contains('div', 'Failed to add').should('exist');
   });
 }
+
 /** Checks that AllUsers group can't be managed */
 export function allUsersDisabledTest(): void {
   it('should be disabled for AllUsers', () => {
@@ -173,7 +208,7 @@ export function noVIPLoadTest(): void {
 }
 
 /** Selects an LSP group from the dropdown. */
-export function selectLspGroupUGM(groupName: string): void {
+function selectLspGroupUGM(groupName: string): void {
   cy.contains('div', 'Select LSP Group').click();
   waitForProgressSpinners();
   cy.contains('mat-form-field', 'Select LSP Group').click().type(`${groupName}`);
