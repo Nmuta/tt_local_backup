@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'e154d5c8-bdad-4170-b8f8-72dbc674d541',
+      shortText: 'Player Profile tags now display Title Ids in their label',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '83c09376-b485-42d9-8337-90520a335168',
       shortText:

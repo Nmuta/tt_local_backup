@@ -35,7 +35,8 @@ export class SteelheadPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
           isCurrent: false,
           isLastLoggedInProfile: false,
           deviceType: DeviceType.Steam,
-          titleId: faker.datatype.number(),
+          titleId: fakeBigNumber(),
+          titleName: faker.datatype.string(),
         } as FullPlayerInventoryProfile;
       });
 

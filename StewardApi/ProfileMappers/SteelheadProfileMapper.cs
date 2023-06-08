@@ -7,6 +7,7 @@ using AutoMapper;
 using Forza.Scoreboard.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
+using Forza.WebServices.LiveOpsObjects.FM8.Generated;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -492,7 +493,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.VersionedTuneId, opt => opt.MapFrom(source => source.versionedTuneId));
 
             this.CreateMap<ForzaProfile, SteelheadInventoryProfile>()
-                .ForMember(dest => dest.IsCurrent, opt => opt.MapFrom(source => source.isLastLoggedInProfile));
+                .ForMember(dest => dest.IsCurrent, opt => opt.MapFrom(source => source.isLastLoggedInProfile))
+                .ForMember(dest => dest.TitleName, opt => opt.MapFrom(source => Enum.GetName(typeof(ForzaMotorsportTitleId), source.titleId)));
 
             this.CreateMap<ServicesLiveOps.ForzaLiveryGiftResult, GiftResponse<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.xuid))
