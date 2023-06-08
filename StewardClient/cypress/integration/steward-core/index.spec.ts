@@ -132,6 +132,23 @@ context('Steward Index', () => {
       });
     });
 
+    it.only('should swap between dark and light mode', () => {
+      waitForProgressSpinners();
+      cy.get('button').contains('span', 'Click to set standard tools').click();
+
+      cy.get('button').contains('mat-icon', 'devices').should('exist');
+      cy.get('button').contains('mat-icon', 'light_mode').should('not.be.enabled');
+      cy.get('button').contains('mat-icon', 'dark_mode').should('be.enabled');
+      cy.get('button').contains('mat-icon', 'dark_mode').click();
+
+      cy.get('button').contains('mat-icon', 'dark_mode').should('not.be.enabled');
+      cy.get('button').contains('mat-icon', 'light_mode').should('be.enabled');
+      cy.get('button').contains('mat-icon', 'light_mode').click();
+
+      cy.get('button').contains('mat-icon', 'light_mode').should('not.be.enabled');
+      cy.get('button').contains('mat-icon', 'dark_mode').should('be.enabled');
+    });
+
     it('should add tools to the nav bar', () => {
       waitForProgressSpinners();
       const $matCardList = cy.get('mat-card');
