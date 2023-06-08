@@ -1,7 +1,7 @@
 <section>
   <ng-container *ngIf="results?.length > 0; else noResultsState">
     <div class="table-container">
-      <table mat-table [dataSource]="results" class="mat-elevation-z8" width="100%">
+      <table mat-table [dataSource]="results" class="mat-elevation-z8">
         <ng-container *ngFor="let column of resultKeys; let i = index" matColumnDef="{{ column }}">
           <mat-header-cell *matHeaderCellDef>
             <button
