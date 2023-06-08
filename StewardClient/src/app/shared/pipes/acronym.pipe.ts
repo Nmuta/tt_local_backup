@@ -14,7 +14,7 @@ export function handleAcronyms(value: string): string {
     return value;
   }
 
-  const acronyms: string[] = ['UGC', 'VIN', 'ID'];
+  const acronyms: string[] = ['UGC', 'VIN', 'ID', 'AC'];
 
   acronyms.forEach(a => {
     let i = value.toLocaleLowerCase().indexOf(a.toLocaleLowerCase());

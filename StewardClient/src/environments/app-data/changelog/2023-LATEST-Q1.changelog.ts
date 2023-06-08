@@ -33,6 +33,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add ability to generate sharecode for UGC',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '7a39d883-6cc6-4bcf-8ad4-02e53f3e25e7',
+      shortText: 'Add AC to acronym pipe',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [NavbarTool.Messaging, NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
