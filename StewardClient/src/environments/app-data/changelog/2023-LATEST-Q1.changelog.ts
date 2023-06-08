@@ -33,6 +33,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: 'e6795959-9944-4c78-8639-9f830afd6c7f',
+      shortText: 'Contact us sidebar now points to Contact Us Teams channel',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'a6b2edb4-08bb-43a9-ad75-bc3ae62d938a',
       shortText: 'Added cyids to Verify checkboxes on UGM page',
     },

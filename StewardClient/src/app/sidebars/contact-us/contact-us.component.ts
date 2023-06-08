@@ -3,8 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
+import { MsTeamsService } from '@services/api-v2/ms-teams/ms-teams.service';
 import { V2UsersService } from '@services/api-v2/users/users.service';
 import { EmailAddresses } from '@shared/constants';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable, switchMap, takeUntil } from 'rxjs';
 
@@ -14,9 +16,29 @@ enum RequestType {
 }
 
 enum RequestImpact {
-  Low,
-  High,
+  Low = 'Low',
+  High = 'High',
 }
+
+/** A feature request for Steward. */
+export type FeatureRequest = {
+  title: string;
+  description: string;
+  isBusinessCritital: boolean;
+  internalImpact: string;
+  externalImpact: string;
+};
+
+/** A bug report for Steward. */
+export type BugReport = {
+  title: string;
+  description: string;
+  isBusinessCritital: boolean;
+  internalImpact: string;
+  externalImpact: string;
+  reproductionSteps: string;
+  hasWorkaround: boolean;
+};
 
 /** Component for handling "Contact Us" forms. */
 @Component({
@@ -38,15 +60,26 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
     'v-charlesyan@microsoft.com',
   ];
 
+  public readonly teamsHelpChannel =
+    'https://teams.microsoft.com/l/channel/19%3ada7d498f9e0941f0842a1aa17d2f3127%40thread.tacv2/Contact%2520Us?groupId=041c1fd8-9880-4947-9f7e-bfde634c48cd&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47';
+
   public selectedRequestType = RequestType.Feature;
   public isSubmitted = false;
   public userProfile: UserModel;
   public teamLead: UserModel;
   public RequestType = RequestType;
   public RequestImpact = RequestImpact;
-  public isMessageTooLong = false;
+  public submitReportMonitor = new ActionMonitor('Submit bug/feature');
 
+  public defaultFeature: FeatureRequest = {
+    title: '',
+    description: '',
+    isBusinessCritital: false,
+    internalImpact: RequestImpact.Low,
+    externalImpact: RequestImpact.Low,
+  };
   public formControlsFeature = {
+    title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
     description: new FormControl('', [Validators.required]),
     isBusinessCritital: new FormControl(false, [Validators.required]),
     internalImpact: new FormControl(RequestImpact.Low, [Validators.required]),
@@ -54,20 +87,30 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
   };
   public formGroupFeature = new FormGroup(this.formControlsFeature);
 
+  public defaultBug: BugReport = {
+    ...this.defaultFeature,
+    hasWorkaround: false,
+    reproductionSteps: '',
+  };
   public formControlsBug = {
+    title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
     description: new FormControl('', [Validators.required]),
     reproductionSteps: new FormControl('', [Validators.required]),
     isBusinessCritital: new FormControl(false, [Validators.required]),
     internalImpact: new FormControl(RequestImpact.Low, [Validators.required]),
     externalImpact: new FormControl(RequestImpact.Low, [Validators.required]),
-    isWorkaround: new FormControl(false, [Validators.required]),
+    hasWorkaround: new FormControl(false, [Validators.required]),
   };
   public formGroupBug = new FormGroup(this.formControlsBug);
 
   public readonly adminTeamLead = 'Live Ops Admins';
   public readonly adminTeamLeadEmail = EmailAddresses.LiveOpsAdmins;
 
-  constructor(protected readonly store: Store, private readonly v2UsersService: V2UsersService) {
+  constructor(
+    protected readonly store: Store,
+    private readonly v2UsersService: V2UsersService,
+    private readonly msTeamsService: MsTeamsService,
+  ) {
     super();
   }
 
@@ -88,73 +131,48 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
 
   /** Submit bug request. */
   public submitBug(): void {
-    const message =
-      `Bug Report\n\n` +
-      `Description: ${this.formControlsBug.description.value}\n` +
-      `Reproduction Steps: ${this.formControlsBug.description.value}\n` +
-      `Is this business critical?: ${
-        this.formControlsBug.isBusinessCritital.value ? 'Yes' : 'No'
-      }\n` +
-      `Is there a workaround?: ${this.formControlsBug.isWorkaround.value ? 'Yes' : 'No'}\n` +
-      `Estimated internal impact: ${RequestImpact[this.formControlsBug.externalImpact.value]}\n` +
-      `Estimated external impact: ${RequestImpact[this.formControlsBug.internalImpact.value]}\n`;
+    const bugReport: BugReport = {
+      title: this.formControlsBug.title.value,
+      description: this.formControlsBug.description.value,
+      isBusinessCritital: this.formControlsBug.isBusinessCritital.value,
+      internalImpact: this.formControlsBug.internalImpact.value,
+      externalImpact: this.formControlsBug.externalImpact.value,
+      reproductionSteps: this.formControlsBug.reproductionSteps.value,
+      hasWorkaround: this.formControlsBug.hasWorkaround.value,
+    };
 
-    this.sendTeamsMessage(message);
+    this.submitReportMonitor = this.submitReportMonitor.repeat();
+    this.msTeamsService
+      .sendBugReportMessage$(bugReport)
+      .pipe(this.submitReportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.isSubmitted = true;
+      });
   }
 
   /** Submit feature request. */
   public submitFeature(): void {
-    const message =
-      `Feature Request\n\n` +
-      `Description: ${this.formControlsFeature.description.value}\n` +
-      `Is this business critical?: ${
-        this.formControlsFeature.isBusinessCritital.value ? 'Yes' : 'No'
-      }\n` +
-      `Estimated internal impact: ${
-        RequestImpact[this.formControlsFeature.externalImpact.value]
-      }\n` +
-      `Estimated external impact: ${
-        RequestImpact[this.formControlsFeature.internalImpact.value]
-      }\n`;
+    const featureRequest: FeatureRequest = {
+      title: this.formControlsFeature.title.value,
+      description: this.formControlsFeature.description.value,
+      isBusinessCritital: this.formControlsFeature.isBusinessCritital.value,
+      internalImpact: this.formControlsFeature.internalImpact.value,
+      externalImpact: this.formControlsFeature.externalImpact.value,
+    };
 
-    this.sendTeamsMessage(message);
+    this.submitReportMonitor = this.submitReportMonitor.repeat();
+    this.msTeamsService
+      .sendFeatureRequestMessage$(featureRequest)
+      .pipe(this.submitReportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.isSubmitted = true;
+      });
   }
 
   /** Reset the contact us form. */
   public resetForm(): void {
-    this.formGroupBug.reset();
-    this.formGroupFeature.reset();
+    this.formGroupBug.setValue(this.defaultBug);
+    this.formGroupFeature.setValue(this.defaultFeature);
     this.isSubmitted = false;
-    this.isMessageTooLong = false;
-  }
-
-  /** Generates and sends Team's message. */
-  private sendTeamsMessage(message: string) {
-    this.isMessageTooLong = false;
-    this.isSubmitted = false;
-    const teamName = !!this.teamLead ? this.teamLead?.team?.name : this.adminTeamLead;
-    const teamLeadName = !!this.teamLead ? this.teamLead?.name : this.adminTeamLead;
-    const teamLeadEmail = !!this.teamLead ? this.teamLead?.emailAddress : this.adminTeamLeadEmail;
-
-    const formattedMessage =
-      `${message}\n` +
-      `Email: ${this.userProfile?.emailAddress}\n` +
-      `Role: ${this.userProfile?.role}\n` +
-      `Team: ${teamName}\n` +
-      `Team Lead: ${teamLeadName} (${teamLeadEmail})`;
-
-    if (formattedMessage.length >= 400) {
-      this.isMessageTooLong = true;
-      return;
-    }
-
-    this.isSubmitted = true;
-    const externalHref =
-      'https://teams.microsoft.com/l/chat/0/0' +
-      `?users=${this.stewardTeamContacts.join(',')}` +
-      '&topicName=Steward - Contact Us' +
-      `&message=${formattedMessage}`;
-
-    window.open(encodeURI(externalHref), '_blank');
   }
 }

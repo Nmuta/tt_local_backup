@@ -269,5 +269,10 @@
         ///    The Woodstock PlayFab dev key.
         /// </summary>
         public const string WoodstockPlayFabDevKey = "WoodstockEnvironment:PlayFab:Dev:Key";
+
+        /// <summary>
+        ///    The Teams Help Channel Webhook Secret Name.
+        /// </summary>
+        public const string TeamsHelpChannelWebhook = "TeamsHelpChannelWebhookSecretName";
     }
 }
