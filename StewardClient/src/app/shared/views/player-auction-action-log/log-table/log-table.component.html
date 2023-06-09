@@ -1,11 +1,7 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-    <mat-panel-title>
-      History
-    </mat-panel-title>
-    <mat-panel-description>
-      All interactions with Auction House
-    </mat-panel-description>
+    <mat-panel-title> History </mat-panel-title>
+    <mat-panel-description> All interactions with Auction House </mat-panel-description>
   </mat-expansion-panel-header>
   <div class="search-bar">
     <mat-form-field appearance="standard">
@@ -34,7 +30,13 @@
     <ng-content extraControl></ng-content>
   </div>
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z8">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      multiTemplateDataRows
+      matSort
+      class="mat-elevation-z8"
+    >
       <ng-container matColumnDef="timeUtc">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
         <td mat-cell *matCellDef="let a">

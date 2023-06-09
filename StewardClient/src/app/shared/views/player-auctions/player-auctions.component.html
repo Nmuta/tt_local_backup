@@ -1,8 +1,6 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-    <mat-panel-title>
-      Created Auctions
-    </mat-panel-title>
+    <mat-panel-title> Created Auctions </mat-panel-title>
     <mat-panel-description>
       {{ gameTitle | humanize }} (Max results 100, filter to find more)
     </mat-panel-description>
@@ -10,8 +8,8 @@
   <mat-card>
     <mat-card-content>
       <sunrise-auction-filters
-          (newAuctionFilterSearch)="searchAuctions($event)"
-        ></sunrise-auction-filters>
+        (newAuctionFilterSearch)="searchAuctions($event)"
+      ></sunrise-auction-filters>
       <ng-container *ngIf="!loadError; else failstate">
         <table mat-table [dataSource]="auctions">
           <ng-container matColumnDef="auctionInfo">
@@ -25,7 +23,7 @@
               >
             </td>
           </ng-container>
-    
+
           <ng-container matColumnDef="pricingInfo">
             <th mat-header-cell *matHeaderCellDef>Pricing Info</th>
             <td mat-cell *matCellDef="let entry">
@@ -34,7 +32,7 @@
               <span><b>Buyout:</b> {{ entry.buyoutPrice }}</span>
             </td>
           </ng-container>
-    
+
           <ng-container matColumnDef="enforcementInfo">
             <th mat-header-cell *matHeaderCellDef>Enforcement Info</th>
             <td mat-cell *matCellDef="let entry">
@@ -46,7 +44,7 @@
               <span><b>Total Reports:</b> {{ entry.totalReports }}</span>
             </td>
           </ng-container>
-    
+
           <ng-container matColumnDef="liveryImageBase64">
             <th mat-header-cell *matHeaderCellDef>Livery</th>
             <td mat-cell *matCellDef="let entry">
@@ -62,7 +60,7 @@
               />
             </td>
           </ng-container>
-    
+
           <ng-container matColumnDef="textureMapImageBase64">
             <th mat-header-cell *matHeaderCellDef>Texture Map</th>
             <td mat-cell *matCellDef="let entry">
@@ -78,7 +76,7 @@
               />
             </td>
           </ng-container>
-    
+
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let entry">N/A</td>
@@ -87,9 +85,9 @@
           <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
         </table>
       </ng-container>
-    
+
       <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"> </mat-progress-spinner>
-    
+
       <mat-paginator
         [hidden]="isLoading || loadError"
         [pageSizeOptions]="[5, 10, 20]"
