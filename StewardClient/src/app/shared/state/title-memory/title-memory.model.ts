@@ -30,4 +30,5 @@ export class TitleMemoryModel {
   public welcomeCenterTiles: GameTitleCodeName.FM8;
   public servicesTableStorage: GameTitleCodeName.FM8;
   public showroomCalendar: GameTitleCodeName.FM8;
+  public acLogReader: GameTitleCodeName.FM8;
 }

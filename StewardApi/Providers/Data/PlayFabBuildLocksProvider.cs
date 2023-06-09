@@ -19,15 +19,17 @@ using Turn10.LiveOps.StewardApi.Helpers;
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
     /// <inheritdoc />
-    public sealed class PlayFabBuildLocksProvider : IPlayFabBuildLocksProvider
+    public sealed class PlayFabBuildLocksProvider : IPlayFabBuildLocksProvider, IInitializeable
     {
-        private readonly ITableStorageClient tableStorageClient;
+        private readonly ITableStorageClientFactory tableStorageClientFactory;
+        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly IConfiguration configuration;
         private readonly IMapper mapper;
+        private ITableStorageClient tableStorageClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayFabBuildLocksProvider"/> class.
         /// </summary>
-        [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
         public PlayFabBuildLocksProvider(
             ITableStorageClientFactory tableStorageClientFactory,
             IMapper mapper,
@@ -39,14 +41,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             configuration.ShouldNotBeNull(nameof(configuration));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
 
-            var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(configuration[ConfigurationKeyConstants.KeyVaultUrl], configuration[ConfigurationKeyConstants.CosmosSharedTableSecretName]).GetAwaiter().GetResult();
+            this.keyVaultProvider = keyVaultProvider;
+            this.configuration = configuration;
+            this.tableStorageClientFactory = tableStorageClientFactory;
+            this.mapper = mapper;
+        }
 
-            configuration.Bind("PlayFabBuildLocksStorageProperties", tableStorageProperties);
+        /// <inheritdoc />
+        public async Task InitializeAsync()
+        {
+            var tableStorageProperties = new TableStorageProperties();
+            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
+                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                this.configuration[ConfigurationKeyConstants.CosmosSharedTableSecretName]).ConfigureAwait(false);
+
+            this.configuration.Bind("PlayFabBuildLocksStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
-            this.tableStorageClient = tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
-            this.mapper = mapper;
+            this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
         }
 
         /// <inheritdoc />

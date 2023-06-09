@@ -1,13 +1,13 @@
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { goToTool } from './page';
+import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
 import {
   searchByGtag,
-  selectLspGroup,
   searchByXuid,
-  selectWoodstock,
-  verifyChip,
-  goToTool,
-} from './page';
+  selectLspGroup,
+} from '@support/steward/shared-functions/searching';
+import { verifyChip } from '@support/steward/shared-functions/verify-chip';
 import { luke } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';

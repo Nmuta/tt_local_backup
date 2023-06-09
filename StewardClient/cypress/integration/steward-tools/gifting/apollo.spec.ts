@@ -1,10 +1,16 @@
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid, verifyChip, goToTool } from './page';
+import { goToTool } from './page';
+import { selectApollo } from '@support/steward/shared-functions/game-nav';
+import {
+  searchByGtag,
+  searchByXuid,
+  selectLspGroup,
+} from '@support/steward/shared-functions/searching';
+import { verifyChip } from '@support/steward/shared-functions/verify-chip';
 import { jordan } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
-import { selectApollo } from './page';
 
 context('Steward / Tools / Gifting / Apollo', () => {
   beforeEach(() => {
@@ -37,6 +43,19 @@ context('Steward / Tools / Gifting / Apollo', () => {
     });
 
     verifyChip(jordan.xuid);
+    verifyNoInputsTest();
+    verifyNoGiftReasonTest();
+    verifyTooManyCreditsTest();
+    verifyValidGiftTest();
+  });
+
+  context('GroupId Lookup', () => {
+    beforeEach(() => {
+      goToTool();
+      selectApollo();
+      selectLspGroup('Live Ops Developers');
+    });
+
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();

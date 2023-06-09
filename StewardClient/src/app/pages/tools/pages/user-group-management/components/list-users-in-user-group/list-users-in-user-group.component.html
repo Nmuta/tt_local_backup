@@ -26,6 +26,7 @@
         <mat-checkbox
           #verifyDelete
           stateManager
+          cyid="verifyDeleteAll"
           [permissionAttribute]="removeAllPermAttribute"
           [permissionTitle]="service?.gameTitle"
           [disabled]="disallowDeleteAllUsers"
@@ -78,6 +79,7 @@
           <mat-checkbox
             #verifyBulkAdd
             stateManager
+            cyid="verifyAdd"
             [permissionAttribute]="updatePermAttribute"
             [permissionTitle]="service?.gameTitle"
             matTooltip="Verify Bulk Add"
@@ -111,6 +113,7 @@
           <mat-checkbox
             #verifyBulkDelete
             stateManager
+            cyid="verifyDelete"
             [permissionAttribute]="updatePermAttribute"
             [permissionTitle]="service?.gameTitle"
             matTooltip="Verify Bulk Deletion"

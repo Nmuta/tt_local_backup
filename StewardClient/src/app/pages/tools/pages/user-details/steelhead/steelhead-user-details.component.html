@@ -13,8 +13,8 @@
             <steelhead-player-game-details [identity]="identity"></steelhead-player-game-details>
             <steelhead-cms-override [identity]="identity"></steelhead-cms-override>
             <steelhead-driver-level [identity]="identity"></steelhead-driver-level>
+            <steelhead-paid-entitlements [identity]="identity"></steelhead-paid-entitlements>
           </div>
-          <steelhead-paid-entitlements [identity]="identity"></steelhead-paid-entitlements>
           <steelhead-ban-history [xuid]="identity.xuid"></steelhead-ban-history>
           <entitlements [identity]="identity"></entitlements>
           <steelhead-gamertags [identity]="identity"></steelhead-gamertags>
@@ -26,7 +26,7 @@
           <steelhead-player-notifications [identity]="identity"></steelhead-player-notifications>
         </div>
       </mat-tab>
-      <mat-tab label="Inventory Profiles">
+      <mat-tab label="Inventory">
         <div class="sf-wrapper sf-tab-container">
           <mat-card>
             <mat-card-header>
@@ -60,8 +60,9 @@
             </mat-card-header>
             <mat-card-content>
               <steelhead-player-inventory
+                [allowEditing]="profile?.isCurrentByTitleId"
                 [identity]="identity"
-                [profileId]="profile?.profileId"
+                [profile]="profile"
               ></steelhead-player-inventory>
             </mat-card-content>
           </mat-card>

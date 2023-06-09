@@ -37,7 +37,9 @@ export class SteelheadUserDetailsComponent {
 
   /** A string overview of the profile ids. */
   public get profileOverviewString(): string {
-    return `Profile Id: ${this.profile?.profileId} (External Id: ${this.profile?.externalProfileId})`;
+    return `Profile Id: ${this.profile?.profileId} (External Id: ${
+      this.profile?.externalProfileId
+    }) Title Id: ${this.profile?.titleName} (${this.profile?.titleId?.toString(16)}))`;
   }
 
   constructor(

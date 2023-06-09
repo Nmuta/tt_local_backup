@@ -3,7 +3,9 @@ import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid, selectWoodstock } from './page';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
+import { stewardUrls } from '@support/steward/urls';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { luke } from '@support/steward/common/account-info';
 
@@ -16,6 +18,7 @@ context('Steward / Tools / Player Details / Woodstock', () => {
 
   context('GTAG Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByGtag(luke.gtag);
       selectWoodstock();
     });
@@ -25,6 +28,7 @@ context('Steward / Tools / Player Details / Woodstock', () => {
 
   context('XUID Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByXuid(luke.xuid);
       selectWoodstock();
     });

@@ -102,24 +102,27 @@
                   <mat-icon>close</mat-icon>
                 </button>
               </mat-form-field>
-              <div *waitForMonitor="submitMotdMonitor" class="sf-horizontal">
-                <button
-                  mat-raised-button
-                  color="accent"
-                  (click)="submitChanges()"
-                  [disabled]="!isInEditMode || !verifyModification.checked || !formGroup.valid"
-                >
-                  Submit Modification
-                </button>
-                <mat-checkbox
-                  #verifyModification
+              <div>
+                <verify-button
+                  #verifyBtn
                   stateManager
                   [permissionAttribute]="permAttribute"
                   [permissionTitle]="gameTitle"
                   [disabled]="!isInEditMode"
-                  matTooltip="Verify Modification"
-                  >Verify Modification</mat-checkbox
+                ></verify-button>
+                <button
+                  mat-raised-button
+                  color="accent"
+                  (click)="submitChanges()"
+                  [disabled]="!isInEditMode || !formGroup.valid"
+                  [verifyWithV2]="verifyBtn"
+                  stateManager
+                  [monitor]="submitMotdMonitor"
+                  monitorDisable
                 >
+                  Submit Modification
+                  <button-spinner [monitor]="submitMotdMonitor" defaultIcon="save"></button-spinner>
+                </button>
               </div>
             </div>
           </form>
@@ -129,62 +132,22 @@
           </span>
         </mat-card-content>
       </mat-card>
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Pending Content Modifications</mat-card-title>
-          <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <ng-container *waitForMonitor="getPullRequests">
-            <table mat-table [dataSource]="existingPullRequestList">
-              <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef>Title</th>
-                <td mat-cell *matCellDef="let entry">
-                  <span>
-                    <a target="_blank" href="{{ entry.webUrl }}"> {{ entry.title }} </a>
-                  </span>
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="creationDate">
-                <th mat-header-cell *matHeaderCellDef>Creation Date</th>
-                <td mat-cell *matCellDef="let entry">
-                  {{ entry.creationDateUtc | utcDate: 'short' }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let entry">
-                  <div *waitForMonitor="entry.monitor">
-                    <verify-button
-                      #verifyAbandonBtn
-                      [permissionAttribute]="permAttribute"
-                      [permissionTitle]="gameTitle"
-                    ></verify-button>
-                    <button
-                      mat-raised-button
-                      color="warn"
-                      (click)="abandonPullRequest(entry)"
-                      clickStop
-                      stateManager
-                      [verifyWithV2]="verifyAbandonBtn"
-                    >
-                      Abandon
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
-                </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-              <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
-            </table>
-          </ng-container>
-        </mat-card-content>
-      </mat-card>
+      <steelhead-active-pull-requests
+        [abandonPermAttribute]="permAttribute"
+        [newActivePullRequest]="newActivePullRequest"
+        [pullRequestSubject]="activePrSubject"
+      ></steelhead-active-pull-requests>
     </ng-container>
   </mat-tab>
   <mat-tab label="Localization">
     <create-localized-string
       [service]="localizationCreationServiceContract"
+      (newActivePr)="newLocStringActivePullRequest = $event"
     ></create-localized-string>
+    <steelhead-active-pull-requests
+      [abandonPermAttribute]="permAttributeLocString"
+      [newActivePullRequest]="newLocStringActivePullRequest"
+      [pullRequestSubject]="locStringActivePrSubject"
+    ></steelhead-active-pull-requests>
   </mat-tab>
 </mat-tab-group>

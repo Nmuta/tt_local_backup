@@ -46,6 +46,11 @@ export class PaidEntitlementsComponent extends BaseComponent implements OnInit {
   };
   public paidEntitlementFormGroup = new FormGroup(this.paidEntitlementFormControls);
 
+  /** Gets game title from the service contract. */
+  public get gameTitle(): GameTitle {
+    return this.serviceContract?.gameTitle;
+  }
+
   constructor() {
     super();
   }

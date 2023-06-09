@@ -7,11 +7,12 @@ import { OpusMasterInventory } from '@models/opus';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { combineLatest, EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemListWithService } from '@models/master-inventory-item-list';
 import { GameTitle } from '@models/enums';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { WoodstockMasterInventory } from '@models/woodstock';
 import { SteelheadMasterInventory } from '@models/steelhead';
+import { OldPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 export type AcceptablePlayerInventoryTypeUnion =
   | SunriseMasterInventory
@@ -38,7 +39,7 @@ export interface PlayerInventoryComponentContract<
     identity: IdentityResultType,
     profileId: BigNumber | string,
   ): Observable<PlayerInventoryType>;
-  makewhatToShowList(inventory: PlayerInventoryType): PlayerInventoryItemList[];
+  makewhatToShowList(inventory: PlayerInventoryType): PlayerInventoryItemListWithService[];
   inventoryFound(inventory: PlayerInventoryType): void;
 }
 
@@ -49,15 +50,15 @@ export interface PlayerInventoryComponentContract<
   styleUrls: ['./player-inventory.component.scss'],
 })
 export class PlayerInventoryComponent extends BaseComponent implements OnInit, OnChanges {
-  /** PlayerInventoryComponent's service contract. */
+  /** Service contract for PlayerInventoryComponentContract. */
   @Input() public service: PlayerInventoryComponentContract<
     AcceptablePlayerInventoryTypeUnion,
     IdentityResultUnion
   >;
   /** Player Identity. */
   @Input() public identity: IdentityResultUnion;
-  /** Inventory profile Id. */
-  @Input() public profileId: BigNumber | string | undefined | null;
+  /** Inventory profile. */
+  @Input() public profile: OldPlayerInventoryProfile;
 
   /** The located inventory. */
   public inventory: AcceptablePlayerInventoryTypeUnion;
@@ -71,13 +72,13 @@ export class PlayerInventoryComponent extends BaseComponent implements OnInit, O
   public error: unknown;
 
   /** The properties to display in a standard fashion. */
-  public itemsToShow: PlayerInventoryItemList[] = [];
+  public itemsToShow: PlayerInventoryItemListWithService[] = [];
 
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultUnion>();
 
-  /** Intermediate event that is fired when @see profileId changes. */
-  private profileId$ = new Subject<BigNumber | string | undefined | null>();
+  /** Intermediate event that is fired when @see profile changes. */
+  private profile$ = new Subject<OldPlayerInventoryProfile>();
 
   /** The game title from service contract. */
   public get gameTitle(): GameTitle {
@@ -86,9 +87,9 @@ export class PlayerInventoryComponent extends BaseComponent implements OnInit, O
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    const identityOrProfile$ = combineLatest([this.identity$, this.profileId$]).pipe(
-      map(([identity, profileId]) => {
-        return { identity: identity, profileId: profileId };
+    const identityOrProfile$ = combineLatest([this.identity$, this.profile$]).pipe(
+      map(([identity, profile]) => {
+        return { identity: identity, profile: profile };
       }),
       takeUntil(this.onDestroy$),
     );
@@ -101,8 +102,11 @@ export class PlayerInventoryComponent extends BaseComponent implements OnInit, O
         }),
         filter(v => !!v.identity),
         switchMap(v => {
-          const request$ = v.profileId
-            ? this.service.getPlayerInventoryByIdentityAndProfileId$(v.identity, v.profileId)
+          const request$ = v.profile
+            ? this.service.getPlayerInventoryByIdentityAndProfileId$(
+                v.identity,
+                v.profile.profileId,
+              )
             : this.service.getPlayerInventoryByIdentity$(v.identity);
           return request$.pipe(
             catchError((error, _observable) => {
@@ -124,7 +128,7 @@ export class PlayerInventoryComponent extends BaseComponent implements OnInit, O
       });
 
     this.identity$.next(this.identity);
-    this.profileId$.next(this.profileId);
+    this.profile$.next(this.profile);
   }
 
   /** Lifecycle hook. */
@@ -139,9 +143,9 @@ export class PlayerInventoryComponent extends BaseComponent implements OnInit, O
       }
     }
 
-    if (changes?.profileId) {
-      if (changes.profileId.currentValue !== changes.profileId.previousValue) {
-        this.profileId$.next(this.profileId);
+    if (changes?.profile) {
+      if (changes.profile.currentValue !== changes.profile.previousValue) {
+        this.profile$.next(this.profile);
       }
     }
   }

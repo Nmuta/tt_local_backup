@@ -43,6 +43,7 @@
                 <div *ngFor="let itemsToShow of history.itemsToShow">
                   <inventory-item-list-display
                     *ngIf="itemsToShow?.items?.length > 0"
+                    [service]="itemListService"
                     [whatToShow]="itemsToShow"
                   ></inventory-item-list-display>
                 </div>

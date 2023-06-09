@@ -1,51 +1,145 @@
-<mat-accordion *ngIf="whatToShow">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
+<mat-expansion-panel *ngIf="whatToShow">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon
+        color="warn"
+        *ngIf="errors?.length > 0"
+        [matTooltip]="errors?.length + ' errors found.'"
+        >warning</mat-icon
+      >
+      {{ whatToShow.title }}
+    </mat-panel-title>
+    <mat-panel-description>{{ whatToShow.description }}</mat-panel-description>
+  </mat-expansion-panel-header>
+  <table mat-table [dataSource]="itemListTableSource">
+    <ng-container matColumnDef="quantity">
+      <td mat-cell *matCellDef="let item">
+        <ng-container *ngIf="item.isInEditMode">
+          <form [formGroup]="item.editFormGroup">
+            <mat-form-field>
+              <mat-label>Quantity</mat-label>
+              <input matInput [formControl]="item.editFormControls.quantity" />
+              <mat-error *ngIf="item.editFormControls.quantity.hasError('min')"
+                >Quantity must be above 0
+              </mat-error>
+            </mat-form-field>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="!item.isInEditMode">{{ item.quantity }}</ng-container>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <td mat-cell *matCellDef="let item">
         <mat-icon
-          color="warn"
-          *ngIf="errors?.length > 0"
-          [matTooltip]="errors?.length + ' errors found.'"
-          >warning</mat-icon
+          class="item-warning"
+          *ngFor="let warning of entry(item).warnings"
+          [color]="warning.color"
+          [matTooltip]="warning.text"
         >
-        {{ whatToShow.title }}
-      </mat-panel-title>
-      <mat-panel-description>{{ whatToShow.description }}</mat-panel-description>
-    </mat-expansion-panel-header>
-    <table mat-table [dataSource]="whatToShow.items">
-      <ng-container matColumnDef="quantity">
-        <td mat-cell *matCellDef="let item">{{ item.quantity }}</td>
-      </ng-container>
-      <ng-container matColumnDef="description">
-        <td mat-cell *matCellDef="let item">
-          <mat-icon
-            class="item-warning"
-            *ngFor="let warning of entry(item).warnings"
-            [color]="warning.color"
-            [matTooltip]="warning.text"
-          >
-            {{ warning.icon }}</mat-icon
-          >
-          {{ item.description }}
-          <span class="item-id-text" *ngIf="item.id >= 0">[{{ item.id }}]</span>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="dateAquired">
-        <td mat-cell *matCellDef="let item">
-          <span *ngIf="item.acquiredUtc">{{ item.acquiredUtc | date: 'shortDate' }}</span>
-          <span *ngIf="!item.acquiredUtc">N/A</span>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="errors">
-        <td mat-cell *matCellDef="let item">
-          <pre *ngIf="item.error">{{ item.error | json }}</pre>
-        </td>
-      </ng-container>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: inventoryColumns; let entry"
-        [class.giftError]="!!entry.error"
-      ></tr>
-    </table>
-  </mat-expansion-panel>
-</mat-accordion>
+          {{ warning.icon }}</mat-icon
+        >
+        {{ item.description }}
+        <span class="item-id-text" *ngIf="item.id >= 0">[{{ item.id }}]</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="dateAquired">
+      <td mat-cell *matCellDef="let item">
+        <span *ngIf="item.acquiredUtc">{{ item.acquiredUtc | date: 'shortDate' }}</span>
+        <span *ngIf="!item.acquiredUtc">N/A</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="errors">
+      <td mat-cell *matCellDef="let item">
+        <pre *ngIf="item.error">{{ item.error | json }}</pre>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <td mat-cell *matCellDef="let item; let index = index">
+        <ng-container
+          [ngTemplateOutlet]="
+            item.isInEditMode ? editModeActionsTemplate : nonEditModeActionsTemplate
+          "
+          [ngTemplateOutletContext]="{ item: item, index: index }"
+        >
+        </ng-container>
+      </td>
+    </ng-container>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: inventoryColumns; let entry"
+      [class.giftError]="!!entry.error"
+    ></tr>
+  </table>
+</mat-expansion-panel>
+
+<ng-template #editModeActionsTemplate let-item="item" let-index="index">
+  <verify-button #verifyEditButton [disabled]="item.editFormGroup.invalid"></verify-button>
+  <button
+    mat-mini-fab
+    color="primary"
+    clickStop
+    stateManager
+    [verifyWithV2]="verifyEditButton"
+    [monitor]="item.editMonitor"
+    [disabled]="item.editFormGroup.invalid"
+    monitorDisable
+    monitorCompleteSnackbar
+    monitorWarnSnackbar
+    matTooltip="Save item changes"
+    (click)="editItemQuantity(item)"
+  >
+    <mat-icon>save</mat-icon>
+  </button>
+  <button
+    mat-mini-fab
+    class="undo-button"
+    clickStop
+    matTooltip="Undo changes"
+    (click)="disableEditMode(item)"
+  >
+    <mat-icon>undo</mat-icon>
+  </button>
+</ng-template>
+
+<ng-template #nonEditModeActionsTemplate let-item="item" let-index="index">
+  <ng-container *ngIf="canDeleteItem">
+    <verify-button #verifyDeleteButton></verify-button>
+    <button
+      mat-mini-fab
+      color="warn"
+      clickStop
+      stateManager
+      [verifyWithV2]="verifyDeleteButton"
+      [monitor]="item.deleteMonitor"
+      monitorDisable
+      monitorCompleteSnackbar
+      monitorWarnSnackbar
+      matTooltip="Delete item"
+      (click)="deleteItem(item, index)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </ng-container>
+  <button
+    *ngIf="canEditCarItem"
+    class="edit-button"
+    mat-mini-fab
+    color="primary"
+    clickStop
+    matTooltip="Edit item"
+    (click)="editCarItem(item)"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    *ngIf="canEditItemQuantity"
+    class="edit-button"
+    mat-mini-fab
+    color="primary"
+    clickStop
+    matTooltip="Edit item"
+    (click)="enableEditMode(item)"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+</ng-template>

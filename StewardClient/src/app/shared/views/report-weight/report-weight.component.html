@@ -1,7 +1,28 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-header class="sf-header">
     <mat-card-title>Player Report Weight</mat-card-title>
     <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <verify-button
+      #verifyBtn
+      [disabled]="!canSetReportWeight || !hasChanges"
+      [permissionAttribute]="permAttribute"
+      [permissionTitle]="gameTitle"
+    ></verify-button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!canSetReportWeight || !hasChanges"
+      (click)="setReportWeight()"
+      stateManager
+      [monitor]="postMonitor"
+      monitorDisable
+      [verifyWithV2]="verifyBtn"
+    >
+      <span [matTooltip]="!canSetReportWeight ? featureDisabledText : null">
+        Apply <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+      </span>
+    </button>
   </mat-card-header>
   <p *ngIf="currentReportWeight?.type === ReportWeightType.Default">
     <b>Player report weight:</b> {{ currentReportWeight.weight }}
@@ -15,21 +36,6 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="!canSetReportWeight || !hasChanges"
-      (click)="setReportWeight()"
-      stateManager
-      [monitor]="postMonitor"
-      monitorDisable
-      [permissionAttribute]="permAttribute"
-      [permissionTitle]="gameTitle"
-    >
-      <span [matTooltip]="!canSetReportWeight ? featureDisabledText : null">
-        Update <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
-      </span>
-    </button>
   </div>
 </mat-card>
 

@@ -1,0 +1,22 @@
+@import '/src/styles/mixins';
+
+mat-card {
+  margin: $gap-medium;
+  flex-grow: unset;
+}
+
+.decoded-content {
+  white-space: pre-line;
+}
+
+.file-input {
+  display: none;
+}
+
+.decode-button {
+  width: $button-min-size;
+}
+
+div.align-right {
+  align-items: end;
+}

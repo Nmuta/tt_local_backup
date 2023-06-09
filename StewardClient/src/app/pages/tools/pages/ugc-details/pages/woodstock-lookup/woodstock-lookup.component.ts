@@ -35,6 +35,8 @@ import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { UgcOperationSnackbarComponent } from '../../components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
+import { WoodstockPersistUgcModalComponent } from '@views/persist-ugc-modal/woodstock/woodstock-persist-ugc-modal.component';
+import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -50,6 +52,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public reportMonitor = new ActionMonitor('POST Report UGC');
   public persistMonitor = new ActionMonitor('POST Persist UGC');
   public cloneMonitor = new ActionMonitor('POST Clone UGC');
+  public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
   public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
 
   public userHasWritePerms: boolean = false;
@@ -58,7 +61,10 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public canHideUgc: boolean = false;
   public canCloneUgc: boolean = false;
   public canPersistUgc: boolean = false;
+  public canGenerateSharecode: boolean = false;
   public featureMatTooltip: string = null;
+  public generateSharecodeMatTooltip: string = null;
+
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
     order: GEO_FLAGS_ORDER,
@@ -71,6 +77,9 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public selectedReason: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
+  private readonly privateUgcSharecodeTooltip = 'Cannot generate Sharecode for private UGC';
+  private readonly existingSharecodeTooltip = 'Sharecode already exists for UGC';
+  private readonly generateSharecodeTooltip = '"Generate sharecode for UGC"';
 
   public featurePermAttribute = PermAttributeName.FeatureUgc;
   public reportPermAttribute = PermAttributeName.ReportUgc;
@@ -87,6 +96,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: WoodstockUgcReportService,
     private readonly ugcHideService: WoodstockUgcHideService,
+    private readonly ugcSharecodeService: WoodstockUgcSharecodeService,
     private readonly dialog: MatDialog,
   ) {
     super();
@@ -168,11 +178,22 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
         this.canHideUgc = this.ugcItem?.isPublic;
+        this.canGenerateSharecode = !this.ugcItem?.shareCode && this.ugcItem?.isPublic;
 
         if (!this.userHasWritePerms) {
           this.featureMatTooltip = this.incorrectPermsTooltip;
         } else if (!this.ugcItem?.isPublic) {
           this.featureMatTooltip = this.privateUgcTooltip;
+        }
+
+        if (!this.canGenerateSharecode) {
+          if (this.ugcItem?.shareCode) {
+            this.generateSharecodeMatTooltip = this.existingSharecodeTooltip;
+          } else if (!this.ugcItem?.isPublic) {
+            this.generateSharecodeMatTooltip = this.privateUgcSharecodeTooltip;
+          }
+        } else {
+          this.generateSharecodeMatTooltip = this.generateSharecodeTooltip;
         }
       });
 
@@ -247,25 +268,19 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     if (!this.ugcItem) {
       return;
     }
-    this.persistMonitor = this.persistMonitor.repeat();
 
-    this.service
-      .persistUgc$(this.ugcItem.id)
+    this.dialog
+      .open(WoodstockPersistUgcModalComponent, {
+        data: this.ugcItem,
+      })
+      .afterClosed()
       .pipe(
-        // The custom success snackbar expects a UgcOperationResult as the monitor value
-        // Mapping must be done above the monitor single fire for it to use mapped result
-        map(
-          result =>
-            ({
-              gameTitle: GameTitle.FH5,
-              fileId: result.newFileId,
-              allowOpenInNewTab: true,
-            } as UgcOperationResult),
-        ),
-        this.persistMonitor.monitorSingleFire(),
+        filter(data => !!data),
         takeUntil(this.onDestroy$),
       )
-      .subscribe();
+      .subscribe((response: WoodstockPlayerUgcItem) => {
+        this.ugcItem = response;
+      });
   }
 
   /** Persist a UGC item to the system user in Woodstock */
@@ -292,5 +307,25 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
         takeUntil(this.onDestroy$),
       )
       .subscribe();
+  }
+
+  /** Generate sharecode for a UGC item in Woodstock */
+  public generateSharecodeForUgc(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+
+    this.generateSharecodeMonitor = this.generateSharecodeMonitor.repeat();
+
+    this.ugcSharecodeService
+      .ugcGenerateSharecode$(this.ugcItem.id)
+      .pipe(this.generateSharecodeMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(newSharecode => {
+        const updatedUgcItem = cloneDeep(this.ugcItem);
+        updatedUgcItem.shareCode = newSharecode.sharecode;
+        this.ugcItem = updatedUgcItem;
+
+        this.canGenerateSharecode = false;
+      });
   }
 }

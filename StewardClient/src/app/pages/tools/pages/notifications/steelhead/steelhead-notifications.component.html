@@ -28,14 +28,17 @@
   </div>
 
   <div class="steward-layout-pane steward-layout-main-group">
-    <mat-tab-group
-      class="steward-layout-vertical-fill"
-      (selectedTabChange)="viewSelectionTypeChange($event.index)"
-    >
+    <mat-tab-group (selectedTabChange)="viewSelectionTypeChange($event.index)">
       <mat-tab label="Create">
         <create-localized-string
           [service]="localizationCreationServiceContract"
+          (newActivePr)="newLocStringActivePullRequest = $event"
         ></create-localized-string>
+        <steelhead-active-pull-requests
+          [abandonPermAttribute]="permAttributeLocString"
+          [newActivePullRequest]="newLocStringActivePullRequest"
+          [pullRequestSubject]="locStringActivePrSubject"
+        ></steelhead-active-pull-requests>
       </mat-tab>
       <mat-tab label="Send">
         <localized-messaging

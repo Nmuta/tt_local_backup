@@ -16,10 +16,25 @@ textarea {
   min-height: $textAreaMinSizePx;
 }
 
-.large-icon {
-  font-size: 100px;
+mat-button-toggle,
+button {
+  min-width: $button-min-size;
 }
 
-mat-button-toggle {
-  min-width: $button-min-size;
+.message-too-long {
+  color: app-color-default($app-warn);
+}
+
+.submitted-container {
+  .sf-horizontal {
+    margin-top: $gap-large;
+  }
+
+  p {
+    text-align: center;
+  }
+}
+
+.large-icon {
+  transform: scale(3);
 }

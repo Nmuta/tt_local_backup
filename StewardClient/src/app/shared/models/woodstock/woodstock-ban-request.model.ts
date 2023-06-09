@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { Duration } from 'luxon';
 
 /** Woodstock Ban Area */
 export enum WoodstockBanArea {
@@ -24,4 +25,8 @@ export interface WoodstockBanRequest {
   deleteLeaderboardEntries: boolean;
   reasonGroupName: string;
   reason: string;
+  override: boolean;
+  overrideDuration?: Duration;
+  overrideDurationPermanent?: boolean;
+  overrideBanConsoles?: boolean;
 }

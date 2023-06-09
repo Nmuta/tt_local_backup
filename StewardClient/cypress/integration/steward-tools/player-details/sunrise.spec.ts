@@ -3,7 +3,9 @@ import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid, selectSunrise } from './page';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { selectSunrise } from '@support/steward/shared-functions/game-nav';
+import { stewardUrls } from '@support/steward/urls';
 import { jordan } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Sunrise', () => {
@@ -15,6 +17,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
 
   context('GTAG Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByGtag(jordan.gtag);
       selectSunrise();
     });
@@ -24,6 +27,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
 
   context('XUID Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByXuid(jordan.xuid);
       selectSunrise();
     });

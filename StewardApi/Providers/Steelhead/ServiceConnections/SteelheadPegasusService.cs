@@ -195,22 +195,49 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         carSales = carSales.Append(liveOpsCarSale);
                     }
 
-                    var carSaleInfo = new CarSaleInformation()
-                    {
-                        BaseCost = carListing.Car.BaseCost.Value,
-                        MediaName = carListing.Car.MediaName,
-                        ModelShort = carListing.Car.ModelShort,
-                        CarId = carListing.Car.CarId,
-                        SalePercentOff = pegasusCarSale.SalePercentOff,
-                        SalePrice = pegasusCarSale.SalePrice,
-                        VipSalePercentOff = pegasusCarSale.VipSalePercentOff,
-                        VipSalePrice = pegasusCarSale.VipSalePrice
-                    };
-                    liveOpsCarSale.Cars = liveOpsCarSale.Cars.Append(carSaleInfo);
-                }
+                var carSaleInfo = new CarSaleInformation()
+                {
+                    BaseCost = carListing.Car.BaseCost.Value,
+                    MediaName = carListing.Car.MediaName,
+                    ModelShort = carListing.Car.ModelShort,
+                    CarId = carListing.Car.CarId,
+                    SalePercentOff = pegasusCarSale.SalePercentOff,
+                    SalePrice = pegasusCarSale.SalePrice,
+                    VipSalePercentOff = pegasusCarSale.VipSalePercentOff,
+                    VipSalePrice = pegasusCarSale.VipSalePrice
+                };
+                liveOpsCarSale.Cars = liveOpsCarSale.Cars.Append(carSaleInfo);
             }
+        }
 
             return carSales;
+        }
+
+        /// <inheritdoc />
+        public async Task<SteelheadLiveOpsContent.Track[]> GetTracksAsync()
+        {
+            var tracks =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.Track[]>(
+                    "LiveOps_Tracks",
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            return tracks;
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync()
+        {
+            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+            var pegasusRivalEvents =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            var rivalsEvents = this.mapper.SafeMap<IEnumerable<RivalsEvent>>(pegasusRivalEvents);
+
+            return rivalsEvents;
         }
 
         /// <inheritdoc />

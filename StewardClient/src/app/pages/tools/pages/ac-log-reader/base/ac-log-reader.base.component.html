@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Anti-Cheat Log Reader</mat-card-title>
+    <mat-card-subtitle>{{ service?.gameTitle | titlecase }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <form [formGroup]="formGroup" class="sf-wrapper">
+      <div class="sf-vertical align-right">
+        <input
+          #fileUpload
+          type="file"
+          accept=".Crash_Info"
+          class="file-input"
+          [formControl]="formControls.fileName"
+          (change)="onFileSelected($event)"
+        />
+        <div class="file-upload">
+          {{ fileName || 'Upload game crash log file' }}
+          <button mat-mini-fab color="accent" class="upload-btn" (click)="fileUpload.click()">
+            <mat-icon>attach_file</mat-icon>
+          </button>
+        </div>
+
+        <button
+          mat-raised-button
+          class="decode-button"
+          color="primary"
+          [disabled]="!formGroup.valid"
+          matTooltip="Decode AC Log"
+          aria-label="Decode AC Log"
+          clickStop
+          stateManager
+          [monitor]="getMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+          (click)="onDecodeClick()"
+        >
+          Decode
+          <button-spinner [monitor]="getMonitor" defaultIcon="document_scanner"></button-spinner>
+        </button>
+      </div>
+    </form>
+  </mat-card-header>
+  <mat-card-content class="decoded-content">
+    <p>{{ decodedLog }}</p>
+  </mat-card-content>
+</mat-card>

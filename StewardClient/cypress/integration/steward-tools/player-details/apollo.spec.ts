@@ -4,7 +4,9 @@ import { login } from '@support/steward/auth/login';
 import { jordan } from '@support/steward/common/account-info';
 import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid, selectApollo } from './page';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { selectApollo } from '@support/steward/shared-functions/game-nav';
+import { stewardUrls } from '@support/steward/urls';
 
 context('Steward / Tools / Player Details / Apollo', () => {
   beforeEach(() => {
@@ -15,6 +17,7 @@ context('Steward / Tools / Player Details / Apollo', () => {
 
   context('GTAG Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByGtag(jordan.gtag);
       selectApollo();
     });
@@ -24,6 +27,7 @@ context('Steward / Tools / Player Details / Apollo', () => {
 
   context('XUID Lookup', () => {
     beforeEach(() => {
+      cy.visit(stewardUrls.tools.playerDetails.default);
       searchByXuid(jordan.xuid);
       selectApollo();
     });

@@ -8,6 +8,99 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'e48f3c9e-0cf1-4991-89f8-097880da44dd',
+      shortText: 'Clean up player details cards',
+      longText: [
+        'Move report weight and cms override buttons to top-right corner of card.',
+        'Move paid entitlements into flexbox container.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'e154d5c8-bdad-4170-b8f8-72dbc674d541',
+      shortText: 'Player Profile tags now display Title Ids in their label',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '83c09376-b485-42d9-8337-90520a335168',
+      shortText:
+        'Allow overriding ban behavior to set custom duration, make ban permanent, and ban devices',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'c852e282-602f-4380-a618-bbede51ba8cb',
+      shortText: 'Add ability to generate sharecode for UGC',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '7a39d883-6cc6-4bcf-8ad4-02e53f3e25e7',
+      shortText: 'Add AC to acronym pipe',
+    },
+    {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.Messaging, NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '6b023f7c-9d0c-43d9-8520-fb1713bbcb31',
+      shortText: 'Display active content moderation PRs to create loc string view',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'e6795959-9944-4c78-8639-9f830afd6c7f',
+      shortText: 'Contact us sidebar now points to Contact Us Teams channel',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'a6b2edb4-08bb-43a9-ad75-bc3ae62d938a',
+      shortText: 'Added cyids to Verify checkboxes on UGM page',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5809f4ce-6486-4ebb-8b25-ce5cb38824f3',
+      shortText: 'Create shared component to view Pegasus content change PRs',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6b023f7c-9d0c-43d9-8520-fb1713bbcb31',
+      shortText: 'Allow Live Ops Admins to modify their own permissions',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'f0f3e335-a45c-45ce-92b2-514ea1acdb63',
+      shortText: 'Update post requests to use existing content type in headers',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
+      uuid: '154e3610-9f99-437c-9127-c3363e3e1635',
+      shortText: 'Added in new Client Crash log decoder tool',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '133d4379-e2e2-4adb-9e80-70afcfa419ea',
+      shortText: 'Remove configuration options from Steelhead profile reset',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '14b2aa22-2a72-4398-8bd5-f794db91b3d0',
+      shortText: 'New Rivals Calendar added to Calendar component',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'f4a43980-8235-40d7-b49c-111cab0db8dc',
+      shortText: 'Add character limit validation to contact us form',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'f28ad86e-9adb-4b51-ab52-b0e2e68035d7',
+      shortText: 'Allow override of persisted UGC title and description',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'f68139b9-9855-4c20-9413-c98a0e0b0695',
+      shortText: 'Allow credits to be added to player inventory',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'c3b3dc75-cf69-4590-8a6d-e1ae09966f93',
       shortText: 'Remove message column from auctionLog',
@@ -17,6 +110,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       uuid: 'f75bfce5-a32a-4c61-925c-9b6e24624cd3',
       shortText: 'New Showroom Calendar component',
       longText: ['Display car featured showcase and car sales in a calendar'],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.CarDetails },
+      uuid: 'aa46faef-3d05-4ae4-92b3-f401c4c053c1',
+      shortText: 'Ensure year exists everywhere a car title is shown',
+    },
+    {
+      tag: { title: [GameTitle.FH4], tool: NavbarTool.CarDetails },
+      uuid: 'da4122e0-c2e6-4f2b-9705-b06d04f6f8a7',
+      shortText: 'Fix car names missing in auction log',
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
