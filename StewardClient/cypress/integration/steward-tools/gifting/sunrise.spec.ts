@@ -8,7 +8,6 @@ import {
   selectLspGroup,
 } from '@support/steward/shared-functions/searching';
 import { verifyChip } from '@support/steward/shared-functions/verify-chip';
-//import { jordan } from '@support/steward/common/account-info';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';

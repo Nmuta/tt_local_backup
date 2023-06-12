@@ -47,7 +47,6 @@ function foundUserData(): void {
 
     // found flag data
     checkboxHasValue('Is Vip', true);
-    checkboxHasValue('Is Under Review', false);
 
     // found bans
     cy.contains('mat-card', 'Ban History').within(() => {

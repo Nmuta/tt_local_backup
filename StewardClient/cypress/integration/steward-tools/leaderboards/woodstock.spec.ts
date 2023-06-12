@@ -11,7 +11,6 @@ import {
   fillLeaderboardFieldsAllFilters,
   fillLeaderboardFieldsNoFilterFakeBoard,
 } from './page';
-//import { chad, jordan } from '@support/steward/common/account-info';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
