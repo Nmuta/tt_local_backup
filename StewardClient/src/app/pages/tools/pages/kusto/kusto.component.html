@@ -57,6 +57,9 @@
         </p>
       </help-popover-icon>
     </mat-card-title>
+    <mat-card-subtitle *ngIf="queryResultsCount > 0">
+      {{ queryResultsCount | number: '1.0':'en-US' }} items
+    </mat-card-subtitle>
     <ng-container *ngIf="!isLoading && !loadError; else failState">
       <json-table-results
         *ngIf="queryResponse"
