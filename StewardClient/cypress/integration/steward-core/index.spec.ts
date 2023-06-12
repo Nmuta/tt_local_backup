@@ -289,33 +289,7 @@ context('Steward Index', () => {
 
         cy.get('button').contains('mat-icon', 'edit').click();
 
-        // 6 June, 2023
-        // Does not display mouse interactions within tests, likely interacting behind the scenes (not visible in the test ui)
-        // cy.get('#cdk-drop-list-0 > :nth-child(1)').then(el => {
-        //   const $drag = el[0];
-        //   cy.get('#cdk-drop-list-0 > :nth-child(2)').then(el => {
-        //     const $drop = el[0];
-
-        //     const coords = $drop.getBoundingClientRect()
-        //     $drag.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-        //     $drag.dispatchEvent(new MouseEvent('mousemove', {clientX: 200, clientY: 0}));
-        //     $drag.dispatchEvent(new MouseEvent('mousemove', {
-        //       clientX: coords.x+10,
-        //       clientY: coords.y+10  // A few extra pixels to get the ordering right
-        //     }));
-        //     $drag.dispatchEvent(new MouseEvent('mouseup'));
-        //   });
-        // });
-
-        // Uses cypress-real-events, can see mouse commands within tests, UI doesn't move with it
-        // cy.get('a').contains('span', 'Player Details').parent().realMouseDown({button: 'left', position: 'center'})
-        // .realMouseMove(100, 0, { position: 'center' }).realMouseUp();
-
-        // Original attempt, can see mouse commands within tests, UI doesn't move with it
-        // cy.get('a').contains('span', 'Player Details').parent()
-        // .trigger('mousedown', { button: 0 })
-        // .trigger('mousemove', 200, 0, { force: true })
-        // .trigger('mouseup', 200, 0, { force: true });
+        //insert functional Drag and Drop logic here
 
         cy.get('div')
           .contains('a')
