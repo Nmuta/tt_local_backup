@@ -6,7 +6,7 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
-import { jordan } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Sunrise', () => {
   beforeEach(() => {
@@ -18,7 +18,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(jordan.gtag);
+      searchByGtag(RetailUsers['jordan'].gtag);
       selectSunrise();
     });
 
@@ -28,7 +28,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(jordan.xuid);
+      searchByXuid(RetailUsers['jordan'].xuid);
       selectSunrise();
     });
 
@@ -39,7 +39,11 @@ context('Steward / Tools / Player Details / Sunrise', () => {
 function foundUserDataTest(): void {
   it('should have found data', () => {
     // found user
-    verifyPlayerIdentityResults({ gtag: jordan.gtag, xuid: jordan.xuid, t10Id: false });
+    verifyPlayerIdentityResults({
+      gtag: RetailUsers['jordan'].gtag,
+      xuid: RetailUsers['jordan'].xuid,
+      t10Id: false,
+    });
 
     // found flag data
     checkboxHasValue('Is Vip', true);

@@ -1,7 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { jordan, luke } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
@@ -59,7 +59,9 @@ context('Steward / Tools / Ban Review', () => {
   context('Search', () => {
     context('When XUIDs input is filled out', () => {
       beforeEach(() => {
-        cy.get('textarea').click().type(`${jordan.xuid}\n${luke.xuid}`);
+        cy.get('textarea')
+          .click()
+          .type(`${RetailUsers['jordan'].xuid}\n${RetailUsers['luke'].xuid}`);
       });
 
       it('should activate the lookup button', () => {
@@ -76,6 +78,8 @@ context('Steward / Tools / Ban Review', () => {
           // Summary of lookup
           cy.contains('li', 'Total players: 2').should('exist');
           cy.contains('li', 'Environments Searched: 3').should('exist');
+
+          waitForProgressSpinners();
 
           // Lookup results
           cy.get('tr').filter('.mat-row').should('have.length', 2);

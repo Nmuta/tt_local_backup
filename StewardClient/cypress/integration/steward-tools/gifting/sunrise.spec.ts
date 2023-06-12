@@ -8,7 +8,8 @@ import {
   selectLspGroup,
 } from '@support/steward/shared-functions/searching';
 import { verifyChip } from '@support/steward/shared-functions/verify-chip';
-import { jordan } from '@support/steward/common/account-info';
+//import { jordan } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
 
@@ -23,11 +24,11 @@ context('Steward / Tools / Gifting / Sunrise', () => {
     beforeEach(() => {
       goToTool();
       selectSunrise();
-      searchByGtag(jordan.gtag);
+      searchByGtag(RetailUsers['jordan'].gtag);
       waitForProgressSpinners();
     });
 
-    verifyChip(jordan.gtag);
+    verifyChip(RetailUsers['jordan'].gtag);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -40,11 +41,11 @@ context('Steward / Tools / Gifting / Sunrise', () => {
     beforeEach(() => {
       goToTool();
       selectSunrise();
-      searchByXuid(jordan.xuid);
+      searchByXuid(RetailUsers['jordan'].xuid);
       waitForProgressSpinners();
     });
 
-    verifyChip(jordan.xuid);
+    verifyChip(RetailUsers['jordan'].xuid);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();

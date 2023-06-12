@@ -7,7 +7,7 @@ import {
 } from '@support/steward/shared-functions/searching';
 import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
 import { verifyChip } from '@support/steward/shared-functions/verify-chip';
-import { luke } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { DateTime } from 'luxon';
 import { stewardUrls } from '@support/steward/urls';
@@ -23,10 +23,10 @@ context('Steward / Tools / Messaging / Woodstock', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.messaging.sunrise);
       selectWoodstock();
-      searchByGtag(luke.gtag);
+      searchByGtag(RetailUsers['luke'].gtag);
     });
 
-    verifyChip(luke.gtag);
+    verifyChip(RetailUsers['luke'].gtag);
     verifyNoInputsTest();
     verifyInvalidDateInputTest();
     verifyInvalidMessageInputTest();
@@ -38,10 +38,10 @@ context('Steward / Tools / Messaging / Woodstock', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.messaging.sunrise);
       selectWoodstock();
-      searchByXuid(luke.xuid);
+      searchByXuid(RetailUsers['luke'].xuid);
     });
 
-    verifyChip(luke.xuid);
+    verifyChip(RetailUsers['luke'].xuid);
     verifyNoInputsTest();
     verifyInvalidDateInputTest();
     verifyInvalidMessageInputTest();

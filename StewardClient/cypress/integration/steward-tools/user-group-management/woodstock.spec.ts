@@ -1,7 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { ben, chad, jordan, luke, madden } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import {
   addManyUsersByGTag,
   addManyUsersByXUID,
@@ -28,16 +28,20 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
   });
 
   context('Basic Tests', () => {
-    findLiveOpsDevGroupTest('Live Ops Developers', jordan);
-    addOneUserByXUID('Live Ops Developers', luke);
-    removeOneUserByXUID('Live Ops Developers', luke);
-    addManyUsersByXUID('Live Ops Developers', luke, chad);
-    removeManyUsersByXUID('Live Ops Developers', luke, chad);
-    addOneUserByGTag('Live Ops Developers', luke);
-    removeOneUserByGTag('Live Ops Developers', luke);
-    addManyUsersByGTag('Live Ops Developers', luke, chad);
-    removeManyUsersByGTag('Live Ops Developers', luke, chad);
-    removeAllUsersThenReplace('Live Ops Developers', [ben, madden, jordan]);
+    findLiveOpsDevGroupTest('Live Ops Developers', RetailUsers['jordan']);
+    addOneUserByXUID('Live Ops Developers', RetailUsers['luke']);
+    removeOneUserByXUID('Live Ops Developers', RetailUsers['luke']);
+    addManyUsersByXUID('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
+    removeManyUsersByXUID('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
+    addOneUserByGTag('Live Ops Developers', RetailUsers['luke']);
+    removeOneUserByGTag('Live Ops Developers', RetailUsers['luke']);
+    addManyUsersByGTag('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
+    removeManyUsersByGTag('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
+    removeAllUsersThenReplace('Live Ops Developers', [
+      RetailUsers['ben'],
+      RetailUsers['madden'],
+      RetailUsers['jordan'],
+    ]);
   });
 
   context('Invalid Input Checks', () => {

@@ -1,7 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { ben, chad, jordan, luke, madden } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import {
   addManyUsersByGTag,
   addManyUsersByXUID,
@@ -28,16 +28,20 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
   });
 
   context('Basic Tests', () => {
-    findLiveOpsDevGroupTest('Live Ops Developers', jordan);
-    addOneUserByXUID('Live Ops Developers', ben);
-    removeOneUserByXUID('Live Ops Developers', ben);
-    addManyUsersByXUID('Live Ops Developers', ben, chad);
-    removeManyUsersByXUID('Live Ops Developers', ben, chad);
-    addOneUserByGTag('Live Ops Developers', ben);
-    removeOneUserByGTag('Live Ops Developers', ben);
-    addManyUsersByGTag('Live Ops Developers', ben, chad);
-    removeManyUsersByGTag('Live Ops Developers', ben, chad);
-    removeAllUsersThenReplace('Live Ops Developers', [jordan, madden, luke]);
+    findLiveOpsDevGroupTest('Live Ops Developers', RetailUsers['jordan']);
+    addOneUserByXUID('Live Ops Developers', RetailUsers['ben']);
+    removeOneUserByXUID('Live Ops Developers', RetailUsers['ben']);
+    addManyUsersByXUID('Live Ops Developers', RetailUsers['ben'], RetailUsers['chad']);
+    removeManyUsersByXUID('Live Ops Developers', RetailUsers['ben'], RetailUsers['chad']);
+    addOneUserByGTag('Live Ops Developers', RetailUsers['ben']);
+    removeOneUserByGTag('Live Ops Developers', RetailUsers['ben']);
+    addManyUsersByGTag('Live Ops Developers', RetailUsers['ben'], RetailUsers['chad']);
+    removeManyUsersByGTag('Live Ops Developers', RetailUsers['ben'], RetailUsers['chad']);
+    removeAllUsersThenReplace('Live Ops Developers', [
+      RetailUsers['jordan'],
+      RetailUsers['madden'],
+      RetailUsers['luke'],
+    ]);
   });
 
   context('Invalid Input Checks', () => {

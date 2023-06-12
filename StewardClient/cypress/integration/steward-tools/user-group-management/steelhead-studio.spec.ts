@@ -1,7 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { calebStudio, chad, madden } from '@support/steward/common/account-info';
+import { RetailUsers, StudioUsers } from '@support/steward/common/account-info';
 import {
   addManyUsersByGTag,
   addManyUsersByXUID,
@@ -37,16 +37,16 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
       cy.contains('span', 'Studio').should('exist');
     });
 
-    findLiveOpsDevGroupTest('LiveOpsTestingGroup', calebStudio);
-    addOneUserByXUID('LiveOpsTestingGroup', madden);
-    removeOneUserByXUID('LiveOpsTestingGroup', madden);
-    addManyUsersByXUID('LiveOpsTestingGroup', madden, chad);
-    removeManyUsersByXUID('LiveOpsTestingGroup', madden, chad);
-    addOneUserByGTag('LiveOpsTestingGroup', madden);
-    removeOneUserByGTag('LiveOpsTestingGroup', madden);
-    addManyUsersByGTag('LiveOpsTestingGroup', madden, chad);
-    removeManyUsersByGTag('LiveOpsTestingGroup', madden, chad);
-    removeAllUsersThenReplace('LiveOpsTestingGroup', [calebStudio]);
+    findLiveOpsDevGroupTest('LiveOpsTestingGroup', StudioUsers['caleb']);
+    addOneUserByXUID('LiveOpsTestingGroup', RetailUsers['madden']);
+    removeOneUserByXUID('LiveOpsTestingGroup', RetailUsers['madden']);
+    addManyUsersByXUID('LiveOpsTestingGroup', RetailUsers['madden'], RetailUsers['chad']);
+    removeManyUsersByXUID('LiveOpsTestingGroup', RetailUsers['madden'], RetailUsers['chad']);
+    addOneUserByGTag('LiveOpsTestingGroup', RetailUsers['madden']);
+    removeOneUserByGTag('LiveOpsTestingGroup', RetailUsers['madden']);
+    addManyUsersByGTag('LiveOpsTestingGroup', RetailUsers['madden'], RetailUsers['chad']);
+    removeManyUsersByGTag('LiveOpsTestingGroup', RetailUsers['madden'], RetailUsers['chad']);
+    removeAllUsersThenReplace('LiveOpsTestingGroup', [StudioUsers['caleb']]);
   });
 
   context('Invalid Input Checks', () => {

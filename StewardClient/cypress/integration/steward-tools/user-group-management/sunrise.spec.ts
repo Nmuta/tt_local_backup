@@ -1,7 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { chad, jordan, luke, madden } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import {
   addManyUsersByGTag,
   addManyUsersByXUID,
@@ -28,16 +28,16 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
   });
 
   context('Basic Tests', () => {
-    findLiveOpsDevGroupTest('Live Ops Developers', madden);
-    addOneUserByXUID('Live Ops Developers', jordan);
-    removeOneUserByXUID('Live Ops Developers', jordan);
-    addManyUsersByXUID('Live Ops Developers', jordan, chad);
-    removeManyUsersByXUID('Live Ops Developers', jordan, chad);
-    addOneUserByGTag('Live Ops Developers', jordan);
-    removeOneUserByGTag('Live Ops Developers', jordan);
-    addManyUsersByGTag('Live Ops Developers', jordan, chad);
-    removeManyUsersByGTag('Live Ops Developers', jordan, chad);
-    removeAllUsersThenReplace('Live Ops Developers', [madden, luke]);
+    findLiveOpsDevGroupTest('Live Ops Developers', RetailUsers['madden']);
+    addOneUserByXUID('Live Ops Developers', RetailUsers['jordan']);
+    removeOneUserByXUID('Live Ops Developers', RetailUsers['jordan']);
+    addManyUsersByXUID('Live Ops Developers', RetailUsers['jordan'], RetailUsers['chad']);
+    removeManyUsersByXUID('Live Ops Developers', RetailUsers['jordan'], RetailUsers['chad']);
+    addOneUserByGTag('Live Ops Developers', RetailUsers['jordan']);
+    removeOneUserByGTag('Live Ops Developers', RetailUsers['jordan']);
+    addManyUsersByGTag('Live Ops Developers', RetailUsers['jordan'], RetailUsers['chad']);
+    removeManyUsersByGTag('Live Ops Developers', RetailUsers['jordan'], RetailUsers['chad']);
+    removeAllUsersThenReplace('Live Ops Developers', [RetailUsers['madden'], RetailUsers['luke']]);
   });
 
   context('Invalid Input Checks', () => {

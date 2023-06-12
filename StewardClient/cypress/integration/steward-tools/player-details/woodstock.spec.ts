@@ -7,7 +7,7 @@ import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/se
 import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { luke } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Woodstock', () => {
   beforeEach(() => {
@@ -19,7 +19,7 @@ context('Steward / Tools / Player Details / Woodstock', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(luke.gtag);
+      searchByGtag(RetailUsers['luke'].gtag);
       selectWoodstock();
     });
 
@@ -29,7 +29,7 @@ context('Steward / Tools / Player Details / Woodstock', () => {
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(luke.xuid);
+      searchByXuid(RetailUsers['luke'].xuid);
       selectWoodstock();
     });
 
@@ -40,7 +40,11 @@ context('Steward / Tools / Player Details / Woodstock', () => {
 function foundUserDataTest(): void {
   it('should have found data', () => {
     // found user
-    verifyPlayerIdentityResults({ gtag: luke.gtag, xuid: luke.xuid, t10Id: false });
+    verifyPlayerIdentityResults({
+      gtag: RetailUsers['luke'].gtag,
+      xuid: RetailUsers['luke'].xuid,
+      t10Id: false,
+    });
 
     // found flag data
     checkboxHasValue('Is Vip', true);

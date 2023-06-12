@@ -8,7 +8,8 @@ import {
   fillLeaderboardFieldsOneFilter,
   fillLeaderboardFieldsNoFilterFakeBoard,
 } from './page';
-import { chad, jordan } from '@support/steward/common/account-info';
+//import { chad, jordan } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
 
@@ -61,15 +62,15 @@ context('Steward / Tools / Leaderboads', () => {
 
     it('should contain leaderboard data for Dev, No Filters, Valid Board, XUID', () => {
       fillLeaderboardFieldsNoFilter('Dev', 'Spotlight 01 Laptime');
-      cy.contains('mat-form-field', 'Player XUID').type(chad.xuid);
+      cy.contains('mat-form-field', 'Player XUID').type(RetailUsers['chad'].xuid);
       pressSearch();
       waitForProgressSpinners();
-      cy.contains('td', chad.xuid).should('exist');
+      cy.contains('td', RetailUsers['chad'].xuid).should('exist');
     });
 
     it('should not contain leaderboard data for Dev, No Filters, Valid Board, xuid for player with no data', () => {
       fillLeaderboardFieldsNoFilter('Dev', 'Spotlight 01 Laptime');
-      cy.contains('mat-form-field', 'Player XUID').type(jordan.xuid);
+      cy.contains('mat-form-field', 'Player XUID').type(RetailUsers['jordan'].xuid);
       pressSearch();
       waitForProgressSpinners();
       cy.contains(

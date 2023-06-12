@@ -7,7 +7,7 @@ import {
 } from '@support/steward/shared-functions/searching';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import { verifyChip } from '@support/steward/shared-functions/verify-chip';
-import { jordan } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { DateTime } from 'luxon';
 import { stewardUrls } from '@support/steward/urls';
@@ -23,10 +23,10 @@ context('Steward / Tools / Messaging / Sunrise', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.messaging.sunrise);
       selectSunrise();
-      searchByGtag(jordan.gtag);
+      searchByGtag(RetailUsers['jordan'].gtag);
     });
 
-    verifyChip(jordan.gtag);
+    verifyChip(RetailUsers['jordan'].gtag);
     verifyNoInputsTest();
     verifyInvalidDateInputTest();
     verifyInvalidMessageInputTest();
@@ -38,10 +38,10 @@ context('Steward / Tools / Messaging / Sunrise', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.messaging.sunrise);
       selectSunrise();
-      searchByXuid(jordan.xuid);
+      searchByXuid(RetailUsers['jordan'].xuid);
     });
 
-    verifyChip(jordan.xuid);
+    verifyChip(RetailUsers['jordan'].xuid);
     verifyNoInputsTest();
     verifyInvalidDateInputTest();
     verifyInvalidMessageInputTest();

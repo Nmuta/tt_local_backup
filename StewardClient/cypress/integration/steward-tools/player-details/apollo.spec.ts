@@ -1,7 +1,7 @@
 import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
 import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { login } from '@support/steward/auth/login';
-import { jordan } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
@@ -18,7 +18,7 @@ context('Steward / Tools / Player Details / Apollo', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(jordan.gtag);
+      searchByGtag(RetailUsers['jordan'].gtag);
       selectApollo();
     });
 
@@ -28,7 +28,7 @@ context('Steward / Tools / Player Details / Apollo', () => {
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(jordan.xuid);
+      searchByXuid(RetailUsers['jordan'].xuid);
       selectApollo();
     });
 
@@ -39,7 +39,11 @@ context('Steward / Tools / Player Details / Apollo', () => {
 function foundUserData(): void {
   it('should have found data', () => {
     // found user
-    verifyPlayerIdentityResults({ gtag: jordan.gtag, xuid: jordan.xuid, t10Id: false });
+    verifyPlayerIdentityResults({
+      gtag: RetailUsers['jordan'].gtag,
+      xuid: RetailUsers['jordan'].xuid,
+      t10Id: false,
+    });
 
     // found flag data
     checkboxHasValue('Is Vip', true);
