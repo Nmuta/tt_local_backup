@@ -38,15 +38,19 @@ import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
 import { ShowroomCalendarComponent } from './showroom-calendar.component';
 import { ShowroomCalendarRoutingModule } from './showroom-calendar.routing';
 import { SteelheadShowroomCalendarViewComponent } from './components/showroom-calendar-view/steelhead/steelhead-showroom-calendar-view.component';
-import { ShowroomFeaturedTileDetailsModalComponent } from './components/showroom-featured-tile-details-modal/steelhead/showroom-featured-tile-details-modal.component';
 import { ShowroomSaleTileDetailsModalComponent } from './components/showroom-sale-tile-details-modal/steelhead/showroom-sale-tile-details-modal.component';
+import { ShowroomCarFeaturedTileDetailsModalComponent } from './components/showroom-car-featured-tile-details-modal/steelhead/showroom-car-featured-tile-details-modal.component';
+import { ShowroomDivisionFeaturedTileDetailsModalComponent } from './components/showroom-division-featured-tile-details-modal/steelhead/showroom-division-featured-tile-details-modal.component';
+import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from './components/showroom-manufacturer-featured-tile-details-modal/steelhead/showroom-manufacturer-featured-tile-details-modal.component';
 
 /** A module for Showroom calendar. */
 @NgModule({
   declarations: [
     ShowroomCalendarComponent,
     SteelheadShowroomCalendarViewComponent,
-    ShowroomFeaturedTileDetailsModalComponent,
+    ShowroomCarFeaturedTileDetailsModalComponent,
+    ShowroomDivisionFeaturedTileDetailsModalComponent,
+    ShowroomManufacturerFeaturedTileDetailsModalComponent,
     ShowroomSaleTileDetailsModalComponent,
   ],
   imports: [

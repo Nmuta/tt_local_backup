@@ -8,6 +8,14 @@ export class MockSteelheadShowroomService {
     .createSpy('getCarFeaturedShowcases')
     .and.returnValue(of(null));
 
+  public getDivisionFeaturedShowcases$ = jasmine
+    .createSpy('getDivisionFeaturedShowcases')
+    .and.returnValue(of(null));
+
+  public getManufacturerFeaturedShowcases$ = jasmine
+    .createSpy('getManufacturerFeaturedShowcases')
+    .and.returnValue(of(null));
+
   public getSales$ = jasmine.createSpy('getCarSales').and.returnValue(of(null));
 
   constructor(private readonly generator$: () => unknown) {}
