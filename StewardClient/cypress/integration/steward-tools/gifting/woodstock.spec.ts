@@ -8,7 +8,7 @@ import {
   selectLspGroup,
 } from '@support/steward/shared-functions/searching';
 import { verifyChip } from '@support/steward/shared-functions/verify-chip';
-import { luke } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
 import { cleanUpTestAccounts } from '@support/steward/common/clear-up-test-accounts';
@@ -33,11 +33,11 @@ context('Steward / Tools / Gifting / Woodstock', () => {
     beforeEach(() => {
       goToTool();
       selectWoodstock();
-      searchByGtag(luke.gtag);
+      searchByGtag(RetailUsers['luke'].gtag);
       waitForProgressSpinners();
     });
 
-    verifyChip(luke.gtag);
+    verifyChip(RetailUsers['luke'].gtag);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -50,11 +50,11 @@ context('Steward / Tools / Gifting / Woodstock', () => {
     beforeEach(() => {
       goToTool();
       selectWoodstock();
-      searchByXuid(luke.xuid);
+      searchByXuid(RetailUsers['luke'].xuid);
       waitForProgressSpinners();
     });
 
-    verifyChip(luke.xuid);
+    verifyChip(RetailUsers['luke'].xuid);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
