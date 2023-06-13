@@ -3,14 +3,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CarFeaturedShowcase } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
 
-/** Modal component to display a showroom feature showcase. */
+/** Modal component to display a showroom car feature showcase. */
 @Component({
-  templateUrl: './showroom-featured-tile-details-modal.component.html',
-  styleUrls: ['./showroom-featured-tile-details-modal.component.scss'],
+  templateUrl: './showroom-car-featured-tile-details-modal.component.html',
+  styleUrls: ['./showroom-car-featured-tile-details-modal.component.scss'],
 })
-export class ShowroomFeaturedTileDetailsModalComponent extends BaseComponent {
+export class ShowroomCarFeaturedTileDetailsModalComponent extends BaseComponent {
   constructor(
-    protected dialogRef: MatDialogRef<ShowroomFeaturedTileDetailsModalComponent>,
+    protected dialogRef: MatDialogRef<ShowroomCarFeaturedTileDetailsModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CarFeaturedShowcase,
   ) {
     super();

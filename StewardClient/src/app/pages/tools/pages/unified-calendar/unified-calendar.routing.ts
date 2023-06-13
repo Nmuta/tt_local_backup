@@ -8,6 +8,7 @@ import { SteelheadWelcomeCenterCalendarViewComponent } from './steelhead/compone
 import { SteelheadUnifiedCalendarComponent } from './steelhead/steelhead-unified-calendar.component';
 import { UnifiedCalendarComponent } from './unified-calendar.component';
 import { SteelheadRivalsCalendarViewComponent } from './steelhead/components/rivals/components/rivals-calendar-view/steelhead-rivals-calendar-view.component';
+import { SteelheadShowroomCalendarViewComponent } from './steelhead/components/showroom/showroom-calendar-view/steelhead/steelhead-showroom-calendar-view.component';
 const routes: Routes = [
   {
     path: '',
@@ -51,6 +52,12 @@ const routes: Routes = [
             path: 'rivals-calendar',
             canActivate: [RouteMemorySetGuard],
             component: SteelheadRivalsCalendarViewComponent,
+            pathMatch: 'full',
+          },
+          {
+            path: 'showroom-calendar',
+            canActivate: [RouteMemorySetGuard],
+            component: SteelheadShowroomCalendarViewComponent,
             pathMatch: 'full',
           },
         ],

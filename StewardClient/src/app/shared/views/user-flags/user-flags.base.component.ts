@@ -63,6 +63,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
     isTurn10Employee: 'Is Employee (User Badge + Unbannable)',
     isUnderReview: 'Is Under Review (Console Banned)',
     isContentCreator: 'Is Content Creator (Unbannable)',
+    isCommunityManager: 'Is Community Manager (Unbannable)',
   };
 
   public abstract gameTitle: GameTitle;

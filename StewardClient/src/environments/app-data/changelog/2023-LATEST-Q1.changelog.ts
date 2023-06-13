@@ -13,6 +13,22 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Combine Auctions and Auction Log tabs',
     },
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'e9168a6f-743e-4763-9dd4-204ea33136e1',
+      shortText: 'Add Community Manager as a player flag option',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: 'c4f99787-574d-4431-9b91-549d03abdd30',
+      shortText:
+        'Moved showroom calendar to unified calendar component with quality of life changes. ',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
+      uuid: 'e33f5cf3-a63e-4683-9c69-532e5a64b6eb',
+      shortText: 'Add division and manufacturer featured showcases',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'e48f3c9e-0cf1-4991-89f8-097880da44dd',
       shortText: 'Clean up player details cards',
@@ -58,7 +74,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: ChangelogTag.General,
       uuid: 'a6b2edb4-08bb-43a9-ad75-bc3ae62d938a',
-      shortText: 'Added cyids to Verify checkboxes on UGM page',
+      shortText: 'Add cyids to Verify checkboxes on UGM page',
     },
     {
       tag: ChangelogTag.Internal,
@@ -78,7 +94,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
       uuid: '154e3610-9f99-437c-9127-c3363e3e1635',
-      shortText: 'Added in new Client Crash log decoder tool',
+      shortText: 'Add in new Client Crash log decoder tool',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },

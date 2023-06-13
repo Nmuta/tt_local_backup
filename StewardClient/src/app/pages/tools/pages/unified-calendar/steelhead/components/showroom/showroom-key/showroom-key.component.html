@@ -1,0 +1,21 @@
+<div class="sf-wrapper">
+  <div class="sf-vertical">
+    <div class="sf-horizontal">
+      <button mat-raised-button color="accent" (click)="toggleAll(true)">Toggle All On</button>
+      <button mat-raised-button color="warn" (click)="toggleAll(false)">Toggle All Off</button>
+    </div>
+    <div class="key-body">
+      <span class="key-title">Filter by Event Type.</span>
+      <section class="checkboxes">
+        <mat-checkbox
+          *ngFor="let eventType of eventTypes"
+          [value]="eventType"
+          [checked]="isChecked(eventType)"
+          (click)="toggleChecked(eventType)"
+        >
+          {{ eventType }}
+        </mat-checkbox>
+      </section>
+    </div>
+  </div>
+</div>

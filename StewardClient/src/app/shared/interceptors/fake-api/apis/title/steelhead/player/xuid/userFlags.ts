@@ -32,6 +32,7 @@ export class SteelheadPlayerXuidUserFlagsFakeApi extends FakeApiBase {
       isUnderReview: false,
       isEarlyAccess: false,
       isRaceMarshall: false,
+      isCommunityManager: false,
       isContentCreator: false,
     };
   }
