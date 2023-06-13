@@ -21,5 +21,6 @@ export interface PlayerInventoryProfileWithDeviceType extends PlayerInventoryPro
 /** Interface for an player inventory profile with most properties. Currently used by Steelhead. */
 export interface FullPlayerInventoryProfile extends PlayerInventoryProfileWithDeviceType {
   isCurrentByTitleId?: boolean;
-  titleId?: number;
+  titleId?: BigNumber;
+  titleName?: string;
 }

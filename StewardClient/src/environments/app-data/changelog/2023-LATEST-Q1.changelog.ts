@@ -8,6 +8,80 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'e9168a6f-743e-4763-9dd4-204ea33136e1',
+      shortText: 'Add Community Manager as a player flag option',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: 'c4f99787-574d-4431-9b91-549d03abdd30',
+      shortText:
+        'Moved showroom calendar to unified calendar component with quality of life changes. ',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
+      uuid: 'e33f5cf3-a63e-4683-9c69-532e5a64b6eb',
+      shortText: 'Add division and manufacturer featured showcases',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'e48f3c9e-0cf1-4991-89f8-097880da44dd',
+      shortText: 'Clean up player details cards',
+      longText: [
+        'Move report weight and cms override buttons to top-right corner of card.',
+        'Move paid entitlements into flexbox container.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'e154d5c8-bdad-4170-b8f8-72dbc674d541',
+      shortText: 'Player Profile tags now display Title Ids in their label',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '83c09376-b485-42d9-8337-90520a335168',
+      shortText:
+        'Allow overriding ban behavior to set custom duration, make ban permanent, and ban devices',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'c852e282-602f-4380-a618-bbede51ba8cb',
+      shortText: 'Add ability to generate sharecode for UGC',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.Kusto },
+      uuid: '3eb1a869-5525-4f92-a56e-7a9cfe4f013d',
+      shortText: 'Display results count after running Kusto query',
+    },
+    {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.Messaging, NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '6b023f7c-9d0c-43d9-8520-fb1713bbcb31',
+      shortText: 'Display active content moderation PRs to create loc string view',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'e6795959-9944-4c78-8639-9f830afd6c7f',
+      shortText: 'Contact us sidebar now points to Contact Us Teams channel',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'a6b2edb4-08bb-43a9-ad75-bc3ae62d938a',
+      shortText: 'Add cyids to Verify checkboxes on UGM page',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5809f4ce-6486-4ebb-8b25-ce5cb38824f3',
+      shortText: 'Create shared component to view Pegasus content change PRs',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '6b023f7c-9d0c-43d9-8520-fb1713bbcb31',
+      shortText: 'Allow Live Ops Admins to modify their own permissions',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'f0f3e335-a45c-45ce-92b2-514ea1acdb63',
       shortText: 'Update post requests to use existing content type in headers',
@@ -15,7 +89,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
       uuid: '154e3610-9f99-437c-9127-c3363e3e1635',
-      shortText: 'Added in new Client Crash log decoder tool',
+      shortText: 'Add in new Client Crash log decoder tool',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },

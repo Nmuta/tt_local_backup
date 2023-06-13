@@ -3,7 +3,7 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 
 //These values may change as tools and games are added or removed from Steward
 const filterValues = {
-  allTools: '33',
+  allTools: '34',
   specificTool: '1',
   playerFilter: '7',
   fh5Filter: '23',
@@ -30,87 +30,277 @@ context('Steward Index', () => {
     cy.get('.mat-icon').contains('contact_support');
   });
 
-  it('should search for a specific tool', () => {
-    waitForProgressSpinners();
-    const $chipList = cy.get('mat-chip-list');
-    $chipList.within(() => {
-      const $inputChipList = cy.get('input');
-      $inputChipList.click().type('Player Details{enter}');
+  context('Search and Filters', () => {
+    it('should search for a specific tool', () => {
+      waitForProgressSpinners();
+      const $chipList = cy.get('mat-chip-list');
+      $chipList.within(() => {
+        const $inputChipList = cy.get('input');
+        $inputChipList.click().type('Player Details{enter}');
+      });
+
+      waitForProgressSpinners();
+      cy.get('.mat-card-title').contains('Player Details');
+      cy.get('mat-chip').contains(filterValues.specificTool).should('exist');
+      cy.get('span').contains('Tools below do not match filters').should('exist');
     });
 
-    waitForProgressSpinners();
-    cy.get('.mat-card-title').contains('Player Details');
-    cy.get('mat-chip').contains(filterValues.specificTool).should('exist');
-    cy.get('span').contains('Tools below do not match filters').should('exist');
+    it('should filter tools by input', () => {
+      waitForProgressSpinners();
+      const $chipList = cy.get('mat-chip-list');
+      $chipList.within(() => {
+        const $inputChipList = cy.get('input');
+        $inputChipList.click().type('Player{enter}');
+      });
+
+      waitForProgressSpinners();
+      cy.get('mat-chip').contains(filterValues.playerFilter).should('exist');
+      cy.get('span').contains('Tools below do not match filters').should('exist');
+    });
+
+    it('should filter tools by title', () => {
+      waitForProgressSpinners();
+      const $chipList = cy.get('mat-chip-list');
+      $chipList.within(() => {
+        const $inputChipList = cy.get('input');
+        $inputChipList.click();
+      });
+      const $optionList = cy.get('mat-option');
+      $optionList.within(() => {
+        const $option = cy.get('span').contains('FH5');
+        $option.click();
+      });
+
+      waitForProgressSpinners();
+      cy.get('mat-chip').contains(filterValues.fh5Filter).should('exist');
+      cy.get('span').contains('Tools below do not match filters').should('exist');
+    });
+
+    it('should filter tools with multiple filters', () => {
+      waitForProgressSpinners();
+      const $chipList = cy.get('mat-chip-list');
+      $chipList.within(() => {
+        const $inputChipList = cy.get('input');
+        $inputChipList.click().type('Player{enter}');
+        $inputChipList.click();
+      });
+      const $optionList = cy.get('mat-option');
+      $optionList.within(() => {
+        const $option = cy.get('span').contains('FM7');
+        $option.click();
+      });
+
+      waitForProgressSpinners();
+      cy.get('mat-chip').contains(filterValues.playerFM7Filter).should('exist');
+      cy.get('span').contains('Tools below do not match filters').should('exist');
+    });
+
+    it('should reset when filters are removed', () => {
+      waitForProgressSpinners();
+      const $chipList = cy.get('mat-chip-list');
+      $chipList.within(() => {
+        const $inputChipList = cy.get('input');
+        $inputChipList.click().type('Player{enter}');
+        $inputChipList.click();
+      });
+      const $optionList = cy.get('mat-option');
+      $optionList.within(() => {
+        const $option = cy.get('span').contains('FM7');
+        $option.click();
+      });
+
+      waitForProgressSpinners();
+      cy.contains('mat-icon', 'close').click();
+      cy.get('mat-chip').contains(filterValues.allTools).should('exist');
+      cy.get('span').contains('Tools below do not match filters').should('not.exist');
+    });
   });
 
-  it('should filter tools by input', () => {
-    waitForProgressSpinners();
-    const $chipList = cy.get('mat-chip-list');
-    $chipList.within(() => {
-      const $inputChipList = cy.get('input');
-      $inputChipList.click().type('Player{enter}');
+  context('Nav Bar', () => {
+    it('should set Standard Tools', () => {
+      waitForProgressSpinners();
+      cy.get('mat-toolbar').within(() => {
+        cy.get('button').contains('span', 'Click to set standard tools').click();
+
+        cy.get('a').contains('Player Details').should('exist');
+        cy.get('a').contains('Gifting').should('exist');
+        cy.get('a').contains('Messaging').should('exist');
+        cy.get('button').contains('span', 'Current Endpoints').should('exist');
+        cy.get('button').contains('mat-icon', 'light_mode').should('exist');
+        cy.get('button').contains('mat-icon', 'dark_mode').should('exist');
+        cy.get('button').contains('mat-icon', 'devices').should('exist');
+      });
     });
 
-    waitForProgressSpinners();
-    cy.get('mat-chip').contains(filterValues.playerFilter).should('exist');
-    cy.get('span').contains('Tools below do not match filters').should('exist');
-  });
+    it('should swap between dark mode, light mode, and match system', () => {
+      waitForProgressSpinners();
+      cy.get('button').contains('span', 'Click to set standard tools').click();
 
-  it('should filter tools by title', () => {
-    waitForProgressSpinners();
-    const $chipList = cy.get('mat-chip-list');
-    $chipList.within(() => {
-      const $inputChipList = cy.get('input');
-      $inputChipList.click();
-    });
-    const $optionList = cy.get('mat-option');
-    $optionList.within(() => {
-      const $option = cy.get('span').contains('FH5');
-      $option.click();
+      cy.get('button')
+        .contains('mat-icon', 'light_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'dark_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'devices')
+        .parent()
+        .parent()
+        .get('[aria-pressed="true"]')
+        .should('exist');
+
+      cy.get('button').contains('mat-icon', 'dark_mode').click();
+      cy.get('button')
+        .contains('mat-icon', 'light_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'dark_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="true"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'devices')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+
+      cy.get('button').contains('mat-icon', 'light_mode').click();
+      cy.get('button')
+        .contains('mat-icon', 'light_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="true"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'dark_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'devices')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+
+      cy.get('button').contains('mat-icon', 'devices').click();
+      cy.get('button')
+        .contains('mat-icon', 'light_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'dark_mode')
+        .parent()
+        .parent()
+        .get('[aria-pressed="false"]')
+        .should('exist');
+      cy.get('button')
+        .contains('mat-icon', 'devices')
+        .parent()
+        .parent()
+        .get('[aria-pressed="true"]')
+        .should('exist');
     });
 
-    waitForProgressSpinners();
-    cy.get('mat-chip').contains(filterValues.fh5Filter).should('exist');
-    cy.get('span').contains('Tools below do not match filters').should('exist');
-  });
+    it('should add tools to the nav bar', () => {
+      waitForProgressSpinners();
+      const $matCardList = cy.get('mat-card');
+      $matCardList.within(() => {
+        //get the mat-card for Player Details
+        const $playerDetailsCard = cy
+          .contains('mat-card-title', 'Player Details')
+          .parent()
+          .parent()
+          .parent();
+        $playerDetailsCard.within(() => {
+          cy.get('mat-card-actions').within(() => {
+            cy.get('mat-checkbox').click();
+          });
+        });
 
-  it('should filter tools with multiple filters', () => {
-    waitForProgressSpinners();
-    const $chipList = cy.get('mat-chip-list');
-    $chipList.within(() => {
-      const $inputChipList = cy.get('input');
-      $inputChipList.click().type('Player{enter}');
-      $inputChipList.click();
-    });
-    const $optionList = cy.get('mat-option');
-    $optionList.within(() => {
-      const $option = cy.get('span').contains('FM7');
-      $option.click();
+        //get the mat-card for Gifting
+        const $giftingCard = cy.contains('mat-card-title', 'Gifting').parent().parent().parent();
+        $giftingCard.within(() => {
+          cy.get('mat-card-actions').within(() => {
+            cy.get('mat-checkbox').click();
+          });
+        });
+
+        //get the mat-card for Car Details
+        const $carDetailsCard = cy
+          .contains('mat-card-title', 'Car Details')
+          .parent()
+          .parent()
+          .parent();
+        $carDetailsCard.within(() => {
+          cy.get('mat-card-actions').within(() => {
+            cy.get('mat-checkbox').click();
+          });
+        });
+      });
+
+      cy.get('mat-toolbar').within(() => {
+        cy.get('a').contains('span', 'Player Details').should('exist');
+        cy.get('a').contains('span', 'Gifting').should('exist');
+        cy.get('a').contains('span', 'Car Details').should('exist');
+      });
     });
 
-    waitForProgressSpinners();
-    cy.get('mat-chip').contains(filterValues.playerFM7Filter).should('exist');
-    cy.get('span').contains('Tools below do not match filters').should('exist');
-  });
+    it('should reset nav bar when pressing the reset selection button', () => {
+      waitForProgressSpinners();
+      cy.get('mat-toolbar').within(() => {
+        cy.get('button').contains('span', 'Click to set standard tools').click();
+        cy.get('button').contains('span', 'Click to set standard tools').should('not.exist');
+      });
 
-  it('should reset when filters are removed', () => {
-    waitForProgressSpinners();
-    const $chipList = cy.get('mat-chip-list');
-    $chipList.within(() => {
-      const $inputChipList = cy.get('input');
-      $inputChipList.click().type('Player{enter}');
-      $inputChipList.click();
-    });
-    const $optionList = cy.get('mat-option');
-    $optionList.within(() => {
-      const $option = cy.get('span').contains('FM7');
-      $option.click();
+      cy.get('button').contains('span', 'Reset Selection').click();
+
+      cy.get('mat-toolbar').within(() => {
+        cy.get('button').contains('span', 'Click to set standard tools').should('exist');
+      });
     });
 
-    waitForProgressSpinners();
-    cy.contains('mat-icon', 'close').click();
-    cy.get('mat-chip').contains(filterValues.allTools).should('exist');
-    cy.get('span').contains('Tools below do not match filters').should('not.exist');
+    // Known failure currently, bug made to address later (drag and drop issues)
+    it('should reorder nav bar', () => {
+      waitForProgressSpinners();
+      cy.get('mat-toolbar').within(() => {
+        cy.get('button').contains('span', 'Click to set standard tools').click();
+
+        cy.get('div')
+          .contains('a')
+          .first()
+          .within(() => {
+            cy.get('span').contains('Player Details').should('exist');
+          });
+
+        cy.get('button').contains('mat-icon', 'edit').click();
+
+        //insert functional Drag and Drop logic here
+
+        cy.get('div')
+          .contains('a')
+          .first()
+          .within(() => {
+            cy.get('span').contains('Gifting').should('exist');
+          });
+        cy.get('a').contains('span', 'Player Details').should('exist');
+
+        cy.get('button').contains('mat-icon', 'edit').click();
+      });
+    });
   });
 });

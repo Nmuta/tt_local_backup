@@ -1,7 +1,48 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-header class="sf-header">
     <mat-card-title>Player CMS Override</mat-card-title>
     <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <verify-button
+      #verifyCmsOverrideBtn
+      [permissionAttribute]="permAttribute"
+      [permissionTitle]="gameTitle"
+    ></verify-button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="setCmsOverride()"
+      stateManager
+      [monitor]="postMonitor"
+      monitorDisable
+      monitorWarnSnackbar
+      monitorCompleteSnackbar
+      [verifyWithV2]="verifyCmsOverrideBtn"
+    >
+      Apply
+      <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+    </button>
+    <ng-container *ngIf="hasCmsOverride">
+      <verify-button
+        #verifyDeleteCmsOverrideBtn
+        [permissionAttribute]="permAttribute"
+        [permissionTitle]="gameTitle"
+      ></verify-button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="deleteCmsOverride()"
+        stateManager
+        [monitor]="deleteMonitor"
+        monitorDisable
+        monitorWarnSnackbar
+        monitorCompleteSnackbar
+        [verifyWithV2]="verifyDeleteCmsOverrideBtn"
+      >
+        Delete
+        <button-spinner [monitor]="deleteMonitor" defaultIcon="delete"></button-spinner>
+      </button>
+    </ng-container>
   </mat-card-header>
   <form [formGroup]="formGroup" class="sf-wrapper">
     <div *waitForMonitor="getMonitor" class="sf-vertical">
@@ -27,46 +68,6 @@
           <input type="text" matInput [formControl]="formControls.snapshot" />
           <mat-hint>Takes priority over slot if both are specified</mat-hint>
         </mat-form-field>
-      </div>
-      <div class="sf-horizontal">
-        <verify-button
-          #verifyCmsOverrideBtn
-          [permissionAttribute]="permAttribute"
-          [permissionTitle]="gameTitle"
-        ></verify-button>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="setCmsOverride()"
-          stateManager
-          [monitor]="postMonitor"
-          monitorDisable
-          monitorWarnSnackbar
-          monitorCompleteSnackbar
-          [verifyWithV2]="verifyCmsOverrideBtn"
-        >
-          Submit CMS Override
-        </button>
-      </div>
-      <div class="sf-horizontal" *ngIf="hasCmsOverride">
-        <verify-button
-          #verifyDeleteCmsOverrideBtn
-          [permissionAttribute]="permAttribute"
-          [permissionTitle]="gameTitle"
-        ></verify-button>
-        <button
-          mat-raised-button
-          color="warn"
-          (click)="deleteCmsOverride()"
-          stateManager
-          [monitor]="deleteMonitor"
-          monitorDisable
-          monitorWarnSnackbar
-          monitorCompleteSnackbar
-          [verifyWithV2]="verifyDeleteCmsOverrideBtn"
-        >
-          Delete CMS Override
-        </button>
       </div>
     </div>
   </form>

@@ -1,6 +1,6 @@
 import env from '@support/env';
 import { login } from '@support/steward/auth/login';
-import { AccountInfo, jordan } from '@support/steward/common/account-info';
+import { AccountInfo, RetailUsers } from '@support/steward/common/account-info';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { stewardUrls } from '@support/steward/urls';
@@ -15,19 +15,19 @@ context('Steward / Tools / Player Details', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(jordan.gtag);
+      searchByGtag(RetailUsers['jordan'].gtag);
     });
 
-    displaysCorrectActiveTitles(jordan.accountInfo);
+    displaysCorrectActiveTitles(RetailUsers['jordan'].accountInfo);
   });
 
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(jordan.xuid);
+      searchByXuid(RetailUsers['jordan'].xuid);
     });
 
-    displaysCorrectActiveTitles(jordan.accountInfo);
+    displaysCorrectActiveTitles(RetailUsers['jordan'].accountInfo);
   });
 });
 

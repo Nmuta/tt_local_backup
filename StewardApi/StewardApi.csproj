@@ -61,11 +61,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AdaptiveCards.Templating" Version="1.4.0" />
     <PackageReference Include="Autofac" Version="6.4.0" />
     <PackageReference Include="Autofac.Configuration" Version="6.0.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
     <PackageReference Include="Castle.Core" Version="4.4.1" />
+    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="2.1.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
   </ItemGroup>
 
@@ -95,7 +97,7 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PlayFabAllSDK" Version="1.144.230123" />
-    <PackageReference Include="SteelheadLiveOpsContent" Version="1.7.9" />
+    <PackageReference Include="SteelheadLiveOpsContent" Version="1.7.12" />
 	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -120,11 +122,11 @@
     <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.5.7">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FH5_main" Version="5.3.3" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5_main" Version="5.3.4" />
     <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.13.5">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.20.2">
+    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.20.6">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4">

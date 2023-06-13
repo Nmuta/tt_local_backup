@@ -1,0 +1,57 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Pending Content Modifications</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *waitForMonitor="getPullRequests">
+      <ng-container *ngIf="existingPullRequestList.data?.length > 0; else noActivePrTemplate">
+        <table mat-table [dataSource]="existingPullRequestList">
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let entry">
+              <span>
+                <a target="_blank" href="{{ entry.webUrl }}"> {{ entry.title }} </a>
+              </span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="creationDate">
+            <th mat-header-cell *matHeaderCellDef>Created Date UTC</th>
+            <td mat-cell *matCellDef="let entry">
+              {{ entry.creationDateUtc | utcDate: 'short' }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let entry">
+              <verify-button
+                #verifyAbandonBtn
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="abandonPullRequest(entry)"
+                clickStop
+                stateManager
+                [verifyWithV2]="verifyAbandonBtn"
+                [monitor]="entry.monitor"
+                monitorDisable
+                monitorCompleteSnackbar
+                monitorWarnSnackbar
+              >
+                Abandon
+                <button-spinner [monitor]="entry.monitor" defaultIcon="delete"></button-spinner>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+        </table>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #noActivePrTemplate> There is currently no active content modifications </ng-template>

@@ -4,7 +4,7 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectOpus } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
-import { chad } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 
 context('Steward / Tools / Player Details / Opus', () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ context('Steward / Tools / Player Details / Opus', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(chad.gtag);
+      searchByGtag(RetailUsers['chad'].gtag);
       selectOpus();
     });
 
@@ -26,7 +26,7 @@ context('Steward / Tools / Player Details / Opus', () => {
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(chad.xuid);
+      searchByXuid(RetailUsers['chad'].xuid);
       selectOpus();
     });
 
@@ -36,7 +36,11 @@ context('Steward / Tools / Player Details / Opus', () => {
 
 function foundUserDataTest(): void {
   it('should have found data', () => {
-    verifyPlayerIdentityResults({ gtag: chad.gtag, xuid: chad.xuid, t10Id: false });
+    verifyPlayerIdentityResults({
+      gtag: RetailUsers['chad'].gtag,
+      xuid: RetailUsers['chad'].xuid,
+      t10Id: false,
+    });
 
     //// switch to Inventory ////
     cy.contains('.mat-tab-label', 'Inventory').click();

@@ -137,20 +137,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             {
                 foreach (var pegasusShowcase in carListing.FeaturedShowcase)
                 {
+                    if (pegasusShowcase is not SteelheadLiveOpsContent.CarFeaturedShowcase)
+                    {
+                        continue;
+                    }
+
                     var liveOpsShowcase = new LiveOpsContracts.CarFeaturedShowcase()
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTime = pegasusShowcase.StartTime,
-                        EndTime = pegasusShowcase.EndTime,
-                        BaseCost = carListing.Car.BaseCost.Value,
-                        CarId = carListing.Car.CarId,
-                        MediaName = carListing.Car.MediaName,
-                        ModelShort = carListing.Car.ModelShort
+                        StartTimeUtc = pegasusShowcase.StartTime,
+                        EndTimeUtc = pegasusShowcase.EndTime,
+                        BaseCost = carListing.FullCarInfo.Car.BaseCost.Value,
+                        CarId = carListing.FullCarInfo.Car.CarId,
+                        MediaName = carListing.FullCarInfo.Car.MediaName,
+                        ModelShort = carListing.FullCarInfo.Car.ModelShort
                     };
                     carFeaturedShowcases = carFeaturedShowcases.Append(liveOpsShowcase);
 
-                    var saleInfo = carListing.SaleInformation.FirstOrDefault(x => x.StartTime >= liveOpsShowcase.StartTime && x.StartTime <= liveOpsShowcase.EndTime);
+                    var saleInfo = carListing.SaleInformation.FirstOrDefault(x => x.StartTime >= liveOpsShowcase.StartTimeUtc && x.StartTime <= liveOpsShowcase.EndTimeUtc);
                     if (saleInfo == null)
                     {
                         continue;
@@ -164,6 +169,87 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             }
 
             return carFeaturedShowcases;
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase>> GetDivisionFeaturedShowcasesAsync()
+        {
+            IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase> divisionFeaturedShowcases = new List<LiveOpsContracts.DivisionFeaturedShowcase>();
+
+            var carListings =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            foreach (var carListing in carListings)
+            {
+                foreach (var pegasusShowcase in carListing.FeaturedShowcase)
+                {
+                    if (pegasusShowcase is not SteelheadLiveOpsContent.DivisionFeaturedShowcase)
+                    {
+                        continue;
+                    }
+
+                    var liveOpsShowcase = new LiveOpsContracts.DivisionFeaturedShowcase()
+                    {
+                        Title = pegasusShowcase.Title,
+                        Description = pegasusShowcase.Description,
+                        StartTimeUtc = pegasusShowcase.StartTime,
+                        EndTimeUtc = pegasusShowcase.EndTime,
+                        DivisionId = carListing.FullCarInfo.CarDivision.CarDivisionId,
+                        DivisionName = carListing.FullCarInfo.CarDivision.Name
+                    };
+                    divisionFeaturedShowcases = divisionFeaturedShowcases.Append(liveOpsShowcase);
+                }
+            }
+
+            var uniqueDivisionFeaturedShowcases = divisionFeaturedShowcases
+                                                    .GroupBy(x => new { x.DivisionId, x.StartTimeUtc, x.EndTimeUtc })
+                                                    .Select(x => x.First())
+                                                    .ToList();
+
+            return uniqueDivisionFeaturedShowcases;
+        }
+
+        public async Task<IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase>> GetManufacturerFeaturedShowcasesAsync()
+        {
+            IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase> manufacturerFeaturedShowcases = new List<LiveOpsContracts.ManufacturerFeaturedShowcase>();
+
+            var carListings =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    this.cmsEnvironment,
+                    slot: "daily").ConfigureAwait(false);
+
+            foreach (var carListing in carListings)
+            {
+                foreach (var pegasusShowcase in carListing.FeaturedShowcase)
+                {
+                    if (pegasusShowcase is not SteelheadLiveOpsContent.ManufacturerFeaturedShowcase)
+                    {
+                        continue;
+                    }
+
+                    var liveOpsShowcase = new LiveOpsContracts.ManufacturerFeaturedShowcase()
+                    {
+                        Title = pegasusShowcase.Title,
+                        Description = pegasusShowcase.Description,
+                        StartTimeUtc = pegasusShowcase.StartTime,
+                        EndTimeUtc = pegasusShowcase.EndTime,
+                        ManufacturerId = carListing.FullCarInfo.Car.MakeID.Value,
+                        ManufacturerName = carListing.FullCarInfo.Car.MakeDisplayName
+                    };
+                    manufacturerFeaturedShowcases = manufacturerFeaturedShowcases.Append(liveOpsShowcase);
+                }
+            }
+
+            var uniqueManufacturerFeaturedShowcases = manufacturerFeaturedShowcases
+                                                        .GroupBy(x => new { x.ManufacturerId, x.StartTimeUtc, x.EndTimeUtc })
+                                                        .Select(x => x.First())
+                                                        .ToList();
+
+            return uniqueManufacturerFeaturedShowcases;
         }
 
         /// <inheritdoc />
@@ -197,10 +283,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
                 var carSaleInfo = new CarSaleInformation()
                 {
-                    BaseCost = carListing.Car.BaseCost.Value,
-                    MediaName = carListing.Car.MediaName,
-                    ModelShort = carListing.Car.ModelShort,
-                    CarId = carListing.Car.CarId,
+                    BaseCost = carListing.FullCarInfo.Car.BaseCost.Value,
+                    MediaName = carListing.FullCarInfo.Car.MediaName,
+                    ModelShort = carListing.FullCarInfo.Car.ModelShort,
+                    CarId = carListing.FullCarInfo.Car.CarId,
                     SalePercentOff = pegasusCarSale.SalePercentOff,
                     SalePrice = pegasusCarSale.SalePrice,
                     VipSalePercentOff = pegasusCarSale.VipSalePercentOff,

@@ -31,6 +31,17 @@ import { HCI } from '@environments/environment';
 import { WoodstockPlayerBanService } from '@services/api-v2/woodstock/player/ban/woodstock-player-ban.service';
 import { BanDuration } from '@models/ban-duration';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Duration } from 'luxon';
+import { DurationOption } from '../../components/duration-picker/duration-picker.component';
+
+export const BanOverrideDurationOptions: DurationOption[] = [
+  { duration: Duration.fromObject({ days: 1 }), humanized: '1 day' },
+  { duration: Duration.fromObject({ days: 3 }), humanized: '3 days' },
+  { duration: Duration.fromObject({ days: 7 }), humanized: '1 week' },
+  { duration: Duration.fromObject({ days: 30 }), humanized: '1 month' },
+];
 
 /** Routed Component; Woodstock Banning Tool. */
 @Component({
@@ -50,9 +61,19 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public formControls = {
     banReason: new FormControl('', [Validators.required, requireReasonListMatch.bind(this)]),
     deleteLeaderboardEntries: new FormControl(false),
+    override: new FormControl(false),
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
+
+  public options: DurationOption[] = BanOverrideDurationOptions;
+  public overrideFormControls = {
+    overrideBanDuration: new FormControl({ value: null, disabled: true }, [Validators.required]),
+    permaBan: new FormControl({ value: false, disabled: true }),
+    deviceBan: new FormControl({ value: false, disabled: true }),
+  };
+
+  public overrideFormGroup = new FormGroup(this.overrideFormControls);
 
   public summaryLookup: Dictionary<WoodstockBanSummary> = {};
   public bannedXuids: BigNumber[] = [];
@@ -68,6 +89,8 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public nextBanDurationUser: string = '';
   public nextBanDurationMonitor: ActionMonitor = new ActionMonitor('GET next ban duration');
   public nextBanDurationSubscription: Subscription;
+
+  public readonly overridePermAttribute = PermAttributeName.BanPlayer;
 
   public identitySortFn = null;
 
@@ -179,12 +202,21 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
     const identities = this.playerIdentities;
 
     const bans: WoodstockBanRequest[] = identities.map(identity => {
-      return <WoodstockBanRequest>{
+      const basicBan = {
         xuid: identity.xuid,
         deleteLeaderboardEntries: this.formControls.deleteLeaderboardEntries.value,
         reason: this.formControls.banReason.value,
         reasonGroupName: this.selectedBanReasonGroup.name,
-      };
+        override: this.formControls.override.value,
+      } as WoodstockBanRequest;
+
+      if (this.formControls.override.valid) {
+        basicBan.overrideDuration = this.overrideFormControls.overrideBanDuration.value;
+        basicBan.overrideDurationPermanent = this.overrideFormControls.permaBan.value;
+        basicBan.overrideBanConsoles = this.overrideFormControls.deviceBan.value;
+      }
+
+      return basicBan;
     });
 
     this.banActionMonitor = this.banActionMonitor.repeat();
@@ -218,7 +250,9 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
 
   /** True when the form can be submitted. */
   public canBan(): boolean {
-    return this.formGroup.valid && this.playerIdentities.length > 0;
+    return (
+      this.formGroup.valid && !this.overrideFormGroup.invalid && this.playerIdentities.length > 0
+    );
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */
@@ -245,6 +279,27 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
     );
     this.selectedBanAreasLabel = banReasonGroup.featureAreas.join(',');
     this.updateNextBanDuration();
+  }
+
+  /** Event when ban override checkbox is toggled. */
+  public onBanOverrideChange(value: MatCheckboxChange): void {
+    if (!value.checked) {
+      this.overrideFormControls.overrideBanDuration.setValue(null);
+      this.overrideFormControls.permaBan.setValue(false);
+      this.overrideFormGroup.disable();
+    } else {
+      this.overrideFormGroup.enable();
+    }
+  }
+
+  /** Event when 'Make Ban Permanent' checkbox is toggled. */
+  public onPermaBanChange(value: MatCheckboxChange): void {
+    if (value.checked) {
+      this.overrideFormControls.overrideBanDuration.setValue(null);
+      this.overrideFormGroup.controls.overrideBanDuration.disable();
+    } else {
+      this.overrideFormGroup.controls.overrideBanDuration.enable();
+    }
   }
 
   /** Update the ban duration label based on the appropriate player and ban configuration. */

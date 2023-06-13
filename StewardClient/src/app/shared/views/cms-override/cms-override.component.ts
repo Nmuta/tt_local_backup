@@ -129,6 +129,9 @@ export class CmsOverrideComponent extends BaseComponent implements OnInit, OnCha
       .pipe(this.deleteMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.hasCmsOverride = false;
+        this.formControls.environment.setValue('');
+        this.formControls.slot.setValue('');
+        this.formControls.snapshot.setValue('');
         this.clearCheckboxes();
       });
   }

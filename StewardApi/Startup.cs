@@ -59,6 +59,7 @@ using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.MsGraph;
+using Turn10.LiveOps.StewardApi.Providers.MsTeams;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Pipelines;
@@ -271,6 +272,12 @@ namespace Turn10.LiveOps.StewardApi
             var graphServiceClient = new GraphServiceClient(clientSecretCredential, scopes);
             builder.Register(c => new MsGraphService(graphServiceClient, servicePrincipalId)).As<IMsGraphService>().SingleInstance();
 
+            // MS Teams Service
+            var teamsHelpChannelWebhook = keyVaultProvider.GetSecretAsync(
+               this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+               this.configuration[ConfigurationKeyConstants.TeamsHelpChannelWebhook]).GetAwaiter().GetResult();
+            builder.Register(c => new MsTeamsService(teamsHelpChannelWebhook)).As<IMsTeamsService>().SingleInstance();
+
             builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
             builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();
             builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
@@ -402,11 +409,28 @@ namespace Turn10.LiveOps.StewardApi
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion);
 
+            builder.RegisterType<Client>().Named<Client>("woodstockClientDevLive")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Dev, WoodstockPegasusSlot.Live));
+
             builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
-                .WithParameter(Named("cmsInstance"), (p, c) => "prod-xlive-steward");
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Prod, WoodstockPegasusSlot.LiveSteward));
+
+            builder.RegisterType<Client>().Named<Client>("woodstockClientDevLiveSteward")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Dev, WoodstockPegasusSlot.LiveSteward));
+        }
+
+        private string GenerateCmsOverrideString(string environment, string slot)
+        {
+            return $"{environment}-x{slot}";
         }
 
         private void RegisterSteelheadTypes(ContainerBuilder builder)

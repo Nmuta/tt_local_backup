@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies
             where TClass : class
         {
             var interceptor = ProxyInterceptor<TClass>.CreateVerified<TInterface>(source);
-            var proxy = Generator.CreateInterfaceProxyWithoutTarget<TInterface>(interceptor);
+            var proxy = Generator.CreateInterfaceProxyWithoutTarget<TInterface>(interceptor.ToInterceptor());
             return proxy;
         }
     }

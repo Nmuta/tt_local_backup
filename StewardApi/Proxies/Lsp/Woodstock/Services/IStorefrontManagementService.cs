@@ -36,5 +36,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 
         /// <summary>Report content with a reason. Reason should come from pegasus.</summary>
         Task ReportContentWithReason(Guid fileId, Guid reason);
+
+        /// <summary>Generates a Sharecode for the given UGC ID.</summary>
+        Task<GenerateShareCodeOutput> GenerateShareCode(Guid id);
     }
 }

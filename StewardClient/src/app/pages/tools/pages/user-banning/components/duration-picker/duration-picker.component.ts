@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, forwardRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { UserRole } from '@models/enums';
@@ -8,7 +8,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { clone, first } from 'lodash';
 import { DateTime, Duration } from 'luxon';
 
-interface DurationOption {
+export interface DurationOption {
   duration: Duration;
   humanized: string;
 }
@@ -34,6 +34,9 @@ export const DurationPickerOptions: DurationOption[] = [
 })
 export class DurationPickerComponent implements OnInit, ControlValueAccessor {
   @ViewChild('datePicker') public datePicker: MatDatepicker<Date>;
+
+  /** Toggles view of date preview. */
+  @Input() public hideDatePreview: boolean = false;
 
   public options: DurationOption[] = DurationPickerOptions;
 

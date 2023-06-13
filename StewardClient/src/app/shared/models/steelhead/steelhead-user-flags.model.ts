@@ -8,5 +8,6 @@ export interface SteelheadUserFlags {
   isEarlyAccess: boolean;
   isUnderReview: boolean;
   isRaceMarshall: boolean;
+  isCommunityManager: boolean;
   isContentCreator: boolean;
 }

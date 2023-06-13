@@ -6,23 +6,32 @@
         <mat-card-subtitle>IDs and other text</mat-card-subtitle>
       </mat-card-header>
       <div class="sf-wrapper">
-        <div class="sf-horizontal">
-          <div class="sf-vertical">
-            <model-dump-xuids></model-dump-xuids>
-            <model-dump-simple-table
-              [values]="source.processedModel.extractedStrings.ids"
-            ></model-dump-simple-table>
-            <model-dump-humanize-table
-              [values]="source.processedModel.extractedStrings.other"
-            ></model-dump-humanize-table>
-            <model-dump-humanize-array-table
-              [values]="source.processedModel.extractedStringArrays.all"
-            ></model-dump-humanize-array-table>
-            <model-dump-simple-table
-              [values]="source.processedModel.extractedNumbers.ids"
-            ></model-dump-simple-table>
-            <model-dump-flags></model-dump-flags>
-          </div>
+        <div class="sf-vertical">
+          <model-dump-xuids></model-dump-xuids>
+          <model-dump-simple-table
+            [values]="source.processedModel.extractedStrings.ids"
+          ></model-dump-simple-table>
+          <model-dump-humanize-table
+            [values]="source.processedModel.extractedStrings.other"
+          ></model-dump-humanize-table>
+          <model-dump-humanize-array-table
+            [values]="source.processedModel.extractedStringArrays.all"
+          ></model-dump-humanize-array-table>
+          <model-dump-simple-table
+            [values]="source.processedModel.extractedNumbers.ids"
+          ></model-dump-simple-table>
+          <model-dump-flags></model-dump-flags>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>UGC Actions</mat-card-title>
+        <mat-card-subtitle>Take actions on UGC</mat-card-subtitle>
+      </mat-card-header>
+      <div class="sf-wrapper">
+        <div class="sf-horizontal do-not-align-items">
           <div class="sf-vertical">
             <ugc-download-button
               class="sf-full-width sf-default-margins sf-action-list-margins"
@@ -42,14 +51,29 @@
                 ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
               }}</span>
             </button>
-            <div class="sf-horizontal">
+            <button
+              class="sf-default-margins sf-action-list-margins"
+              [disabled]="!canGenerateSharecode"
+              mat-raised-button
+              color="primary"
+              stateManager
+              [monitor]="generateSharecodeMonitor"
+              monitorDisable
+              monitorWarn
+              monitorWarnSnackbar
+              monitorCompleteSnackbar
+              (click)="generateSharecodeForUgc()"
+            >
+              <span [matTooltip]="generateSharecodeMatTooltip">Generate Sharecode</span>
+            </button>
+            <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button
                 #verifyReportBtn
                 [permissionAttribute]="reportPermAttribute"
                 [permissionTitle]="gameTitle"
               ></verify-button>
               <button
-                class="sf-action-list-margins sf-grow-1"
+                class="sf-action-list-margins"
                 mat-raised-button
                 color="warn"
                 [verifyWithV2]="verifyReportBtn"

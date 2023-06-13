@@ -13,6 +13,7 @@ export enum PullRequestStatus {
 export enum PullRequestSubject {
   MessageOfTheDay = 'MessageOfTheDay',
   WorldOfForzaTile = 'WoFTile',
+  LocalizationString = 'LocalizationString',
 }
 
 /** Interface for a a git pull request. */
