@@ -1,0 +1,162 @@
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="over">
+    <showroom-key (filterResults)="filterEvents($event)"></showroom-key>
+  </mat-drawer>
+  <div class="steward-layout-with-sidebar">
+    <ng-container *waitForMonitor="getActionMonitor">
+      <div class="steward-layout-pane steward-layout-main-group">
+        <mat-card>
+          <mat-card-header class="sf-header">
+            <mat-card-title>Showroom Schedule</mat-card-title>
+            <div class="sf-spacer"></div>
+            <button
+              mat-raised-button
+              (click)="drawer.toggle()"
+              [disabled]="events?.length === 0"
+              color="accent"
+            >
+              Filter by Event Type
+            </button>
+          </mat-card-header>
+          <div class="calendar-header">
+            <div>
+              <button
+                mat-raised-button
+                mwlCalendarPreviousView
+                [view]="view"
+                [(viewDate)]="viewDate"
+              >
+                Previous
+              </button>
+              <button mat-raised-button mwlCalendarToday [(viewDate)]="viewDate">Today</button>
+              <button mat-raised-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+                Next
+              </button>
+            </div>
+            <div>
+              <h2>{{ viewDate | calendarDate: view + 'ViewTitle':'en' }}</h2>
+            </div>
+            <div>
+              <button
+                mat-raised-button
+                (click)="setView(CalendarView.Month)"
+                [class.active]="view === CalendarView.Month"
+              >
+                Month
+              </button>
+              <button
+                mat-raised-button
+                (click)="setView(CalendarView.Week)"
+                [class.active]="view === CalendarView.Week"
+              >
+                Week
+              </button>
+              <button
+                mat-raised-button
+                (click)="setView(CalendarView.Day)"
+                [class.active]="view === CalendarView.Day"
+              >
+                Day
+              </button>
+            </div>
+          </div>
+          <br />
+          <div class="calendar-view-switch" [ngSwitch]="view">
+            <mwl-calendar-month-view
+              *ngSwitchCase="CalendarView.Month"
+              [viewDate]="viewDate"
+              [events]="filteredEvents"
+              [cellTemplate]="customDayCellTemplate"
+            >
+            </mwl-calendar-month-view>
+            <mwl-calendar-week-view
+              *ngSwitchCase="CalendarView.Week"
+              [viewDate]="viewDate"
+              [events]="filteredEvents"
+              [eventTemplate]="weekEventTemplate"
+            >
+            </mwl-calendar-week-view>
+            <mwl-calendar-day-view
+              *ngSwitchCase="CalendarView.Day"
+              [viewDate]="viewDate"
+              [events]="filteredEvents"
+              [eventTemplate]="dayEventTemplate"
+            >
+            </mwl-calendar-day-view>
+          </div>
+        </mat-card>
+      </div>
+    </ng-container>
+  </div>
+</mat-drawer-container>
+
+<ng-template #customDayCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top">
+    <span class="cal-day-number">{{ day.date | calendarDate: 'monthViewDayNumber':locale }}</span>
+  </div>
+  <div class="cell-totals">
+    <div class="shrink-wrap">
+      <div
+        *ngFor="let event of day.events"
+        [class]="event.cssClass"
+        (click)="eventClicked(event)"
+        matTooltip="{{ event.meta.eventType }}"
+      >
+        {{ event.title }}
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- "weekEvent" comes from Angular Calendar and cannot be changed -->
+<ng-template
+  #dayEventTemplate
+  let-dayEvent="weekEvent"
+  let-tooltipPlacement="tooltipPlacement"
+  let-eventClicked="eventClicked"
+  let-tooltipTemplate="tooltipTemplate"
+  let-tooltipAppendToBody="tooltipAppendToBody"
+  let-tooltipDisabled="tooltipDisabled"
+  let-tooltipDelay="tooltipDelay"
+  let-column="column"
+  let-daysInWeek="daysInWeek"
+  let-locale="locale"
+>
+  <div
+    class="cal-event day-view-event"
+    [mwlCalendarTooltip]="!tooltipDisabled ? dayEvent.event.title : ''"
+    [tooltipPlacement]="tooltipPlacement"
+    [tooltipEvent]="dayEvent.tempEvent || dayEvent.event"
+    [tooltipTemplate]="tooltipTemplate"
+    [tooltipAppendToBody]="tooltipAppendToBody"
+    [tooltipDelay]="tooltipDelay"
+  >
+    <div class="badge day-event-badge">
+      {{ dayEvent.event.title }}
+    </div>
+  </div>
+</ng-template>
+
+<ng-template
+  #weekEventTemplate
+  let-weekEvent="weekEvent"
+  let-tooltipPlacement="tooltipPlacement"
+  let-eventClicked="eventClicked"
+  let-tooltipTemplate="tooltipTemplate"
+  let-tooltipAppendToBody="tooltipAppendToBody"
+  let-tooltipDisabled="tooltipDisabled"
+  let-tooltipDelay="tooltipDelay"
+  let-column="column"
+  let-daysInWeek="daysInWeek"
+  let-locale="locale"
+>
+  <div
+    class="cal-event week-view-event"
+    [mwlCalendarTooltip]="!tooltipDisabled ? weekEvent.event.title : ''"
+    [tooltipPlacement]="tooltipPlacement"
+    [tooltipEvent]="weekEvent.event"
+    [tooltipTemplate]="tooltipTemplate"
+    [tooltipAppendToBody]="tooltipAppendToBody"
+    [tooltipDelay]="tooltipDelay"
+  ></div>
+</ng-template>

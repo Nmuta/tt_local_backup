@@ -62,6 +62,12 @@ import { SteelheadWelcomeCenterCalendarViewComponent } from './steelhead/compone
 import { WelcomeCenterTileDetailsModalComponent } from './steelhead/components/welcome-center/welcome-center-tile-details-modal/steelhead/welcome-center-tile-details-modal.component';
 import { RivalsTileDetailsModalComponent } from './steelhead/components/rivals/components/rivals-tile-details-modal/rivals-tile-details-modal.component';
 import { SteelheadRivalsCalendarViewComponent } from './steelhead/components/rivals/components/rivals-calendar-view/steelhead-rivals-calendar-view.component';
+import { SteelheadShowroomCalendarViewComponent } from './steelhead/components/showroom/showroom-calendar-view/steelhead/steelhead-showroom-calendar-view.component';
+import { ShowroomCarFeaturedTileDetailsModalComponent } from './steelhead/components/showroom/showroom-car-featured-tile-details-modal/steelhead/showroom-car-featured-tile-details-modal.component';
+import { ShowroomDivisionFeaturedTileDetailsModalComponent } from './steelhead/components/showroom/showroom-division-featured-tile-details-modal/steelhead/showroom-division-featured-tile-details-modal.component';
+import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from './steelhead/components/showroom/showroom-manufacturer-featured-tile-details-modal/steelhead/showroom-manufacturer-featured-tile-details-modal.component';
+import { ShowroomSaleTileDetailsModalComponent } from './steelhead/components/showroom/showroom-sale-tile-details-modal/steelhead/showroom-sale-tile-details-modal.component';
+import { ShowroomKeyComponent } from './steelhead/components/showroom/showroom-key/showroom-key.component';
 
 /** Module for the PlayFab tool. */
 @NgModule({
@@ -85,6 +91,13 @@ import { SteelheadRivalsCalendarViewComponent } from './steelhead/components/riv
 
     RivalsTileDetailsModalComponent,
     SteelheadRivalsCalendarViewComponent,
+
+    SteelheadShowroomCalendarViewComponent,
+    ShowroomSaleTileDetailsModalComponent,
+    ShowroomCarFeaturedTileDetailsModalComponent,
+    ShowroomDivisionFeaturedTileDetailsModalComponent,
+    ShowroomManufacturerFeaturedTileDetailsModalComponent,
+    ShowroomKeyComponent,
   ],
   imports: [
     UnifiedCalendarRoutingModule,

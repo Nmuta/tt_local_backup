@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: 'c4f99787-574d-4431-9b91-549d03abdd30',
+      shortText:
+        'Moved showroom calendar to unified calendar component with quality of life changes. ',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
       uuid: 'e33f5cf3-a63e-4683-9c69-532e5a64b6eb',
       shortText: 'Add division and manufacturer featured showcases',
