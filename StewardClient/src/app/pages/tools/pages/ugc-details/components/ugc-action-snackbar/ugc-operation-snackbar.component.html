@@ -12,7 +12,7 @@
   *ngIf="!!completionValue?.shareCode"
   mat-icon-button
   [cdkCopyToClipboard]="completionValue?.shareCode"
-  matTooltip="Copy Share Code"
+  matTooltip="Copy Share Code ({{ completionValue?.shareCode }})"
 >
   <mat-icon>pin</mat-icon>
 </button>
