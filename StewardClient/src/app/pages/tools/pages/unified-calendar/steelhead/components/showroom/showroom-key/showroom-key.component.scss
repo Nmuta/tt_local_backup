@@ -1,0 +1,18 @@
+@import '/src/styles/mixins';
+
+div.key-body {
+  width: 100%;
+  max-width: 500em;
+}
+
+.key-title {
+  font-weight: bold;
+  margin-top: $gap-medium;
+  display: block;
+}
+
+section.checkboxes {
+  > mat-checkbox {
+    display: block;
+  }
+}

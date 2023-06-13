@@ -17,11 +17,19 @@ import { ShowroomCarFeaturedTileDetailsModalComponent } from '../../showroom-car
 import { ShowroomDivisionFeaturedTileDetailsModalComponent } from '../../showroom-division-featured-tile-details-modal/steelhead/showroom-division-featured-tile-details-modal.component';
 import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from '../../showroom-manufacturer-featured-tile-details-modal/steelhead/showroom-manufacturer-featured-tile-details-modal.component';
 
+export enum ShowroomEventType {
+  CarSale = 'Car Sale',
+  CarFeaturedShowcase = 'Car Featured Showcase',
+  DivisionFeaturedShowcase = 'Division Featured Showcase',
+  ManufacturerFeaturedShowcase = 'Manufacturer Featured Showcase',
+}
+
 export interface ShowroomMeta {
   carFeaturedShowcase: CarFeaturedShowcase;
   divisionFeaturedShowcase: DivisionFeaturedShowcase;
   manufacturerFeaturedShowcase: ManufacturerFeaturedShowcase;
   carSale: CarSale;
+  eventType: ShowroomEventType;
 }
 
 /** The Steelhead Showroom Calendar View page. */
@@ -39,6 +47,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
   public viewDate: Date = new Date();
 
   public events: CalendarEvent[];
+  public filteredEvents: CalendarEvent<ShowroomMeta>[] = [];
 
   constructor(
     private readonly steelheadShowroomService: SteelheadShowroomService,
@@ -77,6 +86,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
             this.makeManufacturerFeaturedEvents(manufacturerFeaturedShowcase),
           );
           this.events = this.events.concat(this.makeSaleEvents(carSales));
+          this.filteredEvents = this.events;
         },
       );
   }
@@ -108,6 +118,11 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
     }
   }
 
+  /** Filter events. */
+  public filterEvents(selectedEventTypes: ShowroomEventType[]): void {
+    this.filteredEvents = this.events.filter(x => selectedEventTypes.includes(x.meta.eventType));
+  }
+
   /** Converts car featured showcase into Calendar Events. */
   private makeCarFeaturedEvents(carFeaturedShowcases: CarFeaturedShowcase[]): CalendarEvent[] {
     const events: CalendarEvent<ShowroomMeta>[] = [];
@@ -122,6 +137,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
           divisionFeaturedShowcase: undefined,
           manufacturerFeaturedShowcase: undefined,
           carSale: undefined,
+          eventType: ShowroomEventType.CarFeaturedShowcase,
         },
         `unique-left-border-color-1-of-5`,
       );
@@ -148,6 +164,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
           divisionFeaturedShowcase: divisionFeaturedShowcase,
           manufacturerFeaturedShowcase: undefined,
           carSale: undefined,
+          eventType: ShowroomEventType.DivisionFeaturedShowcase,
         },
         `unique-left-border-color-3-of-5`,
       );
@@ -174,6 +191,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
           divisionFeaturedShowcase: undefined,
           manufacturerFeaturedShowcase: manufacturerFeaturedShowcase,
           carSale: undefined,
+          eventType: ShowroomEventType.ManufacturerFeaturedShowcase,
         },
         `unique-left-border-color-4-of-5`,
       );
@@ -198,6 +216,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
           divisionFeaturedShowcase: undefined,
           manufacturerFeaturedShowcase: undefined,
           carSale: carSale,
+          eventType: ShowroomEventType.CarSale,
         },
         `unique-left-border-color-2-of-5`,
       );
