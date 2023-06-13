@@ -36,6 +36,16 @@ namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
             {
                 modelState.AddModelError("UserFlags.IsUltimateVip", $"{nameof(model.IsUltimateVip)} must not be null.");
             }
+
+            if (!model.IsRaceMarshall.HasValue)
+            {
+                modelState.AddModelError("UserFlags.IsRaceMarshall", $"{nameof(model.IsRaceMarshall)} must not be null.");
+            }
+
+            if (!model.IsCommunityManager.HasValue)
+            {
+                modelState.AddModelError("UserFlags.IsCommunityManager", $"{nameof(model.IsCommunityManager)} must not be null.");
+            }
         }
 
         /// <inheritdoc />

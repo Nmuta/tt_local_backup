@@ -30,6 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
         private const int RaceMarshallUserGroupId = 9;
+        private const int CommunityManagerUserGroupId = 5;
 
         private readonly IWoodstockService woodstockService;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
@@ -289,6 +290,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
                     IsUnderReview = suspiciousResults.isUnderReview,
                     IsRaceMarshall = userGroupResults.userGroups.Any(r => r.Id == RaceMarshallUserGroupId),
+                    IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
                     IsContentCreator = userGroupResults.userGroups.Any(r => r.Id == nonStandardUserGroups.ContentCreatorId),
                 };
             }
@@ -636,6 +638,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             if (userFlags.IsTurn10Employee == toggleOn) { resultGroupIds.Add(T10EmployeeUserGroupId); }
             if (userFlags.IsEarlyAccess == toggleOn) { resultGroupIds.Add(WhitelistUserGroupId); }
             if (userFlags.IsRaceMarshall == toggleOn) { resultGroupIds.Add(RaceMarshallUserGroupId); }
+            if (userFlags.IsCommunityManager == toggleOn) { resultGroupIds.Add(CommunityManagerUserGroupId); }
             if (userFlags.IsContentCreator == toggleOn) { resultGroupIds.Add(nonStandardUserGroups.ContentCreatorId); }
 
             return resultGroupIds;
