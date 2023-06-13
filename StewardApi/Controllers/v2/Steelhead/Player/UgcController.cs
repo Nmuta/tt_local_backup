@@ -21,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using static Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
@@ -109,6 +110,44 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
 
             return this.Ok(ugcItems);
+        }
+
+        /// <summary>
+        ///     Gets player hidden UGC items.
+        /// </summary>
+        [HttpGet("hidden")]
+        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetHiddenUgcItems(ulong xuid)
+        {
+            var exceptions = new List<Exception>();
+            var defaultValue = new GetHiddenUGCByUserOutput() { result = Array.Empty<ForzaUGCDataLight>() };
+            var liveries = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Livery, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
+            var photos = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Photo, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
+            var tunings = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.TuneBlob, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
+
+            await Task.WhenAll(liveries, photos, tunings).ConfigureAwait(false);
+
+            var results = new List<ForzaUGCDataLight>();
+            if (liveries.IsCompletedSuccessfully)
+            {
+                results.AddRange(liveries.GetAwaiter().GetResult().result);
+            }
+
+            if (photos.IsCompletedSuccessfully)
+            {
+                results.AddRange(photos.GetAwaiter().GetResult().result);
+            }
+
+            if (tunings.IsCompletedSuccessfully)
+            {
+                results.AddRange(tunings.GetAwaiter().GetResult().result);
+            }
+
+            var convertedResults = this.mapper.SafeMap<List<HideableUgc>>(results); //This mapper isn't working yet.
+
+            return this.Ok(convertedResults);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 
+
 #pragma warning disable VSTHRD200 // Use  Suffix
 #pragma warning disable SA1516 // Blank lines
 #pragma warning disable SA1600 // Elements must be documented
@@ -68,5 +69,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 
         /// <summary>Gets base UGC data.</summary>
         Task<GetUGCObjectOutput> GetUGCObject(Guid id);
+
+        /// <summary>Gets hidden UGC by xuid.</summary>
+        Task<GetHiddenUGCByUserOutput> GetHiddenUGCByUser(ulong xuid, ForzaUGCContentType contentType, int maxResults);
+
+        /// <summary>Sets/Unsets Hidden status for UGC.</summary>
+        Task SetUGCVisibility(System.Guid id, bool shouldBeVisible);
     }
 }
