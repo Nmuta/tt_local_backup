@@ -59,6 +59,7 @@ using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.MsGraph;
+using Turn10.LiveOps.StewardApi.Providers.MsTeams;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Pipelines;
@@ -270,6 +271,12 @@ namespace Turn10.LiveOps.StewardApi
             var scopes = new[] { "https://graph.microsoft.com/.default" };
             var graphServiceClient = new GraphServiceClient(clientSecretCredential, scopes);
             builder.Register(c => new MsGraphService(graphServiceClient, servicePrincipalId)).As<IMsGraphService>().SingleInstance();
+
+            // MS Teams Service
+            var teamsHelpChannelWebhook = keyVaultProvider.GetSecretAsync(
+               this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+               this.configuration[ConfigurationKeyConstants.TeamsHelpChannelWebhook]).GetAwaiter().GetResult();
+            builder.Register(c => new MsTeamsService(teamsHelpChannelWebhook)).As<IMsTeamsService>().SingleInstance();
 
             builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
             builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();

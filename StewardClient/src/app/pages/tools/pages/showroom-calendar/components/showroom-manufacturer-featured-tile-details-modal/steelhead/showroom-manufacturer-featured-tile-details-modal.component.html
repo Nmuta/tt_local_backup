@@ -1,0 +1,41 @@
+<section>
+  <h2 mat-dialog-title>
+    <span>Banner Details</span>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="modal-wrapper">
+      <div class="scroll-pane">
+        <table class="info-table">
+          <tr>
+            <th>Title</th>
+            <td>
+              {{ data.title }}
+            </td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>{{ data.description }}</td>
+          </tr>
+          <tr>
+            <th>Start Time</th>
+            <td><standard-absolute-time [timeUtc]="data.startTimeUtc"></standard-absolute-time></td>
+          </tr>
+          <tr>
+            <th>End Time</th>
+            <td><standard-absolute-time [timeUtc]="data.endTimeUtc"></standard-absolute-time></td>
+          </tr>
+          <tr>
+            <th>Manufacturer Id</th>
+            <td>{{ data.manufacturerId }}</td>
+          </tr>
+          <tr>
+            <th>Manufacturer Name</th>
+            <td>{{ data.manufacturerName }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </mat-dialog-content>
+</section>

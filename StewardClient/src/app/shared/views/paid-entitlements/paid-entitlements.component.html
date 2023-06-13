@@ -1,6 +1,29 @@
 <mat-card>
-  <mat-card-header>
+  <mat-card-header class="sf-header">
     <mat-card-title>Paid Entitlements</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <verify-button
+      #verifySubmissionButton
+      [disabled]="!this.paidEntitlementFormGroup.valid"
+      [permissionAttribute]="grantPaidEntitlementAttribute"
+      [permissionTitle]="serviceContract.gameTitle"
+    ></verify-button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="sendEntitlement()"
+      [disabled]="!this.paidEntitlementFormGroup.valid"
+      stateManager
+      [monitor]="putMonitor"
+      monitorDisable
+      monitorWarnSnackbar
+      monitorCompleteSnackbar
+      [verifyWithV2]="verifySubmissionButton"
+    >
+      Send Entitlement
+      <button-spinner [monitor]="putMonitor" defaultIcon="arrow_circle_right"></button-spinner>
+    </button>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="paidEntitlementFormGroup" class="sf-wrapper">
@@ -20,32 +43,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <div class="sf-horizontal">
-          <verify-button
-            #verifySubmissionButton
-            [disabled]="!this.paidEntitlementFormGroup.valid"
-            [permissionAttribute]="grantPaidEntitlementAttribute"
-            [permissionTitle]="serviceContract.gameTitle"
-          ></verify-button>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="sendEntitlement()"
-            [disabled]="!this.paidEntitlementFormGroup.valid"
-            stateManager
-            [monitor]="putMonitor"
-            monitorDisable
-            monitorWarnSnackbar
-            monitorCompleteSnackbar
-            [verifyWithV2]="verifySubmissionButton"
-          >
-            Send Entitlement
-            <button-spinner
-              [monitor]="putMonitor"
-              defaultIcon="arrow_circle_right"
-            ></button-spinner>
-          </button>
-        </div>
       </div>
     </form>
   </mat-card-content>

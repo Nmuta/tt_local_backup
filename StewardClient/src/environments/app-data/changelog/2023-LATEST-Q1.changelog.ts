@@ -13,12 +13,52 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add Community Manager as a player flag option',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },
+      uuid: 'e33f5cf3-a63e-4683-9c69-532e5a64b6eb',
+      shortText: 'Add division and manufacturer featured showcases',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'e48f3c9e-0cf1-4991-89f8-097880da44dd',
+      shortText: 'Clean up player details cards',
+      longText: [
+        'Move report weight and cms override buttons to top-right corner of card.',
+        'Move paid entitlements into flexbox container.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'e154d5c8-bdad-4170-b8f8-72dbc674d541',
+      shortText: 'Player Profile tags now display Title Ids in their label',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '83c09376-b485-42d9-8337-90520a335168',
+      shortText:
+        'Allow overriding ban behavior to set custom duration, make ban permanent, and ban devices',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'c852e282-602f-4380-a618-bbede51ba8cb',
+      shortText: 'Add ability to generate sharecode for UGC',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.Kusto },
+      uuid: '3eb1a869-5525-4f92-a56e-7a9cfe4f013d',
+      shortText: 'Display results count after running Kusto query',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [NavbarTool.Messaging, NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
       },
       uuid: '6b023f7c-9d0c-43d9-8520-fb1713bbcb31',
       shortText: 'Display active content moderation PRs to create loc string view',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'e6795959-9944-4c78-8639-9f830afd6c7f',
+      shortText: 'Contact us sidebar now points to Contact Us Teams channel',
     },
     {
       tag: ChangelogTag.General,

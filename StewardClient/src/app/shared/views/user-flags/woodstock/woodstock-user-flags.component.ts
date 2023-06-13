@@ -33,6 +33,9 @@ export class WoodstockUserFlagsComponent
 
   public formGroup = new FormGroup(this.formControls);
 
+  private readonly fh5CommunityManagerAltLabel =
+    'Is Community Manager (Unbannable + Community Challenge Moderation)';
+
   constructor(
     private readonly woodstockService: WoodstockService,
     permissionsService: OldPermissionsService,
@@ -43,20 +46,8 @@ export class WoodstockUserFlagsComponent
   /** Lifecycle hook. */
   public ngOnInit(): void {
     // Community Manager in FH5 has additional feature to modertate community challenges through liking and disliking content.
-    // We need to add that text to the alternate label
-    const unbannabledSearchText = 'Unbannable';
-    const unbannableIndex = this.alteredLabels.isCommunityManager.indexOf(unbannabledSearchText);
-    if (unbannableIndex >= 0) {
-      const startString = this.alteredLabels.isCommunityManager.substring(
-        0,
-        unbannableIndex + unbannabledSearchText.length,
-      );
-      const endString = this.alteredLabels.isCommunityManager.substring(
-        unbannableIndex + unbannabledSearchText.length,
-        this.alteredLabels.isCommunityManager.length,
-      );
-      this.alteredLabels.isCommunityManager = `${startString} + Community Challenge Moderation${endString}`;
-    }
+    // Update the alternate label to match the additional feature.
+    this.alteredLabels.isCommunityManager = this.fh5CommunityManagerAltLabel;
   }
 
   /** Gets Woodstock user flags. */

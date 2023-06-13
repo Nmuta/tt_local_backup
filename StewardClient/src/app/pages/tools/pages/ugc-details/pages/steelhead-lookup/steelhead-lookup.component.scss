@@ -1,3 +1,5 @@
+@import '/src/styles/mixins';
+
 model-dump {
   display: flex;
   flex-flow: row wrap;
@@ -35,4 +37,8 @@ mat-card {
 
 p {
   margin: 2rem;
+}
+
+button {
+  min-width: $button-min-size;
 }

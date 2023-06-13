@@ -1,4 +1,4 @@
-<mat-form-field class="date-picker sf-default-hint" appearance="fill">
+<mat-form-field *ngIf="!hideDatePreview" class="date-picker sf-default-hint" appearance="fill">
   <mat-label>Ban End Date</mat-label>
   <input matInput [matDatepicker]="datePicker" [value]="targetDate" disabled />
   <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>

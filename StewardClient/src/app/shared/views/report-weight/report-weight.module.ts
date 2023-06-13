@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SteelheadReportWeightComponent } from './steelhead/steelhead-report-weight.component';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 
 /** Module for getting and setting a player's report weight. */
 @NgModule({
@@ -43,6 +44,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     MatCardModule,
     StateManagersModule,
     PermissionsModule,
+    VerifyCheckboxModule,
   ],
   exports: [WoodstockReportWeightComponent, SteelheadReportWeightComponent],
 })

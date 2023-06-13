@@ -36,5 +36,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         ///     Gets or sets the Title ID.
         /// </summary>
         public int TitleId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Title Name.
+        /// </summary>
+        public string TitleName { get; set; }
     }
 }

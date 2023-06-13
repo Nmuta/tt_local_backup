@@ -13,7 +13,7 @@ export interface AccountInfo {
   hasAccount: boolean;
 }
 
-export const jordan: KnownUser = {
+const jordan: KnownUser = {
   gtag: 'FuriKuriFan5',
   xuid: '2535435129485725',
   t10Id: '2535435129485725',
@@ -26,7 +26,7 @@ export const jordan: KnownUser = {
   ],
 };
 
-export const luke: KnownUser = {
+const luke: KnownUser = {
   gtag: 'testing 01001',
   xuid: '2535405314408422',
   t10Id: undefined,
@@ -39,7 +39,7 @@ export const luke: KnownUser = {
   ],
 };
 
-export const chad: KnownUser = {
+const chad: KnownUser = {
   gtag: 'Plink',
   xuid: '2675352635783107',
   t10Id: undefined,
@@ -52,7 +52,7 @@ export const chad: KnownUser = {
   ],
 };
 
-export const madden: KnownUser = {
+const madden: KnownUser = {
   gtag: 'R2Dubs',
   xuid: '2533274879135661',
   t10Id: undefined,
@@ -65,7 +65,7 @@ export const madden: KnownUser = {
   ],
 };
 
-export const ben: KnownUser = {
+const ben: KnownUser = {
   gtag: 'Dinjambes',
   xuid: '2533274833661814',
   t10Id: undefined,
@@ -78,7 +78,7 @@ export const ben: KnownUser = {
   ],
 };
 
-export const calebStudio: KnownUser = {
+const caleb: KnownUser = {
   gtag: '	2 Dev 046404329',
   xuid: '2814670801628842',
   t10Id: undefined,
@@ -92,3 +92,15 @@ export const calebStudio: KnownUser = {
 };
 
 export const AllKnownUsers: KnownUser[] = [jordan, luke, chad, madden, ben];
+
+export const RetailUsers = {
+  jordan,
+  luke,
+  chad,
+  madden,
+  ben,
+};
+
+export const StudioUsers = {
+  caleb,
+};

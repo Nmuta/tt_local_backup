@@ -33,6 +33,9 @@
     <span class="device-type" [matTooltip]="'Device Type: ' + profile.deviceType">{{
       profile.deviceType
     }}</span>
+    <span *ngIf="profile.titleId" class="title-info" [matTooltip]="'Title Id: ' + profile.titleId"
+      >({{ profile.titleName }} - {{ profile.titleId.toString(16) }})</span
+    >
     <mat-icon
       *ngIf="profile.externalProfileId"
       class="external-id trailing-icon"

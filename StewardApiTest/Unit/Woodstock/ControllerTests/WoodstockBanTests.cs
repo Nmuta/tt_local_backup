@@ -103,6 +103,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,
+                    Override = false,
+                    OverrideBanConsoles = false,
+                    OverrideDurationPermanent = false,
+                    OverrideDuration = new TimeSpan(0,0,0),
                 },
                 new WoodstockBanParametersInput {
                     Xuid = ValidXuid,
@@ -110,6 +114,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,
+                    Override = false,
+                    OverrideBanConsoles = false,
+                    OverrideDurationPermanent = false,
+                    OverrideDuration = new TimeSpan(0,0,0),
                 },
                 new WoodstockBanParametersInput {
                     Xuid = ValidXuid,
@@ -117,6 +125,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,
+                    Override = true,
+                    OverrideBanConsoles = false,
+                    OverrideDurationPermanent = false,
+                    OverrideDuration = new TimeSpan(12,0,0),
                 }
             };
         }
