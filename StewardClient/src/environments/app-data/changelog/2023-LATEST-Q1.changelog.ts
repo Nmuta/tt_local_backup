@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Combine Auctions and Auction Log tabs',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '5aa1a11f-5dce-40cc-968a-d30f02c1015a',
+      shortText: 'Added skill rating and safety rating tools',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'e9168a6f-743e-4763-9dd4-204ea33136e1',
       shortText: 'Add Community Manager as a player flag option',
@@ -22,6 +27,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       uuid: 'c4f99787-574d-4431-9b91-549d03abdd30',
       shortText:
         'Moved showroom calendar to unified calendar component with quality of life changes. ',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '92489393-b7da-42a0-be5b-0f006f3bdf58',
+      shortText: 'Show Share Code when hovering copy button after clone UGC',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.ShowroomCalendar },

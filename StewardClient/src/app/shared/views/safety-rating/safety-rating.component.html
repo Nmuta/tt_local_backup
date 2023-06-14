@@ -1,0 +1,94 @@
+<mat-card>
+  <mat-card-header class="sf-header">
+    <mat-card-title>Safety Rating</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <verify-button
+      #verifyApplyBtn
+      [disabled]="!formGroup.dirty || !formGroup.valid"
+      [permissionAttribute]="permAttribute"
+      [permissionTitle]="gameTitle"
+    ></verify-button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="setSafetyRating()"
+      clickStop
+      stateManager
+      monitorDisable
+      [monitor]="postMonitor"
+      [disabled]="!formGroup.dirty || !formGroup.valid"
+      [verifyWithV2]="verifyApplyBtn"
+    >
+      Apply
+      <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+    </button>
+    <help-popover-icon cardTitle="Safety Rating">
+      <p>
+        Safety Rating is a measure of how safely a player drives. It is used in matchmaking to avoid
+        placing players who drive safely with those who don't.
+      </p>
+      <p>
+        This tool manipulates a player's Safety Rating for testing purposes and replaces their
+        existing Safety Rating history with test data when used.
+      </p>
+      <p>Probation means that a player has less than five races in their history.</p>
+      <p>Any number of races over 5 takes a player out of probation.</p>
+      <p>
+        The tool automatically determines the Safety Rating grade, which ranges from E (lowest) to S
+        (highest).
+      </p>
+      <p>
+        Safety Rating is attached to the XUID, meaning it follows the player regardless of profile.
+      </p>
+    </help-popover-icon>
+  </mat-card-header>
+
+  <div *waitForMonitor="getMonitor" class="update-section">
+    <mat-checkbox
+      class="probation-toggle"
+      [formControl]="formControls.isInProbation"
+      (change)="onInProbationChange($event)"
+      >In Probation?
+    </mat-checkbox>
+    <form [formGroup]="formGroup" class="sf-wrapper">
+      <div class="sf-vertical">
+        <mat-form-field appearance="fill" class="sf-default-hint">
+          <mat-label>Safety Rating</mat-label>
+          <input type="number" matInput [formControl]="formControls.safetyRatingScore" />
+          <mat-hint *ngIf="formControls.isInProbation.value"
+            >Only used while player is out of probation.</mat-hint
+          >
+          <mat-error *ngIf="formControls.safetyRatingScore.hasError('min')"
+            >Safety Rating must be greater than or equal to 1.</mat-error
+          >
+          <mat-error *ngIf="formControls.safetyRatingScore.hasError('max')"
+            >Safety Rating must be less than or equal to 100.</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="sf-default-hint">
+          <mat-label>Probationary Safety Rating</mat-label>
+          <input
+            type="number"
+            matInput
+            [formControl]="formControls.probationarySafetyRatingScore"
+          />
+          <mat-hint *ngIf="!formControls.isInProbation.value"
+            >Only used while player is in probation.</mat-hint
+          >
+          <mat-error *ngIf="formControls.probationarySafetyRatingScore.hasError('min')"
+            >Probationary Safety Rating must be greater than or equal to 1.</mat-error
+          >
+          <mat-error *ngIf="formControls.probationarySafetyRatingScore.hasError('max')"
+            >Probationary Safety Rating must be less than or equal to 100.</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="sf-default-hint">
+          <mat-label>Grade</mat-label>
+          <input matInput [formControl]="formControls.grade" />
+          <mat-hint>Grade is auto calculated based on Safety Rating.</mat-hint>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+</mat-card>
