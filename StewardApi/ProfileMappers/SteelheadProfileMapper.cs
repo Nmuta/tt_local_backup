@@ -508,6 +508,16 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                             new ServicesFailureStewardError(
                                 $"LSP failed to gift livery to player with XUID: {source.xuid}")
                         }));
+
+            this.CreateMap<ForzaUGCDataLight, HideableUgc>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Metadata.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Metadata.Description))
+                .ForMember(dest => dest.UgcId, opt => opt.MapFrom(src => src.Metadata.GuidId))
+                .ForMember(dest => dest.Sharecode, opt => opt.MapFrom(src => src.Metadata.ShareCode))
+                .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.Thumbnail.ToImageDataUrl()))
+                .ForMember(dest => dest.SubmissionUtc, opt => opt.MapFrom(src => src.Metadata.CreatedDate.DefaultAsNull()))
+                //.ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => null)) //What to do here?
+                .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => Enum.GetName(typeof(ForzaUGCContentType), src.Metadata.ContentType)));
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)
