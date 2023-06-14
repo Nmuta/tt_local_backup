@@ -1,7 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { goToTool } from './page';
-import { jordan } from '@support/steward/common/account-info';
+import { RetailUsers } from '@support/steward/common/account-info';
 import {
   verifySearchInvalidGtagEmptyHistoryTest,
   verifySearchValidGtagGiftsExistsTest,
@@ -17,10 +17,14 @@ import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 // If changing any dates, be sure they are used in the correct order of first then last below
 const noGiftsDateStart = '1/1/2023';
 const noGiftsDateEnd = '1/2/2023';
+
 // Ideally, there should be the exact same number of gifts between the two dates in both dev and prod
+const userWithRecentGifts = RetailUsers['jordan'];
 const recentGiftToUserInProd = '12/22/2022';
 const recentGiftToUserInDev = '5/30/2023';
 const numberOfExpectedUserGifts = 1;
+
+const lspGroupWithRecentGifts = 'Live Ops Developers';
 const recentGiftToLSPInProd = '3/16/2022';
 const recentGiftToLSPInDev = '6/1/2023';
 const numberOfExpectedLSPGifts = 1;
@@ -38,7 +42,7 @@ context('Steward / Tools / Gift History / Sunrise', () => {
       selectSunrise();
     });
     verifySearchInvalidGtagEmptyHistoryTest();
-    verifySearchValidGtagGiftsExistsTest(jordan.gtag);
+    verifySearchValidGtagGiftsExistsTest(userWithRecentGifts.gtag);
   });
 
   context('XUID Lookup', () => {
@@ -47,14 +51,18 @@ context('Steward / Tools / Gift History / Sunrise', () => {
       selectSunrise();
     });
     verifySearchInvalidXuidEmptyHistoryTest();
-    verifySearchValidXuidGiftsExistsTest(jordan.xuid);
+    verifySearchValidXuidGiftsExistsTest(userWithRecentGifts.xuid);
     verifyGiftHistoryCalendarWhereGiftsExist(
-      jordan.xuid,
+      userWithRecentGifts.xuid,
       recentGiftToUserInProd,
       recentGiftToUserInDev,
       numberOfExpectedUserGifts,
     );
-    verifyGiftHistoryCalendarWhereGiftsDoNotExist(jordan.xuid, noGiftsDateStart, noGiftsDateEnd);
+    verifyGiftHistoryCalendarWhereGiftsDoNotExist(
+      userWithRecentGifts.xuid,
+      noGiftsDateStart,
+      noGiftsDateEnd,
+    );
   });
 
   context('LSP Group Lookup', () => {
@@ -62,9 +70,9 @@ context('Steward / Tools / Gift History / Sunrise', () => {
       goToTool();
       selectSunrise();
     });
-    verifySearchValidLspGroupHistoryGiftsExistsTest('Live Ops Developers');
+    verifySearchValidLspGroupHistoryGiftsExistsTest(lspGroupWithRecentGifts);
     verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
-      'Live Ops Developers',
+      lspGroupWithRecentGifts,
       recentGiftToLSPInProd,
       recentGiftToLSPInDev,
       numberOfExpectedLSPGifts,
