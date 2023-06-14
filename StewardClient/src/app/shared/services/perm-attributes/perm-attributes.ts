@@ -41,6 +41,8 @@ export enum PermAttributeName {
   ManageStewardTeam = 'ManageStewardTeam',
   ManagePlayerInventory = 'ManagePlayerInventory',
   AllowedToExceedCreditLimit = 'AllowedToExceedCreditLimit',
+  UpdateSafetyRating = 'UpdateSafetyRating',
+  OverrideSkillRating = 'OverrideSkillRating',
 }
 
 /** Full perm attribute details. */
