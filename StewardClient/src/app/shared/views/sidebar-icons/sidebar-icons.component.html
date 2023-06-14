@@ -1,20 +1,5 @@
 <span>
   <a
-    [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
-    queryParamsHandling="preserve"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Settings"
-  >
-    <mat-icon
-      [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
-      matBadgeSize="small"
-      >settings</mat-icon
-    >
-  </a>
-</span>
-<span>
-  <a
     [routerLink]="[{ outlets: { sidebar: 'changelog' } }]"
     queryParamsHandling="preserve"
     mat-icon-button
@@ -30,15 +15,15 @@
     >
   </a>
 </span>
-<span>
-  <a
-    [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
-    queryParamsHandling="preserve"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Profile"
+<span class="short-spacer"></span>
+<span class="info">
+  <a 
+  href="http://www.google.com" 
+  target="_blank"
+  mat-icon-button
+  matTooltip="Documentation"
   >
-    <mat-icon>account_circle</mat-icon>
+    <mat-icon>info</mat-icon>
   </a>
 </span>
 <span>
@@ -52,3 +37,32 @@
     <mat-icon>contact_support</mat-icon>
   </a>
 </span>
+<span class="short-spacer"></span>
+<span>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
+    queryParamsHandling="preserve"
+    mat-icon-button
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Settings"
+  >
+    <mat-icon
+      [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
+      matBadgeSize="small"
+      >settings</mat-icon
+    >
+  </a>
+</span>
+
+<span>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
+    queryParamsHandling="preserve"
+    mat-icon-button
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Profile"
+  >
+    <mat-icon>account_circle</mat-icon>
+  </a>
+</span>
+
