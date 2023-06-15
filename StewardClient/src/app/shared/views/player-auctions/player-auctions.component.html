@@ -1,99 +1,101 @@
-<mat-card>
-  <mat-card-content>
-    <mat-card-header>
-      <mat-card-title>Auctions</mat-card-title>
-      <mat-card-subtitle
-        >{{ gameTitle | humanize }} (Max results 100, filter to find more)
-      </mat-card-subtitle>
-    </mat-card-header>
-    <sunrise-auction-filters
-      (newAuctionFilterSearch)="searchAuctions($event)"
-    ></sunrise-auction-filters>
-    <ng-container *ngIf="!loadError; else failstate">
-      <table mat-table [dataSource]="auctions">
-        <ng-container matColumnDef="auctionInfo">
-          <th mat-header-cell *matHeaderCellDef>Auction Info</th>
-          <td mat-cell *matCellDef="let entry">
-            <span><b>Status:</b> {{ entry.status }}</span>
-            <span><b>Item Name:</b> {{ entry.itemName }}</span>
-            <span
-              ><b>Closing Date UTC:</b>
-              {{ entry.closingDateUtc | dateTimeToJsDate | date: 'short' }}</span
-            >
-          </td>
-        </ng-container>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title> Created Auctions </mat-panel-title>
+    <mat-panel-description>
+      {{ gameTitle | humanize }} (Max results 100, filter to find more)
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-card>
+    <mat-card-content>
+      <sunrise-auction-filters
+        (newAuctionFilterSearch)="searchAuctions($event)"
+      ></sunrise-auction-filters>
+      <ng-container *ngIf="!loadError; else failstate">
+        <table mat-table [dataSource]="auctions">
+          <ng-container matColumnDef="auctionInfo">
+            <th mat-header-cell *matHeaderCellDef>Auction Info</th>
+            <td mat-cell *matCellDef="let entry">
+              <span><b>Status:</b> {{ entry.status }}</span>
+              <span><b>Item Name:</b> {{ entry.itemName }}</span>
+              <span
+                ><b>Closing Date UTC:</b>
+                {{ entry.closingDateUtc | dateTimeToJsDate | date: 'short' }}</span
+              >
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="pricingInfo">
-          <th mat-header-cell *matHeaderCellDef>Pricing Info</th>
-          <td mat-cell *matCellDef="let entry">
-            <span><b>Bids:</b> {{ entry.bids }}</span>
-            <span><b>Current:</b> {{ entry.currentPrice }}</span>
-            <span><b>Buyout:</b> {{ entry.buyoutPrice }}</span>
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="pricingInfo">
+            <th mat-header-cell *matHeaderCellDef>Pricing Info</th>
+            <td mat-cell *matCellDef="let entry">
+              <span><b>Bids:</b> {{ entry.bids }}</span>
+              <span><b>Current:</b> {{ entry.currentPrice }}</span>
+              <span><b>Buyout:</b> {{ entry.buyoutPrice }}</span>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="enforcementInfo">
-          <th mat-header-cell *matHeaderCellDef>Enforcement Info</th>
-          <td mat-cell *matCellDef="let entry">
-            <span *ngIf="!!entry.timeFlagged" class="auction-flagged"
-              ><b>Auction/Livery Flagged On:</b>
-              {{ entry.timeFlagged | dateTimeToJsDate | date: 'short' }}</span
-            >
-            <span><b>Review State:</b> {{ entry.reviewState }}</span>
-            <span><b>Total Reports:</b> {{ entry.totalReports }}</span>
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="enforcementInfo">
+            <th mat-header-cell *matHeaderCellDef>Enforcement Info</th>
+            <td mat-cell *matCellDef="let entry">
+              <span *ngIf="!!entry.timeFlagged" class="auction-flagged"
+                ><b>Auction/Livery Flagged On:</b>
+                {{ entry.timeFlagged | dateTimeToJsDate | date: 'short' }}</span
+              >
+              <span><b>Review State:</b> {{ entry.reviewState }}</span>
+              <span><b>Total Reports:</b> {{ entry.totalReports }}</span>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="liveryImageBase64">
-          <th mat-header-cell *matHeaderCellDef>Livery</th>
-          <td mat-cell *matCellDef="let entry">
-            <img
-              matTooltip="Click to enlarge image"
-              (click)="enlargeImage('Livery', entry.liveryImageBase64)"
-              [src]="entry.liveryImageBase64"
-            />
-            <img
-              *ngIf="!entry.liveryImageBase64"
-              [src]="NO_AUCTION_IMAGE_SRC"
-              matTooltip="No livery image found"
-            />
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="liveryImageBase64">
+            <th mat-header-cell *matHeaderCellDef>Livery</th>
+            <td mat-cell *matCellDef="let entry">
+              <img
+                matTooltip="Click to enlarge image"
+                (click)="enlargeImage('Livery', entry.liveryImageBase64)"
+                [src]="entry.liveryImageBase64"
+              />
+              <img
+                *ngIf="!entry.liveryImageBase64"
+                [src]="NO_AUCTION_IMAGE_SRC"
+                matTooltip="No livery image found"
+              />
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="textureMapImageBase64">
-          <th mat-header-cell *matHeaderCellDef>Texture Map</th>
-          <td mat-cell *matCellDef="let entry">
-            <img
-              matTooltip="Click to enlarge image"
-              (click)="enlargeImage('Texture Map', entry.textureMapImageBase64)"
-              [src]="entry.textureMapImageBase64"
-            />
-            <img
-              *ngIf="!entry.textureMapImageBase64"
-              [src]="NO_AUCTION_IMAGE_SRC"
-              matTooltip="No texture map image found"
-            />
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="textureMapImageBase64">
+            <th mat-header-cell *matHeaderCellDef>Texture Map</th>
+            <td mat-cell *matCellDef="let entry">
+              <img
+                matTooltip="Click to enlarge image"
+                (click)="enlargeImage('Texture Map', entry.textureMapImageBase64)"
+                [src]="entry.textureMapImageBase64"
+              />
+              <img
+                *ngIf="!entry.textureMapImageBase64"
+                [src]="NO_AUCTION_IMAGE_SRC"
+                matTooltip="No texture map image found"
+              />
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let entry">N/A</td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
-      </table>
-    </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let entry">N/A</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+        </table>
+      </ng-container>
 
-    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"> </mat-progress-spinner>
+      <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"> </mat-progress-spinner>
 
-    <mat-paginator
-      [hidden]="isLoading || loadError"
-      [pageSizeOptions]="[5, 10, 20]"
-      showFirstLastButtons
-    ></mat-paginator>
-  </mat-card-content>
-</mat-card>
+      <mat-paginator
+        [hidden]="isLoading || loadError"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</mat-expansion-panel>
 
 <ng-template #failstate>
   <json-dump [input]="loadError">Failed to load.</json-dump>
