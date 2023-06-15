@@ -8,6 +8,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH4, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'd6c338dc-8bc7-4e1d-96a6-97063940f920',
+      shortText: 'Combine Auctions and Auction Log tabs',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '5aa1a11f-5dce-40cc-968a-d30f02c1015a',
+      shortText: 'Added skill rating and safety rating tools',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'e9168a6f-743e-4763-9dd4-204ea33136e1',
       shortText: 'Add Community Manager as a player flag option',
