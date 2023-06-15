@@ -508,6 +508,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                             new ServicesFailureStewardError(
                                 $"LSP failed to gift livery to player with XUID: {source.xuid}")
                         }));
+
+            this.CreateMap<ForzaSafetyRatingLetterGrade, SafetyRatingGrade>();
+            this.CreateMap<ForzaSafetyRating, SafetyRating>()
+                .ForMember(dest => dest.Score, opt => opt.MapFrom(source => source.scoreValue));
+
+            this.CreateMap<ForzaPlayerSkillRatingSummary, SkillRatingSummary>();
         }
 
         private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)
