@@ -90,11 +90,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         public IAuctionManagementService AuctionManagementService => this.WoodstockFactory.PrepareAuctionManagementService(this.Endpoint);
 
         /// <summary>
-        ///     Gets a <see cref="IStorefrontService" />.
-        /// </summary>
-        public IStorefrontService Storefront => this.WoodstockFactory.PrepareStorefrontService(this.Endpoint);
-
-        /// <summary>
         ///     Gets a <see cref="IConfigurationManagementService" />.
         /// </summary>
         public IConfigurationManagementService ConfigurationManagementService => this.WoodstockFactory.PrepareConfigurationManagementService(this.Endpoint);

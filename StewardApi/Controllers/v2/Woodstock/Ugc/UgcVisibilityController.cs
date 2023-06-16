@@ -17,21 +17,20 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 {
     /// <summary>
-    ///     Controller for Woodstock Ugc hiding.
+    ///     Controller for Woodstock Ugc hiding/unhiding.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/ugc/hide")]
+    [Route("api/v{version:apiVersion}/title/woodstock/ugc")]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
     [Tags(Title.Woodstock, Topic.Ugc, Target.Details)]
-    public class HideController : V2WoodstockControllerBase
+    public class UgcVisibilityController : V2WoodstockControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
@@ -40,9 +39,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         private readonly IScheduler scheduler;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="HideController"/> class.
+        ///     Initializes a new instance of the <see cref="UgcVisibilityController"/> class.
         /// </summary>
-        public HideController(
+        public UgcVisibilityController(
             IJobTracker jobTracker,
             ILoggingService loggingService,
             IScheduler scheduler)
@@ -57,12 +56,33 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         }
 
         /// <summary>
+        ///    Unhide a ugc item.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.GeneralUser,
+            UserRole.LiveOpsAdmin)]
+        [HttpPost("{ugcId}/unhide")]
+        [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Ugc)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
+        [Authorize(Policy = UserAttribute.UnhideUgc)]
+        public async Task<IActionResult> UnhideUgc(string ugcId)
+        {
+            var ugcIdGuid = ugcId.TryParseGuidElseThrow(nameof(ugcId));
+
+            await this.Services.StorefrontManagementService.SetUGCVisibility(ugcIdGuid, true).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
         ///    Hide a list of ugc item.
         /// </summary>
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin)]
-        [HttpPost]
+        [HttpPost("hide")]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
@@ -87,7 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         {
             foreach (var ugcId in ugcIds)
             {
-                await this.Services.Storefront.HideUGC(ugcId).ConfigureAwait(true);
+                await this.Services.StorefrontManagementService.SetUGCVisibility(ugcId, false).ConfigureAwait(true);
             }
         }
 
@@ -98,7 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Hide Multiple Ugc.", this.Response).ConfigureAwait(true);
-            var storefrontService = this.Services.Storefront;
+            var storefrontManagementService = this.Services.StorefrontManagementService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -112,7 +132,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     {
                         try
                         {
-                            await storefrontService.HideUGC(ugcId).ConfigureAwait(true);
+                            await storefrontManagementService.SetUGCVisibility(ugcId, false).ConfigureAwait(true);
                         }
                         catch (Exception)
                         {
