@@ -706,6 +706,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets UGC item by share code.
         /// </summary>
+        [NonAction]  //Disabling because replacing
         [HttpGet("storefront/shareCode({shareCode})")]
         [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
@@ -914,6 +915,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets hidden player UGC content.
         /// </summary>
+        [NonAction]  //Disabling because replacing
         [HttpGet("storefront/xuid({xuid})/hidden")]
         [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
@@ -930,6 +932,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Unhides player UGC content.
         /// </summary>
+        [NonAction]  //Disabling because replacing
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin)]
