@@ -1,4 +1,5 @@
-﻿using Forza.WebServices.FM8.Generated;
+﻿using Forza.UserInventory.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
 using System;
 using System.Threading.Tasks;
 using static Forza.WebServices.FM8.Generated.LiveOpsService;
@@ -112,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Adds or edits car type inventory items in user's profile.
         /// </summary>
-        Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, Guid externalProfileId, ForzaCarUserInventoryItem[] clientCars, ForzaCarDataUpdateAccessLevel accessLevel);
+        Task<LiveOpsUpdateCarDataV2Output> LiveOpsUpdateCarDataV2(ulong xuid, Guid externalProfileId, AdminForzaCarUserInventoryItem[] carsToUpdate, ForzaCarDataUpdateAccessLevel accessLevel);
 
         /// <summary>
         ///     Removes non-car type inventory items from user's profile.

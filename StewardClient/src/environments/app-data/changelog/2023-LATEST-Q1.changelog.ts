@@ -13,9 +13,19 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Reorder navbar icons and link to docs',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
+      uuid: 'c7dcbb87-172e-4845-9fd5-6afbbe09c67a',
+      shortText: 'Add color highlighting and drag and drop upload.',
+    },
+    {
       tag: { title: [GameTitle.FH4, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'd6c338dc-8bc7-4e1d-96a6-97063940f920',
       shortText: 'Combine Auctions and Auction Log tabs',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '1cbfd6e8-4edb-4d1a-8466-cfef7025b0b5',
+      shortText: 'Allow users to add and edit cars on player inventories',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },

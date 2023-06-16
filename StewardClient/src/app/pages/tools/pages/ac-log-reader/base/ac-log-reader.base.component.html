@@ -3,45 +3,55 @@
     <mat-card-title>Anti-Cheat Log Reader</mat-card-title>
     <mat-card-subtitle>{{ service?.gameTitle | titlecase }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
-    <form [formGroup]="formGroup" class="sf-wrapper">
+    <help-popover-icon class="top-pop-over" cardTitle="Anti-Cheat Log Reader Categories">
+      <p>Decodes client logs and categorizes results based on severity with a color-coded icon.</p>
+      <div class="decoded-content">
+        <div class="decoded-line">
+          <mat-icon class="category1">close</mat-icon>
+          <p>Danger</p>
+        </div>
+        <div class="decoded-line">
+          <mat-icon class="category2">priority_high</mat-icon>
+          <p>Caution</p>
+        </div>
+        <div class="decoded-line">
+          <mat-icon class="category3">question_mark</mat-icon>
+          <p>Interesting</p>
+        </div>
+        <div class="decoded-line">
+          <mat-icon class="category4"></mat-icon>
+          <p>Other</p>
+        </div>
+      </div>
+    </help-popover-icon>
+    <form [formGroup]="formGroup" class="sf-wrapper file-upload-wrapper">
       <div class="sf-vertical align-right">
         <input
           #fileUpload
+          accept=".log"
           type="file"
-          accept=".Crash_Info"
-          class="file-input"
+          class="file-upload-overlay"
           [formControl]="formControls.fileName"
           (change)="onFileSelected($event)"
         />
-        <div class="file-upload">
+        <div>
           {{ fileName || 'Upload game crash log file' }}
           <button mat-mini-fab color="accent" class="upload-btn" (click)="fileUpload.click()">
             <mat-icon>attach_file</mat-icon>
           </button>
         </div>
-
-        <button
-          mat-raised-button
-          class="decode-button"
-          color="primary"
-          [disabled]="!formGroup.valid"
-          matTooltip="Decode AC Log"
-          aria-label="Decode AC Log"
-          clickStop
-          stateManager
-          [monitor]="getMonitor"
-          monitorDisable
-          monitorWarn
-          monitorWarnSnackbar
-          (click)="onDecodeClick()"
-        >
-          Decode
-          <button-spinner [monitor]="getMonitor" defaultIcon="document_scanner"></button-spinner>
-        </button>
       </div>
     </form>
   </mat-card-header>
-  <mat-card-content class="decoded-content">
-    <p>{{ decodedLog }}</p>
+  <mat-card-content>
+    <div class="decoded-content">
+      <div *ngFor="let line of decodedLog" class="decoded-line">
+        <mat-icon *ngIf="line.class === 'category1'" [class]="line.class">close</mat-icon>
+        <mat-icon *ngIf="line.class === 'category2'" [class]="line.class">priority_high</mat-icon>
+        <mat-icon *ngIf="line.class === 'category3'" [class]="line.class">question_mark</mat-icon>
+        <mat-icon *ngIf="line.class === 'category4'" [class]="line.class"></mat-icon>
+        <p>{{ line.text }}</p>
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>
