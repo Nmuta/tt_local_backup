@@ -37,7 +37,6 @@ export class SunriseLookupComponent extends BaseComponent implements OnInit {
 
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
-  public canHideUgc: boolean = false;
   public featureMatTooltip: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
@@ -135,7 +134,6 @@ export class SunriseLookupComponent extends BaseComponent implements OnInit {
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;
-        this.canHideUgc = false;
       });
   }
 }

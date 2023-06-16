@@ -20,7 +20,7 @@ export interface HiddenUgcServiceContract {
     fileType: HideableUgcFileType,
     ugcId: GuidLikeString,
   ): Observable<void>;
-  getPlayerHiddenUgcByXuid$(xuid: BigNumber ): Observable<HideableUgc[]>;
+  getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]>;
 }
 
 /** Extended type from HideableUgc. */

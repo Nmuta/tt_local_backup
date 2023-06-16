@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { SteelheadPlayerHiddenUgcComponent } from './steelhead-player-hidden-ugc/steelhead-player-hidden-ugc.component';
 
 /**
  *  A feature module for retrieving and displaying a player's hidden UGC.
@@ -25,6 +26,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     HiddenUgcTableComponent,
     SunrisePlayerHiddenUgcComponent,
     WoodstockPlayerHiddenUgcComponent,
+    SteelheadPlayerHiddenUgcComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     HiddenUgcTableComponent,
     SunrisePlayerHiddenUgcComponent,
     WoodstockPlayerHiddenUgcComponent,
+    SteelheadPlayerHiddenUgcComponent,
   ],
 })
 export class PlayerHiddenUgcModule {}

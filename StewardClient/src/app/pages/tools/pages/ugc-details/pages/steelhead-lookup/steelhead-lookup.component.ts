@@ -23,6 +23,7 @@ import {
   of,
   takeUntil,
 } from 'rxjs';
+import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service';
 
 /** Routed component that displays details about a steelhead UGC item. */
 @Component({
@@ -38,7 +39,6 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
 
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
-  public canHideUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
   public featureMatTooltip: string = null;
   public generateSharecodeMatTooltip: string = null;
@@ -59,6 +59,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: SteelheadUgcReportService,
     private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
+    private readonly ugcVisibilityService: SteelheadUgcVisibilityService,
   ) {
     super();
   }
@@ -137,11 +138,17 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     if (!this.ugcItem) {
       return;
     }
+    this.hideMonitor = this.hideMonitor.repeat();
 
-    throw new Error(`Steelhead does not support hiding UGC.`);
+    this.ugcVisibilityService
+      .hideUgcItems$([this.ugcItem.id])
+      .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = false;
+      });
   }
 
-  /** Report a Ugc item in Woodstock */
+  /** Report a Ugc item in Steelhead */
   public reportUgcItem(): void {
     if (!this.ugcItem) {
       return;
@@ -154,7 +161,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       .subscribe();
   }
 
-  /** Generate sharecode for a UGC item in Woodstock */
+  /** Generate sharecode for a UGC item in Steelhead */
   public generateSharecodeForUgc(): void {
     if (!this.ugcItem) {
       return;

@@ -106,7 +106,6 @@
 
             <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button
-                [disabled]="!canHideUgc"
                 #verifyHideBtn
                 [permissionAttribute]="hidePermAttribute"
                 [permissionTitle]="gameTitle"
@@ -123,11 +122,7 @@
                 monitorWarn
                 monitorWarnSnackbar
                 monitorCompleteSnackbar
-                [disabled]="!canHideUgc"
               >
-                <help-popover-icon *ngIf="!ugcItem?.isPublic" cardTitle="Hide UGC">
-                  <p class="sf-text-warn">This item is private and cannot be hidden.</p>
-                </help-popover-icon>
                 Hide UGC
               </button>
             </div>

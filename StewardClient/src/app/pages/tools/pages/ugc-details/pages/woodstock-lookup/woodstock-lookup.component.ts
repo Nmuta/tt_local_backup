@@ -58,7 +58,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public userHasWritePerms: boolean = false;
   public canChangeGeoFlags: boolean = false;
   public canFeatureUgc: boolean = false;
-  public canHideUgc: boolean = false;
   public canCloneUgc: boolean = false;
   public canPersistUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
@@ -177,7 +176,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
         }
 
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
-        this.canHideUgc = this.ugcItem?.isPublic;
         this.canGenerateSharecode = !this.ugcItem?.shareCode && this.ugcItem?.isPublic;
 
         if (!this.userHasWritePerms) {
@@ -237,7 +235,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;
-        this.canHideUgc = false;
       });
   }
 

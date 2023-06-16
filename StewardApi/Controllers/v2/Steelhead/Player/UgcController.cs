@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 results.AddRange(tunings.GetAwaiter().GetResult().result);
             }
 
-            var convertedResults = this.mapper.SafeMap<List<HideableUgc>>(results); //This mapper isn't working yet.
+            var convertedResults = this.mapper.SafeMap<List<HideableUgc>>(results);
 
             return this.Ok(convertedResults);
         }

@@ -88,6 +88,39 @@
                 <span>Report</span>
               </button>
             </div>
+            <div class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyHideBtn
+                [permissionAttribute]="hidePermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyHideBtn"
+                (click)="hideUgcItem()"
+                stateManager
+                [monitor]="hideMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                <help-popover-icon cardTitle="Hide UGC">
+                  <p>
+                    Hidden UGC will be removed from the game, but can be restored after the fact in
+                    the Hidden UGC section of Player Details.
+                  </p>
+                  <p>Be advised, for the moment Steelhead can't easily identify hidden UGC.</p>
+                  <p>
+                    If hiding UGC fails, please lookup the Creator and check their UGC tab in Player
+                    Details and verify the UGC is not already hidden.
+                  </p>
+                </help-popover-icon>
+                Hide UGC
+              </button>
+            </div>
           </div>
         </div>
       </div>

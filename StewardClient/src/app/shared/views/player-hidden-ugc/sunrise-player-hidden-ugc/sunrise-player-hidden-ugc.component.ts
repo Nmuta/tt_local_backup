@@ -20,7 +20,7 @@ export class SunrisePlayerHiddenUgcComponent {
   constructor(public readonly service: SunriseService) {
     this.serviceContract = {
       title: GameTitle.FH5,
-      getPlayerHiddenUgcByXuid$: (xuid) => service.getPlayerHiddenUgcByXuid$(xuid),
+      getPlayerHiddenUgcByXuid$: xuid => service.getPlayerHiddenUgcByXuid$(xuid),
       unhideUgc$: (xuid, fileType, ugcId) => service.unhideUgc$(xuid, fileType, ugcId),
     };
   }
