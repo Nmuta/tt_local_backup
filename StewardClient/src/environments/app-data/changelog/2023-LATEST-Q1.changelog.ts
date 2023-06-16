@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '8cb3427a-a9a5-4e94-9e69-5d9f628a751b',
+      shortText: 'Reorder navbar icons and link to docs',
+    },
+    {
       tag: { title: [GameTitle.FH4, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'd6c338dc-8bc7-4e1d-96a6-97063940f920',
       shortText: 'Combine Auctions and Auction Log tabs',
