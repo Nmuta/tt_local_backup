@@ -25,6 +25,8 @@ import { InventoryItemListDisplayComponentContract } from '@views/inventory-item
 import { MatDialog } from '@angular/material/dialog';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { SteelheadEditCarItemModalComponent } from '@views/edit-car-item-modal/steelhead/steelhead-edit-car-item-modal.component';
+import { EditCarItemModalData } from '@views/edit-car-item-modal/edit-car-item-modal.component';
 
 /** Displays an Steelhead player's inventory. */
 @Component({
@@ -88,8 +90,6 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
 
         // must be cloned because a child component modifies this value, and modification of state is disallowed
         const masterInventory = cloneDeep(steelheadMasterInventory);
-        // TMP: Remove cars until we can support their options
-        masterInventory.cars = [];
         this.itemSelectionList = masterInventory;
       });
   }
@@ -142,13 +142,17 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
         return this.editInventory(inventoryUpdates, quantityChange > 0);
       };
 
-      // TODO: Cars coming next as credits were top priority (lugeiken 2023/05/09)
-      // cars.service.openCarEditModal$ = item => {
-      //   const dialogRef = this.dialog.open(SteelheadEditCarItemModalComponent, {
-      //     data: item,
-      //   });
-      //   return dialogRef.afterClosed();
-      // };
+      cars.service.openCarEditModal$ = item => {
+        const dialogRef = this.dialog.open(SteelheadEditCarItemModalComponent, {
+          data: {
+            xuid: this.identity.xuid,
+            profileId: this.profile.profileId,
+            externalProfileId: this.profile.externalProfileId,
+            car: item,
+          } as EditCarItemModalData,
+        });
+        return dialogRef.afterClosed();
+      };
 
       // VANITY ITEMS
       vanityItems.service.editItemQuantity$ = (item, quantityChange) => {
@@ -177,7 +181,7 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
   private editInventory(
     inventoryUpdates: SteelheadPlayerInventory,
     addUpdates: boolean,
-  ): Observable<PlayerInventoryItem[]> {
+  ): Observable<unknown> {
     return addUpdates
       ? this.playerInventoryService.editPlayerProfileItems$(
           this.identity.xuid,

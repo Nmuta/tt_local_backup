@@ -1,29 +1,29 @@
 import { ValueProvider } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
-import { WoodstockCarsService } from './woodstock-cars.service';
+import { PermissionsService } from './permissions.service';
 
-/** Defines the mock for the API Service. */
-export class MockWoodstockCarsService {
+/** Defines the mock for the Permissions Service. */
+export class MockPermissionsService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getCars$ = jasmine
-    .createSpy('getCars$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+  public getAllPermissionAttributes$ = jasmine
+    .createSpy('getAllPermissionAttributes$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
 
-  public getCar$ = jasmine
-    .createSpy('getCar$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(null))));
+  public getUserPermissionAttributes$ = jasmine
+    .createSpy('getUserPermissionAttributes$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   constructor(private readonly generator$: () => unknown) {}
 }
 
-/** Creates an injectable mock for Woodstock Service. */
-export function createMockWoodstockCarsService(
+/** Creates an injectable mock for Permissions Service. */
+export function createMockPermissionsService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {
-    provide: WoodstockCarsService,
-    useValue: new MockWoodstockCarsService(returnValueGenerator),
+    provide: PermissionsService,
+    useValue: new MockPermissionsService(returnValueGenerator),
   };
 }

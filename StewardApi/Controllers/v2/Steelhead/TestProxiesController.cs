@@ -44,6 +44,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
+            if (!this.VerifyServiceProxy(() => services.ConfigurationManagementService, "ConfigurationManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
             if (!this.VerifyServiceProxy(() => services.GiftingManagementService, "GiftingManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
@@ -59,12 +64,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.UserManagementService, "UserManagementService", out exception))
+            if (!this.VerifyServiceProxy(() => services.NotificationManagementService, "NotificationManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.UserInventoryManagementService, "UserInventoryManagementService", out exception))
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.ScoreboardManagementService, "ScoreboardManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
@@ -74,12 +84,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.NotificationManagementService, "NotificationManagementService", out exception))
+            if (!this.VerifyServiceProxy(() => services.UserManagementService, "UserManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
-            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
+            if (!this.VerifyServiceProxy(() => services.UserInventoryManagementService, "UserInventoryManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }

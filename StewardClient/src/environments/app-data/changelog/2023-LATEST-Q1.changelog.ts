@@ -19,6 +19,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '1cbfd6e8-4edb-4d1a-8466-cfef7025b0b5',
+      shortText: 'Allow users to add and edit cars on player inventories',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '5aa1a11f-5dce-40cc-968a-d30f02c1015a',
       shortText: 'Added skill rating and safety rating tools',
     },

@@ -456,7 +456,6 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<SteelheadGiftRequestValidator>().As<IRequestValidator<SteelheadGift>>().SingleInstance();
             builder.RegisterType<SteelheadMasterInventoryRequestValidator>().As<IRequestValidator<SteelheadMasterInventory>>().SingleInstance();
             builder.RegisterType<SteelheadPlayerInventoryItemUpdateRequestValidator>().As<IRequestValidator<SteelheadPlayerInventory>>().SingleInstance();
-            builder.RegisterType<SteelheadPlayerInventoryCarUpdateRequestValidator>().As<IRequestValidator<IList<CarInventoryItem>>>().SingleInstance();
             builder.RegisterType<SteelheadUserFlagsRequestValidator>().As<IRequestValidator<SteelheadUserFlagsInput>>().SingleInstance();
         }
 
