@@ -913,55 +913,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets hidden player UGC content.
-        /// </summary>
-        [NonAction]  //Disabling because replacing
-        [HttpGet("storefront/xuid({xuid})/hidden")]
-        [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Ugc)]
-        public async Task<IActionResult> GetPlayerHiddenUGC(ulong xuid)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-
-            var hiddenUgc = await this.storefrontProvider.GetHiddenUgcForUserAsync(xuid, endpoint).ConfigureAwait(true);
-
-            return this.Ok(hiddenUgc);
-        }
-
-        /// <summary>
-        ///     Unhides player UGC content.
-        /// </summary>
-        [NonAction]  //Disabling because replacing
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
-        [SwaggerResponse(200)]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.UnhideUgc)]
-        public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, string ugcId)
-        {
-            fileType.ShouldNotBeNull(nameof(fileType));
-            xuid.EnsureValidXuid();
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(ugcId, out var itemIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
-            }
-
-            if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(FileType)} provided: {fileType}");
-            }
-
-            await this.storefrontProvider.UnhideUgcAsync(xuid, itemIdGuid, fileTypeEnum, endpoint).ConfigureAwait(true);
-
-            return this.Ok();
-        }
-
-        /// <summary>
         ///     Gets backstage pass updates.
         /// </summary>
         [NonAction] // TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818)
