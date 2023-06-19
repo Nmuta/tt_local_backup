@@ -1,5 +1,5 @@
 <div class="sf-wrapper">
-  <div class="sf-horizontal sf-right" *ngIf="ugcHidingSupported">
+  <div class="sf-horizontal sf-right do-not-manipulate-margin" *ngIf="ugcHidingSupported">
     Click on a row to select
     <button
       mat-stroked-button
@@ -10,37 +10,37 @@
       Unselect all
     </button>
     <div class="sf-spacer"></div>
-    <div class="sf-right do-not-manipulate-margin action-section">
-    <verify-button
-      #verifyCheckboxHideBtn
-      [disabled]="selectedUgcs?.length <= 0"
-      [permissionAttribute]="hideUgcPermission"
-      [permissionTitle]="gameTitle"
-    ></verify-button>
-    <button
-      mat-raised-button
-      color="warn"
-      [disabled]="selectedUgcs?.length <= 0"
-      [verifyWithV2]="verifyCheckboxHideBtn"
-      (click)="hideMultipleUgc(selectedUgcs)"
-      stateManager
-      [monitor]="hideUgcMonitor"
-      monitorDisable
-      monitorWarn
-      monitorWarnSnackbar
-    >
-      <span [ngPlural]="selectedUgcs?.length">
-        Hide {{ selectedUgcs?.length }}
-        <ng-template ngPluralCase="=1">Ugc </ng-template>
-        <ng-template ngPluralCase="other">Ugcs </ng-template>
-      </span>
-      <mat-spinner
-        *ngIf="hideUgcMonitor.isActive"
-        class="force-inline-2x"
-        [matTooltip]="hideUgcMonitor.label + ' in progress'"
-      ></mat-spinner>
-    </button>
-    </div>
+    <span class="action-section">
+      <verify-button
+        #verifyCheckboxHideBtn
+        [disabled]="selectedUgcs?.length <= 0"
+        [permissionAttribute]="hideUgcPermission"
+        [permissionTitle]="gameTitle"
+      ></verify-button>
+      <button
+        mat-raised-button
+        color="warn"
+        [disabled]="selectedUgcs?.length <= 0"
+        [verifyWithV2]="verifyCheckboxHideBtn"
+        (click)="hideMultipleUgc(selectedUgcs)"
+        stateManager
+        [monitor]="hideUgcMonitor"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
+      >
+        <span [ngPlural]="selectedUgcs?.length">
+          Hide {{ selectedUgcs?.length }}
+          <ng-template ngPluralCase="=1">Ugc </ng-template>
+          <ng-template ngPluralCase="other">Ugcs </ng-template>
+        </span>
+        <mat-spinner
+          *ngIf="hideUgcMonitor.isActive"
+          class="force-inline-2x"
+          [matTooltip]="hideUgcMonitor.label + ' in progress'"
+        ></mat-spinner>
+      </button>
+    </span>
   </div>
 </div>
 <div class="table-wide-actions" *ngIf="displayTableWideActions">

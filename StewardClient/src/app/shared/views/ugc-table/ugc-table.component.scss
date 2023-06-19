@@ -94,8 +94,8 @@ div.table-wide-actions {
   }
 }
 
-div.action-section {
-  width: fit-content;
+.action-section {
+  flex-grow: 0;
 }
 
 mat-progress-spinner {
