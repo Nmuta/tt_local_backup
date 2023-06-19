@@ -9,15 +9,20 @@ import {
   PlayerInventoryItemList,
   PlayerInventoryItemListEntry,
 } from '@models/master-inventory-item-list';
-import { PlayerInventoryItem, isPlayerInventoryItem } from '@models/player-inventory-item';
+import {
+  PlayerInventoryCarItem,
+  PlayerInventoryItem,
+  isPlayerInventoryItem,
+  toPlayerInventoryCarItem,
+} from '@models/player-inventory-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep } from 'lodash';
-import { Observable, takeUntil } from 'rxjs';
+import { Observable, filter, take, takeUntil } from 'rxjs';
 
 /** Service contract for InventoryItemListDisplayComponent. */
 export interface InventoryItemListDisplayComponentContract {
   /** Optional: Allows editing of inventory car items. */
-  openCarEditModal$(item: PlayerInventoryItem): Observable<unknown>;
+  openCarEditModal$(item: PlayerInventoryItem): Observable<PlayerInventoryCarItem>;
   /** Optional: Allows editing of inventory items. */
   editItemQuantity$(item: PlayerInventoryItem, quantityChange: number): Observable<unknown>;
   /** Optional: Allows deleting of inventory items. */
@@ -115,14 +120,25 @@ export class InventoryItemListDisplayComponent extends BaseComponent implements 
   }
 
   /** Edits a car item. */
-  public editCarItem(item: PlayerInventoryItemListEntry): void {
+  public editCarItem(item: PlayerInventoryCarItem, index: number): void {
     if (!this.isCarItem(item)) {
       throw new Error(
         'Non-car items should not support car property changes. Verify InventoryItemListDisplayComponentContract is implementing editItemQuantity$ instead of openCarEditModal$',
       );
     }
 
-    this.service.openCarEditModal$(item).pipe(takeUntil(this.onDestroy$)).subscribe();
+    this.service
+      .openCarEditModal$(toPlayerInventoryCarItem(item))
+      .pipe(
+        take(1),
+        filter(updatedCar => !!updatedCar),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(updatedCar => {
+        const data = cloneDeep(this.itemListTableSource.data);
+        data[index] = updatedCar;
+        this.itemListTableSource.data = data;
+      });
   }
 
   /** Edits an item based on internal form controls. */

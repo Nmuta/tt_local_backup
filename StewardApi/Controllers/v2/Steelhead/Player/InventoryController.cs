@@ -27,6 +27,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.Services.LiveOps.FM8.Generated;
 using static Forza.WebServices.FM8.Generated.LiveOpsService;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using ForzaCarUserInventoryItem = Forza.WebServices.FM8.Generated.ForzaCarUserInventoryItem;
@@ -52,7 +53,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         private readonly ISteelheadItemsProvider itemsProvider;
         private readonly ISteelheadPegasusService pegasusService;
         private readonly IRequestValidator<SteelheadPlayerInventory> steelheadPlayerInventoryItemUpdateRequestValidator;
-        private readonly IRequestValidator<IList<CarInventoryItem>> steelheadPlayerInventoryCarUpdateRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="InventoryController"/> class.
@@ -62,22 +62,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             ILoggingService loggingService,
             ISteelheadItemsProvider itemsProvider,
             ISteelheadPegasusService pegasusService,
-            IRequestValidator<SteelheadPlayerInventory> steelheadPlayerInventoryItemUpdateRequestValidator,
-            IRequestValidator<IList<CarInventoryItem>> steelheadPlayerInventoryCarUpdateRequestValidator)
+            IRequestValidator<SteelheadPlayerInventory> steelheadPlayerInventoryItemUpdateRequestValidator)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             pegasusService.ShouldNotBeNull(nameof(pegasusService));
             steelheadPlayerInventoryItemUpdateRequestValidator.ShouldNotBeNull(nameof(steelheadPlayerInventoryItemUpdateRequestValidator));
-            steelheadPlayerInventoryCarUpdateRequestValidator.ShouldNotBeNull(nameof(steelheadPlayerInventoryCarUpdateRequestValidator));
 
             this.mapper = mapper;
             this.loggingService = loggingService;
             this.itemsProvider = itemsProvider;
             this.pegasusService = pegasusService;
             this.steelheadPlayerInventoryItemUpdateRequestValidator = steelheadPlayerInventoryItemUpdateRequestValidator;
-            this.steelheadPlayerInventoryCarUpdateRequestValidator = steelheadPlayerInventoryCarUpdateRequestValidator;
         }
 
         /// <summary>
@@ -145,48 +142,33 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             ulong xuid,
             int profileId)
         {
-            profileId.ShouldBeGreaterThanValue(-1);
+            var inventory = await this.GetPlayerInventoryByProfileId(xuid, profileId).ConfigureAwait(true);
 
-            async Task<SteelheadPlayerInventory> GetInventory()
+            return this.Ok(inventory);
+        }
+
+        /// <summary>
+        ///     Gets a specific car from player inventory based on profile id.
+        /// </summary>
+        [HttpGet("profile/{profileId}/car/{vin}")]
+        [SwaggerResponse(200, type: typeof(PlayerInventoryCarItem))]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
+        public async Task<IActionResult> GetPlayerInventoryCar(
+            ulong xuid,
+            int profileId,
+            string vin)
+        {
+            var parsedVin = vin.TryParseGuidElseThrow(nameof(vin));
+            var inventory = await this.GetPlayerInventoryByProfileId(xuid, profileId).ConfigureAwait(true);
+
+            var car = inventory.Cars.FirstOrDefault(car => car.Vin == parsedVin);
+            if (car == null)
             {
-                var service = this.Services.LiveOpsService;
-
-                Forza.WebServices.FM8.Generated.LiveOpsService.GetAdminUserInventoryByProfileIdOutput response = null;
-
-                try
-                {
-                    response = await service.GetAdminUserInventoryByProfileId(profileId, xuid)
-                        .ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    throw new UnknownFailureStewardException($"Failed to retrieve player inventory. (profileId: {profileId})", ex);
-                }
-
-                var playerInventoryDetails = this.mapper.SafeMap<SteelheadPlayerInventory>(response.summary);
-
-                return playerInventoryDetails;
+                throw new InvalidArgumentsStewardException($"Could not find car with vin on player's inventory profile. (xuid: {xuid}) (profileId: {profileId}) (vin: {vin})");
             }
 
-            var getPlayerInventory = GetInventory();
-            var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
-
-            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
-
-            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            var masterInventory = await getMasterInventory.ConfigureAwait(true);
-
-            if (playerInventory == null)
-            {
-                throw new NotFoundStewardException($"No inventory found for profileId: {profileId}.");
-            }
-
-            playerInventory.SetItemDescriptions(
-                masterInventory,
-                $"Profile Id: {profileId}",
-                this.loggingService);
-
-            return this.Ok(playerInventory);
+            return this.Ok(car);
         }
 
         /// <summary>
@@ -232,10 +214,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///     Adds or edits inventory items.
         /// </summary>
         [HttpPost("externalProfileId/{externalProfileId}/items")]
-        [SwaggerResponse(200, type: typeof(PlayerInventoryItem[]))]
+        [SwaggerResponse(200, type: typeof(SteelheadPlayerInventory))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Inventory)]
-        [Authorize(Policy = UserAttribute.AddAndEditPlayerInventory)]
+        [Authorize(Policy = UserAttribute.ManagePlayerInventory)]
         public async Task<IActionResult> EditPlayerProfileItems(ulong xuid, string externalProfileId, [FromBody]SteelheadPlayerInventory inventoryUpdates)
         {
             if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
@@ -253,24 +235,64 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new InvalidArgumentsStewardException(result);
             }
 
+            var exceptions = new List<Exception>();
+            LiveOpsAddInventoryItemsOutput rawResults = null;
+            LiveOpsUpdateCarDataV2Output carRawResults = null;
+
             var updateCredits = inventoryUpdates.CreditRewards.Select(credit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((credit, InventoryItemType.Credits)));
             var updateVanityItems = inventoryUpdates.VanityItems.Select(vanityItem => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((vanityItem, InventoryItemType.VanityItem)));
-            var updateItems = updateCredits.Concat(updateVanityItems);
+            var updateItems = updateCredits.Concat(updateVanityItems).ToArray();
 
-            LiveOpsAddInventoryItemsOutput rawResults = null;
+            // Verify UGC ids for each car to make sure they match the car id and type it is being applied to
+            foreach (var car in inventoryUpdates.Cars)
+            {
+                var carId = car.Id;
+                var liveryId = car.VersionedLiveryId;
+                var tuneId = car.VersionedTuneId;
+
+                if (liveryId.HasValue && liveryId != default(Guid))
+                {
+                    await this.VerifyUgcHasCorrectTypeAndCarIdElseThrowAsync(liveryId.Value, ForzaUGCContentType.Livery, carId, this.Services.StorefrontManagementService).ConfigureAwait(true);
+                }
+
+                if (tuneId.HasValue && tuneId != default(Guid))
+                {
+                    await this.VerifyUgcHasCorrectTypeAndCarIdElseThrowAsync(tuneId.Value, ForzaUGCContentType.TuneBlob, carId, this.Services.StorefrontManagementService).ConfigureAwait(true);
+                }
+            }
+
+            var updateCars = inventoryUpdates.Cars.Select(car => this.mapper.SafeMap<AdminForzaCarUserInventoryItem>(car)).ToArray();
+
             try
             {
-                rawResults = await this.Services.LiveOpsService.LiveOpsAddInventoryItems(xuid, externalProfileIdGuid, updateItems.ToArray()).ConfigureAwait(true);
+                if (updateItems != null && updateItems.Length > 0)
+                {
+                    rawResults = await this.Services.LiveOpsService.LiveOpsAddInventoryItems(xuid, externalProfileIdGuid, updateItems).ConfigureAwait(true);
+                }
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to update inventory items. (XUID: {xuid}) (External Profile ID: {externalProfileIdGuid})", ex);
+                exceptions.Add(new LspFailureStewardException("Failed to update non-car inventory items.", ex));
+            }
+
+            try
+            {
+                if (updateCars != null && updateCars.Length > 0)
+                {
+                    carRawResults = await this.Services.LiveOpsService.LiveOpsUpdateCarDataV2(xuid, externalProfileIdGuid, updateCars, ForzaCarDataUpdateAccessLevel.Developer).ConfigureAwait(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                exceptions.Add(new LspFailureStewardException("Failed to update car inventory items.", ex));
             }
 
             var results = new SteelheadPlayerInventory
             {
-                CreditRewards = this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.Credits)),
-                VanityItems = this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.VanityItem)),
+                CreditRewards = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.Credits)) : new List<PlayerInventoryItem>(),
+                VanityItems = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.VanityItem)) : new List<PlayerInventoryItem>(),
+                Cars = carRawResults != null ? this.mapper.SafeMap<PlayerInventoryCarItem[]>(carRawResults.carOutput) : new List<PlayerInventoryCarItem>(),
+                Errors = exceptions,
             };
 
             return this.Ok(results);
@@ -283,7 +305,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(PlayerInventoryItem[]))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Inventory)]
-        [Authorize(Policy = UserAttribute.AddAndEditPlayerInventory)]
+        [Authorize(Policy = UserAttribute.ManagePlayerInventory)]
         public async Task<IActionResult> RemovePlayerProfileItems(ulong xuid, string externalProfileId, [FromBody] SteelheadPlayerInventory inventoryUpdates)
         {
             var externalProfileIdGuid = externalProfileId.TryParseGuidElseThrow("External Profile ID could no be parsed as GUID.");
@@ -314,46 +336,71 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             return this.Ok();
         }
 
-        /// <summary>
-        ///     Adds or edits cars.
-        /// </summary>
-        [HttpPost("externalProfileId/{externalProfileId}/cars")]
-        [SwaggerResponse(200, type: typeof(IList<CarInventoryItem>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Inventory)]
-        [Authorize(Policy = UserAttribute.AddAndEditPlayerInventory)]
-        public async Task<IActionResult> EditPlayerProfileCars(ulong xuid, string externalProfileId, [FromBody] IList<CarInventoryItem> carUpdates)
+        private async Task VerifyUgcHasCorrectTypeAndCarIdElseThrowAsync(Guid ugcId, ForzaUGCContentType type, int carId, IStorefrontManagementService service)
         {
-            if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
+            var response = await service.GetUGCObject(ugcId).ConfigureAwait(false);
+            if (response == null || response.result == null)
             {
-                throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: (externalProfileId: {externalProfileId})");
+                throw new InvalidArgumentsStewardException($"UGC id not found. (ugcId: {ugcId})");
             }
 
-            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
-
-            // Basic validation of all cars
-            this.steelheadPlayerInventoryCarUpdateRequestValidator.Validate(carUpdates, this.ModelState);
-            if (!this.ModelState.IsValid)
+            if (response?.result?.Metadata.ContentType != type)
             {
-                var result = this.steelheadPlayerInventoryCarUpdateRequestValidator.GenerateErrorResponse(this.ModelState);
-                throw new InvalidArgumentsStewardException(result);
+                throw new InvalidArgumentsStewardException($"Cannot attached UGC from one type to another. (ugcId: {ugcId}) (carId: {type})");
             }
 
-            var updateCars = this.mapper.SafeMap<ForzaCarUserInventoryItem[]>(carUpdates);
-
-            LiveOpsUpdateCarDataOutput rawResults = null;
-            try
+            if (response?.result?.Metadata.CarId != carId)
             {
-                rawResults = await this.Services.LiveOpsService.LiveOpsUpdateCarData(xuid, externalProfileIdGuid, updateCars, ForzaCarDataUpdateAccessLevel.Developer).ConfigureAwait(true);
+                throw new InvalidArgumentsStewardException($"Cannot attached UGC from a specific car to another. (ugcId: {ugcId}) (carId: {carId})");
             }
-            catch (Exception ex)
+        }
+
+        private async Task<SteelheadPlayerInventory> GetPlayerInventoryByProfileId(
+            ulong xuid,
+            int profileId)
+        {
+            profileId.ShouldBeGreaterThanValue(-1);
+
+            async Task<SteelheadPlayerInventory> GetInventory()
             {
-                throw new UnknownFailureStewardException($"Failed to update inventory items. (XUID: {xuid}) (External Profile ID: {externalProfileIdGuid})", ex);
+                var service = this.Services.LiveOpsService;
+
+                Forza.WebServices.FM8.Generated.LiveOpsService.GetAdminUserInventoryByProfileIdOutput response = null;
+
+                try
+                {
+                    response = await service.GetAdminUserInventoryByProfileId(profileId, xuid)
+                        .ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    throw new UnknownFailureStewardException($"Failed to retrieve player inventory. (profileId: {profileId})", ex);
+                }
+
+                var playerInventoryDetails = this.mapper.SafeMap<SteelheadPlayerInventory>(response.summary);
+
+                return playerInventoryDetails;
             }
 
-            var results = this.mapper.SafeMap<CarInventoryItem[]>(rawResults.carOutput);
+            var getPlayerInventory = GetInventory();
+            var getMasterInventory = this.itemsProvider.GetMasterInventoryAsync();
 
-            return this.Ok(results);
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(false);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(false);
+            var masterInventory = await getMasterInventory.ConfigureAwait(false);
+
+            if (playerInventory == null)
+            {
+                throw new NotFoundStewardException($"No inventory found for profileId: {profileId}.");
+            }
+
+            playerInventory.SetItemDescriptions(
+                masterInventory,
+                $"Profile Id: {profileId}",
+                this.loggingService);
+
+            return playerInventory;
         }
     }
 }

@@ -37,7 +37,47 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             var failedServiceProcies = new StringBuilder();
 
             Exception exception;
+            if (!this.VerifyServiceProxy(() => services.AuctionManagementService, "AuctionManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.ConfigurationManagementService, "ConfigurationManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.GiftingManagementService, "GiftingManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
             if (!this.VerifyServiceProxy(() => services.LiveOpsService, "LiveOpsService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.NotificationsManagementService, "NotificationsManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.RareCarShopService, "RareCarShopService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.Storefront, "Storefront", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
@@ -48,16 +88,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             }
 
             if (!this.VerifyServiceProxy(() => services.UserManagementService, "UserManagementService", out exception))
-            {
-                failedServiceProcies.Append($"{exception.Message}, ");
-            }
-
-            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
-            {
-                failedServiceProcies.Append($"{exception.Message}, ");
-            }
-
-            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out exception))
             {
                 failedServiceProcies.Append($"{exception.Message}, ");
             }

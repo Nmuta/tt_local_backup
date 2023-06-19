@@ -10,6 +10,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
 import { SunrisePlayerAuctionsComponent } from './sunrise/sunrise-player-auctions.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { DirectivesModule } from '@shared/directives/directives.module';
@@ -32,6 +33,7 @@ import { SteelheadPlayerAuctionsComponent } from './steelhead/steelhead-player-a
     MatProgressSpinnerModule,
     MatTableModule,
     MatTooltipModule,
+    MatExpansionModule,
     FontAwesomeModule,
     ErrorSpinnerModule,
     JsonDumpModule,

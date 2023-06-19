@@ -16,6 +16,7 @@ import { PlayerInventoryComponent } from './player-inventory.component';
 import { ItemSelectionModule } from '@tools-app/pages/gifting/components/item-selection/item-selection.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { EditCarItemModalModule } from '@views/edit-car-item-modal/edit-car-item-modal.module';
 
 /** Feature module containing cards that display player inventory. */
 @NgModule({
@@ -39,6 +40,7 @@ import { MatButtonModule } from '@angular/material/button';
     ItemSelectionModule,
     MatDialogModule,
     MatButtonModule,
+    EditCarItemModalModule,
   ],
   exports: [
     WoodstockPlayerInventoryComponent,
