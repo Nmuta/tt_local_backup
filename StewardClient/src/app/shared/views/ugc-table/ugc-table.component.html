@@ -10,6 +10,7 @@
       Unselect all
     </button>
     <div class="sf-spacer"></div>
+    <div class="sf-right do-not-manipulate-margin action-section">
     <verify-button
       #verifyCheckboxHideBtn
       [disabled]="selectedUgcs?.length <= 0"
@@ -39,6 +40,7 @@
         [matTooltip]="hideUgcMonitor.label + ' in progress'"
       ></mat-spinner>
     </button>
+    </div>
   </div>
 </div>
 <div class="table-wide-actions" *ngIf="displayTableWideActions">

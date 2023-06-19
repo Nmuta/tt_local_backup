@@ -94,10 +94,8 @@ div.table-wide-actions {
   }
 }
 
-.sf-horizontal {
-  verify-button {
-    flex-grow: 0;
-  }
+div.action-section {
+  width: fit-content;
 }
 
 mat-progress-spinner {
