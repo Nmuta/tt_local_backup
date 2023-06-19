@@ -17,22 +17,34 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public partial class WofBaseDestination
     {
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationManufacturer Manufacturer { get; set; }
+        public DeeplinkDestinationCategoryId CategoryId { get; set; }
 
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationCategoryId CategoryId { get; set; }
+        public DeeplinkDestinationCarId CarId { get; set; }
 
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationSetting Setting { get; set; }
+        public DeeplinkDestinationSetting Setting { get; set; }
 
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationCupId CupId { get; set; }
+        public DeeplinkDestinationCupId CupId { get; set; }
 
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationLadderId LadderId { get; set; }
+        public DeeplinkDestinationLadderId LadderId { get; set; }
 
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationSeriesId SeriesId { get; set; }
+        public DeeplinkDestinationSeriesId SeriesId { get; set; }
+
+        [WriteToPegasus]
+        public DeeplinkDestinationEventId EventId { get; set; }
+
+        [WriteToPegasus]
+        public LocTextBaseWof CategoryTitle { get; set; }
+
+        [WriteToPegasus]
+        public DeeplinkDestinationProduct Product { get; set; }
+
+        [WriteToPegasus]
+        public DeeplinkDestinationRacersCupSeries Series { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -42,7 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationManufacturer
+    public partial class DeeplinkDestinationRacersCupSeries
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -52,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationCategoryId
+    public partial class DeeplinkDestinationCategoryId
     {
         [XmlElement(Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -62,16 +74,41 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationSetting
+    public partial class DeeplinkDestinationCarId
+    {
+        [XmlElement(Namespace = "scribble:x")]
+        [WriteToPegasus]
+        public object @null { get; set; }
+    }
+
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class DeeplinkDestinationSetting
     {
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship Championship { get; set; }
+        public DeeplinkDestinationBuildersCupChampionship Championship { get; set; }
 
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationSettingSeries Series { get; set; }
+        public DeeplinkDestinationBuildersCupSeries Series { get; set; }
 
         [WriteToPegasus]
-        public WorldOfForzaWoFTileDeeplinkDestinationSettingLadder Ladder { get; set; }
+        public DeeplinkDestinationBuildersCupLadder Ladder { get; set; }
+
+        [WriteToPegasus]
+        public DeeplinkDestinationShowroomCar Car { get; set; }
+
+        [WriteToPegasus]
+        public DeeplinkDestinationShowroomManufacturer Manufacturer { get; set; }
+
+        [WriteToPegasus]
+        public DeeplinkDestinationStoreProduct Product { get; set; }
+
+        [WriteToPegasus]
+        public DeeplinkDestinationRivalsCategory Category { get; set; }
+
+        [WriteToPegasus]
+        public DeeplinkDestinationRivalsEvent Event { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -81,7 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship
+    public partial class DeeplinkDestinationBuildersCupChampionship
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -91,7 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationSettingSeries
+    public partial class DeeplinkDestinationBuildersCupSeries
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -101,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationSettingLadder
+    public partial class DeeplinkDestinationBuildersCupLadder
     {
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -111,7 +148,57 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationCupId
+    public partial class DeeplinkDestinationRivalsCategory
+    {
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [WriteToPegasus]
+        public Guid @ref { get; set; }
+    }
+
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class DeeplinkDestinationStoreProduct
+    {
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [WriteToPegasus]
+        public Guid @ref { get; set; }
+    }
+
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class DeeplinkDestinationShowroomManufacturer
+    {
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [WriteToPegasus]
+        public Guid @ref { get; set; }
+    }
+
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class DeeplinkDestinationShowroomCar
+    {
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [WriteToPegasus]
+        public Guid @ref { get; set; }
+    }
+
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class DeeplinkDestinationRivalsEvent
+    {
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        [WriteToPegasus]
+        public Guid @ref { get; set; }
+    }
+
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class DeeplinkDestinationCupId
     {
         [XmlElement(Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -121,7 +208,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationLadderId
+    public partial class DeeplinkDestinationLadderId
     {
         [XmlElement(Namespace = "scribble:x")]
         [WriteToPegasus]
@@ -131,7 +218,27 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WorldOfForzaWoFTileDeeplinkDestinationSeriesId
+    public partial class DeeplinkDestinationSeriesId
+    {
+        [XmlElement(Namespace = "scribble:x")]
+        [WriteToPegasus]
+        public object @null { get; set; }
+    }
+
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class DeeplinkDestinationEventId
+    {
+        [XmlElement(Namespace = "scribble:x")]
+        [WriteToPegasus]
+        public object @null { get; set; }
+    }
+
+    [Serializable]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class DeeplinkDestinationProduct
     {
         [XmlElement(Namespace = "scribble:x")]
         [WriteToPegasus]

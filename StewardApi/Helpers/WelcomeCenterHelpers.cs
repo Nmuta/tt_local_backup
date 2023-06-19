@@ -184,7 +184,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 }
                 else
                 {
-                    FillXml(el.Descendants(child.Path).First(), child);
+                    FillXml(el.Elements(child.Path).First(), child);
                 }
             }
         }
@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
         private static bool ElementDoesNotExist(XElement el, Node child)
         {
-            return !el.Descendants(child.Path).Any();
+            return !el.Elements(child.Path).Any();
         }
 
         private static void HandleAttribute(XElement el, Node child)
