@@ -94,6 +94,12 @@ div.table-wide-actions {
   }
 }
 
+.sf-horizontal {
+  verify-button {
+    flex-grow: 0;
+  }
+}
+
 mat-progress-spinner {
   margin: auto;
   margin-top: $gap-small;
