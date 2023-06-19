@@ -142,7 +142,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
       ['a05afb61-1c62-4885-9bd5-62d28c3f46b3', 'Audi'],
     ]);
 
-    this.championships = new Map([['575e903e-c2a4-4993-a1b9-de565c17391a', 'Main BC']]);
+    this.championships = new Map([['575e903e-c2a4-4993-a1b9-de565c17391a', 'Career']]);
 
     this.buildersCupLadders = new Map([
       ['6d3e623d-3b4f-4239-8cfd-85ac9b5ed573', 'Modern Race Car Tour'],
