@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Reorder navbar icons and link to docs',
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.UserDetails },
+      uuid: '6c281c82-d209-4a9a-9620-f4337b55604f',
+      shortText: 'Fixed active profile icon to not show as inactive.',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
       uuid: 'c7dcbb87-172e-4845-9fd5-6afbbe09c67a',
       shortText: 'Add color highlighting and drag and drop upload.',
