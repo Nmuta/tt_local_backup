@@ -70,12 +70,5 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
         /// <summary>Gets or sets the (lazily) the Woodstock services  with dev live-steward cms override.</summary>
         protected Lazy<WoodstockProxyBundle> WoodstockServicesWithDevLiveStewardCms { get; set; }
-
-        /// <summary>Ensures all provided xuids are valid, else throws error.</summary>
-        [Obsolete("Use services.EnsurePlayersExistAsync(...)")]
-        protected Task EnsurePlayersExist(WoodstockProxyBundle services, IList<ulong> xuids)
-        {
-            return services.EnsurePlayersExistAsync(xuids);
-        }
     }
 }
