@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '8cb3427a-a9a5-4e94-9e69-5d9f628a751b',
+      shortText: 'Reorder navbar icons and link to docs',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.UserDetails },
       uuid: '6c281c82-d209-4a9a-9620-f4337b55604f',
       shortText: 'Fixed active profile icon to not show as inactive.',
