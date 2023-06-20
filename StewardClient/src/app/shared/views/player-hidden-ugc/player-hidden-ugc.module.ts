@@ -13,7 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
@@ -39,7 +39,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     PermissionsModule,
   ],
   exports: [

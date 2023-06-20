@@ -23,7 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
@@ -59,7 +59,7 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     MatButtonModule,
     MatCheckboxModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,

@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '5c5ae753-ac77-45ee-80fb-63824fa7cf17',
+      shortText: 'Remove old verify-with directive and rename module',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.UserDetails },
       uuid: '6c281c82-d209-4a9a-9620-f4337b55604f',
       shortText: 'Fixed active profile icon to not show as inactive.',

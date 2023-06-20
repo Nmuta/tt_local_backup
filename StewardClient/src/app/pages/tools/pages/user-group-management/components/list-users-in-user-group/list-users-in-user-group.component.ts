@@ -326,8 +326,6 @@ export class ListUsersInGroupComponent
             .map(player => player.gamertag ?? player.xuid)
             .join('\n');
         }
-
-        this.clearCheckboxes();
       });
   }
 
@@ -405,12 +403,6 @@ export class ListUsersInGroupComponent
         xuids: xuids,
         gamertags: null,
       };
-    }
-  }
-
-  private clearCheckboxes(): void {
-    for (const checkbox of this.checkboxes) {
-      checkbox.checked = false;
     }
   }
 }

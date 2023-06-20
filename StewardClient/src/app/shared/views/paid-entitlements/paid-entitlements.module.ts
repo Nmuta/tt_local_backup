@@ -16,7 +16,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { PaidEntitlementsComponent } from './paid-entitlements.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { SteelheadPaidEntitlementsComponent } from './steelhead/steelhead-paid-entitlements.component';
 
 /** Module for getting and setting a player's report weight. */
@@ -41,7 +41,7 @@ import { SteelheadPaidEntitlementsComponent } from './steelhead/steelhead-paid-e
     StateManagersModule,
     PermissionsModule,
     MatCheckboxModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
   ],
   exports: [PaidEntitlementsComponent, SteelheadPaidEntitlementsComponent],
 })

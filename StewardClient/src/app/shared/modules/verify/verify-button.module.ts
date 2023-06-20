@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VerifyWithButtonDirective } from './verify-with.directive';
 import { VerifyButtonComponent } from './verify-button/verify-button.component';
 import { HelpModule } from '../help/help.module';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +11,7 @@ import { StateManagersModule } from '../state-managers/state-managers.module';
 
 /** A feature module that allows a verification checkbox to be bound to other components. */
 @NgModule({
-  declarations: [VerifyWithButtonDirective, VerifyWithV2ButtonDirective, VerifyButtonComponent],
+  declarations: [VerifyWithV2ButtonDirective, VerifyButtonComponent],
   imports: [
     CommonModule,
     HelpModule,
@@ -22,6 +21,6 @@ import { StateManagersModule } from '../state-managers/state-managers.module';
     PermissionsModule,
     StateManagersModule,
   ],
-  exports: [VerifyWithButtonDirective, VerifyWithV2ButtonDirective, VerifyButtonComponent],
+  exports: [VerifyWithV2ButtonDirective, VerifyButtonComponent],
 })
-export class VerifyCheckboxModule {}
+export class VerifyButtonModule {}

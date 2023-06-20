@@ -18,7 +18,7 @@ import { DriverLevelComponent } from './driver-level.component';
 import { SteelheadDriverLevelComponent } from './steelhead/steelhead-driver-level.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 
 /** Module for getting and setting a player's driver level. */
@@ -44,7 +44,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
     PermissionsModule,
     MatInputModule,
     MatCheckboxModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     ErrorSpinnerModule,
   ],
   exports: [SteelheadDriverLevelComponent],

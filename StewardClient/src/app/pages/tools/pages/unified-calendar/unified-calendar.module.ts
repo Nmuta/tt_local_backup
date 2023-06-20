@@ -24,7 +24,7 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -130,7 +130,7 @@ import { ShowroomKeyComponent } from './steelhead/components/showroom/showroom-k
     StateManagersModule,
     EndpointSelectionModule,
     PermissionsModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
 
     DataPrivacyNoticeModule,
     FontAwesomeModule,
