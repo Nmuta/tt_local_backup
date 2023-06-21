@@ -41,7 +41,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         private readonly string tenantId;
         private readonly string clientId;
         private string clientSecret;
-        private readonly string authToken;
 
         private readonly IKeyVaultProvider keyVaultProvider;
         private readonly IConfiguration configuration;
@@ -63,6 +62,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             this.refreshableCacheStore = refreshableCacheStore;
         }
 
+        /// <summary>
+        ///     Gets auth token from refreshable cache store. If expired generates a new one and uploads to cache.
+        /// </summary>
+        private string AuthToken
+        {
+            get
+            {
+                return this.refreshableCacheStore.GetItem<string>(BigCatAuthToken)
+                    ?? this.MintAuthTokenAsync().GetAwaiter().GetResult();
+            }
+        }
+
         /// <inheritdoc />
         public async Task InitializeAsync()
         {
@@ -74,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
 
-        private async Task MintAuthTokenAsync()
+        private async Task<string> MintAuthTokenAsync()
         {
             var uri = $"https://login.microsoftonline.com/{this.tenantId}/oauth2/token";
 
@@ -104,6 +115,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                             var result = JsonConvert.DeserializeObject<AuthResponse>(content);
 
                             this.refreshableCacheStore.PutItem(BigCatAuthToken, TimeSpan.FromSeconds(result.ExpiresIn), result);
+
+                            return result.AccessToken;
                         }
                         else
                         {
