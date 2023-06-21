@@ -8,9 +8,34 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '8cb3427a-a9a5-4e94-9e69-5d9f628a751b',
+      shortText: 'Reorder navbar icons and link to docs',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.UserDetails },
+      uuid: '6c281c82-d209-4a9a-9620-f4337b55604f',
+      shortText: 'Fixed active profile icon to not show as inactive.',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'dec40db0-c132-4b04-b31a-ec7d4b847d5d',
+      shortText: 'Align Hide UGC verify button to right side in UGC search',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
+      uuid: 'c7dcbb87-172e-4845-9fd5-6afbbe09c67a',
+      shortText: 'Add color highlighting and drag and drop upload.',
+    },
+    {
       tag: { title: [GameTitle.FH4, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'd6c338dc-8bc7-4e1d-96a6-97063940f920',
       shortText: 'Combine Auctions and Auction Log tabs',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '1cbfd6e8-4edb-4d1a-8466-cfef7025b0b5',
+      shortText: 'Allow users to add and edit cars on player inventories',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },

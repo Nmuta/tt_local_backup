@@ -4,19 +4,46 @@ mat-card {
   margin: $gap-medium;
   flex-grow: unset;
 }
-
 .decoded-content {
-  white-space: pre-line;
-}
-
-.file-input {
-  display: none;
-}
-
-.decode-button {
-  width: $button-min-size;
+  display: grid;
 }
 
 div.align-right {
   align-items: end;
+}
+
+div.decoded-line {
+  display: inline-flex;
+  white-space: pre-line;
+}
+
+.category1 {
+  color: app-color-default($app-warn);
+}
+
+.category2 {
+  color: app-color-default($app-primary);
+}
+
+.category3 {
+  color: app-color-default($app-accent);
+}
+
+.file-upload-wrapper {
+  position: relative;
+  padding-right: 15px; //Required to prevent popover from interfering with drag/drop file upload
+}
+
+.file-upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  opacity: 0;
+}
+
+.top-pop-over {
+  z-index: 10;
 }
