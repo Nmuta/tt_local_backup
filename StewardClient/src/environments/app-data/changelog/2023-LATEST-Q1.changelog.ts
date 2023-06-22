@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Implemented new deeplink destination type',
     },
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'f703a92a-dac4-41d0-8265-5826bb17df0a',
+      shortText: 'Added C-Livery download for Woodstock and Steelhead',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '8cb3427a-a9a5-4e94-9e69-5d9f628a751b',
       shortText: 'Reorder navbar icons and link to docs',
