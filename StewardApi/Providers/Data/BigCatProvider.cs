@@ -22,28 +22,6 @@ using static System.Net.WebRequestMethods;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
-    //public class BigCatAvailability
-    //{
-
-    //}
-
-    //public class BigCatSkuAvailabilities
-    //{
-    //    public BigCatAvailability Availabilities;
-
-    //    public BigCatAvailability HistoricalBestAvailabilities;
-    //}
-
-    //public class BigCatProductCatalogEntry
-    //{
-    //    public BigCatSkuAvailabilities[] DisplaySkuAvailabilities;
-    //}
-
-    //public class BigCatPriceCatalog
-    //{
-    //    public BigCatProductCatalogEntry Product;
-    //}
-
     public class BigCatProductPrice
     {
         public string CurrencyCode;
@@ -51,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public double ListPrice;
         public double MSRP;
         public string WholesaleCurrencyCode;
-        public double WholesalePrice;
+        public double? WholesalePrice;
     }
 
     public class AuthResponse
@@ -126,7 +104,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 using (var client = new HttpClient(handler) { BaseAddress = new Uri(uri) })
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    //client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "multipart/form-data");
                     client.DefaultRequestHeaders.Add(HttpRequestHeader.Authorization.ToString(), $"bearer {this.AuthToken}");
                     client.DefaultRequestHeaders.Add(HttpRequestHeader.Host.ToString(), "frontdoor-displaycatalog.bigcatalog.microsoft.com");
                     client.DefaultRequestHeaders.Add("MS-CV", Guid.NewGuid().ToString());
