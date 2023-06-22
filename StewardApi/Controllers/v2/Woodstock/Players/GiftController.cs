@@ -126,7 +126,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             groupGift.Xuids.EnsureValidXuids();
 
-            await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
+            var proxyBundle = this.ServicesWithLiveStewardCms;
+
+            await proxyBundle.EnsurePlayersExistAsync(groupGift.Xuids).ConfigureAwait(true);
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
             this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
@@ -149,8 +151,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
                 requesterObjectId,
                 $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.",
                 this.Response).ConfigureAwait(true);
-
-            var proxyBundle = this.ServicesWithLiveStewardCms;
 
             var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
@@ -214,13 +214,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
+            var proxyBundle = this.ServicesWithLiveStewardCms;
+
+            await proxyBundle.EnsurePlayersExistAsync(groupGift.Xuids).ConfigureAwait(true);
 
             var liveries = await this.LookupLiveries(gift.LiveryIds).ConfigureAwait(true);
 
             var jobId = await this.jobTracker.CreateNewJobAsync(groupGift.ToJson(), requesterObjectId, $"Woodstock Gifting Liveries: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
-
-            var proxyBundle = this.ServicesWithLiveStewardCms;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
