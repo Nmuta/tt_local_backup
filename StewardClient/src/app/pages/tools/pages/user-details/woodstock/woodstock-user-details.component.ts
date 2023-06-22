@@ -8,7 +8,6 @@ import { SpecialXuid1 } from '@models/special-identity';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
 import { PlayerInventoryProfile } from '@models/player-inventory-profile';
-import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({
@@ -35,11 +34,6 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
   /** The specific relevant identity from the parent. */
   public get identity(): IdentityResultAlpha {
     return this.parent.identity?.woodstock;
-  }
-
-  /** The specific relevant identity from the parent. */
-  public get completeIdentity(): AugmentedCompositeIdentity {
-    return this.parent.identity;
   }
 
   constructor(

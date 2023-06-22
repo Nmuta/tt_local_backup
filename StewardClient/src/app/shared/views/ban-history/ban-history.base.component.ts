@@ -11,7 +11,6 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { getUserDetailsRoute } from '@helpers/route-links';
-import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { MultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service';
 
 /** Extended type from LiveOpsExtendedBanDescription. */
@@ -26,9 +25,6 @@ type BanHistoryTableEntry = LiveOpsExtendedBanDescription & {
 export abstract class BanHistoryBaseComponent extends BaseComponent implements OnChanges {
   /** Player xuid. */
   @Input() public xuid?: BigNumber;
-
-  /** Player identity. */
-  @Input() identity: AugmentedCompositeIdentity;
 
   /** The ban list to display. */
   public banList: LiveOpsBanDescription[];
