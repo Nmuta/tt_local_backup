@@ -15,7 +15,11 @@ describe('WoodstockBanHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockBanHistoryComponent],
       imports: [PipesModule],
-      providers: [createMockWoodstockService(), createMockOldPermissionsService(), createMockMultipleBanHistoryService()],
+      providers: [
+        createMockWoodstockService(),
+        createMockOldPermissionsService(),
+        createMockMultipleBanHistoryService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

@@ -15,7 +15,11 @@ describe('SunriseBanHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseBanHistoryComponent],
       imports: [PipesModule],
-      providers: [createMockSunriseService(), createMockOldPermissionsService(), createMockMultipleBanHistoryService()],
+      providers: [
+        createMockSunriseService(),
+        createMockOldPermissionsService(),
+        createMockMultipleBanHistoryService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

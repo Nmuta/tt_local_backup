@@ -15,7 +15,11 @@ describe('ApolloBanHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloBanHistoryComponent],
       imports: [PipesModule],
-      providers: [createMockApolloService(), createMockOldPermissionsService(), createMockMultipleBanHistoryService()],
+      providers: [
+        createMockApolloService(),
+        createMockOldPermissionsService(),
+        createMockMultipleBanHistoryService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
