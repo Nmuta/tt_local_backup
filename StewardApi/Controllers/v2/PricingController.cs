@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
         {
             productId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(productId));
 
-            var result = await this.bigCatProvider.RetrievePriceCatalogAsync(productId);
+            var result = await this.bigCatProvider.RetrievePriceCatalogAsync(productId).ConfigureAwait(true);
 
             return this.Ok(result);
         }

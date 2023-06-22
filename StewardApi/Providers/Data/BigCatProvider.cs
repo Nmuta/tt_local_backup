@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -17,33 +18,13 @@ using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using static System.Net.WebRequestMethods;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
-    public class BigCatProductPrice
-    {
-        public string CurrencyCode;
-        public bool IsPiRequired;
-        public double ListPrice;
-        public double MSRP;
-        public string WholesaleCurrencyCode;
-        public double? WholesalePrice;
-    }
-
-    public class AuthResponse
-    {
-        [JsonProperty("token_type")]
-        public string TokenType { get; set; }
-
-        [JsonProperty("access_token")]
-        public string AccessToken { get; set; }
-
-        [JsonProperty("expires_in")]
-        public int ExpiresIn { get; set; }
-    }
-
     /// <inheritdoc />
     public sealed class BigCatProvider : IBigCatProvider, IInitializeable
     {
@@ -95,7 +76,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             await this.MintAuthTokenAsync().ConfigureAwait(false);
         }
 
+        /// <inheritdoc />
         public async Task<List<BigCatProductPrice>> RetrievePriceCatalogAsync(string productId)
+        {
+            return this.refreshableCacheStore.GetItem<List<BigCatProductPrice>>(BigCatProductPrice.BuildCacheKey(productId))
+                ?? await this.GetPricesAsync(productId).ConfigureAwait(false);
+        }
+
+        private async Task<List<BigCatProductPrice>> GetPricesAsync(string productId)
         {
             var uri = $"https://frontdoor-displaycatalog.bigcatalog.microsoft.com/v8.0/products/{productId}?market=neutral&languages=neutral&catalogIds=1";
 
@@ -117,50 +105,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                         var content = await res.Content.ReadAsStringAsync().ConfigureAwait(false);
                         var result = JsonConvert.DeserializeObject<JObject>(content);
 
-
-
                         var prices = new List<BigCatProductPrice>();
 
-                        // Let's rip out the stuff we actually want.
+                        // Let's target the stuff we actually want.
                         var availabilities = result["Product"]["DisplaySkuAvailabilities"][0]["Availabilities"];
 
                         foreach (var availability in availabilities.Children())
                         {
                             var priceToken = availability["OrderManagementData"]["Price"];
 
-                            var CurrencyCode = (string)priceToken["CurrencyCode"];
-                            var WholesaleCurrencyCode = (string)priceToken["WholesaleCurrencyCode"];
-                            var IsPiRequired = (bool)priceToken["IsPIRequired"];
-                            var MSRP = (double)priceToken["MSRP"];
-                            var ListPrice = (double)priceToken["ListPrice"];
-
-                            var wholesalePriceExists = priceToken["WholesalePrice"] != null;
-                            var WholesalePrice = wholesalePriceExists ? (double)priceToken["WholesalePrice"] : 0;
-
                             var price = new BigCatProductPrice
                             {
-                                CurrencyCode = CurrencyCode,
-                                WholesaleCurrencyCode = WholesaleCurrencyCode,
-                                IsPiRequired = IsPiRequired,
-                                MSRP = MSRP,
-                                ListPrice = ListPrice,
-                                WholesalePrice = WholesalePrice,
+                                CurrencyCode = (string)priceToken["CurrencyCode"],
+                                WholesaleCurrencyCode = (string)priceToken["WholesaleCurrencyCode"],
+                                IsPiRequired = (bool)priceToken["IsPIRequired"],
+                                MSRP = (double)priceToken["MSRP"],
+                                ListPrice = (double)priceToken["ListPrice"],
+                                WholesalePrice = priceToken["WholesalePrice"] != null ? (double)priceToken["WholesalePrice"] : 0,
                             };
-
-                            //var price = new BigCatProductPrice
-                            //{
-                            //    CurrencyCode = (string)priceToken["CurrencyCode"],
-                            //    WholesaleCurrencyCode = (string)priceToken["WholesaleCurrencyCode"],
-                            //    IsPiRequired = (bool)priceToken["IsPiRequired"],
-                            //    MSRP = (double)priceToken["MSRP"],
-                            //    ListPrice = (double)priceToken["ListPrice"],
-                            //    WholesalePrice = (double)priceToken["WholesalePrice"]
-                            //};
 
                             prices.Add(price);
                         }
 
-                        //this.refreshableCacheStore.PutItem(BigCatAuthToken, TimeSpan.FromSeconds(result.ExpiresIn), result);
+                        // Sanitize, mostly removing empty data from the list.
+                        var equalityComparer = new BigCatProductPriceEqualityComparer();
+                        prices = prices.Where(price => price.MSRP != 0).Distinct(equalityComparer).ToList();
+
+                        this.refreshableCacheStore.PutItem(BigCatProductPrice.BuildCacheKey(productId), TimeSpan.FromHours(24), prices);
 
                         return prices;
                     }
