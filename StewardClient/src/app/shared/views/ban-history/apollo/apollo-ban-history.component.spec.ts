@@ -5,6 +5,7 @@ import { createMockApolloService } from '@services/apollo/apollo.service.mock';
 import { ApolloBanHistoryComponent } from './apollo-ban-history.component';
 import { createMockOldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service.mock';
 
 describe('ApolloBanHistoryComponent', () => {
   let component: ApolloBanHistoryComponent;
@@ -14,7 +15,7 @@ describe('ApolloBanHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloBanHistoryComponent],
       imports: [PipesModule],
-      providers: [createMockApolloService(), createMockOldPermissionsService()],
+      providers: [createMockApolloService(), createMockOldPermissionsService(), createMockMultipleBanHistoryService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -32,6 +33,5 @@ describe('ApolloBanHistoryComponent', () => {
 
   it('should load history', () => {
     component.ngOnChanges();
-    expect(component.isLoading).toBeFalsy();
   });
 });

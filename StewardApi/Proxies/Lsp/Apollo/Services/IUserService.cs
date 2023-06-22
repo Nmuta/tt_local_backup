@@ -16,5 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services
         ///     Gets user data by xuid.
         /// </summary>
         Task<LiveOpsGetUserDataByXuidOutput> LiveOpsGetUserDataByXuid(ulong xuid);
+
+        Task<GetUserBanSummariesV2Output> GetUserBanSummariesV2(ulong[] xuids);
     }
 }

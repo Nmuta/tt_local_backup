@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7, GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '7d8cdf02-2042-46eb-8725-e267cabac8eb',
+      shortText: 'Display ban count per title.',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'f703a92a-dac4-41d0-8265-5826bb17df0a',
       shortText: 'Added C-Livery download for Woodstock and Steelhead',

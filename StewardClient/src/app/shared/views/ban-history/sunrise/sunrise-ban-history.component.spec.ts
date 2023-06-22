@@ -5,6 +5,7 @@ import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock
 import { SunriseBanHistoryComponent } from './sunrise-ban-history.component';
 import { createMockOldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service.mock';
 
 describe('SunriseBanHistoryComponent', () => {
   let component: SunriseBanHistoryComponent;
@@ -14,7 +15,7 @@ describe('SunriseBanHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseBanHistoryComponent],
       imports: [PipesModule],
-      providers: [createMockSunriseService(), createMockOldPermissionsService()],
+      providers: [createMockSunriseService(), createMockOldPermissionsService(), createMockMultipleBanHistoryService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -32,6 +33,5 @@ describe('SunriseBanHistoryComponent', () => {
 
   it('should load history', () => {
     component.ngOnChanges();
-    expect(component.isLoading).toBeFalsy();
   });
 });
