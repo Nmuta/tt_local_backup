@@ -32,6 +32,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise.Services
         /// </summary>
         Task RemoveFromUserGroups(ulong xuid, int[] groupIds);
 
+        /// <summary>
+        ///     Gets ban history summaries by xuids.
+        /// </summary>
         Task<GetUserBanSummariesOutput> GetUserBanSummaries(ulong[] xuids, int xuidCount);
     }
 }

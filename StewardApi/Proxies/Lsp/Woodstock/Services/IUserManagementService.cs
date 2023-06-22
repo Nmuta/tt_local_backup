@@ -112,6 +112,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         /// </summary>
         Task<GetNextBanPeriodOutput> GetNextBanPeriod(ulong xuid, Guid pegasusBanConfigurationId);
 
+        /// <summary>
+        ///     Gets ban history summaries by xuids.
+        /// </summary>
         Task<GetUserBanSummariesOutput> GetUserBanSummaries(ulong[] xuids, int xuidCount);
     }
 }
