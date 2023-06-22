@@ -66,5 +66,9 @@ export const stewardUrls = {
       sunrise: 'app/tools/user-group-management/sunrise',
       apollo: 'app/tools/user-group-management/apollo',
     },
+    createAuction: {
+      default: 'app/tools/create-auction',
+      woodstock: 'app/tools/create-auction/woodstock',
+    },
   },
 };
