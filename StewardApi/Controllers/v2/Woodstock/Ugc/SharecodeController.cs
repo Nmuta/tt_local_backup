@@ -109,7 +109,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     var errorResponse = new BulkGenerateSharecodeResponse { Sharecode = null, UgcId = ugcId, Error = new StewardError($"Failed to generate sharecode for ugcId: {ugcId}", ex.Message) };
                     response.Add(errorResponse);
                 }
-
             }
 
             return response.ToArray();
@@ -122,6 +121,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Generate Multiple Sharecodes.", this.Response).ConfigureAwait(true);
+            var storefrontManagementService = this.WoodstockServices.Value.StorefrontManagementService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -136,7 +136,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     {
                         try
                         {
-                            var result = await this.WoodstockServices.Value.StorefrontManagementService.GenerateShareCode(ugcId).ConfigureAwait(true);
+                            var result = await storefrontManagementService.GenerateShareCode(ugcId).ConfigureAwait(true);
                             response.Add(new BulkGenerateSharecodeResponse { Sharecode = result.shareCode, UgcId = ugcId });
                         }
                         catch (StewardBaseException ex)

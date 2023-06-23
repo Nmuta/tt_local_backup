@@ -317,9 +317,7 @@ export abstract class UgcTableBaseComponent
         // the backend was successful (200)
         if (failedSharecodes.length > 0) {
           this.snackbar.open(
-            `Failed to generate Share Codes for some or all of the following UGC items : ${failedSharecodes
-              .map(ugc => ugc.ugcId)
-              .join('\n')}`,
+            `Failed to generate Share Codes for ${failedSharecodes.length} UGC items.`,
             'Okay',
             {
               panelClass: 'snackbar-warn',

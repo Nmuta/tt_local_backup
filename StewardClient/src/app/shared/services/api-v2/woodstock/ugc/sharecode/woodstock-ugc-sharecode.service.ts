@@ -4,10 +4,17 @@ import { BackgroundJob } from '@models/background-job';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
+/**
+ * Interface to describe a response from the API for generating a single sharecode.
+ */
 export interface GenerateSharecodeResponse {
   sharecode: string;
 }
 
+/**
+ * Interface to describe a response from the API for generating multiple
+ * sharecodes in bulk. Extends GenerateSharecodeResponse interface.
+ */
 export interface BulkGenerateSharecodeResponse extends GenerateSharecodeResponse {
   ugcId: string;
   error: string;

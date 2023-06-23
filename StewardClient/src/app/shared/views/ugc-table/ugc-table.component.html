@@ -69,11 +69,7 @@
             <ng-template ngPluralCase="=1">Share Code </ng-template>
             <ng-template ngPluralCase="other">Share Codes </ng-template>
           </span>
-          <mat-spinner
-            *ngIf="generateSharecodesMonitor.isActive"
-            class="force-inline-2x"
-            [matTooltip]="generateSharecodesMonitor.label + ' in progress'"
-          ></mat-spinner>
+          <button-spinner [monitor]="generateSharecodesMonitor" defaultIcon="add"></button-spinner>
         </button>
       </div>
     </span>
