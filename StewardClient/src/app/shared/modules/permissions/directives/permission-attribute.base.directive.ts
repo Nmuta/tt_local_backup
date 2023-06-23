@@ -76,7 +76,6 @@ export abstract class BasePermissionAttributeDirective
   private selectedEnv: string;
   private actionType: InvalidPermActionType = InvalidPermActionType.Disable;
   protected hideChildElement: boolean = false;
-  private allowV1Auth: boolean = true;
 
   constructor(
     protected readonly element: ElementRef,
