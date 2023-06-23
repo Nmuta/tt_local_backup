@@ -456,12 +456,12 @@ export class WoodstockService {
     return this.apiService.postRequest$(`${this.basePathV2}/ugc/${ugcId}/geoFlags`, geoFlags);
   }
 
-  /** Gets a player's hidden UGC item. */
-  public getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
-    return this.apiService.getRequest$<HideableUgc[]>(
-      `${this.basePath}/storefront/xuid(${xuid})/hidden`,
-    );
-  }
+  // /** Gets a player's hidden UGC item. */
+  // public getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
+  //   return this.apiService.getRequest$<HideableUgc[]>(
+  //     `${this.basePath}/storefront/xuid(${xuid})/hidden`,
+  //   );
+  // }
 
   // /** Hide UGC item. */
   // public hideUgc$(ugcId: string): Observable<void> {
@@ -471,17 +471,17 @@ export class WoodstockService {
   //   );
   // }
 
-  /** Unhide UGC item. */
-  public unhideUgc$(
-    xuid: BigNumber,
-    fileType: HideableUgcFileType,
-    ugcId: GuidLikeString,
-  ): Observable<void> {
-    return this.apiService.postRequest$<void>(
-      `${this.basePath}/storefront/${xuid}/ugc/${fileType}/${ugcId}/unhide`,
-      null,
-    );
-  }
+  // /** Unhide UGC item. */
+  // public unhideUgc$(
+  //   xuid: BigNumber,
+  //   fileType: HideableUgcFileType,
+  //   ugcId: GuidLikeString,
+  // ): Observable<void> {
+  //   return this.apiService.postRequest$<void>(
+  //     `${this.basePath}/storefront/${xuid}/ugc/${fileType}/${ugcId}/unhide`,
+  //     null,
+  //   );
+  // }
 
   /**
    * Persist UGC item to the system user.

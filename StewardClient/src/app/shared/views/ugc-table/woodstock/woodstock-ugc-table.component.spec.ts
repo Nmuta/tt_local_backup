@@ -10,10 +10,10 @@ import { createMockWoodstockUgcLookupService } from '@services/api-v2/woodstock/
 import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
-import { createMockWoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service.mock';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { createMockWoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service.mock';
 
 describe('WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
@@ -28,7 +28,7 @@ describe('WoodstockUgcTableComponent', () => {
       providers: [
         createMockWoodstockService(),
         createMockWoodstockUgcLookupService(),
-        createMockWoodstockUgcHideService(),
+        createMockWoodstockUgcVisibilityService(),
         createMockBackgroundJobService(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
