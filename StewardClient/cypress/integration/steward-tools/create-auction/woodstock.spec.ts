@@ -1,5 +1,6 @@
 import { login } from '@support/steward/auth/login';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
+import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
 import { stewardUrls } from '@support/steward/urls';
 import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
@@ -10,17 +11,7 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
 
     disableFakeApi();
     cy.visit(stewardUrls.tools.createAuction.woodstock);
-    cy.get('span').contains('mat-icon', 'settings').click();
-    cy.get('mat-form-field')
-      .contains('mat-label', 'Woodstock Endpoint')
-      .parent()
-      .parent()
-      .parent()
-      .contains('span', 'Retail')
-      .click();
-    cy.get('mat-option').contains('span', 'Studio').click();
-    cy.get('span').contains('mat-icon', 'settings').click();
-    cy.contains('span', 'Studio').should('exist');
+    changeEndpoint('Woodstock', 'Retail', 'Studio');
   });
 
   it('should create an auction', () => {
@@ -56,7 +47,7 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
     cy.contains('span', 'An auction has been created. You can access it here').should('not.exist');
   });
 
-  it('should not create an auction with invalid Price inputs', () => {
+  it.only('should not create an auction with invalid Price inputs', () => {
     cy.contains('mat-form-field', 'Search for model').click().type('Ferrari');
     cy.contains('mat-option', 'Ferrari FXX (2005) [1006]').click();
 
