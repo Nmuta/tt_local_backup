@@ -28,15 +28,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Steelhead, Target.Player, Topic.Banning)]
-    public class SteelheadBanController : V2ControllerBase
+    public class BanController : V2ControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SteelheadBanController"/> class.
+        ///     Initializes a new instance of the <see cref="BanController"/> class.
         /// </summary>
-        public SteelheadBanController(IMapper mapper)
+        public BanController(IMapper mapper)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
 
