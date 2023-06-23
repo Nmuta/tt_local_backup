@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     /// <summary>
     ///     Handles requests for Steelhead players.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/players/ban")]
+    [Route("api/v{version:apiVersion}/title/steelhead/players/identities")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
@@ -53,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         /// <summary>
         ///     Searches for identities of provided Steelhead user queries.
         /// </summary>
-        [HttpPost("identities")]
+        [HttpPost]
         [SwaggerResponse(200, type: typeof(IList<IdentityResultAlpha>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]

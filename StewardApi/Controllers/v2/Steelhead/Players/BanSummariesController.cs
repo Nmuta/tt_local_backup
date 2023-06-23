@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     /// <summary>
     ///     Handles requests for Steelhead players.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/players/ban")]
+    [Route("api/v{version:apiVersion}/title/steelhead/players/banSummaries")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         /// <summary>
         ///     Gets ban summaries.
         /// </summary>
-        [HttpPost("banSummaries")]
+        [HttpPost]
         [SwaggerResponse(200, type: typeof(IList<BanSummary>))]
         public async Task<IActionResult> GetBanSummaries(
             [FromBody] IList<ulong> xuids)
