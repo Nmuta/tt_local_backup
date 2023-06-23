@@ -13,7 +13,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { ActivePullRequestsComponent } from './active-pull-requests.component';
 import { SteelheadActivePullRequestsComponent } from './steelhead/steelhead-active-pull-requests.component';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MatTableModule } from '@angular/material/table';
 
@@ -35,7 +35,7 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
     StateManagersModule,
     PermissionsModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     ErrorSpinnerModule,
   ],
   exports: [SteelheadActivePullRequestsComponent],

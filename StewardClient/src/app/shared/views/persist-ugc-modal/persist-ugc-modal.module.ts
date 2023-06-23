@@ -16,7 +16,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { WoodstockPersistUgcModalComponent } from './woodstock/woodstock-persist-ugc-modal.component';
@@ -45,7 +45,7 @@ import { PersistUgcModalComponent } from './persist-ugc-modal.component';
     MonitorActionModule,
     MatDatepickerModule,
     StandardDateModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     PermissionsModule,
   ],
   exports: [WoodstockPersistUgcModalComponent],

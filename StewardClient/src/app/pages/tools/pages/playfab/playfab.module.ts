@@ -29,7 +29,7 @@ import { WoodstockPlayFabComponent } from './woodstock/woodstock-playfab.compone
 import { WoodstockPlayFabBuildsManagementComponent } from './components/playfab-builds-management/woodstock/woodstock-playfab-builds-management.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { BuildLockChangeDialogComponent } from './components/build-lock-change-dialog/build-lock-change-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -77,7 +77,7 @@ import { PlayFabSettingsComponent } from './components/playfab-settings/playfab-
     StateManagersModule,
     EndpointSelectionModule,
     PermissionsModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
   ],
 })
 export class PlayFabModule {}
