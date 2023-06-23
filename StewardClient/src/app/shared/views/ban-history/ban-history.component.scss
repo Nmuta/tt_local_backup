@@ -70,3 +70,20 @@ mat-card {
 .forum-ban-link {
   margin-top: $gap-medium;
 }
+
+.ban-subchip {
+  border-radius: 2em;
+  padding-left: 0.125em;
+  padding-right: 0.125em;
+  white-space: nowrap;
+  margin: 0 0.125rem;
+
+  mat-chip {
+    color: app-color-default($app-warn);
+  }
+
+  mat-icon {
+    color: app-color-default($app-warn);
+    font-size: 1.5em;
+  }
+}

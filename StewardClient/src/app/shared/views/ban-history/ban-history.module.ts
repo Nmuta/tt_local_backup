@@ -29,6 +29,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { RouterModule } from '@angular/router';
+import { MatChipsModule } from '@angular/material/chips';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
@@ -65,6 +66,7 @@ import { RouterModule } from '@angular/router';
     PermissionsModule,
     HelpModule,
     RouterModule,
+    MatChipsModule,
   ],
   exports: [
     WoodstockBanHistoryComponent,
