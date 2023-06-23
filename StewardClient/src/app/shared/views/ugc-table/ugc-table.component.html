@@ -54,14 +54,13 @@
         ></verify-button>
         <button
           mat-raised-button
-          color="warn"
+          color="primary"
           [disabled]="ugcsWithoutSharecodes?.length <= 0"
           [verifyWithV2]="verifyCheckboxGenerateBtn"
           (click)="generateMissingSharecodes(ugcsWithoutSharecodes)"
           stateManager
           [monitor]="generateSharecodesMonitor"
           monitorDisable
-          monitorWarn
           monitorWarnSnackbar
         >
           <span [ngPlural]="ugcsWithoutSharecodes?.length">
