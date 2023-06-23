@@ -48,7 +48,6 @@ import { GroupNotification, PlayerNotification } from '@models/notifications.mod
 import { ProfileNote } from '@models/profile-note.model';
 import { AuctionData } from '@models/auction-data';
 import { GuidLikeString } from '@models/extended-types';
-import { HideableUgc } from '@models/hideable-ugc.model';
 import { DateTime } from 'luxon';
 import { PlayerAuctionAction } from '@models/player-auction-action';
 import {
@@ -57,7 +56,6 @@ import {
   Leaderboard,
   LeaderboardScore,
 } from '@models/leaderboards';
-import { HideableUgcFileType } from '@models/hideable-ugc.model';
 import { DeviceType, PegasusProjectionSlot } from '@models/enums';
 import { addQueryParamArray } from '@helpers/add-query-param-array';
 import { UnbanResult } from '@models/unban-result';
@@ -455,33 +453,6 @@ export class WoodstockService {
   public setUgcGeoFlag$(ugcId: string, geoFlags: string[]): Observable<void> {
     return this.apiService.postRequest$(`${this.basePathV2}/ugc/${ugcId}/geoFlags`, geoFlags);
   }
-
-  // /** Gets a player's hidden UGC item. */
-  // public getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
-  //   return this.apiService.getRequest$<HideableUgc[]>(
-  //     `${this.basePath}/storefront/xuid(${xuid})/hidden`,
-  //   );
-  // }
-
-  // /** Hide UGC item. */
-  // public hideUgc$(ugcId: string): Observable<void> {
-  //   return this.apiService.postRequest$<void>(
-  //     `${this.basePath}/storefront/ugc/${ugcId}/hide`,
-  //     null,
-  //   );
-  // }
-
-  // /** Unhide UGC item. */
-  // public unhideUgc$(
-  //   xuid: BigNumber,
-  //   fileType: HideableUgcFileType,
-  //   ugcId: GuidLikeString,
-  // ): Observable<void> {
-  //   return this.apiService.postRequest$<void>(
-  //     `${this.basePath}/storefront/${xuid}/ugc/${fileType}/${ugcId}/unhide`,
-  //     null,
-  //   );
-  // }
 
   /**
    * Persist UGC item to the system user.

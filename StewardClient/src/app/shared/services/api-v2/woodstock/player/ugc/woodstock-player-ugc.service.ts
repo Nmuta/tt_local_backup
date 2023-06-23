@@ -23,8 +23,6 @@ export class WoodstockPlayerUgcService {
 
   /** Gets a player's hidden UGC item. */
   public getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
-    return this.api.getRequest$<HideableUgc[]>(
-      `${this.basePath}/storefront/xuid(${xuid})/hidden`,
-    );
+    return this.api.getRequest$<HideableUgc[]>(`${this.basePath}/${xuid}/ugc/hidden`);
   }
 }

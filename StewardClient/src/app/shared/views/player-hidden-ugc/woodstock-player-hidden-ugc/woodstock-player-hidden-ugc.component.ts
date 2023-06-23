@@ -20,11 +20,14 @@ export class WoodstockPlayerHiddenUgcComponent {
 
   public serviceContract: HiddenUgcServiceContract;
 
-  constructor(playerUgcService: WoodstockPlayerUgcService, visibilityService: WoodstockUgcVisibilityService) {
+  constructor(
+    playerUgcService: WoodstockPlayerUgcService,
+    visibilityService: WoodstockUgcVisibilityService,
+  ) {
     this.serviceContract = {
       unhideUgc$: (_xuid, _fileType, ugcId) => visibilityService.unhideUgc$(ugcId),
-      getPlayerHiddenUgcByXuid$: (xuid) => playerUgcService.getPlayerHiddenUgcByXuid$(xuid),
-    }
+      getPlayerHiddenUgcByXuid$: xuid => playerUgcService.getPlayerHiddenUgcByXuid$(xuid),
+    };
   }
 
   /** Retrieve child monitor for use with reload spinner in User Details tab. */
