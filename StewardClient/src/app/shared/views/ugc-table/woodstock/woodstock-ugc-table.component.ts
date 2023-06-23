@@ -11,6 +11,7 @@ import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BulkGenerateSharecodeResponse, WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 /** Displays woodstock UGC content in a table. */
 @Component({
@@ -25,6 +26,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
     private readonly woodstockService: WoodstockService,
     private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
     private readonly woodstockUgcHideService: WoodstockUgcHideService,
+    private readonly woodstockUgcSharecodeService: WoodstockUgcSharecodeService,
     private readonly backgroundJobService: BackgroundJobService,
     snackbar: MatSnackBar,
   ) {
@@ -46,6 +48,15 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
     return this.woodstockUgcHideService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
+      }),
+    );
+  }
+
+  /** Generate multiple Sharecodes. */
+  public generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
+    return this.woodstockUgcSharecodeService.ugcGenerateSharecodesUsingBackgroundJob$(ugcIds).pipe(
+      switchMap(response => {
+        return this.backgroundJobService.waitForBackgroundJobToComplete<BulkGenerateSharecodeResponse[]>(response);
       }),
     );
   }

@@ -44,6 +44,38 @@
           ></mat-spinner>
         </button>
       </div>
+      <div class="sf-horizontal sf-right">
+        <verify-button
+          class="action-section"
+          #verifyCheckboxGenerateBtn
+          [disabled]="ugcsWithoutSharecodes?.length <= 0"
+          [permissionAttribute]="bulkGenerateSharecodePermission"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="ugcsWithoutSharecodes?.length <= 0"
+          [verifyWithV2]="verifyCheckboxGenerateBtn"
+          (click)="generateMissingSharecodes(ugcsWithoutSharecodes)"
+          stateManager
+          [monitor]="generateSharecodesMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+        >
+          <span [ngPlural]="ugcsWithoutSharecodes?.length">
+            Generate {{ ugcsWithoutSharecodes?.length }}
+            <ng-template ngPluralCase="=1">Share Code </ng-template>
+            <ng-template ngPluralCase="other">Share Codes </ng-template>
+          </span>
+          <mat-spinner
+            *ngIf="generateSharecodesMonitor.isActive"
+            class="force-inline-2x"
+            [matTooltip]="generateSharecodesMonitor.label + ' in progress'"
+          ></mat-spinner>
+        </button>
+      </div>
     </span>
   </div>
 </div>

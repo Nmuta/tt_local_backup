@@ -318,11 +318,11 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     this.generateSharecodeMonitor = this.generateSharecodeMonitor.repeat();
 
     this.ugcSharecodeService
-      .ugcGenerateSharecode$(this.ugcItem.id)
+      .ugcGenerateSharecode$([this.ugcItem.id])
       .pipe(this.generateSharecodeMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(newSharecode => {
         const updatedUgcItem = cloneDeep(this.ugcItem);
-        updatedUgcItem.shareCode = newSharecode.sharecode;
+        updatedUgcItem.shareCode = newSharecode[0]?.sharecode;
         this.ugcItem = updatedUgcItem;
 
         this.canGenerateSharecode = false;

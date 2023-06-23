@@ -10,6 +10,7 @@ import { GuidLikeString } from '@models/extended-types';
 import { SunriseUgcHideService } from '@services/api-v2/sunrise/ugc/hide/sunrise-ugc-hide.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -46,5 +47,10 @@ export class SunriseUgcTableComponent extends UgcTableBaseComponent implements O
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
       }),
     );
+  }
+
+  /** Generate multiple Sharecodes. */
+  public generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
+    return throwError(new Error('Sunrise does not support bulk sharecode generation.'));
   }
 }
