@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: '6ceff20c-1dc0-48e1-8044-a7be33a0a994',
+      shortText: 'Add title and environment to permission tooltip',
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: '22b4ce22-a3d4-4fb7-91d3-6b50e21f9280',
       shortText: 'Adjust spacing of navbar icons',
     },
