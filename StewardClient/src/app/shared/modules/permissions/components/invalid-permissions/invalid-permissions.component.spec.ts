@@ -3,6 +3,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { InvalidPermissionsComponent } from './invalid-permissions.component';
+import { GameTitle } from '@models/enums';
 
 describe('InvalidPermissionsComponent', () => {
   let component: InvalidPermissionsComponent;
@@ -26,12 +27,14 @@ describe('InvalidPermissionsComponent', () => {
 
   describe('Method: setPermAttributeName', () => {
     const feature = PermAttributeName.GiftPlayer;
+    const title = GameTitle.FM8;
+    const environment = 'Studio';
 
     it('should set the correct mat tooltip string', () => {
-      component.setPermAttributeName(feature);
+      component.setPermAttributeName(feature, title, environment);
 
       expect(component.matTooltip).toEqual(
-        `You do not have the permissions to use this feature: Gift Player`,
+        `You do not have the permissions to use this feature: Gift Player - FM8 - Studio`,
       );
     });
   });
