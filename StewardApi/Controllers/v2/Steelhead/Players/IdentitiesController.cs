@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     /// <summary>
     ///     Handles requests for Steelhead players.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/players")]
+    [Route("api/v{version:apiVersion}/title/steelhead/players/ban")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(

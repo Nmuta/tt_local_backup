@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     /// <summary>
     ///     Handles requests for Steelhead players.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/players")]
+    [Route("api/v{version:apiVersion}/title/steelhead/players/ban")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
@@ -83,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         /// <summary>
         ///     Bans players.
         /// </summary>
-        [HttpPost("ban")]
+        [HttpPost]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin)]
@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         /// <summary>
         ///     Bans players.
         /// </summary>
-        [HttpPost("ban/useBackgroundProcessing")]
+        [HttpPost("useBackgroundProcessing")]
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin)]
