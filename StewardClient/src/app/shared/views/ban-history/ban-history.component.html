@@ -2,6 +2,12 @@
   <mat-card-header class="sf-header">
     <mat-card-title>Ban History</mat-card-title>
     <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+    <span class="ban-subchip" *ngFor="let item of titlesBanCount | keyvalue">
+      <mat-chip
+        >{{ item.key }} <mat-icon class="ban-icon" svgIcon="steward-gavel"></mat-icon
+        >{{ item.value }}
+      </mat-chip>
+    </span>
     <div class="sf-spacer"></div>
     <button
       mat-stroked-button
@@ -18,7 +24,7 @@
     </button>
   </mat-card-header>
   <mat-card-content>
-    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+    <ng-container *waitForMonitor="getMonitor">
       <table mat-table [dataSource]="banList" multiTemplateDataRows>
         <ng-container matColumnDef="reason">
           <th mat-header-cell *matHeaderCellDef>Reason</th>
@@ -114,11 +120,6 @@
     </ng-container>
   </mat-card-content>
 </mat-card>
-
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
-</ng-template>
 
 <ng-template #noActions>
   <span>No actions available for your role.</span>
