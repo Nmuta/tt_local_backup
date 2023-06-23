@@ -44,7 +44,7 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
   }
 
   /** Generate multiple Sharecodes. */
-  public generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
+  public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     return throwError(new Error('Steelhead does not support bulk sharecode generation.'));
   }
 }

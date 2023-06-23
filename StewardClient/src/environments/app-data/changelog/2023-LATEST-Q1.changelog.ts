@@ -10,7 +10,8 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
       uuid: 'dec40db0-c132-4b04-b31a-ec7d4b847d5d',
-      shortText: 'Add button to generate sharecodes for public UGC search results without a sharecode',
+      shortText:
+        'Add button to generate sharecodes for public UGC search results without a sharecode',
     },
     {
       tag: ChangelogTag.General,

@@ -24,11 +24,17 @@ export class WoodstockUgcSharecodeService {
   /** Generate sharecode for UGC. */
   public ugcGenerateSharecode$(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     const params = new HttpParams().set('useBackgroundProcessing', false);
-    return this.api.postRequest$<BulkGenerateSharecodeResponse[]>(`${this.basePath}/sharecode`, ugcIds, params);
+    return this.api.postRequest$<BulkGenerateSharecodeResponse[]>(
+      `${this.basePath}/sharecode`,
+      ugcIds,
+      params,
+    );
   }
 
   /** Bulk generate sharecodes for UGC. */
-  public ugcGenerateSharecodesUsingBackgroundJob$(ugcIds: string[]): Observable<BackgroundJob<void>> {
+  public ugcGenerateSharecodesUsingBackgroundJob$(
+    ugcIds: string[],
+  ): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBackgroundProcessing', true);
     return this.api.postRequest$<BackgroundJob<void>>(`${this.basePath}/sharecode`, ugcIds, params);
   }

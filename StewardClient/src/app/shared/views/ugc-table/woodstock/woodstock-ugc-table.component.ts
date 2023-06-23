@@ -11,7 +11,10 @@ import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BulkGenerateSharecodeResponse, WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
+import {
+  BulkGenerateSharecodeResponse,
+  WoodstockUgcSharecodeService,
+} from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 /** Displays woodstock UGC content in a table. */
 @Component({
@@ -56,7 +59,9 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   public generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     return this.woodstockUgcSharecodeService.ugcGenerateSharecodesUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
-        return this.backgroundJobService.waitForBackgroundJobToComplete<BulkGenerateSharecodeResponse[]>(response);
+        return this.backgroundJobService.waitForBackgroundJobToComplete<
+          BulkGenerateSharecodeResponse[]
+        >(response);
       }),
     );
   }

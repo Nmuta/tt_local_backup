@@ -146,7 +146,7 @@ export abstract class UgcTableBaseComponent
   public ngOnChanges(changes: BetterSimpleChanges<UgcTableBaseComponent>): void {
     if (!!changes.content) {
       const ugcItemsToProcess: PlayerUgcItemTableEntries[] = this.content;
-      this.ugcsWithoutSharecodes = [];    
+      this.ugcsWithoutSharecodes = [];
 
       ugcItemsToProcess.forEach(item => {
         if (this.ugcDetailsLinkSupported) {
@@ -309,41 +309,39 @@ export abstract class UgcTableBaseComponent
     const ugcIds = ugcs.map(ugc => ugc.id);
 
     this.generateSharecodes(ugcIds)
-    .pipe(this.generateSharecodesMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-    .subscribe(ugcResponse => {
-      const failedSharecodes = ugcResponse.filter(response => !!response.error);
+      .pipe(this.generateSharecodesMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(ugcResponse => {
+        const failedSharecodes = ugcResponse.filter(response => !!response.error);
 
-      // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
-      // the backend was successful (200)
-      if (failedSharecodes.length > 0) {
-        this.snackbar.open(
-          `Failed to generate Share Codes for some or all of the following UGC items : ${failedSharecodes
-            .map(ugc => ugc.ugcId)
-            .join(
-            '\n',
-          )}`,
-          'Okay',
-          {
-            panelClass: 'snackbar-warn',
-          },
-        );
-      } else {
-        this.snackbar.openFromComponent(SuccessSnackbarComponent, {
-          data: this.generateSharecodesMonitor,
-          panelClass: ['snackbar-success'],
+        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
+        // the backend was successful (200)
+        if (failedSharecodes.length > 0) {
+          this.snackbar.open(
+            `Failed to generate Share Codes for some or all of the following UGC items : ${failedSharecodes
+              .map(ugc => ugc.ugcId)
+              .join('\n')}`,
+            'Okay',
+            {
+              panelClass: 'snackbar-warn',
+            },
+          );
+        } else {
+          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
+            data: this.generateSharecodesMonitor,
+            panelClass: ['snackbar-success'],
+          });
+        }
+
+        const successes = ugcResponse.filter(response => !!response.sharecode);
+
+        // Update UGC items to add newly generated sharecodes
+        // The ugcTableDataSource data property is a reference to this.content
+        successes.forEach(response => {
+          const index = this.content.findIndex(x => x.id == response.ugcId);
+          this.content[index].shareCode = response.sharecode;
         });
-      }
-      
-      const successes = ugcResponse.filter(response => !!response.sharecode);
-
-      // Update UGC items to add newly generated sharecodes
-      // The ugcTableDataSource data property is a reference to this.content
-      successes.forEach(response => {
-        const index = this.content.findIndex(x => x.id == response.ugcId);
-        this.content[index].shareCode = response.sharecode
+        this.ugcTableDataSource._updateChangeSubscription();
       });
-      this.ugcTableDataSource._updateChangeSubscription();
-    });
   }
 
   /** Unselects all selected ugc items. */
