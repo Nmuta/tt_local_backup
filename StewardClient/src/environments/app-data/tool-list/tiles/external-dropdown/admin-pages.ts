@@ -9,8 +9,6 @@ import {
 
 /** Static links to different admin pages. */
 export enum AdminPages {
-  SteelheadFlight = 'https://steelheadadmin-flight-15.dev.services.forzamotorsport.net',
-  SteelheadStudio = 'https://steelheadadmin-15.dev.services.forzamotorsport.net',
   FH5 = 'https://admin.fh5.forzamotorsport.net/',
   FH5Studio = 'https://woodstockadmin-final.dev.services.forzamotorsport.net/',
   FH4 = 'https://admin.fh4.forzamotorsport.net/',
