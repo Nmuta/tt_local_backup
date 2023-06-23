@@ -18,7 +18,7 @@ export class InvalidPermissionsComponent {
   constructor(private readonly humanizePipe: HumanizePipe) {}
 
   /** Lifecycle hooks. */
-  public setPermAttributeName(feature: PermAttributeName, title: GameTitle, env: string): void {
+  public setPermissionTooltip(feature: PermAttributeName, title: GameTitle, env: string): void {
     const displayTitle = Object.keys(GameTitle).find(key => GameTitle[key] === title);
 
     this.matTooltip = `You do not have the permissions to use this feature: ${this.humanizePipe.transform(

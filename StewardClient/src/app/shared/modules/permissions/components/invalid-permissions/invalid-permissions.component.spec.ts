@@ -25,13 +25,13 @@ describe('InvalidPermissionsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: setPermAttributeName', () => {
+  describe('Method: setPermissionTooltip', () => {
     const feature = PermAttributeName.GiftPlayer;
     const title = GameTitle.FM8;
     const environment = 'Studio';
 
     it('should set the correct mat tooltip string', () => {
-      component.setPermAttributeName(feature, title, environment);
+      component.setPermissionTooltip(feature, title, environment);
 
       expect(component.matTooltip).toEqual(
         `You do not have the permissions to use this feature: Gift Player - FM8 - Studio`,

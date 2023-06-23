@@ -144,7 +144,7 @@ export abstract class BasePermissionAttributeDirective
       const invalidPermissionComponent = this.viewContainerRef.createComponent(
         InvalidPermissionsComponent,
       );
-      invalidPermissionComponent.instance.setPermAttributeName(
+      invalidPermissionComponent.instance.setPermissionTooltip(
         this.attributeName,
         this.gameTitle,
         this.selectedEnv,
