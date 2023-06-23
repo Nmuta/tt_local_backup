@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatColumnDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { state, style, trigger } from '@angular/animations';
-import { EMPTY, from, fromEvent, Observable } from 'rxjs';
+import { EMPTY, from, fromEvent, Observable, of, throwError } from 'rxjs';
 import {
   catchError,
   map as rxjsMap,
@@ -309,27 +309,23 @@ export abstract class UgcTableBaseComponent
     const ugcIds = ugcs.map(ugc => ugc.id);
 
     this.generateSharecodes(ugcIds)
-      .pipe(this.generateSharecodesMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(
+        switchMap(ugcResponse => {
+          const failedSharecodes = ugcResponse.filter(response => !!response.error);
+          if (failedSharecodes.length > 0) {
+            return throwError(
+              () =>
+                `Failed to generate Share Codes for some or all of the following UGC items : ${failedSharecodes
+                  .map(ugc => ugc.ugcId)
+                  .join('\n')}`,
+            );
+          }
+          return of(ugcResponse);
+        }),
+        this.generateSharecodesMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe(ugcResponse => {
-        const failedSharecodes = ugcResponse.filter(response => !!response.error);
-
-        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
-        // the backend was successful (200)
-        if (failedSharecodes.length > 0) {
-          this.snackbar.open(
-            `Failed to generate Share Codes for ${failedSharecodes.length} UGC items.`,
-            'Okay',
-            {
-              panelClass: 'snackbar-warn',
-            },
-          );
-        } else {
-          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
-            data: this.generateSharecodesMonitor,
-            panelClass: ['snackbar-success'],
-          });
-        }
-
         const successes = ugcResponse.filter(response => !!response.sharecode);
 
         // Update UGC items to add newly generated sharecodes
@@ -338,6 +334,11 @@ export abstract class UgcTableBaseComponent
           const index = this.content.findIndex(x => x.id == response.ugcId);
           this.content[index].shareCode = response.sharecode;
         });
+
+        this.ugcsWithoutSharecodes = this.ugcsWithoutSharecodes.filter(
+          x => !successes.find(y => y.ugcId === x.id),
+        );
+
         this.ugcTableDataSource._updateChangeSubscription();
       });
   }

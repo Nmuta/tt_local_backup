@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using System.Diagnostics;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 {
@@ -64,33 +66,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.UserGeneratedContent)]
         public async Task<IActionResult> GenerateSharecode([FromQuery] bool useBackgroundProcessing, [FromBody] Guid[] ugcIds)
         {
+            var storefrontManagementService = this.WoodstockServices.Value.StorefrontManagementService;
+
             if (useBackgroundProcessing)
             {
-                var response = await this.GenerateSharecodeUsingBackgroundProcessing(ugcIds).ConfigureAwait(false);
+                var response = await this.GenerateSharecodeUsingBackgroundProcessing(storefrontManagementService, ugcIds).ConfigureAwait(false);
                 return response;
             }
             else
             {
-                var response = await this.GenerateSharecodes(ugcIds).ConfigureAwait(false);
+                var response = await this.GenerateSharecodes(storefrontManagementService, ugcIds).ConfigureAwait(false);
                 return this.Ok(response);
             }
         }
 
         // Generate sharecode(s) for UGC identified by UGC ID(s).
-        private async Task<BulkGenerateSharecodeResponse[]> GenerateSharecodes(Guid[] ugcIds)
+        private async Task<IList<BulkGenerateSharecodeResponse>> GenerateSharecodes(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds)
         {
             List<BulkGenerateSharecodeResponse> response = new List<BulkGenerateSharecodeResponse>();
 
             foreach (var ugcId in ugcIds)
             {
-                var lookup = await this.WoodstockServices.Value.StorefrontManagementService.GetUGCObject(ugcId).ConfigureAwait(true);
+                var lookup = await storefrontManagementService.GetUGCObject(ugcId).ConfigureAwait(true);
                 var ugcIsPublic = lookup.result.Metadata.Searchable;
                 var existingSharecode = lookup.result.Metadata.ShareCode;
-
-                if (!ugcIsPublic)
-                {
-                    throw new FailedToSendStewardException("Cannot assign sharecode to private UGC.");
-                }
 
                 if (!string.IsNullOrWhiteSpace(existingSharecode))
                 {
@@ -101,7 +100,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 
                 try
                 {
-                    var result = await this.WoodstockServices.Value.StorefrontManagementService.GenerateShareCode(ugcId).ConfigureAwait(true);
+                    if (!ugcIsPublic)
+                    {
+                        throw new FailedToSendStewardException("Cannot assign sharecode to private UGC.");
+                    }
+
+                    throw new UnknownFailureStewardException("TEST TEST");
+
+                    var result = await storefrontManagementService.GenerateShareCode(ugcId).ConfigureAwait(true);
                     response.Add(new BulkGenerateSharecodeResponse { Sharecode = result.shareCode, UgcId = ugcId });
                 }
                 catch (StewardBaseException ex)
@@ -111,17 +117,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 }
             }
 
-            return response.ToArray();
+            return response;
         }
 
         // Generate sharecode(s) for UGC identified by UGC ID(s) using background processing.
-        private async Task<CreatedResult> GenerateSharecodeUsingBackgroundProcessing(Guid[] ugcIds)
+        private async Task<CreatedResult> GenerateSharecodeUsingBackgroundProcessing(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Generate Multiple Sharecodes.", this.Response).ConfigureAwait(true);
-            var storefrontManagementService = this.WoodstockServices.Value.StorefrontManagementService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -129,30 +134,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 // Do not throw.
                 try
                 {
-                    List<BulkGenerateSharecodeResponse> response = new List<BulkGenerateSharecodeResponse>();
-                    bool foundErrors = false;
+                    var results = await this.GenerateSharecodes(storefrontManagementService, ugcIds).ConfigureAwait(true);
 
-                    foreach (var ugcId in ugcIds)
-                    {
-                        try
-                        {
-                            var result = await storefrontManagementService.GenerateShareCode(ugcId).ConfigureAwait(true);
-                            response.Add(new BulkGenerateSharecodeResponse { Sharecode = result.shareCode, UgcId = ugcId });
-                        }
-                        catch (StewardBaseException ex)
-                        {
-                            var errorResponse = new BulkGenerateSharecodeResponse { Sharecode = null, UgcId = ugcId, Error = new StewardError($"Failed to generate sharecode for UgcId: {ugcId}", ex.Message) };
-                            response.Add(errorResponse);
-
-                            if (!foundErrors)
-                            {
-                                foundErrors = true;
-                            }
-                        }
-                    }
+                    bool foundErrors = results.Any(results => results.Error != null);
 
                     var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response.ToArray()).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
