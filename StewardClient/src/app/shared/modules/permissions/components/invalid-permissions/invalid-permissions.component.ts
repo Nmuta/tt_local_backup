@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
@@ -17,9 +18,11 @@ export class InvalidPermissionsComponent {
   constructor(private readonly humanizePipe: HumanizePipe) {}
 
   /** Lifecycle hooks. */
-  public setPermAttributeName(name: PermAttributeName): void {
+  public setPermAttributeName(feature: PermAttributeName, title: GameTitle, env: string): void {
+    const displayTitle = Object.keys(GameTitle).find(key => GameTitle[key] === title);
+
     this.matTooltip = `You do not have the permissions to use this feature: ${this.humanizePipe.transform(
-      name,
-    )}`;
+      feature,
+    )} - ${displayTitle} - ${env}`;
   }
 }
