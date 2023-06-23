@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AdminPagesSelector },
+      uuid: 'c9930424-33e9-4a5d-a551-ab7a4c01147f',
+      shortText: 'Removed links to Steelhead admin pages',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '22b4ce22-a3d4-4fb7-91d3-6b50e21f9280',
       shortText: 'Adjust spacing of navbar icons',
