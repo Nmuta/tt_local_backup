@@ -33,11 +33,9 @@ describe('ExternalDropdownComponent', () => {
       tooltipDescription: 'Various Admin Pages',
       shortDescription: [`Various Admin Pages`],
       externalUrls: [
-        { icon: 'face', text: '(Flight) Steelhead', url: AdminPages.SteelheadFlight },
         { icon: 'face', text: 'FH5', url: AdminPages.FH5 },
         { icon: 'face', text: 'FH4', url: AdminPages.FH4 },
         { icon: 'face', text: 'FM7', url: AdminPages.FM7 },
-        { icon: 'admin_panel_settings', text: '(Dev) Steelhead', url: AdminPages.SteelheadStudio },
         { icon: 'admin_panel_settings', text: '(Dev) FH5', url: AdminPages.FH5Studio },
         { icon: 'admin_panel_settings', text: '(Dev) FH4', url: AdminPages.FH4Studio },
         { icon: 'admin_panel_settings', text: '(Dev) FM7', url: AdminPages.FM7Studio },
