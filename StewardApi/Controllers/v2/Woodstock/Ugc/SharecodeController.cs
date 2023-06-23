@@ -105,8 +105,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                         throw new FailedToSendStewardException("Cannot assign sharecode to private UGC.");
                     }
 
-                    throw new UnknownFailureStewardException("TEST TEST");
-
                     var result = await storefrontManagementService.GenerateShareCode(ugcId).ConfigureAwait(true);
                     response.Add(new BulkGenerateSharecodeResponse { Sharecode = result.shareCode, UgcId = ugcId });
                 }
