@@ -13,7 +13,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
         tool: NavbarTool.UserDetails,
       },
       uuid: '7d8cdf02-2042-46eb-8725-e267cabac8eb',
-      shortText: 'Display ban count per title.',
+      shortText: 'Display ban count per title',
     },
     {
       tag: ChangelogTag.General,
