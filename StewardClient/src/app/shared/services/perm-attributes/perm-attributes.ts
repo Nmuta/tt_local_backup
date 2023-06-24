@@ -14,6 +14,7 @@ export enum PermAttributeName {
   GiftGroup = 'GiftGroup',
   GiftPlayer = 'GiftPlayer',
   HideUgc = 'HideUgc',
+  BulkGenerateSharecode = 'BulkGenerateSharecode',
   MessageGroup = 'MessageGroup',
   MessagePlayer = 'MessagePlayer',
   OverrideCms = 'OverrideCms',
