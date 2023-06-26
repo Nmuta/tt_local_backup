@@ -124,10 +124,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
             var exceptions = new List<Exception>();
             var defaultValue = new GetHiddenUGCByUserOutput() { result = Array.Empty<ForzaUGCDataLight>() };
             var liveries = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Livery, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
-            var layerGroups = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Livery, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
-            var photos = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Livery, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
-            var tunings = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Livery, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
-            var eventBlueprints = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Livery, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
+            var layerGroups = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Layergroup, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
+            var photos = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Photo, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
+            var tunings = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Tune, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
+            var eventBlueprints = this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.EventBlueprint, this.ugcMaxResults).SuccessOrDefault(defaultValue, exceptions);
 
             await Task.WhenAll(liveries, layerGroups, photos, tunings, eventBlueprints).ConfigureAwait(false);
 
