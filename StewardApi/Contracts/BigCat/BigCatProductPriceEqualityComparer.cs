@@ -1,6 +1,12 @@
 ﻿using System.Collections.Generic;
+using Turn10;
+using Turn10.LiveOps;
+using Turn10.LiveOps.StewardApi;
+using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.BigCat;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Data
+namespace Turn10.LiveOps.StewardApi.Contracts.BigCat
 {
     /// <inheritdoc />
     public class BigCatProductPriceEqualityComparer : IEqualityComparer<BigCatProductPrice>
@@ -28,11 +34,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             // Integers 17 and 23 are prime numbers, should help avoid collision
             int hash = 17;
 
-            hash = (hash * 23) + price.CurrencyCode.GetHashCode();
-            hash = (hash * 23) + price.IsPiRequired.GetHashCode();
-            hash = (hash * 23) + price.ListPrice.GetHashCode();
-            hash = (hash * 23) + price.MSRP.GetHashCode();
-            hash = (hash * 23) + price.WholesaleCurrencyCode.GetHashCode();
+            hash = hash * 23 + price.CurrencyCode.GetHashCode();
+            hash = hash * 23 + price.IsPiRequired.GetHashCode();
+            hash = hash * 23 + price.ListPrice.GetHashCode();
+            hash = hash * 23 + price.MSRP.GetHashCode();
+            hash = hash * 23 + price.WholesaleCurrencyCode.GetHashCode();
 
             return hash;
         }

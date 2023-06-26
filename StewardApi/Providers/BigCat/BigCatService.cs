@@ -13,22 +13,29 @@ using Microsoft.Graph;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Turn10;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.Data.SecretProvider;
+using Turn10.LiveOps;
+using Turn10.LiveOps.StewardApi;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.BigCat;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.BigCat;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using static System.Net.WebRequestMethods;
 
-namespace Turn10.LiveOps.StewardApi.Providers.Data
+namespace Turn10.LiveOps.StewardApi.Providers.BigCat
 {
     /// <inheritdoc />
-    public sealed class BigCatProvider : IBigCatProvider, IInitializeable
+    public sealed class BigCatService : IBigCatService, IInitializeable
     {
-        const string BigCatAuthToken = "BigCatAuthToken";
+        private const string BigCatAuthToken = "BigCatAuthToken";
 
         private readonly string tenantId;
         private readonly string clientId;
@@ -39,9 +46,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         private readonly IRefreshableCacheStore refreshableCacheStore;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BigCatProvider"/> class.
+        ///     Initializes a new instance of the <see cref="BigCatService"/> class.
         /// </summary>
-        public BigCatProvider(IKeyVaultProvider keyVaultProvider, IRefreshableCacheStore refreshableCacheStore, IConfiguration configuration)
+        public BigCatService(IKeyVaultProvider keyVaultProvider, IRefreshableCacheStore refreshableCacheStore, IConfiguration configuration)
         {
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
@@ -92,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 using (var client = new HttpClient(handler) { BaseAddress = new Uri(uri) })
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    client.DefaultRequestHeaders.Add(HttpRequestHeader.Authorization.ToString(), $"bearer {this.AuthToken}");
+                    client.DefaultRequestHeaders.Add(HttpRequestHeader.Authorization.ToString(), $"bearer {AuthToken}");
                     client.DefaultRequestHeaders.Add(HttpRequestHeader.Host.ToString(), "frontdoor-displaycatalog.bigcatalog.microsoft.com");
                     client.DefaultRequestHeaders.Add("MS-CV", Guid.NewGuid().ToString());
 

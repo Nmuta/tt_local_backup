@@ -33,6 +33,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Hubs;
 using Turn10.LiveOps.StewardApi.Logging;
+using Turn10.LiveOps.StewardApi.Providers.BigCat;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.MsGraph;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -50,16 +51,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
     [StandardTags(Title.Agnostic)]
     public sealed class PricingController : V2ControllerBase
     {
-        private readonly IBigCatProvider bigCatProvider;
+        private readonly IBigCatService bigCatService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PricingController"/> class.
         /// </summary>
-        public PricingController(IBigCatProvider bigCatProvider)
+        public PricingController(IBigCatService bigCatService)
         {
-            bigCatProvider.ShouldNotBeNull(nameof(bigCatProvider));
+            bigCatService.ShouldNotBeNull(nameof(bigCatService));
 
-            this.bigCatProvider = bigCatProvider;
+            this.bigCatService = bigCatService;
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
         {
             productId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(productId));
 
-            var result = await this.bigCatProvider.RetrievePriceCatalogAsync(productId).ConfigureAwait(true);
+            var result = await this.bigCatService.RetrievePriceCatalogAsync(productId).ConfigureAwait(true);
 
             return this.Ok(result);
         }

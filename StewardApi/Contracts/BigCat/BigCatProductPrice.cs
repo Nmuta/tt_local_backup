@@ -1,8 +1,14 @@
 ﻿#pragma warning disable SA1600 // Elements should be documented
 
 using System.Collections.Generic;
+using Turn10;
+using Turn10.LiveOps;
+using Turn10.LiveOps.StewardApi;
+using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.BigCat;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Data
+namespace Turn10.LiveOps.StewardApi.Contracts.BigCat
 {
     public class BigCatProductPrice
     {
