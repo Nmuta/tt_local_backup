@@ -170,7 +170,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                         if (res.IsSuccessStatusCode)
                         {
                             var content = await res.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            var result = JsonConvert.DeserializeObject<AuthResponse>(content);
+                            var result = JsonConvert.DeserializeObject<OAuthResponse>(content);
 
                             this.refreshableCacheStore.PutItem(BigCatAuthToken, TimeSpan.FromSeconds(result.ExpiresIn), result.AccessToken);
 

@@ -4,7 +4,10 @@ using Newtonsoft.Json;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
-    public class AuthResponse
+    /// <summary>
+    ///     Represents response when sending request for Microsoft OAuth.
+    /// </summary>
+    public class OAuthResponse
     {
         [JsonProperty("token_type")]
         public string TokenType { get; set; }
