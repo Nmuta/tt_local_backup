@@ -73,9 +73,9 @@ export abstract class BasePermissionAttributeDirective
   private checkPermission$ = new Subject<void>();
   private attributeName: PermAttributeName;
   private gameTitle: GameTitle;
+  private selectedEnv: string;
   private actionType: InvalidPermActionType = InvalidPermActionType.Disable;
   protected hideChildElement: boolean = false;
-  private allowV1Auth: boolean = true;
 
   constructor(
     protected readonly element: ElementRef,
@@ -100,6 +100,7 @@ export abstract class BasePermissionAttributeDirective
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
+        this.selectedEnv = this.permAttributesService.getEnvironmentToCheck(this.gameTitle);
         const hasPerm = this.permAttributesService.hasFeaturePermission(
           this.attributeName,
           this.gameTitle,
@@ -142,7 +143,11 @@ export abstract class BasePermissionAttributeDirective
       const invalidPermissionComponent = this.viewContainerRef.createComponent(
         InvalidPermissionsComponent,
       );
-      invalidPermissionComponent.instance.setPermAttributeName(this.attributeName);
+      invalidPermissionComponent.instance.setPermissionTooltip(
+        this.attributeName,
+        this.gameTitle,
+        this.selectedEnv,
+      );
       host.insertBefore(invalidPermissionComponent.location.nativeElement, host.firstChild);
     }
   }

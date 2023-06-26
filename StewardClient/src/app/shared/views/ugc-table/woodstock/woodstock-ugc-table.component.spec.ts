@@ -19,7 +19,9 @@ describe('WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
   let fixture: ComponentFixture<WoodstockUgcTableComponent>;
   let mockWoodstockService: WoodstockService;
+
   let mockWoodstockUgcLookupService: WoodstockUgcLookupService;
+  let mockWoodstockUgcSharecodeService: WoodstockUgcSharecodeService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -38,6 +40,7 @@ describe('WoodstockUgcTableComponent', () => {
     component = fixture.componentInstance;
     mockWoodstockService = TestBed.inject(WoodstockService);
     mockWoodstockUgcLookupService = TestBed.inject(WoodstockUgcLookupService);
+    mockWoodstockUgcSharecodeService = TestBed.inject(WoodstockUgcSharecodeService);
 
     fixture.detectChanges();
   });
@@ -124,6 +127,16 @@ describe('WoodstockUgcTableComponent', () => {
       component.getUgcItem(faker.datatype.uuid(), UgcType.Livery);
 
       expect(mockWoodstockService.getPlayerUgcItem$).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: generateSharecodes', () => {
+    it('should call WoodstockUgcSharecodeService.ugcGenerateSharecodesUsingBackgroundJob$', () => {
+      component.generateSharecodes([faker.datatype.uuid()]);
+
+      expect(
+        mockWoodstockUgcSharecodeService.ugcGenerateSharecodesUsingBackgroundJob$,
+      ).toHaveBeenCalled();
     });
   });
 });

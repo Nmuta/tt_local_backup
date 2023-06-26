@@ -12,6 +12,10 @@ export class MockWoodstockUgcSharecodeService {
     .createSpy('ugcGenerateSharecode$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(faker.random.number()))));
 
+  public ugcGenerateSharecodesUsingBackgroundJob$ = jasmine
+    .createSpy('ugcGenerateSharecodesUsingBackgroundJob$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

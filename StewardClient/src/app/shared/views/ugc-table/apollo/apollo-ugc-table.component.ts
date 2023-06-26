@@ -8,6 +8,7 @@ import { Observable, throwError } from 'rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 /** Displays apollo UGC content in a table. */
 @Component({
@@ -37,5 +38,10 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
   /** Hide multiple Ugcs. */
   public hideUgc(_ugcIds: string[]): Observable<string[]> {
     return throwError(new Error('Apollo does not support hiding ugc items.'));
+  }
+
+  /** Generate multiple Sharecodes. */
+  public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
+    return throwError(new Error('Apollo does not support bulk sharecode generation.'));
   }
 }

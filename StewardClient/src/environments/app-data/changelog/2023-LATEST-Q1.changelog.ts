@@ -8,14 +8,48 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AdminPagesSelector },
+      uuid: 'c9930424-33e9-4a5d-a551-ab7a4c01147f',
+      shortText: 'Removed links to Steelhead admin pages',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserDetails,
+      },
+      uuid: '7d8cdf02-2042-46eb-8725-e267cabac8eb',
+      shortText: 'Display ban count per title',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '6ceff20c-1dc0-48e1-8044-a7be33a0a994',
+      shortText: 'Add title and environment to permission tooltip',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '22b4ce22-a3d4-4fb7-91d3-6b50e21f9280',
+      shortText: 'Adjust spacing of navbar icons',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'f703a92a-dac4-41d0-8265-5826bb17df0a',
       shortText: 'Added C-Livery download for Woodstock and Steelhead',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'dec40db0-c132-4b04-b31a-ec7d4b847d5d',
+      shortText:
+        'Add button to generate sharecodes for public UGC search results without a sharecode',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '8cb3427a-a9a5-4e94-9e69-5d9f628a751b',
       shortText: 'Reorder navbar icons and link to docs',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5c5ae753-ac77-45ee-80fb-63824fa7cf17',
+      shortText: 'Remove old verify-with directive and rename module',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.UserDetails },

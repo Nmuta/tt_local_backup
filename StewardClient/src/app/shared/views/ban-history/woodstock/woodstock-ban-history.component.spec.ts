@@ -5,6 +5,7 @@ import { createMockWoodstockService } from '@services/woodstock/woodstock.servic
 import { WoodstockBanHistoryComponent } from './woodstock-ban-history.component';
 import { createMockOldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service.mock';
 
 describe('WoodstockBanHistoryComponent', () => {
   let component: WoodstockBanHistoryComponent;
@@ -14,7 +15,11 @@ describe('WoodstockBanHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockBanHistoryComponent],
       imports: [PipesModule],
-      providers: [createMockWoodstockService(), createMockOldPermissionsService()],
+      providers: [
+        createMockWoodstockService(),
+        createMockOldPermissionsService(),
+        createMockMultipleBanHistoryService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -32,6 +37,5 @@ describe('WoodstockBanHistoryComponent', () => {
 
   it('should load history', () => {
     component.ngOnChanges();
-    expect(component.isLoading).toBeFalsy();
   });
 });

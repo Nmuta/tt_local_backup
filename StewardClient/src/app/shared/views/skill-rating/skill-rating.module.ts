@@ -16,7 +16,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { SkillRatingComponent } from './skill-rating.component';
 import { SteelheadSkillRatingComponent } from './steelhead/steelhead-skill-rating.component';
@@ -45,7 +45,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
     PermissionsModule,
     MatInputModule,
     MatCheckboxModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     ErrorSpinnerModule,
     HelpModule,
   ],
