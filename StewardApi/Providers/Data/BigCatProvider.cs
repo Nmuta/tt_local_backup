@@ -98,7 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                     client.Timeout = TimeSpan.FromMilliseconds(10000);
 
-                    var res = await client.PostAsync(string.Empty, null).ConfigureAwait(false);
+                    var res = await client.GetAsync(string.Empty).ConfigureAwait(false);
 
                     if (res.IsSuccessStatusCode)
                     {
