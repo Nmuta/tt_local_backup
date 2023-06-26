@@ -11,6 +11,10 @@ import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service';
+import {
+  BulkGenerateSharecodeResponse,
+  WoodstockUgcSharecodeService,
+} from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 /** Displays woodstock UGC content in a table. */
 @Component({
@@ -25,6 +29,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
     private readonly woodstockService: WoodstockService,
     private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
     private readonly woodstockUgcVisibilityService: WoodstockUgcVisibilityService,
+    private readonly woodstockUgcSharecodeService: WoodstockUgcSharecodeService,
     private readonly backgroundJobService: BackgroundJobService,
     snackbar: MatSnackBar,
   ) {

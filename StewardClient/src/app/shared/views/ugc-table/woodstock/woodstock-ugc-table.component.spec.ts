@@ -14,6 +14,8 @@ import { createMockBackgroundJobService } from '@services/background-job/backgro
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { createMockWoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service.mock';
+import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
+import { createMockWoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service.mock';
 
 describe('WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
@@ -31,6 +33,7 @@ describe('WoodstockUgcTableComponent', () => {
         createMockWoodstockService(),
         createMockWoodstockUgcLookupService(),
         createMockWoodstockUgcVisibilityService(),
+        createMockWoodstockUgcSharecodeService(),
         createMockBackgroundJobService(),
       ],
       schemas: [NO_ERRORS_SCHEMA],

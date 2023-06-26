@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '806596e2-19b8-4f1c-9fcd-bf7c43654dd6',
+      shortText:
+        'Remove all references to FH5 StorefrontService, move relevant logic to V2 controllers',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.AdminPagesSelector },
       uuid: 'c9930424-33e9-4a5d-a551-ab7a4c01147f',
       shortText: 'Removed links to Steelhead admin pages',
