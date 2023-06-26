@@ -15,7 +15,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SteelheadEditCarItemModalComponent } from './steelhead/steelhead-edit-car-item-modal.component';
@@ -43,7 +43,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
     StateManagersModule,
     MonitorActionModule,
     StandardDateModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     PermissionsModule,
     HelpModule,
   ],

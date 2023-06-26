@@ -12,7 +12,7 @@ import { SunriseConsolesComponent } from './sunrise/sunrise-consoles.component';
 import { SteelheadConsolesComponent } from './steelhead/steelhead-consoles.component';
 import { WoodstockConsolesComponent } from './woodstock/woodstock-consoles.component';
 import { MatIconModule } from '@angular/material/icon';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -39,7 +39,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     MatIconModule,
     MatButtonModule,
     MatCheckboxModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,

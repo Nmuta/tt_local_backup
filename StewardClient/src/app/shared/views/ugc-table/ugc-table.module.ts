@@ -20,7 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ApolloUgcTableComponent } from './apollo/apollo-ugc-table.component';
 import { RouterModule } from '@angular/router';
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
@@ -59,7 +59,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     StateManagersModule,
     MatSnackBarModule,
     MatIconModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     RouterModule,
     FeatureUgcModalModule,
     UgcDownloadButtonModule,

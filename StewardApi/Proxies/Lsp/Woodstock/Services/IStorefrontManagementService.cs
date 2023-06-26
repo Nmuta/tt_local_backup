@@ -39,5 +39,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 
         /// <summary>Generates a Sharecode for the given UGC ID.</summary>
         Task<GenerateShareCodeOutput> GenerateShareCode(Guid id);
+
+        /// <summary>Sets the visibility of UGC by ID.<summary>
+        Task SetUGCVisibility(Guid id, bool shouldBeVisible);
     }
 }

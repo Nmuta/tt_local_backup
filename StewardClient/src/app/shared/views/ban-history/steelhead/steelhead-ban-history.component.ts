@@ -9,6 +9,7 @@ import { UnbanResult } from '@models/unban-result';
 import { OldPermissionsService } from '@services/old-permissions';
 import { SteelheadBanHistoryService } from '@services/api-v2/steelhead/player/ban-history/steelhead-ban-history.service';
 import { SteelheadBanService } from '@services/api-v2/steelhead/ban/steelhead-ban.service';
+import { MultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service';
 
 /** Retreives and displays Steelhead Ban history by XUID. */
 @Component({
@@ -31,8 +32,9 @@ export class SteelheadBanHistoryComponent extends BanHistoryBaseComponent {
     private readonly steelheadBanHistoryService: SteelheadBanHistoryService,
     private readonly steelheadBanService: SteelheadBanService,
     permissionsService: OldPermissionsService,
+    multipleBanHistoryService: MultipleBanHistoryService,
   ) {
-    super(permissionsService);
+    super(permissionsService, multipleBanHistoryService);
   }
 
   /** Gets the Steelhead ban history. */

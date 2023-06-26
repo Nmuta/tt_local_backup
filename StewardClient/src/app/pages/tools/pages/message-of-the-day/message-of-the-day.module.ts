@@ -28,7 +28,7 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { LuxonModule } from 'luxon-angular';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ActivePullRequestsModule } from '@views/active-pull-requests/active-pull-requests.module';
 
 /** Module for displaying message of the day tool. */
@@ -63,7 +63,7 @@ import { ActivePullRequestsModule } from '@views/active-pull-requests/active-pul
     MatDatepickerModule,
     PermissionsModule,
     LuxonModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     ActivePullRequestsModule,
   ],
   exports: [],

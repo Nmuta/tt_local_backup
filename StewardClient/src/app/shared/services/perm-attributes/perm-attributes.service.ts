@@ -162,6 +162,11 @@ export class PermAttributesService extends BaseService {
     this.tryInitialization$.next();
   }
 
+  /** Returns environment/endpoint that will be checked for permission. */
+  public getEnvironmentToCheck(title: GameTitle): string {
+    return this.selectedEndpoints[title];
+  }
+
   /** Returns true if user has permission to feature attribute. */
   public hasFeaturePermission(attr: PermAttributeName, title?: GameTitle): boolean {
     if (this.isAdmin) {

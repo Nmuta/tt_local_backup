@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
                     if (skip("Gravity", "UpdatePlayerInventoryByT10IdUseBackgroundProcessing") ||
                        skip("Gravity", "UpdatePlayerInventoryByT10Id") ||
                        skip("Kusto", "RunQuery") ||
-                       skip("Players", "SearchIdentities") ||
+                       skip("Identities", "SearchIdentities") ||
                        skip("Util", "DeleteStatus") ||
                        skip("Util", "PatchStatus") ||
                        skip("Util", "PostStatus") ||

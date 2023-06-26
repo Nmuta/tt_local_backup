@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { WoodstockUserFlagsComponent } from './woodstock/woodstock-user-flags.component';
 import { MatInputModule } from '@angular/material/input';
 import { HelpModule } from '@shared/modules/help/help.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
@@ -47,7 +47,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     ReactiveFormsModule,
     MatInputModule,
     HelpModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,
