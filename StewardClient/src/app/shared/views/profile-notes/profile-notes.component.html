@@ -4,7 +4,7 @@
     <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+    <ng-container *waitForMonitor="getMonitor">
       <ng-container *ngIf="profileNotes?.length > 0; else noNotesState">
         <table mat-table [dataSource]="profileNotes">
           <ng-container matColumnDef="date">
@@ -26,15 +26,34 @@
           <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
         </table>
       </ng-container>
+      <form [formGroup]="formGroup">
+        <mat-form-field appearance="fill" class="profile-notes">
+          <mat-label>Note</mat-label>
+          <textarea matInput [formControl]="formControls.note" dkTextareaAutosize></textarea>
+        </mat-form-field>
+        <verify-button
+          #verifyBtn
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="!formControls.note.value"
+          (click)="addProfileNote()"
+          stateManager
+          [monitor]="postMonitor"
+          monitorDisable
+          [verifyWithV2]="verifyBtn"
+        >
+          Add
+          <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+        </button>
+      </form>
     </ng-container>
   </mat-card-content>
 </mat-card>
 
 <ng-template #noNotesState>
   <h3>No notes on the player.</h3>
-</ng-template>
-
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
 </ng-template>
