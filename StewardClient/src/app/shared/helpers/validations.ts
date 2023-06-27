@@ -11,3 +11,20 @@ export function requireReasonListMatch(control: FormControl): ValidationErrors |
 
   return null;
 }
+
+/** Verify that the value is part of the parent cars list. */
+export function requireValidCarSelection(control: FormControl): ValidationErrors | null {
+  const selection = control.value;
+
+  if (!selection?.id) {
+    return { requireValidCarSelection: true };
+  }
+
+  const valid = this.allCars.find(car => car.id.isEqualTo(selection.id));
+
+  if (valid) {
+    return null;
+  }
+
+  return { requireValidCarSelection: true };
+}

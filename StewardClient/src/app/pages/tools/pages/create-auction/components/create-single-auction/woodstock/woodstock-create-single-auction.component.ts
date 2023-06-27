@@ -5,6 +5,7 @@ import { WoodstockAuctionsService } from '@services/api-v2/woodstock/auctions/wo
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { CreateSingleAuctionContract } from '../create-single-auction.component';
+import { WoodstockService } from '@services/woodstock';
 
 /** The Woodstock create single auction component. */
 @Component({
@@ -15,7 +16,10 @@ import { CreateSingleAuctionContract } from '../create-single-auction.component'
 export class WoodstockCreateSingleAuctionComponent extends BaseComponent {
   public createSingleAuctionContract: CreateSingleAuctionContract;
 
-  constructor(woodstockAuctionsService: WoodstockAuctionsService) {
+  constructor(
+    woodstockAuctionsService: WoodstockAuctionsService,
+    woodstockService: WoodstockService,
+  ) {
     super();
 
     this.createSingleAuctionContract = {
@@ -35,6 +39,7 @@ export class WoodstockCreateSingleAuctionComponent extends BaseComponent {
           sellerId,
         );
       },
+      getAllCars$: () => woodstockService.getSimpleCars$(),
     };
   }
 }
