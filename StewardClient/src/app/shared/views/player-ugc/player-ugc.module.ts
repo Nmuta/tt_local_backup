@@ -23,12 +23,14 @@ import { UgcTableModule } from '../ugc-table/ugc-table.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { SteelheadPlayerUgcComponent } from './steelhead/steelhead-player-ugc.component';
+import { WoodstockPlayerHiddenUgcComponent } from './woodstock/hidden/woodstock-player-hidden-ugc.component';
 
 /** Display for player ugc. */
 @NgModule({
   declarations: [
     SunrisePlayerUgcComponent,
     WoodstockPlayerUgcComponent,
+    WoodstockPlayerHiddenUgcComponent,
     ApolloPlayerUgcComponent,
     SteelheadPlayerUgcComponent,
   ],
@@ -58,6 +60,7 @@ import { SteelheadPlayerUgcComponent } from './steelhead/steelhead-player-ugc.co
   exports: [
     SunrisePlayerUgcComponent,
     WoodstockPlayerUgcComponent,
+    WoodstockPlayerHiddenUgcComponent,
     ApolloPlayerUgcComponent,
     SteelheadPlayerUgcComponent,
   ],
