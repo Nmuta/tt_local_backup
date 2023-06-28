@@ -811,60 +811,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetProfileNotesAsync_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            async Task<IActionResult> Action() => await controller.GetProfileNotesAsync(xuid).ConfigureAwait(false);
-
-            // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            Action().Should().NotBeNull();
-            var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<ProfileNote>;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<List<ProfileNote>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task AddProfileNoteAsync_WithValidParameters_DoesNotThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = ValidXuid;
-            var note = Fixture.Create<ProfileNote>();
-
-            // Act.
-            async Task<IActionResult> Action() => await controller.AddProfileNoteAsync(xuid, note).ConfigureAwait(false);
-
-            // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            Action().Should().NotBeNull();
-            var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<OkResult>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void AddProfileNoteAsync_WithNullProfileNote_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.AddProfileNoteAsync(xuid, null).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "profileNote"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task GetBanHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

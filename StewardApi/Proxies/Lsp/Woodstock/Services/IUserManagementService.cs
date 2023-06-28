@@ -116,5 +116,15 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         ///     Gets ban history summaries by xuids.
         /// </summary>
         Task<GetUserBanSummariesOutput> GetUserBanSummaries(ulong[] xuids, int xuidCount);
+
+        /// <summary>
+        ///     Add meta-level comment to a player.
+        /// </summary>
+        Task AddAdminComment(ulong xuid, string text, string author);
+
+        /// <summary>
+        ///     Gets meta-level comments on a player.
+        /// </summary>
+        Task<GetAdminCommentsOutput> GetAdminComments(ulong xuid, int maxResults);
     }
 }
