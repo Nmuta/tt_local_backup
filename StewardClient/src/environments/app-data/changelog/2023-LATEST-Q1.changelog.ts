@@ -14,6 +14,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
         'Remove all references to FH5 StorefrontService, move relevant logic to V2 controllers',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'e1b03cab-7326-4a35-aec9-f6d9a5bc037d',
+      shortText: 'Change form array for display conditions in welcome center tiles',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '9e8da39e-c8aa-490e-b712-564b1823a4f2',
+      shortText: 'Profile notes can now be added to player details',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.AdminPagesSelector },
       uuid: 'c9930424-33e9-4a5d-a551-ab7a4c01147f',
       shortText: 'Removed links to Steelhead admin pages',

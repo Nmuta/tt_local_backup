@@ -1,7 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
   FormControl,
   FormGroup,
   NG_VALIDATORS,
@@ -11,6 +10,7 @@ import {
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
+import { BetterFormArray } from '@helpers/better-form-array';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { GameTitle } from '@models/enums';
 import { LocalizedStringsMap } from '@models/localization';
@@ -29,6 +29,16 @@ import { filter, map, Observable, pairwise, startWith, takeUntil } from 'rxjs';
 
 /** Outputted form value of the base tile form. */
 export type BaseTileFormValue = WelcomeCenterTile;
+
+/** FormGroup extension for a display condition item. */
+class DisplayConditionItemFormGroup extends FormGroup {
+  get reference(): AbstractControl {
+    return this.get('reference');
+  }
+  get when(): AbstractControl {
+    return this.get('when');
+  }
+}
 
 /** The base tile component. */
 @Component({
@@ -95,7 +105,7 @@ export class GeneralTileComponent extends BaseComponent {
     timerReferenceId: new FormControl(),
     timerCustomFromDate: new FormControl(),
     timerCustomToDate: new FormControl(),
-    displayConditions: new FormArray([]),
+    displayConditions: new BetterFormArray<DisplayConditionItemFormGroup>([]),
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
@@ -299,8 +309,8 @@ export class GeneralTileComponent extends BaseComponent {
       welcomeCenterTile.displayConditions.item = [];
       this.formControls.displayConditions.controls.forEach(element => {
         welcomeCenterTile.displayConditions.item.push({
-          refId: element.get('reference').value,
-          when: element.get('when').value,
+          refId: element.reference.value,
+          when: element.when.value,
         });
       });
     } else {
@@ -315,7 +325,7 @@ export class GeneralTileComponent extends BaseComponent {
 
   /** Add a new display condition. */
   public addDisplayCondition(reference: string, when: string): void {
-    const newDisplayConditionForm = new FormGroup({
+    const newDisplayConditionForm = new DisplayConditionItemFormGroup({
       reference: new FormControl(reference, [Validators.required]),
       when: new FormControl(when),
     });

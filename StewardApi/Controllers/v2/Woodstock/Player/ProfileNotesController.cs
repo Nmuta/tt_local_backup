@@ -12,32 +12,30 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
 {
     /// <summary>
     ///     Controller for user profile notes.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/profileNotes")]
-    [LogTagTitle(TitleLogTags.Steelhead)]
+    [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}/profileNotes")]
+    [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [AuthorizeRoles(
         UserRole.GeneralUser,
         UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
-    [StandardTags(Title.Steelhead, Target.Player, Topic.ProfileNotes)]
-    public class ProfileNotesController : V2SteelheadControllerBase
+    [StandardTags(Title.Woodstock, Target.Player, Topic.ProfileNotes)]
+    public class ProfileNotesController : V2WoodstockControllerBase
     {
         private const int DefaultMaxResults = 500;
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
+        private const TitleCodeName CodeName = TitleCodeName.Woodstock;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -63,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            Services.LiveOps.FM8.Generated.UserManagementService.GetAdminCommentsOutput response;
+            UserManagementService.GetAdminCommentsOutput response;
 
             try
             {
