@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: '8db18c20-e408-4237-becc-58d6408aa5bb',
+      shortText: 'Change create single auction to use verify V2 and move buttons',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e1b03cab-7326-4a35-aec9-f6d9a5bc037d',
       shortText: 'Change form array for display conditions in welcome center tiles',
