@@ -26,7 +26,7 @@ using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementServ
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
 {
     /// <summary>
-    ///     Handles requests for Woodstock player auctions.
+    ///     Handles requests for Woodstock player UGC.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/player/{xuid}/ugc")]
     [LogTagTitle(TitleLogTags.Woodstock)]
