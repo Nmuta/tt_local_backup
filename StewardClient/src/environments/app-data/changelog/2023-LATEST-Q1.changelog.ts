@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'c6275cf3-6366-40e7-b765-48488263f477',
+      shortText: 'Target CU-Next in Woodstock car details lookup',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e1b03cab-7326-4a35-aec9-f6d9a5bc037d',
       shortText: 'Change form array for display conditions in welcome center tiles',
