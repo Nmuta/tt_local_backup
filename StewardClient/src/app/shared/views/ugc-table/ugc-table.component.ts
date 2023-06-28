@@ -83,6 +83,8 @@ export abstract class UgcTableBaseComponent
   @Input() content: PlayerUgcItem[];
   /** Content type of the UGC shown. Default to {@link UgcType.Unknown}. */
   @Input() contentType: UgcType = UgcType.Unknown;
+  /** Whether the content of the table is hidden or not. */
+  @Input() isContentHidden: boolean = false;
   /** Output when UGC items are hidden. */
   @Output() ugcItemsRemoved = new EventEmitter<string[]>();
 
@@ -100,6 +102,7 @@ export abstract class UgcTableBaseComponent
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
   public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc(s)');
+  public unhideUgcMonitor: ActionMonitor = new ActionMonitor('Unhide Ugc(s)');
   public generateSharecodesMonitor: ActionMonitor = new ActionMonitor('Generate Sharecode(s)');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcHidingSupported: boolean = true;
@@ -112,6 +115,7 @@ export abstract class UgcTableBaseComponent
     'Cannot change featured status of private UGC content.';
   public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
   public readonly hideUgcPermission = PermAttributeName.HideUgc;
+  public readonly unhideUgcPermission = PermAttributeName.UnhideUgc;
   public readonly bulkGenerateSharecodePermission = PermAttributeName.BulkGenerateSharecode;
 
   public abstract gameTitle: GameTitle;
@@ -126,6 +130,7 @@ export abstract class UgcTableBaseComponent
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
   public abstract hideUgc(ugcIds: string[]): Observable<string[]>;
+  public abstract unhideUgc(ugcIds: string[]): Observable<string[]>;
   public abstract generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]>;
 
   /** Angular hook. */
@@ -287,6 +292,52 @@ export abstract class UgcTableBaseComponent
           ugcIds.splice(index, 1);
         });
         // Remove hidden ugcs from the table
+        // The ugcTableDataSource data property is a reference to this.content
+        ugcIds.forEach(ugcId => {
+          const index = this.content.findIndex(x => x.id == ugcId);
+          this.content.splice(index, 1);
+        });
+        // Send ugcIds to be removed to parent component
+        this.ugcItemsRemoved.emit(ugcIds);
+        this.selectedUgcs = [];
+        this.ugcTableDataSource.data.forEach(ugcTableElement => {
+          ugcTableElement.selected = false;
+        });
+        this.ugcTableDataSource._updateChangeSubscription();
+      });
+  }
+
+  /** Unhide multiple ugc items. */
+  public unhideMultipleUgc(ugcs: PlayerUgcItemTableEntries[]): void {
+    this.unhideUgcMonitor = this.unhideUgcMonitor.repeat();
+
+    const ugcIds = ugcs.map(ugc => ugc.id);
+    this.unhideUgc(ugcIds)
+      .pipe(this.unhideUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(failedUgcs => {
+        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
+        // the backend was successful (200)
+        if (failedUgcs.length > 0) {
+          this.snackbar.open(
+            `Failed to unhide some or all of the following UGC items : ${failedUgcs.join('\n')}`,
+            'Okay',
+            {
+              panelClass: 'snackbar-warn',
+            },
+          );
+        } else {
+          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
+            data: this.unhideUgcMonitor,
+            panelClass: ['snackbar-success'],
+          });
+        }
+
+        // Remove ugcId that failed from the list of ugcIds
+        failedUgcs.forEach(failedUgc => {
+          const index = ugcIds.indexOf(failedUgc);
+          ugcIds.splice(index, 1);
+        });
+        // Remove unhidden ugcs from the table
         // The ugcTableDataSource data property is a reference to this.content
         ugcIds.forEach(ugcId => {
           const index = this.content.findIndex(x => x.id == ugcId);

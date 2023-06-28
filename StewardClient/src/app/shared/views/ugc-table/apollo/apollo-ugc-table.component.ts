@@ -40,6 +40,11 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
     return throwError(new Error('Apollo does not support hiding ugc items.'));
   }
 
+  /** Unhide multiple Ugcs. */
+  public unhideUgc(_ugcIds: string[]): Observable<string[]> {
+    return throwError(new Error('Apollo does not support bulk unhide UGC.'));
+  }
+
   /** Generate multiple Sharecodes. */
   public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     return throwError(new Error('Apollo does not support bulk sharecode generation.'));

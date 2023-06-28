@@ -19,13 +19,20 @@ export class WoodstockUgcVisibilityService {
   }
 
   /** Hide Ugc items. */
-  public hideUgcItems$(ugcIds: string[]): Observable<void> {
+  public hideUgcItems$(ugcIds: string[]): Observable<string[]> {
     const params = new HttpParams().set('useBackgroundProcessing', false);
-    return this.api.postRequest$<void>(`${this.basePath}/hide`, ugcIds, params);
+    return this.api.postRequest$<string[]>(`${this.basePath}/hide`, ugcIds, params);
+  }
+
+  /** Unhide Ugc items using background processing. */
+  public unhideUgcItemsUsingBackgroundJob$(ugcIds: string[]): Observable<BackgroundJob<void>> {
+    const params = new HttpParams().set('useBackgroundProcessing', true);
+    return this.api.postRequest$<BackgroundJob<void>>(`${this.basePath}/unhide`, ugcIds, params);
   }
 
   /** Unhide Ugc item. */
-  public unhideUgc$(ugcId: string): Observable<void> {
-    return this.api.postRequest$<void>(`${this.basePath}/${ugcId}/unhide`, null);
+  public unhideUgcItems$(ugcIds: string[]): Observable<string[]> {
+    const params = new HttpParams().set('useBackgroundProcessing', false);
+    return this.api.postRequest$<string[]>(`${this.basePath}/unhide`, ugcIds, params);
   }
 }

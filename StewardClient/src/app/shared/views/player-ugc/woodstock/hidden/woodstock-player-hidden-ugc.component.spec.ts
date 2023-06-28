@@ -5,26 +5,26 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { WoodstockPlayerUgcComponent } from './woodstock-player-ugc.component';
 import { WoodstockPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { createMockWoodstockService } from '@services/woodstock';
+import { WoodstockPlayerHiddenUgcComponent } from './woodstock-player-hidden-ugc.component';
+import { createMockWoodstockPlayerUgcService } from '@services/api-v2/woodstock/player/ugc/woodstock-player-ugc.service.mock';
 
-describe('WoodstockPlayerUgcComponent', () => {
-  let component: WoodstockPlayerUgcComponent;
-  let fixture: ComponentFixture<WoodstockPlayerUgcComponent>;
+describe('WoodstockPlayerHiddenUgcComponent', () => {
+  let component: WoodstockPlayerHiddenUgcComponent;
+  let fixture: ComponentFixture<WoodstockPlayerHiddenUgcComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [WoodstockPlayerUgcComponent, BigJsonPipe],
-      providers: [createMockWoodstockService()],
+      declarations: [WoodstockPlayerHiddenUgcComponent, BigJsonPipe],
+      providers: [createMockWoodstockPlayerUgcService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(WoodstockPlayerUgcComponent);
+    fixture = TestBed.createComponent(WoodstockPlayerHiddenUgcComponent);
     component = fixture.componentInstance;
     component.usingIdentities = true;
   });

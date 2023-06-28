@@ -61,19 +61,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [AuthorizeRoles(
             UserRole.GeneralUser,
             UserRole.LiveOpsAdmin)]
-        [HttpPost("{ugcId}/unhide")]
+        [HttpPost("unhide")]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
         [Authorize(Policy = UserAttribute.UnhideUgc)]
-        public async Task<IActionResult> UnhideUgc(string ugcId)
+        public async Task<IActionResult> UnhideUgc([FromQuery] bool useBackgroundProcessing, [FromBody] Guid[] ugcIds)
         {
-            var ugcIdGuid = ugcId.TryParseGuidElseThrow(nameof(ugcId));
-
-            await this.Services.StorefrontManagementService.SetUGCVisibility(ugcIdGuid, true).ConfigureAwait(true);
-
-            return this.Ok();
+            if (useBackgroundProcessing)
+            {
+                var response = await this.SetUgcItemsVisibilityUseBackgroundProcessing(ugcIds, true).ConfigureAwait(false);
+                return response;
+            }
+            else
+            {
+                await this.SetUgcItemsVisibility(ugcIds, true).ConfigureAwait(false);
+                return this.Ok();
+            }
         }
 
         /// <summary>
@@ -92,27 +97,38 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         {
             if (useBackgroundProcessing)
             {
-                var response = await this.HideUgcItemsUseBackgroundProcessing(ugcIds).ConfigureAwait(false);
+                var response = await this.SetUgcItemsVisibilityUseBackgroundProcessing(ugcIds, false).ConfigureAwait(false);
                 return response;
             }
             else
             {
-                await this.HideUgcItems(ugcIds).ConfigureAwait(false);
-                return this.Ok();
+                var response = await this.SetUgcItemsVisibility(ugcIds, false).ConfigureAwait(false);
+                return this.Ok(response);
             }
         }
 
         // Hide list of UgcIds
-        private async Task HideUgcItems(Guid[] ugcIds)
+        private async Task<List<Guid>> SetUgcItemsVisibility(Guid[] ugcIds, bool isVisible)
         {
+            var failedUgc = new List<Guid>();
+
             foreach (var ugcId in ugcIds)
             {
-                await this.Services.StorefrontManagementService.SetUGCVisibility(ugcId, false).ConfigureAwait(true);
+                try
+                {
+                    await this.Services.StorefrontManagementService.SetUGCVisibility(ugcId, isVisible).ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    failedUgc.Add(ugcId);
+                }
             }
+
+            return failedUgc;
         }
 
         // Hide list of UfcIds using background processing
-        private async Task<CreatedResult> HideUgcItemsUseBackgroundProcessing(Guid[] ugcIds)
+        private async Task<CreatedResult> SetUgcItemsVisibilityUseBackgroundProcessing(Guid[] ugcIds, bool isVisible)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -132,7 +148,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                     {
                         try
                         {
-                            await storefrontManagementService.SetUGCVisibility(ugcId, false).ConfigureAwait(true);
+                            await storefrontManagementService.SetUGCVisibility(ugcId, isVisible).ConfigureAwait(true);
                         }
                         catch (Exception)
                         {

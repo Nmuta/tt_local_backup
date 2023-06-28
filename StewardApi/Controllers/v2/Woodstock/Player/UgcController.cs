@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
                     throw new UnknownFailureStewardException($"Unsupported UGC type: {parseUgcType}");
             }
 
-            var convertedResults = this.mapper.SafeMap<List<HideableUgc>>(results);
+            var convertedResults = this.mapper.SafeMap<List<WoodstockUgcItem>>(results);
 
             return this.Ok(convertedResults);
         }

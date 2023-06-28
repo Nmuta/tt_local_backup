@@ -55,6 +55,15 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
     );
   }
 
+  /** Unhide multiple Ugcs. */
+  public unhideUgc(ugcIds: string[]): Observable<string[]> {
+    return this.woodstockUgcVisibilityService.unhideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+      switchMap(response => {
+        return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
+      }),
+    );
+  }
+
   /** Generate multiple Sharecodes. */
   public generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     return this.woodstockUgcSharecodeService.ugcGenerateSharecodesUsingBackgroundJob$(ugcIds).pipe(
