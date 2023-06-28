@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Implemented new deeplink destination type',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'e1b03cab-7326-4a35-aec9-f6d9a5bc037d',
+      shortText: 'Change form array for display conditions in welcome center tiles',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
       uuid: '9e8da39e-c8aa-490e-b712-564b1823a4f2',
       shortText: 'Profile notes can now be added to player details',
