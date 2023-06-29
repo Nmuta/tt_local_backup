@@ -3,7 +3,7 @@
     <mat-card-title>Create Single Auction</mat-card-title>
     <mat-card-subtitle>{{ service.gameTitle | humanize }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
-    <div *waitForMonitor="submitCreateAuctionMonitor" class="sf-horizontal">
+    <div class="sf-horizontal">
       <verify-button
         #verifySubmitBtn
         [disabled]="!formGroup.valid"
@@ -14,11 +14,15 @@
         mat-raised-button
         color="accent"
         stateManager
+        [monitor]="submitCreateAuctionMonitor"
+        monitorDisable
+        monitorWarn
+        monitorWarnSnackbar
         (click)="submitCreateAuction()"
         [disabled]="!formGroup.valid"
         [verifyWithV2]="verifySubmitBtn"
       >
-        Create Auction
+        Create Auction <button-spinner [monitor]="submitCreateAuctionMonitor"></button-spinner>
       </button>
     </div>
   </mat-card-header>
