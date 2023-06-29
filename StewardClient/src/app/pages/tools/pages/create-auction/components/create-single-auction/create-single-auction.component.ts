@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { BaseComponent } from '@components/base-component/base.component';
 import { tryParseBigNumber } from '@helpers/bignumbers';
@@ -38,7 +37,6 @@ export interface CreateSingleAuctionContract {
   styleUrls: ['./create-single-auction.component.scss'],
 })
 export class CreateSingleAuctionComponent extends BaseComponent implements OnInit {
-  @ViewChild(MatCheckbox) verifyCheckbox: MatCheckbox;
   @ViewChild('datePicker') public datePicker: MatDatepicker<Date>;
 
   /** Create single auction service contract. */
@@ -93,7 +91,6 @@ export class CreateSingleAuctionComponent extends BaseComponent implements OnIni
   /** Submit auction creation. */
   public submitCreateAuction(): void {
     this.submitCreateAuctionMonitor = this.submitCreateAuctionMonitor.repeat();
-    this.verifyCheckbox.checked = false;
 
     this.service
       .createSingleAuction$(

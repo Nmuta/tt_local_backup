@@ -2,6 +2,25 @@
   <mat-card-header>
     <mat-card-title>Create Single Auction</mat-card-title>
     <mat-card-subtitle>{{ service.gameTitle | humanize }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <div *waitForMonitor="submitCreateAuctionMonitor" class="sf-horizontal">
+      <verify-button
+        #verifySubmitBtn
+        [disabled]="!formGroup.valid"
+        [permissionAttribute]="permAttribute"
+        [permissionTitle]="service.gameTitle"
+      ></verify-button>
+      <button
+        mat-raised-button
+        color="accent"
+        stateManager
+        (click)="submitCreateAuction()"
+        [disabled]="!formGroup.valid"
+        [verifyWithV2]="verifySubmitBtn"
+      >
+        Create Auction
+      </button>
+    </div>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="formGroup" class="sf-wrapper">
@@ -46,24 +65,6 @@
             <mat-label>Seller Id</mat-label>
             <input type="number" matInput placeholder="1" [formControl]="formControls.sellerId" />
           </mat-form-field>
-        </div>
-        <div *waitForMonitor="submitCreateAuctionMonitor" class="sf-horizontal">
-          <button
-            mat-raised-button
-            color="accent"
-            (click)="submitCreateAuction()"
-            [disabled]="!verifySubmit.checked || !formGroup.valid"
-          >
-            Create Auction
-          </button>
-          <mat-checkbox
-            #verifySubmit
-            stateManager
-            [permissionAttribute]="permAttribute"
-            [permissionTitle]="service.gameTitle"
-            matTooltip="Verify"
-            >Verify</mat-checkbox
-          >
         </div>
         <span *ngIf="auctionUrl">
           An auction has been created. You can access it
