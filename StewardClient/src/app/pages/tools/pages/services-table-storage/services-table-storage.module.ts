@@ -36,6 +36,7 @@ import { ServicesTableResultsComponent } from './components/services-table-resul
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { WoodstockServicesTableStorageComponent } from './woodstock/woodstock-services-table-storage.component';
 import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 /** The feature module for the Services Table Storage route. */
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/
     MatTableModule,
     StandardDateModule,
     StandardCopyModule,
+    MatSlideToggleModule,
   ],
 })
 export class ServicesTableStorageModule {}

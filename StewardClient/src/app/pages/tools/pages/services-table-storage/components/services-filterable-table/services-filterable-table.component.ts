@@ -1,6 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
@@ -21,6 +21,7 @@ export interface ServicesTableStorageContract {
   getTableStorageByProfileId$(
     xuid: BigNumber,
     externalProfileId: GuidLikeString,
+    filterResults: boolean,
   ): Observable<ServicesTableStorageEntity[]>;
 }
 
@@ -43,6 +44,12 @@ export class ServicesFilterableTableComponent extends BaseComponent implements O
   public categoryControl = new FormControl('');
   public categories: string[] = [];
   public filteredCategories: Observable<string[]>;
+
+  public formControls = {
+    filterResults: new FormControl(true),
+  };
+
+  public formGroup: FormGroup = new FormGroup(this.formControls);
 
   public getMonitor: ActionMonitor = new ActionMonitor('Get Table Storage');
 
@@ -70,7 +77,7 @@ export class ServicesFilterableTableComponent extends BaseComponent implements O
 
     this.getMonitor = this.getMonitor.repeat();
     this.contract
-      .getTableStorageByProfileId$(this.contract?.xuid, this.contract?.externalProfileId)
+      .getTableStorageByProfileId$(this.contract?.xuid, this.contract?.externalProfileId, this.formControls.filterResults.value)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(results => {
         const data = results;
