@@ -60,7 +60,7 @@ export class SteelheadServicesTableStorageComponent extends BaseComponent {
       getTableStorageByProfileId$(
         xuid: BigNumber,
         externalProfileId: GuidLikeString,
-        filterResults: boolean
+        filterResults: boolean,
       ): Observable<ServicesTableStorageEntity[]> {
         return steelheadService.getTableStorageByProfileId$(xuid, externalProfileId, filterResults);
       },

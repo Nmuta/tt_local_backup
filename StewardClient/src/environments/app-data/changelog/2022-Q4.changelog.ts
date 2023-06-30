@@ -8,6 +8,11 @@ export const CHANGELOG_2022_Q4: ChangelogGroup = {
   id: 'cd4c3f29-ea08-4550-aec2-de051686419a',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'a66f8898-b059-4e34-b503-5cf2c7bdf5f9',
+      shortText: 'Add toggle to filter out non profile-specific rows',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '31486e41-e069-4ab2-9672-b81c24b406f5',
       shortText: 'Restructure Home Page Tile data',

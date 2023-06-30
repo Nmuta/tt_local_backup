@@ -5,7 +5,17 @@
       <mat-card-subtitle>{{ contract?.gameTitle | humanize }}</mat-card-subtitle>
       <div class="sf-spacer"></div>
       <div class="actions">
-        <mat-slide-toggle [formControl]="formControls.showAll">Show All</mat-slide-toggle>
+        <mat-slide-toggle [formControl]="formControls.showAll"
+          >Show All Rows
+          <help-popover-icon cardTitle="Toggle Profile-Specific lookup">
+            <ul>
+              <li>When left off, will only show profile-specific rows from table storage.</li>
+              <li>
+                When toggled on, will show all rows related to the xuid or profile. (Everything)
+              </li>
+            </ul>
+          </help-popover-icon></mat-slide-toggle
+        >
         <button
           mat-raised-button
           class="lookup"
