@@ -72,5 +72,9 @@ export const stewardUrls = {
       steelhead: '/app/tools/ugc-details/steelhead',
       sunrise: '/app/tools/ugc-details/sunrise',
     },
+    createAuction: {
+      default: 'app/tools/create-auction',
+      woodstock: 'app/tools/create-auction/woodstock',
+    },
   },
 };

@@ -10,7 +10,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -30,10 +29,12 @@ import { WoodstockCreateSingleAuctionComponent } from './woodstock/woodstock-cre
 import { CreateSingleAuctionComponent } from './create-single-auction.component';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 
 /** Module for displaying create single auction component. */
 @NgModule({
   declarations: [CreateSingleAuctionComponent, WoodstockCreateSingleAuctionComponent],
+  exports: [WoodstockCreateSingleAuctionComponent],
   imports: [
     CommonModule,
     MatTabsModule,
@@ -50,7 +51,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatTooltipModule,
     MatIconModule,
     MatInputModule,
-    MatCheckboxModule,
     MatFormFieldModule,
     MatTableModule,
     MonitorActionModule,
@@ -65,7 +65,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     PermissionsModule,
     MakeModelAutocompleteModule,
     MatButtonToggleModule,
+    VerifyButtonModule,
   ],
-  exports: [WoodstockCreateSingleAuctionComponent],
 })
 export class CreateSingleAuctionModule {}

@@ -23,7 +23,7 @@ import { KustoDataActivitiesComponent } from './components/kusto-data-activities
 import { KustoFunctionComponent } from './components/kusto-data-activities/kusto-function/kusto-function.component';
 import { OptionalNumberModule } from '@components/optional-number/optional-number.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { DependencyListComponent } from './components/dependency-list/dependency-list.component';
@@ -82,7 +82,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     ReactiveFormsModule,
     RouterModule,
     TextFieldModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     PermissionsModule,
   ],
   exports: [DataPipelineObligationComponent],

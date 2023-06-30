@@ -42,7 +42,7 @@ import { LeaderboardStatsComponent } from './components/leaderboard-stats/leader
 import { WoodstockLeaderboardStatsComponent } from './components/leaderboard-stats/woodstock/woodstock-leaderboard-stats.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { LuxonModule } from 'luxon-angular';
 import { LeaderboardValidationsComponent } from './components/leaderboard-validations/leaderboard-validations.component';
 import { HelpModule } from '@shared/modules/help/help.module';
@@ -117,7 +117,7 @@ import { SteelheadLeaderboardScoresComponent } from './components/leaderboard-sc
     NgxChartsModule,
     StandardDateModule,
     StandardCopyModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     PipesModule,
     LuxonModule,
     DateTimePickersModule,

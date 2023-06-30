@@ -18,6 +18,7 @@ import {
   removeOneUserByGTag,
   removeOneUserByXUID,
 } from './shared-functions';
+import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
 
 context('Steward / Tools / User Group Management / Woodstock', () => {
   beforeEach(() => {
@@ -25,15 +26,11 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
 
     disableFakeApi();
     cy.visit(stewardUrls.tools.userGroupManagement.steelhead);
-    cy.get('span').contains('mat-icon', 'settings').click();
-    cy.get('mat-form-field').contains('span', 'Flight').click();
-    cy.get('mat-option').contains('span', 'Studio').click();
-    cy.get('span').contains('mat-icon', 'settings').click();
-    cy.contains('span', 'Studio').should('exist');
+    changeEndpoint('Steelhead', 'Flight', 'Studio');
   });
 
   context('Basic Tests', () => {
-    it('should be in Studio', () => {
+    it.only('should be in Studio', () => {
       cy.contains('span', 'Studio').should('exist');
     });
 

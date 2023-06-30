@@ -45,7 +45,6 @@ import { SimpleCar } from '@models/cars';
 import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
-import { ProfileNote } from '@models/profile-note.model';
 import { AuctionData } from '@models/auction-data';
 import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc } from '@models/hideable-ugc.model';
@@ -172,13 +171,6 @@ export class WoodstockService {
   public getFlagsByXuid$(xuid: BigNumber): Observable<WoodstockUserFlags> {
     return this.apiService.getRequest$<WoodstockUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
-    );
-  }
-
-  /** Gets user flags by a XUID. */
-  public getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]> {
-    return this.apiService.getRequest$<ProfileNote[]>(
-      `${this.basePath}/player/xuid(${xuid})/profileNotes`,
     );
   }
 

@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,7 +33,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatButtonModule,
     StateManagersModule,
     PermissionsModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     MonitorActionModule,
     FormsModule,
     ReactiveFormsModule,

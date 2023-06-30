@@ -13,7 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { SelectLocalizedStringComponent } from './select-localized-string/select-localized-string.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -40,7 +40,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     MonitorActionModule,
     StateManagersModule,
     MatCheckboxModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     DirectivesModule,
     MatButtonToggleModule,
     MatChipsModule,

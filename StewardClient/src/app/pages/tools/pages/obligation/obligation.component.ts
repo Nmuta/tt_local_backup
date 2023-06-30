@@ -18,7 +18,7 @@ import { SimplifiedObligationPipeline } from '@models/pipelines/simplified-oblig
 import { ObligationsService } from '@services/obligations';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { VerifyWithButtonDirective } from '@shared/modules/verify/verify-with.directive';
+import { VerifyWithV2ButtonDirective } from '@shared/modules/verify/verify-with-v2.directive';
 import BigNumber from 'bignumber.js';
 import { chain, cloneDeep, flatMap, has, keyBy } from 'lodash';
 import { Duration } from 'luxon';
@@ -45,7 +45,8 @@ export class DataPipelineObligationComponent
   extends BaseComponent
   implements OnInit, AfterViewChecked
 {
-  @ViewChildren(VerifyWithButtonDirective) private checkboxes: VerifyWithButtonDirective[] = [];
+  @ViewChildren(VerifyWithV2ButtonDirective) private verifyButtons: VerifyWithV2ButtonDirective[] =
+    [];
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public putMonitor: ActionMonitor = new ActionMonitor('PUT');
   public createMonitor: ActionMonitor = new ActionMonitor('POST (create)');
@@ -131,7 +132,7 @@ export class DataPipelineObligationComponent
       .subscribe(mapped => {
         this.setValue(mapped);
         this.changeDetectorRef.markForCheck();
-        this.clearVerificationCheckboxes();
+        this.clearVerificationButtons();
       });
   }
 
@@ -147,7 +148,7 @@ export class DataPipelineObligationComponent
       .put$(this.obligationOptionsToApiObligation(this.options))
       .pipe(delay(5_000 /*ms*/), this.putMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_model => {
-        this.clearVerificationCheckboxes();
+        this.clearVerificationButtons();
         this.onGetClick();
       });
   }
@@ -163,7 +164,7 @@ export class DataPipelineObligationComponent
       .post$(this.obligationOptionsToApiObligation(this.options))
       .pipe(delay(5_000 /*ms*/), this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_model => {
-        this.clearVerificationCheckboxes();
+        this.clearVerificationButtons();
         this.onGetClick();
       });
   }
@@ -179,7 +180,7 @@ export class DataPipelineObligationComponent
       .create$(this.obligationOptionsToApiObligation(this.options))
       .pipe(delay(5_000 /*ms*/), this.createMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_model => {
-        this.clearVerificationCheckboxes();
+        this.clearVerificationButtons();
         this.onGetClick();
       });
   }
@@ -196,15 +197,15 @@ export class DataPipelineObligationComponent
       .delete$(this.options.name)
       .pipe(this.deleteMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_model => {
-        this.clearVerificationCheckboxes();
+        this.clearVerificationButtons();
         this.setValue(cloneDeep(FullObligationInputComponent.defaults));
         this.changeDetectorRef.markForCheck();
       });
   }
 
-  private clearVerificationCheckboxes() {
-    for (const checkbox of this.checkboxes) {
-      checkbox.clear();
+  private clearVerificationButtons() {
+    for (const button of this.verifyButtons) {
+      button.clear();
     }
   }
 
