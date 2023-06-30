@@ -7,6 +7,20 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectApollo } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
+import {
+  userDetailsFindBans,
+  userDetailsFindRelatedConsoles,
+  userDetailsFindRelatedGamertags,
+  inventoryFindPlayerInventoryData,
+  swapToTab,
+  userDetailsVerifyPlayerIdentityResults,
+  userDetailsVerifyFlagData,
+  testGtag,
+  testXuid,
+  jsonCheckJson,
+} from './shared-tests';
+
+const defaultApolloUser = 'jordan';
 
 context('Steward / Tools / Player Details / Apollo', () => {
   beforeEach(() => {
@@ -18,57 +32,68 @@ context('Steward / Tools / Player Details / Apollo', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(RetailUsers['jordan'].gtag);
       selectApollo();
     });
 
-    foundUserData();
+    testUserDetails(defaultApolloUser, testGtag);
+
+    testInventory(defaultApolloUser, testGtag);
+
+    testLiveries(defaultApolloUser, testGtag);
+
+    testJson(defaultApolloUser, testGtag);
   });
 
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(RetailUsers['jordan'].xuid);
       selectApollo();
     });
 
-    foundUserData();
+    testUserDetails(defaultApolloUser, testXuid);
+
+    testInventory(defaultApolloUser, testXuid);
+
+    testLiveries(defaultApolloUser, testXuid);
+
+    testJson(defaultApolloUser, testXuid);
   });
 });
 
-function foundUserData(): void {
-  it('should have found data', () => {
+function testUserDetails(userToSearch: string, isXuidTest: boolean): void {
+  context('User Details', () => {
     // found user
-    verifyPlayerIdentityResults({
-      gtag: RetailUsers['jordan'].gtag,
-      xuid: RetailUsers['jordan'].xuid,
-      t10Id: false,
-    });
+    userDetailsVerifyPlayerIdentityResults(userToSearch, isXuidTest);
 
     // found flag data
-    checkboxHasValue('Is Vip', true);
+    userDetailsVerifyFlagData(userToSearch, isXuidTest, 'Is Vip', true);
 
     // found bans
-    cy.contains('mat-card', 'Ban History').within(() => {
-      tableHasEntry('banDetails', 'All Requests');
-    });
+    userDetailsFindBans(userToSearch, isXuidTest);
 
     // found related gamertags
-    cy.contains('mat-card', 'Related Gamertags').within(() => {
-      tableHasEntry('xuid', '2535435129485725');
-    });
+    userDetailsFindRelatedGamertags(userToSearch, isXuidTest, '2535435129485725');
 
     // found related consoles
-    cy.contains('mat-card', 'Consoles').within(() => {
-      tableHasEntry('consoleId', '18230637609444823812');
-    });
+    userDetailsFindRelatedConsoles(userToSearch, isXuidTest, '18230637609444823812');
+  });
+}
 
-    //// switch to Inventory ////
-    cy.contains('.mat-tab-label', 'Inventory').click();
-
+function testInventory(userToSearch: string, isXuidTest: boolean): void {
+  context('Inventory', () => {
     // found player inventory data
-    cy.contains('mat-card', 'Player Inventory').within(() => {
-      cy.contains('Credit Rewards');
-    });
+    inventoryFindPlayerInventoryData(userToSearch, isXuidTest);
+  });
+}
+
+function testLiveries(userToSearch: string, isXuidTest: booleane): void {
+  context('Liveries', () => {
+    //TODO
+  });
+}
+
+function testJson(userToSearch: string, isXuidTest: boolean): void {
+  context('JSON', () => {
+    jsonCheckJson(userToSearch, isXuidTest);
   });
 }

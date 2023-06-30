@@ -1,12 +1,29 @@
-import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
-import { tableHasEntry } from '@support/mat-form/table-has-entry';
-import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import { RetailUsers } from '@support/steward/common/account-info';
+import {
+  userDetailsFindBans,
+  userDetailsFindProfileNotes,
+  userDetailsFindRelatedConsoles,
+  userDetailsFindRelatedGamertags,
+  deepDiveFindCreditHistory,
+  deepDiveFindOverviewData,
+  inventoryFindPlayerInventoryData,
+  notificationsFindNotification,
+  userDetailsVerifyPlayerIdentityResults,
+  userDetailsVerifyFlagData,
+  testGtag,
+  testXuid,
+  ugcLiveriesFindLivery,
+  auctionsFindCreatedAuction,
+  jsonCheckJson,
+} from './shared-tests';
+import { tableHasEntry } from '@support/mat-form/table-has-entry';
+
+const defaultSunriseUser = 'jordan';
 
 context('Steward / Tools / Player Details / Sunrise', () => {
   beforeEach(() => {
@@ -18,83 +35,119 @@ context('Steward / Tools / Player Details / Sunrise', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(RetailUsers['jordan'].gtag);
       selectSunrise();
     });
 
-    foundUserDataTest();
+    testUserDetails(defaultSunriseUser, testGtag);
+
+    testDeepDive(defaultSunriseUser, testGtag);
+
+    testInventory(defaultSunriseUser, testGtag);
+
+    testNotifications(defaultSunriseUser, testGtag);
+
+    testAuctions('madden', testGtag);
+
+    testUgc('madden', testGtag);
+
+    testJson(defaultSunriseUser, testGtag);
   });
 
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(RetailUsers['jordan'].xuid);
       selectSunrise();
     });
 
-    foundUserDataTest();
+    testUserDetails(defaultSunriseUser, testXuid);
+
+    testDeepDive(defaultSunriseUser, testXuid);
+
+    testInventory(defaultSunriseUser, testXuid);
+
+    testNotifications(defaultSunriseUser, testXuid);
+
+    testAuctions('madden', testXuid);
+
+    testUgc('madden', testXuid);
+
+    testJson(defaultSunriseUser, testXuid);
   });
 });
 
-function foundUserDataTest(): void {
-  it('should have found data', () => {
+function testUserDetails(userToSearch: string, isXuidTest: boolean): void {
+  context('User Details', () => {
     // found user
-    verifyPlayerIdentityResults({
-      gtag: RetailUsers['jordan'].gtag,
-      xuid: RetailUsers['jordan'].xuid,
-      t10Id: false,
-    });
+    userDetailsVerifyPlayerIdentityResults(userToSearch, isXuidTest);
 
     // found flag data
-    checkboxHasValue('Is Vip', true);
+    userDetailsVerifyFlagData(userToSearch, isXuidTest, 'Is Vip', true);
 
     // found bans
-    cy.contains('mat-card', 'Ban History').within(() => {
-      tableHasEntry('banDetails', 'All Requests');
-    });
+    userDetailsFindBans(userToSearch, isXuidTest);
 
     // found profile notes
-    cy.contains('mat-card', 'Profile Notes').within(() => {
-      tableHasEntry('text', 'This is a testing string, not a chicken wing.');
-    });
+    userDetailsFindProfileNotes(
+      userToSearch,
+      isXuidTest,
+      'This is a testing string, not a chicken wing.',
+    );
 
     // found related gamertags
-    cy.contains('mat-card', 'Related Gamertags').within(() => {
-      tableHasEntry('xuid', '2535435129485725');
-    });
+    userDetailsFindRelatedGamertags(userToSearch, isXuidTest, '2535435129485725');
 
     // found related consoles
-    cy.contains('mat-card', 'Consoles').within(() => {
-      tableHasEntry('consoleId', '18230637609444823812');
-    });
+    userDetailsFindRelatedConsoles(userToSearch, isXuidTest, '18230637609444823812');
+  });
+}
 
-    //// switch to Deep Dive ////
-    cy.contains('.mat-tab-label', 'Deep Dive').click();
-
+function testDeepDive(userToSearch: string, isXuidTest: boolean): void {
+  context('Deep Dive', () => {
     // found overview data
-    cy.contains('mat-card', 'Overview').within(() => {
-      cy.contains('th', 'Current Credits').should('exist');
-    });
+    deepDiveFindOverviewData(userToSearch, isXuidTest);
 
     // found credit history
-    cy.contains('mat-card', 'Credit History').within(() => {
-      tableHasEntry('deviceType', 'UWP');
-    });
+    deepDiveFindCreditHistory(userToSearch, isXuidTest, 'UWP');
+  });
+}
 
-    //// switch to Inventory ////
-    cy.contains('.mat-tab-label', 'Inventory').click();
-
+function testInventory(userToSearch: string, isXuidTest: boolean): void {
+  context('Inventory', () => {
     // found player inventory data
-    cy.contains('mat-card', 'Player Inventory').within(() => {
-      cy.contains('Credit Rewards');
-    });
+    inventoryFindPlayerInventoryData(userToSearch, isXuidTest);
+  });
+}
 
-    //// switch to Notifications ////
-    cy.contains('.mat-tab-label', 'Notifications').click();
-
+function testNotifications(userToSearch: string, isXuidTest: boolean): void {
+  context('Notifications', () => {
     // found player inventory data
-    cy.contains('mat-card', 'Notifications').within(() => {
-      cy.contains('Notification');
-    });
+    notificationsFindNotification(userToSearch, isXuidTest);
+  });
+}
+
+function testAuctions(userToSearch: string, isXuidTest: boolean): void {
+  context('Auctions', () => {
+    //Nobody has any auction history for this title :(
+    //auctionsFindCreatedAuction(userToSearch, isXuidTest, 'sunrise', 'rsx', 'Acura RSX Type-S', 'Auction Info', 'Acura RSX Type S (2002)')
+  });
+}
+
+function testUgc(userToSearch: string, isXuidTest: boolean): void {
+  context('Ugc', () => {
+    ugcLiveriesFindLivery(
+      userToSearch,
+      isXuidTest,
+      'sunrise',
+      'one-77',
+      'Aston Martin One-77 (2010) [1181]',
+      'metadata',
+      'Aston Martin One-77',
+    );
+  });
+}
+
+function testJson(userToSearch: string, isXuidTest: boolean): void {
+  context('JSON', () => {
+    jsonCheckJson(userToSearch, isXuidTest);
   });
 }
