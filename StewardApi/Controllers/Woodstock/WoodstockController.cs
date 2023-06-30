@@ -409,66 +409,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets the user's profile notes.
-        /// </summary>
-        [HttpGet("player/xuid({xuid})/profileNotes")]
-        [SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetProfileNotesAsync(
-            ulong xuid)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-            if (!playerExists)
-            {
-                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
-            }
-
-            var result = await this.woodstockPlayerDetailsProvider.GetProfileNotesAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-
-            return this.Ok(result);
-        }
-
-        /// <summary>
-        ///     Adds a profile note to a user's profile.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [HttpPost("player/xuid({xuid})/profileNotes")] // TODO: This should be /profileNotes/add
-        [SwaggerResponse(200)]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
-        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
-        [Authorize(Policy = UserAttribute.AddProfileNote)]
-        public async Task<IActionResult> AddProfileNoteAsync(
-            ulong xuid,
-            [FromBody] ProfileNote profileNote)
-        {
-            profileNote.ShouldNotBeNull(nameof(profileNote));
-            xuid.EnsureValidXuid();
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-            if (!playerExists)
-            {
-                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
-            }
-
-            var userClaims = this.User.UserClaims();
-            profileNote.Author = userClaims.EmailAddress;
-
-            await this.woodstockPlayerDetailsProvider.AddProfileNoteAsync(xuid, profileNote, endpoint)
-                .ConfigureAwait(true);
-
-            return this.Ok();
-        }
-
-        /// <summary>
         ///     Gets player auctions.
         /// </summary>
         [HttpGet("player/xuid({xuid})/auctions")]

@@ -5,7 +5,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { NavbarTool } from '@environments/environment';
 import { tryParseBigNumber } from '@helpers/bignumbers';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
-import { GameTitle } from '@models/enums';
+import { GameTitle, PegasusProjectionSlot } from '@models/enums';
 import { PathParams } from '@models/path-params';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { MakeModelAutoCompleteFormValue } from '@views/make-model-autocomplete/make-model-autocomplete.base.component';
@@ -20,6 +20,7 @@ import { skip, takeUntil } from 'rxjs';
 export class WoodstockSelectCarDetailsComponent extends BaseComponent implements OnInit {
   public getActionMonitor = new ActionMonitor('GET car details');
   public preselectedId: BigNumber;
+  public readonly pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.LiveSteward;
 
   public formControls = {
     makeModelSelect: new FormControl(null),

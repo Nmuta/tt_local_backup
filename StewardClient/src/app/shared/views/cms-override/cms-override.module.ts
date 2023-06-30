@@ -19,7 +19,7 @@ import { WoodstockCmsOverrideComponent } from './woodstock/woodstock-cms-overrid
 import { SteelheadCmsOverrideComponent } from './steelhead/steelhead-cms-override.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 
 /** Module for getting and setting a player's cms override. */
@@ -49,7 +49,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
     PermissionsModule,
     MatInputModule,
     MatCheckboxModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     ErrorSpinnerModule,
   ],
   exports: [WoodstockCmsOverrideComponent, SteelheadCmsOverrideComponent],

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +24,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
-    ///     Test controller for testing Steelhead LSP APIs.
+    ///     Controller for user profile notes.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/profileNotes")]
     [LogTagTitle(TitleLogTags.Steelhead)]
@@ -63,9 +61,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             ulong xuid,
             [FromQuery] int maxResults = DefaultMaxResults)
         {
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            Services.LiveOps.FM8.Generated.UserManagementService.GetAdminCommentsOutput response = null;
+            Services.LiveOps.FM8.Generated.UserManagementService.GetAdminCommentsOutput response;
 
             try
             {
@@ -73,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
             catch (Exception ex)
             {
-                throw new FailedToSendStewardException($"No profile notes found. (XUID: {xuid})", ex);
+                throw new FailedToSendStewardException($"Unable to get profile notes. (XUID: {xuid})", ex);
             }
 
             var result = this.mapper.SafeMap<IList<ProfileNote>>(response.adminComments);
@@ -95,17 +93,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttribute.AddProfileNote)]
         public async Task<IActionResult> AddProfileNoteAsync(
             ulong xuid,
-            [FromBody] ProfileNote profileNote)
+            [FromBody] string profileNote)
         {
-            profileNote.ShouldNotBeNull(nameof(profileNote));
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
-
+            profileNote.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileNote));
+            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
             var userClaims = this.User.UserClaims();
-            profileNote.Author = userClaims.EmailAddress;
 
             try
             {
-                await this.Services.UserManagementService.AddAdminComment(xuid, profileNote.Text, profileNote.Author).ConfigureAwait(true);
+                await this.Services.UserManagementService.AddAdminComment(xuid, profileNote, userClaims.EmailAddress).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

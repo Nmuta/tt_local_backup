@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { WoodstockLoyaltyRewardsComponent } from './woodstock/woodstock-loyalty-rewards.component';
@@ -42,7 +42,7 @@ import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/
     PlayerInventoryProfilesModule,
     MatButtonModule,
     MatCheckboxModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     StateManagersModule,
     MonitorActionModule,
     HelpModule,

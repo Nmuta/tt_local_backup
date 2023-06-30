@@ -28,7 +28,7 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { LuxonModule } from 'luxon-angular';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { GeneralTileComponent } from './steelhead/tile-components/steelhead-general-tile.component';
 import { ImageTextTileComponent } from './steelhead/tile-components/image-text/steelhead-image-text-tile.component';
 import { GenericPopupTileComponent } from './steelhead/tile-components/generic-popup/steelhead-generic-popup-tile.component';
@@ -74,7 +74,7 @@ import { ActivePullRequestsModule } from '@views/active-pull-requests/active-pul
     MatDatepickerModule,
     PermissionsModule,
     LuxonModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     ActivePullRequestsModule,
   ],
   exports: [],

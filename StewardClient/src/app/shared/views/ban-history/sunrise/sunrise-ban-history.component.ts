@@ -8,6 +8,7 @@ import { BanHistoryBaseComponent } from '../ban-history.base.component';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { OldPermissionsService } from '@services/old-permissions';
+import { MultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service';
 
 /** Retreives and displays Sunrise Ban history by XUID. */
 @Component({
@@ -26,8 +27,12 @@ export class SunriseBanHistoryComponent extends BanHistoryBaseComponent {
   public gameTitle = GameTitle.FH4;
   public actionsEnabled = true;
 
-  constructor(private readonly sunrise: SunriseService, permissionsService: OldPermissionsService) {
-    super(permissionsService);
+  constructor(
+    private readonly sunrise: SunriseService,
+    permissionsService: OldPermissionsService,
+    multipleBanHistoryService: MultipleBanHistoryService,
+  ) {
+    super(permissionsService, multipleBanHistoryService);
   }
 
   /** Gets the Sunrise ban history. */

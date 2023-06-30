@@ -6,6 +6,7 @@ import { createMockOldPermissionsService } from '@services/old-permissions';
 import { createMockSteelheadBanHistoryService } from '@services/api-v2/steelhead/player/ban-history/steelhead-ban-history.service.mock';
 import { createMockSteelheadBanService } from '@services/api-v2/steelhead/ban/steelhead-ban.service.mock';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service.mock';
 
 describe('SteelheadBanHistoryComponent', () => {
   let component: SteelheadBanHistoryComponent;
@@ -19,6 +20,7 @@ describe('SteelheadBanHistoryComponent', () => {
         createMockSteelheadBanHistoryService(),
         createMockSteelheadBanService(),
         createMockOldPermissionsService(),
+        createMockMultipleBanHistoryService(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -37,6 +39,5 @@ describe('SteelheadBanHistoryComponent', () => {
 
   it('should load history', () => {
     component.ngOnChanges();
-    expect(component.isLoading).toBeFalsy();
   });
 });

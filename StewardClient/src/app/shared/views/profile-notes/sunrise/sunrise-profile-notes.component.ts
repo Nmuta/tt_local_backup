@@ -1,26 +1,27 @@
 import BigNumber from 'bignumber.js';
-import { Component } from '@angular/core';
-import { SunriseService } from '@services/sunrise/sunrise.service';
-import { Observable } from 'rxjs';
+import { Component, Input } from '@angular/core';
 import { GameTitle } from '@models/enums';
-import { ProfileNotesBaseComponent } from '../profile-notes.base.component';
-import { ProfileNote } from '@models/profile-note.model';
+import { ProfileNotesServiceContract } from '../profile-notes.component';
+import { SunrisePlayerProfileNotesService } from '@services/api-v2/sunrise/player/profile-notes/sunrise-player-profile-notes.service';
+import { IdentityResultAlpha } from '@models/identity-query.model';
 
 /** Retreives and displays Sunrise user profile notes by XUID. */
 @Component({
   selector: 'sunrise-profile-notes',
-  templateUrl: '../profile-notes.component.html',
-  styleUrls: ['../profile-notes.component.scss'],
+  templateUrl: './sunrise-profile-notes.component.html',
 })
-export class SunriseProfileNotesComponent extends ProfileNotesBaseComponent {
-  public gameTitle = GameTitle.FH4;
+export class SunriseProfileNotesComponent {
+  /** Player identity. */
+  @Input() identity: IdentityResultAlpha;
 
-  constructor(private readonly sunriseService: SunriseService) {
-    super();
-  }
+  public service: ProfileNotesServiceContract;
 
-  /** Gets Sunrise user flags. */
-  public getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]> {
-    return this.sunriseService.getProfileNotesXuid$(xuid);
+  constructor(sunrisePlayerProfileNotesService: SunrisePlayerProfileNotesService) {
+    this.service = {
+      gameTitle: GameTitle.FH4,
+      getProfileNotesByXuid$: xuid => sunrisePlayerProfileNotesService.getProfileNotesByXuid$(xuid),
+      addProfileNoteByXuid$: (xuid: BigNumber, profileNote: string) =>
+        sunrisePlayerProfileNotesService.addProfileNoteByXuid$(xuid, profileNote),
+    };
   }
 }

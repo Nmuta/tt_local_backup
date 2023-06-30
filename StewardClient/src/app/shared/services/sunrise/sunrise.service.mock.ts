@@ -17,7 +17,6 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { SunriseService } from './sunrise.service';
-import { SunrisePlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileNotes';
 import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/backstagePassHistory';
 import { SunrisePlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/accountInventory';
 import { SunrisePlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/ugc';
@@ -131,11 +130,6 @@ export class MockSunriseService {
     .createSpy('postGiftLspGroup')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunriseGiftingLspGroupFakeApi.make()))),
-    );
-  public getProfileNotesXuid$ = jasmine
-    .createSpy('getProfileNotesXuid')
-    .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidProfileNotesApi.makeMany()))),
     );
   public getPlayerAuctionsByXuid$ = jasmine
     .createSpy('getPlayerAuctionsByXuid$')

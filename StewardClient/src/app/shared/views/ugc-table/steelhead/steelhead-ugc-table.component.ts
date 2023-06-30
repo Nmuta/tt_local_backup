@@ -8,6 +8,7 @@ import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 /** Displays steelhead UGC content in a table. */
 @Component({
@@ -40,5 +41,10 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
   /** Hide multiple Ugcs. */
   public hideUgc(_ugcIds: string[]): Observable<string[]> {
     return throwError(new Error('Steelhead does not support hiding ugc items.'));
+  }
+
+  /** Generate multiple Sharecodes. */
+  public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
+    return throwError(new Error('Steelhead does not support bulk sharecode generation.'));
   }
 }

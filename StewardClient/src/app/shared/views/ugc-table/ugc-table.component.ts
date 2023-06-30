@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatColumnDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { state, style, trigger } from '@angular/animations';
-import { EMPTY, from, fromEvent, Observable } from 'rxjs';
+import { EMPTY, from, fromEvent, Observable, of, throwError } from 'rxjs';
 import {
   catchError,
   map as rxjsMap,
@@ -37,6 +37,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SuccessSnackbarComponent } from '@shared/modules/monitor-action/success-snackbar/success-snackbar.component';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -99,16 +100,19 @@ export abstract class UgcTableBaseComponent
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
   public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc(s)');
+  public generateSharecodesMonitor: ActionMonitor = new ActionMonitor('Generate Sharecode(s)');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcHidingSupported: boolean = true;
   public ugcType = UgcType;
   public liveryGiftingRoute: string[];
   public selectedUgcs: PlayerUgcItemTableEntries[] = [];
+  public ugcsWithoutSharecodes: PlayerUgcItemTableEntries[] = [];
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
   public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
   public readonly hideUgcPermission = PermAttributeName.HideUgc;
+  public readonly bulkGenerateSharecodePermission = PermAttributeName.BulkGenerateSharecode;
 
   public abstract gameTitle: GameTitle;
 
@@ -122,6 +126,7 @@ export abstract class UgcTableBaseComponent
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
   public abstract hideUgc(ugcIds: string[]): Observable<string[]>;
+  public abstract generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]>;
 
   /** Angular hook. */
   public ngOnInit(): void {
@@ -141,10 +146,15 @@ export abstract class UgcTableBaseComponent
   public ngOnChanges(changes: BetterSimpleChanges<UgcTableBaseComponent>): void {
     if (!!changes.content) {
       const ugcItemsToProcess: PlayerUgcItemTableEntries[] = this.content;
+      this.ugcsWithoutSharecodes = [];
 
       ugcItemsToProcess.forEach(item => {
         if (this.ugcDetailsLinkSupported) {
           item.ugcDetailsLink = getUgcDetailsRoute(this.gameTitle, item.id, item.type);
+        }
+
+        if (!item.shareCode || item.shareCode == '') {
+          this.ugcsWithoutSharecodes.push(item);
         }
       });
 
@@ -288,6 +298,47 @@ export abstract class UgcTableBaseComponent
         this.ugcTableDataSource.data.forEach(ugcTableElement => {
           ugcTableElement.selected = false;
         });
+        this.ugcTableDataSource._updateChangeSubscription();
+      });
+  }
+
+  /** Generates share codes for public UGC search results that don't have one. */
+  public generateMissingSharecodes(ugcs: PlayerUgcItemTableEntries[]): void {
+    this.generateSharecodesMonitor = this.generateSharecodesMonitor.repeat();
+
+    const ugcIds = ugcs.map(ugc => ugc.id);
+
+    this.generateSharecodes(ugcIds)
+      .pipe(
+        switchMap(ugcResponse => {
+          const failedSharecodes = ugcResponse.filter(response => !!response.error);
+          if (failedSharecodes.length > 0) {
+            return throwError(
+              () =>
+                `Failed to generate Share Codes for some or all of the following UGC items : ${failedSharecodes
+                  .map(ugc => ugc.ugcId)
+                  .join('\n')}`,
+            );
+          }
+          return of(ugcResponse);
+        }),
+        this.generateSharecodesMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(ugcResponse => {
+        const successes = ugcResponse.filter(response => !!response.sharecode);
+
+        // Update UGC items to add newly generated sharecodes
+        // The ugcTableDataSource data property is a reference to this.content
+        successes.forEach(response => {
+          const index = this.content.findIndex(x => x.id == response.ugcId);
+          this.content[index].shareCode = response.sharecode;
+        });
+
+        this.ugcsWithoutSharecodes = this.ugcsWithoutSharecodes.filter(
+          x => !successes.find(y => y.ugcId === x.id),
+        );
+
         this.ugcTableDataSource._updateChangeSubscription();
       });
   }

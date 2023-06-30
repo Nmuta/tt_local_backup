@@ -25,7 +25,6 @@ import { WoodstockPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title
 import { WoodstockSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import { WoodstockGiftLiveryToPlayersFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/livery/useBackgroundProcessing/players';
 import { WoodstockGiftLiveryToLspGroupFakeApi } from '@interceptors/fake-api/apis/title/woodstock/gifting/livery/groupId';
-import { WoodstockPlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/profileNotes';
 
 /** Defines the mock for the API Service. */
 export class MockWoodstockService {
@@ -183,11 +182,6 @@ export class MockWoodstockService {
     .createSpy('getSimpleCars')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(WoodstockSimpleCarsFakeApi.make()))),
-    );
-  public getProfileNotesXuid$ = jasmine
-    .createSpy('getProfileNotesXuid')
-    .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidProfileNotesApi.makeMany()))),
     );
   public getAuctionDataByAuctionId$ = jasmine
     .createSpy('getAuctionDataByAuctionId$')
