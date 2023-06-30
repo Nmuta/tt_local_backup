@@ -1,7 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { testLayerGroup, testLivery, testPhoto, testTune } from './shared-functions';
+import { testInputUGCID } from './shared-functions';
 
 context('Steward / Tools / UGC Details / Woodstock', () => {
   beforeEach(() => {
@@ -13,29 +13,29 @@ context('Steward / Tools / UGC Details / Woodstock', () => {
 
   context('Basic Tests', () => {
     it('should find Livery data', () => {
-      testLivery('c5329e63-3c1f-4d60-b251-9e69cb2aeda7', '11/9/21 5:48:05 PM');
+      testInputUGCID('c5329e63-3c1f-4d60-b251-9e69cb2aeda7', '11/9/21 5:48:05 PM');
     });
 
     it('should find Layer Group data', () => {
-      testLayerGroup('307916c9-e492-4b57-af6e-815bb5e068f9', '2/8/22 11:40:02 AM');
+      testInputUGCID('307916c9-e492-4b57-af6e-815bb5e068f9', '2/8/22 11:40:02 AM');
     });
 
     it('should find Photo data', () => {
-      testPhoto('12555e32-9e02-452b-b4ee-a1886c5a40a2', '2/8/22 3:13:50 PM');
+      testInputUGCID('12555e32-9e02-452b-b4ee-a1886c5a40a2', '2/8/22 3:13:50 PM');
     });
 
     it('should find Tune data', () => {
-      testTune('27f5873f-de88-406d-829e-9eb8658cd511', '2/8/22 3:16:11 PM');
+      testInputUGCID('27f5873f-de88-406d-829e-9eb8658cd511', '2/8/22 3:16:11 PM');
     });
 
     //No Known Events to Test
     // it('should find Events data', () => {
-    //   testTune('*insert ugcid here*', '*insert created date here*');
+    //   testInputUGCID('*insert ugcid here*', '*insert created date here*');
     // });
 
     //No Known Community Challenges to Test
     // it('should find Events data', () => {
-    //   testCommunityChallenge('*insert ugcid here*', '*insert created date here*');
+    //   testInputUGCID('*insert ugcid here*', '*insert created date here*');
     // });
   });
 });
