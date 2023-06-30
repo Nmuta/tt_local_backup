@@ -46,7 +46,7 @@ export class ServicesFilterableTableComponent extends BaseComponent implements O
   public filteredCategories: Observable<string[]>;
 
   public formControls = {
-    filterResults: new FormControl(true),
+    showAll: new FormControl(false),
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
@@ -77,7 +77,7 @@ export class ServicesFilterableTableComponent extends BaseComponent implements O
 
     this.getMonitor = this.getMonitor.repeat();
     this.contract
-      .getTableStorageByProfileId$(this.contract?.xuid, this.contract?.externalProfileId, this.formControls.filterResults.value)
+      .getTableStorageByProfileId$(this.contract?.xuid, this.contract?.externalProfileId, !this.formControls.showAll.value)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(results => {
         const data = results;

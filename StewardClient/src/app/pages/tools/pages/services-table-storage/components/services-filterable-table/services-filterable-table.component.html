@@ -4,21 +4,23 @@
       <mat-card-title>Services Table Storage</mat-card-title>
       <mat-card-subtitle>{{ contract?.gameTitle | humanize }}</mat-card-subtitle>
       <div class="sf-spacer"></div>
-      <mat-slide-toggle [formControl]="formControls.filterResults">Show All</mat-slide-toggle>
-      <button
-        mat-raised-button
-        class="lookup"
-        color="primary"
-        (click)="lookup()"
-        stateManager
-        [monitor]="getMonitor"
-        monitorDisable
-        monitorWarnSnackbar
-        monitorCompleteSnackbar
-      >
-        Lookup
-        <button-spinner [monitor]="getMonitor" defaultIcon="search"></button-spinner>
-      </button>
+      <div class="actions">
+        <mat-slide-toggle [formControl]="formControls.showAll">Show All</mat-slide-toggle>
+        <button
+          mat-raised-button
+          class="lookup"
+          color="primary"
+          (click)="lookup()"
+          stateManager
+          [monitor]="getMonitor"
+          monitorDisable
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
+        >
+          Lookup
+          <button-spinner [monitor]="getMonitor" defaultIcon="search"></button-spinner>
+        </button>
+      </div>
     </mat-card-header>
     <mat-card-content class="sf-wrapper">
       <div class="sf-vertical">
