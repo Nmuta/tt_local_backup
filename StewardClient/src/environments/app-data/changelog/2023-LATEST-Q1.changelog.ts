@@ -10,8 +10,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
       uuid: '7bbd5f84-b9ec-4854-b1fc-e1982659d389',
-      shortText:
-        'Implement bulk UGC reporting in UGC Search',
+      shortText: 'Implement bulk UGC reporting in UGC Search',
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
