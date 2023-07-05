@@ -58,6 +58,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise
         /// </summary>
         public IStorefrontService StorefrontService => this.SunriseFactory.PrepareStorefrontService(this.Endpoint);
 
+        /// <summary>
+        ///     Gets storefront management service.
+        /// </summary>
+        public IStorefrontManagementService StorefrontManagementService => this.SunriseFactory.PrepareStorefrontManagementService(this.Endpoint);
+
         private ISunriseProxyFactory SunriseFactory { get; }
 
         /// <summary>
