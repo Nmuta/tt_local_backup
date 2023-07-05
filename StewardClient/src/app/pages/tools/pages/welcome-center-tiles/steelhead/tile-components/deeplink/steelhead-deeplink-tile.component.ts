@@ -31,9 +31,14 @@ import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localiz
 import { SteelheadDeeplinkTileService } from '@services/api-v2/steelhead/welcome-center-tiles/world-of-forza/deeplink/steelhead-deeplink-tiles.service';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { Observable, takeUntil } from 'rxjs';
+import { Observable, combineLatest, takeUntil } from 'rxjs';
 import { GeneralTileComponent } from '../steelhead-general-tile.component';
 import { VerifyButtonComponent } from '@shared/modules/verify/verify-button/verify-button.component';
+import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
+import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
+import { SteelheadRivalsService } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
+import { SteelheadCarsService } from '@services/api-v2/steelhead/cars/steelhead-cars.service';
+import { SteelheadStoreService } from '@services/api-v2/steelhead/store/steelhead-store.service';
 
 /** The deeplink tile component. */
 @Component({
@@ -58,6 +63,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
 
   public gameTitle = GameTitle.FM8;
   public submitWelcomeCenterTileMonitor = new ActionMonitor('POST Welcome Center Tile');
+  public referenceDataMonitor = new ActionMonitor('GET Reference Data');
   public pullRequestUrl: string;
   public localizationSelectServiceContract: SelectLocalizedStringContract;
   public destinationType: string[] = [
@@ -90,8 +96,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
   public rivalsSettingTypes = RivalsSettingType;
   public showroomSettingTypes = ShowroomSettingType;
   public storeSettingTypes = StoreSettingType;
-  public showRoomCategories: Map<string, string>;
-  public championships: Map<string, string>;
+  public buildersCupChampionships: Map<string, string>;
   public buildersCupSeries: Map<string, string>;
   public buildersCupLadders: Map<string, string>;
   public racersCupSeries: Map<string, string>;
@@ -126,6 +131,11 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
 
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
+    steelheadBuildersCupService: SteelheadBuildersCupService,
+    steelheadRacersCupService: SteelheadRacersCupService,
+    steelheadRivalsService: SteelheadRivalsService,
+    steelheadCarsService: SteelheadCarsService,
+    steelheadStoreService: SteelheadStoreService,
     private readonly steelheadDeeplinkTileService: SteelheadDeeplinkTileService,
   ) {
     super();
@@ -137,54 +147,73 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
       },
     };
 
-    this.showRoomCategories = new Map([
-      ['bfccc7e2-3200-4bb6-9ba1-5395c51422c5', 'Pontiac'],
-      ['a05afb61-1c62-4885-9bd5-62d28c3f46b3', 'Audi'],
-    ]);
+    this.formControls.destinationType.valueChanges
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(destination => {
+        if (destination == DestinationType.BuildersCup) {
+          if (
+            !this.buildersCupChampionships ||
+            !this.buildersCupLadders ||
+            !this.buildersCupSeries
+          ) {
+            const getBuildersCupChampionships$ =
+              steelheadBuildersCupService.getBuildersCupChampionships$();
+            const getBuildersCupLadders$ = steelheadBuildersCupService.getBuildersCupLadders$();
+            const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$();
 
-    this.championships = new Map([['575e903e-c2a4-4993-a1b9-de565c17391a', 'Career']]);
+            this.referenceDataMonitor = this.referenceDataMonitor.repeat();
+            combineLatest([
+              getBuildersCupChampionships$,
+              getBuildersCupLadders$,
+              getBuildersCupSeries$,
+            ])
+              .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+              .subscribe(([championships, ladders, series]) => {
+                this.buildersCupChampionships = championships;
+                this.buildersCupLadders = ladders;
+                this.buildersCupSeries = series;
+              });
+          }
+        } else if (destination == DestinationType.RacersCup) {
+          this.referenceDataMonitor = this.referenceDataMonitor.repeat();
+          steelheadRacersCupService
+            .getRacersCupSeries$()
+            .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+            .subscribe(series => {
+              this.racersCupSeries = series;
+            });
+        } else if (destination == DestinationType.Rivals) {
+          const getRivalsCategories$ = steelheadRivalsService.getRivalsEventCategories$();
+          const getRivalsEvents$ = steelheadRivalsService.getRivalsEventReference$();
 
-    this.buildersCupLadders = new Map([
-      ['6d3e623d-3b4f-4239-8cfd-85ac9b5ed573', 'Modern Race Car Tour'],
-      ['b4cfc5b1-fbf4-4cef-9fe9-9970d71bb642', 'Decades Tour'],
-    ]);
+          this.referenceDataMonitor = this.referenceDataMonitor.repeat();
+          combineLatest([getRivalsCategories$, getRivalsEvents$])
+            .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+            .subscribe(([categories, events]) => {
+              this.rivalsCategories = categories;
+              this.rivalsEvents = events;
+            });
+        } else if (destination == DestinationType.Showroom) {
+          const getShowroomCars$ = steelheadCarsService.getCarsReference$();
+          const getShowroomManufacturers$ = steelheadCarsService.getCarManufacturers$();
 
-    this.buildersCupSeries = new Map([
-      ['03390be2-c878-40c3-8eab-f7370688ad04', 'Test Entry Series'],
-      ['1f3ce4b5-fade-4341-80cb-0006c8c9b122', 'Vintage LM Prototypes Series'],
-    ]);
-
-    this.racersCupSeries = new Map([
-      ['7d838ee4-aeb8-4dbd-8450-2720cdc7c92f', 'Test'],
-      ['575e903e-c2a4-4993-a1b9-de565c17391a', 'C Class'],
-      ['9aa6aefa-172f-4c75-ac22-d579b121a259', 'D Class'],
-      ['55f3ade3-6f6f-4a5d-a16b-73c277e54fbb', 'Spotlight Series'],
-    ]);
-
-    this.rivalsCategories = new Map([
-      ['66d3b507-b755-40cf-9eb1-7b5550b05d3d', 'Featured'],
-      ['b6e05fbc-6d03-460f-b6e3-c6c34db0e36a', 'VIP'],
-    ]);
-
-    this.rivalsEvents = new Map([
-      ['e9d7dec3-97ca-443b-96f3-b6794930aebd', 'Spotlight - Rally Rivals'],
-      ['f64fab1d-9490-4476-a20a-e7e1b29087a5', 'Spotlight - American Feud'],
-    ]);
-
-    this.showroomCars = new Map([
-      ['00000001-0000-0000-0000-000000001020', '1996 F50 GT'],
-      ['00000001-0000-0000-0000-000000001047', 'Yaris 2008'],
-    ]);
-
-    this.showroomManufacturers = new Map([
-      ['00000013-0000-0000-0000-000000000010', 'Chrysler'],
-      ['00000013-0000-0000-0000-000000000155', 'Quartz'],
-    ]);
-
-    this.storeProducts = new Map([
-      ['f43a3396-310c-420a-9082-5ab2fcd43d98', 'Premium Add-On'],
-      ['3695615f-2e60-4e6c-b605-f38a0f7cfc80', 'Car Pass'],
-    ]);
+          this.referenceDataMonitor = this.referenceDataMonitor.repeat();
+          combineLatest([getShowroomCars$, getShowroomManufacturers$])
+            .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+            .subscribe(([cars, manufacturers]) => {
+              this.showroomCars = cars;
+              this.showroomManufacturers = manufacturers;
+            });
+        } else if (destination == DestinationType.Store) {
+          this.referenceDataMonitor = this.referenceDataMonitor.repeat();
+          steelheadStoreService
+            .getStoreEntitlements$()
+            .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+            .subscribe(entitlements => {
+              this.storeProducts = entitlements;
+            });
+        }
+      });
   }
 
   /** Lifecycle hook. */

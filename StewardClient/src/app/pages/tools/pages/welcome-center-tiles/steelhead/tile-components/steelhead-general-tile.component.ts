@@ -22,10 +22,13 @@ import {
   WelcomeCenterTileSize,
   FriendlyNameMap,
 } from '@models/welcome-center';
+import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
+import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
 import { SteelheadWorldOfForzaService } from '@services/api-v2/steelhead/welcome-center-tiles/world-of-forza/world-of-forza/steelhead-world-of-forza.service';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DateTime } from 'luxon';
-import { filter, map, Observable, pairwise, startWith, takeUntil } from 'rxjs';
+import { combineLatest, filter, map, Observable, pairwise, startWith, takeUntil } from 'rxjs';
 
 /** Outputted form value of the base tile form. */
 export type BaseTileFormValue = WelcomeCenterTile;
@@ -62,10 +65,13 @@ export class GeneralTileComponent extends BaseComponent {
   public gameTitle = GameTitle.FM8;
   public localizationSelectServiceContract: SelectLocalizedStringContract;
   public sizes: string[] = [WelcomeCenterTileSize.Large, WelcomeCenterTileSize.Medium];
+  public getTimerReferenceMonitor = new ActionMonitor('GET Timer Reference Data');
 
   public timerInstanceEnum = TimerInstance;
   public timerTypeEnum = TimerType;
   public timerReferenceOptions: Map<string, string>;
+  public ladderReferences: Map<string, string>;
+  public seriesReferences: Map<string, string>;
   public displayConditionReferences: FriendlyNameMap;
   public whenFieldReferences: string[] = [
     '#builderscup',
@@ -113,6 +119,8 @@ export class GeneralTileComponent extends BaseComponent {
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
     steelheadWorldOfForzaService: SteelheadWorldOfForzaService,
+    steelheadBuildersCupService: SteelheadBuildersCupService,
+    steelheadRacersCupService: SteelheadRacersCupService,
   ) {
     super();
 
@@ -135,27 +143,55 @@ export class GeneralTileComponent extends BaseComponent {
       .subscribe(data => {
         if (data == TimerInstance.Chapter) {
           this.selectedTimerReferenceInstance = TimerReferenceInstance.Chapter;
+
           this.timerReferenceOptions = new Map([
             ['3a9b1321-792c-47d1-ad40-b2dc39bf62b3', 'Chapter 1: GA Pre-Season - Chapter 1'],
-            ['bbb41fc3-1e92-40f8-9b0a-cead82d4f2c5', 'Chapter 1: GA Pre-Season - Chapter 1'],
+            ['bbb41fc3-1e92-40f8-9b0a-cead82d4f2c5', 'Chapter 2: GA Pre-Season - Chapter 2'],
           ]);
         } else if (data == TimerInstance.Ladder) {
           this.selectedTimerReferenceInstance = TimerReferenceInstance.Ladder;
-          this.timerReferenceOptions = new Map([
-            ['6d3e623d-3b4f-4239-8cfd-85ac9b5ed573', 'Modern Race Car Tour'],
-            ['b4cfc5b1-fbf4-4cef-9fe9-9970d71bb642', 'Decades Tour'],
-          ]);
+
+          if (this.ladderReferences) {
+            this.timerReferenceOptions = this.ladderReferences;
+          } else {
+            this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+            steelheadBuildersCupService
+              .getBuildersCupLadders$()
+              .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+              .subscribe(ladderReferences => {
+                this.ladderReferences = ladderReferences;
+                this.timerReferenceOptions = this.ladderReferences;
+              });
+          }
         } else if (data == TimerInstance.Season) {
           this.selectedTimerReferenceInstance = TimerReferenceInstance.Season;
+
           this.timerReferenceOptions = new Map([
             ['b0344978-c1cc-4cb0-bff8-422bb9cd21c2', 'Season 1:GA Pre-Season'],
           ]);
         } else if (data == TimerInstance.Series) {
           this.selectedTimerReferenceInstance = TimerReferenceInstance.Series;
-          this.timerReferenceOptions = new Map([
-            ['03390be2-c878-40c3-8eab-f7370688ad04', 'Test Entry Series'],
-            ['1f3ce4b5-fade-4341-80cb-0006c8c9b122', 'Vintage LM Prototypes Series'],
-          ]);
+
+          if (this.seriesReferences) {
+            this.timerReferenceOptions = this.seriesReferences;
+          } else {
+            this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+            const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$();
+            const getRacersCupSeries$ = steelheadRacersCupService.getRacersCupSeries$();
+
+            combineLatest([getBuildersCupSeries$, getRacersCupSeries$])
+              .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+              .subscribe(([builderCupSeries, racersCupSeries]) => {
+                const mergeMap = new Map<string, string>();
+                [...Object.entries(builderCupSeries), ...Object.entries(racersCupSeries)].forEach(
+                  ([key, value]) => {
+                    mergeMap.set(key, value);
+                  },
+                );
+                this.seriesReferences = mergeMap;
+                this.timerReferenceOptions = this.seriesReferences;
+              });
+          }
         } else if (data == TimerInstance.Custom) {
           this.selectedTimerReferenceInstance = undefined;
           this.timerReferenceOptions = undefined;

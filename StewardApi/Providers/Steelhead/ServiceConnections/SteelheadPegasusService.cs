@@ -281,20 +281,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         carSales = carSales.Append(liveOpsCarSale);
                     }
 
-                var carSaleInfo = new CarSaleInformation()
-                {
-                    BaseCost = carListing.FullCarInfo.Car.BaseCost.Value,
-                    MediaName = carListing.FullCarInfo.Car.MediaName,
-                    ModelShort = carListing.FullCarInfo.Car.ModelShort,
-                    CarId = carListing.FullCarInfo.Car.CarId,
-                    SalePercentOff = pegasusCarSale.SalePercentOff,
-                    SalePrice = pegasusCarSale.SalePrice,
-                    VipSalePercentOff = pegasusCarSale.VipSalePercentOff,
-                    VipSalePrice = pegasusCarSale.VipSalePrice
-                };
-                liveOpsCarSale.Cars = liveOpsCarSale.Cars.Append(carSaleInfo);
+                    var carSaleInfo = new CarSaleInformation()
+                    {
+                        BaseCost = carListing.FullCarInfo.Car.BaseCost.Value,
+                        MediaName = carListing.FullCarInfo.Car.MediaName,
+                        ModelShort = carListing.FullCarInfo.Car.ModelShort,
+                        CarId = carListing.FullCarInfo.Car.CarId,
+                        SalePercentOff = pegasusCarSale.SalePercentOff,
+                        SalePrice = pegasusCarSale.SalePrice,
+                        VipSalePercentOff = pegasusCarSale.VipSalePercentOff,
+                        VipSalePrice = pegasusCarSale.VipSalePrice
+                    };
+                    liveOpsCarSale.Cars = liveOpsCarSale.Cars.Append(carSaleInfo);
+                }
             }
-        }
 
             return carSales;
         }
@@ -316,14 +316,119 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
             var pegasusRivalEvents =
-                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalEvent>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    slot: "user-v-blebois").ConfigureAwait(false);
 
-            var rivalsEvents = this.mapper.SafeMap<IEnumerable<RivalsEvent>>(pegasusRivalEvents);
+            var rivalsEvents = this.mapper.SafeMap<IEnumerable<RivalsEvent>>(pegasusRivalEvents.Values);
 
             return rivalsEvents;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetRivalsEventsReferenceAsync()
+        {
+            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+            var pegasusRivalEvents =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalEvent>>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "user-v-blebois").ConfigureAwait(false);
+
+            var outputDictionary = pegasusRivalEvents.ToDictionary(kv => kv.Key, kv => kv.Value.Description);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetRivalsEventCategoriesAsync()
+        {
+            var filename = CMSFileNames.RivalCategories.Replace("{:loc}", "en-US");
+            var pegasusRivalsCategories =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalCategory>>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "user-v-blebois").ConfigureAwait(false);
+
+            var outputDictionary = pegasusRivalsCategories.ToDictionary(kv => kv.Key, kv => kv.Value.Title);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetStoreEntitlementsAsync()
+        {
+            var filename = CMSFileNames.StoreEntitlements;
+            var pegasusEntitlements =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.Entitlement>>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "user-v-blebois").ConfigureAwait(false);
+
+            var outputDictionary = pegasusEntitlements.ToDictionary(kv => kv.Key, kv => kv.Value.Description);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync()
+        {
+            var filename = CMSFileNames.RacersCupSeries.Replace("{:loc}", "en-US");
+            var pegasusRacersCupSeries =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipSeriesDataV3>>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "user-v-blebois").ConfigureAwait(false);
+
+            var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetBuildersCupChampionshipsAsync()
+        {
+            var filename = CMSFileNames.BuildersCupChampionships.Replace("{:loc}", "en-US");
+            var pegasusRacersCupSeries =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupDataV3>>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "user-v-blebois").ConfigureAwait(false);
+
+            var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetBuildersCupLaddersAsync()
+        {
+            var filename = CMSFileNames.BuildersCupLadders.Replace("{:loc}", "en-US");
+            var pegasusRacersCupSeries =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupLadderDataV3>>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "user-v-blebois").ConfigureAwait(false);
+
+            var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync()
+        {
+            var filename = CMSFileNames.BuildersCupSeries.Replace("{:loc}", "en-US");
+            var pegasusRacersCupSeries =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupSeriesDataV3>>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "user-v-blebois").ConfigureAwait(false);
+
+            var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
+
+            return outputDictionary;
         }
 
         /// <inheritdoc />
@@ -476,11 +581,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<IEnumerable<DataCar>> GetCars()
             {
-                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
+                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: "user-v-blebois").ConfigureAwait(false);
 
-                this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
+                this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars.Values);
 
-                return cars;
+                return cars.Values;
             }
 
             return this.refreshableCacheStore.GetItem<IEnumerable<DataCar>>(carsKey)
@@ -488,19 +593,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ListCarMake>> GetCarMakesAsync()
+        public async Task<Dictionary<Guid, string>> GetCarsReferenceAsync()
+        {
+            var filename = CMSFileNames.DataCars.Replace("{:loc}", "en-US");
+            var pegasusRivalEvents =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.DataCar>>(
+                    filename,
+                    this.cmsEnvironment,
+                    slot: "user-v-blebois").ConfigureAwait(false);
+
+            var outputDictionary = pegasusRivalEvents.ToDictionary(kv => kv.Key, kv => kv.Value.DisplayName);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetCarMakesAsync()
         {
             var carMakesKey = $"{PegasusBaseCacheKey}CarMakes";
 
-            async Task<IEnumerable<ListCarMake>> GetCarMakes()
+            async Task<Dictionary<Guid, string>> GetCarMakes()
             {
-                var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<ListCarMake>>(CMSFileNames.ListCarMake, this.cmsEnvironment).ConfigureAwait(false);
-                this.refreshableCacheStore.PutItem(carMakesKey, TimeSpan.FromDays(1), pegasusResults);
+                var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, ListCarMake>>(CMSFileNames.ListCarMake, this.cmsEnvironment, slot: "user-v-blebois").ConfigureAwait(false);
+                var outputDictionary = pegasusResults.ToDictionary(kv => kv.Key, kv => kv.Value.DisplayName);
+                this.refreshableCacheStore.PutItem(carMakesKey, TimeSpan.FromDays(1), outputDictionary);
 
-                return pegasusResults;
+                return outputDictionary;
             }
 
-            return this.refreshableCacheStore.GetItem<IEnumerable<ListCarMake>>(carMakesKey)
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, string>>(carMakesKey)
                    ?? await GetCarMakes().ConfigureAwait(false);
         }
 

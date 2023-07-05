@@ -22,6 +22,14 @@ export class MockSteelheadBuildersCupService {
     .createSpy('getBuildersCupSchedule')
     .and.returnValue(of(this.result));
 
+  public getBuildersCupChampionships$ = jasmine
+    .createSpy('getBuildersCupChampionships')
+    .and.returnValue(of());
+
+  public getBuildersCupLadders$ = jasmine.createSpy('getBuildersCupLadders').and.returnValue(of());
+
+  public getBuildersCupSeries$ = jasmine.createSpy('getBuildersCupSeries').and.returnValue(of());
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

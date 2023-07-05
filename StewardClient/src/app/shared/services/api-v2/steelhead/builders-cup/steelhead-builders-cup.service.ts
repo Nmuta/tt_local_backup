@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SimpleCar } from '@models/cars';
+import { GuidLikeString } from '@models/extended-types';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
@@ -43,5 +44,20 @@ export class SteelheadBuildersCupService {
   /** Gets the Steelhead Builder's Cup featured content schedule. */
   public getBuildersCupSchedule$(): Observable<BuildersCupFeaturedTour[]> {
     return this.api.getRequest$<BuildersCupFeaturedTour[]>(`${this.basePath}/schedule`);
+  }
+
+  /** Gets the Steelhead Builder's Cup championships. */
+  public getBuildersCupChampionships$(): Observable<Map<GuidLikeString, string>> {
+    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/championships`);
+  }
+
+  /** Gets the Steelhead Builder's Cup ladders. */
+  public getBuildersCupLadders$(): Observable<Map<GuidLikeString, string>> {
+    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/ladders`);
+  }
+
+  /** Gets the Steelhead Builder's Cup series. */
+  public getBuildersCupSeries$(): Observable<Map<string, string>> {
+    return this.api.getRequest$<Map<string, string>>(`${this.basePath}/championships`);
   }
 }
