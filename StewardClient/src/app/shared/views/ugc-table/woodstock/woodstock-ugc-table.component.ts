@@ -46,6 +46,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   public ngOnInit(): void {
     super.ngOnInit();
 
+    this.getReportReasonsMonitor = this.getReportReasonsMonitor.repeat();
     this.woodstockUgcReportService
       .getUgcReportReasons$()
       .pipe(this.getReportReasonsMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
