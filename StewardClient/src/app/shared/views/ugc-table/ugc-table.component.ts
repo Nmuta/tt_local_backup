@@ -100,6 +100,7 @@ export abstract class UgcTableBaseComponent
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
   public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc(s)');
+  public reportUgcMonitor: ActionMonitor = new ActionMonitor('Report Ugc(s)');
   public generateSharecodesMonitor: ActionMonitor = new ActionMonitor('Generate Sharecode(s)');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcHidingSupported: boolean = true;
@@ -107,6 +108,7 @@ export abstract class UgcTableBaseComponent
   public liveryGiftingRoute: string[];
   public selectedUgcs: PlayerUgcItemTableEntries[] = [];
   public ugcsWithoutSharecodes: PlayerUgcItemTableEntries[] = [];
+  public reasonId: string = null;
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
@@ -126,6 +128,7 @@ export abstract class UgcTableBaseComponent
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
   public abstract hideUgc(ugcIds: string[]): Observable<string[]>;
+  public abstract reportUgc(ugcIds: string[], reasonId: string): Observable<string[]>;
   public abstract generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]>;
 
   /** Angular hook. */
@@ -294,6 +297,45 @@ export abstract class UgcTableBaseComponent
         });
         // Send ugcIds to be removed to parent component
         this.ugcItemsRemoved.emit(ugcIds);
+        this.selectedUgcs = [];
+        this.ugcTableDataSource.data.forEach(ugcTableElement => {
+          ugcTableElement.selected = false;
+        });
+        this.ugcTableDataSource._updateChangeSubscription();
+      });
+  }
+
+  /** Report multiple ugc items. */
+  public reportMultipleUgc(ugcs: PlayerUgcItemTableEntries[], reasonId: string): void {
+    if (!ugcs || !reasonId) {
+      return;
+    }
+
+    this.reportUgcMonitor = this.reportUgcMonitor.repeat();
+
+    const ugcIds = ugcs.map(ugc => ugc.id);
+    this.reportUgc(ugcIds, reasonId)
+      .pipe(this.reportUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(failedUgcs => {
+        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
+        // the backend was successful (200)
+        if (failedUgcs.length > 0) {
+          this.snackbar.open(
+            `Failed to report some or all of the following UGC items : ${failedUgcs.join('\n')}`,
+            'Okay',
+            {
+              panelClass: 'snackbar-warn',
+            },
+          );
+        } else {
+          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
+            data: this.reportUgcMonitor,
+            panelClass: ['snackbar-success'],
+          });
+        }
+
+        // We don't currently hide items after they're reported
+        // so we'll just deselect everything after reporting
         this.selectedUgcs = [];
         this.ugcTableDataSource.data.forEach(ugcTableElement => {
           ugcTableElement.selected = false;

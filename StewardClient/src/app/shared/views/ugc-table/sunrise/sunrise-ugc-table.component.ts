@@ -53,4 +53,9 @@ export class SunriseUgcTableComponent extends UgcTableBaseComponent implements O
   public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     return throwError(new Error('Sunrise does not support bulk sharecode generation.'));
   }
+
+  /** Report multiple Ugcs. */
+  public reportUgc(_ugcIds: string[], _reasonId: string): Observable<string[]> {
+    return throwError(new Error('Sunrise does not support reporting ugc items.'));
+  }
 }

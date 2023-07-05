@@ -44,4 +44,9 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
   public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     return throwError(new Error('Apollo does not support bulk sharecode generation.'));
   }
+
+  /** Report multiple Ugcs. */
+  public reportUgc(_ugcIds: string[], _reasonId: string): Observable<string[]> {
+    return throwError(new Error('Apollo does not support reporting ugc items.'));
+  }
 }
