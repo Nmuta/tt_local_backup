@@ -3,7 +3,7 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 
 //These values may change as tools and games are added or removed from Steward
 const filterValues = {
-  allTools: '34',
+  allTools: '33',
   specificTool: '1',
   playerFilter: '7',
   fh5Filter: '23',
@@ -28,6 +28,28 @@ context('Steward Index', () => {
     cy.get('.mat-icon').contains('sticky_note_2');
     cy.get('.mat-icon').contains('account_circle');
     cy.get('.mat-icon').contains('contact_support');
+  });
+
+  context('External Tools', () => {
+    it('should confirm Zendesk tool exists', () => {
+      cy.get('.mat-card-title').contains('Zendesk').should('exist');
+    });
+
+    it('should confirm Sprinklr tool exists', () => {
+      cy.get('.mat-card-title').contains('Sprinklr').should('exist');
+    });
+
+    it('should confirm Pegasus tool exists', () => {
+      cy.get('.mat-card-title').contains('Pegasus').should('exist');
+    });
+
+    it('should confirm Admin Pages tool exists', () => {
+      cy.get('.mat-card-title').contains('Admin Pages').should('exist');
+    });
+
+    it('should confirm Power BI tool exists', () => {
+      cy.get('.mat-card-title').contains('Power BI').should('exist');
+    });
   });
 
   context('Search and Filters', () => {
