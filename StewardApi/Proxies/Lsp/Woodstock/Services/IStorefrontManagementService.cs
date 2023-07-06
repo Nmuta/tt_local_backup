@@ -42,5 +42,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 
         /// <summary>Sets the visibility of UGC by ID.<summary>
         Task SetUGCVisibility(Guid id, bool shouldBeVisible);
+
+        /// <summary>Gets curate UGC data.</summary>
+        Task<GetCuratedUgcOutput> GetCuratedUgc(ForzaUGCContentType contentType, ForzaCurationMethod curationMethod, int maxResults);
     }
 }

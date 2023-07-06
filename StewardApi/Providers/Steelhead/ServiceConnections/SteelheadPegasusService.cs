@@ -476,11 +476,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<IEnumerable<DataCar>> GetCars()
             {
-                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
+                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
 
-                this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
+                this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars.Values);
 
-                return cars;
+                return cars.Values;
             }
 
             return this.refreshableCacheStore.GetItem<IEnumerable<DataCar>>(carsKey)

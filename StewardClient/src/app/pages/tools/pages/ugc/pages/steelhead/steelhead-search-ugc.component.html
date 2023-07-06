@@ -41,6 +41,33 @@
         [serviceContract]="serviceContract"
       ></ugc-search-filters>
     </form>
+    <form [formGroup]="formGroup" class="sf-wrapper">
+      <div class="sf-horizontal">
+        <!-- UGC Curated Type Filter -->
+        <mat-form-field class="sf-default-hint" appearance="fill">
+          <mat-label>UGC Curated Type</mat-label>
+          <mat-select matInput [formControl]="formControls.ugcCuratedType">
+            <mat-option *ngFor="let item of ugcCuratedEnum | keyvalue" [value]="item.value">
+              {{ item.key | deppoh }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          matTooltip="Load Curated Ugc"
+          [disabled]="!formControls.ugcCuratedType.value"
+          (click)="loadCuratedUgc()"
+          [monitor]="getMonitor"
+          stateManager
+          monitorDisable
+          monitorWarnSnackbar
+        >
+          Load Curated Ugc
+          <button-spinner defaultIcon="search" [monitor]="getMonitor"></button-spinner>
+        </button>
+      </div>
+    </form>
 
     <steelhead-ugc-table [content]="ugcContent" [contentType]="ugcType"></steelhead-ugc-table>
   </mat-card-content>

@@ -2,7 +2,12 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { GameTitle, PegasusProjectionSlot } from '@models/enums';
 import { catchError, EMPTY, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { UgcSearchFilters, UgcType, WoodstockSupportedUgcTypes } from '@models/ugc-filters';
+import {
+  UgcCurationType,
+  UgcSearchFilters,
+  UgcType,
+  WoodstockSupportedUgcTypes,
+} from '@models/ugc-filters';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -37,6 +42,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   public getMonitor = new ActionMonitor('GET UGC Content');
   public ugcType: UgcType = UgcType.Unknown;
   public filterXuid: BigNumber = undefined;
+  public ugcCuratedEnum = UgcCurationType;
 
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
@@ -49,6 +55,7 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
 
   public formControls = {
     ugcFilters: new FormControl('', Validators.required),
+    ugcCuratedType: new FormControl(''),
   };
 
   public formGroup = new FormGroup(this.formControls);
@@ -99,6 +106,19 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   /** Searches player UGC content. */
   public getSystemUgc$(searchParameters: UgcSearchFilters): Observable<PlayerUgcItem[]> {
     return this.searchService.searchUgc$(searchParameters);
+  }
+
+  /** Load curated UGC queues. */
+  public loadCuratedUgc(): void {
+    const ugcFilters = this.formControls.ugcFilters.value as UgcSearchFilters;
+    this.ugcContent = [];
+    this.getMonitor = this.getMonitor.repeat();
+    this.searchService
+      .getCuratedUgc$(ugcFilters.ugcType, this.formControls.ugcCuratedType.value)
+      .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(results => {
+        this.ugcContent = results;
+      });
   }
 
   /** Gets master inventory list */

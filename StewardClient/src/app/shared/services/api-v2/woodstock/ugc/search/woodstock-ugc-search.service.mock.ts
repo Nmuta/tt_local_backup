@@ -7,8 +7,12 @@ export class MockWoodstockUgcSearchService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public GetPhotoThumbnails$ = jasmine
-    .createSpy('GetPhotoThumbnails$')
+  public searchUgc$ = jasmine
+    .createSpy('searchUgc$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
+  public getCuratedUgc$ = jasmine
+    .createSpy('getCuratedUgc$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   constructor(private readonly generator$: () => unknown) {}

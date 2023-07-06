@@ -24,3 +24,10 @@ mat-card {
   text-overflow: ellipsis;
   margin: auto;
 }
+
+form {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-end;
+}
