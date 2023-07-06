@@ -9,6 +9,7 @@ import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
+import { BulkReportUgcResponse } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 
 /** Displays steelhead UGC content in a table. */
 @Component({
@@ -49,7 +50,7 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
   }
 
   /** Report multiple Ugcs. */
-  public reportUgc(_ugcIds: string[], _reasonId: string): Observable<string[]> {
+  public reportUgc(_ugcIds: string[], _reasonId: string): Observable<BulkReportUgcResponse[]> {
     return throwError(new Error('Steelhead does not support reporting ugc items.'));
   }
 }

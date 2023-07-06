@@ -12,12 +12,14 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
@@ -96,44 +98,45 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [Authorize(Policy = UserAttribute.ReportUgc)]
         public async Task<IActionResult> ReportUgc([FromQuery] bool useBackgroundProcessing, [FromQuery] string reasonId, [FromBody] Guid[] ugcIds)
         {
+            var storefrontManagementService = this.Services.StorefrontManagementService;
+
             if (useBackgroundProcessing)
             {
-                var response = await this.ReportUgcItemsUseBackgroundProcessing(ugcIds, reasonId).ConfigureAwait(false);
+                var response = await this.ReportUgcItemsUseBackgroundProcessing(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(false);
                 return response;
             }
             else
             {
-                await this.ReportUgcItems(ugcIds, reasonId).ConfigureAwait(false);
+                await this.ReportUgcItems(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(false);
                 return this.Ok();
             }
         }
 
         // Report list of UgcIds with reason
-        private async Task<List<Guid>> ReportUgcItems (Guid[] ugcIds, string reasonId)
+        private async Task<List<BulkReportUgcResponse>> ReportUgcItems (IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
         {
-            if (!Guid.TryParse(reasonId, out var parsedReasonId))
-            {
-                throw new BadRequestStewardException($"Reason ID could not be parsed as GUID. (reasonId: {reasonId})");
-            }
+            var parsedReasonId = reasonId.TryParseGuidElseThrow(nameof(reasonId));
 
-            var failedUgc = new List<Guid>();
+            List<BulkReportUgcResponse> response = new List<BulkReportUgcResponse>();
 
             foreach (var ugcId in ugcIds)
             {
                 try
                 {
-                    await this.Services.StorefrontManagementService.ReportContentWithReason(ugcId, parsedReasonId).ConfigureAwait(true);
+                    await storefrontManagementService.ReportContentWithReason(ugcId, parsedReasonId).ConfigureAwait(true);
+                    response.Add(new BulkReportUgcResponse { UgcId = ugcId });
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    failedUgc.Add(ugcId);
+                    var errorResponse = new BulkReportUgcResponse { UgcId = ugcId, Error = new StewardError($"Failed to report UGC. UgcId: {ugcId}", ex.Message) };
+                    response.Add(errorResponse);
                 }
             }
 
-            return failedUgc;
+            return response;
         }
 
-        private async Task<CreatedResult> ReportUgcItemsUseBackgroundProcessing(Guid[] ugcIds, string reasonId)
+        private async Task<CreatedResult> ReportUgcItemsUseBackgroundProcessing(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -141,10 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Report Multiple Ugc.", this.Response).ConfigureAwait(true);
             var storefrontService = this.Services.Storefront;
 
-            if (!Guid.TryParse(reasonId, out var parsedReasonId))
-            {
-                throw new BadRequestStewardException($"Reason ID could not be parsed as GUID. (reasonId: {reasonId})");
-            }
+            var parsedReasonId = reasonId.TryParseGuidElseThrow(nameof(reasonId));
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -152,23 +152,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 // Do not throw.
                 try
                 {
-                    var failedUgc = new List<Guid>();
+                    var results = await this.ReportUgcItems(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(true);
 
-                    foreach (var ugcId in ugcIds)
-                    {
-                        try
-                        {
-                            await this.Services.StorefrontManagementService.ReportContentWithReason(ugcId, parsedReasonId).ConfigureAwait(true);
-                        }
-                        catch (Exception)
-                        {
-                            failedUgc.Add(ugcId);
-                        }
-                    }
-
-                    var foundErrors = failedUgc.Count > 0;
+                    bool foundErrors = results.Any(results => results.Error != null);
                     var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, failedUgc).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {

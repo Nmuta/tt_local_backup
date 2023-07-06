@@ -15,20 +15,16 @@ import {
   BulkGenerateSharecodeResponse,
   WoodstockUgcSharecodeService,
 } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
-import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
-import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { UgcReportReason } from '@models/ugc-report-reason';
+import { BulkReportUgcResponse, WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 
 /** Displays woodstock UGC content in a table. */
 @Component({
   selector: 'woodstock-ugc-table',
-  templateUrl: 'woodstock-ugc-table.component.html',
+  templateUrl: '../ugc-table.component.html',
   styleUrls: ['../ugc-table.component.scss'],
 })
 export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements OnChanges, OnInit {
   public gameTitle = GameTitle.FH5;
-  public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
-  public reportReasons: UgcReportReason[] = null;
 
   constructor(
     private readonly woodstockService: WoodstockService,
@@ -45,6 +41,8 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   /** Angular hook. */
   public ngOnInit(): void {
     super.ngOnInit();
+
+    this.isBulkReportSupported = true;
 
     this.getReportReasonsMonitor = this.getReportReasonsMonitor.repeat();
     this.woodstockUgcReportService
@@ -75,10 +73,10 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   }
 
   /** Report multiple Ugcs. */
-  public reportUgc(ugcIds: string[], reasonId: string): Observable<string[]> {
+  public reportUgc(ugcIds: string[], reasonId: string): Observable<BulkReportUgcResponse[]> {
     return this.woodstockUgcReportService.reportUgcItemsUsingBackgroundJob$(ugcIds, reasonId).pipe(
       switchMap(response => {
-        return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
+        return this.backgroundJobService.waitForBackgroundJobToComplete<BulkReportUgcResponse[]>(response);
       }),
     );
   }

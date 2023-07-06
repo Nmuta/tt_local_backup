@@ -5,6 +5,15 @@ import { UgcReportReason } from '@models/ugc-report-reason';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
+/**
+ * Interface to describe a response from the API for reporting multiple
+ * UGC in bulk.
+ */
+export interface BulkReportUgcResponse {
+  ugcId: string;
+  error: string;
+}
+
 /** The /v2/woodstock/report endpoints. */
 @Injectable({
   providedIn: 'root',
@@ -28,8 +37,8 @@ export class WoodstockUgcReportService {
   }
 
   /** Report a Ugc. */
-  public reportUgc$(ugcIds: string[], reasonId: string): Observable<void> {
+  public reportUgc$(ugcIds: string[], reasonId: string): Observable<BulkReportUgcResponse[]> {
     const params = new HttpParams().set('useBackgroundProcessing', false).set('reasonId', reasonId);
-    return this.api.postRequest$<void>(`${this.basePath}/report`, ugcIds, params);
+    return this.api.postRequest$<BulkReportUgcResponse[]>(`${this.basePath}/report`, ugcIds, params);
   }
 }

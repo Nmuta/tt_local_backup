@@ -44,6 +44,49 @@
           ></mat-spinner>
         </button>
       </div>
+      <div *ngIf="isBulkReportSupported" class="sf-horizontal sf-right">
+        <mat-form-field
+          *waitForMonitor="getReportReasonsMonitor"
+          class="bulk-report-reason sf-default-hint sf-action-list"
+          appearance="fill"
+        >
+          <mat-label>Report reason</mat-label>
+          <mat-select matInput [(ngModel)]="reasonId">
+            <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
+              {{ reason.description }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <verify-button
+          class="action-section"
+          #verifyCheckboxReportBtn
+          [disabled]="selectedUgcs?.length <= 0 || reasonId === null"
+          [permissionAttribute]="hideUgcPermission"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="selectedUgcs?.length <= 0"
+          [verifyWithV2]="verifyCheckboxReportBtn"
+          (click)="reportMultipleUgc(selectedUgcs, reasonId)"
+          stateManager
+          [monitor]="reportUgcMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+        >
+          <span [ngPlural]="selectedUgcs?.length">
+            Report {{ selectedUgcs?.length }}
+            <ng-template ngPluralCase="=1">Ugc </ng-template>
+            <ng-template ngPluralCase="other">Ugcs </ng-template>
+          </span>
+          <button-spinner
+            [monitor]="reportUgcMonitor"
+            defaultIcon="report"
+          ></button-spinner>
+        </button>
+      </div>
       <div class="sf-horizontal sf-right">
         <verify-button
           class="action-section"
