@@ -319,7 +319,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalEvent>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
             var rivalsEvents = this.mapper.SafeMap<IEnumerable<RivalsEvent>>(pegasusRivalEvents.Values);
 
@@ -334,9 +334,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalEvent>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
-            var outputDictionary = pegasusRivalEvents.ToDictionary(kv => kv.Key, kv => kv.Value.Description);
+            var outputDictionary = pegasusRivalEvents.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
             return outputDictionary;
         }
@@ -349,7 +349,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalCategory>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
             var outputDictionary = pegasusRivalsCategories.ToDictionary(kv => kv.Key, kv => kv.Value.Title);
 
@@ -364,7 +364,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.Entitlement>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
             var outputDictionary = pegasusEntitlements.ToDictionary(kv => kv.Key, kv => kv.Value.Description);
 
@@ -379,7 +379,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipSeriesDataV3>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
             var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
@@ -394,7 +394,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupDataV3>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
             var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
@@ -409,7 +409,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupLadderDataV3>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
             var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
@@ -424,7 +424,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupSeriesDataV3>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
             var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
@@ -581,7 +581,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<IEnumerable<DataCar>> GetCars()
             {
-                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: "user-v-blebois").ConfigureAwait(false);
+                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars.Values);
 
@@ -600,7 +600,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.DataCar>>(
                     filename,
                     this.cmsEnvironment,
-                    slot: "user-v-blebois").ConfigureAwait(false);
+                    slot: "daily").ConfigureAwait(false);
 
             var outputDictionary = pegasusRivalEvents.ToDictionary(kv => kv.Key, kv => kv.Value.DisplayName);
 
@@ -614,7 +614,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<Dictionary<Guid, string>> GetCarMakes()
             {
-                var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, ListCarMake>>(CMSFileNames.ListCarMake, this.cmsEnvironment, slot: "user-v-blebois").ConfigureAwait(false);
+                var pegasusResults = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, ListCarMake>>(CMSFileNames.ListCarMake, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
                 var outputDictionary = pegasusResults.ToDictionary(kv => kv.Key, kv => kv.Value.DisplayName);
                 this.refreshableCacheStore.PutItem(carMakesKey, TimeSpan.FromDays(1), outputDictionary);
 
