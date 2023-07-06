@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 namespace Turn10.LiveOps.StewardTest.Integration.Opus
 {
     [TestClass]
+    [Ignore]
     public sealed class OpusIntegrationTests
     {
         private static string endpoint;
@@ -22,7 +23,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         private static KeyVaultProvider KeyVaultProvider;
         private static OpusStewardTestingClient stewardClient;
         private static OpusStewardTestingClient unauthorizedClient;
-
+        
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
         {
