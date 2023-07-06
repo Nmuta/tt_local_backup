@@ -1,12 +1,7 @@
 import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
 import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
-import { login } from '@support/steward/auth/login';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
-import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
-import { stewardUrls } from '@support/steward/urls';
-import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { RetailUsers } from '@support/steward/common/account-info';
 
 export const testGtag: boolean = false;
@@ -24,6 +19,7 @@ function searchUser(user: string, isXuid: boolean): void {
   }
 }
 
+/** Verifies that the user details match a searched user */
 export function userDetailsVerifyPlayerIdentityResults(user: string, isXuid: boolean): void {
   it('should verify the player identity results', () => {
     searchUser(user, isXuid);
@@ -36,6 +32,7 @@ export function userDetailsVerifyPlayerIdentityResults(user: string, isXuid: boo
   });
 }
 
+/** Verifies that the flag data is correct for a searched user in the user details tab */
 export function userDetailsVerifyFlagData(
   user: string,
   isXuid: boolean,
@@ -49,6 +46,7 @@ export function userDetailsVerifyFlagData(
   });
 }
 
+/** Verifies that the searched user has ban details in the user details tab */
 export function userDetailsFindBans(user: string, isXuid: boolean): void {
   it('should have ban history for a known user', () => {
     searchUser(user, isXuid);
@@ -61,6 +59,7 @@ export function userDetailsFindBans(user: string, isXuid: boolean): void {
   });
 }
 
+/** Verifies that the searched user has a specified profile note in the user details tab */
 export function userDetailsFindProfileNotes(user: string, isXuid: boolean, noteText: string): void {
   it('should have a profile note', () => {
     searchUser(user, isXuid);
@@ -71,6 +70,7 @@ export function userDetailsFindProfileNotes(user: string, isXuid: boolean, noteT
   });
 }
 
+/** Verifies that the searched user has the correct related gamertags in the user details tab */
 export function userDetailsFindRelatedGamertags(
   user: string,
   isXuid: boolean,
@@ -85,6 +85,7 @@ export function userDetailsFindRelatedGamertags(
   });
 }
 
+/** Verifies that the user has the correct related consoles in the user details tab */
 export function userDetailsFindRelatedConsoles(
   user: string,
   isXuid: boolean,
@@ -99,6 +100,7 @@ export function userDetailsFindRelatedConsoles(
   });
 }
 
+/** Verifies that the user has current credits information in the overview of the deep dive tab */
 export function deepDiveFindOverviewData(user: string, isXuid: boolean): void {
   it('should have an overview', () => {
     searchUser(user, isXuid);
@@ -107,6 +109,7 @@ export function deepDiveFindOverviewData(user: string, isXuid: boolean): void {
   });
 }
 
+/** Verifies that the user has credit history in the deep dive tab */
 export function deepDiveFindCreditHistory(user: string, isXuid: boolean, deviceType: string) {
   it('should have credit history', () => {
     searchUser(user, isXuid);
@@ -117,6 +120,7 @@ export function deepDiveFindCreditHistory(user: string, isXuid: boolean, deviceT
   });
 }
 
+/** Verifies that the user has a credit reward in their inventory in the inventory tab */
 export function inventoryFindPlayerInventoryData(user: string, isXuid: boolean): void {
   it('should have a credit reward in the inventory', () => {
     searchUser(user, isXuid);
@@ -127,6 +131,7 @@ export function inventoryFindPlayerInventoryData(user: string, isXuid: boolean):
   });
 }
 
+/** Verifies that the user has a notification in the notifications tab */
 export function notificationsFindNotification(user: string, isXuid: boolean): void {
   it('should have a notification', () => {
     searchUser(user, isXuid);
@@ -139,6 +144,7 @@ export function notificationsFindNotification(user: string, isXuid: boolean): vo
   });
 }
 
+/** Verifies that the user has a livery for a specified vehicle in the liveries tab */
 export function ugcLiveriesFindLivery(
   user: string,
   isXuid: boolean,
@@ -165,6 +171,7 @@ export function ugcLiveriesFindLivery(
   });
 }
 
+/** Verifies that the user has an auction for a specified vehicle in the auctions tab */
 export function auctionsFindCreatedAuction(
   user: string,
   isXuid: boolean,
@@ -198,6 +205,7 @@ export function auctionsFindCreatedAuction(
   });
 }
 
+/** Verifies that the user has the correct titles in the loyalties tab */
 export function loyaltyFindTitlesPlayed(
   user: string,
   isXuid: boolean,
@@ -217,6 +225,7 @@ export function loyaltyFindTitlesPlayed(
   });
 }
 
+/** Verifies that the user has JSON search info in the JSON tab */
 export function jsonCheckJson(user: string, isXuid: boolean): void {
   it('should have JSON for a user searched', () => {
     searchUser(user, isXuid);

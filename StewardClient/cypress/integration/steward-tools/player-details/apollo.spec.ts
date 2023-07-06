@@ -1,10 +1,6 @@
-import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
-import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { login } from '@support/steward/auth/login';
 import { RetailUsers } from '@support/steward/common/account-info';
-import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectApollo } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import {

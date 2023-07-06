@@ -1,9 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
-import { RetailUsers } from '@support/steward/common/account-info';
 import {
   userDetailsFindBans,
   userDetailsFindProfileNotes,
@@ -21,7 +19,6 @@ import {
   auctionsFindCreatedAuction,
   jsonCheckJson,
 } from './shared-tests';
-import { tableHasEntry } from '@support/mat-form/table-has-entry';
 
 const defaultSunriseUser = 'jordan';
 
