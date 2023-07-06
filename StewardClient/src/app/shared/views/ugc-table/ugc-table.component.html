@@ -12,33 +12,42 @@
           Unselect all
         </button>
       </div>
-      <div *ngIf="!isContentHidden" class="sf-horizontal sf-right">
-        <verify-button
-          class="action-section"
-          #verifyCheckboxHideBtn
-          [disabled]="selectedUgcs?.length <= 0"
-          [permissionAttribute]="hideUgcPermission"
-          [permissionTitle]="gameTitle"
-        ></verify-button>
-        <button
-          mat-raised-button
-          color="warn"
-          [disabled]="selectedUgcs?.length <= 0"
-          [verifyWithV2]="verifyCheckboxHideBtn"
-          (click)="hideMultipleUgc(selectedUgcs)"
-          stateManager
-          [monitor]="hideUgcMonitor"
-          monitorDisable
-          monitorCompleteSnackbar
-          monitorWarnSnackbar
-        >
-          <span [ngPlural]="selectedUgcs?.length">
-            Hide {{ selectedUgcs?.length }}
-            <ng-template ngPluralCase="=1">Ugc </ng-template>
-            <ng-template ngPluralCase="other">Ugcs </ng-template>
-          </span>
-          <button-spinner [monitor]="hideUgcMonitor" defaultIcon="visibility_off"></button-spinner>
-        </button>
+      <div *ngIf="!isContentHidden" class="sf-vertical sf-end">
+        <div class="sf-horizontal">
+          <verify-button
+            class="action-section"
+            #verifyCheckboxHideBtn
+            [disabled]="selectedUgcs?.length <= 0"
+            [permissionAttribute]="hideUgcPermission"
+            [permissionTitle]="gameTitle"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="warn"
+            [disabled]="selectedUgcs?.length <= 0"
+            [verifyWithV2]="verifyCheckboxHideBtn"
+            (click)="hideMultipleUgc(selectedUgcs)"
+            stateManager
+            [monitor]="hideUgcMonitor"
+            monitorDisable
+            monitorCompleteSnackbar
+            monitorWarnSnackbar
+          >
+            <span [ngPlural]="selectedUgcs?.length">
+              Hide {{ selectedUgcs?.length }}
+              <ng-template ngPluralCase="=1">Ugc </ng-template>
+              <ng-template ngPluralCase="other">Ugcs </ng-template>
+            </span>
+            <button-spinner
+              [monitor]="hideUgcMonitor"
+              defaultIcon="visibility_off"
+            ></button-spinner>
+          </button>
+        </div>
+        <p *ngIf="selectedPrivateUgcCount" class="warn">
+          You have selected {{ selectedPrivateUgcCount }} Private UGC which will be ignored by the
+          Hide action.
+        </p>
       </div>
       <div *ngIf="isContentHidden" class="sf-horizontal sf-right">
         <verify-button

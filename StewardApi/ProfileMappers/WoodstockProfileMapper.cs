@@ -547,8 +547,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 //.ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => null)) //Park with Caleb about getting this added. Replace with task# once that's good to go
                 .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => Enum.GetName(typeof(ForzaUGCContentType), src.Metadata.ContentType)));
 
-
             this.CreateMap<ForzaUGCDataLight, WoodstockUgcItem>()
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.ToImageDataUrl()))
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.ToImageDataUrl()))
                 .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))

@@ -108,6 +108,7 @@ export abstract class UgcTableBaseComponent
   public ugcType = UgcType;
   public liveryGiftingRoute: string[];
   public selectedUgcs: PlayerUgcItemTableEntries[] = [];
+  public selectedPrivateUgcCount: number = 0;
   public ugcsWithoutSharecodes: PlayerUgcItemTableEntries[] = [];
 
   public readonly privateFeaturingDisabledTooltip =
@@ -258,13 +259,15 @@ export abstract class UgcTableBaseComponent
         this.selectedUgcs.splice(selectedUgcIndex, 1);
       }
     }
+
+    this.selectedPrivateUgcCount = this.selectedUgcs.filter(ugc => !ugc.isPublic)?.length;
   }
 
   /** Hide multiple ugc items. */
   public hideMultipleUgc(ugcs: PlayerUgcItemTableEntries[]): void {
     this.hideUgcMonitor = this.hideUgcMonitor.repeat();
-
-    const ugcIds = ugcs.map(ugc => ugc.id);
+    // Private UGC can't be hidden by design.
+    const ugcIds = ugcs.filter(ugc => ugc.isPublic).map(ugc => ugc.id);
     this.hideUgc(ugcIds)
       .pipe(
         switchMap(failedSharecodes => {
@@ -366,6 +369,7 @@ export abstract class UgcTableBaseComponent
   /** Unselects all selected ugc items. */
   public unselectAllUgcItems(): void {
     this.selectedUgcs = [];
+    this.selectedPrivateUgcCount = 0;
     this.ugcTableDataSource.data.map(s => (s.selected = false));
   }
 
@@ -425,6 +429,7 @@ export abstract class UgcTableBaseComponent
     // Send ugcIds to be removed to parent component
     this.ugcItemsRemoved.emit(ugcIds);
     this.selectedUgcs = [];
+    this.selectedPrivateUgcCount = 0;
     this.ugcTableDataSource.data.forEach(ugcTableElement => {
       ugcTableElement.selected = false;
     });

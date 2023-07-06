@@ -131,6 +131,11 @@
       margin-top: $gap-medium;
     }
 
+    // align element to start from the right instead of the left
+    &.sf-end {
+      align-items: end;
+    }
+
     // things that shouldn't grow to fill space
     > mat-checkbox,
     > button,
