@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -17,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
@@ -76,8 +78,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             }
             else
             {
-                await this.SetUgcItemsVisibility(ugcIds, true).ConfigureAwait(false);
-                return this.Ok();
+                var response = await this.SetUgcItemsVisibilityAsync(this.Services.StorefrontManagementService, ugcIds, true).ConfigureAwait(false);
+                return this.Ok(response);
             }
         }
 
@@ -102,13 +104,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             }
             else
             {
-                var response = await this.SetUgcItemsVisibility(ugcIds, false).ConfigureAwait(false);
+                var response = await this.SetUgcItemsVisibilityAsync(this.Services.StorefrontManagementService, ugcIds, false).ConfigureAwait(false);
                 return this.Ok(response);
             }
         }
 
         // Hide list of UgcIds
-        private async Task<List<Guid>> SetUgcItemsVisibility(Guid[] ugcIds, bool isVisible)
+        private async Task<List<Guid>> SetUgcItemsVisibilityAsync(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, bool isVisible)
         {
             var failedUgc = new List<Guid>();
 
@@ -116,7 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             {
                 try
                 {
-                    await this.Services.StorefrontManagementService.SetUGCVisibility(ugcId, isVisible).ConfigureAwait(true);
+                    await storefrontManagementService.SetUGCVisibility(ugcId, isVisible).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -142,19 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 // Do not throw.
                 try
                 {
-                    var failedUgc = new List<Guid>();
-
-                    foreach (var ugcId in ugcIds)
-                    {
-                        try
-                        {
-                            await storefrontManagementService.SetUGCVisibility(ugcId, isVisible).ConfigureAwait(true);
-                        }
-                        catch (Exception)
-                        {
-                            failedUgc.Add(ugcId);
-                        }
-                    }
+                    var failedUgc = await this.SetUgcItemsVisibilityAsync(storefrontManagementService, ugcIds, isVisible).ConfigureAwait(false);
 
                     var foundErrors = failedUgc.Count > 0;
                     var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;

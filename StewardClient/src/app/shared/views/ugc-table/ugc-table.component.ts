@@ -35,7 +35,6 @@ import { chunk, cloneDeep, flatten } from 'lodash';
 import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SuccessSnackbarComponent } from '@shared/modules/monitor-action/success-snackbar/success-snackbar.component';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 
@@ -267,43 +266,28 @@ export abstract class UgcTableBaseComponent
 
     const ugcIds = ugcs.map(ugc => ugc.id);
     this.hideUgc(ugcIds)
-      .pipe(this.hideUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(failedUgcs => {
-        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
-        // the backend was successful (200)
-        if (failedUgcs.length > 0) {
-          this.snackbar.open(
-            `Failed to hide some or all of the following UGC items : ${failedUgcs.join('\n')}`,
-            'Okay',
-            {
-              panelClass: 'snackbar-warn',
-            },
-          );
-        } else {
-          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
-            data: this.hideUgcMonitor,
-            panelClass: ['snackbar-success'],
-          });
-        }
+      .pipe(
+        switchMap(failedSharecodes => {
+          if (failedSharecodes.length > 0) {
+            // Remove ugcId that failed from the list of ugcIds
+            failedSharecodes.forEach(failedUgc => {
+              const index = ugcIds.indexOf(failedUgc);
+              ugcIds.splice(index, 1);
+            });
 
-        // Remove ugcId that failed from the list of ugcIds
-        failedUgcs.forEach(failedUgc => {
-          const index = ugcIds.indexOf(failedUgc);
-          ugcIds.splice(index, 1);
-        });
-        // Remove hidden ugcs from the table
-        // The ugcTableDataSource data property is a reference to this.content
-        ugcIds.forEach(ugcId => {
-          const index = this.content.findIndex(x => x.id == ugcId);
-          this.content.splice(index, 1);
-        });
-        // Send ugcIds to be removed to parent component
-        this.ugcItemsRemoved.emit(ugcIds);
-        this.selectedUgcs = [];
-        this.ugcTableDataSource.data.forEach(ugcTableElement => {
-          ugcTableElement.selected = false;
-        });
-        this.ugcTableDataSource._updateChangeSubscription();
+            this.removeUgcFromTable(ugcIds);
+
+            return throwError(
+              () => `Failed to hide the following UGC items : ${failedSharecodes.join('\n')}`,
+            );
+          }
+          return of(failedSharecodes);
+        }),
+        this.hideUgcMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.removeUgcFromTable(ugcIds);
       });
   }
 
@@ -313,43 +297,28 @@ export abstract class UgcTableBaseComponent
 
     const ugcIds = ugcs.map(ugc => ugc.id);
     this.unhideUgc(ugcIds)
-      .pipe(this.unhideUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(failedUgcs => {
-        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
-        // the backend was successful (200)
-        if (failedUgcs.length > 0) {
-          this.snackbar.open(
-            `Failed to unhide some or all of the following UGC items : ${failedUgcs.join('\n')}`,
-            'Okay',
-            {
-              panelClass: 'snackbar-warn',
-            },
-          );
-        } else {
-          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
-            data: this.unhideUgcMonitor,
-            panelClass: ['snackbar-success'],
-          });
-        }
+      .pipe(
+        switchMap(failedSharecodes => {
+          if (failedSharecodes.length > 0) {
+            // Remove ugcId that failed from the list of ugcIds
+            failedSharecodes.forEach(failedUgc => {
+              const index = ugcIds.indexOf(failedUgc);
+              ugcIds.splice(index, 1);
+            });
 
-        // Remove ugcId that failed from the list of ugcIds
-        failedUgcs.forEach(failedUgc => {
-          const index = ugcIds.indexOf(failedUgc);
-          ugcIds.splice(index, 1);
-        });
-        // Remove unhidden ugcs from the table
-        // The ugcTableDataSource data property is a reference to this.content
-        ugcIds.forEach(ugcId => {
-          const index = this.content.findIndex(x => x.id == ugcId);
-          this.content.splice(index, 1);
-        });
-        // Send ugcIds to be removed to parent component
-        this.ugcItemsRemoved.emit(ugcIds);
-        this.selectedUgcs = [];
-        this.ugcTableDataSource.data.forEach(ugcTableElement => {
-          ugcTableElement.selected = false;
-        });
-        this.ugcTableDataSource._updateChangeSubscription();
+            this.removeUgcFromTable(ugcIds);
+
+            return throwError(
+              () => `Failed to unhide the following UGC items : ${failedSharecodes.join('\n')}`,
+            );
+          }
+          return of(failedSharecodes);
+        }),
+        this.unhideUgcMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.removeUgcFromTable(ugcIds);
       });
   }
 
@@ -444,5 +413,21 @@ export abstract class UgcTableBaseComponent
 
   private shouldUseCondensedTableView(): boolean {
     return this.table?.nativeElement?.offsetWidth <= 1000;
+  }
+
+  private removeUgcFromTable(ugcIds: string[]) {
+    // Remove hidden ugcs from the table
+    // The ugcTableDataSource data property is a reference to this.content
+    ugcIds.forEach(ugcId => {
+      const index = this.content.findIndex(x => x.id == ugcId);
+      this.content.splice(index, 1);
+    });
+    // Send ugcIds to be removed to parent component
+    this.ugcItemsRemoved.emit(ugcIds);
+    this.selectedUgcs = [];
+    this.ugcTableDataSource.data.forEach(ugcTableElement => {
+      ugcTableElement.selected = false;
+    });
+    this.ugcTableDataSource._updateChangeSubscription();
   }
 }

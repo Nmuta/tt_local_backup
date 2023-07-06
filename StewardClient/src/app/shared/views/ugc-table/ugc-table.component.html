@@ -29,7 +29,7 @@
           stateManager
           [monitor]="hideUgcMonitor"
           monitorDisable
-          monitorWarn
+          monitorCompleteSnackbar
           monitorWarnSnackbar
         >
           <span [ngPlural]="selectedUgcs?.length">
@@ -37,11 +37,7 @@
             <ng-template ngPluralCase="=1">Ugc </ng-template>
             <ng-template ngPluralCase="other">Ugcs </ng-template>
           </span>
-          <mat-spinner
-            *ngIf="hideUgcMonitor.isActive"
-            class="force-inline-2x"
-            [matTooltip]="hideUgcMonitor.label + ' in progress'"
-          ></mat-spinner>
+          <button-spinner [monitor]="hideUgcMonitor" defaultIcon="visibility_off"></button-spinner>
         </button>
       </div>
       <div *ngIf="isContentHidden" class="sf-horizontal sf-right">
@@ -61,19 +57,15 @@
           stateManager
           [monitor]="unhideUgcMonitor"
           monitorDisable
-          monitorWarn
           monitorWarnSnackbar
+          monitorCompleteSnackbar
         >
           <span [ngPlural]="selectedUgcs?.length">
             Unhide {{ selectedUgcs?.length }}
             <ng-template ngPluralCase="=1">Ugc </ng-template>
             <ng-template ngPluralCase="other">Ugcs </ng-template>
           </span>
-          <mat-spinner
-            *ngIf="unhideUgcMonitor.isActive"
-            class="force-inline-2x"
-            [matTooltip]="unhideUgcMonitor.label + ' in progress'"
-          ></mat-spinner>
+          <button-spinner [monitor]="unhideUgcMonitor" defaultIcon="visibility"></button-spinner>
         </button>
       </div>
       <div *ngIf="!isContentHidden" class="sf-horizontal sf-right">
