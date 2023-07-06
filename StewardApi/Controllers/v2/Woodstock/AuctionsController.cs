@@ -41,15 +41,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
     public sealed class AuctionsController : V2WoodstockControllerBase
     {
         private readonly IActionLogger actionLogger;
+        private readonly IWoodstockItemsProvider itemsProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="AuctionsController"/> class.
         /// </summary>
-        public AuctionsController(IActionLogger actionLogger)
+        public AuctionsController(IActionLogger actionLogger, IWoodstockItemsProvider itemsProvider)
         {
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
+            itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
 
             this.actionLogger = actionLogger;
+            this.itemsProvider = itemsProvider;
         }
 
         /// <summary>
@@ -78,6 +81,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
             if (!Guid.TryParse(tuneId, out var tuneGuid) && tuneId != null)
             {
                 throw new InvalidArgumentsStewardException($"Invalid tune id: {tuneId}");
+            }
+
+            var cars = await this.itemsProvider.GetCarsAsync<SimpleCar>().ConfigureAwait(true);
+
+            if (!cars.Any(car => car.Id == carId))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid car id: {carId}");
             }
 
             var response = await this.Services.AuctionManagementService.CreateAuction(

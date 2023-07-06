@@ -1,6 +1,5 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { BaseComponent } from '@components/base-component/base.component';
 import { tryParseBigNumber } from '@helpers/bignumbers';
@@ -11,6 +10,8 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import BigNumber from 'bignumber.js';
 import { Duration } from 'luxon';
 import { Observable, takeUntil } from 'rxjs';
+import { requireValidCarSelection } from '@helpers/validations';
+import { SimpleCar } from '@models/cars';
 
 interface DurationOption {
   duration: Duration;
@@ -26,6 +27,7 @@ export interface CreateSingleAuctionContract {
     durationInMS: number,
     sellerId: BigNumber,
   ): Observable<string>;
+  getAllCars$(): Observable<SimpleCar[]>;
 }
 
 /** The Create Single Auction page. */
@@ -34,8 +36,7 @@ export interface CreateSingleAuctionContract {
   templateUrl: './create-single-auction.component.html',
   styleUrls: ['./create-single-auction.component.scss'],
 })
-export class CreateSingleAuctionComponent extends BaseComponent {
-  @ViewChild(MatCheckbox) verifyCheckbox: MatCheckbox;
+export class CreateSingleAuctionComponent extends BaseComponent implements OnInit {
   @ViewChild('datePicker') public datePicker: MatDatepicker<Date>;
 
   /** Create single auction service contract. */
@@ -52,9 +53,11 @@ export class CreateSingleAuctionComponent extends BaseComponent {
   public submitCreateAuctionMonitor = new ActionMonitor('POST Create Single Auction');
   public auctionUrl: string[];
   public readonly permAttribute = PermAttributeName.CreateAuctions;
+  /** List of every car available. Used in custom validation. */
+  public allCars: SimpleCar[] = [];
 
   public formControls = {
-    carId: new FormControl(null, [Validators.required]),
+    carId: new FormControl(null, [Validators.required, requireValidCarSelection.bind(this)]),
     openingPrice: new FormControl(null, [Validators.required]),
     buyoutPrice: new FormControl(null, [Validators.required]),
     durationInMS: new FormControl(null, [Validators.required]),
@@ -70,6 +73,16 @@ export class CreateSingleAuctionComponent extends BaseComponent {
     this.formControls.durationOptions.valueChanges.subscribe(value => this.updateDuration(value));
   }
 
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    this.service
+      .getAllCars$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(cars => {
+        this.allCars = cars;
+      });
+  }
+
   /** Updates the duration in ms. */
   public updateDuration(newDuration: Duration): void {
     this.formControls.durationInMS.setValue(newDuration.as('milliseconds'));
@@ -78,7 +91,6 @@ export class CreateSingleAuctionComponent extends BaseComponent {
   /** Submit auction creation. */
   public submitCreateAuction(): void {
     this.submitCreateAuctionMonitor = this.submitCreateAuctionMonitor.repeat();
-    this.verifyCheckbox.checked = false;
 
     this.service
       .createSingleAuction$(

@@ -18,6 +18,9 @@ export enum DestinationType {
   RacersCup = 'RacersCup',
   BuildersCup = 'BuildersCup',
   Showroom = 'Showroom',
+  PatchNotes = 'PatchNotes',
+  Rivals = 'Rivals',
+  Store = 'Store',
 }
 
 /** Represent the setting type a builder's cup tile can have */
@@ -25,6 +28,26 @@ export enum BuildersCupSettingType {
   Homepage = 'Homepage',
   Series = 'Series',
   Ladder = 'Ladder',
+}
+
+/** Represent the setting type a rivals tile can have */
+export enum RivalsSettingType {
+  Homepage = 'Homepage',
+  Event = 'Event',
+  Category = 'Category',
+}
+
+/** Represent the setting type a showroom tile can have */
+export enum ShowroomSettingType {
+  Homepage = 'Homepage',
+  Car = 'Car',
+  Manufacturer = 'Manufacturer',
+}
+
+/** Represent the setting type a store tile can have */
+export enum StoreSettingType {
+  Homepage = 'Homepage',
+  Product = 'Product',
 }
 
 /** Timer type */
@@ -104,6 +127,44 @@ export interface TileDisplayCondition {
   item: DisplayConditionItem[];
 }
 
+/** Base class for a deeplink destination. */
+export class DeeplinkDestination {
+  destinationType: DestinationType;
+}
+
+/** Builders Cup Deeplink Destination. */
+export class BuildersCupDestination extends DeeplinkDestination {
+  settingType: BuildersCupSettingType;
+  championship: string;
+  ladder: string;
+  series: string;
+}
+
+/** Racers Cup Deeplink Destination. */
+export class RacersCupDestination extends DeeplinkDestination {
+  series: string;
+}
+
+/** Rivals Deeplink Destination. */
+export class RivalsDestination extends DeeplinkDestination {
+  settingType: RivalsSettingType;
+  category: string;
+  event: string;
+}
+
+/** Showroom Deeplink Destination. */
+export class ShowroomDestination extends DeeplinkDestination {
+  settingType: ShowroomSettingType;
+  car: string;
+  manufacturer: string;
+}
+
+/** Store Deeplink Destination. */
+export class StoreDestination extends DeeplinkDestination {
+  settingType: StoreSettingType;
+  product: string;
+}
+
 /** Base interface for a welcome center tile. */
 export interface WelcomeCenterTile {
   friendlyName: string;
@@ -130,12 +191,7 @@ export interface GenericPopupTile extends WelcomeCenterTile {
 
 /** Interface for a deeplink tile. */
 export interface DeeplinkTile extends WelcomeCenterTile {
-  manufacturer: string;
-  championship: string;
-  ladder: string;
-  series: string;
-  destinationType: DestinationType;
-  buildersCupSettingType: BuildersCupSettingType;
+  destination: DeeplinkDestination;
 }
 
 /** Interface that represents a mapping of  welcome center tile friendly name to guid IDs. */

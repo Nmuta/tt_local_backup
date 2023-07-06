@@ -19,6 +19,31 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
         'Remove all references to FH5 StorefrontService, move relevant logic to V2 controllers',
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'a66f8898-b059-4e34-b503-5cf2c7bdf5f9',
+      shortText: 'Add toggle to filter out non profile-specific rows',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
+      shortText: 'Implemented new deeplink destination type',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'c1eac190-9ab8-4b19-9f39-796a62271153',
+      shortText: 'Ensure valid car is selected in create single auction',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'c6275cf3-6366-40e7-b765-48488263f477',
+      shortText: 'Target CU-Next in Woodstock car details lookup',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: '8db18c20-e408-4237-becc-58d6408aa5bb',
+      shortText: 'Change create single auction to use verify V2 and move buttons',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e1b03cab-7326-4a35-aec9-f6d9a5bc037d',
       shortText: 'Change form array for display conditions in welcome center tiles',

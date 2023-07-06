@@ -246,7 +246,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         public async Task<IList<ProfileNote>> GetProfileNotesAsync(ulong xuid)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/profileNotes");
+            var path = new Uri(this.baseUri, $"{V2TitlePath}player/{xuid}/profileNotes");
 
             return await ServiceClient.SendRequestAsync<IList<ProfileNote>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
