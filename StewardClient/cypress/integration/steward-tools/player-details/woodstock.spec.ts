@@ -14,14 +14,13 @@ import {
   inventoryFindPlayerInventoryData,
   notificationsFindNotification,
   userDetailsVerifyFlagData,
-  testGtag,
-  testXuid,
   swapToTab,
   auctionsFindCreatedAuction,
   ugcLiveriesFindLivery,
   loyaltyFindTitlesPlayed,
   jsonCheckJson,
 } from './shared-tests';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 
 const defaultWoodstockUser = 'luke';
 const platformName = 'woodstock';
@@ -39,21 +38,32 @@ context('Steward / Tools / Player Details / Woodstock', () => {
       selectWoodstock();
     });
 
-    testUserDetails(defaultWoodstockUser, testGtag);
+    context('With default user', () =>{
+      beforeEach(() => {
+        searchByGtag(RetailUsers[defaultWoodstockUser].gtag)
+      })
+      testUserDetails(defaultWoodstockUser);
 
-    testDeepDive(defaultWoodstockUser, testGtag);
+      testDeepDive();
 
-    testInventory(defaultWoodstockUser, testGtag);
+      testInventory();
 
-    testNotifications(defaultWoodstockUser, testGtag);
+      testNotifications();
 
-    testAuctions('madden', testGtag);
+      testJson();
+    });
 
-    testUgc('madden', testGtag);
+    context('With Madden user', () =>{
+      beforeEach(() => {
+        searchByGtag(RetailUsers['madden'].gtag)
+      })
+      testAuctions();
 
-    testLoyalty('madden', testGtag, ['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
+      testUgc();
 
-    testJson(defaultWoodstockUser, testGtag);
+      testLoyalty(['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
+    });
+    
   });
 
   context('XUID Lookup', () => {
@@ -62,76 +72,84 @@ context('Steward / Tools / Player Details / Woodstock', () => {
       selectWoodstock();
     });
 
-    testUserDetails(defaultWoodstockUser, testXuid);
+    context('With default user', () =>{
+      beforeEach(() => {
+        searchByXuid(RetailUsers[defaultWoodstockUser].xuid)
+      })
+      testUserDetails(defaultWoodstockUser);
 
-    testDeepDive(defaultWoodstockUser, testXuid);
+      testDeepDive();
 
-    testInventory(defaultWoodstockUser, testXuid);
+      testInventory();
 
-    testNotifications(defaultWoodstockUser, testXuid);
+      testNotifications();
 
-    testAuctions('madden', testXuid);
+      testJson();
+    });
 
-    testUgc('madden', testXuid);
+    context('With Madden user', () =>{
+      beforeEach(() => {
+        searchByXuid(RetailUsers['madden'].xuid)
+      })
+      testAuctions();
 
-    testLoyalty('madden', testXuid, ['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
+      testUgc();
 
-    testJson(defaultWoodstockUser, testXuid);
+      testLoyalty(['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
+    });
   });
 });
 
-function testUserDetails(userToSearch: string, isXuid: boolean): void {
+function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
     // found user
-    userDetailsVerifyPlayerIdentityResults(userToSearch, isXuid);
+    userDetailsVerifyPlayerIdentityResults(userToSearch);
 
     // found flag data
-    userDetailsVerifyFlagData(userToSearch, isXuid, 'Is Vip', true);
+    userDetailsVerifyFlagData('Is Vip', true);
 
     // found bans
-    userDetailsFindBans(userToSearch, isXuid);
+    userDetailsFindBans();
 
     // found profile notes
-    userDetailsFindProfileNotes(userToSearch, isXuid, 'test note from Steward API');
+    userDetailsFindProfileNotes('test note from Steward API');
 
     // found related gamertags
-    userDetailsFindRelatedGamertags(userToSearch, isXuid, '2535424453525895');
+    userDetailsFindRelatedGamertags('2535424453525895');
 
     // found related consoles
-    userDetailsFindRelatedConsoles(userToSearch, isXuid, '18230640064596068933');
+    userDetailsFindRelatedConsoles('18230640064596068933');
   });
 }
 
-function testDeepDive(userToSearch: string, isXuid: boolean): void {
+function testDeepDive(): void {
   context('Deep Dive', () => {
     // found overview data
-    deepDiveFindOverviewData(userToSearch, isXuid);
+    deepDiveFindOverviewData();
 
     // found credit history
-    deepDiveFindCreditHistory(userToSearch, isXuid, 'Scorpio');
+    deepDiveFindCreditHistory('Scorpio');
   });
 }
 
-function testInventory(userToSearch: string, isXuid: boolean): void {
+function testInventory(): void {
   context('Inventory', () => {
     // found player inventory data
-    inventoryFindPlayerInventoryData(userToSearch, isXuid);
+    inventoryFindPlayerInventoryData();
   });
 }
 
-function testNotifications(userToSearch: string, isXuid: boolean): void {
+function testNotifications(): void {
   context('Notifications', () => {
     // found player inventory data
-    notificationsFindNotification(userToSearch, isXuid);
+    notificationsFindNotification();
   });
 }
 
-function testAuctions(userToSearch: string, isXuid: boolean): void {
+function testAuctions(): void {
   context('Auctions', () => {
     //The auction filter labels are currently using sunrise instead of woodstock, check in shared tests file for details
     auctionsFindCreatedAuction(
-      userToSearch,
-      isXuid,
       platformName,
       'rsx',
       'Acura RSX Type-S',
@@ -141,11 +159,9 @@ function testAuctions(userToSearch: string, isXuid: boolean): void {
   });
 }
 
-function testUgc(userToSearch: string, isXuid: boolean): void {
+function testUgc(): void {
   context('Ugc', () => {
     ugcLiveriesFindLivery(
-      userToSearch,
-      isXuid,
       platformName,
       '2jetz',
       'Hot Wheels 2JetZ (2018) [3405]',
@@ -155,14 +171,14 @@ function testUgc(userToSearch: string, isXuid: boolean): void {
   });
 }
 
-function testLoyalty(userToSearch: string, isXuid: boolean, titles: string[]): void {
+function testLoyalty(titles: string[]): void {
   context('Loyalty', () => {
-    loyaltyFindTitlesPlayed(userToSearch, isXuid, platformName, titles);
+    loyaltyFindTitlesPlayed(platformName, titles);
   });
 }
 
-function testJson(userToSearch: string, isXuid: boolean): void {
+function testJson(): void {
   context('JSON', () => {
-    jsonCheckJson(userToSearch, isXuid);
+    jsonCheckJson();
   });
 }

@@ -11,10 +11,9 @@ import {
   swapToTab,
   userDetailsVerifyPlayerIdentityResults,
   userDetailsVerifyFlagData,
-  testGtag,
-  testXuid,
   jsonCheckJson,
 } from './shared-tests';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 
 const defaultApolloUser = 'jordan';
 
@@ -31,13 +30,19 @@ context('Steward / Tools / Player Details / Apollo', () => {
       selectApollo();
     });
 
-    testUserDetails(defaultApolloUser, testGtag);
+    context('With default user', () =>{
+      beforeEach(() => {
+        searchByGtag(RetailUsers[defaultApolloUser].gtag)
+      })
 
-    testInventory(defaultApolloUser, testGtag);
+      testUserDetails(defaultApolloUser);
 
-    testLiveries(defaultApolloUser, testGtag);
+      testInventory();
 
-    testJson(defaultApolloUser, testGtag);
+      testLiveries();
+
+      testJson();
+    })
   });
 
   context('XUID Lookup', () => {
@@ -46,50 +51,56 @@ context('Steward / Tools / Player Details / Apollo', () => {
       selectApollo();
     });
 
-    testUserDetails(defaultApolloUser, testXuid);
+    context('With default user', () =>{
+      beforeEach(() => {
+        searchByXuid(RetailUsers[defaultApolloUser].xuid)
+      })
 
-    testInventory(defaultApolloUser, testXuid);
+      testUserDetails(defaultApolloUser);
 
-    testLiveries(defaultApolloUser, testXuid);
+      testInventory();
 
-    testJson(defaultApolloUser, testXuid);
+      testLiveries();
+
+      testJson();
+    });
   });
 });
 
-function testUserDetails(userToSearch: string, isXuidTest: boolean): void {
+function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
     // found user
-    userDetailsVerifyPlayerIdentityResults(userToSearch, isXuidTest);
+    userDetailsVerifyPlayerIdentityResults(userToSearch);
 
     // found flag data
-    userDetailsVerifyFlagData(userToSearch, isXuidTest, 'Is Vip', true);
+    userDetailsVerifyFlagData('Is Vip', true);
 
     // found bans
-    userDetailsFindBans(userToSearch, isXuidTest);
+    userDetailsFindBans();
 
     // found related gamertags
-    userDetailsFindRelatedGamertags(userToSearch, isXuidTest, '2535435129485725');
+    userDetailsFindRelatedGamertags('2535435129485725');
 
     // found related consoles
-    userDetailsFindRelatedConsoles(userToSearch, isXuidTest, '18230637609444823812');
+    userDetailsFindRelatedConsoles('18230637609444823812');
   });
 }
 
-function testInventory(userToSearch: string, isXuidTest: boolean): void {
+function testInventory(): void {
   context('Inventory', () => {
     // found player inventory data
-    inventoryFindPlayerInventoryData(userToSearch, isXuidTest);
+    inventoryFindPlayerInventoryData();
   });
 }
 
-function testLiveries(userToSearch: string, isXuidTest: booleane): void {
+function testLiveries(): void {
   context('Liveries', () => {
     //TODO
   });
 }
 
-function testJson(userToSearch: string, isXuidTest: boolean): void {
+function testJson(): void {
   context('JSON', () => {
-    jsonCheckJson(userToSearch, isXuidTest);
+    jsonCheckJson();
   });
 }

@@ -4,25 +4,13 @@ import { verifyPlayerIdentityResults } from '@support/steward/component/player-i
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
 
-export const testGtag: boolean = false;
-export const testXuid: boolean = true;
-
 export function swapToTab(tabName: string): void {
   cy.contains('.mat-tab-label', tabName).click();
 }
 
-function searchUser(user: string, isXuid: boolean): void {
-  if (isXuid == testXuid) {
-    searchByXuid(RetailUsers[user].xuid);
-  } else {
-    searchByGtag(RetailUsers[user].gtag);
-  }
-}
-
 /** Verifies that the user details match a searched user */
-export function userDetailsVerifyPlayerIdentityResults(user: string, isXuid: boolean): void {
+export function userDetailsVerifyPlayerIdentityResults(user: string): void {
   it('should verify the player identity results', () => {
-    searchUser(user, isXuid);
     swapToTab('User Details');
     verifyPlayerIdentityResults({
       gtag: RetailUsers[user].gtag,
@@ -34,22 +22,18 @@ export function userDetailsVerifyPlayerIdentityResults(user: string, isXuid: boo
 
 /** Verifies that the flag data is correct for a searched user in the user details tab */
 export function userDetailsVerifyFlagData(
-  user: string,
-  isXuid: boolean,
   flagName: string,
   flagValue: boolean,
 ): void {
   it('should find flag data', () => {
-    searchUser(user, isXuid);
     swapToTab('User Details');
     checkboxHasValue(flagName, flagValue);
   });
 }
 
 /** Verifies that the searched user has ban details in the user details tab */
-export function userDetailsFindBans(user: string, isXuid: boolean): void {
+export function userDetailsFindBans(): void {
   it('should have ban history for a known user', () => {
-    searchUser(user, isXuid);
     swapToTab('User Details');
     cy.contains('mat-card', 'Ban History')
       .within(() => {
@@ -60,9 +44,8 @@ export function userDetailsFindBans(user: string, isXuid: boolean): void {
 }
 
 /** Verifies that the searched user has a specified profile note in the user details tab */
-export function userDetailsFindProfileNotes(user: string, isXuid: boolean, noteText: string): void {
+export function userDetailsFindProfileNotes(noteText: string): void {
   it('should have a profile note', () => {
-    searchUser(user, isXuid);
     swapToTab('User Details');
     cy.contains('mat-card', 'Profile Notes').within(() => {
       tableHasEntry('text', noteText);
@@ -72,12 +55,9 @@ export function userDetailsFindProfileNotes(user: string, isXuid: boolean, noteT
 
 /** Verifies that the searched user has the correct related gamertags in the user details tab */
 export function userDetailsFindRelatedGamertags(
-  user: string,
-  isXuid: boolean,
   relatedXuid: string,
 ): void {
   it('should have a related gtag', () => {
-    searchUser(user, isXuid);
     swapToTab('User Details');
     cy.contains('mat-card', 'Related Gamertags').within(() => {
       tableHasEntry('xuid', relatedXuid);
@@ -87,12 +67,9 @@ export function userDetailsFindRelatedGamertags(
 
 /** Verifies that the user has the correct related consoles in the user details tab */
 export function userDetailsFindRelatedConsoles(
-  user: string,
-  isXuid: boolean,
   expectedConsoleId: string,
 ): void {
   it('should have a related console ID', () => {
-    searchUser(user, isXuid);
     swapToTab('User Details');
     cy.contains('mat-card', 'Consoles').within(() => {
       tableHasEntry('consoleId', expectedConsoleId);
@@ -101,18 +78,16 @@ export function userDetailsFindRelatedConsoles(
 }
 
 /** Verifies that the user has current credits information in the overview of the deep dive tab */
-export function deepDiveFindOverviewData(user: string, isXuid: boolean): void {
+export function deepDiveFindOverviewData(): void {
   it('should have an overview', () => {
-    searchUser(user, isXuid);
     swapToTab('Deep Dive');
     cy.contains('th', 'Current Credits').should('exist');
   });
 }
 
 /** Verifies that the user has credit history in the deep dive tab */
-export function deepDiveFindCreditHistory(user: string, isXuid: boolean, deviceType: string) {
+export function deepDiveFindCreditHistory(deviceType: string) {
   it('should have credit history', () => {
-    searchUser(user, isXuid);
     swapToTab('Deep Dive');
     cy.contains('mat-card', 'Credit History').within(() => {
       tableHasEntry('deviceType', deviceType);
@@ -121,9 +96,8 @@ export function deepDiveFindCreditHistory(user: string, isXuid: boolean, deviceT
 }
 
 /** Verifies that the user has a credit reward in their inventory in the inventory tab */
-export function inventoryFindPlayerInventoryData(user: string, isXuid: boolean): void {
+export function inventoryFindPlayerInventoryData(): void {
   it('should have a credit reward in the inventory', () => {
-    searchUser(user, isXuid);
     swapToTab('Inventory');
     cy.contains('mat-card', 'Player Inventory').within(() => {
       cy.contains('Credit Rewards');
@@ -132,9 +106,8 @@ export function inventoryFindPlayerInventoryData(user: string, isXuid: boolean):
 }
 
 /** Verifies that the user has a notification in the notifications tab */
-export function notificationsFindNotification(user: string, isXuid: boolean): void {
+export function notificationsFindNotification(): void {
   it('should have a notification', () => {
-    searchUser(user, isXuid);
     swapToTab('Notifications');
     cy.contains('mat-card', 'Notifications')
       .within(() => {
@@ -146,8 +119,6 @@ export function notificationsFindNotification(user: string, isXuid: boolean): vo
 
 /** Verifies that the user has a livery for a specified vehicle in the liveries tab */
 export function ugcLiveriesFindLivery(
-  user: string,
-  isXuid: boolean,
   platform: string,
   carToSearch: string,
   carToClick: string,
@@ -155,7 +126,6 @@ export function ugcLiveriesFindLivery(
   rowDataExpected: string,
 ): void {
   it('should have a searchable livery', () => {
-    searchUser(user, isXuid);
     swapToTab('Ugc');
     cy.contains('.mat-tab-label', 'Liveries').click();
     cy.get(platform + '-make-model-autocomplete')
@@ -173,8 +143,6 @@ export function ugcLiveriesFindLivery(
 
 /** Verifies that the user has an auction for a specified vehicle in the auctions tab */
 export function auctionsFindCreatedAuction(
-  user: string,
-  isXuid: boolean,
   platform: string,
   carToSearch: string,
   carToClick: string,
@@ -182,7 +150,6 @@ export function auctionsFindCreatedAuction(
   rowDataExpected: string,
 ): void {
   it('should have a searchable created auction', () => {
-    searchUser(user, isXuid);
     swapToTab('Auctions');
     cy.get(platform + '-player-auctions').within(() => {
       cy.contains('.mat-expansion-panel', 'Created Auctions').click();
@@ -207,13 +174,10 @@ export function auctionsFindCreatedAuction(
 
 /** Verifies that the user has the correct titles in the loyalties tab */
 export function loyaltyFindTitlesPlayed(
-  user: string,
-  isXuid: boolean,
   platform: string,
   titlesOwned: string[],
 ): void {
   it('should have the correct titles owned', () => {
-    searchUser(user, isXuid);
     swapToTab('Loyalty');
     cy.get(platform + '-loyalty-rewards').within(() => {
       cy.get('.mat-table').within(() => {
@@ -226,9 +190,8 @@ export function loyaltyFindTitlesPlayed(
 }
 
 /** Verifies that the user has JSON search info in the JSON tab */
-export function jsonCheckJson(user: string, isXuid: boolean): void {
+export function jsonCheckJson(): void {
   it('should have JSON for a user searched', () => {
-    searchUser(user, isXuid);
     swapToTab('JSON');
     cy.contains('.mat-expansion-panel-header', 'Click to expand JSON').click();
     // here we could check the formatting of the JSON with some regex and/or jsonify some class to compare

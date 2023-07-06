@@ -13,12 +13,12 @@ import {
   notificationsFindNotification,
   userDetailsVerifyPlayerIdentityResults,
   userDetailsVerifyFlagData,
-  testGtag,
-  testXuid,
   ugcLiveriesFindLivery,
   auctionsFindCreatedAuction,
   jsonCheckJson,
 } from './shared-tests';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { RetailUsers } from '@support/steward/common/account-info';
 
 const defaultSunriseUser = 'jordan';
 
@@ -35,19 +35,29 @@ context('Steward / Tools / Player Details / Sunrise', () => {
       selectSunrise();
     });
 
-    testUserDetails(defaultSunriseUser, testGtag);
+    context('With default user', () =>{
+      beforeEach(() => {
+        searchByGtag(RetailUsers[defaultSunriseUser].gtag)
+      })
+      testUserDetails(defaultSunriseUser);
 
-    testDeepDive(defaultSunriseUser, testGtag);
+      testDeepDive();
 
-    testInventory(defaultSunriseUser, testGtag);
+      testInventory();
 
-    testNotifications(defaultSunriseUser, testGtag);
+      testNotifications();
 
-    testAuctions('madden', testGtag);
+      testJson();
+    });
 
-    testUgc('madden', testGtag);
+    context('With Madden user', () =>{
+      beforeEach(() => {
+        searchByGtag(RetailUsers['madden'].gtag)
+      })
+      testAuctions();
 
-    testJson(defaultSunriseUser, testGtag);
+      testUgc();
+    });
   });
 
   context('XUID Lookup', () => {
@@ -56,84 +66,88 @@ context('Steward / Tools / Player Details / Sunrise', () => {
       selectSunrise();
     });
 
-    testUserDetails(defaultSunriseUser, testXuid);
+    context('With default user', () =>{
+      beforeEach(() => {
+        searchByXuid(RetailUsers[defaultSunriseUser].xuid)
+      })
+      testUserDetails(defaultSunriseUser);
 
-    testDeepDive(defaultSunriseUser, testXuid);
+      testDeepDive();
 
-    testInventory(defaultSunriseUser, testXuid);
+      testInventory();
 
-    testNotifications(defaultSunriseUser, testXuid);
+      testNotifications();
 
-    testAuctions('madden', testXuid);
+      testJson();
+    });
 
-    testUgc('madden', testXuid);
+    context('With Madden user', () =>{
+      beforeEach(() => {
+        searchByXuid(RetailUsers['madden'].xuid)
+      })
+      testAuctions();
 
-    testJson(defaultSunriseUser, testXuid);
+      testUgc();
+    });
   });
 });
 
-function testUserDetails(userToSearch: string, isXuidTest: boolean): void {
+function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
     // found user
-    userDetailsVerifyPlayerIdentityResults(userToSearch, isXuidTest);
+    userDetailsVerifyPlayerIdentityResults(userToSearch);
 
     // found flag data
-    userDetailsVerifyFlagData(userToSearch, isXuidTest, 'Is Vip', true);
+    userDetailsVerifyFlagData('Is Vip', true);
 
     // found bans
-    userDetailsFindBans(userToSearch, isXuidTest);
+    userDetailsFindBans();
 
     // found profile notes
-    userDetailsFindProfileNotes(
-      userToSearch,
-      isXuidTest,
-      'This is a testing string, not a chicken wing.',
-    );
+    userDetailsFindProfileNotes('This is a testing string, not a chicken wing.',);
 
     // found related gamertags
-    userDetailsFindRelatedGamertags(userToSearch, isXuidTest, '2535435129485725');
+    userDetailsFindRelatedGamertags('2535435129485725');
 
     // found related consoles
-    userDetailsFindRelatedConsoles(userToSearch, isXuidTest, '18230637609444823812');
+    userDetailsFindRelatedConsoles('18230637609444823812');
   });
 }
 
-function testDeepDive(userToSearch: string, isXuidTest: boolean): void {
+function testDeepDive(): void {
   context('Deep Dive', () => {
     // found overview data
-    deepDiveFindOverviewData(userToSearch, isXuidTest);
+    deepDiveFindOverviewData();
 
     // found credit history
-    deepDiveFindCreditHistory(userToSearch, isXuidTest, 'UWP');
+    deepDiveFindCreditHistory('UWP');
   });
 }
 
-function testInventory(userToSearch: string, isXuidTest: boolean): void {
+function testInventory(): void {
   context('Inventory', () => {
     // found player inventory data
-    inventoryFindPlayerInventoryData(userToSearch, isXuidTest);
+    inventoryFindPlayerInventoryData();
   });
 }
 
-function testNotifications(userToSearch: string, isXuidTest: boolean): void {
+function testNotifications(): void {
   context('Notifications', () => {
     // found player inventory data
-    notificationsFindNotification(userToSearch, isXuidTest);
+    notificationsFindNotification();
   });
 }
 
-function testAuctions(userToSearch: string, isXuidTest: boolean): void {
+function testAuctions(): void {
   context('Auctions', () => {
     //Nobody has any auction history for this title :(
     //auctionsFindCreatedAuction(userToSearch, isXuidTest, 'sunrise', 'rsx', 'Acura RSX Type-S', 'Auction Info', 'Acura RSX Type S (2002)')
   });
 }
 
-function testUgc(userToSearch: string, isXuidTest: boolean): void {
+function testUgc(): void {
   context('Ugc', () => {
     ugcLiveriesFindLivery(
-      userToSearch,
-      isXuidTest,
       'sunrise',
       'one-77',
       'Aston Martin One-77 (2010) [1181]',
@@ -143,8 +157,8 @@ function testUgc(userToSearch: string, isXuidTest: boolean): void {
   });
 }
 
-function testJson(userToSearch: string, isXuidTest: boolean): void {
+function testJson(): void {
   context('JSON', () => {
-    jsonCheckJson(userToSearch, isXuidTest);
+    jsonCheckJson();
   });
 }
