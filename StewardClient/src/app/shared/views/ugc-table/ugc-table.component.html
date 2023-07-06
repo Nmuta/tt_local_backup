@@ -33,6 +33,13 @@
             monitorCompleteSnackbar
             monitorWarnSnackbar
           >
+            <help-popover-icon cardTitle="Hide UGC">
+              <p>Hiding UGC also marks it as private.</p>
+              <p>
+                If you've selected private UGC, Steward will automatically ignore them while hiding
+                UGC.
+              </p>
+            </help-popover-icon>
             <span [ngPlural]="selectedUgcs?.length">
               Hide {{ selectedUgcs?.length }}
               <ng-template ngPluralCase="=1">Ugc </ng-template>
