@@ -327,6 +327,8 @@ export abstract class UgcTableBaseComponent
         switchMap(ugcResponse => {
           const failedReports = ugcResponse.filter(response => !!response.error);
           if (failedReports.length > 0) {
+            this.reportMultipleUgcFinished();
+
             return throwError(
               () =>
                 `Failed to report some or all of the following UGC items : ${failedReports
@@ -340,13 +342,7 @@ export abstract class UgcTableBaseComponent
         takeUntil(this.onDestroy$),
       )
       .subscribe(_ugcResponse => {
-        // We don't currently hide items after they're reported
-        // so we'll just deselect everything after reporting
-        this.selectedUgcs = [];
-        this.ugcTableDataSource.data.forEach(ugcTableElement => {
-          ugcTableElement.selected = false;
-        });
-        this.ugcTableDataSource._updateChangeSubscription();
+        this.reportMultipleUgcFinished();
       });
   }
 
@@ -441,5 +437,15 @@ export abstract class UgcTableBaseComponent
 
   private shouldUseCondensedTableView(): boolean {
     return this.table?.nativeElement?.offsetWidth <= 1000;
+  }
+
+  private reportMultipleUgcFinished() {
+    // We don't currently hide items after they're reported
+    // so we'll just deselect everything after reporting
+    this.selectedUgcs = [];
+    this.ugcTableDataSource.data.forEach(ugcTableElement => {
+      ugcTableElement.selected = false;
+    });
+    this.ugcTableDataSource._updateChangeSubscription();
   }
 }
