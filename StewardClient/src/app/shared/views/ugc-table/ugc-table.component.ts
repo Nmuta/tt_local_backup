@@ -38,6 +38,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SuccessSnackbarComponent } from '@shared/modules/monitor-action/success-snackbar/success-snackbar.component';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
+import { UgcReportReason } from '@models/ugc-report-reason';
+import { BulkReportUgcResponse } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -96,17 +98,22 @@ export abstract class UgcTableBaseComponent
   public expandoColumnDef = UGC_TABLE_COLUMNS_EXPANDO;
   public waitingForThumbnails = false;
   public displayTableWideActions: boolean = false;
+  public isBulkReportSupported: boolean = false;
   public ugcCount: number;
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
   public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc(s)');
+  public reportUgcMonitor: ActionMonitor = new ActionMonitor('Report Ugc(s)');
   public generateSharecodesMonitor: ActionMonitor = new ActionMonitor('Generate Sharecode(s)');
+  public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcHidingSupported: boolean = true;
   public ugcType = UgcType;
   public liveryGiftingRoute: string[];
   public selectedUgcs: PlayerUgcItemTableEntries[] = [];
   public ugcsWithoutSharecodes: PlayerUgcItemTableEntries[] = [];
+  public reportReasons: UgcReportReason[] = null;
+  public reasonId: string = null;
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
@@ -126,6 +133,10 @@ export abstract class UgcTableBaseComponent
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
   public abstract hideUgc(ugcIds: string[]): Observable<string[]>;
+  public abstract reportUgc(
+    ugcIds: string[],
+    reasonId: string,
+  ): Observable<BulkReportUgcResponse[]>;
   public abstract generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]>;
 
   /** Angular hook. */
@@ -302,6 +313,39 @@ export abstract class UgcTableBaseComponent
       });
   }
 
+  /** Report multiple ugc items. */
+  public reportMultipleUgc(ugcs: PlayerUgcItemTableEntries[], reasonId: string): void {
+    if (!ugcs || !reasonId) {
+      return;
+    }
+
+    this.reportUgcMonitor = this.reportUgcMonitor.repeat();
+
+    const ugcIds = ugcs.map(ugc => ugc.id);
+    this.reportUgc(ugcIds, reasonId)
+      .pipe(
+        switchMap(ugcResponse => {
+          const failedReports = ugcResponse.filter(response => !!response.error);
+          if (failedReports.length > 0) {
+            this.reportMultipleUgcFinished();
+
+            return throwError(
+              () =>
+                `Failed to report some or all of the following UGC items : ${failedReports
+                  .map(ugc => ugc.ugcId)
+                  .join('\n')}`,
+            );
+          }
+          return of(ugcResponse);
+        }),
+        this.reportUgcMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(_ugcResponse => {
+        this.reportMultipleUgcFinished();
+      });
+  }
+
   /** Generates share codes for public UGC search results that don't have one. */
   public generateMissingSharecodes(ugcs: PlayerUgcItemTableEntries[]): void {
     this.generateSharecodesMonitor = this.generateSharecodesMonitor.repeat();
@@ -393,5 +437,15 @@ export abstract class UgcTableBaseComponent
 
   private shouldUseCondensedTableView(): boolean {
     return this.table?.nativeElement?.offsetWidth <= 1000;
+  }
+
+  private reportMultipleUgcFinished() {
+    // We don't currently hide items after they're reported
+    // so we'll just deselect everything after reporting
+    this.selectedUgcs = [];
+    this.ugcTableDataSource.data.forEach(ugcTableElement => {
+      ugcTableElement.selected = false;
+    });
+    this.ugcTableDataSource._updateChangeSubscription();
   }
 }

@@ -256,7 +256,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     this.reportMonitor = this.reportMonitor.repeat();
 
     this.ugcReportService
-      .reportUgc$(this.ugcItem.id, this.selectedReason)
+      .reportUgc$([this.ugcItem.id], this.selectedReason)
       .pipe(this.reportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.selectedReason = null;
