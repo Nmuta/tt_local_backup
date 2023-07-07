@@ -39,6 +39,10 @@ export class WoodstockUgcReportService {
   /** Report a Ugc. */
   public reportUgc$(ugcIds: string[], reasonId: string): Observable<BulkReportUgcResponse[]> {
     const params = new HttpParams().set('useBackgroundProcessing', false).set('reasonId', reasonId);
-    return this.api.postRequest$<BulkReportUgcResponse[]>(`${this.basePath}/report`, ugcIds, params);
+    return this.api.postRequest$<BulkReportUgcResponse[]>(
+      `${this.basePath}/report`,
+      ugcIds,
+      params,
+    );
   }
 }

@@ -133,7 +133,10 @@ export abstract class UgcTableBaseComponent
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
   public abstract hideUgc(ugcIds: string[]): Observable<string[]>;
-  public abstract reportUgc(ugcIds: string[], reasonId: string): Observable<BulkReportUgcResponse[]>;
+  public abstract reportUgc(
+    ugcIds: string[],
+    reasonId: string,
+  ): Observable<BulkReportUgcResponse[]>;
   public abstract generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]>;
 
   /** Angular hook. */

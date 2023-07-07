@@ -15,7 +15,10 @@ import {
   BulkGenerateSharecodeResponse,
   WoodstockUgcSharecodeService,
 } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
-import { BulkReportUgcResponse, WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
+import {
+  BulkReportUgcResponse,
+  WoodstockUgcReportService,
+} from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 
 /** Displays woodstock UGC content in a table. */
 @Component({
@@ -76,7 +79,9 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   public reportUgc(ugcIds: string[], reasonId: string): Observable<BulkReportUgcResponse[]> {
     return this.woodstockUgcReportService.reportUgcItemsUsingBackgroundJob$(ugcIds, reasonId).pipe(
       switchMap(response => {
-        return this.backgroundJobService.waitForBackgroundJobToComplete<BulkReportUgcResponse[]>(response);
+        return this.backgroundJobService.waitForBackgroundJobToComplete<BulkReportUgcResponse[]>(
+          response,
+        );
       }),
     );
   }
