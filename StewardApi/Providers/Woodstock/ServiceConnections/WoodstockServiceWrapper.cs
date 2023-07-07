@@ -636,9 +636,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint,
             bool includeThumbnails = false)
         {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.GetUGCForUser(xuid, contentType, includeThumbnails, 8_000, false).ConfigureAwait(false);
+            return await storefrontManagementService.GetUGCForUser(xuid, contentType, includeThumbnails, 8_000, false).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -648,9 +648,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint,
             bool includeThumbnails = false)
         {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.SearchUGC(filters, contentType, includeThumbnails, 5_000).ConfigureAwait(false);
+            return await storefrontManagementService.SearchUGC(filters, contentType, includeThumbnails, 5_000).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -658,9 +658,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid liveryId,
             string endpoint)
         {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.GetUGCLivery(liveryId).ConfigureAwait(false);
+            return await storefrontManagementService.GetUGCLivery(liveryId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -668,9 +668,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid photoId,
             string endpoint)
         {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.GetUGCPhoto(photoId).ConfigureAwait(false);
+            return await storefrontManagementService.GetUGCPhoto(photoId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -678,9 +678,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid tuneId,
             string endpoint)
         {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.GetUGCTune(tuneId).ConfigureAwait(false);
+            return await storefrontManagementService.GetUGCTune(tuneId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -704,34 +704,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontService.GetHiddenUGCForUserOutput> GetHiddenUgcForUserAsync(
-            int maxUgcCount,
-            ulong xuid,
-            FileType fileType,
-            string endpoint)
-        {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await storefrontService.GetHiddenUGCForUser(maxUgcCount, xuid, fileType).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        public async Task HideUgcAsync(Guid ugcId, string endpoint)
-        {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
-
-            await storefrontService.HideUGC(ugcId).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        public async Task UnhideUgcAsync(Guid ugcId, ulong xuid, FileType fileType, string endpoint)
-        {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontServiceAsync(endpoint).ConfigureAwait(false);
-
-            await storefrontService.UnhideUGC(ugcId, xuid, fileType).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
         public async Task SetUgcFeaturedStatusAsync(
             Guid contentId,
             bool isFeatured,
@@ -739,9 +711,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             DateTime forceFeatureEndDate,
             string endpoint)
         {
-            var storefrontService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, forceFeatureEndDate)
+            await storefrontManagementService.SetFeatured(contentId, isFeatured, featureEndDate, forceFeatureEndDate)
                 .ConfigureAwait(false);
         }
 

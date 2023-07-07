@@ -50,6 +50,11 @@ export class SunriseUgcTableComponent extends UgcTableBaseComponent implements O
     );
   }
 
+  /** Unhide multiple Ugcs. */
+  public unhideUgc(_ugcIds: string[]): Observable<string[]> {
+    return throwError(new Error('Sunrise does not support bulk unhide UGC.'));
+  }
+
   /** Generate multiple Sharecodes. */
   public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     return throwError(new Error('Sunrise does not support bulk sharecode generation.'));

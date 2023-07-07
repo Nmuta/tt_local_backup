@@ -646,7 +646,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets UGC item by share code.
         /// </summary>
-        [HttpGet("storefront/shareCode({shareCode})")]
+        [NonAction]
+        [Obsolete]
+        //[HttpGet("storefront/shareCode({shareCode})")]
         [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
@@ -847,53 +849,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 status.FeaturedExpiry,
                 null, // Force featured expiry
                 endpoint).ConfigureAwait(true);
-
-            return this.Ok();
-        }
-
-        /// <summary>
-        ///     Gets hidden player UGC content.
-        /// </summary>
-        [HttpGet("storefront/xuid({xuid})/hidden")]
-        [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Ugc)]
-        public async Task<IActionResult> GetPlayerHiddenUGC(ulong xuid)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-
-            var hiddenUgc = await this.storefrontProvider.GetHiddenUgcForUserAsync(xuid, endpoint).ConfigureAwait(true);
-
-            return this.Ok(hiddenUgc);
-        }
-
-        /// <summary>
-        ///     Unhides player UGC content.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
-        [SwaggerResponse(200)]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.UnhideUgc)]
-        public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, string ugcId)
-        {
-            fileType.ShouldNotBeNull(nameof(fileType));
-            xuid.EnsureValidXuid();
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(ugcId, out var itemIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
-            }
-
-            if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(FileType)} provided: {fileType}");
-            }
-
-            await this.storefrontProvider.UnhideUgcAsync(xuid, itemIdGuid, fileTypeEnum, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }

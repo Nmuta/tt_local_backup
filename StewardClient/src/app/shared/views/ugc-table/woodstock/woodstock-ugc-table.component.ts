@@ -8,9 +8,9 @@ import { WoodstockService } from '@services/woodstock';
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
-import { WoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { WoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service';
 import {
   BulkGenerateSharecodeResponse,
   WoodstockUgcSharecodeService,
@@ -32,8 +32,8 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   constructor(
     private readonly woodstockService: WoodstockService,
     private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
-    private readonly woodstockUgcHideService: WoodstockUgcHideService,
     private readonly woodstockUgcReportService: WoodstockUgcReportService,
+    private readonly woodstockUgcVisibilityService: WoodstockUgcVisibilityService,
     private readonly woodstockUgcSharecodeService: WoodstockUgcSharecodeService,
     private readonly backgroundJobService: BackgroundJobService,
     snackbar: MatSnackBar,
@@ -68,7 +68,16 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Hide multiple Ugcs. */
   public hideUgc(ugcIds: string[]): Observable<string[]> {
-    return this.woodstockUgcHideService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+    return this.woodstockUgcVisibilityService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+      switchMap(response => {
+        return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
+      }),
+    );
+  }
+
+  /** Unhide multiple Ugcs. */
+  public unhideUgc(ugcIds: string[]): Observable<string[]> {
+    return this.woodstockUgcVisibilityService.unhideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
       }),

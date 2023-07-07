@@ -1307,23 +1307,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             result.Should().BeOfType<OkResult>();
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UnhideUgc_WithValidInputs_DoesNotThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = ValidXuid;
-            var ugcId = Fixture.Create<string>();
-            var fileType = "Livery";
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UnhideUGC(xuid, fileType, ugcId).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
         private sealed class Dependencies
         {
             private readonly ControllerContext ControllerContext;

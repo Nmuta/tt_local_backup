@@ -62,8 +62,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get(string shareCodeOrId)
         {
-            var fh5StorefrontService = this.WoodstockServices.Value.StorefrontManagementService;
-            var fm8StorefrontService = this.SteelheadServices.Value.StorefrontManagementService;
+            var fh5StorefrontManagementService = this.WoodstockServices.Value.StorefrontManagementService;
+            var fm8StorefrontManagementService = this.SteelheadServices.Value.StorefrontManagementService;
             var fm8Lookups = new[]
             {
                 this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.Livery),
@@ -72,17 +72,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                 this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCLiveryOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFM8.ForzaUGCContentType.Livery,
-                    (id) => fm8StorefrontService.GetUGCLivery(id),
+                    (id) => fm8StorefrontManagementService.GetUGCLivery(id),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.Livery),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCTuneOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob,
-                    (id) => fm8StorefrontService.GetUGCTune(id),
+                    (id) => fm8StorefrontManagementService.GetUGCTune(id),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob),
                 this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCPhotoOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFM8.ForzaUGCContentType.Photo,
-                    (id) => fm8StorefrontService.GetUGCPhoto(id),
+                    (id) => fm8StorefrontManagementService.GetUGCPhoto(id),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.Photo),
             };
 
@@ -122,7 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                 this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, T10SubmoduleFH5.StorefrontManagementService.GetUGCLayerGroupOutput>(
                     shareCodeOrId,
                     ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup,
-                    (id) => fh5StorefrontService.GetUGCLayerGroup(id),
+                    (id) => fh5StorefrontManagementService.GetUGCLayerGroup(id),
                     item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
             };
 

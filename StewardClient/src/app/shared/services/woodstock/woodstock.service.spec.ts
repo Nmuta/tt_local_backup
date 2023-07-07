@@ -605,24 +605,4 @@ describe('WoodstockService', () => {
       });
     });
   });
-
-  describe('Method: unhideUgc', () => {
-    const xuid = new BigNumber(0);
-    const ugcId = faker.datatype.uuid();
-    const fileType = 'Livery';
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest$ with the expected params', done => {
-      service.unhideUgc$(xuid, fileType, ugcId).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/storefront/${xuid}/ugc/${fileType}/${ugcId}/unhide`,
-          null,
-        );
-        done();
-      });
-    });
-  });
 });
