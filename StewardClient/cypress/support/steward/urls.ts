@@ -70,5 +70,9 @@ export const stewardUrls = {
       default: 'app/tools/create-auction',
       woodstock: 'app/tools/create-auction/woodstock',
     },
+    messageOfTheDay: {
+      default: 'app/tools/message-of-the-day',
+      steelhead: 'app/tools/message-of-the-day/steelhead',
+    },
   },
 };
