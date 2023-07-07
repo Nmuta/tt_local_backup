@@ -19,6 +19,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
         'Remove all references to FH5 StorefrontService, move relevant logic to V2 controllers',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
+      uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
+      shortText: 'Add message title view and editing',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
       uuid: 'a66f8898-b059-4e34-b503-5cf2c7bdf5f9',
       shortText: 'Add toggle to filter out non profile-specific rows',
