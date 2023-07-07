@@ -16,32 +16,17 @@ context('Steward / Tools / Message of the Day / Steelhead', () => {
       enableEdit();
       cy.get('mat-form-field')
         .contains('mat-label', 'Title Header')
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
+        .parents('mat-form-field')
         .click();
       cy.get('mat-option').contains('span', 'Test string').click();
       cy.get('mat-form-field')
         .contains('mat-label', 'Content Header')
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
+        .parents('mat-form-field')
         .click();
       cy.get('mat-option').contains('span', 'Test string').click();
       cy.get('mat-form-field')
         .contains('mat-label', 'Content Body')
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
+        .parents('mat-form-field')
         .click();
       cy.get('mat-option').contains('span', 'Test string').click();
       cy.get('button').contains('mat-icon', 'lock_open').click();
@@ -56,15 +41,11 @@ context('Steward / Tools / Message of the Day / Steelhead', () => {
     it('should abandon previously created pr', () => {
       waitForProgressSpinners();
       cy.contains('a', 'Edits MessageOfTheDay from Steward. Author: Email not found')
-        .parent()
-        .parent()
-        .parent()
+        .parents('tr')
         .contains('mat-icon', 'lock_open')
         .click();
       cy.contains('a', 'Edits MessageOfTheDay from Steward. Author: Email not found')
-        .parent()
-        .parent()
-        .parent()
+        .parents('tr')
         .contains('span', 'Abandon')
         .click();
       cy.contains('a', 'Edits MessageOfTheDay from Steward. Author: Email not found').should(
@@ -89,9 +70,7 @@ context('Steward / Tools / Message of the Day / Steelhead', () => {
       enableEdit();
       cy.get('mat-form-field')
         .contains('mat-label', 'Content Image Path')
-        .parent()
-        .parent()
-        .parent()
+        .parents('mat-form-field')
         .click()
         .clear();
       cy.get('button').contains('mat-icon', 'lock_open').click();
@@ -104,60 +83,37 @@ context('Steward / Tools / Message of the Day / Steelhead', () => {
       cy.contains('div', 'Localization').click();
       cy.get('mat-form-field')
         .contains('mat-label', 'String To Localize')
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
+        .parents('mat-form-field')
         .click()
         .type('This is a test');
       cy.get('mat-form-field')
         .contains('mat-label', 'Description')
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
+        .parents('mat-form-field')
         .click()
         .type('This is a description');
-      cy.get('mat-form-field')
-        .contains('mat-label', 'Category')
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .click();
+      cy.get('mat-form-field').contains('mat-label', 'Category').parents('mat-form-field').click();
       cy.get('mat-option').contains('span', 'MOTD').click();
       cy.get('mat-form-field')
         .contains('mat-label', 'Sub-Category')
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
-        .parent()
+        .parents('mat-form-field')
         .click();
       cy.get('mat-option').contains('span', 'Description').click();
       cy.get('button').contains('mat-icon', 'lock_open').click();
       cy.get('button').contains('span', 'Submit').click();
+      waitForProgressSpinners();
+      cy.contains('a', 'Edits LocalizationString from Steward. Author: Email not found').should(
+        'exist',
+      );
     });
 
     it('should abandon previously created pr', () => {
       cy.contains('div', 'Localization').click();
       cy.contains('a', 'Edits LocalizationString from Steward. Author: Email not found')
-        .parent()
-        .parent()
-        .parent()
+        .parents('tr')
         .contains('mat-icon', 'lock_open')
         .click();
       cy.contains('a', 'Edits LocalizationString from Steward. Author: Email not found')
-        .parent()
-        .parent()
-        .parent()
+        .parents('tr')
         .contains('span', 'Abandon')
         .click();
       cy.contains('a', 'Edits LocalizationString from Steward. Author: Email not found').should(
@@ -177,12 +133,7 @@ function enableEdit(): void {
   waitForProgressSpinners();
   cy.get('mat-form-field')
     .contains('mat-label', 'Select Message Of The Day')
-    .parent()
-    .parent()
-    .parent()
-    .parent()
-    .parent()
-    .parent()
+    .parents('mat-form-field')
     .click();
   //wait to allow page to load after selecting an option, may need a progress spinner to eliminate the wait()
   cy.get('mat-option').contains('span', 'INTERNAL ONLY - Default MOTD').click().wait(2000);
