@@ -1,19 +1,25 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { testEvents, testLivery, testPhoto, testTune } from './shared-functions';
+import {
+  SunriseUgcCreatedDate,
+  SunriseUgcID,
+  testInputUgcID,
+  verifyUgcCreatedDate,
+} from './shared-functions';
 
 context('Steward / Tools / UGC Details / Sunrise', () => {
   beforeEach(() => {
     login();
 
     disableFakeApi();
-    cy.visit(stewardUrls.tools.ugc_details.sunrise);
+    cy.visit(stewardUrls.tools.ugcDetails.sunrise);
   });
 
   context('Basic Tests', () => {
     it('should find Livery data', () => {
-      testLivery('0f8d8e88-6ecb-43ab-b386-6b56c9889390', '3/15/21 8:30:02 AM');
+      testInputUgcID(SunriseUgcID.Livery);
+      verifyUgcCreatedDate(SunriseUgcCreatedDate.Livery);
     });
 
     //No Known Layer Groups to Test
@@ -22,15 +28,18 @@ context('Steward / Tools / UGC Details / Sunrise', () => {
     // });
 
     it('should find Photo data', () => {
-      testPhoto('cb276ca9-9e62-4493-bf21-5b1021de5098', '1/10/21 8:06:05 PM');
+      testInputUgcID(SunriseUgcID.Photo);
+      verifyUgcCreatedDate(SunriseUgcCreatedDate.Photo);
     });
 
     it('should find Tune data', () => {
-      testTune('513c0c47-150b-45ca-912e-39d6728f6f9b', '12/3/20 5:15:51 PM');
+      testInputUgcID(SunriseUgcID.Livery);
+      verifyUgcCreatedDate(SunriseUgcCreatedDate.Livery);
     });
 
     it('should find Events data', () => {
-      testEvents('740b5d6a-5b10-44d1-882a-e647f42b910f', '10/11/18 5:51:25 PM');
+      testInputUgcID(SunriseUgcID.Livery);
+      verifyUgcCreatedDate(SunriseUgcCreatedDate.Livery);
     });
   });
 });
