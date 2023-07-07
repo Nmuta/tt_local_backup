@@ -21,10 +21,7 @@ export function userDetailsVerifyPlayerIdentityResults(user: string): void {
 }
 
 /** Verifies that the flag data is correct for a searched user in the user details tab */
-export function userDetailsVerifyFlagData(
-  flagName: string,
-  flagValue: boolean,
-): void {
+export function userDetailsVerifyFlagData(flagName: string, flagValue: boolean): void {
   it('should find flag data', () => {
     swapToTab('User Details');
     checkboxHasValue(flagName, flagValue);
@@ -54,9 +51,7 @@ export function userDetailsFindProfileNotes(noteText: string): void {
 }
 
 /** Verifies that the searched user has the correct related gamertags in the user details tab */
-export function userDetailsFindRelatedGamertags(
-  relatedXuid: string,
-): void {
+export function userDetailsFindRelatedGamertags(relatedXuid: string): void {
   it('should have a related gtag', () => {
     swapToTab('User Details');
     cy.contains('mat-card', 'Related Gamertags').within(() => {
@@ -66,9 +61,7 @@ export function userDetailsFindRelatedGamertags(
 }
 
 /** Verifies that the user has the correct related consoles in the user details tab */
-export function userDetailsFindRelatedConsoles(
-  expectedConsoleId: string,
-): void {
+export function userDetailsFindRelatedConsoles(expectedConsoleId: string): void {
   it('should have a related console ID', () => {
     swapToTab('User Details');
     cy.contains('mat-card', 'Consoles').within(() => {
@@ -173,10 +166,7 @@ export function auctionsFindCreatedAuction(
 }
 
 /** Verifies that the user has the correct titles in the loyalties tab */
-export function loyaltyFindTitlesPlayed(
-  platform: string,
-  titlesOwned: string[],
-): void {
+export function loyaltyFindTitlesPlayed(platform: string, titlesOwned: string[]): void {
   it('should have the correct titles owned', () => {
     swapToTab('Loyalty');
     cy.get(platform + '-loyalty-rewards').within(() => {

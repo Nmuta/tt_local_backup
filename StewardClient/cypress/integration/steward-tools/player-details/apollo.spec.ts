@@ -30,10 +30,10 @@ context('Steward / Tools / Player Details / Apollo', () => {
       selectApollo();
     });
 
-    context('With default user', () =>{
+    context('With default user', () => {
       beforeEach(() => {
-        searchByGtag(RetailUsers[defaultApolloUser].gtag)
-      })
+        searchByGtag(RetailUsers[defaultApolloUser].gtag);
+      });
 
       testUserDetails(defaultApolloUser);
 
@@ -42,7 +42,7 @@ context('Steward / Tools / Player Details / Apollo', () => {
       testLiveries();
 
       testJson();
-    })
+    });
   });
 
   context('XUID Lookup', () => {
@@ -51,10 +51,10 @@ context('Steward / Tools / Player Details / Apollo', () => {
       selectApollo();
     });
 
-    context('With default user', () =>{
+    context('With default user', () => {
       beforeEach(() => {
-        searchByXuid(RetailUsers[defaultApolloUser].xuid)
-      })
+        searchByXuid(RetailUsers[defaultApolloUser].xuid);
+      });
 
       testUserDetails(defaultApolloUser);
 

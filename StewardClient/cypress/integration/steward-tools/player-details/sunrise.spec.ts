@@ -35,10 +35,10 @@ context('Steward / Tools / Player Details / Sunrise', () => {
       selectSunrise();
     });
 
-    context('With default user', () =>{
+    context('With default user', () => {
       beforeEach(() => {
-        searchByGtag(RetailUsers[defaultSunriseUser].gtag)
-      })
+        searchByGtag(RetailUsers[defaultSunriseUser].gtag);
+      });
       testUserDetails(defaultSunriseUser);
 
       testDeepDive();
@@ -50,10 +50,10 @@ context('Steward / Tools / Player Details / Sunrise', () => {
       testJson();
     });
 
-    context('With Madden user', () =>{
+    context('With Madden user', () => {
       beforeEach(() => {
-        searchByGtag(RetailUsers['madden'].gtag)
-      })
+        searchByGtag(RetailUsers['madden'].gtag);
+      });
       testAuctions();
 
       testUgc();
@@ -66,10 +66,10 @@ context('Steward / Tools / Player Details / Sunrise', () => {
       selectSunrise();
     });
 
-    context('With default user', () =>{
+    context('With default user', () => {
       beforeEach(() => {
-        searchByXuid(RetailUsers[defaultSunriseUser].xuid)
-      })
+        searchByXuid(RetailUsers[defaultSunriseUser].xuid);
+      });
       testUserDetails(defaultSunriseUser);
 
       testDeepDive();
@@ -81,10 +81,10 @@ context('Steward / Tools / Player Details / Sunrise', () => {
       testJson();
     });
 
-    context('With Madden user', () =>{
+    context('With Madden user', () => {
       beforeEach(() => {
-        searchByXuid(RetailUsers['madden'].xuid)
-      })
+        searchByXuid(RetailUsers['madden'].xuid);
+      });
       testAuctions();
 
       testUgc();
@@ -104,7 +104,7 @@ function testUserDetails(userToSearch: string): void {
     userDetailsFindBans();
 
     // found profile notes
-    userDetailsFindProfileNotes('This is a testing string, not a chicken wing.',);
+    userDetailsFindProfileNotes('This is a testing string, not a chicken wing.');
 
     // found related gamertags
     userDetailsFindRelatedGamertags('2535435129485725');
