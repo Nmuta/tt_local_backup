@@ -32,7 +32,6 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
   constructor(
     private readonly woodstockService: WoodstockService,
     private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
-    private readonly woodstockUgcHideService: WoodstockUgcHideService,
     private readonly woodstockUgcReportService: WoodstockUgcReportService,
     private readonly woodstockUgcVisibilityService: WoodstockUgcVisibilityService,
     private readonly woodstockUgcSharecodeService: WoodstockUgcSharecodeService,
