@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { GuidLikeString } from '@models/extended-types';
 import BigNumber from 'bignumber.js';
 import { ObjectEntry } from '@shared/modules/model-dump/helpers';
+import { HttpParams } from '@angular/common/http';
 
 /** The /v2/title/woodstock/servicesTableStorage. */
 @Injectable({
@@ -18,9 +19,12 @@ export class WoodstockServicesTableStorageService {
   public getTableStorageByProfileId$(
     xuid: BigNumber,
     externalProfileId: GuidLikeString,
+    filterResults: boolean,
   ): Observable<ServicesTableStorageEntity[]> {
+    const params = new HttpParams().set('filterResults', filterResults);
     return this.api.getRequest$<ServicesTableStorageEntity[]>(
       `${this.basePath}/player/${xuid}/externalProfileId/${externalProfileId}`,
+      params,
     );
   }
 }

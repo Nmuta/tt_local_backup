@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         [SwaggerResponse(200, type: typeof(DetailedCar))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetCarAsync([FromRoute] int carId, [FromQuery] string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IActionResult> GetCarAsync([FromRoute] int carId, [FromQuery] string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var cars = await this.itemsProvider.GetCarsAsync<DetailedCar>(slotId).ConfigureAwait(true);
             var car = cars.FirstOrDefault(car => car.Id == carId);
