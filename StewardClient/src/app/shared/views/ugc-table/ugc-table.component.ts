@@ -100,8 +100,8 @@ export abstract class UgcTableBaseComponent
   public ugcCount: number;
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
-  public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc(s)');
-  public unhideUgcMonitor: ActionMonitor = new ActionMonitor('Unhide Ugc(s)');
+  public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc');
+  public unhideUgcMonitor: ActionMonitor = new ActionMonitor('Unhide Ugc');
   public generateSharecodesMonitor: ActionMonitor = new ActionMonitor('Generate Sharecode(s)');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcHidingSupported: boolean = true;

@@ -544,7 +544,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Sharecode, opt => opt.MapFrom(src => src.Metadata.ShareCode))
                 .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.Thumbnail.ToImageDataUrl()))
                 .ForMember(dest => dest.SubmissionUtc, opt => opt.MapFrom(src => src.Metadata.CreatedDate.DefaultAsNull()))
-                //.ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => null)) //Park with Caleb about getting this added. Replace with task# once that's good to go
+                //.ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => null)) //TODO 7/7/2023 Waiting on Caleb to provide hidden time in UGC metadata
                 .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => Enum.GetName(typeof(ForzaUGCContentType), src.Metadata.ContentType)));
 
             this.CreateMap<ForzaUGCDataLight, WoodstockUgcItem>()
