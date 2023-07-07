@@ -107,8 +107,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             }
             else
             {
-                await this.ReportUgcItems(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(false);
-                return this.Ok();
+                var response = await this.ReportUgcItems(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(false);
+                return this.Ok(response);
             }
         }
 
