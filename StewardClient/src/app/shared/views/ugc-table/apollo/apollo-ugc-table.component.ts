@@ -9,6 +9,7 @@ import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
+import { BulkReportUgcResponse } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 
 /** Displays apollo UGC content in a table. */
 @Component({
@@ -48,5 +49,10 @@ export class ApolloUgcTableComponent extends UgcTableBaseComponent implements On
   /** Generate multiple Sharecodes. */
   public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
     return throwError(new Error('Apollo does not support bulk sharecode generation.'));
+  }
+
+  /** Report multiple Ugcs. */
+  public reportUgc(_ugcIds: string[], _reasonId: string): Observable<BulkReportUgcResponse[]> {
+    return throwError(new Error('Apollo does not support reporting ugc items.'));
   }
 }

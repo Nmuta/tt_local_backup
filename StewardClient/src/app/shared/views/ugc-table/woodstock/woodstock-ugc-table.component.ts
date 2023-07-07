@@ -1,9 +1,9 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, takeUntil } from 'rxjs';
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service';
 import { GuidLikeString } from '@models/extended-types';
@@ -15,6 +15,10 @@ import {
   BulkGenerateSharecodeResponse,
   WoodstockUgcSharecodeService,
 } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
+import {
+  BulkReportUgcResponse,
+  WoodstockUgcReportService,
+} from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 
 /** Displays woodstock UGC content in a table. */
 @Component({
@@ -22,18 +26,35 @@ import {
   templateUrl: '../ugc-table.component.html',
   styleUrls: ['../ugc-table.component.scss'],
 })
-export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
+export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements OnChanges, OnInit {
   public gameTitle = GameTitle.FH5;
 
   constructor(
     private readonly woodstockService: WoodstockService,
     private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
+    private readonly woodstockUgcHideService: WoodstockUgcHideService,
+    private readonly woodstockUgcReportService: WoodstockUgcReportService,
     private readonly woodstockUgcVisibilityService: WoodstockUgcVisibilityService,
     private readonly woodstockUgcSharecodeService: WoodstockUgcSharecodeService,
     private readonly backgroundJobService: BackgroundJobService,
     snackbar: MatSnackBar,
   ) {
     super(snackbar);
+  }
+
+  /** Angular hook. */
+  public ngOnInit(): void {
+    super.ngOnInit();
+
+    this.isBulkReportSupported = true;
+
+    this.getReportReasonsMonitor = this.getReportReasonsMonitor.repeat();
+    this.woodstockUgcReportService
+      .getUgcReportReasons$()
+      .pipe(this.getReportReasonsMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(results => {
+        this.reportReasons = results;
+      });
   }
 
   /** Gets player UGC item. */
@@ -60,6 +81,17 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
     return this.woodstockUgcVisibilityService.unhideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
+      }),
+    );
+  }
+
+  /** Report multiple Ugcs. */
+  public reportUgc(ugcIds: string[], reasonId: string): Observable<BulkReportUgcResponse[]> {
+    return this.woodstockUgcReportService.reportUgcItemsUsingBackgroundJob$(ugcIds, reasonId).pipe(
+      switchMap(response => {
+        return this.backgroundJobService.waitForBackgroundJobToComplete<BulkReportUgcResponse[]>(
+          response,
+        );
       }),
     );
   }

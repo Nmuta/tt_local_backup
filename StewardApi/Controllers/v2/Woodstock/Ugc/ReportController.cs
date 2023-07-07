@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -11,11 +12,14 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
@@ -34,15 +38,28 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
         private readonly IWoodstockPegasusService pegasusService;
+        private readonly IJobTracker jobTracker;
+        private readonly ILoggingService loggingService;
+        private readonly IScheduler scheduler;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ReportController"/> class.
         /// </summary>
-        public ReportController(IWoodstockPegasusService pegasusService)
+        public ReportController(
+            IWoodstockPegasusService pegasusService,
+            IJobTracker jobTracker,
+            ILoggingService loggingService,
+            IScheduler scheduler)
         {
             pegasusService.ShouldNotBeNull(nameof(pegasusService));
+            jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
+            scheduler.ShouldNotBeNull(nameof(scheduler));
 
             this.pegasusService = pegasusService;
+            this.jobTracker = jobTracker;
+            this.loggingService = loggingService;
+            this.scheduler = scheduler;
         }
 
         /// <summary>
@@ -71,36 +88,87 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         }
 
         /// <summary>
-        ///    Report a ugc item with a reason.
+        ///    Report ugc item(s) with a reason.
         /// </summary>
-        [HttpPost("{ugcId}/report")]
+        [HttpPost("report")]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.UgcReport)]
         [Authorize(Policy = UserAttribute.ReportUgc)]
-        public async Task<IActionResult> ReportUgc(string ugcId, string reasonId)
+        public async Task<IActionResult> ReportUgc([FromQuery] bool useBackgroundProcessing, [FromQuery] string reasonId, [FromBody] Guid[] ugcIds)
         {
-            if (!Guid.TryParse(ugcId, out var parsedUgcId))
+            var storefrontManagementService = this.Services.StorefrontManagementService;
+
+            if (useBackgroundProcessing)
             {
-                throw new BadRequestStewardException($"UGC ID could not be parsed as GUID. (ugcId: {ugcId})");
+                var response = await this.ReportUgcItemsUseBackgroundProcessing(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(false);
+                return response;
+            }
+            else
+            {
+                var response = await this.ReportUgcItems(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(false);
+                return this.Ok(response);
+            }
+        }
+
+        // Report list of UgcIds with reason
+        private async Task<List<BulkReportUgcResponse>> ReportUgcItems (IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
+        {
+            var parsedReasonId = reasonId.TryParseGuidElseThrow(nameof(reasonId));
+
+            List<BulkReportUgcResponse> response = new List<BulkReportUgcResponse>();
+
+            foreach (var ugcId in ugcIds)
+            {
+                try
+                {
+                    await storefrontManagementService.ReportContentWithReason(ugcId, parsedReasonId).ConfigureAwait(true);
+                    response.Add(new BulkReportUgcResponse { UgcId = ugcId });
+                }
+                catch (Exception ex)
+                {
+                    var errorResponse = new BulkReportUgcResponse { UgcId = ugcId, Error = new StewardError($"Failed to report UGC. UgcId: {ugcId}", ex.Message) };
+                    response.Add(errorResponse);
+                }
             }
 
-            if (!Guid.TryParse(reasonId, out var parsedReasonId))
+            return response;
+        }
+
+        private async Task<CreatedResult> ReportUgcItemsUseBackgroundProcessing(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Report Multiple Ugc.", this.Response).ConfigureAwait(true);
+            var storefrontService = this.Services.Storefront;
+
+            var parsedReasonId = reasonId.TryParseGuidElseThrow(nameof(reasonId));
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
-                throw new BadRequestStewardException($"Reason ID could not be parsed as GUID. (reasonId: {reasonId})");
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    var results = await this.ReportUgcItems(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(true);
+
+                    bool foundErrors = results.Any(results => results.Error != null);
+                    var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results).ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                }
             }
 
-            try
-            {
-                await this.Services.StorefrontManagementService.ReportContentWithReason(parsedUgcId, parsedReasonId).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to report UGC. (ugcId: {parsedUgcId}) (reasonId: {parsedReasonId})", ex);
-            }
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Ok();
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
         }
     }
 }

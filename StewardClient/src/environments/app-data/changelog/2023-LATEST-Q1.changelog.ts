@@ -34,6 +34,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Implemented new deeplink destination type',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: '7bbd5f84-b9ec-4854-b1fc-e1982659d389',
+      shortText: 'Implement bulk UGC reporting in UGC Search',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
       uuid: 'c1eac190-9ab8-4b19-9f39-796a62271153',
       shortText: 'Ensure valid car is selected in create single auction',

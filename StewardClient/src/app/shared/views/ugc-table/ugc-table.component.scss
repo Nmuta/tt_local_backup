@@ -99,6 +99,10 @@ div.table-wide-actions {
   margin: -1em;
 }
 
+.bulk-report-reason {
+  max-width: $container-width-small;
+}
+
 mat-progress-spinner {
   margin: auto;
   margin-top: $gap-small;
