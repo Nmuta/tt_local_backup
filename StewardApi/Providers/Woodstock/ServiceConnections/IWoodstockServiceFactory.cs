@@ -51,12 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<ServicesLiveOps.StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint);
 
         /// <summary>
-        ///     Prepares a <see cref="StorefrontService" />.
-        /// </summary>
-        Task<StorefrontService> PrepareStorefrontServiceAsync(string endpoint);
-
-        /// <summary>
-        ///     Prepares a <see cref="ScoreboardManagementService" />.
+        ///     Prepares a <see cref="ServicesLiveOps.ScoreboardManagementService" />.
         /// </summary>
         Task<ServicesLiveOps.ScoreboardManagementService> PrepareScoreboardManagementServiceAsync(string endpoint);
     }

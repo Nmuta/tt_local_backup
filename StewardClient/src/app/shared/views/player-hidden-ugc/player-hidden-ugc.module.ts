@@ -5,7 +5,6 @@ import { SunrisePlayerHiddenUgcComponent } from './sunrise-player-hidden-ugc/sun
 import { MatTableModule } from '@angular/material/table';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { WoodstockPlayerHiddenUgcComponent } from './woodstock-player-hidden-ugc/woodstock-player-hidden-ugc.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -21,11 +20,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
  *  A feature module for retrieving and displaying a player's hidden UGC.
  */
 @NgModule({
-  declarations: [
-    HiddenUgcTableComponent,
-    SunrisePlayerHiddenUgcComponent,
-    WoodstockPlayerHiddenUgcComponent,
-  ],
+  declarations: [HiddenUgcTableComponent, SunrisePlayerHiddenUgcComponent],
   imports: [
     CommonModule,
     MatTableModule,
@@ -42,10 +37,6 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     VerifyButtonModule,
     PermissionsModule,
   ],
-  exports: [
-    HiddenUgcTableComponent,
-    SunrisePlayerHiddenUgcComponent,
-    WoodstockPlayerHiddenUgcComponent,
-  ],
+  exports: [HiddenUgcTableComponent, SunrisePlayerHiddenUgcComponent],
 })
 export class PlayerHiddenUgcModule {}

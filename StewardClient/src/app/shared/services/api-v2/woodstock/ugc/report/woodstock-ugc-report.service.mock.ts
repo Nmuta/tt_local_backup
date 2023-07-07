@@ -15,6 +15,10 @@ export class MockWoodstockUgcReportService {
     .createSpy('reportUgc$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
+  public reportUgcItemsUsingBackgroundJob$ = jasmine
+    .createSpy('reportUgcItemsUsingBackgroundJob$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

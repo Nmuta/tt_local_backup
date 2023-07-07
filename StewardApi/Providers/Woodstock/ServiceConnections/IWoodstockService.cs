@@ -437,25 +437,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
-        ///     Get hidden UGC.
-        /// </summary>
-        Task<StorefrontService.GetHiddenUGCForUserOutput> GetHiddenUgcForUserAsync(
-            int maxUgcCount,
-            ulong xuid,
-            FileType fileType,
-            string endpoint);
-
-        /// <summary>
-        ///     Hide UGC.
-        /// </summary>
-        Task HideUgcAsync(Guid ugcId, string endpoint);
-
-        /// <summary>
-        ///     Unhide UGC.
-        /// </summary>
-        Task UnhideUgcAsync(Guid ugcId, ulong xuid, FileType fileType, string endpoint);
-
-        /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
         Task SetUgcFeaturedStatusAsync(

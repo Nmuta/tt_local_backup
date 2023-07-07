@@ -8,6 +8,37 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: '03478150-f427-4b0b-97d2-508c9d42b88b',
+      shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '806596e2-19b8-4f1c-9fcd-bf7c43654dd6',
+      shortText:
+        'Remove all references to FH5 StorefrontService, move relevant logic to V2 controllers',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
+      uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
+      shortText: 'Add message title view and editing',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'a66f8898-b059-4e34-b503-5cf2c7bdf5f9',
+      shortText: 'Add toggle to filter out non profile-specific rows',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
+      shortText: 'Implemented new deeplink destination type',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: '7bbd5f84-b9ec-4854-b1fc-e1982659d389',
+      shortText: 'Implement bulk UGC reporting in UGC Search',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
       uuid: 'c1eac190-9ab8-4b19-9f39-796a62271153',
       shortText: 'Ensure valid car is selected in create single auction',
