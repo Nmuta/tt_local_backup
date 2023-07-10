@@ -329,6 +329,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetRivalsEventsReferenceAsync()
         {
+            // No caching due to small data size
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
             var pegasusRivalEvents =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
@@ -344,6 +345,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetRivalsEventCategoriesAsync()
         {
+            // No caching due to small data size
             var filename = CMSFileNames.RivalCategories.Replace("{:loc}", "en-US");
             var pegasusRivalsCategories =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalCategory>>(
@@ -359,6 +361,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetStoreEntitlementsAsync()
         {
+            // No caching due to small data size
             var filename = CMSFileNames.StoreEntitlements;
             var pegasusEntitlements =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.Entitlement>>(
@@ -374,6 +377,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync()
         {
+            // No caching due to small data size
             var filename = CMSFileNames.RacersCupSeries.Replace("{:loc}", "en-US");
             var pegasusRacersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipSeriesDataV3>>(
@@ -389,6 +393,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetBuildersCupChampionshipsAsync()
         {
+            // No caching due to small data size
             var filename = CMSFileNames.BuildersCupChampionships.Replace("{:loc}", "en-US");
             var pegasusBuildersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupDataV3>>(
@@ -404,6 +409,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetBuildersCupLaddersAsync()
         {
+            // No caching due to small data size
             var filename = CMSFileNames.BuildersCupLadders.Replace("{:loc}", "en-US");
             var pegasusBuildersCupLadder =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupLadderDataV3>>(
@@ -419,6 +425,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync()
         {
+            // No caching due to small data size
             var filename = CMSFileNames.BuildersCupSeries.Replace("{:loc}", "en-US");
             var pegasusBuildersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupSeriesDataV3>>(
@@ -595,6 +602,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetCarsReferenceAsync()
         {
+            // No caching due to small data size
             var filename = CMSFileNames.DataCars.Replace("{:loc}", "en-US");
             var pegasusCars =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(
@@ -610,6 +618,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetCarMakesAsync()
         {
+            // No caching due to small data size
             var pegasusCarMakes =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<ListCarMake>>(
                     CMSFileNames.ListCarMake,
