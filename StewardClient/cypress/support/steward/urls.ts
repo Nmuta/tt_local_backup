@@ -80,5 +80,9 @@ export const stewardUrls = {
       default: 'app/tools/message-of-the-day',
       steelhead: 'app/tools/message-of-the-day/steelhead',
     },
+    welcomeCenterTiles: {
+      default: 'app/tools/welcome-center-tiles',
+      steelhead: 'app/tools/welcome-center-tiles/steelhead',
+    },
   },
 };
