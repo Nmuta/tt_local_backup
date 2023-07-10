@@ -196,56 +196,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             act.Should().NotThrow();
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetHiddenUGCForUser_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task> act = async () => await provider.GetHiddenUgcForUserAsync(xuid, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            act.Should().NotThrow();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void HideUgc_WithValidInputs_DoesNotThrow()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var ugcId = Fixture.Create<Guid>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task> action = async () => await provider.HideUgcAsync(ugcId, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UnhideUgc_WithValidInputs_DoesNotThrow()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var ugcId = Fixture.Create<Guid>();
-            var fileType = Fixture.Create<FileType>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task> action = async () => await provider.UnhideUgcAsync(xuid, ugcId, fileType, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
         private sealed class Dependencies
         {
             public Dependencies()
@@ -254,7 +204,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.WoodstockService.GetPlayerLiveryAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCLiveryOutput>());
                 this.WoodstockService.GetPlayerPhotoAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCPhotoOutput>());
                 this.WoodstockService.GetPlayerTuneAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<ServicesLiveOps.StorefrontManagementService.GetUGCTuneOutput>());
-                this.WoodstockService.GetHiddenUgcForUserAsync(Arg.Any<int>(), Arg.Any<ulong>(), Arg.Any<FileType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontService.GetHiddenUGCForUserOutput>());
                 this.Mapper.SafeMap<IList<HideableUgc>>(Arg.Any<List<ForzaStorefrontFile>>()).Returns(Fixture.Create<IList<HideableUgc>>());
                 var ugcItem = Fixture.Create<WoodstockUgcItem>();
                 var ugcLiveryItem = Fixture.Create<WoodstockUgcLiveryItem>();

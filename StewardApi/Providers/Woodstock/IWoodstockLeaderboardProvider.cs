@@ -15,20 +15,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         ///     Gets leaderboard metadata.
         /// </summary>
         Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment);
-
-        /// <summary>
-        ///     Gets leaderboard scores.
-        /// </summary>
-        Task<IEnumerable<LeaderboardScore>> GetLeaderboardScoresAsync(ScoreboardType scoreboardType, ScoreType scoreType, int trackId, string pivotId, IEnumerable<DeviceType> deviceTypes, int startAt, int maxResults, string endpoint);
-
-        /// <summary>
-        ///     Gets leaderboard scores around a player Xuid.
-        /// </summary>
-        Task<IEnumerable<LeaderboardScore>> GetLeaderboardScoresAsync(ulong xuid, ScoreboardType scoreboardType, ScoreType scoreType, int trackId, string pivotId, IEnumerable<DeviceType> deviceTypes, int maxResults, string endpoint);
-
-        /// <summary>
-        ///     Deletes the provided score ids;
-        /// </summary>
-        Task DeleteLeaderboardScoresAsync(Guid[] scoreIds, string endpoint);
     }
 }

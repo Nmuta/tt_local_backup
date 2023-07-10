@@ -11,7 +11,7 @@ import {
   LeaderboardScore,
   paramsToLeadboardQuery,
 } from '@models/leaderboards';
-import { WoodstockService } from '@services/woodstock';
+import { WoodstockLeaderboardService } from '@services/api-v2/woodstock/leaderboard/woodstock-leaderboard.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { catchError, filter, map, of, switchMap, takeUntil, tap } from 'rxjs';
 
@@ -29,7 +29,7 @@ export class WoodstockLeaderboardsComponent extends BaseComponent implements OnI
   public getActionMonitor = new ActionMonitor('GET leaderboard metadata');
 
   constructor(
-    private readonly woodstockService: WoodstockService,
+    private readonly leaderboardService: WoodstockLeaderboardService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
   ) {
@@ -86,7 +86,7 @@ export class WoodstockLeaderboardsComponent extends BaseComponent implements OnI
         switchMap(() => {
           this.getActionMonitor = this.getActionMonitor.repeat();
 
-          return this.woodstockService
+          return this.leaderboardService
             .getLeaderboardMetadata$(
               this.temporaryLeaderboard.query.scoreboardTypeId,
               this.temporaryLeaderboard.query.scoreTypeId,

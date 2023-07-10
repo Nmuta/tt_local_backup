@@ -13,7 +13,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
-using static Forza.WebServices.FH5_main.Generated.StorefrontService;
 using FileType = Forza.UserGeneratedContent.FH5_main.Generated.FileType;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
@@ -216,89 +215,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to delete auction. (auctionId: {auctionId})", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
-        public async Task<IList<HideableUgc>> GetHiddenUgcForUserAsync(ulong xuid, string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            var exceptions = new List<Exception>();
-            var defaultValue = new GetHiddenUGCForUserOutput() { ugcData = Array.Empty<ForzaStorefrontFile>() };
-            var liveries = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Livery, endpoint).SuccessOrDefault(defaultValue, exceptions);
-            var layerGroups = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.LayerGroup, endpoint).SuccessOrDefault(defaultValue, exceptions);
-            var photos = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Photo, endpoint).SuccessOrDefault(defaultValue, exceptions);
-            var tunings = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.Tuning, endpoint).SuccessOrDefault(defaultValue, exceptions);
-            var eventBlueprints = this.woodstockService.GetHiddenUgcForUserAsync(100, xuid, FileType.EventBlueprint, endpoint).SuccessOrDefault(defaultValue, exceptions);
-
-            await Task.WhenAll(liveries, layerGroups, photos, tunings, eventBlueprints).ConfigureAwait(false);
-
-            var results = new List<ForzaStorefrontFile>();
-            if (liveries.IsCompletedSuccessfully)
-            {
-                results.AddRange(liveries.GetAwaiter().GetResult().ugcData);
-            }
-
-            if (layerGroups.IsCompletedSuccessfully)
-            {
-                results.AddRange(layerGroups.GetAwaiter().GetResult().ugcData);
-            }
-
-            if (photos.IsCompletedSuccessfully)
-            {
-                results.AddRange(photos.GetAwaiter().GetResult().ugcData);
-            }
-
-            if (tunings.IsCompletedSuccessfully)
-            {
-                results.AddRange(tunings.GetAwaiter().GetResult().ugcData);
-            }
-
-            if (eventBlueprints.IsCompletedSuccessfully)
-            {
-                results.AddRange(eventBlueprints.GetAwaiter().GetResult().ugcData);
-            }
-
-            var convertedResults = this.mapper.SafeMap<List<HideableUgc>>(results);
-
-            return convertedResults;
-        }
-
-        /// <inheritdoc />
-        public async Task HideUgcAsync(
-            Guid ugcId,
-            string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                await this.woodstockService.HideUgcAsync(ugcId, endpoint).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to hide {ugcId}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task UnhideUgcAsync(
-            ulong xuid,
-            Guid ugcId,
-            FileType fileType,
-            string endpoint)
-        {
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            try
-            {
-                await this.woodstockService.UnhideUgcAsync(ugcId, xuid, fileType, endpoint).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to unhide {fileType}:{ugcId} for {xuid}.", ex);
             }
         }
     }

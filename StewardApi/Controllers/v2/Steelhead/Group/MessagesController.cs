@@ -146,8 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             {
                 var response = await this.Services.NotificationManagementService.SendGroupMessage(
                     groupId,
-                    // TODO: Update from test string (https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1491290)
-                    Guid.Parse("3b7e0ead-0631-4e7a-8e65-6d27fec35e7c"),
+                    localizedTitleGuid,
                     localizedMessageGuid,
                     forzaDeviceType != ForzaLiveDeviceType.Invalid,
                     forzaDeviceType,
@@ -215,9 +214,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             [FromBody] LspGroupLocalizedMessage editParameters)
         {
             editParameters.ShouldNotBeNull(nameof(editParameters));
+            messageId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(messageId));
             editParameters.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedMessageID));
-            // TODO: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1495466/
-            // editParameters.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedTitleID));
+            editParameters.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedTitleID));
             editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
@@ -225,9 +224,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
             }
 
-            // TODO: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1495466/
-            //var localizedTitleIdAsGuid = editParameters.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
-            var localizedMessageIdAsGuid = editParameters.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
+            var localizedTitleIdAsGuid = editParameters.LocalizedTitleID.TryParseGuidElseThrow($"Localized Title ID could not be parsed as GUID. (LocalizedTitleID: {editParameters.LocalizedTitleID})");
+            var localizedMessageIdAsGuid = editParameters.LocalizedMessageID.TryParseGuidElseThrow($"Localized Message ID could not be parsed as GUID. (LocalizedMessageID: {editParameters.LocalizedMessageID})");
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -244,6 +242,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
+                TitleStringId = localizedTitleIdAsGuid,
                 MessageStringId = localizedMessageIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = forzaDeviceType != ForzaLiveDeviceType.Invalid,

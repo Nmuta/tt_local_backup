@@ -40,10 +40,18 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         /// <summary>Generates a Sharecode for the given UGC ID.</summary>
         Task<GenerateShareCodeOutput> GenerateShareCode(Guid id);
 
-        /// <summary>Sets the visibility of UGC by ID.<summary>
+        /// <summary>Sets hidden status for UGC item by ID.</summary>
         Task SetUGCVisibility(Guid id, bool shouldBeVisible);
 
-        /// <summary>Gets curate UGC data.</summary>
+        /// <summary>
+        ///     Gets player UGC.
+        /// </summary>
+        Task<GetUGCForUserOutput> GetUGCForUser(ulong xuid, ForzaUGCContentType contentType, bool includeThumbnails, int maxResults, bool onlyT10Featured);
+
+        /// <summary>Gets hidden UGC by xuid.</summary>
+        Task<GetHiddenUGCByUserOutput> GetHiddenUGCByUser(ulong xuid, ForzaUGCContentType contentType, int maxResults);
+
+        /// <summary>Gets curated UGC data.</summary>
         Task<GetCuratedUgcOutput> GetCuratedUgc(ForzaUGCContentType contentType, ForzaCurationMethod curationMethod, int maxResults);
     }
 }
