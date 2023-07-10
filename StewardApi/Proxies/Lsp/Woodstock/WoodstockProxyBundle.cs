@@ -94,6 +94,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         /// </summary>
         public IConfigurationManagementService ConfigurationManagementService => this.WoodstockFactory.PrepareConfigurationManagementService(this.Endpoint);
 
+        /// <summary>
+        ///     Gets a <see cref="IScoreboardManagementService" />.
+        /// </summary>
+        public IScoreboardManagementService ScoreboardManagementService => this.WoodstockFactory.PrepareScoreboardManagementService(this.Endpoint);
+
         private IWoodstockProxyFactory WoodstockFactory { get; }
 
         /// <summary>

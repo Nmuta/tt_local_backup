@@ -87,6 +87,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 failedServiceProcies.Append($"{exception.Message}, ");
             }
 
+            if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
+            if (!this.VerifyServiceProxy(() => services.ScoreboardManagementService, "ScoreboardManagementService", out exception))
+            {
+                failedServiceProcies.Append($"{exception.Message}, ");
+            }
+
             if (failedServiceProcies.Length > 0)
             {
                 throw new ServiceProxyStewardException(failedServiceProcies.ToString());
@@ -173,6 +188,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             var services = this.WoodstockServices.Value;
 
             if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out var exception))
+            {
+                throw exception;
+            }
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Verifies Scoreboard Management Service proxy.
+        /// </summary>
+        [HttpGet("ScoreboardManagementService")]
+        [SwaggerResponse(200, type: typeof(bool))]
+        public IActionResult ScoreboardManagementServiceProxy()
+        {
+            var services = this.WoodstockServices.Value;
+
+            if (!this.VerifyServiceProxy(() => services.ScoreboardManagementService, "ScoreboardManagementService", out var exception))
             {
                 throw exception;
             }

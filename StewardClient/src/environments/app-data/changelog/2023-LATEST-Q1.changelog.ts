@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '0cd8e85a-b5e2-49e2-8a25-4a4d38a00d2d',
+      shortText: 'Look ups for dev leaderboards now pull from services studio environment',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: '03478150-f427-4b0b-97d2-508c9d42b88b',
       shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
