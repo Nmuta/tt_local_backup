@@ -52,6 +52,12 @@ export interface WoodstockPlayerUgcItem extends PlayerUgcItem {
   geoFlags: WoodstockGeoFlags[];
 }
 
+/** A UGC Item for steelhead players, which includes Steelhead-specific features. */
+export interface SteelheadPlayerUgcItem extends PlayerUgcItem {
+  /** Only for Steelhead / supported titles. */
+  geoFlags: WoodstockGeoFlags[];
+}
+
 /** The result of a cloning operation. */
 export interface ClonedItemResult {
   clonedFileId: string;

@@ -13,7 +13,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Search UGC items.
         /// </summary>
         [HttpPost("{ugcType}")]
-        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [SwaggerResponse(200, type: typeof(IList<SteelheadUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get([FromBody] UgcSearchFilters parameters, string ugcType)
@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var searchParameters = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCSearchRequest>(parameters);
 
-            async Task<IList<UgcItem>> SearchUGC()
+            async Task<IList<SteelheadUgcItem>> SearchUGC()
             {
                 var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
                 var results = await this.Services.StorefrontManagementService.SearchUGC(searchParameters, mappedContentType, false, DefaultMaxResults).ConfigureAwait(false);
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
                 var filteredResults = results.result.Where(result => searchParameters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);
 
-                return this.mapper.SafeMap<IList<UgcItem>>(filteredResults);
+                return this.mapper.SafeMap<IList<SteelheadUgcItem>>(filteredResults);
             }
 
             var getUgc = SearchUGC();
@@ -113,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets a UGC livery by ID.
         /// </summary>
         [HttpGet("livery/{ugcId}")]
-        [SwaggerResponse(200, type: typeof(UgcLiveryItem))]
+        [SwaggerResponse(200, type: typeof(SteelheadUgcLiveryItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcLivery(string ugcId)
@@ -123,7 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            async Task<UgcItem> GetLiveryAsync()
+            async Task<SteelheadUgcLiveryItem> GetLiveryAsync()
             {
                 StorefrontManagementService.GetUGCLiveryOutput liveryOutput = null;
 
@@ -136,7 +136,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     throw new UnknownFailureStewardException($"No livery found. (ugcId: {parsedUgcId}).", ex);
                 }
 
-                var livery = this.mapper.SafeMap<UgcLiveryItem>(liveryOutput.result);
+                var livery = this.mapper.SafeMap<SteelheadUgcLiveryItem>(liveryOutput.result);
 
                 if (livery.GameTitle != (int)GameTitle.FM8)
                 {
@@ -167,7 +167,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets a UGC photo by ID.
         /// </summary>
         [HttpGet("photo/{ugcId}")]
-        [SwaggerResponse(200, type: typeof(UgcItem))]
+        [SwaggerResponse(200, type: typeof(SteelheadUgcItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcPhoto(string ugcId)
@@ -204,7 +204,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         public async Task<IActionResult> GetPhotoThumbnails([FromBody] IList<Guid> ugcIds)
         {
             var thumbnails = new List<ThumbnailLookupOutput>();
-            var thumbnailLookups = new List<Task<UgcItem>>();
+            var thumbnailLookups = new List<Task<SteelheadUgcItem>>();
 
             foreach (var id in ugcIds)
             {
@@ -229,7 +229,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets a UGC tune by ID.
         /// </summary>
         [HttpGet("tuneblob/{ugcId}")]
-        [SwaggerResponse(200, type: typeof(UgcTuneBlobItem))]
+        [SwaggerResponse(200, type: typeof(SteelheadUgcTuneBlobItem))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcTune(string ugcId)
@@ -253,7 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     throw new UnknownFailureStewardException($"No tune found. (ugcId: {parsedUgcId}).", ex);
                 }
 
-                var tune = this.mapper.SafeMap<UgcTuneBlobItem>(tuneOutput);
+                var tune = this.mapper.SafeMap<SteelheadUgcTuneBlobItem>(tuneOutput);
 
                 if (tune.GameTitle != (int)GameTitle.FM8)
                 {
@@ -284,7 +284,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets UGC item by share code.
         /// </summary>
         [HttpGet("shareCode/{shareCode}")]
-        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [SwaggerResponse(200, type: typeof(IList<SteelheadUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcItemBySharecode(string shareCode, [FromQuery] string ugcType = "Unknown")
@@ -303,7 +303,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var filters = this.mapper.SafeMap<ForzaUGCSearchRequest>(new UgcFilters(ulong.MaxValue, shareCode));
 
-            async Task<IList<UgcItem>> GetUgcItemBySharecodeAsync()
+            async Task<IList<SteelheadUgcItem>> GetUgcItemBySharecodeAsync()
             {
                 var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
 
@@ -320,7 +320,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
                 var filteredResults = results.result.Where(result => filters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);
 
-                return this.mapper.SafeMap<IList<UgcItem>>(filteredResults);
+                return this.mapper.SafeMap<IList<SteelheadUgcItem>>(filteredResults);
             }
 
             var getUgcItems = GetUgcItemBySharecodeAsync();
@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             return this.Ok(ugCItems);
         }
 
-        private async Task<UgcItem> GetPhotoAsync(Guid ugcId)
+        private async Task<SteelheadUgcItem> GetPhotoAsync(Guid ugcId)
         {
             StorefrontManagementService.GetUGCPhotoOutput photoOutput = null;
 
@@ -355,7 +355,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new UnknownFailureStewardException($"No photo found. (ugcId: {ugcId}).", ex);
             }
 
-            var photo = this.mapper.SafeMap<UgcItem>(photoOutput.result);
+            var photo = this.mapper.SafeMap<SteelheadUgcItem>(photoOutput.result);
 
             if (photo.GameTitle != (int)GameTitle.FM8)
             {

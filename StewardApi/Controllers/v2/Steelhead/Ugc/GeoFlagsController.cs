@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -47,20 +48,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UgcGeoFlags)]
         [Authorize(Policy = UserAttribute.SetUgcGeoFlag)]
-        public async Task<IActionResult> SetGeoFlags(string ugcId, [FromBody] IList<int> geoFlags)
+        public async Task<IActionResult> SetGeoFlags(string ugcId, [FromBody] IList<WoodstockUgcGeoFlagOption> geoFlags)
         {
             if (!Guid.TryParse(ugcId, out var parsedUgcId))
             {
                 throw new BadRequestStewardException("UGC ID could not be parsed as GUID.");
             }
 
+            if (geoFlags == null)
+            {
+                throw new BadRequestStewardException($"Missing geo-flags.");
+            }
+
             try
             {
-                await this.Services.StorefrontManagementService.SetUGCGeoFlag(parsedUgcId, geoFlags.ToArray()).ConfigureAwait(true);
+                var typedGeoFlags = geoFlags.Cast<int>().ToArray();
+                await this.Services.StorefrontManagementService.SetUGCGeoFlag(parsedUgcId, typedGeoFlags).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to set UGC geo flags. (ugcId: {parsedUgcId}) (geoFlags: {geoFlags.ToString()})", ex);
+                throw new UnknownFailureStewardException($"Failed to set UGC geo flags. (ugcId: {parsedUgcId}) (geoFlags: {geoFlags})", ex);
             }
 
             return this.Ok();
