@@ -48,7 +48,7 @@
         <mat-form-field class="sf-default-hint" appearance="fill">
           <mat-label>UGC Curated Type</mat-label>
           <mat-select matInput [formControl]="formControls.ugcCuratedType">
-            <mat-option *ngFor="let item of ugcCuratedEnum | keyvalue" [value]="item.value">
+            <mat-option *ngFor="let item of ugcCurationType | keyvalue" [value]="item.value">
               {{ item.key | deppoh }}
             </mat-option>
           </mat-select>
@@ -56,7 +56,7 @@
         <button
           mat-raised-button
           color="primary"
-          matTooltip="Load Curated Ugc"
+          matTooltip="Load Curated UGC"
           [disabled]="!formControls.ugcCuratedType.value"
           (click)="loadCuratedUgc()"
           [monitor]="getMonitor"
@@ -67,7 +67,7 @@
           Load Curated Ugc
           <button-spinner defaultIcon="search" [monitor]="getMonitor"></button-spinner>
           <help-popover-icon cardTitle="Load Curated Ugc">
-            <div>Loading Curated UGC queues will return the first 500 of the queue.</div>
+            <div>Loading Curated UGC queues will return the first 500 items in the queue.</div>
           </help-popover-icon>
         </button>
       </div>

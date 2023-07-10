@@ -36,7 +36,7 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
   public getMonitor = new ActionMonitor('GET UGC Content');
   public ugcType: UgcType = UgcType.Unknown;
   public filterXuid: BigNumber = undefined;
-  public ugcCuratedEnum = UgcCurationType;
+  public ugcCurationType = UgcCurationType;
 
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
