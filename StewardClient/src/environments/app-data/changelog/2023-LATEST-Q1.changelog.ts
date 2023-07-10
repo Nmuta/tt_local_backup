@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
+      uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
+      shortText: 'Add message title view and editing for player messages',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '0cd8e85a-b5e2-49e2-8a25-4a4d38a00d2d',
       shortText: 'Look ups for dev leaderboards now pull from services studio environment',
@@ -26,7 +31,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
       uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
-      shortText: 'Add message title view and editing',
+      shortText: 'Add message title view and editing for group messages',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
