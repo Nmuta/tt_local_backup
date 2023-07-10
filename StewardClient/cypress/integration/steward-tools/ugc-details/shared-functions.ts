@@ -34,9 +34,7 @@ export enum SunriseUgcCreatedDate {
 export function testInputUgcID(ugcId: string): void {
   cy.get('mat-form-field')
     .contains('mat-label', 'UGC ID / Share Code')
-    .parent()
-    .parent()
-    .parent()
+    .parents('mat-form-field')
     .click()
     .type(ugcId);
   waitForProgressSpinners();
