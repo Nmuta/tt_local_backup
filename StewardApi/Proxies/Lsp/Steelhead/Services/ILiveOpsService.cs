@@ -1,4 +1,5 @@
-﻿using Forza.WebServices.FM8.Generated;
+﻿using Forza.UserInventory.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
 using System;
 using System.Threading.Tasks;
 using static Forza.WebServices.FM8.Generated.LiveOpsService;
@@ -112,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Adds or edits car type inventory items in user's profile.
         /// </summary>
-        Task<LiveOpsUpdateCarDataOutput> LiveOpsUpdateCarData(ulong xuid, Guid externalProfileId, ForzaCarUserInventoryItem[] clientCars, ForzaCarDataUpdateAccessLevel accessLevel);
+        Task<LiveOpsUpdateCarDataV2Output> LiveOpsUpdateCarDataV2(ulong xuid, Guid externalProfileId, AdminForzaCarUserInventoryItem[] carsToUpdate, ForzaCarDataUpdateAccessLevel accessLevel);
 
         /// <summary>
         ///     Removes non-car type inventory items from user's profile.
@@ -128,5 +129,41 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Retrieves player profiles for a given xuid.
         /// </summary>
         Task<GetPlayerProfilesOutput> GetPlayerProfiles(ulong xuid, int maxProfiles);
+
+        /// <summary>
+        ///     Retrieves player safety rating by xuid.
+        /// </summary>
+        Task<GetLiveOpsSafetyRatingByXuidOutput> GetLiveOpsSafetyRatingByXuid(ulong xuid);
+
+        /// <summary>
+        ///     Clears player safety rating history by xuid.
+        /// </summary>
+        Task DeleteLiveOpsOverallSafetyRatingByXuid(ulong xuid);
+
+        /// <summary>
+        ///     Adds a safety rating entry to user's safety rating history.
+        /// </summary>
+        Task<AddLiveOpsSafetyRatingHistoryByXuidOutput> AddLiveOpsSafetyRatingHistoryByXuid(ulong xuid, double scoreValue);
+
+        /// <summary>
+        ///     Sets safety rating history by xuid.
+        /// </summary>
+
+        Task<SetLiveOpsSafetyRatingHistoryOutput> SetLiveOpsSafetyRatingHistory(ulong xuid, double[] ratingHistory);
+
+        /// <summary>
+        ///     Retrieves player skill rating by xuid and profileId.
+        /// </summary>
+        Task<GetUserSkillRatingOutput> GetUserSkillRating(ulong xuid, Guid externalProfileId);
+
+        /// <summary>
+        ///     Override player skill rating by xuid and profileId.
+        /// </summary>
+        Task OverrideUserSkillRating(ulong xuid, Guid externalProfileId, double skillRating);
+
+        /// <summary>
+        ///     Clears override of player skill rating by xuid and profileId.
+        /// </summary>
+        Task ClearUserSkillRatingOverride(ulong xuid, Guid externalProfileId);
     }
 }

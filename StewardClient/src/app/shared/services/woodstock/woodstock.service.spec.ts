@@ -7,7 +7,7 @@ import { WoodstockPlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/
 import { WoodstockPlayerXuidProfileSummaryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/profileSummary';
 import { WoodstockPlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/sharedConsoleUsers';
 import { WoodstockPlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/userFlags';
-import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
+import { fakeXuid } from '@interceptors/fake-api/utility';
 import { WoodstockUserFlags } from '@models/woodstock';
 import { ApiService, createMockApiService } from '@services/api';
 import faker from '@faker-js/faker';
@@ -17,7 +17,7 @@ import { of } from 'rxjs';
 import { WoodstockService } from './woodstock.service';
 import { DateTime } from 'luxon';
 import { DefaultAuctionFilters } from '@models/auction-filters';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 import { PegasusProjectionSlot } from '@models/enums';
 
@@ -146,23 +146,6 @@ describe('WoodstockService', () => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
           params,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: getProfileNotesXuid$', () => {
-    const expectedXuid = new BigNumber(123456789);
-
-    beforeEach(() => {
-      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service getRequest with the expected params', done => {
-      service.getProfileNotesXuid$(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/player/xuid(${expectedXuid})/profileNotes`,
         );
         done();
       });
@@ -425,218 +408,6 @@ describe('WoodstockService', () => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/items/cars`,
           httpParams,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: getLeaderboards', () => {
-    const expectedParams = new HttpParams().set('pegasusEnvironment', 'dev');
-
-    beforeEach(() => {
-      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service getRequest$ with the expected params', done => {
-      service.getLeaderboards$('dev').subscribe(() => {
-        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/leaderboards`,
-          expectedParams,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: getLeaderboards', () => {
-    const scoreboardTypeId = fakeBigNumber();
-    const scoreTypeId = fakeBigNumber();
-    const trackId = fakeBigNumber();
-    const pivotId = fakeBigNumber();
-    const startAt = fakeBigNumber();
-    const maxResults = fakeBigNumber();
-    const endpointKeyOverride = faker.random.word();
-
-    const expectedParams = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('startAt', startAt.toString())
-      .set('maxResults', maxResults.toString());
-
-    const expectedHeaders = new HttpHeaders()
-      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
-      .set('endpoint-woodstock', endpointKeyOverride);
-
-    beforeEach(() => {
-      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service getRequest$ with the expected params', done => {
-      service
-        .getLeaderboardScores$(
-          scoreboardTypeId,
-          scoreTypeId,
-          trackId,
-          pivotId,
-          [],
-          startAt,
-          maxResults,
-        )
-        .subscribe(() => {
-          expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-            `${service.basePath}/leaderboard/scores/top`,
-            expectedParams,
-            new HttpHeaders(),
-          );
-          done();
-        });
-    });
-
-    it('should call API service getRequest$ with the expected params and headers', done => {
-      service
-        .getLeaderboardScores$(
-          scoreboardTypeId,
-          scoreTypeId,
-          trackId,
-          pivotId,
-          [],
-          startAt,
-          maxResults,
-          endpointKeyOverride,
-        )
-        .subscribe(() => {
-          expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-            `${service.basePath}/leaderboard/scores/top`,
-            expectedParams,
-            expectedHeaders,
-          );
-          done();
-        });
-    });
-  });
-
-  describe('Method: getLeaderboardScoresNearPlayer', () => {
-    const xuid = fakeBigNumber();
-    const scoreboardTypeId = fakeBigNumber();
-    const scoreTypeId = fakeBigNumber();
-    const trackId = fakeBigNumber();
-    const pivotId = fakeBigNumber();
-    const maxResults = fakeBigNumber();
-    const endpointKeyOverride = faker.random.word();
-
-    const expectedParams = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('maxResults', maxResults.toString());
-
-    const expectedHeaders = new HttpHeaders()
-      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
-      .set('endpoint-woodstock', endpointKeyOverride);
-
-    beforeEach(() => {
-      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service getRequest$ with the expected params', done => {
-      service
-        .getLeaderboardScoresNearPlayer$(
-          xuid,
-          scoreboardTypeId,
-          scoreTypeId,
-          trackId,
-          pivotId,
-          [],
-          maxResults,
-        )
-        .subscribe(() => {
-          expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-            `${service.basePath}/leaderboard/scores/near-player/${xuid}`,
-            expectedParams,
-            new HttpHeaders(),
-          );
-          done();
-        });
-    });
-
-    it('should call API service getRequest$ with the expected params and headers', done => {
-      service
-        .getLeaderboardScoresNearPlayer$(
-          xuid,
-          scoreboardTypeId,
-          scoreTypeId,
-          trackId,
-          pivotId,
-          [],
-          maxResults,
-          endpointKeyOverride,
-        )
-        .subscribe(() => {
-          expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-            `${service.basePath}/leaderboard/scores/near-player/${xuid}`,
-            expectedParams,
-            expectedHeaders,
-          );
-          done();
-        });
-    });
-  });
-
-  describe('Method: deleteLeaderboardScores', () => {
-    const scoreIds = [faker.datatype.uuid(), faker.datatype.uuid(), faker.datatype.uuid()];
-    const endpointKeyOverride = faker.random.word();
-
-    const expectedHeaders = new HttpHeaders()
-      .set('endpointKey', `Woodstock|${endpointKeyOverride}`)
-      .set('endpoint-woodstock', endpointKeyOverride);
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service getRequest$ with the expected params', done => {
-      service.deleteLeaderboardScores$(scoreIds).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/leaderboard/scores/delete`,
-          scoreIds,
-          undefined,
-          new HttpHeaders(),
-        );
-        done();
-      });
-    });
-
-    it('should call API service getRequest$ with the expected params and headers', done => {
-      service.deleteLeaderboardScores$(scoreIds, endpointKeyOverride).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/leaderboard/scores/delete`,
-          scoreIds,
-          undefined,
-          expectedHeaders,
-        );
-        done();
-      });
-    });
-  });
-
-  describe('Method: unhideUgc', () => {
-    const xuid = new BigNumber(0);
-    const ugcId = faker.datatype.uuid();
-    const fileType = 'Livery';
-
-    beforeEach(() => {
-      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
-    });
-
-    it('should call API service postRequest$ with the expected params', done => {
-      service.unhideUgc$(xuid, fileType, ugcId).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/storefront/${xuid}/ugc/${fileType}/${ugcId}/unhide`,
-          null,
         );
         done();
       });

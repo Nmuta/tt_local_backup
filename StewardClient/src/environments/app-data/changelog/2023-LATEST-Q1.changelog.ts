@@ -8,6 +8,141 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '0cd8e85a-b5e2-49e2-8a25-4a4d38a00d2d',
+      shortText: 'Look ups for dev leaderboards now pull from services studio environment',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: '03478150-f427-4b0b-97d2-508c9d42b88b',
+      shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '806596e2-19b8-4f1c-9fcd-bf7c43654dd6',
+      shortText:
+        'Remove all references to FH5 StorefrontService, move relevant logic to V2 controllers',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
+      uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
+      shortText: 'Add message title view and editing',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'a66f8898-b059-4e34-b503-5cf2c7bdf5f9',
+      shortText: 'Add toggle to filter out non profile-specific rows',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
+      shortText: 'Implemented new deeplink destination type',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: '7bbd5f84-b9ec-4854-b1fc-e1982659d389',
+      shortText: 'Implement bulk UGC reporting in UGC Search',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'c1eac190-9ab8-4b19-9f39-796a62271153',
+      shortText: 'Ensure valid car is selected in create single auction',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CarDetails },
+      uuid: 'c6275cf3-6366-40e7-b765-48488263f477',
+      shortText: 'Target CU-Next in Woodstock car details lookup',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: '8db18c20-e408-4237-becc-58d6408aa5bb',
+      shortText: 'Change create single auction to use verify V2 and move buttons',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e1b03cab-7326-4a35-aec9-f6d9a5bc037d',
+      shortText: 'Change form array for display conditions in welcome center tiles',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '9e8da39e-c8aa-490e-b712-564b1823a4f2',
+      shortText: 'Profile notes can now be added to player details',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AdminPagesSelector },
+      uuid: 'c9930424-33e9-4a5d-a551-ab7a4c01147f',
+      shortText: 'Removed links to Steelhead admin pages',
+    },
+    {
+      tag: {
+        title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7, GameTitle.FM8],
+        tool: NavbarTool.UserDetails,
+      },
+      uuid: '7d8cdf02-2042-46eb-8725-e267cabac8eb',
+      shortText: 'Display ban count per title',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '6ceff20c-1dc0-48e1-8044-a7be33a0a994',
+      shortText: 'Add title and environment to permission tooltip',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '22b4ce22-a3d4-4fb7-91d3-6b50e21f9280',
+      shortText: 'Adjust spacing of navbar icons',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'f703a92a-dac4-41d0-8265-5826bb17df0a',
+      shortText: 'Added C-Livery download for Woodstock and Steelhead',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'dec40db0-c132-4b04-b31a-ec7d4b847d5d',
+      shortText:
+        'Add button to generate sharecodes for public UGC search results without a sharecode',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '8cb3427a-a9a5-4e94-9e69-5d9f628a751b',
+      shortText: 'Reorder navbar icons and link to docs',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5c5ae753-ac77-45ee-80fb-63824fa7cf17',
+      shortText: 'Remove old verify-with directive and rename module',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4, GameTitle.FM7], tool: NavbarTool.UserDetails },
+      uuid: '6c281c82-d209-4a9a-9620-f4337b55604f',
+      shortText: 'Fixed active profile icon to not show as inactive.',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
+      uuid: 'dec40db0-c132-4b04-b31a-ec7d4b847d5d',
+      shortText: 'Align Hide UGC verify button to right side in UGC search',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.AcLogReader },
+      uuid: 'c7dcbb87-172e-4845-9fd5-6afbbe09c67a',
+      shortText: 'Add color highlighting and drag and drop upload.',
+    },
+    {
+      tag: { title: [GameTitle.FH4, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'd6c338dc-8bc7-4e1d-96a6-97063940f920',
+      shortText: 'Combine Auctions and Auction Log tabs',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '1cbfd6e8-4edb-4d1a-8466-cfef7025b0b5',
+      shortText: 'Allow users to add and edit cars on player inventories',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '5aa1a11f-5dce-40cc-968a-d30f02c1015a',
+      shortText: 'Added skill rating and safety rating tools',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'e9168a6f-743e-4763-9dd4-204ea33136e1',
       shortText: 'Add Community Manager as a player flag option',

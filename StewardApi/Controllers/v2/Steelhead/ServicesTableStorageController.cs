@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </summary>
         [HttpGet("player/{xuid}/externalProfileId/{externalProfileId}")]
         [SwaggerResponse(200, type: typeof(IList<ServicesTableStorageEntity>))]
-        public async Task<IActionResult> GetTableStorageConfig(ulong xuid, string externalProfileId)
+        public async Task<IActionResult> GetTableStorageConfig(ulong xuid, string externalProfileId, [FromQuery] bool filterResults = true)
         {
             if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
             {
@@ -111,7 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 // If that guid doesn't match the external profile ID we're using, we need to filter them out.
                 string guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
 
-                var filteredResponse = finalResponse.Where(entry =>
+                var filteredResponse = filterResults ? finalResponse.Where(entry =>
                 {
                     var rowKeyGuids = Regex.Matches(entry.RowKey, guidPattern);
                     var partitionKeyGuids = Regex.Matches(entry.PartitionKey, guidPattern);
@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     }
 
                     return true;
-                });
+                }) : finalResponse;
 
                 return this.Ok(filteredResponse);
             }

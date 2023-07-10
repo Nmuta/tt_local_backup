@@ -8,6 +8,7 @@ import { LiveOpsBanDescription } from '@models/sunrise';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { OldPermissionsService } from '@services/old-permissions';
+import { MultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service';
 
 /** Retreives and displays Apollo Ban history by XUID. */
 @Component({
@@ -26,8 +27,12 @@ export class ApolloBanHistoryComponent extends BanHistoryBaseComponent {
   public gameTitle = GameTitle.FM7;
   public actionsEnabled = true;
 
-  constructor(private readonly apollo: ApolloService, permissionsService: OldPermissionsService) {
-    super(permissionsService);
+  constructor(
+    private readonly apollo: ApolloService,
+    permissionsService: OldPermissionsService,
+    multipleBanHistoryService: MultipleBanHistoryService,
+  ) {
+    super(permissionsService, multipleBanHistoryService);
   }
 
   /** Gets the Apollo ban history. */

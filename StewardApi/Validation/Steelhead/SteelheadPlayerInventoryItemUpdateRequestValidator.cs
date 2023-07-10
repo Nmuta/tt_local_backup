@@ -50,6 +50,11 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
             {
                 this.ValidateItemsAsync(model.VanityItems.ToList(), modelState, nameof(model.VanityItems)).ConfigureAwait(false).GetAwaiter().GetResult();
             }
+
+            if (model.Cars != null)
+            {
+                this.ValidateCarsAsync(model.Cars, modelState).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
         }
 
         /// <inheritdoc />
@@ -84,6 +89,40 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
             if (stringBuilder.Length > 0)
             {
                 modelState.AddModelError($"SteelheadPlayerInventory.{propertyName}", $"Vanity Items with IDs: {stringBuilder} were not found in Pegasus.");
+            }
+        }
+
+        private async Task ValidateCarsAsync(IList<PlayerInventoryCarItem> cars, ModelStateDictionary modelState)
+        {
+            var pegasusCars = await this.pegasusService.GetCarsAsync().ConfigureAwait(true);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var car in cars)
+            {
+                if (car.Id <= 0)
+                {
+                    modelState.AddModelError($"PlayerInventoryCarItem.{nameof(car.Id)}", $"{nameof(car.Id)} cannot be negative or zero. {nameof(car.Id)} was {car.Id}.");
+                }
+
+                if (car.PurchasePrice < 0)
+                {
+                    modelState.AddModelError($"PlayerInventoryCarItem.{nameof(car.PurchasePrice)}", $"{nameof(car.PurchasePrice)} cannot be negative. {nameof(car.PurchasePrice)} was {car.PurchasePrice}.");
+                }
+
+                if (car.ExperiencePoints < 0)
+                {
+                    modelState.AddModelError($"PlayerInventoryCarItem.{nameof(car.ExperiencePoints)}", $"{nameof(car.ExperiencePoints)} cannot be negative. {nameof(car.ExperiencePoints)} was {car.ExperiencePoints}.");
+                }
+
+                if (!pegasusCars.Where(pegasusCar => pegasusCar.CarId == car.Id).Any())
+                {
+                    stringBuilder.Append($"{car.Id} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                modelState.AddModelError($"Cars", $"Cars with IDs: {stringBuilder} were not found in Pegasus.");
             }
         }
     }

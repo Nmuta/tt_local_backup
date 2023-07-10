@@ -14,6 +14,7 @@ export enum PermAttributeName {
   GiftGroup = 'GiftGroup',
   GiftPlayer = 'GiftPlayer',
   HideUgc = 'HideUgc',
+  BulkGenerateSharecode = 'BulkGenerateSharecode',
   MessageGroup = 'MessageGroup',
   MessagePlayer = 'MessagePlayer',
   OverrideCms = 'OverrideCms',
@@ -41,6 +42,8 @@ export enum PermAttributeName {
   ManageStewardTeam = 'ManageStewardTeam',
   ManagePlayerInventory = 'ManagePlayerInventory',
   AllowedToExceedCreditLimit = 'AllowedToExceedCreditLimit',
+  UpdateSafetyRating = 'UpdateSafetyRating',
+  OverrideSkillRating = 'OverrideSkillRating',
 }
 
 /** Full perm attribute details. */

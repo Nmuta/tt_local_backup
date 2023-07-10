@@ -1,43 +1,158 @@
 <div class="sf-wrapper">
   <div class="sf-horizontal sf-right" *ngIf="ugcHidingSupported">
-    Click on a row to select
-    <button
-      mat-stroked-button
-      color="primary"
-      [disabled]="selectedUgcs?.length <= 0"
-      (click)="unselectAllUgcItems()"
-    >
-      Unselect all
-    </button>
-    <verify-button
-      #verifyCheckboxHideBtn
-      [disabled]="selectedUgcs?.length <= 0"
-      [permissionAttribute]="hideUgcPermission"
-      [permissionTitle]="gameTitle"
-    ></verify-button>
-    <button
-      mat-raised-button
-      color="warn"
-      [disabled]="selectedUgcs?.length <= 0"
-      [verifyWithV2]="verifyCheckboxHideBtn"
-      (click)="hideMultipleUgc(selectedUgcs)"
-      stateManager
-      [monitor]="hideUgcMonitor"
-      monitorDisable
-      monitorWarn
-      monitorWarnSnackbar
-    >
-      <span [ngPlural]="selectedUgcs?.length">
-        Hide {{ selectedUgcs?.length }}
-        <ng-template ngPluralCase="=1">Ugc </ng-template>
-        <ng-template ngPluralCase="other">Ugcs </ng-template>
-      </span>
-      <mat-spinner
-        *ngIf="hideUgcMonitor.isActive"
-        class="force-inline-2x"
-        [matTooltip]="hideUgcMonitor.label + ' in progress'"
-      ></mat-spinner>
-    </button>
+    <span class="sf-vertical">
+      <div class="sf-horizontal sf-right">
+        Click on a row to select
+        <button
+          mat-stroked-button
+          color="primary"
+          [disabled]="selectedUgcs?.length <= 0"
+          (click)="unselectAllUgcItems()"
+        >
+          Unselect all
+        </button>
+      </div>
+      <div *ngIf="!isContentHidden" class="sf-vertical sf-end">
+        <div class="sf-horizontal">
+          <verify-button
+            class="action-section"
+            #verifyCheckboxHideBtn
+            [disabled]="selectedUgcs?.length <= 0"
+            [permissionAttribute]="hideUgcPermission"
+            [permissionTitle]="gameTitle"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="warn"
+            [disabled]="selectedUgcs?.length <= 0"
+            [verifyWithV2]="verifyCheckboxHideBtn"
+            (click)="hideMultipleUgc(selectedUgcs)"
+            stateManager
+            [monitor]="hideUgcMonitor"
+            monitorDisable
+            monitorCompleteSnackbar
+            monitorWarnSnackbar
+          >
+            <help-popover-icon cardTitle="Hide UGC">
+              <p>Hiding UGC also marks it as private.</p>
+              <p>
+                If you've selected private UGC, Steward will automatically ignore them while hiding
+                UGC.
+              </p>
+            </help-popover-icon>
+            <span [ngPlural]="selectedUgcs?.length">
+              Hide {{ selectedUgcs?.length }}
+              <ng-template ngPluralCase="=1">Ugc </ng-template>
+              <ng-template ngPluralCase="other">Ugcs </ng-template>
+            </span>
+            <button-spinner
+              [monitor]="hideUgcMonitor"
+              defaultIcon="visibility_off"
+            ></button-spinner>
+          </button>
+        </div>
+        <p *ngIf="selectedPrivateUgcCount" class="sf-text-warn">
+          You have selected {{ selectedPrivateUgcCount }} Private UGC which will be ignored by the
+          Hide action.
+        </p>
+      </div>
+      <div *ngIf="isContentHidden" class="sf-horizontal sf-right">
+        <verify-button
+          class="action-section"
+          #verifyCheckboxUnhideBtn
+          [disabled]="selectedUgcs?.length <= 0"
+          [permissionAttribute]="unhideUgcPermission"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="selectedUgcs?.length <= 0"
+          [verifyWithV2]="verifyCheckboxUnhideBtn"
+          (click)="unhideMultipleUgc(selectedUgcs)"
+          stateManager
+          [monitor]="unhideUgcMonitor"
+          monitorDisable
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
+        >
+          <span [ngPlural]="selectedUgcs?.length">
+            Unhide {{ selectedUgcs?.length }}
+            <ng-template ngPluralCase="=1">Ugc </ng-template>
+            <ng-template ngPluralCase="other">Ugcs </ng-template>
+          </span>
+          <button-spinner [monitor]="unhideUgcMonitor" defaultIcon="visibility"></button-spinner>
+        </button>
+      </div>
+      <div *ngIf="isBulkReportSupported" class="sf-horizontal sf-right">
+        <mat-form-field
+          *waitForMonitor="getReportReasonsMonitor"
+          class="bulk-report-reason sf-default-hint sf-action-list"
+          appearance="fill"
+        >
+          <mat-label>Report reason</mat-label>
+          <mat-select matInput [(ngModel)]="reasonId">
+            <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
+              {{ reason.description }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <verify-button
+          class="action-section"
+          #verifyCheckboxReportBtn
+          [disabled]="selectedUgcs?.length <= 0 || reasonId === null"
+          [permissionAttribute]="hideUgcPermission"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="selectedUgcs?.length <= 0"
+          [verifyWithV2]="verifyCheckboxReportBtn"
+          (click)="reportMultipleUgc(selectedUgcs, reasonId)"
+          stateManager
+          [monitor]="reportUgcMonitor"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+        >
+          <span [ngPlural]="selectedUgcs?.length">
+            Report {{ selectedUgcs?.length }}
+            <ng-template ngPluralCase="=1">Ugc </ng-template>
+            <ng-template ngPluralCase="other">Ugcs </ng-template>
+          </span>
+          <button-spinner [monitor]="reportUgcMonitor" defaultIcon="report"></button-spinner>
+        </button>
+      </div>
+      <div class="sf-horizontal sf-right">
+        <verify-button
+          class="action-section"
+          #verifyCheckboxGenerateBtn
+          [disabled]="ugcsWithoutSharecodes?.length <= 0"
+          [permissionAttribute]="bulkGenerateSharecodePermission"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="ugcsWithoutSharecodes?.length <= 0"
+          [verifyWithV2]="verifyCheckboxGenerateBtn"
+          (click)="generateMissingSharecodes(ugcsWithoutSharecodes)"
+          stateManager
+          [monitor]="generateSharecodesMonitor"
+          monitorDisable
+          monitorCompleteSnackbar
+          monitorWarnSnackbar
+        >
+          <span [ngPlural]="ugcsWithoutSharecodes?.length">
+            Generate {{ ugcsWithoutSharecodes?.length }}
+            <ng-template ngPluralCase="=1">Share Code </ng-template>
+            <ng-template ngPluralCase="other">Share Codes </ng-template>
+          </span>
+          <button-spinner [monitor]="generateSharecodesMonitor" defaultIcon="add"></button-spinner>
+        </button>
+      </div>
+    </span>
   </div>
 </div>
 <div class="table-wide-actions" *ngIf="displayTableWideActions">

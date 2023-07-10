@@ -1,14 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { InventoryItemListDisplayComponent } from './inventory-item-list-display.component';
+import {
+  InventoryItemListDisplayComponent,
+  InventoryItemListDisplayComponentContract,
+} from './inventory-item-list-display.component';
 import faker from '@faker-js/faker';
-import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { toDateTime } from '@helpers/luxon';
 import { PlayerInventoryItemListEntry } from '@models/master-inventory-item-list';
 import BigNumber from 'bignumber.js';
+import { of } from 'rxjs';
 
 describe('InventoryItemListDisplayComponent', () => {
   let component: InventoryItemListDisplayComponent;
@@ -22,6 +27,18 @@ describe('InventoryItemListDisplayComponent', () => {
     error: null,
   };
 
+  const mockService: InventoryItemListDisplayComponentContract = {
+    openCarEditModal$: () => {
+      return of(null);
+    },
+    editItemQuantity$: () => {
+      return of(null);
+    },
+    deleteItem$: () => {
+      return of(null);
+    },
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [InventoryItemListDisplayComponent],
@@ -33,6 +50,15 @@ describe('InventoryItemListDisplayComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InventoryItemListDisplayComponent);
     component = fixture.componentInstance;
+    component.service = mockService;
+
+    component.service.openCarEditModal$ = jasmine
+      .createSpy('openCarEditModal$')
+      .and.returnValue(of(null));
+    component.service.editItemQuantity$ = jasmine
+      .createSpy('editItemQuantity$')
+      .and.returnValue(of(null));
+    component.service.deleteItem$ = jasmine.createSpy('deleteItem$').and.returnValue(of(null));
 
     component.whatToShow = {
       title: faker.random.word(),
@@ -98,6 +124,41 @@ describe('InventoryItemListDisplayComponent', () => {
     });
   });
 
+  describe('Method: ngOnChanges', () => {
+    describe('When service is null', () => {
+      beforeEach(() => {
+        component.service = null;
+      });
+
+      it('should throw error', () => {
+        try {
+          component.ngOnChanges(<any>{});
+
+          expect(false).toBeTruthy();
+        } catch (e) {
+          expect(true).toBeTruthy();
+          expect(e.message).toEqual(
+            'Service contract undefined for InventoryItemListDisplayComponent.',
+          );
+        }
+      });
+    });
+
+    describe('When service is provided', () => {
+      // Provided by default in the test component
+      it('should not throw error', () => {
+        try {
+          component.ngOnChanges(<any>{});
+
+          expect(true).toBeTruthy();
+        } catch (e) {
+          expect(e).toEqual(null);
+          expect(false).toBeTruthy();
+        }
+      });
+    });
+  });
+
   describe('Method: enableEditMode', () => {
     beforeEach(() => {
       listEntry.isInEditMode = false;
@@ -142,6 +203,55 @@ describe('InventoryItemListDisplayComponent', () => {
       component.disableEditMode(listEntry);
 
       expect(listEntry.isInEditMode).toBeFalsy();
+    });
+  });
+
+  describe('Method: editCarItem', () => {
+    let carItem: Partial<PlayerInventoryCarItem>;
+    beforeEach(() => {
+      carItem = {
+        ...listEntry,
+        vin: faker.datatype.uuid(),
+      };
+      component.itemListTableSource.data = [carItem as PlayerInventoryCarItem];
+    });
+
+    it('should invoke service.openCarEditModal$', () => {
+      component.editCarItem(carItem as PlayerInventoryCarItem, 0);
+
+      expect(component.service.openCarEditModal$).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: editItemQuantity', () => {
+    let item: Partial<PlayerInventoryItemListEntry>;
+    beforeEach(() => {
+      item = {
+        ...listEntry,
+      };
+      component.itemListTableSource.data = [item as PlayerInventoryItemListEntry];
+    });
+
+    it('should invoke service.openCarEditModal$', () => {
+      component.editItemQuantity(item as PlayerInventoryItemListEntry);
+
+      expect(component.service.editItemQuantity$).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: deleteItem', () => {
+    let item: Partial<PlayerInventoryItemListEntry>;
+    beforeEach(() => {
+      item = {
+        ...listEntry,
+      };
+      component.itemListTableSource.data = [item as PlayerInventoryItemListEntry];
+    });
+
+    it('should invoke service.deleteItem$', () => {
+      component.deleteItem(item as PlayerInventoryItemListEntry, 0);
+
+      expect(component.service.deleteItem$).toHaveBeenCalled();
     });
   });
 });

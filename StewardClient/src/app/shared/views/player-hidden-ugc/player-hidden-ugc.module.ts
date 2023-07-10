@@ -5,7 +5,6 @@ import { SunrisePlayerHiddenUgcComponent } from './sunrise-player-hidden-ugc/sun
 import { MatTableModule } from '@angular/material/table';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { WoodstockPlayerHiddenUgcComponent } from './woodstock-player-hidden-ugc/woodstock-player-hidden-ugc.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -13,7 +12,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { SteelheadPlayerHiddenUgcComponent } from './steelhead-player-hidden-ugc/steelhead-player-hidden-ugc.component';
@@ -22,12 +21,7 @@ import { SteelheadPlayerHiddenUgcComponent } from './steelhead-player-hidden-ugc
  *  A feature module for retrieving and displaying a player's hidden UGC.
  */
 @NgModule({
-  declarations: [
-    HiddenUgcTableComponent,
-    SunrisePlayerHiddenUgcComponent,
-    WoodstockPlayerHiddenUgcComponent,
-    SteelheadPlayerHiddenUgcComponent,
-  ],
+  declarations: [HiddenUgcTableComponent, SunrisePlayerHiddenUgcComponent],
   imports: [
     CommonModule,
     MatTableModule,
@@ -41,14 +35,9 @@ import { SteelheadPlayerHiddenUgcComponent } from './steelhead-player-hidden-ugc
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     PermissionsModule,
   ],
-  exports: [
-    HiddenUgcTableComponent,
-    SunrisePlayerHiddenUgcComponent,
-    WoodstockPlayerHiddenUgcComponent,
-    SteelheadPlayerHiddenUgcComponent,
-  ],
+  exports: [HiddenUgcTableComponent, SunrisePlayerHiddenUgcComponent],
 })
 export class PlayerHiddenUgcModule {}

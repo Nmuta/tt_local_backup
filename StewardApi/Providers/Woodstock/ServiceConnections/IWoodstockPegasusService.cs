@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets leaderboards.
         /// </summary>
-        Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment);
+        Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.Live);
 
         /// <summary>
         ///     Gets cars.

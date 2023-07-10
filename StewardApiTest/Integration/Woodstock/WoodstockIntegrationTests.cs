@@ -1402,7 +1402,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -1658,7 +1658,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
                 IsUltimateVip = true,
                 IsTurn10Employee = false,
                 IsUnderReview = false,
-                IsEarlyAccess = false
+                IsRaceMarshall = false,
+                IsEarlyAccess = false,
+                IsCommunityManager = false,
+                IsContentCreator = false
             };
         }
     }

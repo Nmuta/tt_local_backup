@@ -1,26 +1,28 @@
 import BigNumber from 'bignumber.js';
-import { Component } from '@angular/core';
-import { WoodstockService } from '@services/woodstock/woodstock.service';
-import { Observable } from 'rxjs';
+import { Component, Input } from '@angular/core';
 import { GameTitle } from '@models/enums';
-import { ProfileNotesBaseComponent } from '../profile-notes.base.component';
-import { ProfileNote } from '@models/profile-note.model';
+import { ProfileNotesServiceContract } from '../profile-notes.component';
+import { IdentityResultAlpha } from '@models/identity-query.model';
+import { WoodstockPlayerProfileNotesService } from '@services/api-v2/woodstock/player/profile-notes/woodstock-player-profile-notes.service';
 
 /** Retreives and displays Woodstock user profile notes by XUID. */
 @Component({
   selector: 'woodstock-profile-notes',
-  templateUrl: '../profile-notes.component.html',
-  styleUrls: ['../profile-notes.component.scss'],
+  templateUrl: './woodstock-profile-notes.component.html',
 })
-export class WoodstockProfileNotesComponent extends ProfileNotesBaseComponent {
-  public gameTitle = GameTitle.FH5;
+export class WoodstockProfileNotesComponent {
+  /** Player identity. */
+  @Input() identity: IdentityResultAlpha;
 
-  constructor(private readonly woodstockService: WoodstockService) {
-    super();
-  }
+  public service: ProfileNotesServiceContract;
 
-  /** Gets Woodstock user flags. */
-  public getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]> {
-    return this.woodstockService.getProfileNotesXuid$(xuid);
+  constructor(woodstockPlayerProfileNotesService: WoodstockPlayerProfileNotesService) {
+    this.service = {
+      gameTitle: GameTitle.FH5,
+      getProfileNotesByXuid$: xuid =>
+        woodstockPlayerProfileNotesService.getProfileNotesByXuid$(xuid),
+      addProfileNoteByXuid$: (xuid: BigNumber, profileNote: string) =>
+        woodstockPlayerProfileNotesService.addProfileNoteByXuid$(xuid, profileNote),
+    };
   }
 }

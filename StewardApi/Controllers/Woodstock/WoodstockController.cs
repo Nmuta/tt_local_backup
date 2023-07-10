@@ -76,7 +76,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
         private readonly INotificationHistoryProvider notificationHistoryProvider;
         private readonly IWoodstockStorefrontProvider storefrontProvider;
-        private readonly IWoodstockLeaderboardProvider leaderboardProvider;
         private readonly IWoodstockItemsProvider itemsProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
@@ -104,7 +103,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IWoodstockBanHistoryProvider banHistoryProvider,
             INotificationHistoryProvider notificationHistoryProvider,
             IWoodstockStorefrontProvider storefrontProvider,
-            IWoodstockLeaderboardProvider leaderboardProvider,
             IWoodstockItemsProvider itemsProvider,
             IConfiguration configuration,
             IScheduler scheduler,
@@ -129,7 +127,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
             storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
-            leaderboardProvider.ShouldNotBeNull(nameof(leaderboardProvider));
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
@@ -154,7 +151,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.banHistoryProvider = banHistoryProvider;
             this.notificationHistoryProvider = notificationHistoryProvider;
             this.storefrontProvider = storefrontProvider;
-            this.leaderboardProvider = leaderboardProvider;
             this.itemsProvider = itemsProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
@@ -406,66 +402,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .ConfigureAwait(true);
 
             return this.Ok(result);
-        }
-
-        /// <summary>
-        ///     Gets the user's profile notes.
-        /// </summary>
-        [HttpGet("player/xuid({xuid})/profileNotes")]
-        [SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetProfileNotesAsync(
-            ulong xuid)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-            if (!playerExists)
-            {
-                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
-            }
-
-            var result = await this.woodstockPlayerDetailsProvider.GetProfileNotesAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-
-            return this.Ok(result);
-        }
-
-        /// <summary>
-        ///     Adds a profile note to a user's profile.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [HttpPost("player/xuid({xuid})/profileNotes")] // TODO: This should be /profileNotes/add
-        [SwaggerResponse(200)]
-        [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
-        [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
-        [Authorize(Policy = UserAttribute.AddProfileNote)]
-        public async Task<IActionResult> AddProfileNoteAsync(
-            ulong xuid,
-            [FromBody] ProfileNote profileNote)
-        {
-            profileNote.ShouldNotBeNull(nameof(profileNote));
-            xuid.EnsureValidXuid();
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            var playerExists = await this.woodstockPlayerDetailsProvider.DoesPlayerExistAsync(xuid, endpoint)
-                .ConfigureAwait(true);
-            if (!playerExists)
-            {
-                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
-            }
-
-            var userClaims = this.User.UserClaims();
-            profileNote.Author = userClaims.EmailAddress;
-
-            await this.woodstockPlayerDetailsProvider.AddProfileNoteAsync(xuid, profileNote, endpoint)
-                .ConfigureAwait(true);
-
-            return this.Ok();
         }
 
         /// <summary>
@@ -907,53 +843,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 status.FeaturedExpiry,
                 null, // Force featured expiry
                 endpoint).ConfigureAwait(true);
-
-            return this.Ok();
-        }
-
-        /// <summary>
-        ///     Gets hidden player UGC content.
-        /// </summary>
-        [HttpGet("storefront/xuid({xuid})/hidden")]
-        [SwaggerResponse(200, type: typeof(IList<HideableUgc>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
-        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Ugc)]
-        public async Task<IActionResult> GetPlayerHiddenUGC(ulong xuid)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-
-            var hiddenUgc = await this.storefrontProvider.GetHiddenUgcForUserAsync(xuid, endpoint).ConfigureAwait(true);
-
-            return this.Ok(hiddenUgc);
-        }
-
-        /// <summary>
-        ///     Unhides player UGC content.
-        /// </summary>
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
-        [SwaggerResponse(200)]
-        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.UnhideUgc)]
-        public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, string ugcId)
-        {
-            fileType.ShouldNotBeNull(nameof(fileType));
-            xuid.EnsureValidXuid();
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(ugcId, out var itemIdGuid))
-            {
-                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
-            }
-
-            if (!Enum.TryParse(fileType, out FileType fileTypeEnum))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(FileType)} provided: {fileType}");
-            }
-
-            await this.storefrontProvider.UnhideUgcAsync(xuid, itemIdGuid, fileTypeEnum, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -1614,156 +1503,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 notificationId,
                 requesterObjectId,
                 endpoint).ConfigureAwait(true);
-
-            return this.Ok();
-        }
-
-        /// <summary>
-        ///     Gets the leaderboards.
-        /// </summary>
-        [HttpGet("leaderboards")]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(200, type: typeof(IEnumerable<Leaderboard>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Leaderboards)]
-        public async Task<IActionResult> GetLeaderboards([FromQuery] string pegasusEnvironment = null)
-        {
-            var environment = WoodstockPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
-
-            var leaderboards = await this.leaderboardProvider.GetLeaderboardsAsync(environment).ConfigureAwait(true);
-
-            return this.Ok(leaderboards);
-        }
-
-        /// <summary>
-        ///     Gets leaderboard metadata.
-        /// </summary>
-        [HttpGet("leaderboard/metadata")]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(200, type: typeof(Leaderboard))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta | ActionAreaLogTags.Leaderboards)]
-        public async Task<IActionResult> GetLeaderboardMetadata(
-            [FromQuery] ScoreboardType scoreboardType,
-            [FromQuery] ScoreType scoreType,
-            [FromQuery] int trackId,
-            [FromQuery] string pivotId,
-            [FromQuery] string pegasusEnvironment = null)
-        {
-            var environment = WoodstockPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
-
-            var allLeaderboards = await this.leaderboardProvider.GetLeaderboardsAsync(environment).ConfigureAwait(true);
-
-            var leaderboard = allLeaderboards.FirstOrDefault(leaderboard => leaderboard.ScoreboardTypeId == (int)scoreboardType
-                && leaderboard.ScoreTypeId == (int)scoreType
-                && leaderboard.TrackId == trackId
-                && leaderboard.GameScoreboardId.ToString() == pivotId);
-
-            if (leaderboard == null)
-            {
-                throw new BadRequestStewardException($"Could not find leaderboard from provided params. ScoreboardType: " +
-                                                     $"{scoreboardType}, ScoreType: {scoreType}, TrackId: {trackId}, PivotId: {pivotId},");
-            }
-
-            return this.Ok(leaderboard);
-        }
-
-        /// <summary>
-        ///     Gets the leaderboard scores.
-        /// </summary>
-        [HttpGet("leaderboard/scores/top")]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Leaderboards)]
-        public async Task<IActionResult> GetLeaderboardScores(
-            [FromQuery] ScoreboardType scoreboardType,
-            [FromQuery] ScoreType scoreType,
-            [FromQuery] int trackId,
-            [FromQuery] string pivotId,
-            [FromQuery] DeviceType[] deviceTypes,
-            [FromQuery] int startAt = 0,
-            [FromQuery] int maxResults = DefaultMaxResults)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-
-            var scores = await this.leaderboardProvider.GetLeaderboardScoresAsync(
-                scoreboardType,
-                scoreType,
-                trackId,
-                pivotId,
-                deviceTypes,
-                startAt,
-                maxResults,
-                endpoint).ConfigureAwait(true);
-
-            return this.Ok(scores);
-        }
-
-        /// <summary>
-        ///     Gets the leaderboard scores around a player.
-        /// </summary>
-        [HttpGet("leaderboard/scores/near-player/{xuid}")]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(200, type: typeof(IEnumerable<LeaderboardScore>))]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Leaderboards)]
-        public async Task<IActionResult> GetLeaderboardScoresAroundXuid(
-            ulong xuid,
-            [FromQuery] ScoreboardType scoreboardType,
-            [FromQuery] ScoreType scoreType,
-            [FromQuery] int trackId,
-            [FromQuery] string pivotId,
-            [FromQuery] DeviceType[] deviceTypes,
-            [FromQuery] int maxResults = DefaultMaxResults)
-        {
-            xuid.EnsureValidXuid();
-
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-
-            var scores = await this.leaderboardProvider.GetLeaderboardScoresAsync(
-                xuid,
-                scoreboardType,
-                scoreType,
-                trackId,
-                pivotId,
-                deviceTypes,
-                maxResults,
-                endpoint).ConfigureAwait(true);
-
-            return this.Ok(scores);
-        }
-
-        /// <summary>
-        ///     Deletes leaderboard scores.
-        /// </summary>
-        [HttpPost("leaderboard/scores/delete")]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(200)]
-        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Leaderboards)]
-        [ManualActionLogging(CodeName, StewardAction.Delete, StewardSubject.Leaderboards)]
-        [Authorize(Policy = UserAttribute.DeleteLeaderboardScores)]
-        public async Task<IActionResult> DeleteLeaderboardScores([FromBody] Guid[] scoreIds)
-        {
-            var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);
-
-            await this.leaderboardProvider.DeleteLeaderboardScoresAsync(scoreIds, endpoint).ConfigureAwait(true);
-
-            var deletedScores = scoreIds.Select(scoreId => Invariant($"{scoreId}")).ToList();
-            await this.actionLogger.UpdateActionTrackingTableAsync(
-                RecipientType.ScoreId,
-                deletedScores).ConfigureAwait(true);
 
             return this.Ok();
         }

@@ -56,19 +56,17 @@
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Auctions">
+        <ng-template mat-tab-label>
+          Auctions
+          <error-spinner
+            [isActive]="auctionActionLog.getMonitor.isActive | renderGuard"
+            spinnerMessage="Retrieving Data"
+          ></error-spinner>
+        </ng-template>
         <div class="sf-wrapper sf-tab-container">
           <woodstock-player-auctions [identity]="identity"></woodstock-player-auctions>
         </div>
-      </mat-tab>
-      <mat-tab *ngIf="!isSpecialXuid">
         <div class="sf-wrapper sf-tab-container">
-          <ng-template mat-tab-label>
-            Auction Log
-            <error-spinner
-              [isActive]="auctionActionLog.getMonitor.isActive | renderGuard"
-              spinnerMessage="Retrieving Data"
-            ></error-spinner>
-          </ng-template>
           <woodstock-player-auction-action-log
             #auctionActionLog
             [identity]="identity"
@@ -93,7 +91,6 @@
           <inline-spinner [monitor]="ugcEvents.getMonitor | renderGuard"
             >({{ ugcEvents?.ugcContent?.length }})</inline-spinner
           >
-          <inline-spinner [monitor]="ugcHidden.getMonitor | renderGuard"></inline-spinner>
         </ng-template>
         <mat-tab-group>
           <mat-tab>
@@ -211,7 +208,7 @@
               </mat-card-content>
             </mat-card>
           </mat-tab>
-          <mat-tab>
+          <!-- <mat-tab>
             <ng-template mat-tab-label>
               Hidden
               <inline-spinner [monitor]="ugcHidden.getMonitor | renderGuard"></inline-spinner>
@@ -221,6 +218,143 @@
               #ugcHidden
               [identity]="identity"
             ></woodstock-player-hidden-ugc>
+          </mat-tab> -->
+        </mat-tab-group>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Hidden Ugc
+          <inline-spinner [monitor]="hiddenUgcLiveries.getMonitor | renderGuard"
+            >({{ hiddenUgcLiveries?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcLayerGroup.getMonitor | renderGuard"
+            >({{ hiddenUgcLayerGroup?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcPhotos.getMonitor | renderGuard"
+            >({{ hiddenUgcPhotos?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcTunes.getMonitor | renderGuard"
+            >({{ hiddenUgcTunes?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcEvents.getMonitor | renderGuard"
+            >({{ hiddenUgcEvents?.ugcContent?.length }})</inline-spinner
+          >
+        </ng-template>
+        <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Liveries
+              <inline-spinner [monitor]="hiddenUgcLiveries.getMonitor | renderGuard"
+                >({{ hiddenUgcLiveries?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Liveries</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <woodstock-player-hidden-ugc
+                  #hiddenUgcLiveries
+                  [identity]="identity"
+                  [contentType]="UgcType.Livery"
+                  [usingIdentities]="true"
+                ></woodstock-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Layer Groups
+              <inline-spinner [monitor]="hiddenUgcLayerGroup.getMonitor | renderGuard"
+                >({{ hiddenUgcLayerGroup?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Layer Groups</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <woodstock-player-hidden-ugc
+                  #hiddenUgcLayerGroup
+                  [identity]="identity"
+                  [contentType]="UgcType.LayerGroup"
+                  [usingIdentities]="true"
+                ></woodstock-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Photos
+              <inline-spinner [monitor]="hiddenUgcPhotos.getMonitor | renderGuard"
+                >({{ hiddenUgcPhotos?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Photos</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <woodstock-player-hidden-ugc
+                  #hiddenUgcPhotos
+                  [identity]="identity"
+                  [contentType]="UgcType.Photo"
+                  [usingIdentities]="true"
+                ></woodstock-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Tunes
+              <inline-spinner [monitor]="hiddenUgcTunes.getMonitor | renderGuard"
+                >({{ hiddenUgcTunes?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Tunes</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <woodstock-player-hidden-ugc
+                  #hiddenUgcTunes
+                  [identity]="identity"
+                  [contentType]="UgcType.Tune"
+                  [usingIdentities]="true"
+                ></woodstock-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Events
+              <inline-spinner [monitor]="hiddenUgcEvents.getMonitor | renderGuard"
+                >({{ hiddenUgcEvents?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Events</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <woodstock-player-hidden-ugc
+                  #hiddenUgcEvents
+                  [identity]="identity"
+                  [contentType]="UgcType.EventBlueprint"
+                  [usingIdentities]="true"
+                ></woodstock-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
           </mat-tab>
         </mat-tab-group>
       </mat-tab>

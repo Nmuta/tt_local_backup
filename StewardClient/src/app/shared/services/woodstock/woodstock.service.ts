@@ -45,23 +45,13 @@ import { SimpleCar } from '@models/cars';
 import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GroupNotification, PlayerNotification } from '@models/notifications.model';
-import { ProfileNote } from '@models/profile-note.model';
 import { AuctionData } from '@models/auction-data';
 import { GuidLikeString } from '@models/extended-types';
-import { HideableUgc } from '@models/hideable-ugc.model';
 import { DateTime } from 'luxon';
 import { PlayerAuctionAction } from '@models/player-auction-action';
-import {
-  DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS,
-  DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS,
-  Leaderboard,
-  LeaderboardScore,
-} from '@models/leaderboards';
-import { HideableUgcFileType } from '@models/hideable-ugc.model';
-import { DeviceType, PegasusProjectionSlot } from '@models/enums';
-import { addQueryParamArray } from '@helpers/add-query-param-array';
 import { UnbanResult } from '@models/unban-result';
 import { PlayerInventoryProfileWithDeviceType } from '@models/player-inventory-profile';
+import { PegasusProjectionSlot } from '@models/enums';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -172,13 +162,6 @@ export class WoodstockService {
   public getFlagsByXuid$(xuid: BigNumber): Observable<WoodstockUserFlags> {
     return this.apiService.getRequest$<WoodstockUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
-    );
-  }
-
-  /** Gets user flags by a XUID. */
-  public getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]> {
-    return this.apiService.getRequest$<ProfileNote[]>(
-      `${this.basePath}/player/xuid(${xuid})/profileNotes`,
     );
   }
 
@@ -456,33 +439,6 @@ export class WoodstockService {
     return this.apiService.postRequest$(`${this.basePathV2}/ugc/${ugcId}/geoFlags`, geoFlags);
   }
 
-  /** Gets a player's hidden UGC item. */
-  public getPlayerHiddenUgcByXuid$(xuid: BigNumber): Observable<HideableUgc[]> {
-    return this.apiService.getRequest$<HideableUgc[]>(
-      `${this.basePath}/storefront/xuid(${xuid})/hidden`,
-    );
-  }
-
-  // /** Hide UGC item. */
-  // public hideUgc$(ugcId: string): Observable<void> {
-  //   return this.apiService.postRequest$<void>(
-  //     `${this.basePath}/storefront/ugc/${ugcId}/hide`,
-  //     null,
-  //   );
-  // }
-
-  /** Unhide UGC item. */
-  public unhideUgc$(
-    xuid: BigNumber,
-    fileType: HideableUgcFileType,
-    ugcId: GuidLikeString,
-  ): Observable<void> {
-    return this.apiService.postRequest$<void>(
-      `${this.basePath}/storefront/${xuid}/ugc/${fileType}/${ugcId}/unhide`,
-      null,
-    );
-  }
-
   /**
    * Persist UGC item to the system user.
    * Can optionally pass in title and description to override on persisted item.
@@ -570,115 +526,6 @@ export class WoodstockService {
   public deleteAuctionBlocklistEntry$(carId: BigNumber): Observable<AuctionBlocklistEntry[]> {
     return this.apiService.deleteRequest$<AuctionBlocklistEntry[]>(
       `${this.basePath}/auctions/blockList/carId(${carId})`,
-    );
-  }
-
-  /** Gets leaderboards. */
-  public getLeaderboards$(pegasusEnvironment: string): Observable<Leaderboard[]> {
-    const params = new HttpParams().set('pegasusEnvironment', pegasusEnvironment);
-
-    return this.apiService.getRequest$<Leaderboard[]>(`${this.basePath}/leaderboards`, params);
-  }
-
-  /** Gets leaderboard metadata. */
-  public getLeaderboardMetadata$(
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    pegasusEnvironment: string,
-  ): Observable<Leaderboard> {
-    const params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('pegasusEnvironment', pegasusEnvironment);
-
-    return this.apiService.getRequest$<Leaderboard>(
-      `${this.basePath}/leaderboard/metadata`,
-      params,
-    );
-  }
-
-  /** Gets leaderboard scores. */
-  public getLeaderboardScores$(
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    deviceTypes: DeviceType[],
-    startAt: BigNumber,
-    maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS),
-    endpointKeyOverride?: string,
-  ): Observable<LeaderboardScore[]> {
-    let params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('startAt', startAt.toString())
-      .set('maxResults', maxResults.toString());
-    params = addQueryParamArray(params, 'deviceTypes', deviceTypes);
-
-    let headers = new HttpHeaders();
-    if (!!endpointKeyOverride) {
-      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
-    }
-
-    return this.apiService.getRequest$<LeaderboardScore[]>(
-      `${this.basePath}/leaderboard/scores/top`,
-      params,
-      headers,
-    );
-  }
-
-  /** Gets leaderboard scores. */
-  public getLeaderboardScoresNearPlayer$(
-    xuid: BigNumber,
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    deviceTypes: DeviceType[],
-    maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS),
-    endpointKeyOverride?: string,
-  ): Observable<LeaderboardScore[]> {
-    let params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('maxResults', maxResults.toString());
-    params = addQueryParamArray(params, 'deviceTypes', deviceTypes);
-
-    let headers = new HttpHeaders();
-    if (!!endpointKeyOverride) {
-      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
-    }
-
-    return this.apiService.getRequest$<LeaderboardScore[]>(
-      `${this.basePath}/leaderboard/scores/near-player/${xuid}`,
-      params,
-      headers,
-    );
-  }
-
-  /** Deletes leaderboard scores. */
-  public deleteLeaderboardScores$(
-    scoreIds: GuidLikeString[],
-    endpointKeyOverride?: string,
-  ): Observable<void> {
-    let headers = new HttpHeaders();
-    if (!!endpointKeyOverride) {
-      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
-    }
-
-    return this.apiService.postRequest$<void>(
-      `${this.basePath}/leaderboard/scores/delete`,
-      scoreIds,
-      undefined,
-      headers,
     );
   }
 }

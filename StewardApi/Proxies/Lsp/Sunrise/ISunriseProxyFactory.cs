@@ -22,5 +22,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise
         ///     Prepares a <see cref="IStorefrontService" />.
         /// </summary>
         IStorefrontService PrepareStorefrontService(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="IStorefrontManagementService" />.
+        /// </summary>
+        IStorefrontManagementService PrepareStorefrontManagementService(string endpoint);
     }
 }

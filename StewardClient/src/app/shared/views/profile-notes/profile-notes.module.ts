@@ -9,10 +9,26 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SunriseProfileNotesComponent } from './sunrise/sunrise-profile-notes.component';
 import { MatTableModule } from '@angular/material/table';
 import { WoodstockProfileNotesComponent } from './woodstock/woodstock-profile-notes.component';
+import { ProfileNotesComponent } from './profile-notes.component';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { SteelheadProfileNotesComponent } from './steelhead/steelhead-profile-notes.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 
 /** A domain module for displaying user profile notes. */
 @NgModule({
-  declarations: [SunriseProfileNotesComponent, WoodstockProfileNotesComponent],
+  declarations: [
+    ProfileNotesComponent,
+    SunriseProfileNotesComponent,
+    WoodstockProfileNotesComponent,
+    SteelheadProfileNotesComponent,
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -22,7 +38,20 @@ import { WoodstockProfileNotesComponent } from './woodstock/woodstock-profile-no
     MatTooltipModule,
     JsonDumpModule,
     FontAwesomeModule,
+    PermissionsModule,
+    DirectivesModule,
+    MonitorActionModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    VerifyButtonModule,
+    MatButtonModule,
+    MatInputModule,
+    StateManagersModule,
   ],
-  exports: [SunriseProfileNotesComponent, WoodstockProfileNotesComponent],
+  exports: [
+    SunriseProfileNotesComponent,
+    WoodstockProfileNotesComponent,
+    SteelheadProfileNotesComponent,
+  ],
 })
 export class ProfileNotesModule {}

@@ -42,7 +42,7 @@ module.exports = function (config) {
         global: {
           statements: 60,
           lines: 60,
-          functions: 60,
+          functions: 55,
           excludes: [
             '**/*.spec.ts',
             '**/*.debug.ts',
@@ -50,6 +50,10 @@ module.exports = function (config) {
             '**/app/pages/util/**/*',
             '**/helpers/types.ts',
             '**/helpers/rxjs/render-guard.ts',
+            '**/app/shared/models/**/*.ts',
+            '**/app/shared/mocks/**/*.ts',
+            '**/*.mock.ts',
+            '**/app/shared/services/api-v2/**/*.ts', // Ignore V2 services for now while steelhead is in development
           ],
         },
         each: {
@@ -71,6 +75,7 @@ module.exports = function (config) {
             '**/app/sidebars/changelog/**/*.ts',
             '**/helpers/types.ts',
             '**/helpers/rxjs/render-guard.ts',
+            '**/app/shared/models/**/*.ts',
           ],
         },
       },

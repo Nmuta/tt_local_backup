@@ -12,6 +12,7 @@ import { LuxonModule } from 'luxon-angular';
 import { MatIconModule } from '@angular/material/icon';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { AuctionDataModule } from '@views/auction-data/auction-data.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
@@ -47,6 +48,7 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     PipesModule,
     MatTooltipModule,
+    MatExpansionModule,
     AuctionDataModule,
     MatDatepickerModule,
     MatCardModule,

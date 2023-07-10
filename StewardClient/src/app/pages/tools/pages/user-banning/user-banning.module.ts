@@ -32,7 +32,7 @@ import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.c
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
@@ -81,7 +81,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTabsModule,
     EndpointSelectionModule,
     MatAutocompleteModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,

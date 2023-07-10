@@ -2,7 +2,6 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { arrayBufferToBase64 } from '@helpers/convert-array-buffer';
-import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { GameTitle } from '@models/enums';
 import { AcLogReaderResponse } from '@services/api-v2/steelhead/ac-log-reader/steelhead-ac-log-reader.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -11,6 +10,11 @@ import { Observable, takeUntil } from 'rxjs';
 export interface AcLogReaderServiceContract {
   gameTitle: GameTitle;
   processGameLog$(log: string): Observable<AcLogReaderResponse>;
+}
+
+interface StyledLog {
+  text: string;
+  class: string;
 }
 
 /** Component for displaying AC Log Reader. */
@@ -23,8 +27,8 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
   /** The AC Log Reader service. */
   @Input() service: AcLogReaderServiceContract;
 
-  public getMonitor = new ActionMonitor('Process Client Crash File');
-  public decodedLog: string;
+  public postMonitor = new ActionMonitor('Process Client Crash File');
+  public decodedLog: StyledLog[];
 
   public formControls = {
     fileName: new FormControl(null, [Validators.required]),
@@ -35,19 +39,35 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
   public fileName: string;
   public fileContent: string;
 
+  private category1: string[] = ['Client Req. Term', 'Prohibited Driver', 'Prohibited Module'];
+  private category2: string[] = ['Inject', 'Object Holds Handle'];
+  private category3: string[] = [
+    'Countermeasure',
+    'Counter Measure',
+    'Hard Exit',
+    'AntiCheat Version',
+  ];
+  private category4: string[] = [
+    'SysInfo',
+    'Not fully signed',
+    'Session UID',
+    'FngPrnt',
+    'OS Version',
+  ];
+
   constructor() {
     super();
   }
 
   /** Initialization hook. */
-  public ngOnChanges(_changes: BetterSimpleChanges<AcLogReaderBaseComponent>): void {
+  public ngOnChanges(): void {
     if (!this.service) {
       throw new Error('Service Contract could not be found for AC Log Reader component.');
     }
   }
 
   /** Fires when the selected file changes. */
-  public onFileSelected(event) {
+  public onFileSelected(event): void {
     const file: File = event.target.files[0];
 
     if (file) {
@@ -58,21 +78,40 @@ export class AcLogReaderBaseComponent extends BaseComponent implements OnChanges
       fileReader.onload = e => {
         const bytes = arrayBufferToBase64(e.target.result as ArrayBuffer);
         this.fileContent = bytes;
+        this.decodeLog();
       };
 
       fileReader.readAsArrayBuffer(file);
     }
   }
 
-  /** Fires when the Decode button is clicked. */
-  public onDecodeClick() {
-    this.getMonitor = this.getMonitor.repeat();
+  /** Sends log file to be decoded, then parses response to apply conditional styling. */
+  public decodeLog(): void {
+    this.postMonitor = this.postMonitor.repeat();
 
     this.service
       .processGameLog$(this.fileContent)
-      .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(response => {
-        this.decodedLog = response.decodedLog;
+        const split = response.decodedLog.split('\r\n');
+        const splitAndStyle: StyledLog[] = split.map(line => {
+          let category = null;
+
+          if (this.category1.some(substring => line.includes(substring))) {
+            category = 'category1';
+          } else if (this.category2.some(substring => line.includes(substring))) {
+            category = 'category2';
+          } else if (this.category3.some(substring => line.includes(substring))) {
+            category = 'category3';
+          } else if (this.category4.some(substring => line.includes(substring))) {
+            category = 'category4';
+          }
+
+          return { text: line, class: category };
+        });
+
+        this.decodedLog = splitAndStyle;
+
         this.formControls.fileName.reset();
       });
   }

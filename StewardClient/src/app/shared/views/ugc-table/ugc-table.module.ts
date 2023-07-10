@@ -20,7 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ApolloUgcTableComponent } from './apollo/apollo-ugc-table.component';
 import { RouterModule } from '@angular/router';
 import { FeatureUgcModalModule } from '@views/feature-ugc-modal/feature-ugc-modal.module';
@@ -29,6 +29,9 @@ import { SteelheadUgcTableComponent } from './steelhead/steelhead-ugc-table.comp
 import { HelpModule } from '@shared/modules/help/help.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -42,6 +45,9 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     CommonModule,
     MatDialogModule,
     MatTooltipModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
     FontAwesomeModule,
     PipesModule,
     ErrorSpinnerModule,
@@ -59,7 +65,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     StateManagersModule,
     MatSnackBarModule,
     MatIconModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
     RouterModule,
     FeatureUgcModalModule,
     UgcDownloadButtonModule,

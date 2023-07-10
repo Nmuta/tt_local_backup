@@ -1,5 +1,10 @@
 @import '/src/styles/mixins';
 
+.short-spacer {
+  flex: 0 1 2em;
+  min-width: 2em;
+}
+
 .mat-menu-trigger {
   padding: 0;
   min-width: $gap-medium + $gap-medium;

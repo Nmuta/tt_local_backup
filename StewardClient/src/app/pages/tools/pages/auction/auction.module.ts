@@ -26,7 +26,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
 import { CacheModule } from '@shared/modules/cache/cache.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
-import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 /**
@@ -65,7 +65,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CacheModule,
     StateManagersModule,
     PermissionsModule,
-    VerifyCheckboxModule,
+    VerifyButtonModule,
   ],
 })
 export class AuctionModule {}

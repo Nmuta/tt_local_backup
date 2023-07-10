@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
+#pragma warning disable SA1600 // Elements should be documented
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
@@ -7,29 +9,24 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// </summary>
     public class PlayerInventoryCarItem : PlayerInventoryItem
     {
-        /// <summary>
-        ///     Gets or sets the Vehicle Identification Number.
-        /// </summary>
         public Guid Vin { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the Vehicle Identification Number.
-        /// </summary>
         public Guid? VersionedLiveryId { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the Vehicle Identification Number.
-        /// </summary>
         public Guid? VersionedTuneId { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the current level.
-        /// </summary>
         public uint CurrentLevel { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the experience points.
-        /// </summary>
         public uint ExperiencePoints { get; set; }
+
+        public ulong Flags { get; set; }
+
+        public IEnumerable<byte> ClientCarInfo { get; set; }
+
+        public double PurchasePrice { get; set; }
+
+        public string EntitlementId { get; set; }
+
+        public IEnumerable<uint> TiersAchieved { get; set; }
     }
 }

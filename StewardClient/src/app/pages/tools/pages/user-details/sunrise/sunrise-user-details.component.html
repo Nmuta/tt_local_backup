@@ -48,19 +48,17 @@
         </div>
       </mat-tab>
       <mat-tab label="Auctions">
+        <ng-template mat-tab-label>
+          Auctions
+          <error-spinner
+            [isActive]="auctionActionLog.getMonitor.isActive | renderGuard"
+            spinnerMessage="Retrieving Data"
+          ></error-spinner>
+        </ng-template>
         <div class="sf-wrapper sf-tab-container">
           <sunrise-player-auctions [identity]="identity"></sunrise-player-auctions>
         </div>
-      </mat-tab>
-      <mat-tab>
         <div class="sf-wrapper sf-tab-container">
-          <ng-template mat-tab-label>
-            Auction Log
-            <error-spinner
-              [isActive]="auctionActionLog.getMonitor.isActive | renderGuard"
-              spinnerMessage="Retrieving Data"
-            ></error-spinner>
-          </ng-template>
           <sunrise-player-auction-action-log
             #auctionActionLog
             [identity]="identity"

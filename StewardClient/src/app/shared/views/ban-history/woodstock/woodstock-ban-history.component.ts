@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { GameTitle } from '@models/enums';
 import { UnbanResult } from '@models/unban-result';
 import { OldPermissionsService } from '@services/old-permissions';
+import { MultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service';
 
 /** Retreives and displays Woodstock Ban history by XUID. */
 @Component({
@@ -29,8 +30,9 @@ export class WoodstockBanHistoryComponent extends BanHistoryBaseComponent {
   constructor(
     private readonly woodstock: WoodstockService,
     permissionsService: OldPermissionsService,
+    multipleBanHistoryService: MultipleBanHistoryService,
   ) {
-    super(permissionsService);
+    super(permissionsService, multipleBanHistoryService);
   }
 
   /** Gets the Woodstock ban history. */

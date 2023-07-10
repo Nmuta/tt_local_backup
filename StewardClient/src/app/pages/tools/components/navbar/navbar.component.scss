@@ -77,3 +77,10 @@
     color: app-color-default-contrast($app-background);
   }
 }
+
+.sidebar-icons {
+  display: flex;
+  flex-direction: row;
+  flex: 0.25 0 2em;
+  max-width: fit-content;
+}

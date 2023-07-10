@@ -155,6 +155,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string Showroom = "Topic: Showroom";
             public const string Rivals = "Topic: Rivals";
             public const string AcLogReader = "Topic: AcLogReader";
+            public const string SafetyRating = "Topic: SafetyRating";
+            public const string SkillRating = "Topic: SkillRating";
         }
 
         /// <summary>

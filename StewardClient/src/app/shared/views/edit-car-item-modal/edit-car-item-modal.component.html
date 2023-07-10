@@ -1,0 +1,117 @@
+<h2 mat-dialog-title>
+  Edit Player Car
+  <br />
+  <span class="mat-subheading-2">
+    {{ gameTitle | humanize }}
+  </span>
+</h2>
+
+<mat-dialog-content>
+  <table class="info-table">
+    <tr>
+      <th>Car Id</th>
+      <td>{{ carItem.id }}</td>
+    </tr>
+    <tr>
+      <th>Car Name</th>
+      <td>{{ carItem.description }}</td>
+    </tr>
+    <tr>
+      <th>VIN</th>
+      <td>{{ carItem.vin }}</td>
+    </tr>
+    <tr>
+      <th>Entitlement Id</th>
+      <td>{{ carItem.entitlementId }}</td>
+    </tr>
+    <tr>
+      <th>Tiers Achieved</th>
+      <td>{{ carItem.tiersAchieved }}</td>
+    </tr>
+    <tr>
+      <th>Acquired Date Utc</th>
+      <td>{{ carItem.acquiredUtc }}</td>
+    </tr>
+    <tr>
+      <th>
+        <help-popover-icon clickStop cardTitle="Current level of a car" cardSubtitle="Steelhead">
+          <p>
+            A car's current level is determined by Services based on the car's current experience
+            points (XP).
+          </p>
+        </help-popover-icon>
+        Current Level
+      </th>
+      <td>
+        {{ carItem.currentLevel }}
+      </td>
+    </tr>
+  </table>
+
+  <form [formGroup]="formGroup">
+    <mat-form-field>
+      <mat-label>Versioned Livery Id</mat-label>
+      <input matInput [formControl]="formControls.versionedLiveryId" />
+      <mat-hint>Make sure any new id is a livery for car id {{ carItem.id }}</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Versioned Tune Id</mat-label>
+      <input matInput [formControl]="formControls.versionedTuneId" />
+      <mat-hint>Make sure any new id is a tune blob for car id {{ carItem.id }}</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Experience Points</mat-label>
+      <input matInput [formControl]="formControls.experiencePoints" />
+      <mat-hint>Experience points determine the car's current level</mat-hint>
+      <mat-error *ngIf="formControls.experiencePoints.hasError('min')"
+        >Cannot be below 0
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Flags</mat-label>
+      <input matInput [formControl]="formControls.flags" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Purchase Price</mat-label>
+      <input matInput [formControl]="formControls.purchasePrice" />
+      <mat-error *ngIf="formControls.purchasePrice.hasError('min')">Cannot be below 0 </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <verify-button
+    #verifyBtn
+    [permissionAttribute]="editCardPermission"
+    [permissionTitle]="gameTitle"
+  ></verify-button>
+  <button
+    [disabled]="!formGroup.valid"
+    stateManager
+    [monitor]="postMonitor"
+    [verifyWithV2]="verifyBtn"
+    monitorDisable
+    monitorCompleteSnackbar
+    monitorWarnSnackbar
+    mat-raised-button
+    color="primary"
+    (click)="saveCarUpdates()"
+  >
+    Save
+    <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+  </button>
+  <button
+    stateManager
+    [monitor]="postMonitor"
+    monitorDisable
+    mat-stroked-button
+    color="warn"
+    mat-dialog-close
+  >
+    Close
+  </button>
+</mat-dialog-actions>

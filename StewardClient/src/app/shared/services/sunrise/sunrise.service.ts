@@ -39,7 +39,6 @@ import {
 import { AuctionFilters } from '@models/auction-filters';
 import { SimpleCar } from '@models/cars';
 import { PlayerAuction } from '@models/player-auction';
-import { ProfileNote } from '@models/profile-note.model';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
 import { UgcType } from '@models/ugc-filters';
 import { PlayerUgcItem } from '@models/player-ugc-item';
@@ -198,13 +197,6 @@ export class SunriseService {
   public getFlagsByXuid$(xuid: BigNumber): Observable<SunriseUserFlags> {
     return this.apiService.getRequest$<SunriseUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
-    );
-  }
-
-  /** Gets user flags by a XUID. */
-  public getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]> {
-    return this.apiService.getRequest$<ProfileNote[]>(
-      `${this.basePath}/player/xuid(${xuid})/profileNotes`,
     );
   }
 

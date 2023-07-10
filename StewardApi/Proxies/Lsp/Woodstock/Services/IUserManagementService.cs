@@ -111,5 +111,20 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
         ///     Gets the next ban period for a player based on a ban configuration.
         /// </summary>
         Task<GetNextBanPeriodOutput> GetNextBanPeriod(ulong xuid, Guid pegasusBanConfigurationId);
+
+        /// <summary>
+        ///     Gets ban history summaries by xuids.
+        /// </summary>
+        Task<GetUserBanSummariesOutput> GetUserBanSummaries(ulong[] xuids, int xuidCount);
+
+        /// <summary>
+        ///     Add meta-level comment to a player.
+        /// </summary>
+        Task AddAdminComment(ulong xuid, string text, string author);
+
+        /// <summary>
+        ///     Gets meta-level comments on a player.
+        /// </summary>
+        Task<GetAdminCommentsOutput> GetAdminComments(ulong xuid, int maxResults);
     }
 }

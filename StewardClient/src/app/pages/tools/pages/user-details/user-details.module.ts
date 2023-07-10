@@ -52,6 +52,8 @@ import { PaidEntitlementsModule } from '@views/paid-entitlements/paid-entitlemen
 import { ForumBanHistoryModule } from '@views/forum-ban-history/forum-ban-history.module';
 import { DriverLevelModule } from '@views/driver-level/driver-level.module';
 import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
+import { SafetyRatingModule } from '@views/safety-rating/safety-rating.module';
+import { SkillRatingModule } from '@views/skill-rating/skill-rating.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -113,6 +115,8 @@ import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/
     ForumBanHistoryModule,
     DriverLevelModule,
     PlayerInventoryProfilesModule,
+    SafetyRatingModule,
+    SkillRatingModule,
   ],
 })
 export class UserDetailsModule {}

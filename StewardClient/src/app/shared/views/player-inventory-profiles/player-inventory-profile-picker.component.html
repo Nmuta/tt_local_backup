@@ -14,14 +14,15 @@
     [selected]="profile?.isCurrent"
   >
     <mat-icon
-      *ngIf="profile.isCurrentByTitleId"
+      *ngIf="!!profile.titleId ? profile.isCurrentByTitleId : profile.isCurrent"
       class="leading-icon"
+      [matTooltipDisabled]="!profile.titleId"
       [matTooltip]="'Profile active for title ID: ' + profile.titleId"
     >
       person
     </mat-icon>
     <mat-icon
-      *ngIf="!profile.isCurrentByTitleId"
+      *ngIf="!!profile.titleId ? !profile.isCurrentByTitleId : !profile.isCurrent"
       class="leading-icon"
       matTooltip="Profile Inactive"
     >

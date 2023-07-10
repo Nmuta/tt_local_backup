@@ -94,6 +94,15 @@ div.table-wide-actions {
   }
 }
 
+.action-section {
+  flex-grow: 0;
+  margin: -1em;
+}
+
+.bulk-report-reason {
+  max-width: $container-width-small;
+}
+
 mat-progress-spinner {
   margin: auto;
   margin-top: $gap-small;

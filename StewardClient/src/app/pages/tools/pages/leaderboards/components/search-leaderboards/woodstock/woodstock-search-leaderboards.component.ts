@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { WoodstockService } from '@services/woodstock';
+import { WoodstockLeaderboardsService } from '@services/api-v2/woodstock/leaderboards/woodstock-leaderboards.service';
 
 /**
  *  Woodstock search leaderboards component.
@@ -9,5 +9,5 @@ import { WoodstockService } from '@services/woodstock';
   templateUrl: './woodstock-search-leaderboards.component.html',
 })
 export class WoodstockSearchLeaderboardsComponent {
-  constructor(public readonly service: WoodstockService) {}
+  constructor(public readonly leaderboardsService: WoodstockLeaderboardsService) {}
 }

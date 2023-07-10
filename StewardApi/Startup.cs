@@ -57,6 +57,7 @@ using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers.BigCat;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.MsGraph;
 using Turn10.LiveOps.StewardApi.Providers.MsTeams;
@@ -334,6 +335,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<PlayFabBuildLocksProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<KustoQueryProvider>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<StewardUserProvider>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<BigCatService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
             builder.RegisterType<PolicyResultAuthorizationMiddleware>().As<IAuthorizationMiddlewareResultHandler>().SingleInstance();
             builder.RegisterType<ForumBanHistoryProvider>().As<IForumBanHistoryProvider>().SingleInstance();
@@ -456,7 +458,6 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<SteelheadGiftRequestValidator>().As<IRequestValidator<SteelheadGift>>().SingleInstance();
             builder.RegisterType<SteelheadMasterInventoryRequestValidator>().As<IRequestValidator<SteelheadMasterInventory>>().SingleInstance();
             builder.RegisterType<SteelheadPlayerInventoryItemUpdateRequestValidator>().As<IRequestValidator<SteelheadPlayerInventory>>().SingleInstance();
-            builder.RegisterType<SteelheadPlayerInventoryCarUpdateRequestValidator>().As<IRequestValidator<IList<CarInventoryItem>>>().SingleInstance();
             builder.RegisterType<SteelheadUserFlagsRequestValidator>().As<IRequestValidator<SteelheadUserFlagsInput>>().SingleInstance();
         }
 

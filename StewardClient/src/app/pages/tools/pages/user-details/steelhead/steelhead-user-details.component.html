@@ -14,8 +14,10 @@
             <steelhead-cms-override [identity]="identity"></steelhead-cms-override>
             <steelhead-driver-level [identity]="identity"></steelhead-driver-level>
             <steelhead-paid-entitlements [identity]="identity"></steelhead-paid-entitlements>
+            <steelhead-safety-rating [identity]="identity"></steelhead-safety-rating>
           </div>
           <steelhead-ban-history [xuid]="identity.xuid"></steelhead-ban-history>
+          <steelhead-profile-notes [identity]="identity"></steelhead-profile-notes>
           <entitlements [identity]="identity"></entitlements>
           <steelhead-gamertags [identity]="identity"></steelhead-gamertags>
           <steelhead-consoles [identity]="identity"></steelhead-consoles>
@@ -53,6 +55,10 @@
               ></steelhead-player-profile-management>
             </mat-card-content>
           </mat-card>
+          <steelhead-skill-rating
+            [identity]="identity"
+            [profile]="profile"
+          ></steelhead-skill-rating>
           <mat-card>
             <mat-card-header>
               <mat-card-title>Profile Inventory</mat-card-title>
