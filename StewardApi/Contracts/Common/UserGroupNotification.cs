@@ -33,6 +33,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public string Message { get; set; }
 
         /// <summary>
+        ///     Gets or sets the title.
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
         ///     Gets or sets the notification type.
         /// </summary>
         public string NotificationType { get; set; }

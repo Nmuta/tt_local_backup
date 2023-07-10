@@ -69,7 +69,7 @@ export class LocalizedGroupNotificationManagementComponent
   public rawNotifications: LocalizedGroupNotification[];
   public notifications = new MatTableDataSource<FormGroupNotificationEntry>();
 
-  public columnsToDisplay = ['message', 'metadata', 'actions'];
+  public columnsToDisplay = ['title', 'message', 'metadata', 'actions'];
 
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public allMonitors = [this.getMonitor];
@@ -224,8 +224,7 @@ export class LocalizedGroupNotificationManagementComponent
   ): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), groupNotification.sentDateUtc]);
     const formControls = {
-      localizedTitleInfo: new FormControl({ id: '', englishText: groupNotification.title }), //Replace with line below once we have working title editing
-      //localizedTitleInfo: new FormControl({}, [Validators.required]),
+      localizedTitleInfo: new FormControl({}, [Validators.required]),
       localizedMessageInfo: new FormControl({}, [Validators.required]),
       deviceType: new FormControl(groupNotification.deviceType),
       expireDateUtc: new FormControl(groupNotification.expirationDateUtc, [

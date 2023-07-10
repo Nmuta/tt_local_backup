@@ -191,22 +191,6 @@ export class MockWoodstockService {
     .createSpy('getPlayerAuctionLogByXuid$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
-  public getLeaderboards$ = jasmine
-    .createSpy('getLeaderboards$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
-
-  public getLeaderboardScores$ = jasmine
-    .createSpy('getLeaderboardScores$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
-
-  public getLeaderboardScoresNearPlayer$ = jasmine
-    .createSpy('getLeaderboardScoresNearPlayer$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
-
-  public deleteLeaderboardScores$ = jasmine
-    .createSpy('deleteLeaderboardScores$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
-
   public postGiftLiveryToPlayersUsingBackgroundJob$ = jasmine
     .createSpy('postGiftLiveryToPlayersUsingBackgroundJob$')
     .and.callFake(() =>

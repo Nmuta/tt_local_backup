@@ -29,6 +29,9 @@ import { SteelheadUgcTableComponent } from './steelhead/steelhead-ugc-table.comp
 import { HelpModule } from '@shared/modules/help/help.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -42,6 +45,9 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     CommonModule,
     MatDialogModule,
     MatTooltipModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
     FontAwesomeModule,
     PipesModule,
     ErrorSpinnerModule,
