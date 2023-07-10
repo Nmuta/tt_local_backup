@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '68ba527e-4a44-4bb6-bfea-f890c4fcde4e',
-      shortText: 'Multiple dropdowns now populated with real pegasus data',
+      shortText: 'Use Pegasus data to populate dropdowns',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
