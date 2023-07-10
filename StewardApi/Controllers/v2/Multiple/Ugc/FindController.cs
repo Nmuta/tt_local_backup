@@ -20,6 +20,9 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using static System.Net.Mime.MediaTypeNames;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using FH4UGCContentType = Forza.LiveOps.FH4.Generated.ForzaUGCContentType;
+using FH5UGCContentType = Turn10.Services.LiveOps.FH5_main.Generated.ForzaUGCContentType;
+using FM8UGCContentType = Turn10.Services.LiveOps.FM8.Generated.ForzaUGCContentType;
 using ServicesLiveOpsFH4 = Forza.LiveOps.FH4.Generated;
 using ServicesLiveOpsFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 using ServicesLiveOpsFM8 = Turn10.Services.LiveOps.FM8.Generated;
@@ -43,6 +46,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
         private readonly ISunriseService fh4Service;
         private readonly ILoggingService loggingService;
 
+        private readonly IList<FH4UGCContentType> fh4SupportedTypes = new List<FH4UGCContentType> { FH4UGCContentType.Livery, FH4UGCContentType.Layergroup, FH4UGCContentType.Tune, FH4UGCContentType.Photo, FH4UGCContentType.EventBlueprint };
+        private readonly IList<FH5UGCContentType> fh5SupportedTypes = new List<FH5UGCContentType> { FH5UGCContentType.Livery, FH5UGCContentType.Layergroup, FH5UGCContentType.Tune, FH5UGCContentType.Photo, FH5UGCContentType.EventBlueprint, FH5UGCContentType.CommunityChallenge };
+        private readonly IList<FM8UGCContentType> fm8SupportedTypes = new List<FM8UGCContentType> { FM8UGCContentType.Livery, FM8UGCContentType.TuneBlob, FM8UGCContentType.Photo };
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="FindController"/> class.
         /// </summary>
@@ -62,161 +69,96 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> Get(string shareCodeOrId)
         {
-            var fh5StorefrontManagementService = this.WoodstockServices.Value.StorefrontManagementService;
-            var fm8StorefrontManagementService = this.SteelheadServices.Value.StorefrontManagementService;
-            var fm8Lookups = new[]
+            var fh4StorefrontService = this.SunriseServices.Value.StorefrontManagementService;
+            var fh5StorefrontService = this.WoodstockServices.Value.StorefrontManagementService;
+            var fm8StorefrontService = this.SteelheadServices.Value.StorefrontManagementService;
+
+            // If it parses to Guid, it's a UGC ID, else it's a sharecode
+            if (Guid.TryParse(shareCodeOrId, out var ugcId))
             {
-                this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.Livery),
-                this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob),
-                this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.Photo),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCLiveryOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFM8.ForzaUGCContentType.Livery,
-                    (id) => fm8StorefrontManagementService.GetUGCLivery(id),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.Livery),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCTuneOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob,
-                    (id) => fm8StorefrontManagementService.GetUGCTune(id),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFM8.ForzaUGCContentType?, ServicesLiveOpsFM8.StorefrontManagementService.GetUGCPhotoOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFM8.ForzaUGCContentType.Photo,
-                    (id) => fm8StorefrontManagementService.GetUGCPhoto(id),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFM8.ForzaUGCContentType.Photo),
-            };
+                FH4UGCContentType? fh4UgcType = null;
+                FH5UGCContentType? fh5UgcType = null;
+                FM8UGCContentType? fm8UgcType = null;
 
-            var fh5Lookups = new[]
-            {
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Livery),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Tune),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Photo),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, ServicesLiveOpsFH5.StorefrontManagementService.GetUGCLiveryOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH5.ForzaUGCContentType.Livery,
-                    (id) => this.fh5Service.GetPlayerLiveryAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Livery),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, ServicesLiveOpsFH5.StorefrontManagementService.GetUGCTuneOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH5.ForzaUGCContentType.Tune,
-                    (id) => this.fh5Service.GetPlayerTuneAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Tune),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, ServicesLiveOpsFH5.StorefrontManagementService.GetUGCPhotoOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH5.ForzaUGCContentType.Photo,
-                    (id) => this.fh5Service.GetPlayerPhotoAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Photo),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, SubmoduleFH5.LiveOpsService.GetUGCEventBlueprintOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint,
-                    (id) => this.fh5Service.GetEventBlueprintAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, SubmoduleFH5.LiveOpsService.GetUGCCommunityChallengeOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge,
-                    (id) => this.fh5Service.GetCommunityChallengeAsync(id, this.WoodstockEndpoint.Value),
-                    item => item.communityChallengeData.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH5.ForzaUGCContentType?, T10SubmoduleFH5.StorefrontManagementService.GetUGCLayerGroupOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup,
-                    (id) => fh5StorefrontManagementService.GetUGCLayerGroup(id),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
-            };
-
-            var fh4Lookups = new[]
-            {
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Livery),
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup),
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Tune),
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Photo),
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.EventBlueprint),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCLiveryOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH4.ForzaUGCContentType.Livery,
-                    (id) => this.fh4Service.GetPlayerLiveryAsync(id, this.SunriseEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Livery),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCObjectOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup,
-                    (id) => this.fh4Service.GetPlayerUgcObjectAsync(id, this.SunriseEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCTuneOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH4.ForzaUGCContentType.Tune,
-                    (id) => this.fh4Service.GetPlayerTuneAsync(id, this.SunriseEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Tune),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCPhotoOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH4.ForzaUGCContentType.Photo,
-                    (id) => this.fh4Service.GetPlayerPhotoAsync(id, this.SunriseEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.Photo),
-                this.LookupIdOrNullAsync<ServicesLiveOpsFH4.ForzaUGCContentType?, ServicesLiveOpsFH4.StorefrontManagementService.GetUGCObjectOutput>(
-                    shareCodeOrId,
-                    ServicesLiveOpsFH4.ForzaUGCContentType.EventBlueprint,
-                    (id) => this.fh4Service.GetPlayerUgcObjectAsync(id, this.SunriseEndpoint.Value),
-                    item => item.result.Metadata.ContentType == ServicesLiveOpsFH4.ForzaUGCContentType.EventBlueprint),
-            };
-
-            await Task.WhenAll(fm8Lookups).ConfigureAwait(true);
-            await Task.WhenAll(fh5Lookups).ConfigureAwait(true);
-            await Task.WhenAll(fh4Lookups).ConfigureAwait(true);
-
-            var foundInFM8 = fm8Lookups
-                .Select(fm8Lookup => fm8Lookup.GetAwaiter().GetResult())
-                .Where(v => v != null)
-                .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
-                .ToList();
-            var foundInFH5 = fh5Lookups
-                .Select(fh5Lookup => fh5Lookup.GetAwaiter().GetResult())
-                .Where(v => v != null)
-                .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
-                .ToList();
-            var foundInFH4 = fh4Lookups
-                .Select(fh4Lookup => fh4Lookup.GetAwaiter().GetResult())
-                .Where(v => v != null)
-                .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
-                .ToList();
-
-            return this.Ok(new OutputModel
-            {
-                ShareCodeOrId = shareCodeOrId,
-                Fm8 = foundInFM8,
-                Fh5 = foundInFH5,
-                Fh4 = foundInFH4,
-            });
-        }
-
-#nullable enable
-        private async Task<TUgcContentType?> LookupIdOrNullAsync<TUgcContentType, TOutput>(string shareCodeOrId, TUgcContentType type, Func<Guid, Task<TOutput>> actionAsync, Func<TOutput, bool> validator)
-        {
-            if (Guid.TryParse(shareCodeOrId, out var id))
-            {
                 try
                 {
-                    var result = await actionAsync(id).ConfigureAwait(true);
-                    if (result != null && validator(result))
+                    var fh4UgcContext = await fh4StorefrontService.GetUGCObject(ugcId).ConfigureAwait(true);
+                    fh4UgcType = fh4UgcContext.result.Metadata.ContentType;
+                    if (!this.fh4SupportedTypes.Contains(fh4UgcType.Value))
                     {
-                        return type;
-                    }
-                    else
-                    {
-                        return default(TUgcContentType);
+                        fh4UgcType = null;
                     }
                 }
-                catch
+                catch {/* Do nothing */}
+                try
                 {
-                    return default(TUgcContentType);
+                    var fh5UgcContext = await fh5StorefrontService.GetUGCObject(ugcId).ConfigureAwait(true);
+                    fh5UgcType = fh5UgcContext.result.Metadata.ContentType;
+                    if (!this.fh5SupportedTypes.Contains(fh5UgcType.Value))
+                    {
+                        fh5UgcType = null;
+                    }
                 }
+                catch {/* Do nothing */}
+
+                try
+                {
+                    var fm8UgcContext = await fm8StorefrontService.GetUGCObject(ugcId).ConfigureAwait(true);
+                    fm8UgcType = fm8UgcContext.result.Metadata.ContentType;
+                    if (!this.fm8SupportedTypes.Contains(fm8UgcType.Value))
+                    {
+                        fm8UgcType = null;
+                    }
+                }
+                catch {/* Do nothing */}
+
+
+
+                return this.Ok(new OutputModel
+                {
+                    ShareCodeOrId = shareCodeOrId,
+                    Fm8 = fm8UgcType.HasValue ? new List<UgcType> { Enum.Parse<UgcType>(fm8UgcType.Value.ToString(), true) } : new List<UgcType>(),
+                    Fh5 = fh5UgcType.HasValue ? new List<UgcType> { Enum.Parse<UgcType>(fh5UgcType.Value.ToString(), true) } : new List<UgcType>(),
+                    Fh4 = fh4UgcType.HasValue ? new List<UgcType> { Enum.Parse<UgcType>(fh4UgcType.Value.ToString(), true) } : new List<UgcType>(),
+                });
             }
             else
             {
-                return default(TUgcContentType);
+                var fm8Lookups = this.fm8SupportedTypes.Select(contentType => this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, contentType)).ToArray();
+                var fh5Lookups = this.fh5SupportedTypes.Select(contentType => this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, contentType)).ToArray();
+                var fh4Lookups = this.fh4SupportedTypes.Select(contentType => this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, contentType)).ToArray();
+
+                await Task.WhenAll(fm8Lookups).ConfigureAwait(true);
+                await Task.WhenAll(fh5Lookups).ConfigureAwait(true);
+                await Task.WhenAll(fh4Lookups).ConfigureAwait(true);
+
+                var foundInFM8 = fm8Lookups
+                    .Select(fm8Lookup => fm8Lookup.GetAwaiter().GetResult())
+                    .Where(v => v != null)
+                    .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
+                    .ToList();
+                var foundInFH5 = fh5Lookups
+                    .Select(fh5Lookup => fh5Lookup.GetAwaiter().GetResult())
+                    .Where(v => v != null)
+                    .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
+                    .ToList();
+                var foundInFH4 = fh4Lookups
+                    .Select(fh4Lookup => fh4Lookup.GetAwaiter().GetResult())
+                    .Where(v => v != null)
+                    .Select(v => Enum.Parse<UgcType>(v.Value.ToString(), true))
+                    .ToList();
+
+                return this.Ok(new OutputModel
+                {
+                    ShareCodeOrId = shareCodeOrId,
+                    Fm8 = foundInFM8,
+                    Fh5 = foundInFH5,
+                    Fh4 = foundInFH4,
+                });
             }
         }
 
+#nullable enable
         private async Task<ServicesLiveOpsFM8.ForzaUGCContentType?> LookupFM8ShareCodeOrNullAsync(string shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType type)
         {
             try
