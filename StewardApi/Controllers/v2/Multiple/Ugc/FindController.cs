@@ -20,6 +20,9 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using static System.Net.Mime.MediaTypeNames;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using FH4UGCContentType = Forza.LiveOps.FH4.Generated.ForzaUGCContentType;
+using FH5UGCContentType = Turn10.Services.LiveOps.FH5_main.Generated.ForzaUGCContentType;
+using FM8UGCContentType = Turn10.Services.LiveOps.FM8.Generated.ForzaUGCContentType;
 using ServicesLiveOpsFH4 = Forza.LiveOps.FH4.Generated;
 using ServicesLiveOpsFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 using ServicesLiveOpsFM8 = Turn10.Services.LiveOps.FM8.Generated;
@@ -43,9 +46,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
         private readonly ISunriseService fh4Service;
         private readonly ILoggingService loggingService;
 
-        private readonly IList<UgcType> fh4SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.LayerGroup, UgcType.Tune, UgcType.Photo, UgcType.EventBlueprint };
-        private readonly IList<UgcType> fh5SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.LayerGroup, UgcType.Tune, UgcType.Photo, UgcType.EventBlueprint, UgcType.CommunityChallenge };
-        private readonly IList<UgcType> fm8SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.TuneBlob, UgcType.Photo };
+        //private readonly IList<UgcType> fh4SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.LayerGroup, UgcType.Tune, UgcType.Photo, UgcType.EventBlueprint };
+        //private readonly IList<UgcType> fh5SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.LayerGroup, UgcType.Tune, UgcType.Photo, UgcType.EventBlueprint, UgcType.CommunityChallenge };
+        //private readonly IList<UgcType> fm8SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.TuneBlob, UgcType.Photo };
+
+        private readonly IList<FH4UGCContentType> fh4SupportedTypes = new List<FH4UGCContentType> { FH4UGCContentType.Livery, FH4UGCContentType.Layergroup, FH4UGCContentType.Tune, FH4UGCContentType.Photo, FH4UGCContentType.EventBlueprint };
+        private readonly IList<FH5UGCContentType> fh5SupportedTypes = new List<FH5UGCContentType> { FH5UGCContentType.Livery, FH5UGCContentType.Layergroup, FH5UGCContentType.Tune, FH5UGCContentType.Photo, FH5UGCContentType.EventBlueprint, FH5UGCContentType.CommunityChallenge };
+        private readonly IList<FM8UGCContentType> fm8SupportedTypes = new List<FM8UGCContentType> { FM8UGCContentType.Livery, FM8UGCContentType.TuneBlob, FM8UGCContentType.Photo };
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="FindController"/> class.
@@ -73,27 +80,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
             // If it parses to Guid, it's a UGC ID, else it's a sharecode
             if (Guid.TryParse(shareCodeOrId, out var ugcId))
             {
-                var fh4UgcType = UgcType.Unknown;
-                var fh5UgcType = UgcType.Unknown;
-                var fm8UgcType = UgcType.Unknown;
+                FH4UGCContentType? fh4UgcType = null;
+                FH5UGCContentType? fh5UgcType = null;
+                FM8UGCContentType? fm8UgcType = null;
 
                 try
                 {
                     var fh4UgcContext = await fh4StorefrontService.GetUGCObject(ugcId).ConfigureAwait(true);
-                    fh4UgcType = Enum.Parse<UgcType>(fh4UgcContext.result.Metadata.ContentType.ToString(), true);
-                    if (!this.fh4SupportedTypes.Contains(fh4UgcType))
+                    fh4UgcType = fh4UgcContext.result.Metadata.ContentType;
+                    if (!this.fh4SupportedTypes.Contains(fh4UgcType.Value))
                     {
-                        fh4UgcType = UgcType.Unknown; // If unsupported, set back to unkown
+                        fh4UgcType = null;
                     }
                 }
                 catch {/* Do nothing */}
                 try
                 {
                     var fh5UgcContext = await fh5StorefrontService.GetUGCObject(ugcId).ConfigureAwait(true);
-                    fh5UgcType = Enum.Parse<UgcType>(fh5UgcContext.result.Metadata.ContentType.ToString(), true);
-                    if (!this.fh5SupportedTypes.Contains(fh5UgcType))
+                    fh5UgcType = fh5UgcContext.result.Metadata.ContentType;
+                    if (!this.fh5SupportedTypes.Contains(fh5UgcType.Value))
                     {
-                        fh5UgcType = UgcType.Unknown; // If unsupported, set back to unkown
+                        fh5UgcType = null;
                     }
                 }
                 catch {/* Do nothing */}
@@ -101,49 +108,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                 try
                 {
                     var fm8UgcContext = await fm8StorefrontService.GetUGCObject(ugcId).ConfigureAwait(true);
-                    fm8UgcType = Enum.Parse<UgcType>(fm8UgcContext.result.Metadata.ContentType.ToString(), true);
-                    if (!this.fm8SupportedTypes.Contains(fm8UgcType))
+                    fm8UgcType = fm8UgcContext.result.Metadata.ContentType;
+                    if (!this.fm8SupportedTypes.Contains(fm8UgcType.Value))
                     {
-                        fm8UgcType = UgcType.Unknown; // If unsupported, set back to unkown
+                        fm8UgcType = null;
                     }
                 }
                 catch {/* Do nothing */}
 
+
+
                 return this.Ok(new OutputModel
                 {
                     ShareCodeOrId = shareCodeOrId,
-                    Fm8 = fm8UgcType == UgcType.Unknown ? new List<UgcType>() : new List<UgcType> { fm8UgcType },
-                    Fh5 = fh5UgcType == UgcType.Unknown ? new List<UgcType>() : new List<UgcType> { fh5UgcType },
-                    Fh4 = fh4UgcType == UgcType.Unknown ? new List<UgcType>() : new List<UgcType> { fh4UgcType },
+                    Fm8 = fm8UgcType.HasValue ? new List<UgcType> { Enum.Parse<UgcType>(fm8UgcType.Value.ToString(), true) } : new List<UgcType>(),
+                    Fh5 = fh5UgcType.HasValue ? new List<UgcType> { Enum.Parse<UgcType>(fh5UgcType.Value.ToString(), true) } : new List<UgcType>(),
+                    Fh4 = fh4UgcType.HasValue ? new List<UgcType> { Enum.Parse<UgcType>(fh4UgcType.Value.ToString(), true) } : new List<UgcType>(),
                 });
             }
             else
             {
-                var fm8Lookups = new[]
-                {
-                this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.Livery),
-                this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.TuneBlob),
-                this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFM8.ForzaUGCContentType.Photo),
-                };
-
-                var fh5Lookups = new[]
-                {
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Livery),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Tune),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Photo),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.EventBlueprint),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.CommunityChallenge),
-                this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH5.ForzaUGCContentType.Layergroup),
-                };
-
-                var fh4Lookups = new[]
-                {
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Livery),
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Layergroup),
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Tune),
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.Photo),
-                this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, ServicesLiveOpsFH4.ForzaUGCContentType.EventBlueprint),
-                };
+                var fm8Lookups = this.fm8SupportedTypes.Select(contentType => this.LookupFM8ShareCodeOrNullAsync(shareCodeOrId, contentType)).ToArray();
+                var fh5Lookups = this.fh5SupportedTypes.Select(contentType => this.LookupFH5ShareCodeOrNullAsync(shareCodeOrId, contentType)).ToArray();
+                var fh4Lookups = this.fh4SupportedTypes.Select(contentType => this.LookupFH4ShareCodeOrNullAsync(shareCodeOrId, contentType)).ToArray();
 
                 await Task.WhenAll(fm8Lookups).ConfigureAwait(true);
                 await Task.WhenAll(fh5Lookups).ConfigureAwait(true);

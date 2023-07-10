@@ -646,9 +646,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets UGC item by share code.
         /// </summary>
-        [NonAction]
-        [Obsolete]
-        //[HttpGet("storefront/shareCode({shareCode})")]
+        [HttpGet("storefront/shareCode({shareCode})")]
         [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
