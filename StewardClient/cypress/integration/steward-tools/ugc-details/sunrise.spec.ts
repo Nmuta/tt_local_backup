@@ -1,12 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import {
-  SunriseUgcCreatedDate,
-  SunriseUgcID,
-  testInputUgcID,
-  verifyUgcCreatedDate,
-} from './shared-functions';
+import { sunriseSamples, testInputUgcID } from './shared-functions';
 
 context('Steward / Tools / UGC Details / Sunrise', () => {
   beforeEach(() => {
@@ -18,8 +13,7 @@ context('Steward / Tools / UGC Details / Sunrise', () => {
 
   context('Basic Tests', () => {
     it('should find Livery data', () => {
-      testInputUgcID(SunriseUgcID.Livery);
-      verifyUgcCreatedDate(SunriseUgcCreatedDate.Livery);
+      testInputUgcID(sunriseSamples.livery);
     });
 
     //No Known Layer Groups to Test
@@ -28,18 +22,15 @@ context('Steward / Tools / UGC Details / Sunrise', () => {
     // });
 
     it('should find Photo data', () => {
-      testInputUgcID(SunriseUgcID.Photo);
-      verifyUgcCreatedDate(SunriseUgcCreatedDate.Photo);
+      testInputUgcID(sunriseSamples.photo);
     });
 
     it('should find Tune data', () => {
-      testInputUgcID(SunriseUgcID.Livery);
-      verifyUgcCreatedDate(SunriseUgcCreatedDate.Livery);
+      testInputUgcID(sunriseSamples.tune);
     });
 
     it('should find Events data', () => {
-      testInputUgcID(SunriseUgcID.Livery);
-      verifyUgcCreatedDate(SunriseUgcCreatedDate.Livery);
+      testInputUgcID(sunriseSamples.events);
     });
   });
 });

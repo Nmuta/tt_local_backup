@@ -1,40 +1,31 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import {
-  testInputUgcID,
-  verifyUgcCreatedDate,
-  woodstockUgcCreatedDate,
-  woodstockUgcID,
-} from './shared-functions';
+import { woodstockSamples, testInputUgcID } from './shared-functions';
 
 context('Steward / Tools / UGC Details / Woodstock', () => {
   beforeEach(() => {
     login();
 
     disableFakeApi();
-    cy.visit(stewardUrls.tools.ugc_details.woodstock);
+    cy.visit(stewardUrls.tools.ugcDetails.woodstock);
   });
 
   context('Basic Tests', () => {
     it('should find Livery data', () => {
-      testInputUgcID(woodstockUgcID.Livery);
-      verifyUgcCreatedDate(woodstockUgcCreatedDate.Livery);
+      testInputUgcID(woodstockSamples.livery);
     });
 
     it('should find Layer Group data', () => {
-      testInputUgcID(woodstockUgcID.LayerGroup);
-      verifyUgcCreatedDate(woodstockUgcCreatedDate.LayerGroup);
+      testInputUgcID(woodstockSamples.layerGroup);
     });
 
     it('should find Photo data', () => {
-      testInputUgcID(woodstockUgcID.Photo);
-      verifyUgcCreatedDate(woodstockUgcCreatedDate.Photo);
+      testInputUgcID(woodstockSamples.photo);
     });
 
     it('should find Tune data', () => {
-      testInputUgcID(woodstockUgcID.Tune);
-      verifyUgcCreatedDate(woodstockUgcCreatedDate.Tune);
+      testInputUgcID(woodstockSamples.tune);
     });
 
     //No Known Events to Test
