@@ -49,14 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         {
             xuid.EnsureValidXuid();
 
-            try
-            {
-                await this.Services.NotificationsManagementService.DeleteNotificationsForUser(xuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new LspFailureStewardException($"Failed to delete all of a player's notifications. (xuid: {xuid})", ex);
-            }
+            await this.Services.NotificationsManagementService.DeleteNotificationsForUser(xuid).ConfigureAwait(true);
 
             return this.Ok();
         }

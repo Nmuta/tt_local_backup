@@ -73,15 +73,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             ForzaLoyaltyRewardsSupportedTitles[] titlesPlayed = null;
-            try
-            {
-                var response = await this.Services.LiveOpsService.GetTitlesUserPlayed(xuid).ConfigureAwait(true);
-                titlesPlayed = response.titlesPlayed;
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"No record of legacy titles played found. (XUID: {xuid})", ex);
-            }
+
+            var response = await this.Services.LiveOpsService.GetTitlesUserPlayed(xuid).ConfigureAwait(true);
+            titlesPlayed = response.titlesPlayed;
 
             var convertedList = this.mapper.SafeMap<IList<SteelheadLoyaltyRewardsTitle>>(titlesPlayed);
 

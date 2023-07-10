@@ -68,26 +68,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             AdminForzaProfile currentProfile = null;
-            try
-            {
-                var userProfiles = await this.Services.UserInventoryManagementService.GetAdminUserProfiles(xuid, uint.MaxValue).ConfigureAwait(true);
-                currentProfile = userProfiles.profiles.Where(profile => profile.isCurrent == true).SingleOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidArgumentsStewardException($"No current profile found. (XUID: {xuid})", ex);
-            }
 
-            try
-            {
-                var response = await this.Services.LiveOpsService.GetAdminPurchasables(currentProfile.profileId).ConfigureAwait(true);
+            var userProfiles = await this.Services.UserInventoryManagementService.GetAdminUserProfiles(xuid, uint.MaxValue).ConfigureAwait(true);
+            currentProfile = userProfiles.profiles.Where(profile => profile.isCurrent == true).SingleOrDefault();
 
-                return this.Ok(response.purchasables);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to find valid entitlements for user. (XUID: {xuid}), (Profile ID: {currentProfile.profileId})", ex);
-            }
+            var response = await this.Services.LiveOpsService.GetAdminPurchasables(currentProfile.profileId).ConfigureAwait(true);
+
+            return this.Ok(response.purchasables);
         }
 
         /// <summary>
@@ -105,24 +92,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             AdminForzaProfile currentProfile = null;
             LiveOpsService.GetAdminPurchasablesOutput validPurchasables = null;
-            try
-            {
-                var userProfiles = await this.Services.UserInventoryManagementService.GetAdminUserProfiles(xuid, uint.MaxValue).ConfigureAwait(true);
-                currentProfile = userProfiles.profiles.Where(profile => profile.isCurrent == true).SingleOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidArgumentsStewardException($"No current profile found. (XUID: {xuid})", ex);
-            }
 
-            try
-            {
-                validPurchasables = await this.Services.LiveOpsService.GetAdminPurchasables(currentProfile.profileId).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to find valid entitlements for user. (XUID: {xuid}), (Profile ID: {currentProfile.profileId})", ex);
-            }
+            var userProfiles = await this.Services.UserInventoryManagementService.GetAdminUserProfiles(xuid, uint.MaxValue).ConfigureAwait(true);
+            currentProfile = userProfiles.profiles.Where(profile => profile.isCurrent == true).SingleOrDefault();
+
+            validPurchasables = await this.Services.LiveOpsService.GetAdminPurchasables(currentProfile.profileId).ConfigureAwait(true);
 
             var validProductId = validPurchasables.purchasables.Any(purchasable => purchasable.ProductId == productId);
             if (!validProductId)
@@ -130,16 +104,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new InvalidArgumentsStewardException($"Product ID is not a valid entitlement for this user. (XUID: {xuid}), (Profile ID: {currentProfile.profileId}), Product ID: {productId})");
             }
 
-            try
-            {
-                await this.Services.LiveOpsService.AdminEntitlePurchasable(currentProfile.profileId, productId).ConfigureAwait(true);
+            await this.Services.LiveOpsService.AdminEntitlePurchasable(currentProfile.profileId, productId).ConfigureAwait(true);
 
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to grant Profile VIP entitlement. (XUID: {xuid}), (Profile ID: {currentProfile.profileId}), (Product ID: {productId})", ex);
-            }
+            return this.Ok();
         }
     }
 }

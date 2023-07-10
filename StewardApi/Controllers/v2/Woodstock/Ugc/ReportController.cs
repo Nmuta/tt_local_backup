@@ -91,14 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 throw new BadRequestStewardException($"Reason ID could not be parsed as GUID. (reasonId: {reasonId})");
             }
 
-            try
-            {
-                await this.Services.StorefrontManagementService.ReportContentWithReason(parsedUgcId, parsedReasonId).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to report UGC. (ugcId: {parsedUgcId}) (reasonId: {parsedReasonId})", ex);
-            }
+            await this.Services.StorefrontManagementService.ReportContentWithReason(parsedUgcId, parsedReasonId).ConfigureAwait(true);
 
             return this.Ok();
         }

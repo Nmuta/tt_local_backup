@@ -88,16 +88,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             AuctionManagementService.SearchAuctionHouseOutput forzaAuctions = null;
 
-            try
-            {
-                forzaAuctionFilters.Seller = xuid;
-                forzaAuctions = await this.Services.AuctionManagementService.SearchAuctionHouse(forzaAuctionFilters)
-                    .ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to search player auctions. (XUID: {xuid})", ex);
-            }
+            forzaAuctionFilters.Seller = xuid;
+            forzaAuctions = await this.Services.AuctionManagementService.SearchAuctionHouse(forzaAuctionFilters)
+                .ConfigureAwait(true);
 
             auctions.AddRange(this.mapper.SafeMap<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions));
 

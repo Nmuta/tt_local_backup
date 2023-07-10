@@ -66,14 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             UserManagementService.GetUserReportWeightOutput response = null;
 
-            try
-            {
-                response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"No report weight found. (XUID: {xuid})", ex);
-            }
+            response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
 
             var mappedResponse = this.mapper.SafeMap<UserReportWeight>(response);
 
@@ -100,21 +93,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             UserManagementService.GetUserReportWeightOutput response = null;
 
-            try
-            {
-                await this.Services.UserManagementService.SetUserReportWeightType(xuid, mappedReportWeightType).ConfigureAwait(false);
+            await this.Services.UserManagementService.SetUserReportWeightType(xuid, mappedReportWeightType).ConfigureAwait(false);
 
-                if (reportWeightType == UserReportWeightType.Default)
-                {
-                    await this.Services.UserManagementService.SetUserReportWeight(xuid, DefaultReportWeight).ConfigureAwait(false);
-                }
-
-                response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
+            if (reportWeightType == UserReportWeightType.Default)
             {
-                throw new UnknownFailureStewardException($"Failed to set report weight. (XUID: {xuid})", ex);
+                await this.Services.UserManagementService.SetUserReportWeight(xuid, DefaultReportWeight).ConfigureAwait(false);
             }
+
+            response = await this.Services.UserManagementService.GetUserReportWeight(xuid).ConfigureAwait(true);
 
             var mappedRepsonse = this.mapper.SafeMap<UserReportWeight>(response);
 

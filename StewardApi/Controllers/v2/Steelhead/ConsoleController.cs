@@ -45,16 +45,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [Authorize(Policy = UserAttribute.BanConsole)]
         public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, [FromBody] bool isBanned)
         {
-            try
-            {
-                await this.Services.UserManagementService.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(true);
+            await this.Services.UserManagementService.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(true);
 
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to update console ban status. (consoleID: {consoleId}).", ex);
-            }
+            return this.Ok();
         }
     }
 }
