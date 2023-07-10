@@ -46,10 +46,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
         private readonly ISunriseService fh4Service;
         private readonly ILoggingService loggingService;
 
-        //private readonly IList<UgcType> fh4SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.LayerGroup, UgcType.Tune, UgcType.Photo, UgcType.EventBlueprint };
-        //private readonly IList<UgcType> fh5SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.LayerGroup, UgcType.Tune, UgcType.Photo, UgcType.EventBlueprint, UgcType.CommunityChallenge };
-        //private readonly IList<UgcType> fm8SupportedTypes = new List<UgcType> { UgcType.Livery, UgcType.TuneBlob, UgcType.Photo };
-
         private readonly IList<FH4UGCContentType> fh4SupportedTypes = new List<FH4UGCContentType> { FH4UGCContentType.Livery, FH4UGCContentType.Layergroup, FH4UGCContentType.Tune, FH4UGCContentType.Photo, FH4UGCContentType.EventBlueprint };
         private readonly IList<FH5UGCContentType> fh5SupportedTypes = new List<FH5UGCContentType> { FH5UGCContentType.Livery, FH5UGCContentType.Layergroup, FH5UGCContentType.Tune, FH5UGCContentType.Photo, FH5UGCContentType.EventBlueprint, FH5UGCContentType.CommunityChallenge };
         private readonly IList<FM8UGCContentType> fm8SupportedTypes = new List<FM8UGCContentType> { FM8UGCContentType.Livery, FM8UGCContentType.TuneBlob, FM8UGCContentType.Photo };
