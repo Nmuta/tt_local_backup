@@ -58,6 +58,6 @@ export class SteelheadBuildersCupService {
 
   /** Gets the Steelhead Builder's Cup series. */
   public getBuildersCupSeries$(): Observable<Map<string, string>> {
-    return this.api.getRequest$<Map<string, string>>(`${this.basePath}/championships`);
+    return this.api.getRequest$<Map<string, string>>(`${this.basePath}/series`);
   }
 }

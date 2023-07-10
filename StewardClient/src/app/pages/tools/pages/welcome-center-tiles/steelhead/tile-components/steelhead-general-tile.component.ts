@@ -143,7 +143,7 @@ export class GeneralTileComponent extends BaseComponent {
       .subscribe(data => {
         if (data == TimerInstance.Chapter) {
           this.selectedTimerReferenceInstance = TimerReferenceInstance.Chapter;
-
+          // TODO: Get data from projection https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1543941
           this.timerReferenceOptions = new Map([
             ['3a9b1321-792c-47d1-ad40-b2dc39bf62b3', 'Chapter 1: GA Pre-Season - Chapter 1'],
             ['bbb41fc3-1e92-40f8-9b0a-cead82d4f2c5', 'Chapter 2: GA Pre-Season - Chapter 2'],
@@ -165,7 +165,7 @@ export class GeneralTileComponent extends BaseComponent {
           }
         } else if (data == TimerInstance.Season) {
           this.selectedTimerReferenceInstance = TimerReferenceInstance.Season;
-
+          // TODO: Get data from projection https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1543941
           this.timerReferenceOptions = new Map([
             ['b0344978-c1cc-4cb0-bff8-422bb9cd21c2', 'Season 1:GA Pre-Season'],
           ]);
