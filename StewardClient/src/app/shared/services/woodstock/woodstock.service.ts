@@ -49,16 +49,9 @@ import { AuctionData } from '@models/auction-data';
 import { GuidLikeString } from '@models/extended-types';
 import { DateTime } from 'luxon';
 import { PlayerAuctionAction } from '@models/player-auction-action';
-import {
-  DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS,
-  DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS,
-  Leaderboard,
-  LeaderboardScore,
-} from '@models/leaderboards';
-import { DeviceType, PegasusProjectionSlot } from '@models/enums';
-import { addQueryParamArray } from '@helpers/add-query-param-array';
 import { UnbanResult } from '@models/unban-result';
 import { PlayerInventoryProfileWithDeviceType } from '@models/player-inventory-profile';
+import { PegasusProjectionSlot } from '@models/enums';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -533,115 +526,6 @@ export class WoodstockService {
   public deleteAuctionBlocklistEntry$(carId: BigNumber): Observable<AuctionBlocklistEntry[]> {
     return this.apiService.deleteRequest$<AuctionBlocklistEntry[]>(
       `${this.basePath}/auctions/blockList/carId(${carId})`,
-    );
-  }
-
-  /** Gets leaderboards. */
-  public getLeaderboards$(pegasusEnvironment: string): Observable<Leaderboard[]> {
-    const params = new HttpParams().set('pegasusEnvironment', pegasusEnvironment);
-
-    return this.apiService.getRequest$<Leaderboard[]>(`${this.basePath}/leaderboards`, params);
-  }
-
-  /** Gets leaderboard metadata. */
-  public getLeaderboardMetadata$(
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    pegasusEnvironment: string,
-  ): Observable<Leaderboard> {
-    const params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('pegasusEnvironment', pegasusEnvironment);
-
-    return this.apiService.getRequest$<Leaderboard>(
-      `${this.basePath}/leaderboard/metadata`,
-      params,
-    );
-  }
-
-  /** Gets leaderboard scores. */
-  public getLeaderboardScores$(
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    deviceTypes: DeviceType[],
-    startAt: BigNumber,
-    maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_MAX_RESULTS),
-    endpointKeyOverride?: string,
-  ): Observable<LeaderboardScore[]> {
-    let params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('startAt', startAt.toString())
-      .set('maxResults', maxResults.toString());
-    params = addQueryParamArray(params, 'deviceTypes', deviceTypes);
-
-    let headers = new HttpHeaders();
-    if (!!endpointKeyOverride) {
-      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
-    }
-
-    return this.apiService.getRequest$<LeaderboardScore[]>(
-      `${this.basePath}/leaderboard/scores/top`,
-      params,
-      headers,
-    );
-  }
-
-  /** Gets leaderboard scores. */
-  public getLeaderboardScoresNearPlayer$(
-    xuid: BigNumber,
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    deviceTypes: DeviceType[],
-    maxResults: BigNumber = new BigNumber(DEFAULT_LEADERBOARD_SCORES_NEAR_PLAYER_MAX_RESULTS),
-    endpointKeyOverride?: string,
-  ): Observable<LeaderboardScore[]> {
-    let params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('maxResults', maxResults.toString());
-    params = addQueryParamArray(params, 'deviceTypes', deviceTypes);
-
-    let headers = new HttpHeaders();
-    if (!!endpointKeyOverride) {
-      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
-    }
-
-    return this.apiService.getRequest$<LeaderboardScore[]>(
-      `${this.basePath}/leaderboard/scores/near-player/${xuid}`,
-      params,
-      headers,
-    );
-  }
-
-  /** Deletes leaderboard scores. */
-  public deleteLeaderboardScores$(
-    scoreIds: GuidLikeString[],
-    endpointKeyOverride?: string,
-  ): Observable<void> {
-    let headers = new HttpHeaders();
-    if (!!endpointKeyOverride) {
-      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
-    }
-
-    return this.apiService.postRequest$<void>(
-      `${this.basePath}/leaderboard/scores/delete`,
-      scoreIds,
-      undefined,
-      headers,
     );
   }
 }

@@ -716,27 +716,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             await storefrontManagementService.SetFeatured(contentId, isFeatured, featureEndDate, forceFeatureEndDate)
                 .ConfigureAwait(false);
         }
-
-        /// <inheritdoc/>
-        public async Task<IList<ServicesLiveOps.ForzaRankedLeaderboardRow>> GetLeaderboardScoresAsync(
-            ServicesLiveOps.ForzaSearchLeaderboardsParametersV2 searchParams,
-            int startIndex,
-            int maxResults,
-            string endpoint)
-        {
-            var service = await this.liveProjectionServiceFactory.PrepareScoreboardManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            var result = await service.SearchLeaderboardsV2(searchParams, startIndex, maxResults).ConfigureAwait(false);
-
-            return result.results.Rows;
-        }
-
-        /// <inheritdoc/>
-        public async Task DeleteLeaderboardScoresAsync(Guid[] scoreIDs, string endpoint)
-        {
-            var service = await this.liveProjectionServiceFactory.PrepareScoreboardManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            await service.DeleteScores(scoreIDs).ConfigureAwait(false);
-        }
     }
 }
