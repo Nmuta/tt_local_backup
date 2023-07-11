@@ -21,7 +21,10 @@ export class SteelheadPlayerUgcService {
   }
 
   /** Gets a player's hidden UGC items. */
-  public getPlayerHiddenUgcByType$(xuid: BigNumber, contentType: UgcType,): Observable<PlayerUgcItem[]> {
+  public getPlayerHiddenUgcByType$(
+    xuid: BigNumber,
+    contentType: UgcType,
+  ): Observable<PlayerUgcItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
     return this.api.getRequest$<PlayerUgcItem[]>(`${this.basePath}/${xuid}/ugc/hidden`, httpParams);
   }

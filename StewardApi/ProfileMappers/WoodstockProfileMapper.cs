@@ -236,6 +236,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
 
             this.CreateMap<ServicesLiveOps.ForzaLiveryData, WoodstockUgcLiveryItem>()
@@ -266,6 +268,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
 
             this.CreateMap<ServicesLiveOps.ForzaPhotoData, WoodstockUgcItem>()
@@ -294,6 +298,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
 
             this.CreateMap<ServicesLiveOps.ForzaTuneData, WoodstockUgcItem>()
@@ -321,6 +327,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
 
             this.CreateMap<WebServicesContracts.ForzaEventBlueprint, WoodstockUgcItem>()
@@ -348,6 +356,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
 
             this.CreateMap<WebServicesContracts.ForzaUGCCommunityChallenge, WoodstockUgcItem>()
@@ -374,7 +384,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.Metadata.TimesDisliked))
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
-                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed));
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()));
 
             this.CreateMap<ForzaLayerGroupData, WoodstockUgcItem>()
                 .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
@@ -401,6 +413,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 // TODO: Handle ForzaCurationMethod
                 .ForMember(
                     dest => dest.ThumbnailOneImageBase64,

@@ -29,7 +29,7 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
     private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
     private readonly steelheadUgcVisibilityService: SteelheadUgcVisibilityService,
     private readonly steelheadUgcSharecodeService: SteelheadUgcSharecodeService,
-    private readonly backgroundJobService: BackgroundJobService,    
+    private readonly backgroundJobService: BackgroundJobService,
     snackbar: MatSnackBar,
   ) {
     super(snackbar);

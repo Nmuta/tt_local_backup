@@ -23,7 +23,11 @@ describe('SteelheadUgcTableComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
       declarations: [SteelheadUgcTableComponent, BigJsonPipe],
-      providers: [createMockSteelheadUgcLookupService(), createMockBackgroundJobService(), createMockSteelheadUgcVisibilityService(),],
+      providers: [
+        createMockSteelheadUgcLookupService(),
+        createMockBackgroundJobService(),
+        createMockSteelheadUgcVisibilityService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

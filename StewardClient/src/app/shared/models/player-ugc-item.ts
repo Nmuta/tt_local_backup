@@ -32,6 +32,8 @@ export interface PlayerUgcItem {
   timesLiked: BigNumber;
   timesDownloaded: BigNumber;
   isPublic: boolean;
+  isHidden: boolean;
+  hiddenTimeUtc: DateTime;
 
   /** Only for livery type UGC items.  */
   liveryDownloadDataBase64?: string;
@@ -100,5 +102,7 @@ export function fakePlayerUgcItem(): PlayerUgcItem {
     timesLiked: new BigNumber(0),
     timesDownloaded: new BigNumber(0),
     isPublic: true,
+    isHidden: false,
+    hiddenTimeUtc: null,
   };
 }

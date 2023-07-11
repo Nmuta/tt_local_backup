@@ -21,6 +21,9 @@
           <model-dump-simple-table
             [values]="source.processedModel.extractedNumbers.ids"
           ></model-dump-simple-table>
+          <model-dump-simple-table
+            [values]="source.processedModel.extractedDates.all"
+          ></model-dump-simple-table>
         </div>
       </div>
     </mat-card>
@@ -104,11 +107,12 @@
 
             <ng-content select="button"></ng-content>
 
-            <div class="sf-horizontal do-not-manipulate-margin">
+            <div *ngIf="!ugcItem?.isHidden" class="sf-horizontal do-not-manipulate-margin">
               <verify-button
                 #verifyHideBtn
                 [permissionAttribute]="hidePermAttribute"
                 [permissionTitle]="gameTitle"
+                [disabled]="!ugcItem?.isPublic"
               ></verify-button>
               <button
                 class="sf-action-list-margins"
@@ -124,6 +128,32 @@
                 monitorCompleteSnackbar
               >
                 Hide UGC
+                <help-popover-icon cardTitle="Hide UGC"
+                  >Private UGC cannot be hidden.</help-popover-icon
+                >
+              </button>
+            </div>
+
+            <div *ngIf="ugcItem.isHidden" class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyUnhideBtn
+                [permissionAttribute]="unhidePermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyUnhideBtn"
+                (click)="unhideUgcItem()"
+                stateManager
+                [monitor]="unhideMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Unhide UGC
               </button>
             </div>
 

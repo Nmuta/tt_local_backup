@@ -34,6 +34,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: PlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('Post Hide UGC');
+  public unhideMonitor = new ActionMonitor('POST Unhide UGC');
   public reportMonitor = new ActionMonitor('Post Report UGC');
   public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
 
@@ -51,6 +52,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public featurePermAttribute = PermAttributeName.FeatureUgc;
   public reportPermAttribute = PermAttributeName.ReportUgc;
   public hidePermAttribute = PermAttributeName.HideUgc;
+  public unhidePermAttribute = PermAttributeName.UnhideUgc;
   public gameTitle = GameTitle.FM8;
 
   constructor(
@@ -145,6 +147,25 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;
+        this.ugcItem.isHidden = true;
+        this.ugcItem.isPublic = false;
+      });
+  }
+
+  /** Unhide a UGC item in Woodstock */
+  public unhideUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.unhideMonitor = this.unhideMonitor.repeat();
+
+    this.ugcVisibilityService
+      .unhideUgcItems$([this.ugcItem.id])
+      .pipe(this.unhideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = true;
+        this.ugcItem.isHidden = false;
+        this.ugcItem.isPublic = true;
       });
   }
 
