@@ -26,7 +26,7 @@ using static Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
-    ///     Handles requests for Steelhead player auctions.
+    ///     Handles requests for Steelhead player UGC.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/ugc")]
     [LogTagTitle(TitleLogTags.Steelhead)]
