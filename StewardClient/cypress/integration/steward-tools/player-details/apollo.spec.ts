@@ -95,7 +95,8 @@ function testInventory(): void {
 
 function testLiveries(): void {
   context('Liveries', () => {
-    //TODO
+    // TODO: Create liveries tests for Apollo
+    // Currently, no test users have liveries in Apollo on the prod server
   });
 }
 

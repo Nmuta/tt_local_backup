@@ -162,10 +162,9 @@ function testUgc(): void {
   context('Ugc', () => {
     ugcLiveriesFindLivery(
       platformName,
-      '2jetz',
-      'Hot Wheels 2JetZ (2018) [3405]',
+      'Hot Wheels',
+      '2JetZ',
       'metadata',
-      'Hot Wheels 2JetZ (2018)',
     );
   });
 }
