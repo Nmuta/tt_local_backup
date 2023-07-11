@@ -14,7 +14,6 @@ import { pull } from 'lodash';
 import { Observable, takeUntil } from 'rxjs';
 
 export interface HiddenUgcServiceContract {
-  title: GameTitle;
   unhideUgc$(
     xuid: BigNumber,
     fileType: HideableUgcFileType,
@@ -39,6 +38,8 @@ export class HiddenUgcTableComponent extends BaseComponent implements OnChanges,
   @Input() public service: HiddenUgcServiceContract;
   /** The player identity. */
   @Input() public identity: IdentityResultAlpha;
+  /** The gameTitle. */
+  @Input() public gameTitle: GameTitle;
   /** Output when results are reloaded. */
   @Output() public reloadMonitor = new EventEmitter<ActionMonitor>();
 

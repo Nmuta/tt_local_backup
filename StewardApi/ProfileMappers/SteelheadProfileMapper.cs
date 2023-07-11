@@ -538,6 +538,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.IsHidden))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime))
                 .ReverseMap();
         }
 

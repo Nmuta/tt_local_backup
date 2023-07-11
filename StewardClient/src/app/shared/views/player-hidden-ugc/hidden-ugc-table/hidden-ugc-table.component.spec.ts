@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { HideableUgc, HideableUgcFileType } from '@models/hideable-ugc.model';
 import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
@@ -10,7 +9,6 @@ import { HiddenUgcServiceContract, HiddenUgcTableComponent } from './hidden-ugc-
 
 /** Test Hidden Ugc Service */
 class TestHiddenUgcService implements HiddenUgcServiceContract {
-  title: GameTitle.FH5;
   /** Unhide UGC. */
   public unhideUgc$(
     _xuid: BigNumber,

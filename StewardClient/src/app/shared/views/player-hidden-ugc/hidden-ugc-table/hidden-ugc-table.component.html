@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-title>Hidden UGC</mat-card-title>
   <mat-card-subtitle>
-    View and Unhide {{ service.title }} UGC
+    View and Unhide UGC
     <button mat-icon-button matTooltip="Refresh hidden UGC table." (click)="refreshTable()">
       <mat-icon>sync</mat-icon>
     </button>
@@ -85,7 +85,7 @@
               <verify-button
                 #verifyUnhideBtn
                 [permissionAttribute]="unhidePermAttribute"
-                [permissionTitle]="service.title"
+                [permissionTitle]="gameTitle"
               ></verify-button>
               <button
                 mat-raised-button
