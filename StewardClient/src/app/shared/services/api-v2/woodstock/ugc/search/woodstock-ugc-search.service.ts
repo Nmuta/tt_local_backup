@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { UgcSearchFilters } from '@models/ugc-filters';
+import { UgcCurationType, UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
@@ -18,6 +18,16 @@ export class WoodstockUgcSearchService {
       `${this.basePath}/${parameters.ugcType}`,
       parameters,
       undefined,
+    );
+  }
+
+  /** Gets Curated UGC items. */
+  public getCuratedUgc$(
+    ugcType: UgcType,
+    curationType: UgcCurationType,
+  ): Observable<PlayerUgcItem[]> {
+    return this.api.getRequest$<PlayerUgcItem[]>(
+      `${this.basePath}/${ugcType}/curated/${curationType}`,
     );
   }
 }

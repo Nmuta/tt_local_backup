@@ -50,5 +50,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 
         /// <summary>Gets hidden UGC by xuid.</summary>
         Task<GetHiddenUGCByUserOutput> GetHiddenUGCByUser(ulong xuid, ForzaUGCContentType contentType, int maxResults);
+
+        /// <summary>Gets curated UGC data.</summary>
+        Task<GetCuratedUgcOutput> GetCuratedUgc(ForzaUGCContentType contentType, ForzaCurationMethod curationMethod, int maxResults);
     }
 }

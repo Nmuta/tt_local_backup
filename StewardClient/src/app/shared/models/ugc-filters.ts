@@ -26,6 +26,22 @@ export enum UgcAccessLevel {
   Private = 'Private',
 }
 
+/** Type of UGC curation. */
+export enum UgcCurationType {
+  ForceFeatured = 'ForceFeatured',
+  Featured = 'Featured',
+  Friends = 'Friends',
+  Followed = 'Followed',
+  New = 'New',
+  Popular = 'Popular',
+  Search = 'Search',
+  EverFeatured = 'EverFeatured',
+  TrendingToday = 'TrendingToday',
+  BestOfTheMonth = 'BestOfTheMonth',
+  AllTimeGreats = 'AllTimeGreats',
+  FriendsAndFollowed = 'FriendsAndFollowed',
+}
+
 /** Type of UGC. */
 export enum UgcType {
   Unknown = 'Unknown',

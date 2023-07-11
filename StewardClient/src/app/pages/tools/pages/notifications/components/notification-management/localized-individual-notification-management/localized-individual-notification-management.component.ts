@@ -221,8 +221,7 @@ export class LocalizedIndividualNotificationManagementComponent
   ): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), playerNotification.sentDateUtc]);
     const formControls = {
-      localizedTitleInfo: new FormControl({ id: '', englishText: playerNotification.title }), //Replace with line below once we have working title editing
-      //localizedTitleInfo: new FormControl({}, [Validators.required]),
+      localizedTitleInfo: new FormControl({}, [Validators.required]),
       localizedMessageInfo: new FormControl({}, [Validators.required]),
       expireDateUtc: new FormControl(playerNotification.expirationDateUtc, [
         Validators.required,

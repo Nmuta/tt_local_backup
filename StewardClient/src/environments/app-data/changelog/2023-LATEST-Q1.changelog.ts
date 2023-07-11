@@ -8,6 +8,16 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
+      uuid: 'f4563a2f-9f91-4da7-ade2-ef634ec2e6d6',
+      shortText: 'Add ability to load curated UGC queues',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
+      uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
+      shortText: 'Add message title view and editing for player messages',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '0cd8e85a-b5e2-49e2-8a25-4a4d38a00d2d',
       shortText: 'Look ups for dev leaderboards now pull from services studio environment',
@@ -26,12 +36,17 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
       uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
-      shortText: 'Add message title view and editing',
+      shortText: 'Add message title view and editing for group messages',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.ServicesTableStorage },
       uuid: 'a66f8898-b059-4e34-b503-5cf2c7bdf5f9',
       shortText: 'Add toggle to filter out non profile-specific rows',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '68ba527e-4a44-4bb6-bfea-f890c4fcde4e',
+      shortText: 'Use Pegasus data to populate dropdowns',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },

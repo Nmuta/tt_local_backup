@@ -19,6 +19,10 @@ export class MockSteelheadUgcLookupService {
     .createSpy('getUgcPhotoThumbnails$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
+  public getCuratedUgc$ = jasmine
+    .createSpy('getCuratedUgc$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

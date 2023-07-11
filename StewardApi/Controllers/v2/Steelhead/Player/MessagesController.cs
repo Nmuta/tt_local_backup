@@ -175,8 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             editParameters.ShouldNotBeNull(nameof(editParameters));
             editParameters.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedMessageID));
-            // TODO: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1495466/
-            //editParameters.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedTitleID));
+            editParameters.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(editParameters.LocalizedTitleID));
             editParameters.ExpireTimeUtc.IsAfterOrThrows(editParameters.StartTimeUtc, nameof(editParameters.ExpireTimeUtc), nameof(editParameters.StartTimeUtc));
 
             if (!Guid.TryParse(messageId, out var messageIdAsGuid))
@@ -184,8 +183,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
             }
 
-            // TODO: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1495466/
-            //var localizedTitleIdAsGuid = editParameters.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
+            var localizedTitleIdAsGuid = editParameters.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
             var localizedMessageIdAsGuid = editParameters.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
 
             //xuid.EnsureValidXuid();
@@ -197,6 +195,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var editParams = new ForzaCommunityMessageNotificationEditParameters
             {
                 ForceExpire = false,
+                TitleStringId = localizedTitleIdAsGuid,
                 MessageStringId = localizedMessageIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = false,

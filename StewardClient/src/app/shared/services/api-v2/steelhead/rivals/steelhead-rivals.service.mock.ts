@@ -6,6 +6,14 @@ import { SteelheadRivalsService } from './steelhead-rivals.service';
 export class MockSteelheadRivalsService {
   public getRivalsEvents$ = jasmine.createSpy('getRivalsEvents').and.returnValue(of(null));
 
+  public getRivalsEventReference$ = jasmine
+    .createSpy('getRivalsEventReference')
+    .and.returnValue(of());
+
+  public getRivalsEventCategories$ = jasmine
+    .createSpy('getRivalsEventCategories')
+    .and.returnValue(of());
+
   constructor(private readonly generator$: () => unknown) {}
 }
 
