@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { mergedParamMap$ } from '@helpers/param-map';
 import { GameTitle } from '@models/enums';
-import { SteelheadPlayerUgcItem, WoodstockGeoFlags } from '@models/player-ugc-item';
+import { SteelheadPlayerUgcItem, SteelheadGeoFlags } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { SteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
@@ -29,7 +29,7 @@ import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-look
 import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
 import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-flags/steelhead-ugc-geo-flags.service';
 
-const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
+const GEO_FLAGS_ORDER = chain(SteelheadGeoFlags).sortBy().value();
 
 /** Routed component that displays details about a steelhead UGC item. */
 @Component({

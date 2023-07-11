@@ -46,6 +46,12 @@ export enum WoodstockGeoFlags {
   Australia = 'Australia',
 }
 
+/** Geoflags that are valid in Steelhead. */
+export enum SteelheadGeoFlags {
+  China = 'China',
+  Australia = 'Australia',
+}
+
 /** A UGC Item for woodstock players, which includes Woodstock-specific features. */
 export interface WoodstockPlayerUgcItem extends PlayerUgcItem {
   /** Only for Woodstock / supported titles. */
@@ -55,7 +61,7 @@ export interface WoodstockPlayerUgcItem extends PlayerUgcItem {
 /** A UGC Item for steelhead players, which includes Steelhead-specific features. */
 export interface SteelheadPlayerUgcItem extends PlayerUgcItem {
   /** Only for Steelhead / supported titles. */
-  geoFlags: WoodstockGeoFlags[];
+  geoFlags: SteelheadGeoFlags[];
 }
 
 /** The result of a cloning operation. */

@@ -13,7 +13,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UgcGeoFlags)]
         [Authorize(Policy = UserAttribute.SetUgcGeoFlag)]
-        public async Task<IActionResult> SetGeoFlags(string ugcId, [FromBody] IList<WoodstockUgcGeoFlagOption> geoFlags)
+        public async Task<IActionResult> SetGeoFlags(string ugcId, [FromBody] IList<SteelheadUgcGeoFlagOption> geoFlags)
         {
             if (!Guid.TryParse(ugcId, out var parsedUgcId))
             {
