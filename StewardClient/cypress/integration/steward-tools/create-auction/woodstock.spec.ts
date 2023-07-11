@@ -47,7 +47,7 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
     cy.contains('span', 'An auction has been created. You can access it here').should('not.exist');
   });
 
-  it.only('should not create an auction with invalid Price inputs', () => {
+  it('should not create an auction with invalid Price inputs', () => {
     cy.contains('mat-form-field', 'Search for model').click().type('Ferrari');
     cy.contains('mat-option', 'Ferrari FXX (2005) [1006]').click();
 
