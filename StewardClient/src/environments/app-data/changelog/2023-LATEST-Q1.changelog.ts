@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
+      uuid: 'f4563a2f-9f91-4da7-ade2-ef634ec2e6d6',
+      shortText: 'Add ability to load curated UGC queues',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
       uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
       shortText: 'Add message title view and editing for player messages',
