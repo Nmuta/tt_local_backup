@@ -22,8 +22,6 @@ import { SteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sha
 })
 export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitle.FM8;
-  //public supportFeaturing: boolean = false;
-  //public ugcHidingSupported = false;
 
   constructor(
     private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
