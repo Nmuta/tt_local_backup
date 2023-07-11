@@ -59,7 +59,6 @@ export class SteelheadUgcLookupService {
   ): Observable<PlayerUgcItem[]> {
     return this.api.getRequest$<PlayerUgcItem[]>(
       `${this.basePath}/${ugcType}/curated/${curationType}`,
-      undefined,
     );
   }
 }
