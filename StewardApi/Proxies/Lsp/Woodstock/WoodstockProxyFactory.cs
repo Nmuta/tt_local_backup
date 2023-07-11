@@ -125,18 +125,18 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         }
 
         /// <inheritdoc/>
-        public IStorefrontService PrepareStorefrontService(string endpoint)
-        {
-            var service = new StorefrontService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
-            var serviceProxy = service.ProxyInterface<StorefrontService, IStorefrontService>();
-            return serviceProxy;
-        }
-
-        /// <inheritdoc/>
         public IConfigurationManagementService PrepareConfigurationManagementService(string endpoint)
         {
             var service = new ConfigurationManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
             var serviceProxy = service.ProxyInterface<ConfigurationManagementService, IConfigurationManagementService>();
+            return serviceProxy;
+        }
+
+        /// <inheritdoc/>
+        public IScoreboardManagementService PrepareScoreboardManagementService(string endpoint)
+        {
+            var service = new ScoreboardManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.WoodstockToken, false);
+            var serviceProxy = service.ProxyInterface<ScoreboardManagementService, IScoreboardManagementService>();
             return serviceProxy;
         }
     }

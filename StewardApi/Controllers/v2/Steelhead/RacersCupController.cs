@@ -263,5 +263,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             return racersCupChampionshipSchedule;
         }
+
+        /// <summary>
+        ///     Gets all racers cup series.
+        /// </summary>
+        [HttpGet("series")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetRacersCupSeries()
+        {
+            var racersCupSeries = await this.pegasusService.GetRacersCupSeriesAsync().ConfigureAwait(true);
+
+            return this.Ok(racersCupSeries);
+        }
     }
 }

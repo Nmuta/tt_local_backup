@@ -10,12 +10,14 @@ import { createMockWoodstockUgcLookupService } from '@services/api-v2/woodstock/
 import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
-import { createMockWoodstockUgcHideService } from '@services/api-v2/woodstock/ugc/hide/woodstock-ugc-hide.service.mock';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { createMockWoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service.mock';
 import { createMockWoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service.mock';
 import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
+import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
+import { createMockWoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service.mock';
 
 describe('WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
@@ -24,6 +26,7 @@ describe('WoodstockUgcTableComponent', () => {
 
   let mockWoodstockUgcLookupService: WoodstockUgcLookupService;
   let mockWoodstockUgcSharecodeService: WoodstockUgcSharecodeService;
+  let mockWoodstockUgcReportService: WoodstockUgcReportService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -32,7 +35,8 @@ describe('WoodstockUgcTableComponent', () => {
       providers: [
         createMockWoodstockService(),
         createMockWoodstockUgcLookupService(),
-        createMockWoodstockUgcHideService(),
+        createMockWoodstockUgcReportService(),
+        createMockWoodstockUgcVisibilityService(),
         createMockWoodstockUgcSharecodeService(),
         createMockBackgroundJobService(),
       ],
@@ -44,6 +48,7 @@ describe('WoodstockUgcTableComponent', () => {
     mockWoodstockService = TestBed.inject(WoodstockService);
     mockWoodstockUgcLookupService = TestBed.inject(WoodstockUgcLookupService);
     mockWoodstockUgcSharecodeService = TestBed.inject(WoodstockUgcSharecodeService);
+    mockWoodstockUgcReportService = TestBed.inject(WoodstockUgcReportService);
 
     fixture.detectChanges();
   });
@@ -140,6 +145,14 @@ describe('WoodstockUgcTableComponent', () => {
       expect(
         mockWoodstockUgcSharecodeService.ugcGenerateSharecodesUsingBackgroundJob$,
       ).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: reportUgc', () => {
+    it('should call WoodstockUgcReportService.reportUgcItemsUsingBackgroundJob$', () => {
+      component.reportUgc([faker.datatype.uuid()], faker.datatype.uuid());
+
+      expect(mockWoodstockUgcReportService.reportUgcItemsUsingBackgroundJob$).toHaveBeenCalled();
     });
   });
 });

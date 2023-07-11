@@ -71,5 +71,13 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise
             var serviceProxy = service.ProxyInterface<StorefrontService, IStorefrontService>();
             return serviceProxy;
         }
+
+        /// <inheritdoc/>
+        public IStorefrontManagementService PrepareStorefrontManagementService(string endpoint)
+        {
+            var service = new StorefrontManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SunriseToken, false);
+            var serviceProxy = service.ProxyInterface<StorefrontManagementService, IStorefrontManagementService>();
+            return serviceProxy;
+        }
     }
 }

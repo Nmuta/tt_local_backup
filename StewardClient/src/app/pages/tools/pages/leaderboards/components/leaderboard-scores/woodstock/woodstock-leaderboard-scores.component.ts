@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { LeaderboardMetadataAndQuery, LeaderboardScore } from '@models/leaderboards';
-import { WoodstockService } from '@services/woodstock';
+import { WoodstockLeaderboardService } from '@services/api-v2/woodstock/leaderboard/woodstock-leaderboard.service';
 
 /**
  *  Woodstock leaderboard scores component.
@@ -11,14 +11,14 @@ import { WoodstockService } from '@services/woodstock';
   templateUrl: './woodstock-leaderboard-scores.component.html',
 })
 export class WoodstockLeaderboardScoresComponent {
-  /** REVIEW-COMMENT: Leaderboard metadata and query. */
+  /** Leaderboard metadata and query. */
   @Input() leaderboard: LeaderboardMetadataAndQuery;
-  /** REVIEW-COMMENT: Selected score. */
+  /** Selected score. */
   @Input() externalSelectedScore: LeaderboardScore;
-  /** REVIEW-COMMENT: Output when leaderboard scores are deleted. */
+  /** Output when leaderboard scores are deleted. */
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
   public gameTitle = GameTitle.FH5;
 
-  constructor(public service: WoodstockService) {}
+  constructor(public leaderboardService: WoodstockLeaderboardService) {}
 }

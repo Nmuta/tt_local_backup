@@ -35,9 +35,10 @@ import { chunk, cloneDeep, flatten } from 'lodash';
 import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SuccessSnackbarComponent } from '@shared/modules/monitor-action/success-snackbar/success-snackbar.component';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
+import { UgcReportReason } from '@models/ugc-report-reason';
+import { BulkReportUgcResponse } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 
 export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
@@ -83,6 +84,8 @@ export abstract class UgcTableBaseComponent
   @Input() content: PlayerUgcItem[];
   /** Content type of the UGC shown. Default to {@link UgcType.Unknown}. */
   @Input() contentType: UgcType = UgcType.Unknown;
+  /** Whether the content of the table is hidden or not. */
+  @Input() isContentHidden: boolean = false;
   /** Output when UGC items are hidden. */
   @Output() ugcItemsRemoved = new EventEmitter<string[]>();
 
@@ -96,22 +99,30 @@ export abstract class UgcTableBaseComponent
   public expandoColumnDef = UGC_TABLE_COLUMNS_EXPANDO;
   public waitingForThumbnails = false;
   public displayTableWideActions: boolean = false;
+  public isBulkReportSupported: boolean = false;
   public ugcCount: number;
   public allMonitors: ActionMonitor[] = [];
   public downloadAllMonitor: ActionMonitor = new ActionMonitor('DOWNLOAD UGC Thumbnails');
-  public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc(s)');
+  public hideUgcMonitor: ActionMonitor = new ActionMonitor('Hide Ugc');
+  public unhideUgcMonitor: ActionMonitor = new ActionMonitor('Unhide Ugc');
+  public reportUgcMonitor: ActionMonitor = new ActionMonitor('Report Ugc');
   public generateSharecodesMonitor: ActionMonitor = new ActionMonitor('Generate Sharecode(s)');
+  public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
   public ugcDetailsLinkSupported: boolean = true;
   public ugcHidingSupported: boolean = true;
   public ugcType = UgcType;
   public liveryGiftingRoute: string[];
   public selectedUgcs: PlayerUgcItemTableEntries[] = [];
+  public selectedPrivateUgcCount: number = 0;
   public ugcsWithoutSharecodes: PlayerUgcItemTableEntries[] = [];
+  public reportReasons: UgcReportReason[] = null;
+  public reasonId: string = null;
 
   public readonly privateFeaturingDisabledTooltip =
     'Cannot change featured status of private UGC content.';
   public readonly invalidRoleDisabledTooltip = 'Action is disabled for your user role.';
   public readonly hideUgcPermission = PermAttributeName.HideUgc;
+  public readonly unhideUgcPermission = PermAttributeName.UnhideUgc;
   public readonly bulkGenerateSharecodePermission = PermAttributeName.BulkGenerateSharecode;
 
   public abstract gameTitle: GameTitle;
@@ -126,6 +137,11 @@ export abstract class UgcTableBaseComponent
     ugcIds: GuidLikeString[],
   ): Observable<LookupThumbnailsResult[]>;
   public abstract hideUgc(ugcIds: string[]): Observable<string[]>;
+  public abstract reportUgc(
+    ugcIds: string[],
+    reasonId: string,
+  ): Observable<BulkReportUgcResponse[]>;
+  public abstract unhideUgc(ugcIds: string[]): Observable<string[]>;
   public abstract generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]>;
 
   /** Angular hook. */
@@ -254,51 +270,102 @@ export abstract class UgcTableBaseComponent
         this.selectedUgcs.splice(selectedUgcIndex, 1);
       }
     }
+
+    this.selectedPrivateUgcCount = this.selectedUgcs.filter(ugc => !ugc.isPublic)?.length;
   }
 
   /** Hide multiple ugc items. */
   public hideMultipleUgc(ugcs: PlayerUgcItemTableEntries[]): void {
     this.hideUgcMonitor = this.hideUgcMonitor.repeat();
+    // Private UGC can't be hidden by design.
+    const ugcIds = ugcs.filter(ugc => ugc.isPublic).map(ugc => ugc.id);
+    this.hideUgc(ugcIds)
+      .pipe(
+        switchMap(failedSharecodes => {
+          if (failedSharecodes.length > 0) {
+            // Remove ugcId that failed from the list of ugcIds
+            failedSharecodes.forEach(failedUgc => {
+              const index = ugcIds.indexOf(failedUgc);
+              ugcIds.splice(index, 1);
+            });
+
+            this.removeUgcFromTable(ugcIds);
+
+            return throwError(
+              () => `Failed to hide the following UGC items : ${failedSharecodes.join('\n')}`,
+            );
+          }
+          return of(failedSharecodes);
+        }),
+        this.hideUgcMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.removeUgcFromTable(ugcIds);
+      });
+  }
+
+  /** Unhide multiple ugc items. */
+  public unhideMultipleUgc(ugcs: PlayerUgcItemTableEntries[]): void {
+    this.unhideUgcMonitor = this.unhideUgcMonitor.repeat();
 
     const ugcIds = ugcs.map(ugc => ugc.id);
-    this.hideUgc(ugcIds)
-      .pipe(this.hideUgcMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(failedUgcs => {
-        // Should be replace by addition to ActionMonitor to be able to handle custom error message when the response from
-        // the backend was successful (200)
-        if (failedUgcs.length > 0) {
-          this.snackbar.open(
-            `Failed to hide some or all of the following UGC items : ${failedUgcs.join('\n')}`,
-            'Okay',
-            {
-              panelClass: 'snackbar-warn',
-            },
-          );
-        } else {
-          this.snackbar.openFromComponent(SuccessSnackbarComponent, {
-            data: this.hideUgcMonitor,
-            panelClass: ['snackbar-success'],
-          });
-        }
+    this.unhideUgc(ugcIds)
+      .pipe(
+        switchMap(failedSharecodes => {
+          if (failedSharecodes.length > 0) {
+            // Remove ugcId that failed from the list of ugcIds
+            failedSharecodes.forEach(failedUgc => {
+              const index = ugcIds.indexOf(failedUgc);
+              ugcIds.splice(index, 1);
+            });
 
-        // Remove ugcId that failed from the list of ugcIds
-        failedUgcs.forEach(failedUgc => {
-          const index = ugcIds.indexOf(failedUgc);
-          ugcIds.splice(index, 1);
-        });
-        // Remove hidden ugcs from the table
-        // The ugcTableDataSource data property is a reference to this.content
-        ugcIds.forEach(ugcId => {
-          const index = this.content.findIndex(x => x.id == ugcId);
-          this.content.splice(index, 1);
-        });
-        // Send ugcIds to be removed to parent component
-        this.ugcItemsRemoved.emit(ugcIds);
-        this.selectedUgcs = [];
-        this.ugcTableDataSource.data.forEach(ugcTableElement => {
-          ugcTableElement.selected = false;
-        });
-        this.ugcTableDataSource._updateChangeSubscription();
+            this.removeUgcFromTable(ugcIds);
+
+            return throwError(
+              () => `Failed to unhide the following UGC items : ${failedSharecodes.join('\n')}`,
+            );
+          }
+          return of(failedSharecodes);
+        }),
+        this.unhideUgcMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.removeUgcFromTable(ugcIds);
+      });
+  }
+
+  /** Report multiple ugc items. */
+  public reportMultipleUgc(ugcs: PlayerUgcItemTableEntries[], reasonId: string): void {
+    if (!ugcs || !reasonId) {
+      return;
+    }
+
+    this.reportUgcMonitor = this.reportUgcMonitor.repeat();
+
+    const ugcIds = ugcs.map(ugc => ugc.id);
+    this.reportUgc(ugcIds, reasonId)
+      .pipe(
+        switchMap(ugcResponse => {
+          const failedReports = ugcResponse.filter(response => !!response.error);
+          if (failedReports.length > 0) {
+            this.reportMultipleUgcFinished();
+
+            return throwError(
+              () =>
+                `Failed to report some or all of the following UGC items : ${failedReports
+                  .map(ugc => ugc.ugcId)
+                  .join('\n')}`,
+            );
+          }
+          return of(ugcResponse);
+        }),
+        this.reportUgcMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(_ugcResponse => {
+        this.reportMultipleUgcFinished();
       });
   }
 
@@ -346,6 +413,7 @@ export abstract class UgcTableBaseComponent
   /** Unselects all selected ugc items. */
   public unselectAllUgcItems(): void {
     this.selectedUgcs = [];
+    this.selectedPrivateUgcCount = 0;
     this.ugcTableDataSource.data.map(s => (s.selected = false));
   }
 
@@ -393,5 +461,33 @@ export abstract class UgcTableBaseComponent
 
   private shouldUseCondensedTableView(): boolean {
     return this.table?.nativeElement?.offsetWidth <= 1000;
+  }
+
+  private reportMultipleUgcFinished() {
+    // We don't currently hide items after they're reported
+    // so we'll just deselect everything after reporting
+    this.selectedUgcs = [];
+    this.selectedPrivateUgcCount = 0;
+    this.ugcTableDataSource.data.forEach(ugcTableElement => {
+      ugcTableElement.selected = false;
+    });
+    this.ugcTableDataSource._updateChangeSubscription();
+  }
+
+  private removeUgcFromTable(ugcIds: string[]) {
+    // Remove hidden ugcs from the table
+    // The ugcTableDataSource data property is a reference to this.content
+    ugcIds.forEach(ugcId => {
+      const index = this.content.findIndex(x => x.id == ugcId);
+      this.content.splice(index, 1);
+    });
+    // Send ugcIds to be removed to parent component
+    this.ugcItemsRemoved.emit(ugcIds);
+    this.selectedUgcs = [];
+    this.selectedPrivateUgcCount = 0;
+    this.ugcTableDataSource.data.forEach(ugcTableElement => {
+      ugcTableElement.selected = false;
+    });
+    this.ugcTableDataSource._updateChangeSubscription();
   }
 }

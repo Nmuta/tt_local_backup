@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets car makes.
         /// </summary>
         /// <remarks>Only exists in LiveOps version of the nuget. Steelhead needs an exact copy of this.</remarks>
-        Task<IEnumerable<SteelheadLiveOpsContent.ListCarMake>> GetCarMakesAsync();
+        Task<Dictionary<Guid, string>> GetCarMakesAsync();
 
         /// <summary>
         ///     Gets vanity items.
@@ -255,5 +255,45 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets Rivals Events.
         /// </summary>
         Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync();
+
+        /// <summary>
+        ///     Gets Rivals Events Reference.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetRivalsEventsReferenceAsync();
+
+        /// <summary>
+        ///     Gets Cars Reference.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetCarsReferenceAsync();
+
+        /// <summary>
+        ///     Gets Rivals Categories.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetRivalsEventCategoriesAsync();
+
+        /// <summary>
+        ///     Gets Store Entitlements.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetStoreEntitlementsAsync();
+
+        /// <summary>
+        ///     Gets Racers Cup Series.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync();
+
+        /// <summary>
+        ///     Gets Builders Cup Championship.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetBuildersCupChampionshipsAsync();
+
+        /// <summary>
+        ///     Gets Builders Cup Ladder.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetBuildersCupLaddersAsync();
+
+        /// <summary>
+        ///     Gets Builders Cup Series.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync();
     }
 }

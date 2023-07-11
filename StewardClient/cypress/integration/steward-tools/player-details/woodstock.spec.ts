@@ -1,13 +1,29 @@
-import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
-import { tableHasEntry } from '@support/mat-form/table-has-entry';
-import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
-import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { RetailUsers } from '@support/steward/common/account-info';
+import {
+  userDetailsVerifyPlayerIdentityResults,
+  userDetailsFindBans,
+  userDetailsFindProfileNotes,
+  userDetailsFindRelatedConsoles,
+  userDetailsFindRelatedGamertags,
+  deepDiveFindCreditHistory,
+  deepDiveFindOverviewData,
+  inventoryFindPlayerInventoryData,
+  notificationsFindNotification,
+  userDetailsVerifyFlagData,
+  swapToTab,
+  auctionsFindCreatedAuction,
+  ugcLiveriesFindLivery,
+  loyaltyFindTitlesPlayed,
+  jsonCheckJson,
+} from './shared-tests';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+
+const defaultWoodstockUser = 'luke';
+const platformName = 'woodstock';
 
 context('Steward / Tools / Player Details / Woodstock', () => {
   beforeEach(() => {
@@ -19,85 +35,143 @@ context('Steward / Tools / Player Details / Woodstock', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(RetailUsers['luke'].gtag);
       selectWoodstock();
     });
 
-    foundUserDataTest();
+    context('With default user', () => {
+      beforeEach(() => {
+        searchByGtag(RetailUsers[defaultWoodstockUser].gtag);
+      });
+      testUserDetails(defaultWoodstockUser);
+
+      testDeepDive();
+
+      testInventory();
+
+      testNotifications();
+
+      testJson();
+    });
+
+    context('With Madden user', () => {
+      beforeEach(() => {
+        searchByGtag(RetailUsers['madden'].gtag);
+      });
+      testAuctions();
+
+      testUgc();
+
+      testLoyalty(['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
+    });
   });
 
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(RetailUsers['luke'].xuid);
       selectWoodstock();
     });
 
-    foundUserDataTest();
+    context('With default user', () => {
+      beforeEach(() => {
+        searchByXuid(RetailUsers[defaultWoodstockUser].xuid);
+      });
+      testUserDetails(defaultWoodstockUser);
+
+      testDeepDive();
+
+      testInventory();
+
+      testNotifications();
+
+      testJson();
+    });
+
+    context('With Madden user', () => {
+      beforeEach(() => {
+        searchByXuid(RetailUsers['madden'].xuid);
+      });
+      testAuctions();
+
+      testUgc();
+
+      testLoyalty(['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
+    });
   });
 });
 
-function foundUserDataTest(): void {
-  it('should have found data', () => {
+function testUserDetails(userToSearch: string): void {
+  context('User Details', () => {
     // found user
-    verifyPlayerIdentityResults({
-      gtag: RetailUsers['luke'].gtag,
-      xuid: RetailUsers['luke'].xuid,
-      t10Id: false,
-    });
+    userDetailsVerifyPlayerIdentityResults(userToSearch);
 
     // found flag data
-    checkboxHasValue('Is Vip', true);
+    userDetailsVerifyFlagData('Is Vip', true);
 
     // found bans
-    cy.contains('mat-card', 'Ban History').within(() => {
-      tableHasEntry('banDetails', 'All Requests');
-    });
+    userDetailsFindBans();
 
     // found profile notes
-    cy.contains('mat-card', 'Profile Notes').within(() => {
-      tableHasEntry('text', 'test note from Steward API');
-    });
+    userDetailsFindProfileNotes('test note from Steward API');
 
     // found related gamertags
-    cy.contains('mat-card', 'Related Gamertags').within(() => {
-      //This specific component takes a very long time to run; so if it fails, it's likely the timeout on the spinner will just need to be increased to pass the test
-      waitForProgressSpinners();
-      tableHasEntry('xuid', '2535424453525895');
-    });
+    userDetailsFindRelatedGamertags('2535424453525895');
 
     // found related consoles
-    cy.contains('mat-card', 'Consoles').within(() => {
-      tableHasEntry('consoleId', '18230640064596068933');
-    });
+    userDetailsFindRelatedConsoles('18230640064596068933');
+  });
+}
 
-    //// switch to Deep Dive ////
-    cy.contains('.mat-tab-label', 'Deep Dive').click();
-
+function testDeepDive(): void {
+  context('Deep Dive', () => {
     // found overview data
-    cy.contains('mat-card', 'Overview').within(() => {
-      cy.contains('th', 'Current Credits').should('exist');
-    });
+    deepDiveFindOverviewData();
 
     // found credit history
-    cy.contains('mat-card', 'Credit History').within(() => {
-      tableHasEntry('deviceType', 'Scorpio');
-    });
+    deepDiveFindCreditHistory('Scorpio');
+  });
+}
 
-    //// switch to Inventory ////
-    cy.contains('.mat-tab-label', 'Inventory').click();
-
+function testInventory(): void {
+  context('Inventory', () => {
     // found player inventory data
-    cy.contains('mat-card', 'Player Inventory').within(() => {
-      cy.contains('Credit Rewards');
-    });
+    inventoryFindPlayerInventoryData();
+  });
+}
 
-    //// switch to Notifications ////
-    cy.contains('.mat-tab-label', 'Notifications').click();
-
+function testNotifications(): void {
+  context('Notifications', () => {
     // found player inventory data
-    cy.contains('mat-card', 'Notifications').within(() => {
-      cy.contains('Notifications');
-    });
+    notificationsFindNotification();
+  });
+}
+
+function testAuctions(): void {
+  context('Auctions', () => {
+    //The auction filter labels are currently using sunrise instead of woodstock, check in shared tests file for details
+    auctionsFindCreatedAuction(
+      platformName,
+      'rsx',
+      'Acura RSX Type-S',
+      'auctionInfo',
+      'Acura RSX Type S (2002)',
+    );
+  });
+}
+
+function testUgc(): void {
+  context('Ugc', () => {
+    ugcLiveriesFindLivery(platformName, 'Hot Wheels', '2JetZ', 'metadata');
+  });
+}
+
+function testLoyalty(titles: string[]): void {
+  context('Loyalty', () => {
+    loyaltyFindTitlesPlayed(platformName, titles);
+  });
+}
+
+function testJson(): void {
+  context('JSON', () => {
+    jsonCheckJson();
   });
 }

@@ -207,20 +207,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenLeaderboardProviderNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { LeaderboardProvider = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "leaderboardProvider"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Ctor_WhenItemsProviderNull_Throws()
         {
             // Arrange.
@@ -1307,23 +1293,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             result.Should().BeOfType<OkResult>();
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UnhideUgc_WithValidInputs_DoesNotThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = ValidXuid;
-            var ugcId = Fixture.Create<string>();
-            var fileType = "Livery";
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UnhideUGC(xuid, fileType, ugcId).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
         private sealed class Dependencies
         {
             private readonly ControllerContext ControllerContext;
@@ -1422,8 +1391,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             public IWoodstockItemsProvider ItemsProvider { get; set; } = Substitute.For<IWoodstockItemsProvider>();
 
-            public IWoodstockLeaderboardProvider LeaderboardProvider { get; set; } = Substitute.For<IWoodstockLeaderboardProvider>();
-
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
             public IScheduler Scheduler { get; set; } = Substitute.For<IScheduler>();
@@ -1460,7 +1427,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 this.BanHistoryProvider,
                 this.NotificationHistoryProvider,
                 this.StorefrontProvider,
-                this.LeaderboardProvider,
                 this.ItemsProvider,
                 this.Configuration,
                 this.Scheduler,

@@ -1,12 +1,26 @@
-import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
-import { tableHasEntry } from '@support/mat-form/table-has-entry';
-import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
+import {
+  userDetailsFindBans,
+  userDetailsFindProfileNotes,
+  userDetailsFindRelatedConsoles,
+  userDetailsFindRelatedGamertags,
+  deepDiveFindCreditHistory,
+  deepDiveFindOverviewData,
+  inventoryFindPlayerInventoryData,
+  notificationsFindNotification,
+  userDetailsVerifyPlayerIdentityResults,
+  userDetailsVerifyFlagData,
+  ugcLiveriesFindLivery,
+  auctionsFindCreatedAuction,
+  jsonCheckJson,
+} from './shared-tests';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
+
+const defaultSunriseUser = 'jordan';
 
 context('Steward / Tools / Player Details / Sunrise', () => {
   beforeEach(() => {
@@ -18,83 +32,127 @@ context('Steward / Tools / Player Details / Sunrise', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(RetailUsers['jordan'].gtag);
       selectSunrise();
     });
 
-    foundUserDataTest();
+    context('With default user', () => {
+      beforeEach(() => {
+        searchByGtag(RetailUsers[defaultSunriseUser].gtag);
+      });
+      testUserDetails(defaultSunriseUser);
+
+      testDeepDive();
+
+      testInventory();
+
+      testNotifications();
+
+      testJson();
+    });
+
+    context('With Madden user', () => {
+      beforeEach(() => {
+        searchByGtag(RetailUsers['madden'].gtag);
+      });
+      testAuctions();
+
+      testUgc();
+    });
   });
 
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(RetailUsers['jordan'].xuid);
       selectSunrise();
     });
 
-    foundUserDataTest();
+    context('With default user', () => {
+      beforeEach(() => {
+        searchByXuid(RetailUsers[defaultSunriseUser].xuid);
+      });
+      testUserDetails(defaultSunriseUser);
+
+      testDeepDive();
+
+      testInventory();
+
+      testNotifications();
+
+      testJson();
+    });
+
+    context('With Madden user', () => {
+      beforeEach(() => {
+        searchByXuid(RetailUsers['madden'].xuid);
+      });
+      testAuctions();
+
+      testUgc();
+    });
   });
 });
 
-function foundUserDataTest(): void {
-  it('should have found data', () => {
+function testUserDetails(userToSearch: string): void {
+  context('User Details', () => {
     // found user
-    verifyPlayerIdentityResults({
-      gtag: RetailUsers['jordan'].gtag,
-      xuid: RetailUsers['jordan'].xuid,
-      t10Id: false,
-    });
+    userDetailsVerifyPlayerIdentityResults(userToSearch);
 
     // found flag data
-    checkboxHasValue('Is Vip', true);
+    userDetailsVerifyFlagData('Is Vip', true);
 
     // found bans
-    cy.contains('mat-card', 'Ban History').within(() => {
-      tableHasEntry('banDetails', 'All Requests');
-    });
+    userDetailsFindBans();
 
     // found profile notes
-    cy.contains('mat-card', 'Profile Notes').within(() => {
-      tableHasEntry('text', 'This is a testing string, not a chicken wing.');
-    });
+    userDetailsFindProfileNotes('This is a testing string, not a chicken wing.');
 
     // found related gamertags
-    cy.contains('mat-card', 'Related Gamertags').within(() => {
-      tableHasEntry('xuid', '2535435129485725');
-    });
+    userDetailsFindRelatedGamertags('2535435129485725');
 
     // found related consoles
-    cy.contains('mat-card', 'Consoles').within(() => {
-      tableHasEntry('consoleId', '18230637609444823812');
-    });
+    userDetailsFindRelatedConsoles('18230637609444823812');
+  });
+}
 
-    //// switch to Deep Dive ////
-    cy.contains('.mat-tab-label', 'Deep Dive').click();
-
+function testDeepDive(): void {
+  context('Deep Dive', () => {
     // found overview data
-    cy.contains('mat-card', 'Overview').within(() => {
-      cy.contains('th', 'Current Credits').should('exist');
-    });
+    deepDiveFindOverviewData();
 
     // found credit history
-    cy.contains('mat-card', 'Credit History').within(() => {
-      tableHasEntry('deviceType', 'UWP');
-    });
+    deepDiveFindCreditHistory('UWP');
+  });
+}
 
-    //// switch to Inventory ////
-    cy.contains('.mat-tab-label', 'Inventory').click();
-
+function testInventory(): void {
+  context('Inventory', () => {
     // found player inventory data
-    cy.contains('mat-card', 'Player Inventory').within(() => {
-      cy.contains('Credit Rewards');
-    });
+    inventoryFindPlayerInventoryData();
+  });
+}
 
-    //// switch to Notifications ////
-    cy.contains('.mat-tab-label', 'Notifications').click();
-
+function testNotifications(): void {
+  context('Notifications', () => {
     // found player inventory data
-    cy.contains('mat-card', 'Notifications').within(() => {
-      cy.contains('Notification');
-    });
+    notificationsFindNotification();
+  });
+}
+
+function testAuctions(): void {
+  context('Auctions', () => {
+    //TODO: Nobody has any auction history for this title 07/10
+    //auctionsFindCreatedAuction(userToSearch, isXuidTest, 'sunrise', 'rsx', 'Acura RSX Type-S', 'Auction Info', 'Acura RSX Type S (2002)')
+  });
+}
+
+function testUgc(): void {
+  context('Ugc', () => {
+    ugcLiveriesFindLivery('sunrise', 'Aston Martin', 'One-77', 'metadata');
+  });
+}
+
+function testJson(): void {
+  context('JSON', () => {
+    jsonCheckJson();
   });
 }
