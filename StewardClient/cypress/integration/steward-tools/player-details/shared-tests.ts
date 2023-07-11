@@ -127,7 +127,7 @@ export function ugcLiveriesFindLivery(
 
     cy.get('.cdk-overlay-container').within(() => {
       cy.contains(`${carBrand} ${carName}`).click();
-    })
+    });
     cy.get(platform + '-ugc-table')
       .within(() => {
         tableHasEntry(columnToLookAt, `${carBrand} ${carName}`);

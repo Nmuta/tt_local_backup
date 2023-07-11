@@ -160,12 +160,7 @@ function testAuctions(): void {
 
 function testUgc(): void {
   context('Ugc', () => {
-    ugcLiveriesFindLivery(
-      platformName,
-      'Hot Wheels',
-      '2JetZ',
-      'metadata',
-    );
+    ugcLiveriesFindLivery(platformName, 'Hot Wheels', '2JetZ', 'metadata');
   });
 }
 

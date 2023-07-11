@@ -147,12 +147,7 @@ function testAuctions(): void {
 
 function testUgc(): void {
   context('Ugc', () => {
-    ugcLiveriesFindLivery(
-      'sunrise',
-      'Aston Martin',
-      'One-77',
-      'metadata',
-    );
+    ugcLiveriesFindLivery('sunrise', 'Aston Martin', 'One-77', 'metadata');
   });
 }
 
