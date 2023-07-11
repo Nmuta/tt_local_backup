@@ -100,7 +100,7 @@
             <mat-card>
               <mat-card-header>
                 <mat-card-title>Liveries</mat-card-title>
-                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
               </mat-card-header>
               <mat-card-content>
                 <steelhead-player-ugc
@@ -122,7 +122,7 @@
             <mat-card>
               <mat-card-header>
                 <mat-card-title>Photos</mat-card-title>
-                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
               </mat-card-header>
               <mat-card-content>
                 <steelhead-player-ugc
@@ -156,7 +156,7 @@
               </mat-card-content>
             </mat-card>
           </mat-tab>
-          <mat-tab>
+          <!-- <mat-tab>
             <ng-template mat-tab-label>
               Hidden
               <inline-spinner [monitor]="ugcHidden.getMonitor | renderGuard"></inline-spinner>
@@ -165,6 +165,88 @@
               #ugcHidden
               [identity]="identity"
             ></steelhead-player-hidden-ugc>
+          </mat-tab> -->
+        </mat-tab-group>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Hidden Ugc
+          <inline-spinner [monitor]="hiddenUgcLiveries.getMonitor | renderGuard"
+            >({{ hiddenUgcLiveries?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcPhotos.getMonitor | renderGuard"
+            >({{ hiddenUgcPhotos?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcTuneBlobs.getMonitor | renderGuard"
+            >({{ hiddenUgcTuneBlobs?.ugcContent?.length }})</inline-spinner
+          >
+        </ng-template>
+        <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Liveries
+              <inline-spinner [monitor]="hiddenUgcLiveries.getMonitor | renderGuard"
+                >({{ hiddenUgcLiveries?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Liveries</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-hidden-ugc
+                  #hiddenUgcLiveries
+                  [identity]="identity"
+                  [contentType]="UgcType.Livery"
+                  [usingIdentities]="true"
+                ></steelhead-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Photos
+              <inline-spinner [monitor]="hiddenUgcPhotos.getMonitor | renderGuard"
+                >({{ hiddenUgcPhotos?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Photos</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-hidden-ugc
+                  #hiddenUgcPhotos
+                  [identity]="identity"
+                  [contentType]="UgcType.Photo"
+                  [usingIdentities]="true"
+                ></steelhead-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Tune Blobs
+              <inline-spinner [monitor]="hiddenUgcTuneBlobs.getMonitor | renderGuard"
+                >({{ hiddenUgcTuneBlobs?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Tune Blobs</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-hidden-ugc
+                  #hiddenUgcTuneBlobs
+                  [identity]="identity"
+                  [contentType]="UgcType.TuneBlob"
+                  [usingIdentities]="true"
+                ></steelhead-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
           </mat-tab>
         </mat-tab-group>
       </mat-tab>

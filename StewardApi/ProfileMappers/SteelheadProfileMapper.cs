@@ -21,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDa
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Output;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters;
@@ -505,15 +506,39 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<ForzaPlayerSkillRatingSummary, SkillRatingSummary>();
 
-            this.CreateMap<ForzaUGCDataLight, HideableUgc>()
-                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Metadata.Title))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Metadata.Description))
-                .ForMember(dest => dest.UgcId, opt => opt.MapFrom(src => src.Metadata.GuidId))
-                .ForMember(dest => dest.Sharecode, opt => opt.MapFrom(src => src.Metadata.ShareCode))
-                .ForMember(dest => dest.PreviewUrl, opt => opt.MapFrom(src => src.Thumbnail.ToImageDataUrl()))
-                .ForMember(dest => dest.SubmissionUtc, opt => opt.MapFrom(src => src.Metadata.CreatedDate.DefaultAsNull()))
-                //.ForMember(dest => dest.HiddenUtc, opt => opt.MapFrom(src => null)) //Park with Caleb about getting this added. Replace with task# once that's good to go
-                .ForMember(dest => dest.FileType, opt => opt.MapFrom(src => Enum.GetName(typeof(ForzaUGCContentType), src.Metadata.ContentType)));
+            this.CreateMap<ForzaUGCDataLight, UgcItem>()
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.ToImageDataUrl()))
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => source.AdminTexture.ToImageDataUrl()))
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Metadata.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
+                .ForMember(
+                    dest => dest.ForceFeaturedEndDateUtc,
+                    opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(
+                    dest => dest.FeaturedEndDateUtc,
+                    opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
+                .ForMember(
+                    dest => dest.PopularityBucket,
+                    opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.Metadata.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.Metadata.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ReverseMap();
         }
 
         private DeeplinkDestination PrepareBridgeDestination(WofBaseDestination destination)
