@@ -80,5 +80,10 @@ export const stewardUrls = {
       default: 'app/tools/message-of-the-day',
       steelhead: 'app/tools/message-of-the-day/steelhead',
     },
+    auctionDetails: {
+      default: 'app/tools/auction-details',
+      woodstock: 'app/tools/auction-details/woodstock',
+      sunrise: 'app/tools/auction-details/sunrise',
+    },
   },
 };

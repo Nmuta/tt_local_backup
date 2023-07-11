@@ -9,5 +9,5 @@ export function goToTool(): void {
 /** Finds and fills in Auction ID field */
 export function searchByAuctionID(auctionId: string): void {
   cy.contains('mat-form-field', 'Auction ID', { matchCase: false }).click().type(`${auctionId}\n`);
-  waitForProgressSpinners(60_000);
+  waitForProgressSpinners();
 }
