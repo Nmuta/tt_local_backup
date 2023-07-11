@@ -113,22 +113,24 @@ export function notificationsFindNotification(): void {
 /** Verifies that the user has a livery for a specified vehicle in the liveries tab */
 export function ugcLiveriesFindLivery(
   platform: string,
-  carToSearch: string,
-  carToClick: string,
+  carBrand: string,
+  carName: string,
   columnToLookAt: string,
-  rowDataExpected: string,
 ): void {
   it('should have a searchable livery', () => {
     swapToTab('Ugc');
     cy.contains('.mat-tab-label', 'Liveries').click();
-    cy.get(platform + '-make-model-autocomplete')
+    cy.get(`${platform}-make-model-autocomplete`)
       .find('input')
       .click({ force: true })
-      .type(carToSearch, { force: true });
-    cy.contains(carToClick).click();
+      .type(carName, { force: true });
+
+    cy.get('.cdk-overlay-container').within(() => {
+      cy.contains(`${carBrand} ${carName}`).click();
+    });
     cy.get(platform + '-ugc-table')
       .within(() => {
-        tableHasEntry(columnToLookAt, rowDataExpected);
+        tableHasEntry(columnToLookAt, `${carBrand} ${carName}`);
       })
       .should('exist');
   });

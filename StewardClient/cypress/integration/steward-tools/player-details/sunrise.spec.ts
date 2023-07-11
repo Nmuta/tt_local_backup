@@ -140,20 +140,14 @@ function testNotifications(): void {
 
 function testAuctions(): void {
   context('Auctions', () => {
-    //Nobody has any auction history for this title :(
+    //TODO: Nobody has any auction history for this title 07/10
     //auctionsFindCreatedAuction(userToSearch, isXuidTest, 'sunrise', 'rsx', 'Acura RSX Type-S', 'Auction Info', 'Acura RSX Type S (2002)')
   });
 }
 
 function testUgc(): void {
   context('Ugc', () => {
-    ugcLiveriesFindLivery(
-      'sunrise',
-      'one-77',
-      'Aston Martin One-77 (2010) [1181]',
-      'metadata',
-      'Aston Martin One-77',
-    );
+    ugcLiveriesFindLivery('sunrise', 'Aston Martin', 'One-77', 'metadata');
   });
 }
 
