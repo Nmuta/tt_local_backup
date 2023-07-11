@@ -110,6 +110,52 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
+        ///    Search curated UGC items.
+        /// </summary>
+        [HttpGet("{ugcType}/curated/{curationType}")]
+        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetCurated(string ugcType, string curationType)
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+            curationType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(curationType));
+
+            if (!Enum.TryParse(ugcType, out ForzaUGCContentType ugcTypeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(ForzaUGCContentType)} provided: {ugcType}");
+            }
+
+            if (!Enum.TryParse(curationType, out ForzaCurationMethod curationTypeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(ForzaCurationMethod)} provided: {curationType}");
+            }
+
+            var getCuratedUgc = this.Services.StorefrontManagementService.GetCuratedUgc(ugcTypeEnum, curationTypeEnum, 500);
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
+
+            await Task.WhenAll(getCuratedUgc, getCars).ConfigureAwait(true);
+
+            var curatedUgcItems = getCuratedUgc.GetAwaiter().GetResult();
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
+
+            // empty thumbnail to not have the return object too big
+            curatedUgcItems.result.ToList().ForEach(x => x.Thumbnail = null);
+            curatedUgcItems.result.ToList().ForEach(x => x.AdminTexture = null);
+
+            var ugcItems = this.mapper.SafeMap<IList<UgcItem>>(curatedUgcItems.result.Select(x => x.Metadata));
+            foreach (var item in ugcItems)
+            {
+                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";
+            }
+
+            return this.Ok(ugcItems);
+        }
+
+        /// <summary>
         ///     Gets a UGC livery by ID.
         /// </summary>
         [HttpGet("livery/{ugcId}")]

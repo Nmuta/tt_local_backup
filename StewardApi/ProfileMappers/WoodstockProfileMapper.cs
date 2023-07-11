@@ -238,6 +238,39 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
+            this.CreateMap<ServicesLiveOps.ForzaUGCMetadata, WoodstockUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Searchable))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.ContentType))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.FeaturedByT10))
+                .ForMember(
+                    dest => dest.ForceFeaturedEndDateUtc,
+                    opt => opt.MapFrom(source => source.ForceFeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(
+                    dest => dest.FeaturedEndDateUtc,
+                    opt => opt.MapFrom(source => source.FeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.KeywordIdTwo))
+                .ForMember(
+                    dest => dest.PopularityBucket,
+                    opt => opt.MapFrom(source => source.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.TimesUsed))
+                .ReverseMap();
+
             this.CreateMap<ServicesLiveOps.ForzaLiveryData, WoodstockUgcLiveryItem>()
                 .ForMember(dest => dest.LiveryDownloadDataBase64, opt => opt.MapFrom(source => source.LiveryData))
                 .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<WoodstockUgcGeoFlagOption>()))
