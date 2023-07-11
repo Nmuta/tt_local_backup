@@ -37,7 +37,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [StandardTags(Title.Steelhead, Topic.Rivals)]
     public class RivalsController : V2SteelheadControllerBase
     {
-
         private readonly ISteelheadPegasusService steelheadPegasusService;
 
         /// <summary>
@@ -81,6 +80,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             return this.Ok(getRivalsEventsResults);
+        }
+
+        /// <summary>
+        ///     Gets all rivals events reference.
+        /// </summary>
+        [HttpGet("reference")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetRivalsEventsReference()
+        {
+            var rivalEvents = await this.steelheadPegasusService.GetRivalsEventsReferenceAsync().ConfigureAwait(true);
+
+            return this.Ok(rivalEvents);
+        }
+
+        /// <summary>
+        ///     Gets all rivals event categories.
+        /// </summary>
+        [HttpGet("categories")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetRivalsEventCategories()
+        {
+            var rivalCategories = await this.steelheadPegasusService.GetRivalsEventCategoriesAsync().ConfigureAwait(true);
+
+            return this.Ok(rivalCategories);
         }
     }
 }

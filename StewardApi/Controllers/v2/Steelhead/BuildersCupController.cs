@@ -83,5 +83,47 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             return this.Ok(featuredTours);
         }
+
+        /// <summary>
+        ///     Gets builders cup championships.
+        /// </summary>
+        [HttpGet("championships")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetBuildersCupChampionships()
+        {
+            var buildersCupChampionships = await this.pegasusService.GetBuildersCupChampionshipsAsync().ConfigureAwait(true);
+
+            return this.Ok(buildersCupChampionships);
+        }
+
+        /// <summary>
+        ///     Gets builders cup ladders.
+        /// </summary>
+        [HttpGet("ladders")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetBuildersCupLadders()
+        {
+            var buildersCupLadders = await this.pegasusService.GetBuildersCupLaddersAsync().ConfigureAwait(true);
+
+            return this.Ok(buildersCupLadders);
+        }
+
+        /// <summary>
+        ///     Gets builders cup series.
+        /// </summary>
+        [HttpGet("series")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetBuildersCupSeries()
+        {
+            var buildersCupSeries = await this.pegasusService.GetBuildersCupSeriesAsync().ConfigureAwait(true);
+
+            return this.Ok(buildersCupSeries);
+        }
     }
 }

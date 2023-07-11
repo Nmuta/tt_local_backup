@@ -1402,7 +1402,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 

@@ -76,26 +76,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<ServicesLiveOps.AuctionManagementService.DeleteAuctionsOutput> DeleteAuctionAsync(
             Guid auctionId,
             string endpoint);
-
-        /// <summary>
-        ///     Gets hidden UGC of a player.
-        /// </summary>
-        Task<IList<HideableUgc>> GetHiddenUgcForUserAsync(ulong xuid, string endpoint);
-
-        /// <summary>
-        ///     Hides UGC.
-        /// </summary>
-        Task HideUgcAsync(
-            Guid ugcId,
-            string endpoint);
-
-        /// <summary>
-        ///     Unhides a player's UGC.
-        /// </summary>
-        Task UnhideUgcAsync(
-            ulong xuid,
-            Guid ugcId,
-            FileType fileType,
-            string endpoint);
     }
 }

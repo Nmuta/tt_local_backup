@@ -34,8 +34,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.Details, Topic.Ugc)]
-    public class SearchController : V2ControllerBase
+    public class SearchController : V2WoodstockControllerBase
     {
+        private const int DefaultMaxResults = 500;
+
         private readonly IWoodstockStorefrontProvider storefrontProvider;
         private readonly IWoodstockItemsProvider itemsProvider;
         private readonly ILoggingService loggingService;
@@ -87,6 +89,48 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var ugcItems = getUgc.GetAwaiter().GetResult();
             var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
 
+            foreach (var item in ugcItems)
+            {
+                item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";
+            }
+
+            return this.Ok(ugcItems);
+        }
+
+        /// <summary>
+        ///    Search curated UGC items.
+        /// </summary>
+        [HttpGet("{ugcType}/curated/{curationType}")]
+        [SwaggerResponse(200, type: typeof(IList<WoodstockUgcItem>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetCurated(string ugcType, string curationType)
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+            curationType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(curationType));
+
+            if (!Enum.TryParse(ugcType, out ForzaUGCContentType ugcTypeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(ForzaUGCContentType)} provided: {ugcType}");
+            }
+
+            if (!Enum.TryParse(curationType, out ForzaCurationMethod curationTypeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(ForzaCurationMethod)} provided: {curationType}");
+            }
+
+            var getCuratedUgc = this.Services.StorefrontManagementService.GetCuratedUgc(ugcTypeEnum, curationTypeEnum, 500);
+            var getCars = this.itemsProvider.GetCarsAsync<SimpleCar>().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
+
+            await Task.WhenAll(getCuratedUgc, getCars).ConfigureAwait(true);
+
+            var curatedUgcItems = getCuratedUgc.GetAwaiter().GetResult();
+            var carsDict = getCars.GetAwaiter().GetResult().ToDictionary(car => car.Id);
+
+            var ugcItems = this.mapper.SafeMap<IList<WoodstockUgcItem>>(curatedUgcItems.result.Select(x => x.Metadata));
             foreach (var item in ugcItems)
             {
                 item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";

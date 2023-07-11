@@ -1,0 +1,12 @@
+<woodstock-ugc-filters (changes)="changeUgcFilters($event)"></woodstock-ugc-filters>
+
+<ng-container *waitForMonitor="getMonitor">
+  <woodstock-ugc-table
+    [content]="filteredUgcContent"
+    [contentType]="contentType"
+    [isContentHidden]="true"
+    (ugcItemsRemoved)="removeUgcItems($event)"
+  ></woodstock-ugc-table>
+</ng-container>
+
+<mat-progress-spinner *ngIf="getMonitor?.isActive" mode="indeterminate"> </mat-progress-spinner>

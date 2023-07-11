@@ -21,18 +21,16 @@
                 {{ entry.notification.notificationType }}
               </span>
             </div>
-            <div *ngIf="entry.edit" class="sf-text-warn">Edit Title Coming Soon</div>
-            <!-- Replace line above with commented out block below once we have working title editing API -->
-            <!-- <div *ngIf="entry.edit">
+            <div *ngIf="entry.edit">
               <select-localized-string
                 *ngIf="entry.edit"
                 [service]="service?.selectLocalizedStringService"
                 [formControl]="entry.formControls.localizedTitleInfo"
                 formControlName="localizedTitleInfo"
-                label = 'Select localized title'
+                label="Select localized title"
                 [disableLanguagePreview]="true"
               ></select-localized-string>
-            </div> -->
+            </div>
           </td>
         </ng-container>
         <ng-container matColumnDef="message">

@@ -68,5 +68,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 
         /// <summary>Gets base UGC data.</summary>
         Task<GetUGCObjectOutput> GetUGCObject(Guid id);
+
+        /// <summary>Gets curate UGC data.</summary>
+        Task<GetCuratedUgcOutput> GetCuratedUgc(ForzaUGCContentType contentType, ForzaCurationMethod curationMethod, int maxResults);
     }
 }

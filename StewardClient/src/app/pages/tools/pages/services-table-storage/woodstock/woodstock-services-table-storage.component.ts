@@ -60,8 +60,9 @@ export class WoodstockServicesTableStorageComponent extends BaseComponent {
       getTableStorageByProfileId$(
         xuid: BigNumber,
         externalProfileId: GuidLikeString,
+        filterResults: boolean,
       ): Observable<ServicesTableStorageEntity[]> {
-        return woodstockService.getTableStorageByProfileId$(xuid, externalProfileId);
+        return woodstockService.getTableStorageByProfileId$(xuid, externalProfileId, filterResults);
       },
     };
   }

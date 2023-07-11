@@ -201,6 +201,39 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
+
+            this.CreateMap<ServicesLiveOps.ForzaUGCMetadata, UgcItem>()
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Searchable))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.ContentType))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.FeaturedByT10))
+                .ForMember(
+                    dest => dest.ForceFeaturedEndDateUtc,
+                    opt => opt.MapFrom(source => source.ForceFeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(
+                    dest => dest.FeaturedEndDateUtc,
+                    opt => opt.MapFrom(source => source.FeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.KeywordIdTwo))
+                .ForMember(
+                    dest => dest.PopularityBucket,
+                    opt => opt.MapFrom(source => source.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.TimesUsed))
+                .ReverseMap();
+
             this.CreateMap<ForzaLiveryData, UgcLiveryItem>()
                 .ForMember(dest => dest.LiveryDownloadDataBase64, opt => opt.MapFrom(source => source.LiveryData))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
@@ -350,13 +383,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<WofGenericPopupEntry, WofGenericPopupBridge>()
                 .ReverseMap();
             this.CreateMap<WofDeeplinkEntry, WofDeeplinkBridge>()
-                .ForMember(dest => dest.Championship, opt => opt.MapFrom(src => src.Destination.Setting.Championship.@ref))
-                .ForMember(dest => dest.Series, opt => opt.MapFrom(src => src.Destination.Setting.Series.@ref))
-                .ForMember(dest => dest.Ladder, opt => opt.MapFrom(src => src.Destination.Setting.Ladder.@ref))
-                .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => src.Destination.Manufacturer.@ref))
-                .ForMember(dest => dest.DestinationType, opt => opt.MapFrom(src => this.PrepareDestinationType(src.Destination.type)))
-                .ForMember(dest => dest.BuildersCupSettingType, opt => opt.MapFrom(src => this.PrepareBuildersCupSettingType(src.Destination.Setting)));
-
+                .ForMember(dest => dest.Destination, opt => opt.MapFrom(src => this.PrepareBridgeDestination(src.Destination)));
             this.CreateMap<WofDeeplinkBridge, WofDeeplinkEntry>()
                 .ForMember(dest => dest.Destination, opt => opt.MapFrom(src => this.PrepareRootDestination(src)));
 
@@ -512,24 +539,85 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaPlayerSkillRatingSummary, SkillRatingSummary>();
         }
 
-        private BuildersCupSettingType? PrepareBuildersCupSettingType(WorldOfForzaWoFTileDeeplinkDestinationSetting rootBuildersCupSetting)
+        private DeeplinkDestination PrepareBridgeDestination(WofBaseDestination destination)
         {
-            if (rootBuildersCupSetting == null)
+            if (destination.type == "WorldOfForza.WoFToBuildersCupConfig")
             {
-                return null;
+                return new BuildersCupDestination()
+                {
+                    SettingType = this.PrepareBuildersCupSettingType(destination.Setting),
+                    Championship = destination.Setting.Championship?.@ref,
+                    Ladder = destination.Setting.Ladder?.@ref,
+                    Series = destination.Setting.Series?.@ref,
+                    DestinationType = DestinationType.BuildersCup
+                };
             }
 
-            if (rootBuildersCupSetting.type == "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting")
+            if (destination.type == "WorldOfForza.WoFToRacersCupConfig")
+            {
+                return new RacersCupDestination()
+                {
+                    Series = destination.Series.@ref,
+                    DestinationType = DestinationType.RacersCup
+                };
+            }
+
+            if (destination.type == "WorldOfForza.WoFToShowroomConfig")
+            {
+                return new ShowroomDestination()
+                {
+                    SettingType = this.PrepareShowroomSettingType(destination.Setting),
+                    Car = destination.Setting.Car?.@ref,
+                    Manufacturer = destination.Setting.Manufacturer?.@ref,
+                    DestinationType = DestinationType.Showroom
+                };
+            }
+
+            if (destination.type == "WorldOfForza.WoFToRivalsConfig")
+            {
+                return new RivalsDestination()
+                {
+                    SettingType = this.PrepareRivalsSettingType(destination.Setting),
+                    Category = destination.Setting.Category?.@ref,
+                    Event = destination.Setting.Event?.@ref,
+                    DestinationType = DestinationType.Rivals
+                };
+            }
+
+            if (destination.type == "WorldOfForza.WoFToPatchNotesConfig")
+            {
+                return new PatchNotesDestination()
+                {
+                    DestinationType = DestinationType.PatchNotes
+                };
+            }
+
+            if (destination.type == "WorldOfForza.WoFToStoreConfig")
+            {
+                return new StoreDestination()
+                {
+                    SettingType = this.PrepareStoreSettingType(destination.Setting),
+                    Product = destination.Setting.Product?.@ref,
+                    DestinationType = DestinationType.Store
+                };
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private BuildersCupSettingType PrepareBuildersCupSettingType(DeeplinkDestinationSetting setting)
+        {
+            if (setting.type == "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting")
             {
                 return BuildersCupSettingType.Homepage;
             }
 
-            if (rootBuildersCupSetting.type == "WorldOfForza.BuildersCupDeeplinkLadderConfigSetting")
+            if (setting.type == "WorldOfForza.BuildersCupDeeplinkLadderConfigSetting")
             {
                 return BuildersCupSettingType.Ladder;
             }
 
-            if (rootBuildersCupSetting.type == "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting")
+            if (setting.type == "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting")
             {
                 return BuildersCupSettingType.Series;
             }
@@ -537,21 +625,56 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             throw new NotImplementedException();
         }
 
-        private DestinationType PrepareDestinationType(string rootDestinationType)
+        private RivalsSettingType PrepareRivalsSettingType(DeeplinkDestinationSetting setting)
         {
-            if (rootDestinationType == "WorldOfForza.WoFToRacersCupConfig")
+            if (setting.type == "WorldOfForza.RivalsDeeplinkHomepageConfigSetting")
             {
-                return DestinationType.RacersCup;
+                return RivalsSettingType.Homepage;
             }
 
-            if (rootDestinationType == "WorldOfForza.WoFToBuildersCupConfig")
+            if (setting.type == "WorldOfForza.RivalsDeeplinkCategoryConfigSetting")
             {
-                return DestinationType.BuildersCup;
+                return RivalsSettingType.Category;
             }
 
-            if (rootDestinationType == "WorldOfForza.WoFToShowroomConfig")
+            if (setting.type == "WorldOfForza.RivalsDeeplinkEventConfigSetting")
             {
-                return DestinationType.Showroom;
+                return RivalsSettingType.Event;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private ShowroomSettingType PrepareShowroomSettingType(DeeplinkDestinationSetting setting)
+        {
+            if (setting.type == "WorldOfForza.ShowroomDeeplinkHomepageConfigSetting")
+            {
+                return ShowroomSettingType.Homepage;
+            }
+
+            if (setting.type == "WorldOfForza.ShowroomDeeplinkCarConfigSetting")
+            {
+                return ShowroomSettingType.Car;
+            }
+
+            if (setting.type == "WorldOfForza.ShowroomDeeplinkManufacturerConfigSetting")
+            {
+                return ShowroomSettingType.Manufacturer;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private StoreSettingType PrepareStoreSettingType(DeeplinkDestinationSetting setting)
+        {
+            if (setting.type == "WorldOfForza.StoreDeeplinkHomepageConfigSetting")
+            {
+                return StoreSettingType.Homepage;
+            }
+
+            if (setting.type == "WorldOfForza.StoreDeeplinkProductConfigSetting")
+            {
+                return StoreSettingType.Product;
             }
 
             throw new NotImplementedException();
@@ -559,51 +682,81 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
         private WofBaseDestination PrepareRootDestination(WofDeeplinkBridge deeplinkBridge)
         {
-            if (deeplinkBridge.DestinationType == DestinationType.RacersCup)
+            if (deeplinkBridge.Destination is RacersCupDestination racersCupDestination)
             {
                 return new WofBaseDestination()
                 {
-                    type = "WorldOfForza.WoFToRacersCupConfig"
+                    type = "WorldOfForza.WoFToRacersCupConfig",
+                    Series = new DeeplinkDestinationRacersCupSeries() { @ref = racersCupDestination.Series },
+                    SeriesId = new DeeplinkDestinationSeriesId(),
                 };
             }
 
-            if (deeplinkBridge.DestinationType == DestinationType.Showroom)
+            if (deeplinkBridge.Destination is ShowroomDestination showroomDestination)
             {
+                DeeplinkDestinationSetting settings = null;
+                if (showroomDestination.SettingType == ShowroomSettingType.Homepage)
+                {
+                    settings = new DeeplinkDestinationSetting()
+                    {
+                        type = "WorldOfForza.ShowroomDeeplinkHomepageConfigSetting"
+                    };
+                }
+
+                if (showroomDestination.SettingType == ShowroomSettingType.Car)
+                {
+                    settings = new DeeplinkDestinationSetting()
+                    {
+                        Car = new DeeplinkDestinationShowroomCar() { @ref = showroomDestination.Car.Value },
+                        type = "WorldOfForza.ShowroomDeeplinkCarConfigSetting",
+                    };
+                }
+
+                if (showroomDestination.SettingType == ShowroomSettingType.Manufacturer)
+                {
+                    settings = new DeeplinkDestinationSetting()
+                    {
+                        Manufacturer = new DeeplinkDestinationShowroomManufacturer() { @ref = showroomDestination.Manufacturer.Value },
+                        type = "WorldOfForza.ShowroomDeeplinkManufacturerConfigSetting",
+                    };
+                }
+
                 return new WofBaseDestination()
                 {
-                    Manufacturer = new WorldOfForzaWoFTileDeeplinkDestinationManufacturer() { @ref = deeplinkBridge.Manufacturer },
                     type = "WorldOfForza.WoFToShowroomConfig",
-                    CategoryId = new WorldOfForzaWoFTileDeeplinkDestinationCategoryId()
+                    Setting = settings,
+                    CarId = new DeeplinkDestinationCarId(),
+                    CategoryId = new DeeplinkDestinationCategoryId()
                 };
             }
 
-            if (deeplinkBridge.DestinationType == DestinationType.BuildersCup)
+            if (deeplinkBridge.Destination is BuildersCupDestination buildersCupDestination)
             {
-                WorldOfForzaWoFTileDeeplinkDestinationSetting settings = null;
-                if (deeplinkBridge.BuildersCupSettingType == BuildersCupSettingType.Homepage)
+                DeeplinkDestinationSetting settings = null;
+                if (buildersCupDestination.SettingType == BuildersCupSettingType.Homepage)
                 {
-                    settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
+                    settings = new DeeplinkDestinationSetting()
                     {
                         type = "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting"
                     };
                 }
 
-                if (deeplinkBridge.BuildersCupSettingType == BuildersCupSettingType.Ladder)
+                if (buildersCupDestination.SettingType == BuildersCupSettingType.Ladder)
                 {
-                    settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
+                    settings = new DeeplinkDestinationSetting()
                     {
-                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
-                        Ladder = new WorldOfForzaWoFTileDeeplinkDestinationSettingLadder() { @ref = deeplinkBridge.Ladder },
+                        Championship = new DeeplinkDestinationBuildersCupChampionship() { @ref = buildersCupDestination.Championship.Value },
+                        Ladder = new DeeplinkDestinationBuildersCupLadder() { @ref = buildersCupDestination.Ladder.Value },
                         type = "WorldOfForza.BuildersCupDeeplinkLadderConfigSetting",
                     };
                 }
 
-                if (deeplinkBridge.BuildersCupSettingType == BuildersCupSettingType.Series)
+                if (buildersCupDestination.SettingType == BuildersCupSettingType.Series)
                 {
-                    settings = new WorldOfForzaWoFTileDeeplinkDestinationSetting()
+                    settings = new DeeplinkDestinationSetting()
                     {
-                        Championship = new WorldOfForzaWoFTileDeeplinkDestinationSettingChampionship() { @ref = deeplinkBridge.Championship },
-                        Series = new WorldOfForzaWoFTileDeeplinkDestinationSettingSeries() { @ref = deeplinkBridge.Series },
+                        Championship = new DeeplinkDestinationBuildersCupChampionship() { @ref = buildersCupDestination.Championship.Value },
+                        Series = new DeeplinkDestinationBuildersCupSeries() { @ref = buildersCupDestination.Series.Value },
                         type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting"
                     };
                 }
@@ -612,9 +765,84 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     Setting = settings,
                     type = "WorldOfForza.WoFToBuildersCupConfig",
-                    CupId = new WorldOfForzaWoFTileDeeplinkDestinationCupId(),
-                    SeriesId = new WorldOfForzaWoFTileDeeplinkDestinationSeriesId(),
-                    LadderId = new WorldOfForzaWoFTileDeeplinkDestinationLadderId(),
+                    CupId = new DeeplinkDestinationCupId(),
+                    SeriesId = new DeeplinkDestinationSeriesId(),
+                    LadderId = new DeeplinkDestinationLadderId(),
+                };
+            }
+
+            if (deeplinkBridge.Destination is PatchNotesDestination patchNotesDestination)
+            {
+                return new WofBaseDestination()
+                {
+                    type = "WorldOfForza.WoFToPatchNotesConfig",
+                };
+            }
+
+            if (deeplinkBridge.Destination is RivalsDestination rivalsDestination)
+            {
+                DeeplinkDestinationSetting settings = null;
+                if (rivalsDestination.SettingType == RivalsSettingType.Homepage)
+                {
+                    settings = new DeeplinkDestinationSetting()
+                    {
+                        type = "WorldOfForza.RivalsDeeplinkHomepageConfigSetting"
+                    };
+                }
+
+                if (rivalsDestination.SettingType == RivalsSettingType.Event)
+                {
+                    settings = new DeeplinkDestinationSetting()
+                    {
+                        Category = new DeeplinkDestinationRivalsCategory() { @ref = rivalsDestination.Category.Value },
+                        Event = new DeeplinkDestinationRivalsEvent() { @ref = rivalsDestination.Event.Value },
+                        type = "WorldOfForza.RivalsDeeplinkEventConfigSetting",
+                    };
+                }
+
+                if (rivalsDestination.SettingType == RivalsSettingType.Category)
+                {
+                    settings = new DeeplinkDestinationSetting()
+                    {
+                        Category = new DeeplinkDestinationRivalsCategory() { @ref = rivalsDestination.Category.Value },
+                        type = "WorldOfForza.RivalsDeeplinkCategoryConfigSetting"
+                    };
+                }
+
+                return new WofBaseDestination()
+                {
+                    Setting = settings,
+                    type = "WorldOfForza.WoFToRivalsConfig",
+                    EventId = new DeeplinkDestinationEventId(),
+                    CategoryTitle = new LocTextBaseWof(),
+                };
+            }
+
+            if (deeplinkBridge.Destination is StoreDestination storeDestination)
+            {
+                DeeplinkDestinationSetting settings = null;
+                if (storeDestination.SettingType == StoreSettingType.Homepage)
+                {
+                    settings = new DeeplinkDestinationSetting()
+                    {
+                        type = "WorldOfForza.StoreDeeplinkHomepageConfigSetting"
+                    };
+                }
+
+                if (storeDestination.SettingType == StoreSettingType.Product)
+                {
+                    settings = new DeeplinkDestinationSetting()
+                    {
+                        Product = new DeeplinkDestinationStoreProduct() { @ref = storeDestination.Product.Value },
+                        type = "WorldOfForza.StoreDeeplinkProductConfigSetting",
+                    };
+                }
+
+                return new WofBaseDestination()
+                {
+                    Setting = settings,
+                    type = "WorldOfForza.WoFToStoreConfig",
+                    Product = new DeeplinkDestinationProduct()
                 };
             }
 

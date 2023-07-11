@@ -1,12 +1,21 @@
-import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
-import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { login } from '@support/steward/auth/login';
 import { RetailUsers } from '@support/steward/common/account-info';
-import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { selectApollo } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
+import {
+  userDetailsFindBans,
+  userDetailsFindRelatedConsoles,
+  userDetailsFindRelatedGamertags,
+  inventoryFindPlayerInventoryData,
+  swapToTab,
+  userDetailsVerifyPlayerIdentityResults,
+  userDetailsVerifyFlagData,
+  jsonCheckJson,
+} from './shared-tests';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+
+const defaultApolloUser = 'jordan';
 
 context('Steward / Tools / Player Details / Apollo', () => {
   beforeEach(() => {
@@ -18,57 +27,81 @@ context('Steward / Tools / Player Details / Apollo', () => {
   context('GTAG Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByGtag(RetailUsers['jordan'].gtag);
       selectApollo();
     });
 
-    foundUserData();
+    context('With default user', () => {
+      beforeEach(() => {
+        searchByGtag(RetailUsers[defaultApolloUser].gtag);
+      });
+
+      testUserDetails(defaultApolloUser);
+
+      testInventory();
+
+      testLiveries();
+
+      testJson();
+    });
   });
 
   context('XUID Lookup', () => {
     beforeEach(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
-      searchByXuid(RetailUsers['jordan'].xuid);
       selectApollo();
     });
 
-    foundUserData();
+    context('With default user', () => {
+      beforeEach(() => {
+        searchByXuid(RetailUsers[defaultApolloUser].xuid);
+      });
+
+      testUserDetails(defaultApolloUser);
+
+      testInventory();
+
+      testLiveries();
+
+      testJson();
+    });
   });
 });
 
-function foundUserData(): void {
-  it('should have found data', () => {
+function testUserDetails(userToSearch: string): void {
+  context('User Details', () => {
     // found user
-    verifyPlayerIdentityResults({
-      gtag: RetailUsers['jordan'].gtag,
-      xuid: RetailUsers['jordan'].xuid,
-      t10Id: false,
-    });
+    userDetailsVerifyPlayerIdentityResults(userToSearch);
 
     // found flag data
-    checkboxHasValue('Is Vip', true);
+    userDetailsVerifyFlagData('Is Vip', true);
 
     // found bans
-    cy.contains('mat-card', 'Ban History').within(() => {
-      tableHasEntry('banDetails', 'All Requests');
-    });
+    userDetailsFindBans();
 
     // found related gamertags
-    cy.contains('mat-card', 'Related Gamertags').within(() => {
-      tableHasEntry('xuid', '2535435129485725');
-    });
+    userDetailsFindRelatedGamertags('2535435129485725');
 
     // found related consoles
-    cy.contains('mat-card', 'Consoles').within(() => {
-      tableHasEntry('consoleId', '18230637609444823812');
-    });
+    userDetailsFindRelatedConsoles('18230637609444823812');
+  });
+}
 
-    //// switch to Inventory ////
-    cy.contains('.mat-tab-label', 'Inventory').click();
-
+function testInventory(): void {
+  context('Inventory', () => {
     // found player inventory data
-    cy.contains('mat-card', 'Player Inventory').within(() => {
-      cy.contains('Credit Rewards');
-    });
+    inventoryFindPlayerInventoryData();
+  });
+}
+
+function testLiveries(): void {
+  context('Liveries', () => {
+    // TODO: Create liveries tests for Apollo
+    // Currently, no test users have liveries in Apollo on the prod server
+  });
+}
+
+function testJson(): void {
+  context('JSON', () => {
+    jsonCheckJson();
   });
 }

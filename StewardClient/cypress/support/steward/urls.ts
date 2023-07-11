@@ -66,7 +66,7 @@ export const stewardUrls = {
       sunrise: 'app/tools/user-group-management/sunrise',
       apollo: 'app/tools/user-group-management/apollo',
     },
-    ugc_details: {
+    ugcDetails: {
       default: '/app/tools/ugc-details',
       woodstock: '/app/tools/ugc-details/woodstock',
       steelhead: '/app/tools/ugc-details/steelhead',
@@ -75,6 +75,10 @@ export const stewardUrls = {
     createAuction: {
       default: 'app/tools/create-auction',
       woodstock: 'app/tools/create-auction/woodstock',
+    },
+    messageOfTheDay: {
+      default: 'app/tools/message-of-the-day',
+      steelhead: 'app/tools/message-of-the-day/steelhead',
     },
   },
 };
