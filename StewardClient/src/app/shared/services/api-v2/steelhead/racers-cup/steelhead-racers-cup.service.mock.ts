@@ -8,6 +8,8 @@ export class MockSteelheadRacersCupService {
     .createSpy('getRacersCupScheduleForUser')
     .and.returnValue(of({ series: [] }));
 
+  public getRacersCupSeries$ = jasmine.createSpy('getRacersCupSeries').and.returnValue(of());
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

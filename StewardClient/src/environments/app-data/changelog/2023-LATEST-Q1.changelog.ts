@@ -40,6 +40,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '68ba527e-4a44-4bb6-bfea-f890c4fcde4e',
+      shortText: 'Use Pegasus data to populate dropdowns',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
       shortText: 'Implemented new deeplink destination type',
     },
