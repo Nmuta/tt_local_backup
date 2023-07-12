@@ -336,33 +336,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            try
+            var creditUpdateId = SunriseCacheKey.MakeCreditUpdatesKey(endpoint, xuid, startIndex, maxResults);
+
+            async Task<IList<CreditUpdate>> CreditUpdates()
             {
-                var creditUpdateId = SunriseCacheKey.MakeCreditUpdatesKey(endpoint, xuid, startIndex, maxResults);
+                var result = await this.sunriseService.GetCreditUpdateEntriesAsync(
+                        xuid,
+                        startIndex,
+                        maxResults,
+                        endpoint).ConfigureAwait(false);
+                var creditUpdates = this.mapper.SafeMap<IList<CreditUpdate>>(result.credityUpdateEntries);
 
-                async Task<IList<CreditUpdate>> CreditUpdates()
-                {
-                    var result = await this.sunriseService.GetCreditUpdateEntriesAsync(
-                            xuid,
-                            startIndex,
-                            maxResults,
-                            endpoint).ConfigureAwait(false);
-                    var creditUpdates = this.mapper.SafeMap<IList<CreditUpdate>>(result.credityUpdateEntries);
+                this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
 
-                    this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
-
-                    return creditUpdates;
-                }
-
-                var result = this.refreshableCacheStore.GetItem<IList<CreditUpdate>>(creditUpdateId) ??
-                             await CreditUpdates().ConfigureAwait(false);
-
-                return result;
+                return creditUpdates;
             }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No credit updates found for XUID: {xuid}.", ex);
-            }
+
+            var result = this.refreshableCacheStore.GetItem<IList<CreditUpdate>>(creditUpdateId) ??
+                            await CreditUpdates().ConfigureAwait(false);
+
+            return result;
         }
 
         /// <inheritdoc />
