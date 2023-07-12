@@ -294,7 +294,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
 
                 StorefrontManagementService.SearchUGCOutput results;
-
                 results = await this.Services.StorefrontManagementService.SearchUGC(filters, mappedContentType, false, 5_000).ConfigureAwait(false);
 
                 // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
