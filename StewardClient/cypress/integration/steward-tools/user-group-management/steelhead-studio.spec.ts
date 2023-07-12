@@ -30,7 +30,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
   });
 
   context('Basic Tests', () => {
-    it.only('should be in Studio', () => {
+    it('should be in Studio', () => {
       cy.contains('span', 'Studio').should('exist');
     });
 

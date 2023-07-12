@@ -20,11 +20,13 @@
           </tr>
           <tr>
             <th>Start Time</th>
-            <td><standard-absolute-time [timeUtc]="data.startTimeUtc"></standard-absolute-time></td>
+            <td>
+              <standard-absolute-time [timeUtc]="data?.startTimeUtc"></standard-absolute-time>
+            </td>
           </tr>
           <tr>
             <th>End Time</th>
-            <td><standard-absolute-time [timeUtc]="data.endTimeUtc"></standard-absolute-time></td>
+            <td><standard-absolute-time [timeUtc]="data?.endTimeUtc"></standard-absolute-time></td>
           </tr>
           <tr>
             <th>Car Id</th>

@@ -146,8 +146,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTimeUtc = pegasusShowcase.StartTime,
-                        EndTimeUtc = pegasusShowcase.EndTime,
+                        StartTimeUtc =pegasusShowcase.StartEndDate.From,
+                        EndTimeUtc =  pegasusShowcase.StartEndDate.To,
                         BaseCost = carListing.FullCarInfo.Car.BaseCost.Value,
                         CarId = carListing.FullCarInfo.Car.CarId,
                         MediaName = carListing.FullCarInfo.Car.MediaName,
@@ -195,8 +195,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTimeUtc = pegasusShowcase.StartTime,
-                        EndTimeUtc = pegasusShowcase.EndTime,
+                        StartTimeUtc = pegasusShowcase.StartEndDate.From,
+                        EndTimeUtc = pegasusShowcase.StartEndDate.To,
                         DivisionId = carListing.FullCarInfo.CarDivision.CarDivisionId,
                         DivisionName = carListing.FullCarInfo.CarDivision.Name
                     };
@@ -235,8 +235,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTimeUtc = pegasusShowcase.StartTime,
-                        EndTimeUtc = pegasusShowcase.EndTime,
+                        StartTimeUtc =pegasusShowcase.StartEndDate.From,
+                        EndTimeUtc = pegasusShowcase.StartEndDate.To,
                         ManufacturerId = carListing.FullCarInfo.Car.MakeID.Value,
                         ManufacturerName = carListing.FullCarInfo.Car.MakeDisplayName
                     };
@@ -274,8 +274,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         {
                             CarSaleId = pegasusCarSale.ShowcaseListingId,
                             Name = pegasusCarSale.ShowcaseListingName,
-                            StartTime = pegasusCarSale.StartTime,
-                            EndTime = pegasusCarSale.EndTime,
+                            StartTimeUtc = pegasusCarSale.StartEndDate.From,
+                            EndTimeUtc = pegasusCarSale.StartEndDate.To,
                             Cars = new List<CarSaleInformation>()
                         };
                         carSales = carSales.Append(liveOpsCarSale);

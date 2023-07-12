@@ -14,11 +14,11 @@
       </tr>
       <tr>
         <th>Start Time</th>
-        <td>{{ data.startTime | utcDate: 'short' }}</td>
+        <td><standard-absolute-time [timeUtc]="data?.startTimeUtc"></standard-absolute-time></td>
       </tr>
       <tr>
         <th>End Time</th>
-        <td>{{ data.endTime | utcDate: 'short' }}</td>
+        <td><standard-absolute-time [timeUtc]="data?.endTimeUtc"></standard-absolute-time></td>
       </tr>
     </table>
     <div class="scroll-pane grid">

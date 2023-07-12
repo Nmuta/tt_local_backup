@@ -28,12 +28,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup
         /// <summary>
         ///     Gets or sets the time the tour opens.
         /// </summary>
-        public DateTime OpenTimeUtc { get; set; }
+        public DateTimeOffset? OpenTimeUtc { get; set; }
 
         /// <summary>
         ///     Gets or sets the time the Tour closes.
         /// </summary>
-        public DateTime CloseTimeUtc { get; set; }
+        public DateTimeOffset? CloseTimeUtc { get; set; }
 
         /// <summary>
         ///     Gets or sets the time the Tour's Series.

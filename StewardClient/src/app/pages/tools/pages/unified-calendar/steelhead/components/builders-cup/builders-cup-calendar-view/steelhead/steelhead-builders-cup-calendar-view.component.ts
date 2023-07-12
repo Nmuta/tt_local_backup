@@ -23,6 +23,7 @@ import {
   SteelheadBuildersCupLadderModalComponent,
   SteelheadBuildersCupLadderModalData,
 } from '../../builders-cup-ladder-modal/steelhead/steelhead-builders-cup-ladder-modal.component';
+import { MIN_CALENDAR_DATETIME, MAX_CALENDAR_DATETIME } from '@shared/constants';
 
 type TourGroup<T> = {
   tourName: string;
@@ -172,7 +173,7 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
 
     featuredTours.forEach(tour => {
       tour.championshipSeries.forEach(series => {
-        if (series.openTimeUtc.equals(series.closeTimeUtc)) {
+        if (!series?.openTimeUtc && !series?.closeTimeUtc) {
           // Skip this series, it's not scheduled despite being part of the ladder
           return;
         }
@@ -183,8 +184,13 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
           ladderSeriesMapping.set(tour.name, [series.name]);
         }
 
+        const seriesOpenTime = series?.openTimeUtc ?? MIN_CALENDAR_DATETIME;
+        const seriesCloseTime = series?.closeTimeUtc ?? MAX_CALENDAR_DATETIME;
+        const tourOpenTime = tour?.openTimeUtc ?? MIN_CALENDAR_DATETIME;
+        const tourCloseTime = tour?.closeTimeUtc ?? MAX_CALENDAR_DATETIME;
+
         const newEvent: CalendarEvent<BuildersCupMeta> = {
-          start: max([series.openTimeUtc.toJSDate(), tour.openTimeUtc.toJSDate()]),
+          start: max([seriesOpenTime.toJSDate(), tourOpenTime.toJSDate()]),
           end: tour.closeTimeUtc.toJSDate(),
           title: `${tour.name} - ${series.name}`,
           meta: {
@@ -193,10 +199,10 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
             tourColorIndex: this.getGroupIndex(tour.name),
             tourDescription: tour.description,
             seriesDescription: series.description,
-            tourOpenTimeUtc: tour.openTimeUtc,
-            tourCloseTimeUtc: tour.closeTimeUtc,
-            seriesOpenTimeUtc: series.openTimeUtc,
-            seriesCloseTimeUtc: series.closeTimeUtc,
+            tourOpenTimeUtc: tourOpenTime,
+            tourCloseTimeUtc: tourCloseTime,
+            seriesOpenTimeUtc: seriesOpenTime,
+            seriesCloseTimeUtc: seriesCloseTime,
             isDisabled: tour.isDisabled,
             seriesAllowedCars: series.allowedCars,
             seriesAllowedCarClass: series.allowedCarClass,
