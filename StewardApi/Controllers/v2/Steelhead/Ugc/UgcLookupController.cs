@@ -113,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///    Search curated UGC items.
         /// </summary>
         [HttpGet("{ugcType}/curated/{curationType}")]
-        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [SwaggerResponse(200, type: typeof(IList<SteelheadUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetCurated(string ugcType, string curationType)
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             curatedUgcItems.result.ToList().ForEach(x => x.Thumbnail = null);
             curatedUgcItems.result.ToList().ForEach(x => x.AdminTexture = null);
 
-            var ugcItems = this.mapper.SafeMap<IList<UgcItem>>(curatedUgcItems.result.Select(x => x.Metadata));
+            var ugcItems = this.mapper.SafeMap<IList<SteelheadUgcItem>>(curatedUgcItems.result.Select(x => x.Metadata));
             foreach (var item in ugcItems)
             {
                 item.CarDescription = carsDict.TryGetValue(item.CarId, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.";

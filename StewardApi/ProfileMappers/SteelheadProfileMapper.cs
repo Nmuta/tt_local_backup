@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ServicesLiveOps.ForzaUGCMetadata, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaUGCMetadata, SteelheadUgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.ContentType))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.GuidId))
