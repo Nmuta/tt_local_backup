@@ -16,6 +16,7 @@ import { ShowroomSaleTileDetailsModalComponent } from '../../showroom-sale-tile-
 import { ShowroomCarFeaturedTileDetailsModalComponent } from '../../showroom-car-featured-tile-details-modal/steelhead/showroom-car-featured-tile-details-modal.component';
 import { ShowroomDivisionFeaturedTileDetailsModalComponent } from '../../showroom-division-featured-tile-details-modal/steelhead/showroom-division-featured-tile-details-modal.component';
 import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from '../../showroom-manufacturer-featured-tile-details-modal/steelhead/showroom-manufacturer-featured-tile-details-modal.component';
+import { MIN_CALENDAR_DATETIME, MAX_CALENDAR_DATETIME } from '@shared/constants';
 
 export enum ShowroomEventType {
   CarSale = 'Car Sale',
@@ -128,9 +129,12 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
     const events: CalendarEvent<ShowroomMeta>[] = [];
 
     for (const carFeaturedShowcase of carFeaturedShowcases) {
+      const startTime = carFeaturedShowcase?.startTimeUtc ?? MIN_CALENDAR_DATETIME;
+      const endTime = carFeaturedShowcase?.endTimeUtc ?? MAX_CALENDAR_DATETIME;
+
       const newEvent = this.makeCalendarEvent(
-        carFeaturedShowcase.startTimeUtc.toJSDate(),
-        carFeaturedShowcase.endTimeUtc.toJSDate(),
+        startTime.toJSDate(),
+        endTime.toJSDate(),
         carFeaturedShowcase.title,
         {
           carFeaturedShowcase: carFeaturedShowcase,
@@ -155,9 +159,12 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
     const events: CalendarEvent<ShowroomMeta>[] = [];
 
     for (const divisionFeaturedShowcase of divisionFeaturedShowcases) {
+      const startTime = divisionFeaturedShowcase?.startTimeUtc ?? MIN_CALENDAR_DATETIME;
+      const endTime = divisionFeaturedShowcase?.endTimeUtc ?? MAX_CALENDAR_DATETIME;
+
       const newEvent = this.makeCalendarEvent(
-        divisionFeaturedShowcase.startTimeUtc.toJSDate(),
-        divisionFeaturedShowcase.endTimeUtc.toJSDate(),
+        startTime.toJSDate(),
+        endTime.toJSDate(),
         divisionFeaturedShowcase.title,
         {
           carFeaturedShowcase: undefined,
@@ -182,9 +189,12 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
     const events: CalendarEvent<ShowroomMeta>[] = [];
 
     for (const manufacturerFeaturedShowcase of manufacturerFeaturedShowcases) {
+      const startTime = manufacturerFeaturedShowcase?.startTimeUtc ?? MIN_CALENDAR_DATETIME;
+      const endTime = manufacturerFeaturedShowcase?.endTimeUtc ?? MAX_CALENDAR_DATETIME;
+
       const newEvent = this.makeCalendarEvent(
-        manufacturerFeaturedShowcase.startTimeUtc.toJSDate(),
-        manufacturerFeaturedShowcase.endTimeUtc.toJSDate(),
+        startTime.toJSDate(),
+        endTime.toJSDate(),
         manufacturerFeaturedShowcase.title,
         {
           carFeaturedShowcase: undefined,
@@ -207,9 +217,12 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
     const events: CalendarEvent<ShowroomMeta>[] = [];
 
     for (const carSale of carSales) {
+      const startTime = carSale?.startTimeUtc ?? MIN_CALENDAR_DATETIME;
+      const endTime = carSale?.endTimeUtc ?? MAX_CALENDAR_DATETIME;
+
       const newEvent = this.makeCalendarEvent(
-        new Date(carSale.startTime),
-        new Date(carSale.endTime),
+        startTime.toJSDate(),
+        endTime.toJSDate(),
         carSale.name,
         {
           carFeaturedShowcase: undefined,

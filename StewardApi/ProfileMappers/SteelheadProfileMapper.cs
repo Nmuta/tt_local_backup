@@ -463,8 +463,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.CarClassId))
                 .ForMember(dest => dest.CarClassName, opt => opt.MapFrom(src => src.CarClassId));
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupSeriesDataV3, BuildersCupChampionshipSeries>()
-                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
-                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.From))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.To))
                 .ForMember(dest => dest.AllowedCars, opt => opt.MapFrom(src =>
                     src.SelectableCars.GetType() == typeof(AcceptlistCarRestrictionsProvider) ?
                         (src.SelectableCars as AcceptlistCarRestrictionsProvider).Acceptlist :
@@ -475,8 +475,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         null));
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
                 .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
-                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
-                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.From))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.To))
                 .ForMember(dest => dest.ChampionshipSeries, opt => opt.MapFrom(src => src.ChampionshipSeriesData));
 
             this.CreateMap<GitPullRequest, PullRequest>()

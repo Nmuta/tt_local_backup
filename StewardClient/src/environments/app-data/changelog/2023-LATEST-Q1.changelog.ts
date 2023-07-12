@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '672f8ca5-285d-4ba1-9dea-1a91c4b1aafe',
+      shortText: 'Convert data from Pegasus to use new StartEndDate property',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
       uuid: 'f4563a2f-9f91-4da7-ade2-ef634ec2e6d6',
       shortText: 'Add ability to load curated UGC queues',
