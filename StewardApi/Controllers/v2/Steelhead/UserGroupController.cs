@@ -145,7 +145,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                                             }).ToArray();
             var getUserIdsOutput = await this.Services.UserManagementService.GetUserIds(playerLookupParameters.Length, playerLookupParameters).ConfigureAwait(false);
 
-            //TODO: LSP Try Catch
             try
             {
                 var userList = new List<BasicPlayer>();
