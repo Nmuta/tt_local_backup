@@ -49,6 +49,22 @@ export const sunriseSamples: Record<string, SampleUgc> = {
   },
 };
 
+/** UGC Data for Steelhead */
+export const steelheadSamples: Record<string, SampleUgc> = {
+  livery: {
+    id: 'f9e7ad6f-2ad0-4585-915d-e1615c4ffe2f',
+    time: '4/14/23 6:01:26 PM',
+  },
+  photo: {
+    id: '8f16ac0c-fb40-4781-915a-3bb3d47a9271',
+    time: '6/10/23 12:40:28 PM',
+  },
+  tuneBlob: {
+    id: '8974773c-b2b4-4f10-8b13-a40dd815471c',
+    time: '6/10/23 12:13:49 PM',
+  },
+};
+
 /** Fills in ugcid and confirms population */
 export function testInputUgcID(ugc: SampleUgc): void {
   cy.get('mat-form-field')
