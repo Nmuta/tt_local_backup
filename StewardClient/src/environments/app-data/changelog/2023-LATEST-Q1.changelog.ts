@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '1469d347-06f9-40d7-9c47-f901d6af5a9c',
+      shortText: 'Add ability to modify Geo Flags on UGC',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '672f8ca5-285d-4ba1-9dea-1a91c4b1aafe',
       shortText: 'Convert data from Pegasus to use new StartEndDate property',
