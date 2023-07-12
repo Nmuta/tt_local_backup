@@ -357,27 +357,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var creditUpdateId = WoodstockCacheKey.MakeCreditUpdatesKey(endpoint, xuid, startIndex, maxResults);
-
-            async Task<IList<CreditUpdate>> CreditUpdates()
+            try
             {
-                var result = await this.woodstockService.GetCreditUpdateEntriesAsync(
-                        xuid,
-                        startIndex,
-                        maxResults,
-                        endpoint)
-                    .ConfigureAwait(false);
-                var creditUpdates = this.mapper.SafeMap<IList<CreditUpdate>>(result.credityUpdateEntries);
+                var creditUpdateId = WoodstockCacheKey.MakeCreditUpdatesKey(endpoint, xuid, startIndex, maxResults);
 
-                this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
+                async Task<IList<CreditUpdate>> CreditUpdates()
+                {
+                    var result = await this.woodstockService.GetCreditUpdateEntriesAsync(
+                            xuid,
+                            startIndex,
+                            maxResults,
+                            endpoint)
+                        .ConfigureAwait(false);
+                    var creditUpdates = this.mapper.SafeMap<IList<CreditUpdate>>(result.credityUpdateEntries);
 
-                return creditUpdates;
+                    this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
+
+                    return creditUpdates;
+                }
+
+                var result = this.refreshableCacheStore.GetItem<IList<CreditUpdate>>(creditUpdateId) ??
+                             await CreditUpdates().ConfigureAwait(false);
+
+                return result;
             }
-
-            var result = this.refreshableCacheStore.GetItem<IList<CreditUpdate>>(creditUpdateId) ??
-                            await CreditUpdates().ConfigureAwait(false);
-
-            return result;
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No credit updates found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
