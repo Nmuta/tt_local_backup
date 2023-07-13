@@ -22,12 +22,12 @@ export class ProductPricingService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Retrieves a curated list of products and IDs from Steward. */
-  public getProductIds$(): Observable<Map<string, number>> {
-    return this.api.getRequest$<Map<string, number>>(`${this.basePath}/productIds`);
+  public getProductIds$(): Observable<Map<string, string>> {
+    return this.api.getRequest$<Map<string, string>>(`${this.basePath}/productIds`);
   }
 
   /** Sends feature request to Steward's MS Teams help channel. */
-  public getPricingByProductId$(productId: string): Observable<BigCatProductPrice> {
-    return this.api.getRequest$<BigCatProductPrice>(`${this.basePath}/${productId}`);
+  public getPricingByProductId$(productId: string): Observable<BigCatProductPrice[]> {
+    return this.api.getRequest$<BigCatProductPrice[]>(`${this.basePath}/${productId}`);
   }
 }
