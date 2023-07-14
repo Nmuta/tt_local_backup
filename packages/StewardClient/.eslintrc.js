@@ -112,8 +112,8 @@ module.exports = {
         'no-console': ['error'], // why? console statements should not be left in committed code
         'no-sparse-arrays': 'error', // why? sparse arrays can break .routing and .module files
         'jsdoc/check-alignment': 'error', // why? automatically configured by tslint port tool
-          // // removed because this rule does not exist. keeping it in for later review of linting rules.
-          // 'jsdoc/newline-after-description': 'error', // why? automatically configured by tslint port tool
+        // // removed because this rule does not exist. keeping it in for later review of linting rules.
+        // 'jsdoc/newline-after-description': 'error', // why? automatically configured by tslint port tool
         'jsdoc/require-returns': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
         'jsdoc/require-returns-type': 'off', // why? we already know these from TS
         'jsdoc/require-param': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
