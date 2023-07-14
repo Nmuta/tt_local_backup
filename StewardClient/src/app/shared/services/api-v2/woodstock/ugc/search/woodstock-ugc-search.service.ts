@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlayerUgcItem } from '@models/player-ugc-item';
+import { PlayerUgcItem, SteelheadPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcCurationType, UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
@@ -25,8 +25,8 @@ export class WoodstockUgcSearchService {
   public getCuratedUgc$(
     ugcType: UgcType,
     curationType: UgcCurationType,
-  ): Observable<PlayerUgcItem[]> {
-    return this.api.getRequest$<PlayerUgcItem[]>(
+  ): Observable<SteelheadPlayerUgcItem[]> {
+    return this.api.getRequest$<SteelheadPlayerUgcItem[]>(
       `${this.basePath}/${ugcType}/curated/${curationType}`,
     );
   }

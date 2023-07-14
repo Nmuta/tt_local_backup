@@ -1,8 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
-import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcCurationType, UgcSearchFilters, UgcType } from '@models/ugc-filters';
+import { PlayerUgcItem, SteelheadPlayerUgcItem } from '@models/player-ugc-item';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable, throwError } from 'rxjs';
@@ -25,12 +25,12 @@ export class SteelheadUgcLookupService {
   }
 
   /** Gets a UGC item by type and id.  */
-  public getPlayerUgcItem$(ugcId: string, ugcType: UgcType): Observable<PlayerUgcItem> {
+  public getPlayerUgcItem$(ugcId: string, ugcType: UgcType): Observable<SteelheadPlayerUgcItem> {
     if (ugcType === UgcType.Unknown || ugcType === UgcType.EventBlueprint) {
       return throwError(() => new Error(`Invalid UGC item type for lookup: ${ugcType}}`));
     }
 
-    return this.api.getRequest$<PlayerUgcItem>(
+    return this.api.getRequest$<SteelheadPlayerUgcItem>(
       `${this.basePath}/${ugcType.toLowerCase()}/${ugcId}`,
     );
   }
@@ -59,7 +59,6 @@ export class SteelheadUgcLookupService {
   ): Observable<PlayerUgcItem[]> {
     return this.api.getRequest$<PlayerUgcItem[]>(
       `${this.basePath}/${ugcType}/curated/${curationType}`,
-      undefined,
     );
   }
 }

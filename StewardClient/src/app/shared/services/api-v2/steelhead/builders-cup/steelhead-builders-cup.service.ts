@@ -17,8 +17,8 @@ export interface BuildersCupCarRestriction {
 export interface BuildersCupChampionshipSeries {
   name: string;
   description: string;
-  openTimeUtc: DateTime;
-  closeTimeUtc: DateTime;
+  openTimeUtc?: DateTime;
+  closeTimeUtc?: DateTime;
   allowedCars: SimpleCar[];
   allowedCarClass: BuildersCupCarRestriction;
 }
@@ -28,8 +28,8 @@ export interface BuildersCupFeaturedTour {
   name: string;
   description: string;
   isDisabled: boolean;
-  openTimeUtc: DateTime;
-  closeTimeUtc: DateTime;
+  openTimeUtc?: DateTime;
+  closeTimeUtc?: DateTime;
   championshipSeries: BuildersCupChampionshipSeries[];
 }
 

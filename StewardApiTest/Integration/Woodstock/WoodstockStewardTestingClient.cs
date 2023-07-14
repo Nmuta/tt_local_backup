@@ -298,18 +298,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return await ServiceClient.SendRequestAsync<BackgroundJob>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<IList<UgcItem>> GetUGCItemsAsync(ulong xuid, string ugcType)
+        public async Task<IList<WoodstockUgcItem>> GetUGCItemsAsync(ulong xuid, string ugcType)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}storefront/xuid({xuid})?ugcType={ugcType}");
 
-            return await ServiceClient.SendRequestAsync<IList<UgcItem>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<WoodstockUgcItem>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<IList<HideableUgc>> GetPlayerHiddenUGCAsync(ulong xuid)
+        public async Task<IList<WoodstockUgcItem>> GetPlayerHiddenUGCAsync(ulong xuid, string ugcType)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}storefront/xuid({xuid})/hidden");
+            var path = new Uri(this.baseUri, $"{V2TitlePath}player/{xuid}/ugc/hidden?ugcType={ugcType}");
 
-            return await ServiceClient.SendRequestAsync<IList<HideableUgc>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<WoodstockUgcItem>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task HideUGCAsync(Guid ugcId, bool useBackgroundJob)
@@ -319,11 +319,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, new[] { ugcId }, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task UnhideUGCAsync(ulong xuid, string fileType, Guid ugcId)
+        public async Task UnhideUGCAsync(Guid ugcId, bool useBackgroundJob)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide");
+            var path = new Uri(this.baseUri, $"{V2TitlePath}ugc/unhide?useBackgroundProcessing={useBackgroundJob.ToStringLowercase()}");
 
-            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, new[] { ugcId }, headers: this.headers).ConfigureAwait(false);
         }
     }
 }

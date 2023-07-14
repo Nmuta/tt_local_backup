@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PlayerUgcItem } from '@models/player-ugc-item';
+import { SteelheadPlayerUgcItem } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
@@ -15,8 +15,14 @@ export class SteelheadPlayerUgcService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Get a player's report weight. */
-  public getPlayerUgcByType$(xuid: BigNumber, contentType: UgcType): Observable<PlayerUgcItem[]> {
+  public getPlayerUgcByType$(
+    xuid: BigNumber,
+    contentType: UgcType,
+  ): Observable<SteelheadPlayerUgcItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
-    return this.api.getRequest$<PlayerUgcItem[]>(`${this.basePath}/${xuid}/ugc`, httpParams);
+    return this.api.getRequest$<SteelheadPlayerUgcItem[]>(
+      `${this.basePath}/${xuid}/ugc`,
+      httpParams,
+    );
   }
 }

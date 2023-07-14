@@ -11,7 +11,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -60,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///     Gets player UGC items.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [SwaggerResponse(200, type: typeof(IList<SteelheadUgcItem>))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
@@ -74,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new InvalidArgumentsStewardException($"Invalid UGC item type to search: (type: {parseUgcType})");
             }
 
-            async Task<IList<UgcItem>> GetPlayerUgcAsync(ulong xuid, UgcType ugcType)
+            async Task<IList<SteelheadUgcItem>> GetPlayerUgcAsync(ulong xuid, UgcType ugcType)
             {
                 var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
 
@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                     throw new UnknownFailureStewardException($"Failed to get player UGC. (xuid: {xuid}) (ugcType: {ugcType})", ex);
                 }
 
-                return this.mapper.SafeMap<IList<UgcItem>>(results.result);
+                return this.mapper.SafeMap<IList<SteelheadUgcItem>>(results.result);
             }
 
             var getUgcItems = GetPlayerUgcAsync(xuid, parseUgcType);
