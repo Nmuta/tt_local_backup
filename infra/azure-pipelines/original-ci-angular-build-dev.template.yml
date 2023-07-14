@@ -41,7 +41,7 @@ jobs:
     displayName: Build (dev)
     retryCountOnTaskFailure: 2
     inputs:
-      script: NODE_OPTIONS=--max_old_space_size=16384 && yarn run build:dev
+      script: yarn run build:dev
       workingDirectory: packages/StewardClient/
   - task: ArchiveFiles@2
     displayName: Archive Files
