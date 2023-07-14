@@ -1,0 +1,90 @@
+jobs:
+- job: Package_Cypress
+  displayName: Package Cypress
+  pool:
+    vmImage: ubuntu-20.04
+  steps:
+  - checkout: self
+    submodules: true
+  - task: Cache@2
+    displayName: Cache node_modules
+    inputs:
+      key: '"yarn" | "$(Agent.OS)" | **/yarn.lock'
+      path: $(Build.Repository.LocalPath)/packages/StewardClient-Cypress/node_modules
+      restoreKeys: >-
+        yarn | "$(Agent.OS)"
+
+        yarn
+  - task: NodeTool@0
+    displayName: Use Node 18.x
+    inputs:
+      versionSpec: 18.x
+  - task: npmAuthenticate@0
+    displayName: Authenticate for private NPM packages
+    inputs:
+      workingFile: packages/StewardClient-Cypress/.npmrc
+  - task: CmdLine@2
+    displayName: yarn install
+    retryCountOnTaskFailure: 3
+    inputs:
+      script: yarn --frozen-lockfile --network-timeout 1000000
+      workingDirectory: packages/StewardClient-Cypress/
+  # Removed because this places our secret in easily retieveable artifact files
+  # - task: CmdLine@2
+  #   displayName: Create cypress.env.json
+  #   enabled: False
+  #   inputs:
+  #     script: >-
+  #       touch cypress.env.json
+
+
+  #       echo {  >> cypress.env.json
+
+  #       echo "\"DEV_CLIENT_ID\": \"$(DEV_CLIENT_ID)\"," >> cypress.env.json
+
+  #       echo "\"PROD_CLIENT_ID\": \"$(PROD_CLIENT_ID)\"," >> cypress.env.json
+  #     workingDirectory: packages/StewardClient-Cypress/
+  # - task: AzureKeyVault@2
+  #   displayName: 'Azure Key Vault: steward-keyvault-dev'
+  #   enabled: False
+  #   inputs:
+  #     ConnectedServiceName: 601c0bc2-7049-4ec7-a48a-76a014ebeab2
+  #     KeyVaultName: steward-keyvault-dev
+  #     SecretsFilter: aad-auth-client-secret
+  # - task: CmdLine@2
+  #   displayName: Add DEV SECRET to cypress.env.json
+  #   enabled: False
+  #   inputs:
+  #     script: 'echo "\"DEV_CLIENT_SECRET\": \"$(aad-auth-client-secret)\"," >> cypress.env.json'
+  #     workingDirectory: packages/StewardClient-Cypress/
+  # - task: AzureKeyVault@2
+  #   displayName: 'Azure Key Vault: steward-keyvault-prod'
+  #   enabled: False
+  #   inputs:
+  #     ConnectedServiceName: c3352461-3cfd-490c-b00e-3e27f83e6f7b
+  #     KeyVaultName: steward-keyvault-prod
+  #     SecretsFilter: aad-auth-client-secret
+  # - task: CmdLine@2
+  #   displayName: Add PROD SECRET to cypress.env.json
+  #   enabled: False
+  #   inputs:
+  #     script: >
+  #       echo "\"PROD_CLIENT_SECRET\": \"$(aad-auth-client-secret)\"" >> cypress.env.json
+  #     workingDirectory: packages/StewardClient-Cypress/
+  # - task: CmdLine@2
+  #   displayName: Complete cypress.env.json
+  #   enabled: False
+  #   inputs:
+  #     script: echo } >> cypress.env.json
+  #     workingDirectory: packages/StewardClient-Cypress/
+  - task: ArchiveFiles@2
+    displayName: Archive Files
+    inputs:
+      rootFolderOrFile: packages/StewardClient-Cypress/
+      includeRootFolder: false
+      sevenZipCompression: 5
+      archiveFile: $(Build.ArtifactStagingDirectory)/ui-tests.zip
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: ui-tests'
+    inputs:
+      ArtifactName: ui-tests
