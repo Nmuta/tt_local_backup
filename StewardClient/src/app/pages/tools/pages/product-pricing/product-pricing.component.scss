@@ -4,28 +4,7 @@
   min-width: $container-width-medium;
 }
 
-// tr {
-//   margin-bottom: 1em;
-//   > td {
-//     &:first-child {
-//       padding-left: 2em;
-//     }
-
-//     &:last-child {
-//       padding-right: 2em;
-//     }
-
-//     &:not(:last-child) {
-//       padding-right: 1em;
-//     }
-
-//     &:not(:first-child) {
-//       padding-left: 1em;
-//     }
-//   }
-// }
-
-td th {
+.column-spacing {
   padding-left: 1em;
   padding-right: 1em;
 }
