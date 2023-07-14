@@ -1,0 +1,56 @@
+jobs:
+- job: Job_1
+  displayName: Angular Build (dev)
+  pool:
+    vmImage: ubuntu-20.04
+  steps:
+  - checkout: self
+    submodules: true
+  - task: Cache@2
+    displayName: Cache node_modules
+    inputs:
+      key: '"yarn" | "$(Agent.OS)" | **/yarn.lock'
+      path: $(Build.Repository.LocalPath)/packages/StewardClient/node_modules
+      restoreKeys: >-
+        yarn | "$(Agent.OS)"
+
+        yarn
+  - task: NodeTool@0
+    displayName: Use Node 18.x
+    inputs:
+      versionSpec: 18.x
+  - task: npmAuthenticate@0
+    displayName: Authenticate for private NPM packages
+    inputs:
+      workingFile: packages/StewardClient/.npmrc
+  - task: CmdLine@2
+    displayName: yarn install
+    retryCountOnTaskFailure: 3
+    inputs:
+      script: yarn --frozen-lockfile --network-timeout 1000000
+      workingDirectory: packages/StewardClient/
+  - task: CmdLine@2
+    displayName: Add Build Number to environment.*.ts files
+    inputs:
+      script: >
+        cd $(Build.SourcesDirectory)/packages/StewardClient/src/environments/
+
+
+        sed -i 's/ADO_VERSION_TO_REPLACE/$(Build.BuildNumber)/g' *.ts
+  - task: CmdLine@2
+    displayName: Build (dev)
+    retryCountOnTaskFailure: 2
+    inputs:
+      script: yarn run build:dev
+      workingDirectory: packages/StewardClient/
+  - task: ArchiveFiles@2
+    displayName: Archive Files
+    inputs:
+      rootFolderOrFile: packages/StewardClient/dist
+      includeRootFolder: false
+      sevenZipCompression: 5
+      archiveFile: $(Build.ArtifactStagingDirectory)/ui-dev.zip
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: ui-drop-dev'
+    inputs:
+      ArtifactName: ui-drop-dev
