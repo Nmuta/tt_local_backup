@@ -21,33 +21,37 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HelpModule } from '../../modules/help/help.module';
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
-  declarations: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatTooltipModule,
-    ErrorSpinnerModule,
-    JsonDumpModule,
-    MatIconModule,
-    MatButtonModule,
-    PipesModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatProgressSpinnerModule,
-    DirectivesModule,
-    StateManagersModule,
-    MonitorActionModule,
-    MatDatepickerModule,
-    StandardDateModule,
-    VerifyButtonModule,
-    PermissionsModule,
-  ],
-  exports: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
+    declarations: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
+    exports: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        MatTooltipModule,
+        ErrorSpinnerModule,
+        JsonDumpModule,
+        MatIconModule,
+        MatButtonModule,
+        PipesModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        DirectivesModule,
+        StateManagersModule,
+        MonitorActionModule,
+        MatDatepickerModule,
+        StandardDateModule,
+        VerifyButtonModule,
+        PermissionsModule,
+        FontAwesomeModule,
+        HelpModule
+    ]
 })
 export class FeatureUgcModalModule {}

@@ -30,6 +30,7 @@ export class SunriseFeatureUgcModalComponent extends FeatureUgcModalBaseComponen
     itemId: string,
     isFeatured: boolean,
     expireDate?: DateTime,
+    forceExpireDate?: DateTime,
   ): Observable<void> {
     const expireDuration = !!expireDate ? expireDate.diff(DateTime.local().startOf('day')) : null;
     return this.sunriseService.setUgcItemFeatureStatus({

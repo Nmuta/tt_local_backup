@@ -105,6 +105,7 @@ describe('WoodstockFeatureUgcModalComponent', () => {
         itemId: itemId,
         isFeatured: true,
         featuredExpiry: expireDuration,
+        forceFeaturedExpiry: expireDuration,
       } as UgcFeaturedStatus);
     });
   });

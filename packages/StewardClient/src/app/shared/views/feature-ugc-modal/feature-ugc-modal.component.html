@@ -3,6 +3,9 @@
   <br />
   <span class="mat-subheading-2">
     <ng-container *ngIf="!!ugcItem.featuredByT10; else notFeaturedTemplate">
+      <ng-container *ngIf="!!ugcItem.forceFeaturedEndDateUtc">
+        Force Featured until: {{ ugcItem.forceFeaturedEndDateUtc | utcDate: 'short' }}
+      </ng-container>
       <ng-container *ngIf="!!ugcItem.featuredEndDateUtc; else noFeaturedEndDateTemplate">
         Featured until: {{ ugcItem.featuredEndDateUtc | utcDate: 'short' }}
       </ng-container>
@@ -11,7 +14,7 @@
 </h2>
 
 <mat-dialog-content>
-  <ul>
+  <ul class="info-list">
     <li><b>Id: </b> {{ ugcItem.id }}</li>
     <li><b>Type: </b> {{ ugcItem.type }}</li>
     <li><b>Description: </b> {{ ugcItem.description }}</li>
@@ -22,8 +25,22 @@
 
   <form [formGroup]="formGroup">
     <mat-checkbox [formControl]="formControls.isFeatured" (click)="changedFeatureStatus()"
-      >Feature UGC Item</mat-checkbox
-    >
+      >Feature UGC Item</mat-checkbox>
+    <help-popover-icon cardTitle="Featured vs. Force Featured">
+      <p>What is the difference between Featured and Force Featured?</p>
+      <ul>
+        <li>The essential concept involved is that Force Featured establishes a hierarchy.</li>
+        <li>For example, the game client typically displays Featured liveries from most recent to least recent.</li>
+        <li>Force Featuring a livery will move it to the top of the hierarchy, displaying it before all other Featured liveries.</li>
+        <li>If several liveries are Force Featured, then the client will display the Force Featured
+          liveries first and then whichever Featured liveries remain.</li>
+        <li>We can set an expiration date for both Featured and Force Featured items,
+          upon which their Featured or Force Featured status will expire.</li>
+        <li>It is important to note that once Force Featured status expires on an item, it will return to the Featured pool,
+          not be unfeatured entirely. To ensure something is unfeatured entirely when it expires,
+          set the Featured expiration date as well.</li>
+      </ul>
+    </help-popover-icon>
     <mat-form-field appearance="fill" class="expiry-date">
       <mat-label>Featured End Date</mat-label>
       <input
@@ -42,6 +59,27 @@
         >Expiry time must be in the future</mat-error
       >
       <mat-error *ngIf="formGroup.controls['featuredDate'].hasError('invalid-format')"
+        >Unrecognized Date (expected mm/dd/yyyy)</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="force-expiry-date">
+      <mat-label>Force Featured End Date</mat-label>
+      <input
+        matInput
+        [disabled]="!formControls.isFeatured.value"
+        [matDatepicker]="forcepicker"
+        [formControl]="formControls.forceFeaturedDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="forcepicker"></mat-datepicker-toggle>
+      <mat-datepicker #forcepicker></mat-datepicker>
+      <mat-hint *ngIf="!formControls.isFeatured.value"
+        >Cannot select end date when UGC is not featured</mat-hint
+      >
+      <mat-hint *ngIf="formControls.isFeatured.value">Optional</mat-hint>
+      <mat-error *ngIf="formGroup.controls['forceFeaturedDate'].hasError('is-after')"
+        >Expiry time must be in the future</mat-error
+      >
+      <mat-error *ngIf="formGroup.controls['forceFeaturedDate'].hasError('invalid-format')"
         >Unrecognized Date (expected mm/dd/yyyy)</mat-error
       >
     </mat-form-field>
