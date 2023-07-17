@@ -1,30 +1,60 @@
 @use '@angular/material' as mat;
 @import '/src/styles/mixins';
 
+// 2023-07-17 this file produces Duplicate Style Generation warnings.
+// https://github.com/angular/components/blob/main/guides/duplicate-theming-styles.md
+//
+// With the current structure, we expect 3 such warnings.
+// - Two for light (since it is default + light-pref + override)
+// - One for dark (since it is dark-pref + override)
+
+// turn duplicate theme warnings off for this file
+mat.$theme-ignore-duplication-warnings: true;
+
 @include mat.core($default-typography);
+
+$light-theme: $app-theme;
+$dark-theme: $dark-theme;
+$no-pref-theme: $light-theme;
+
+// common definition for light theme hooks
+@mixin light-theme-root {
+  @include mat.all-component-colors($light-theme);
+  @include init-theme($app-theme);
+}
+
+// common definition for dark theme hooks
+@mixin dark-theme-root {
+  @include mat.all-component-colors($dark-theme);
+  @include init-theme($dark-theme);
+}
 
 // default based on system configuration
 body {
-  // no preference
-  @include init-theme($app-theme);
+  // general setup / no preference
+  @include mat.all-component-themes($no-pref-theme);
+  @include init-theme($no-pref-theme);
 
   // light preference
   @media (prefers-color-scheme: light) {
-    @include init-theme($app-theme);
+    @include light-theme-root;
   }
 
   // dark preference
   @media (prefers-color-scheme: dark) {
-    @include init-theme($dark-theme);
+    @include dark-theme-root;
   }
-}
-
-// override with dark theme
-.apply-dark-theme {
-  @include init-theme($dark-theme);
 }
 
 // override with light theme
 .apply-light-theme {
-  @include init-theme($app-theme);
+  @include light-theme-root;
 }
+
+// override with dark theme
+.apply-dark-theme {
+  @include dark-theme-root;
+}
+
+// turn the warnings back on for other files
+mat.$theme-ignore-duplication-warnings: false;
