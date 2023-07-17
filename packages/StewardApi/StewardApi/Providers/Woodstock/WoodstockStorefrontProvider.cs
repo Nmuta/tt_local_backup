@@ -1,0 +1,221 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using Forza.WebServices.FH5_main.Generated;
+using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using Turn10.UGC.Contracts;
+using FileType = Forza.UserGeneratedContent.FH5_main.Generated.FileType;
+using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
+
+namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
+{
+    /// <inheritdoc />
+    public sealed class WoodstockStorefrontProvider : IWoodstockStorefrontProvider
+    {
+        private readonly IWoodstockService woodstockService;
+        private readonly IMapper mapper;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WoodstockStorefrontProvider"/> class.
+        /// </summary>
+        public WoodstockStorefrontProvider(IWoodstockService woodstockService, IMapper mapper)
+        {
+            woodstockService.ShouldNotBeNull(nameof(woodstockService));
+            mapper.ShouldNotBeNull(nameof(mapper));
+
+            this.woodstockService = woodstockService;
+            this.mapper = mapper;
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<WoodstockUgcItem>> GetPlayerUgcContentAsync(ulong xuid, UgcType ugcType, string endpoint, bool includeThumbnails = false)
+        {
+            ugcType.ShouldNotBeNull(nameof(ugcType));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            if (ugcType == UgcType.Unknown)
+            {
+                throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
+            }
+
+            var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+            var results = await this.woodstockService.GetPlayerUgcContentAsync(xuid, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
+
+            return this.mapper.SafeMap<IList<WoodstockUgcItem>>(results.result);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<WoodstockUgcItem>> SearchUgcContentAsync(UgcType ugcType, ServicesLiveOps.ForzaUGCSearchRequest filters, string endpoint, bool includeThumbnails = false)
+        {
+            ugcType.ShouldNotBeNull(nameof(ugcType));
+            filters.ShouldNotBeNull(nameof(filters));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            if (ugcType == UgcType.Unknown)
+            {
+                throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
+            }
+
+            var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
+            ServicesLiveOps.StorefrontManagementService.SearchUGCOutput results;
+            try
+            {
+                results = await this.woodstockService.SearchUgcContentAsync(filters, mappedContentType, endpoint, includeThumbnails).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new LspFailureStewardException($"Failed to search ugc. (type: {ugcType}) (filters: {filters})", ex);
+            }
+
+            // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
+            var filteredResults = results.result.Where(result => filters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);
+
+            return this.mapper.SafeMap<IList<WoodstockUgcItem>>(filteredResults);
+        }
+
+        /// <inheritdoc />
+        public async Task<WoodstockUgcLiveryItem> GetUgcLiveryAsync(Guid liveryId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var liveryOutput = await this.woodstockService.GetPlayerLiveryAsync(liveryId, endpoint).ConfigureAwait(false);
+            var livery = this.mapper.SafeMap<WoodstockUgcLiveryItem>(liveryOutput.result);
+
+            if (livery.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Livery id could not found: {liveryId}");
+            }
+
+            return livery;
+        }
+
+        /// <inheritdoc />
+        public async Task<WoodstockUgcItem> GetUgcPhotoAsync(Guid photoId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var photoOutput = await this.woodstockService.GetPlayerPhotoAsync(photoId, endpoint).ConfigureAwait(false);
+            var photo = this.mapper.SafeMap<WoodstockUgcItem>(photoOutput.result);
+
+            if (photo.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Photo id could not found: {photoId}");
+            }
+
+            return photo;
+        }
+
+        /// <inheritdoc />
+        public async Task<WoodstockUgcItem> GetUgcTuneAsync(Guid tuneId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var tuneOutput = await this.woodstockService.GetPlayerTuneAsync(tuneId, endpoint).ConfigureAwait(false);
+            var tune = this.mapper.SafeMap<WoodstockUgcItem>(tuneOutput.result);
+
+            if (tune.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Tune id could not found: {tuneId}");
+            }
+
+            return tune;
+        }
+
+        /// <inheritdoc />
+        public async Task<WoodstockUgcItem> GetUgcEventBlueprintAsync(Guid eventBlueprintId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var eventBlueprintOutput = await this.woodstockService.GetEventBlueprintAsync(eventBlueprintId, endpoint).ConfigureAwait(false);
+            var eventBlueprint = this.mapper.SafeMap<WoodstockUgcItem>(eventBlueprintOutput.result);
+
+            if (eventBlueprint.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Event blueprint id could not found: {eventBlueprintId}");
+            }
+
+            return eventBlueprint;
+        }
+
+        /// <inheritdoc />
+        public async Task<UgcItem> GetUgcCommunityChallengeAsync(Guid communityChallengeId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var communityChallengeOutput = await this.woodstockService.GetCommunityChallengeAsync(communityChallengeId, endpoint).ConfigureAwait(false);
+            var communityChallenge = this.mapper.SafeMap<WoodstockUgcItem>(communityChallengeOutput.communityChallengeData);
+
+            if (communityChallenge.GameTitle != (int)GameTitle.FH5)
+            {
+                throw new NotFoundStewardException($"Community Challenge ID could not found: {communityChallengeId}");
+            }
+
+            return communityChallenge;
+        }
+
+        /// <inheritdoc />
+        public async Task SetUgcFeaturedStatusAsync(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, TimeSpan? forceFeaturedExpiry, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var featureEndDate = isFeatured && featuredExpiry.HasValue ? DateTime.UtcNow.Add(featuredExpiry.Value) : DateTime.MinValue;
+                var forceFeatureEndDate = isFeatured && forceFeaturedExpiry.HasValue ? DateTime.UtcNow.Add(forceFeaturedExpiry.Value) : DateTime.MinValue;
+                await this.woodstockService.SetUgcFeaturedStatusAsync(contentId, isFeatured, featureEndDate, forceFeatureEndDate, endpoint).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException(
+                    $"An unknown exception occurred while setting featured status of content item: {contentId}", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<AuctionData> GetAuctionDataAsync(
+            Guid auctionId,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            ServicesLiveOps.ForzaAuction forzaAuctions = null;
+
+            try
+            {
+                forzaAuctions = await this.woodstockService.GetAuctionDataAsync(auctionId, endpoint).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get auction data. (auctionId: {auctionId})", ex);
+            }
+
+            return this.mapper.SafeMap<AuctionData>(forzaAuctions);
+        }
+
+        /// <inheritdoc />
+        public async Task<ServicesLiveOps.AuctionManagementService.DeleteAuctionsOutput> DeleteAuctionAsync(
+            Guid auctionId,
+            string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                return await this.woodstockService.DeleteAuctionAsync(auctionId, endpoint).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to delete auction. (auctionId: {auctionId})", ex);
+            }
+        }
+    }
+}

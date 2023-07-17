@@ -1,0 +1,78 @@
+<mat-card>
+  <mat-card-header class="sf-header">
+    <mat-card-title>Search Public UGC</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
+
+    <div class="sf-spacer"></div>
+    <button
+      mat-stroked-button
+      color="primary"
+      class="private-ugc-search-link"
+      (click)="playerDetailsClick()"
+    >
+      <help-popover-icon cardTitle="Private UGC">
+        <div>
+          Private UGC can only be viewed per player in the player details tool.<br /><br />
+          Click on this link and navigate to the UGC tab to see content.
+        </div>
+      </help-popover-icon>
+      <span>Looking for private UGC?</span>
+      <div *ngIf="!!filterXuid" class="player-details-link-with-xuid">XUID: {{ filterXuid }}</div>
+    </button>
+    <button
+      class="filter-search"
+      mat-raised-button
+      color="primary"
+      matTooltip="Search Public UGC"
+      [disabled]="!formGroup.valid"
+      (click)="searchUgc()"
+      [monitor]="getMonitor"
+      stateManager
+      monitorDisable
+      monitorWarnSnackbar
+    >
+      Search
+      <button-spinner defaultIcon="search" [monitor]="getMonitor"></button-spinner>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <ugc-search-filters
+        [formControl]="formControls.ugcFilters"
+        [serviceContract]="serviceContract"
+      ></ugc-search-filters>
+    </form>
+    <form [formGroup]="formGroup" class="sf-wrapper">
+      <div class="sf-horizontal">
+        <!-- UGC Curated Type Filter -->
+        <mat-form-field class="sf-default-hint" appearance="fill">
+          <mat-label>UGC Curated Type</mat-label>
+          <mat-select matInput [formControl]="formControls.ugcCuratedType">
+            <mat-option *ngFor="let item of ugcCurationType | keyvalue" [value]="item.value">
+              {{ item.key | deppoh }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          matTooltip="Load Curated UGC"
+          [disabled]="!formControls.ugcCuratedType.value"
+          (click)="loadCuratedUgc()"
+          [monitor]="getMonitor"
+          stateManager
+          monitorDisable
+          monitorWarnSnackbar
+        >
+          Load Curated Ugc
+          <button-spinner defaultIcon="search" [monitor]="getMonitor"></button-spinner>
+          <help-popover-icon cardTitle="Load Curated Ugc">
+            <div>Loading Curated UGC queues will return the first 500 items in the queue.</div>
+          </help-popover-icon>
+        </button>
+      </div>
+    </form>
+
+    <woodstock-ugc-table [content]="ugcContent" [contentType]="ugcType"></woodstock-ugc-table>
+  </mat-card-content>
+</mat-card>

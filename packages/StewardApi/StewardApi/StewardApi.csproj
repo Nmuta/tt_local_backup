@@ -1,0 +1,152 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <!-- <Nullable>enable</Nullable> -->
+    <AssemblyName>Turn10.LiveOps.StewardApi</AssemblyName>
+    <RootNamespace>Turn10.LiveOps.StewardApi</RootNamespace>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <CodeAnalysisRuleSet>$(SolutionDir)\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisAdditionalOptions>/assemblyCompareMode:StrongNameIgnoringVersion</CodeAnalysisAdditionalOptions>
+    <StartupObject>Turn10.LiveOps.StewardApi.Program</StartupObject>
+    <UserSecretsId>69aa9e39-2604-4e97-b974-f3707268e684</UserSecretsId>
+    <InformationalVersion>Localhost</InformationalVersion>
+    <Platforms>AnyCPU;x64</Platforms>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
+    <DefineConstants>DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
+    <DefineConstants>DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdaptiveCards.Templating" Version="1.4.0" />
+    <PackageReference Include="Autofac" Version="6.4.0" />
+    <PackageReference Include="Autofac.Configuration" Version="6.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+    <PackageReference Include="Castle.Core" Version="4.4.1" />
+    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="2.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.14.0" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
+    <PackageReference Include="Microsoft.Graph" Version="4.11.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.8.2" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.0.64">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="PlayFabAllSDK" Version="1.144.230123" />
+    <PackageReference Include="SteelheadLiveOpsContent" Version="1.7.26" />
+	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+	<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
+	<PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
+    <PackageReference Include="Turn10.Data.SecretProvider" Version="3.0.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
+	<PackageReference Include="Turn10.Data.Azure" Version="3.0.0" />
+    <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
+    <PackageReference Include="Turn10.Data.KustoLogger" Version="4.0.0" />
+    <PackageReference Include="Turn10.Services.CMSRetrieval" Version="2.0.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient" Version="3.1.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH3" Version="1.3.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.5.7">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5_main" Version="5.3.6" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.13.5">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.21.1">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.Serialization" Version="1.3.1" />
+    <PackageReference Include="Turn10.Services.ServiceClient" Version="1.2.5" />
+    <PackageReference Include="Turn10.Services.Storage.Table" Version="1.2.0" />
+    <PackageReference Include="Turn10.Services.STS.Contracts" Version="1.2.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.UGC.Contracts" Version="1.11.13" />
+    <PackageReference Include="WoodstockLiveOpsContent" Version="2.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StewardGitApi\StewardGitApi.csproj" />
+  </ItemGroup>
+
+  <Target Name="RealClean" AfterTargets="Clean">
+    <RemoveDir Directories="$(OutDir)" ContinueOnError="true" />
+  </Target>
+</Project>
