@@ -1,6 +1,6 @@
 @use 'sass:list';
 @use 'sass:map';
-@import '/src/styles/mixins/colors/unique-colors.scss';
+@import '/src/styles/mixins';
 
 @each $name, $set in $color-sets {
   $count: list.length($set);
