@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
@@ -159,6 +160,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var actionOutput = getAction.GetAwaiter().GetResult();
             var objectToMap = mappedObjectSelector(actionOutput);
             var result = this.Mapper.SafeMap<OutT>(objectToMap);
+
+            var query = new ForzaPlayerLookupParameters
+            {
+                UserID = result.OwnerXuid.ToString(),
+                UserIDType = ForzaUserIdType.Xuid
+            };
+
+            var playerLookup = await this.Services.UserManagementService.GetUserIds(1, new ForzaPlayerLookupParameters[] { query }).ConfigureAwait(true);
+            result.OwnerGamertag = playerLookup.playerLookupResult[0].Gamertag;
+
             var cars = getCars.GetAwaiter().GetResult();
             if (result.GameTitle != (int)GameTitle.FH5)
             {
