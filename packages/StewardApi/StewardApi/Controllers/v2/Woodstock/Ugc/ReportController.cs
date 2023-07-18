@@ -113,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         }
 
         // Report list of UgcIds with reason
-        private async Task<List<BulkReportUgcResponse>> ReportUgcItems(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
+        private async Task<List<BulkReportUgcResponse>> ReportUgcItems (IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
         {
             var parsedReasonId = reasonId.TryParseGuidElseThrow(nameof(reasonId));
 
