@@ -153,8 +153,6 @@ export class TaskManagementComponent extends BaseComponent implements OnInit {
     rawEntry.periodInSeconds = entry.formGroup.controls.periodInSeconds.value;
     rawEntry.periodType = entry.formGroup.controls.periodType.value;
 
-    //const index = this.tasks.data.indexOf(entry);
-    //this.rawTasks.splice(index, 1, newEntry);
     this.tasks._updateChangeSubscription();
   }
 }
