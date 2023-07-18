@@ -32,7 +32,7 @@ $tile-gap-size: 1px;
 
   .entry {
     border: 1px solid transparent;
-    margin: $tile-gap-size / 2;
+    margin: calc($tile-gap-size / 2);
     width: $tile-size;
     height: $tile-size;
     background-color: app-color-default-contrast($app-primary, 0.3);
