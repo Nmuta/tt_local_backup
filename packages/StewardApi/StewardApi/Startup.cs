@@ -180,6 +180,20 @@ namespace Turn10.LiveOps.StewardApi
                 options.AllowSynchronousIO = true;
             });
 
+            services.AddHttpClient(STSClient.HttpClientName)
+                .ConfigurePrimaryHttpMessageHandler((Func<IServiceProvider, HttpMessageHandler>)delegate
+                {
+                    HttpClientHandler httpClientHandler = new HttpClientHandler
+                    {
+                        AutomaticDecompression = (DecompressionMethods.GZip | DecompressionMethods.Deflate)
+                    };
+
+                    var cert = LoadCert();
+                    httpClientHandler.ClientCertificates.Add(cert);
+
+                    return httpClientHandler;
+                });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));

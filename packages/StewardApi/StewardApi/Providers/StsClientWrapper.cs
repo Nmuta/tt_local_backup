@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Turn10.Contracts.STS;
 using Turn10.Contracts.STS.Responses;
 using Turn10.Data.Common;
@@ -13,6 +14,28 @@ using Turn10.LiveOps.StewardApi.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {
+    public class STSClientOptionsWrapper : IOptionsMonitor<STSClientOptions>
+    {
+        private STSClientOptions options;
+
+        public STSClientOptionsWrapper(string stsUrl)
+        {
+            options = new STSClientOptions
+            {
+                BaseUri = new Uri(stsUrl)
+            };
+        }
+
+        public STSClientOptions CurrentValue => options;
+
+        public STSClientOptions Get(string name) => options;
+
+        public IDisposable OnChange(Action<STSClientOptions, string> listener)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     /// <inheritdoc/>
     public sealed class StsClientWrapper : IStsClient
     {
@@ -30,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         ///     Initializes a new instance of the <see cref="StsClientWrapper"/> class.
         /// </summary>
         [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
-        public StsClientWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
+        public StsClientWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider, IHttpClientFactory factory)
         {
             configuration.ShouldNotBeNull(nameof(configuration));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
@@ -42,7 +65,8 @@ namespace Turn10.LiveOps.StewardApi.Providers
             var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultUrl, keyVaultCertificateName).GetAwaiter().GetResult();
 
             var stsForgeryCertificate = this.ConvertToCertificate(certificateSecret);
-            this.stsClient = new STSClient(new Uri(stsUrl), null, stsForgeryCertificate);
+
+            this.stsClient = new STSClient(new STSClientOptionsWrapper(stsUrl), factory);
         }
 
         /// <inheritdoc/>
