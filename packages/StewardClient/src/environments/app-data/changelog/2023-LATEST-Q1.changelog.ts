@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'caf46095-1749-46e0-bb9c-57682c61dc1f',
+      shortText: 'Stylesheet refactoring in preparation for SCSS 2.0',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '1469d347-06f9-40d7-9c47-f901d6af5a9c',
       shortText: 'Add ability to modify Geo Flags on UGC',
