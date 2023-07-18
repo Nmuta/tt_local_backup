@@ -1,0 +1,59 @@
+jobs:
+- job: Job_3
+  displayName: Code Inspector
+  pool:
+    name: Azure Pipelines
+    vmImage: windows-latest
+  steps:
+  - checkout: self
+    submodules: true
+  - task: Cache@2
+    displayName: Cache node_modules
+    inputs:
+      key: '"yarn" | "$(Agent.OS)" | **/yarn.lock'
+      path: $(Build.Repository.LocalPath)/packages/StewardClient/node_modules
+      restoreKeys: >-
+        yarn | "$(Agent.OS)"
+
+        yarn
+  - task: NodeTool@0
+    displayName: Use Node 18.x
+    inputs:
+      versionSpec: 18.x
+  - task: DotNetCoreCLI@2
+    displayName: dotnet restore
+    inputs:
+      command: restore
+      projects: >-
+        packages/StewardApi/StewardApi/*.csproj
+
+        packages/StewardApi/StewardApiTest/*.csproj
+      selectOrConfig: config
+      feedRestore: /2cea4146-e4d1-416d-9823-c02540cc01a9
+      nugetConfigPath: packages/StewardApi/nuget.config
+  - task: npmAuthenticate@0
+    displayName: Authenticate for private NPM packages
+    inputs:
+      workingFile: packages/StewardClient/.npmrc
+  - task: CmdLine@2
+    displayName: yarn install
+    inputs:
+      script: yarn --frozen-lockfile --network-timeout 1000000
+      workingDirectory: packages/StewardClient/
+  - task: CodeInspector@2
+    displayName: Run Code Inspector
+    inputs:
+      ProductId: DEDD5DEA-78EB-4939-84C2-7C02D9834E79
+      ExcludeFilters: sample,example,test,docs,.vs,.git,.gdn,node_modules
+  - task: Semmle@1
+    displayName: Run CodeQL (Semmle) (csharp)
+    enabled: False
+    inputs:
+      toolVersion: 2.3.4.3-prerelease
+  - task: Semmle@1
+    displayName: Run CodeQL (Semmle) (tsandjs)
+    enabled: False
+    inputs:
+      toolVersion: 2.3.4.3-prerelease
+      sourceCodeDirectory: packages/StewardClient
+      language: tsandjs
