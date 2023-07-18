@@ -3,7 +3,8 @@ echo \# Context
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo Working dir: $(pwd)
 echo Script dir: $SCRIPT_DIR
-CHANGELOG_QUARTER=$($SCRIPT_DIR/changelog-quarter.sh )
+chmod +x $SCRIPT_DIR/changelog-quarter.sh
+CHANGELOG_QUARTER=$($SCRIPT_DIR/changelog-quarter.sh)
 echo Changelog Quarter: $CHANGELOG_QUARTER
 SRC_PATH='packages/StewardClient/src'
 CHANGELOG_FILENAME=$CHANGELOG_QUARTER-LATEST.changelog.ts
