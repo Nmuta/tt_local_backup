@@ -263,16 +263,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var updateCars = inventoryUpdates.Cars.Select(car => this.mapper.SafeMap<AdminForzaCarUserInventoryItem>(car)).ToArray();
 
-            try
+            if (updateItems != null && updateItems.Length > 0)
             {
-                if (updateItems != null && updateItems.Length > 0)
-                {
-                    rawResults = await this.Services.LiveOpsService.LiveOpsAddInventoryItems(xuid, externalProfileIdGuid, updateItems).ConfigureAwait(true);
-                }
-            }
-            catch (Exception ex)
-            {
-                exceptions.Add(new LspFailureStewardException("Failed to update non-car inventory items.", ex));
+                rawResults = await this.Services.LiveOpsService.LiveOpsAddInventoryItems(xuid, externalProfileIdGuid, updateItems).ConfigureAwait(true);
             }
 
             try
@@ -324,14 +317,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var removeVanityItems = inventoryUpdates.VanityItems.Select(vanityItem => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((vanityItem, InventoryItemType.VanityItem)));
             var removeItems = removeCredits.Concat(removeVanityItems);
 
-            try
-            {
-                await this.Services.LiveOpsService.LiveOpsRemoveInventoryItems(xuid, externalProfileIdGuid, removeItems.ToArray()).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to update inventory items. (XUID: {xuid}) (External Profile ID: {externalProfileIdGuid})", ex);
-            }
+            await this.Services.LiveOpsService.LiveOpsRemoveInventoryItems(xuid, externalProfileIdGuid, removeItems.ToArray()).ConfigureAwait(true);
 
             return this.Ok();
         }

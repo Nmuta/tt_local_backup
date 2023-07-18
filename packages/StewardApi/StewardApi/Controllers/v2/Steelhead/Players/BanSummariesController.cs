@@ -60,15 +60,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 
             UserManagementService.GetUserBanSummariesOutput result = null;
 
-            try
-            {
-                result = await this.Services.UserManagementService.GetUserBanSummaries(xuids.ToArray(), xuids.Count)
-                    .ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException("Ban Summary lookup has failed.", ex);
-            }
+            result = await this.Services.UserManagementService.GetUserBanSummaries(xuids.ToArray(), xuids.Count)
+                .ConfigureAwait(true);
 
             var banSummaryResults = this.mapper.SafeMap<IList<BanSummary>>(result.banSummaries);
 

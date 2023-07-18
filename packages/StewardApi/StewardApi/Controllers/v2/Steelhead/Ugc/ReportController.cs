@@ -49,14 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException($"UGC ID could not be parsed as GUID. (ugcId: {ugcId})");
             }
 
-            try
-            {
-                await this.Services.StorefrontManagementService.ReportContentWithReason(parsedUgcId, Guid.NewGuid()).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to report UGC. (ugcId: {parsedUgcId})", ex);
-            }
+            await this.Services.StorefrontManagementService.ReportContentWithReason(parsedUgcId, Guid.NewGuid()).ConfigureAwait(true);
 
             return this.Ok();
         }

@@ -63,15 +63,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             Forza.WebServices.FM8.Generated.LiveOpsService.GetLiveOpsUserDataByGamerTagOutput response = null;
 
-            try
-            {
-                response = await this.Services.LiveOpsService.GetLiveOpsUserDataByGamerTag(gamertag)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"No player found. (Gamertag: {gamertag})", ex);
-            }
+            response = await this.Services.LiveOpsService.GetLiveOpsUserDataByGamerTag(gamertag)
+                .ConfigureAwait(false);
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
 
@@ -88,15 +81,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             Forza.WebServices.FM8.Generated.LiveOpsService.GetLiveOpsUserDataByXuidOutput response = null;
 
-            try
-            {
-                response = await this.Services.LiveOpsService.GetLiveOpsUserDataByXuid(xuid)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"No player found. (XUID: {xuid})", ex);
-            }
+            response = await this.Services.LiveOpsService.GetLiveOpsUserDataByXuid(xuid)
+                .ConfigureAwait(false);
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
 
@@ -113,15 +99,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             GetUserDetailsOutput response;
 
-            try
-            {
-                response = await this.Services.UserManagementService.GetUserDetails(xuid)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get player game details. (XUID: {xuid})", ex);
-            }
+            response = await this.Services.UserManagementService.GetUserDetails(xuid)
+                .ConfigureAwait(false);
 
             var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
 

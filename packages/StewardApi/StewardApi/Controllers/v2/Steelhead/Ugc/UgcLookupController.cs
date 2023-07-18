@@ -173,14 +173,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             {
                 StorefrontManagementService.GetUGCLiveryOutput liveryOutput = null;
 
-                try
-                {
-                    liveryOutput = await this.Services.StorefrontManagementService.GetUGCLivery(parsedUgcId).ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    throw new UnknownFailureStewardException($"No livery found. (ugcId: {parsedUgcId}).", ex);
-                }
+                liveryOutput = await this.Services.StorefrontManagementService.GetUGCLivery(parsedUgcId).ConfigureAwait(false);
 
                 var livery = this.mapper.SafeMap<SteelheadUgcLiveryItem>(liveryOutput.result);
 
@@ -289,15 +282,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             {
                 ForzaTuneBlob tuneOutput = null;
 
-                try
-                {
-                    var tuneOutputResponse = await this.Services.LiveOpsService.LiveOpsGetUGCTuneBlobs(new[] { parsedUgcId }).ConfigureAwait(false);
-                    tuneOutput = tuneOutputResponse.results.First();
-                }
-                catch (Exception ex)
-                {
-                    throw new UnknownFailureStewardException($"No tune found. (ugcId: {parsedUgcId}).", ex);
-                }
+                var tuneOutputResponse = await this.Services.LiveOpsService.LiveOpsGetUGCTuneBlobs(new[] { parsedUgcId }).ConfigureAwait(false);
+                tuneOutput = tuneOutputResponse.results.First();
 
                 var tune = this.mapper.SafeMap<SteelheadUgcTuneBlobItem>(tuneOutput);
 
@@ -354,14 +340,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 var mappedContentType = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCContentType>(ugcType);
 
                 StorefrontManagementService.SearchUGCOutput results;
-                try
-                {
-                    results = await this.Services.StorefrontManagementService.SearchUGC(filters, mappedContentType, false, 5_000).ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    throw new UnknownFailureStewardException($"Failed to search UGC by sharecode. (shareCode: {shareCode}) (ugcType: {ugcType})", ex);
-                }
+                results = await this.Services.StorefrontManagementService.SearchUGC(filters, mappedContentType, false, 5_000).ConfigureAwait(false);
 
                 // Client filters out any featured UGC that has expired. Special case for min DateTime, which is how Services tracks featured UGC with no end date.
                 var filteredResults = results.result.Where(result => filters.Featured == false || result.Metadata.FeaturedEndDate > DateTime.UtcNow || result.Metadata.FeaturedEndDate == DateTime.MinValue);
@@ -392,14 +371,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             StorefrontManagementService.GetUGCPhotoOutput photoOutput = null;
 
-            try
-            {
-                photoOutput = await this.Services.StorefrontManagementService.GetUGCPhoto(ugcId).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"No photo found. (ugcId: {ugcId}).", ex);
-            }
+            photoOutput = await this.Services.StorefrontManagementService.GetUGCPhoto(ugcId).ConfigureAwait(false);
 
             var photo = this.mapper.SafeMap<SteelheadUgcItem>(photoOutput.result);
 

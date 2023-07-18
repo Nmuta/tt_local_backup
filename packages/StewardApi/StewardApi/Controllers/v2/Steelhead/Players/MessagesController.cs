@@ -91,21 +91,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 
             NotificationsManagementService.SendMessageOutput results = null;
 
-            try
-            {
-                results = await this.Services.NotificationManagementService.SendMessage(
-                    communityMessage.Xuids.ToArray(),
-                    localizedTitleGuid,
-                    localizedMessageGuid,
-                    communityMessage.StartTimeUtc,
-                    communityMessage.ExpireTimeUtc,
-                    communityMessage.NotificationType).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-
-                throw new UnknownFailureStewardException("Failed to send messages to players.", ex);
-            }
+            results = await this.Services.NotificationManagementService.SendMessage(
+                communityMessage.Xuids.ToArray(),
+                localizedTitleGuid,
+                localizedMessageGuid,
+                communityMessage.StartTimeUtc,
+                communityMessage.ExpireTimeUtc,
+                communityMessage.NotificationType).ConfigureAwait(true);
 
             notifications.AddRange(this.mapper.SafeMap<IList<MessageSendResult<ulong>>>(results.messageSendResults));
 
