@@ -65,14 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            try
-            {
-                results = await this.Services.AuctionManagementService.GetAuctionData(auctionIdAsGuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get auction. (auctionId: {auctionId})", ex);
-            }
+            results = await this.Services.AuctionManagementService.GetAuctionData(auctionIdAsGuid).ConfigureAwait(true);
 
             return this.Ok(this.mapper.SafeMap<AuctionData>(results.auction));
         }
@@ -96,25 +89,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
             }
 
-            try
-            {
-                var result = await this.Services.AuctionManagementService.DeleteAuctions(new[] { auctionIdAsGuid }).ConfigureAwait(true);
+            var result = await this.Services.AuctionManagementService.DeleteAuctions(new[] { auctionIdAsGuid }).ConfigureAwait(true);
 
-                var realResult = result.result.First();
-                if (!realResult.Success)
-                {
-                    throw new CustomStewardException(
-                        HttpStatusCode.BadGateway,
-                        StewardErrorCode.ServicesFailure,
-                        $"LSP failed to cancel auction {auctionId}");
-                }
-
-                return this.Ok();
-            }
-            catch (Exception ex)
+            var realResult = result.result.First();
+            if (!realResult.Success)
             {
-                throw new UnknownFailureStewardException($"Failed to delete auction. (auctionId: {auctionId})", ex);
+                throw new CustomStewardException(
+                    HttpStatusCode.BadGateway,
+                    StewardErrorCode.ServicesFailure,
+                    $"LSP failed to cancel auction {auctionId}");
             }
+
+            return this.Ok();
         }
     }
 }

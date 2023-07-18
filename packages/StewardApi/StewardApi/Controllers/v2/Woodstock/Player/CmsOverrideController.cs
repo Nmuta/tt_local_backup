@@ -49,16 +49,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            try
-            {
-                var response = await this.Services.UserManagementService.GetCMSOverride(xuid).ConfigureAwait(true);
+            var response = await this.Services.UserManagementService.GetCMSOverride(xuid).ConfigureAwait(true);
 
-                return this.Ok(response.cmsOverride);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get player CMS override. (XUID: {xuid})", ex);
-            }
+            return this.Ok(response.cmsOverride);
         }
 
         /// <summary>
@@ -76,20 +69,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            try
-            {
-                await this.Services.UserManagementService.SetCMSOverride(
-                        xuid,
-                        cmsOverride.Snapshot,
-                        cmsOverride.Environment,
-                        cmsOverride.Slot).ConfigureAwait(true);
+            await this.Services.UserManagementService.SetCMSOverride(
+                    xuid,
+                    cmsOverride.Snapshot,
+                    cmsOverride.Environment,
+                    cmsOverride.Slot).ConfigureAwait(true);
 
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to set player CMS override. (XUID: {xuid}) (snapshot: {cmsOverride.Snapshot}) (environment: {cmsOverride.Environment}) (slot: {cmsOverride.Slot})", ex);
-            }
+            return this.Ok();
         }
 
         /// <summary>
@@ -105,16 +91,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            try
-            {
-                await this.Services.UserManagementService.DeleteCMSOverride(xuid).ConfigureAwait(true);
+            await this.Services.UserManagementService.DeleteCMSOverride(xuid).ConfigureAwait(true);
 
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to delete player CMS override. (XUID: {xuid})", ex);
-            }
+            return this.Ok();
         }
     }
 }

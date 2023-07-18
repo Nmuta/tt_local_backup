@@ -1,10 +1,13 @@
 {
   "folders": [
     {
-      "path": "StewardClient"
+      "path": "Notes"
     },
     {
-      "path": "Notes"
+      "path": "packages/StewardClient"
+    },
+    {
+      "path": "packages/StewardClient-Cypress"
     }
   ],
   "settings": {
