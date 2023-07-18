@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
-        UserRole.GeneralUser,//???
+        UserRole.GeneralUser,
         UserRole.LiveOpsAdmin)]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Topic.Task, Target.Lsp)]

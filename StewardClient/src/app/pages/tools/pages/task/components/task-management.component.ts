@@ -82,7 +82,7 @@ export class TaskManagementComponent extends BaseComponent implements OnInit {
   public updateNotificationEntry(entry: FormGroupTaskEntry): void {
     const updatedTask: LspTask = entry.task;
     updatedTask.nextExecutionUtc = entry.formGroup.controls.nextExecutionUtc.value;
-    updatedTask.periodInSeconds = entry.formGroup.controls.periodInSeconds.value; //is a bignumber?
+    updatedTask.periodInSeconds = entry.formGroup.controls.periodInSeconds.value;
     updatedTask.periodType = entry.formGroup.controls.periodType.value;
 
     this.updateTask(updatedTask, entry);

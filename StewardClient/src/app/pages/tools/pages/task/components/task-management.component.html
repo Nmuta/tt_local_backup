@@ -98,6 +98,7 @@
               <mat-form-field class="period-in-seconds">
                 <mat-label>Period In Seconds</mat-label>
                 <input
+                  [formControl]="entry.formControls.periodInSeconds"
                   type="number"
                   matInput
                   min="1"
