@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, type: typeof(IEnumerable<LspTask>))]
-        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetTasks()
         {
@@ -68,8 +68,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [HttpPut]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
-        [LogTagAction(ActionTargetLogTags.Console, ActionAreaLogTags.Banning)]
-        [Authorize(Policy = UserAttribute.BanConsole)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update)]
+        [Authorize(Policy = UserAttribute.UpdateTask)]
         public async Task<IActionResult> UpdateTask([FromBody] LspTask task)
         {
             var taskParameters = this.mapper.SafeMap<ForzaTaskUpdateParameters>(task);

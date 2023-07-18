@@ -49,7 +49,7 @@ export class TaskManagementComponent extends BaseComponent implements OnInit {
   ];
   public minDate: DateTime = DateTime.utc();
   public taskStateEnum = TaskState;
-  public readonly permAttribute = PermAttributeName.TaskManagement;
+  public readonly permAttribute = PermAttributeName.UpdateTask;
 
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
