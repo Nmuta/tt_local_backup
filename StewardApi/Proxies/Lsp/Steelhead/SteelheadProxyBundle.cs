@@ -99,6 +99,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         /// </summary>
         public IConfigurationManagementService ConfigurationManagementService => this.SteelheadFactory.PrepareConfigurationManagementService(this.Endpoint);
 
+        /// <summary>
+        ///     Gets a <see cref="ITaskManagementService" />.
+        /// </summary>
+        public ITaskManagementService TaskManagementService => this.SteelheadFactory.PrepareTaskManagementService(this.Endpoint);
+
         private ISteelheadProxyFactory SteelheadFactory { get; }
 
         /// <summary>

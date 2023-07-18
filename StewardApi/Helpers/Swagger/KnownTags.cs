@@ -157,6 +157,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string AcLogReader = "Topic: AcLogReader";
             public const string SafetyRating = "Topic: SafetyRating";
             public const string SkillRating = "Topic: SkillRating";
+            public const string Task = "Topic: Task";
         }
 
         /// <summary>

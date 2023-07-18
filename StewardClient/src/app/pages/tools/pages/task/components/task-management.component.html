@@ -1,0 +1,207 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Task Management</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form *waitForMonitor="getMonitor">
+      <table mat-table [dataSource]="tasks">
+        <ng-container matColumnDef="task-info">
+          <th mat-header-cell *matHeaderCellDef>Task Info</th>
+          <td mat-cell *matCellDef="let entry">
+            <table class="info-table">
+              <tr>
+                <th>Name</th>
+                <td>
+                  {{ entry.task.executorType }}
+                </td>
+              </tr>
+              <tr>
+                <th>Id</th>
+                <td>
+                  {{ entry.task.id }}
+                </td>
+              </tr>
+              <tr>
+                <th>State</th>
+                <td>
+                  {{ entry.task.state }}
+                </td>
+              </tr>
+              <tr>
+                <th>Custom Properties</th>
+                <td>
+                  {{ entry.task.customProperties }}
+                </td>
+              </tr>
+              <tr>
+                <th>Lock</th>
+                <td>
+                  {{ entry.task.lock }}
+                </td>
+              </tr>
+              <tr>
+                <th>Lock Taken Until</th>
+                <td>
+                  {{ entry.task.lockTakenUntilUtc | utcDate: 'short' }}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="execution-info">
+          <th mat-header-cell *matHeaderCellDef>Execution Info</th>
+          <td mat-cell *matCellDef="let entry">
+            <table class="info-table">
+              <tr>
+                <th>Last Event</th>
+                <td>
+                  {{ entry.task.lastEventUtc | utcDate: 'short' }}
+                </td>
+              </tr>
+              <tr>
+                <th>Last Exception</th>
+                <td>
+                  {{ entry.task.lastException }}
+                </td>
+              </tr>
+              <tr>
+                <th>Last Run Duration</th>
+                <td>{{ entry.task.lastRunDuration }} seconds</td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Next Execution</th>
+                <td>
+                  {{ entry.formGroup.controls.nextExecutionUtc.value | utcDate: 'short' }}
+                </td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Period In Seconds</th>
+                <td>
+                  {{ entry.formGroup.controls.periodInSeconds.value }}
+                </td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Period Type</th>
+                <td>
+                  {{ entry.formGroup.controls.periodType.value }}
+                </td>
+              </tr>
+            </table>
+            <ng-container *ngIf="entry.edit">
+              <mat-label>Next Execution Date (mm/dd/yyyy)</mat-label>
+              <datetime-picker
+                [min]="minDate"
+                [formControl]="entry.formControls.nextExecutionUtc"
+              ></datetime-picker>
+              <mat-form-field class="period-in-seconds">
+                <mat-label>Period In Seconds</mat-label>
+                <input
+                  type="number"
+                  matInput
+                  min="1"
+                  max="999999999"
+                  [value]="entry.task.periodInSeconds"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Period Type</mat-label>
+                <mat-select [formControl]="entry.formControls.periodType">
+                  <mat-option *ngFor="let type of taskPeriodTypes" [value]="type">
+                    {{ type | deppoh }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let entry">
+            <span class="editable" *ngIf="!entry.edit">
+              <button
+                mat-raised-button
+                color="primary"
+                matTooltip="Change the state of the task"
+                (click)="changeState(entry)"
+                clickStop
+                stateManager
+                [monitor]="entry.postMonitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              >
+                {{ entry.task.state === taskStateEnum.Disabled ? 'Enable' : 'Disable' }}
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                matTooltip="Run the task now"
+                (click)="runNow(entry)"
+                clickStop
+                stateManager
+                [monitor]="entry.postMonitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              >
+                Run Now
+              </button>
+              <button
+                class="edit"
+                mat-raised-button
+                color="primary"
+                (click)="editEntry(entry)"
+                stateManager
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              >
+                <span matTooltip="Edit Task">Edit</span>
+              </button>
+            </span>
+            <span class="edit" *ngIf="entry.edit">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="updateNotificationEntry(entry)"
+                [disabled]="!entry.formGroup.valid"
+                matTooltip="Update task"
+                clickStop
+                stateManager
+                [monitor]="entry.postMonitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              >
+                Submit
+              </button>
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="revertEntryEdit(entry)"
+                matTooltip="Cancel task edit"
+              >
+                Undo
+              </button>
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <!-- [class.nonEditable]="!entry.isCommunityMessage" -->
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+      </table>
+    </form>
+  </mat-card-content>
+</mat-card>

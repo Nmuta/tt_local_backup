@@ -44,4 +44,5 @@ export enum NavbarTool {
   ServicesTableStorage = 'services-table-storage',
   ShowroomCalendar = 'showroom-calendar',
   AcLogReader = 'ac-log-reader',
+  Task = 'task',
 }

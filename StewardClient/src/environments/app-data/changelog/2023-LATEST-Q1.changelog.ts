@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.Task },
+      uuid: 'ded9dabb-5e0b-4e7c-af71-6567f5ac1881',
+      shortText: 'Add new component to view and manage Lsp tasks',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '1469d347-06f9-40d7-9c47-f901d6af5a9c',
       shortText: 'Add ability to modify Geo Flags on UGC',

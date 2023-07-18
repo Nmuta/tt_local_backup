@@ -44,6 +44,7 @@ export enum PermAttributeName {
   AllowedToExceedCreditLimit = 'AllowedToExceedCreditLimit',
   UpdateSafetyRating = 'UpdateSafetyRating',
   OverrideSkillRating = 'OverrideSkillRating',
+  TaskManagement = 'TaskManagement,',
 }
 
 /** Full perm attribute details. */

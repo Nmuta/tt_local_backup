@@ -91,3 +91,8 @@ export function getUnifiedCalendarRoute(gameTitle: GameTitle) {
 export function getUserDetailsRoute(gameTitle: string) {
   return ['/app/tools/user-details/', gameTitle];
 }
+
+/** Make tasks route. */
+export function getTasksRoute(gameTitle: GameTitle) {
+  return ['/app/tools/task/', gameTitle];
+}

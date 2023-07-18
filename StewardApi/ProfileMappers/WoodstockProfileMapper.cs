@@ -614,6 +614,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ReverseMap();
+
+            this.CreateMap<ForzaTask, LspTask>()
+                .ForMember(dest => dest.LastEventUtc, opt => opt.MapFrom(source => source.LastEvent))
+                .ForMember(dest => dest.LockTakenUntilUtc, opt => opt.MapFrom(source => source.LockTakenUntil))
+                .ForMember(dest => dest.NextExecutionUtc, opt => opt.MapFrom(source => source.NextExecution));
         }
 
         private string PrepareDeviceType(string deviceType)
