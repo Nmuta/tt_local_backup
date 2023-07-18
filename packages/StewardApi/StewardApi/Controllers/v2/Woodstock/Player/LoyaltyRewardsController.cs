@@ -74,15 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
                 throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: (externalProfileId: {externalProfileId})");
             }
 
-            UserManagementService.GetHasPlayedRecordOutput response;
-            try
-            {
-                response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Has played record not found. (XUID: {xuid}) (externalProfileId: {externalProfileIdGuid})", ex);
-            }
+            UserManagementService.GetHasPlayedRecordOutput response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
 
             var hasPlayedRecord = this.mapper.SafeMap<IList<HasPlayedRecord>>(response.records);
 

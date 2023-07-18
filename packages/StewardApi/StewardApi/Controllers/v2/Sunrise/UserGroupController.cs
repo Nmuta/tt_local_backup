@@ -75,14 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
 
             GetUserGroupBulkOperationStatusOutput bulkOperationStatusOutput;
 
-            try
-            {
-                bulkOperationStatusOutput = await this.Services.UserService.GetUserGroupBulkOperationStatus(bulkOperationType, userGroupId, parsedOperationId).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get user group bulk operation status. (userGroupId: {userGroupId}) (operationId: {parsedOperationId}) (bulkOperationType: {bulkOperationType})", ex);
-            }
+            bulkOperationStatusOutput = await this.Services.UserService.GetUserGroupBulkOperationStatus(bulkOperationType, userGroupId, parsedOperationId).ConfigureAwait(false);
 
             var userGroupOperationStatus = this.mapper.SafeMap<UserGroupBulkOperationStatusOutput>(bulkOperationStatusOutput.status);
 
@@ -105,40 +98,33 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
                 throw new InvalidArgumentsStewardException($"User group provided is part of large user group list. (userGroupId: {userGroupId})");
             }
 
-            try
+            var users = await this.Services.UserService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
+
+            // Temporary code until the service call returns gamertags //
+            var playerLookupParameters = users.xuids
+                                            .Select(xuid => new ServicesLiveOps.ForzaPlayerLookupParameters
+                                            {
+                                                UserID = xuid.ToString(),
+                                            }).ToArray();
+            var getUserIdsOutput = await this.Services.UserManagementService.GetUserIds(playerLookupParameters.Length, playerLookupParameters).ConfigureAwait(false);
+
+            var userList = new List<BasicPlayer>();
+            foreach (var playerLookupResult in getUserIdsOutput.playerLookupResult)
             {
-                var users = await this.Services.UserService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
-
-                // Temporary code until the service call returns gamertags //
-                var playerLookupParameters = users.xuids
-                                                .Select(xuid => new ServicesLiveOps.ForzaPlayerLookupParameters
-                                                {
-                                                    UserID = xuid.ToString(),
-                                                }).ToArray();
-                var getUserIdsOutput = await this.Services.UserManagementService.GetUserIds(playerLookupParameters.Length, playerLookupParameters).ConfigureAwait(false);
-
-                var userList = new List<BasicPlayer>();
-                foreach (var playerLookupResult in getUserIdsOutput.playerLookupResult)
+                userList.Add(new BasicPlayer()
                 {
-                    userList.Add(new BasicPlayer()
-                    {
-                        Gamertag = playerLookupResult.Gamertag,
-                        Xuid = playerLookupResult.Xuid,
-                    });
-                }
-                // End of temporary code //
-                var response = new GetUserGroupUsersResponse()
-                {
-                    PlayerList = userList,
-                    PlayerCount = users.available
-                };
-
-                return this.Ok(response);
+                    Gamertag = playerLookupResult.Gamertag,
+                    Xuid = playerLookupResult.Xuid,
+                });
             }
-            catch (Exception ex)
+            // End of temporary code //
+            var response = new GetUserGroupUsersResponse()
             {
-                throw new UnknownFailureStewardException($"Get users from user group failed. (userGroupId: {userGroupId}) (startIndex: {startIndex}) (maxResult: {maxResults})", ex);
-            }
+                PlayerList = userList,
+                PlayerCount = users.available
+            };
+
+            return this.Ok(response);
         }
 
         /// <summary>
@@ -154,20 +140,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
         {
             userGroupName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userGroupName));
 
-            try
+            var result = await this.Services.UserManagementService.CreateUserGroup(userGroupName).ConfigureAwait(false);
+            var newGroup = new LspGroup()
             {
-                var result = await this.Services.UserManagementService.CreateUserGroup(userGroupName).ConfigureAwait(false);
-                var newGroup = new LspGroup()
-                {
-                    Id = result.groupId,
-                    Name = userGroupName
-                };
-                return this.Ok(newGroup);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Create user group failed. (userGroupName: {userGroupName})", ex);
-            }
+                Id = result.groupId,
+                Name = userGroupName
+            };
+            return this.Ok(newGroup);
         }
 
         /// <summary>
@@ -237,19 +216,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
         [Authorize(Policy = UserAttribute.RemoveAllUsersFromGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
-            try
-            {
-                // Block removing all users from All Users and VIP groups.
-                userGroupId.ShouldBeGreaterThanValue(LargeUserGroups.Max(), nameof(userGroupId));
+            // Block removing all users from All Users and VIP groups.
+            userGroupId.ShouldBeGreaterThanValue(LargeUserGroups.Max(), nameof(userGroupId));
 
-                await this.Services.UserService.ClearUserGroup(userGroupId).ConfigureAwait(false);
+            await this.Services.UserService.ClearUserGroup(userGroupId).ConfigureAwait(false);
 
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Remove all users from user group failed. (userGroupId: {userGroupId})", ex);
-            }
+            return this.Ok();
         }
 
         // Add or remove users to a user group using xuids and/or gamertags using bulk operation.

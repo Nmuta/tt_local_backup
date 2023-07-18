@@ -78,9 +78,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var xuidAndProfId = xuid.ToString() + '_' + externalProfileId;
 
+            var response = await this.Services.ConfigurationManagementService.GetTableConfiguration().ConfigureAwait(true);
+
             try
             {
-                var response = await this.Services.ConfigurationManagementService.GetTableConfiguration().ConfigureAwait(true);
                 var connectionStrings = response.tableConfiguration.tBaseConnectionStrings;
                 var tableName = this.GetTableName(response.tableConfiguration.instanceName);
 

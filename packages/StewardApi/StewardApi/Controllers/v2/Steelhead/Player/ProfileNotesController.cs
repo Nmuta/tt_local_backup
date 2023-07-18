@@ -65,14 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             Services.LiveOps.FM8.Generated.UserManagementService.GetAdminCommentsOutput response;
 
-            try
-            {
-                response = await this.Services.UserManagementService.GetAdminComments(xuid, maxResults).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"Unable to get profile notes. (XUID: {xuid})", ex);
-            }
+            response = await this.Services.UserManagementService.GetAdminComments(xuid, maxResults).ConfigureAwait(true);
 
             var result = this.mapper.SafeMap<IList<ProfileNote>>(response.adminComments);
 
@@ -99,14 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
             var userClaims = this.User.UserClaims();
 
-            try
-            {
-                await this.Services.UserManagementService.AddAdminComment(xuid, profileNote, userClaims.EmailAddress).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"Could not add profile note. (XUID: {xuid})", ex);
-            }
+            await this.Services.UserManagementService.AddAdminComment(xuid, profileNote, userClaims.EmailAddress).ConfigureAwait(true);
 
             return this.Ok();
         }

@@ -47,16 +47,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Services
         [LogTagDependency(DependencyLogTags.Lsp)]
         public async Task<IActionResult> GetServicesApiPermissions([FromQuery] int deviceRegion, [FromQuery] int startAt, [FromQuery] int maxResults)
         {
-            try
-            {
-                var response = await this.Services.PermissionsManagementService.GetApiPermissions(deviceRegion, startAt, maxResults).ConfigureAwait(true);
+            var response = await this.Services.PermissionsManagementService.GetApiPermissions(deviceRegion, startAt, maxResults).ConfigureAwait(true);
 
-                return this.Ok(response);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get services API permissions.", ex);
-            }
+            return this.Ok(response);
         }
 
         /// <summary>
@@ -70,16 +63,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Services
         [Authorize(Policy = UserAttribute.ServicesFeature)]
         public async Task<IActionResult> SetServicesApiPermissions([FromBody] ForzaLiveOpsPermissionsUpdateParameters[] parametersList)
         {
-            try
-            {
-                var response = await this.Services.PermissionsManagementService.UpdateApiPermissions(parametersList).ConfigureAwait(true);
+            var response = await this.Services.PermissionsManagementService.UpdateApiPermissions(parametersList).ConfigureAwait(true);
 
-                return this.Ok(response);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to update services API permissions.", ex);
-            }
+            return this.Ok(response);
         }
     }
 }

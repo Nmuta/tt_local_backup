@@ -77,61 +77,54 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
             var xuidAndProfId = xuid.ToString() + '_' + externalProfileId;
 
-            try
+            var response = await this.Services.ConfigurationManagementService.GetTableConfiguration().ConfigureAwait(true);
+            var connectionStrings = response.tableConfiguration.tBaseConnectionStrings;
+            var tableName = this.GetTableName(response.tableConfiguration.instanceName);
+
+            var tableProviderFactory = new TableProviderFactory(connectionStrings, tableName, null);
+
+            var atp = tableProviderFactory.GetAzureTableProvider();
+
+            var xuidResponse = await atp.RetrieveAllFromPartitionAsync<DynamicTableEntity>(xuid.ToString()).ConfigureAwait(true);
+            var xuidAndProfIdResponse = await atp.RetrieveAllFromPartitionAsync<DynamicTableEntity>(xuidAndProfId).ConfigureAwait(true);
+
+            var combinedResponse = xuidResponse.Concat(xuidAndProfIdResponse);
+
+            var finalResponse = new List<ServicesTableStorageEntity>();
+            foreach (var entry in combinedResponse)
             {
-                var response = await this.Services.ConfigurationManagementService.GetTableConfiguration().ConfigureAwait(true);
-                var connectionStrings = response.tableConfiguration.tBaseConnectionStrings;
-                var tableName = this.GetTableName(response.tableConfiguration.instanceName);
-
-                var tableProviderFactory = new TableProviderFactory(connectionStrings, tableName, null);
-
-                var atp = tableProviderFactory.GetAzureTableProvider();
-
-                var xuidResponse = await atp.RetrieveAllFromPartitionAsync<DynamicTableEntity>(xuid.ToString()).ConfigureAwait(true);
-                var xuidAndProfIdResponse = await atp.RetrieveAllFromPartitionAsync<DynamicTableEntity>(xuidAndProfId).ConfigureAwait(true);
-
-                var combinedResponse = xuidResponse.Concat(xuidAndProfIdResponse);
-
-                var finalResponse = new List<ServicesTableStorageEntity>();
-                foreach (var entry in combinedResponse)
+                var properties = new JObject();
+                foreach (var property in entry.Properties)
                 {
-                    var properties = new JObject();
-                    foreach (var property in entry.Properties)
-                    {
-                        properties.Add(property.Key, this.EntityPropertyDeserializer(property.Value));
-                    }
-
-                    var convertedEntry = new ServicesTableStorageEntity(entry.RowKey, entry.PartitionKey, entry.Timestamp, properties);
-
-                    finalResponse.Add(convertedEntry);
+                    properties.Add(property.Key, this.EntityPropertyDeserializer(property.Value));
                 }
 
-                // Some results have the external profile ID as part of the row key instead of the partition key.
-                // If that guid doesn't match the external profile ID we're using, we need to filter them out.
-                string guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
+                var convertedEntry = new ServicesTableStorageEntity(entry.RowKey, entry.PartitionKey, entry.Timestamp, properties);
 
-                var filteredResponse = filterResults ? finalResponse.Where(entry =>
-                {
-                    var rowKeyGuids = Regex.Matches(entry.RowKey, guidPattern);
-                    var partitionKeyGuids = Regex.Matches(entry.PartitionKey, guidPattern);
-                    var rowKeyContainsGuid = rowKeyGuids.Count > 0;
-                    var partitionKeyNoGuid = partitionKeyGuids.Count == 0;
-                    var rowKeyGuidMatchProfileId = rowKeyGuids.All(guid => guid.Value == externalProfileIdGuid.ToString());
-
-                    if (rowKeyContainsGuid && partitionKeyNoGuid && !rowKeyGuidMatchProfileId)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }) : finalResponse;
-
-                return this.Ok(filteredResponse);
+                finalResponse.Add(convertedEntry);
             }
-            catch (Exception ex)
+
+            // Some results have the external profile ID as part of the row key instead of the partition key.
+            // If that guid doesn't match the external profile ID we're using, we need to filter them out.
+            string guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
+
+            var filteredResponse = filterResults ? finalResponse.Where(entry =>
             {
-                throw new UnknownFailureStewardException($"No table storage data found for {TitleConstants.WoodstockFullName}", ex);
-            }
+                var rowKeyGuids = Regex.Matches(entry.RowKey, guidPattern);
+                var partitionKeyGuids = Regex.Matches(entry.PartitionKey, guidPattern);
+                var rowKeyContainsGuid = rowKeyGuids.Count > 0;
+                var partitionKeyNoGuid = partitionKeyGuids.Count == 0;
+                var rowKeyGuidMatchProfileId = rowKeyGuids.All(guid => guid.Value == externalProfileIdGuid.ToString());
+
+                if (rowKeyContainsGuid && partitionKeyNoGuid && !rowKeyGuidMatchProfileId)
+                {
+                    return false;
+                }
+
+                return true;
+            }) : finalResponse;
+
+            return this.Ok(filteredResponse);
         }
 
         private string GetTableName(string instanceName)
