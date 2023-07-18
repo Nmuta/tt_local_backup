@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { LspTask } from '@models/lsp-task';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('TaskManagementComponent', () => {
   let component: TaskManagementComponent;
@@ -26,7 +27,7 @@ describe('TaskManagementComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [TaskManagementComponent],
+      declarations: [TaskManagementComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
