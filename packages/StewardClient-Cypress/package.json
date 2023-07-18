@@ -14,7 +14,7 @@
     "open:local": "cypress open --config-file cypress/configs/localhost.json",
     "open:local-dev": "cypress open --config-file cypress/configs/localhost-dev.json",
     "open:dev": "cypress open --config-file cypress/configs/dev.config.ts",
-    "open:prod": "cypress open --config-file cypress/configs/prod.json",
+    "open:prod": "cypress open --config-file cypress/configs/prod.config.ts",
     "open:prod-staging": "cypress open --config-file cypress/configs/prod-staging.json",
     "run": "cypress run --config-file cypress/configs/localhost.json",
     "run:local": "cypress run --config-file cypress/configs/localhost.json",
