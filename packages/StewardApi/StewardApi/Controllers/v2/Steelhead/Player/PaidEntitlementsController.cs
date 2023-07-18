@@ -91,7 +91,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             AdminForzaProfile currentProfile = null;
             LiveOpsService.GetAdminPurchasablesOutput validPurchasables = null;
-
             var userProfiles = await this.Services.UserInventoryManagementService.GetAdminUserProfiles(xuid, uint.MaxValue).ConfigureAwait(true);
             currentProfile = userProfiles.profiles.Where(profile => profile.isCurrent == true).SingleOrDefault();
 

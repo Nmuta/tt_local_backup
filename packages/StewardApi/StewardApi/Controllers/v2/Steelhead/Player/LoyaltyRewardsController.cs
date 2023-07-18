@@ -73,7 +73,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             ForzaLoyaltyRewardsSupportedTitles[] titlesPlayed = null;
-
             var response = await this.Services.LiveOpsService.GetTitlesUserPlayed(xuid).ConfigureAwait(true);
             titlesPlayed = response.titlesPlayed;
 
