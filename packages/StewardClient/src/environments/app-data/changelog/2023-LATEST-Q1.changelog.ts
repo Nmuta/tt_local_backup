@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '070d816b-8df5-4324-bff8-06093c99a9c5',
+      shortText: 'Force featured end date is now selectable in UGC details',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'caf46095-1749-46e0-bb9c-57682c61dc1f',
       shortText: 'Stylesheet refactoring in preparation for SCSS 2.0',
