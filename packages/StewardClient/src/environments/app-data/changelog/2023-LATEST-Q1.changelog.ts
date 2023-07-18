@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
+      shortText: 'Add Retail endpoint for Steelhead',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '1469d347-06f9-40d7-9c47-f901d6af5a9c',
       shortText: 'Add ability to modify Geo Flags on UGC',
@@ -24,7 +29,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
-      uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
+      uuid: '7487083d-5523-4810-a575-5406ab0fb59e',
       shortText: 'Add message title view and editing for player messages',
     },
     {
