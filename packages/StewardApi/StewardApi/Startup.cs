@@ -180,7 +180,7 @@ namespace Turn10.LiveOps.StewardApi
                 options.AllowSynchronousIO = true;
             });
 
-            services.AddHttpClient(STSClient.HttpClientName)
+            services.AddHttpClient("STS")
                 .ConfigurePrimaryHttpMessageHandler((Func<IServiceProvider, HttpMessageHandler>)delegate
                 {
                     HttpClientHandler httpClientHandler = new HttpClientHandler
@@ -188,8 +188,14 @@ namespace Turn10.LiveOps.StewardApi
                         AutomaticDecompression = (DecompressionMethods.GZip | DecompressionMethods.Deflate)
                     };
 
-                    var cert = LoadCert();
-                    httpClientHandler.ClientCertificates.Add(cert);
+                    var keyVaultProvider = new KeyVaultProvider(new KeyVaultClientFactory());
+                    var keyVaultUrl = configuration[ConfigurationKeyConstants.KeyVaultUrl];
+                    var stsUrl = configuration[ConfigurationKeyConstants.StsUrl];
+                    var keyVaultCertificateName = configuration[ConfigurationKeyConstants.StsSecretName];
+                    var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultUrl, keyVaultCertificateName).GetAwaiter().GetResult();
+
+                    var stsForgeryCertificate = StsClientWrapper.ConvertToCertificate(certificateSecret);
+                    httpClientHandler.ClientCertificates.Add(stsForgeryCertificate);
 
                     return httpClientHandler;
                 });

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,12 +60,12 @@ namespace Turn10.LiveOps.StewardApi.Providers
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             configuration.ShouldContainSettings(RequiredSettings);
 
-            var keyVaultUrl = configuration[ConfigurationKeyConstants.KeyVaultUrl];
+            //var keyVaultUrl = configuration[ConfigurationKeyConstants.KeyVaultUrl];
             var stsUrl = configuration[ConfigurationKeyConstants.StsUrl];
-            var keyVaultCertificateName = configuration[ConfigurationKeyConstants.StsSecretName];
-            var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultUrl, keyVaultCertificateName).GetAwaiter().GetResult();
+            //var keyVaultCertificateName = configuration[ConfigurationKeyConstants.StsSecretName];
+            //var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultUrl, keyVaultCertificateName).GetAwaiter().GetResult();
 
-            var stsForgeryCertificate = this.ConvertToCertificate(certificateSecret);
+            //var stsForgeryCertificate = this.ConvertToCertificate(certificateSecret);
 
             this.stsClient = new STSClient(new STSClientOptionsWrapper(stsUrl), factory);
         }
@@ -88,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             }
         }
 
-        private X509Certificate2 ConvertToCertificate(string certificateSecret)
+        public static X509Certificate2 ConvertToCertificate(string certificateSecret)
         {
             certificateSecret.ShouldNotBeNullEmptyOrWhiteSpace(nameof(certificateSecret));
 
