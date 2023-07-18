@@ -68,11 +68,14 @@ namespace Turn10.LiveOps.StewardApi.Proxies
             }
         }
 
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         /// <inheritdoc/>
         public async void InterceptAsynchronous(IInvocation invocation)
         {
             invocation.ReturnValue = this.InternalInterceptAsynchronous(invocation);
         }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
         /// <inheritdoc/>
         public void InterceptAsynchronous<TResult>(IInvocation invocation)

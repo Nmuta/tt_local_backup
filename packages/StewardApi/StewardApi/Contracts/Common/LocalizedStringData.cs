@@ -18,7 +18,6 @@
         /// <summary>
         ///     Gets or sets the category.
         /// </summary>
-        /// <remarks><see cref="LocalizationCategory" />.</remarks>
         public string Category { get; set; }
     }
 }

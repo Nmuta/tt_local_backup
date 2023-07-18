@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-
     <IsPackable>false</IsPackable>
-
     <RootNamespace>Turn10.LiveOps.StewardTest</RootNamespace>
+    <AnalysisMode>None</AnalysisMode>
+    <Nullable>disable</Nullable> <!-- TODO: We should probably spend some time to enable this. -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

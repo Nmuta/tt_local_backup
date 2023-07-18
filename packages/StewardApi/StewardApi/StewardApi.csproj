@@ -3,14 +3,13 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>9.0</LangVersion>
-    <!-- <Nullable>enable</Nullable> -->
+    <Nullable>disable</Nullable> <!-- TODO: We should probably spend some time to enable this. -->
     <AssemblyName>Turn10.LiveOps.StewardApi</AssemblyName>
     <RootNamespace>Turn10.LiveOps.StewardApi</RootNamespace>
-    <WarningLevel>4</WarningLevel>
+    <AnalysisMode>None</AnalysisMode>
+    <NoWarn>CA1506,CS0618,NU1701</NoWarn> <!-- Excessive Class Coupling , Obsolete , Restored using another version of .NET-->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <CodeAnalysisRuleSet>$(SolutionDir)\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisAdditionalOptions>/assemblyCompareMode:StrongNameIgnoringVersion</CodeAnalysisAdditionalOptions>
     <StartupObject>Turn10.LiveOps.StewardApi.Program</StartupObject>
     <UserSecretsId>69aa9e39-2604-4e97-b974-f3707268e684</UserSecretsId>
@@ -24,8 +23,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
@@ -34,8 +31,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
@@ -44,8 +39,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
@@ -54,8 +47,6 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
@@ -91,27 +82,15 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="1.8.2" />
     <PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.0.64">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PlayFabAllSDK" Version="1.144.230123" />
     <PackageReference Include="SteelheadLiveOpsContent" Version="1.7.26" />
-	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-	<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-	<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
-	<PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
     <PackageReference Include="Turn10.Data.SecretProvider" Version="3.0.0" />
-	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
-	<PackageReference Include="Turn10.Data.Azure" Version="3.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
+    <PackageReference Include="Turn10.Data.Azure" Version="3.0.0" />
     <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
     <PackageReference Include="Turn10.Data.KustoLogger" Version="4.0.0" />
     <PackageReference Include="Turn10.Services.CMSRetrieval" Version="2.0.0" />
