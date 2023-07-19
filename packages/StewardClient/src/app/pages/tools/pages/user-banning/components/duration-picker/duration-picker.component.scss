@@ -5,7 +5,7 @@
   flex-flow: row wrap;
   align-items: center;
   > * {
-    margin: 0 ($gap-small / 2);
+    margin: 0 $gap-micro;
   }
 }
 
