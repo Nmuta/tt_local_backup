@@ -16,6 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public UgcType Type { get; set; }
         public int GameTitle { get; set; }
         public ulong OwnerXuid { get; set; }
+        public string OwnerGamertag { get; set; }
         public byte PopularityBucket { get; set; }
         public string ThumbnailOneImageBase64 { get; set; }
         public string ThumbnailTwoImageBase64 { get; set; }

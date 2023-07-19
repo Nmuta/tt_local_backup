@@ -269,7 +269,7 @@
 
       <toggle-list-ez
         [contract]="geoFlagsToggleListEzContract"
-        [disabled]="canChangeGeoFlags"
+        [disabled]="!canChangeGeoFlags"
         (afterSubmitted)="updateGeoFlagsModel($event)"
       >
         <help-popover-icon cardTitle="Geo Flags" confluenceName="Geo Flags Card">

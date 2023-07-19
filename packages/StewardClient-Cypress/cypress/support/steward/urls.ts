@@ -84,5 +84,10 @@ export const stewardUrls = {
       default: 'app/tools/welcome-center-tiles',
       steelhead: 'app/tools/welcome-center-tiles/steelhead',
     },
+    auctionDetails: {
+      default: 'app/tools/auction-details',
+      woodstock: 'app/tools/auction-details/woodstock',
+      sunrise: 'app/tools/auction-details/sunrise',
+    },
   },
 };

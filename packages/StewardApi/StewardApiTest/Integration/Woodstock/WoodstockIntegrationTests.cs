@@ -1466,16 +1466,16 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         public async Task HideAndUnhideUGC()
         {
             await stewardClient.HideUGCAsync(liveryUgcId, false);
-            var unhiddenResult2 = await stewardClient.GetUGCItemsAsync(xuid, "Livery").ConfigureAwait(false);
-            var hiddenResult2 = await stewardClient.GetPlayerHiddenUGCAsync(xuid).ConfigureAwait(false);
-            Assert.IsTrue(hiddenResult2.Where(item => item.UgcId == liveryUgcId).ToList().Count > 0);
+            var unhiddenResult2 = await stewardClient.GetUGCItemsAsync(xuid, UgcType.Livery.ToString()).ConfigureAwait(false);
+            var hiddenResult2 = await stewardClient.GetPlayerHiddenUGCAsync(xuid, UgcType.Livery.ToString()).ConfigureAwait(false);
+            Assert.IsTrue(hiddenResult2.Where(item => item.Id == liveryUgcId).ToList().Count > 0);
             Assert.IsTrue(unhiddenResult2.Where(item => item.Id == liveryUgcId).ToList().Count == 0);
 
-            await stewardClient.UnhideUGCAsync(xuid, "Livery", liveryUgcId);
-            var unhiddenResult1 = await stewardClient.GetUGCItemsAsync(xuid, "Livery").ConfigureAwait(false);
-            var hiddenResult1 = await stewardClient.GetPlayerHiddenUGCAsync(xuid).ConfigureAwait(false);
+            await stewardClient.UnhideUGCAsync(liveryUgcId, false);
+            var unhiddenResult1 = await stewardClient.GetUGCItemsAsync(xuid, UgcType.Livery.ToString()).ConfigureAwait(false);
+            var hiddenResult1 = await stewardClient.GetPlayerHiddenUGCAsync(xuid, UgcType.Livery.ToString()).ConfigureAwait(false);
             Assert.IsTrue(unhiddenResult1.Where(item => item.Id == liveryUgcId).ToList().Count > 0);
-            Assert.IsTrue(hiddenResult1.Where(item => item.UgcId == liveryUgcId).ToList().Count == 0);
+            Assert.IsTrue(hiddenResult1.Where(item => item.Id == liveryUgcId).ToList().Count == 0);
         }
 
         [TestMethod]
@@ -1485,36 +1485,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             try
             {
                 await stewardClient.GetUGCItemsAsync(xuid, "Blueberry").ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UnhideUGC_InvalidFileType()
-        {
-            try
-            {
-                await stewardClient.UnhideUGCAsync(xuid, "Blueberry", liveryUgcId).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UnhideUGC_InvalidXuid()
-        {
-            try
-            {
-                await stewardClient.UnhideUGCAsync(TestConstants.InvalidXuid, "Livery", liveryUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)

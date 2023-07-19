@@ -159,7 +159,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaLiveOpsHasPlayedRecord, HasPlayedRecord>() // Use UGC contracts GameTitle, confirmed with Caleb 6/23/22
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(src => Enum.GetName(typeof(Turn10.UGC.Contracts.GameTitle), src.gameTitle)))
                 .ReverseMap();
-            this.CreateMap<ServicesLiveOps.ForzaUGCData, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaUGCData, SteelheadUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(
                     dest => dest.ThumbnailOneImageBase64,
@@ -205,7 +206,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
 
-            this.CreateMap<ServicesLiveOps.ForzaUGCMetadata, UgcItem>()
+            this.CreateMap<ServicesLiveOps.ForzaUGCMetadata, SteelheadUgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.ContentType))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.GuidId))
@@ -237,7 +238,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.TimesUsed))
                 .ReverseMap();
 
-            this.CreateMap<ForzaLiveryData, UgcLiveryItem>()
+            this.CreateMap<ForzaLiveryData, SteelheadUgcLiveryItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
                 .ForMember(dest => dest.LiveryDownloadDataBase64, opt => opt.MapFrom(source => source.LiveryData))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
@@ -267,7 +269,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
-            this.CreateMap<ForzaPhotoData, UgcItem>()
+            this.CreateMap<ForzaPhotoData, SteelheadUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
@@ -295,7 +298,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
-            this.CreateMap<ForzaTuneBlob, UgcTuneBlobItem>()
+            this.CreateMap<ForzaTuneBlob, SteelheadUgcTuneBlobItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
                 .ForMember(dest => dest.TuneBlobDownloadDataBase64, opt => opt.MapFrom(source => source.TuneData))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.TuneBlob))
@@ -472,8 +476,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.CarClassId))
                 .ForMember(dest => dest.CarClassName, opt => opt.MapFrom(src => src.CarClassId));
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupSeriesDataV3, BuildersCupChampionshipSeries>()
-                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
-                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.From))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.To))
                 .ForMember(dest => dest.AllowedCars, opt => opt.MapFrom(src =>
                     src.SelectableCars.GetType() == typeof(AcceptlistCarRestrictionsProvider) ?
                         (src.SelectableCars as AcceptlistCarRestrictionsProvider).Acceptlist :
@@ -484,8 +488,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         null));
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
                 .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
-                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.OpenTime))
-                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.CloseTime))
+                .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.From))
+                .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.To))
                 .ForMember(dest => dest.ChampionshipSeries, opt => opt.MapFrom(src => src.ChampionshipSeriesData));
 
             this.CreateMap<GitPullRequest, PullRequest>()

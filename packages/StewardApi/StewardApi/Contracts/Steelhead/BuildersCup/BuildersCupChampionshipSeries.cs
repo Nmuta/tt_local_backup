@@ -23,12 +23,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup
         /// <summary>
         ///     Gets or sets the open time.
         /// </summary>
-        public DateTime OpenTimeUtc { get; set; }
+        public DateTimeOffset? OpenTimeUtc { get; set; }
 
         /// <summary>
         ///     Gets or sets the close time.
         /// </summary>
-        public DateTime CloseTimeUtc { get; set; }
+        public DateTimeOffset? CloseTimeUtc { get; set; }
 
         /// <summary>
         ///     Gets or sets the collection of allowed cars.

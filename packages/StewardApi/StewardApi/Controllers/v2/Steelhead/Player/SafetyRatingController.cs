@@ -101,11 +101,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             safetyRating.Score.ShouldBeGreaterThanOrEqual(0, nameof(safetyRating.Score));
             safetyRating.Score.ShouldBeLessThanOrEqual(100, nameof(safetyRating.Score));
 
+            // TODO: This is actually configurable in CMS. Task to integrate these config properties:
+            // https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1545818
             // Probation is determined by length of safety rating history. Fewer than 5 entries means in probation.
             // We want to abstract that away from the user. So we ask them if they want to be in probation.
-            // If they want to be in probation, their safety rating must have fewer than 5 entries, so we set it to 3.
+            // If they want to be in probation, their safety rating must have fewer than 5 entries, so we set it to 1.
             // If they don't want to be in probation, we must make their safety rating more than 5 entries, so we use 10.
-            var arrayLength = safetyRating.IsInProbationaryPeriod ? 3 : 10;
+            var arrayLength = safetyRating.IsInProbationaryPeriod ? 1 : 10;
             var scoreArray = new double[arrayLength];
             Array.Fill<double>(scoreArray, safetyRating.Score);
 

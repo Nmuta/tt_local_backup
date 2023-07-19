@@ -54,8 +54,8 @@ export interface CarPriceInformation {
 /** Interface that represents a car sale. */
 export interface CarSale {
   name: string;
-  startTime: string;
-  endTime: string;
+  startTimeUtc: DateTime;
+  endTimeUtc: DateTime;
   cars: CarPriceInformation[];
 }
 

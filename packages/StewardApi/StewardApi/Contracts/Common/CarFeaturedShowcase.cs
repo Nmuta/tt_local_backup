@@ -15,9 +15,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public string Description { get; set; }
 
-        public DateTimeOffset StartTimeUtc { get; set; }
+        public DateTimeOffset? StartTimeUtc { get; set; }
 
-        public DateTimeOffset EndTimeUtc { get; set; }
+        public DateTimeOffset? EndTimeUtc { get; set; }
 
         public int BaseCost { get; set; }
 

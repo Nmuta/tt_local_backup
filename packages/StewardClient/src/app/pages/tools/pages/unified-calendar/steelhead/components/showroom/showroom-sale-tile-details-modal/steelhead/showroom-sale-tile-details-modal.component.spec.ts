@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { ShowroomSaleTileDetailsModalComponent } from './showroom-sale-tile-details-modal.component';
 import faker from '@faker-js/faker';
 import { CarSale } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
+import { toDateTime } from '@helpers/luxon';
 
 describe('ShowroomSaleTileDetailsModalComponent', () => {
   let component: ShowroomSaleTileDetailsModalComponent;
@@ -22,8 +23,8 @@ describe('ShowroomSaleTileDetailsModalComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
-            startTime: faker.datatype.datetime().toISOString(),
-            endTime: faker.datatype.datetime().toISOString(),
+            startTimeUtc: toDateTime(faker.date.past()),
+            endTimeUtc: toDateTime(faker.date.future()),
           } as CarSale,
         },
       ],

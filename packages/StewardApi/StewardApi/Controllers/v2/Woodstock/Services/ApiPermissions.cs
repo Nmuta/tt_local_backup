@@ -69,16 +69,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Services
         [Authorize(Policy = UserAttribute.ServicesFeature)]
         public async Task<IActionResult> SetServicesApiPermissions([FromBody] ForzaLiveOpsPermissionsUpdateParameters[] parametersList)
         {
-            try
-            {
-                var response = await this.Services.PermissionsManagementService.UpdateApiPermissions(parametersList).ConfigureAwait(true);
+            var response = await this.Services.PermissionsManagementService.UpdateApiPermissions(parametersList).ConfigureAwait(true);
 
-                return this.Ok(response);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to update services API permissions.", ex);
-            }
+            return this.Ok(response);
         }
     }
 }

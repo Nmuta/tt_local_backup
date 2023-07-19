@@ -15,9 +15,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public string Name { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public DateTimeOffset? StartTimeUtc { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public DateTimeOffset? EndTimeUtc { get; set; }
 
         public IEnumerable<CarSaleInformation> Cars { get; set; }
     }

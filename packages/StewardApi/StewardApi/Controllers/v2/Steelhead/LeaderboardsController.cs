@@ -190,25 +190,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             UserManagementService.GetUserIdsOutput result = null;
 
-            try
-            {
-                leaderboardTalent = await this.Services.UserManagementService.GetUserGroupUsers(LeaderboardTalentGroupId, 0, LeaderboardTalentMaxResults).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to lookup users in leaderboard talent user group. (userGroupId: {LeaderboardTalentGroupId})", ex);
-            }
+            leaderboardTalent = await this.Services.UserManagementService.GetUserGroupUsers(LeaderboardTalentGroupId, 0, LeaderboardTalentMaxResults).ConfigureAwait(true);
 
             var convertedQueries = this.mapper.SafeMap<ForzaPlayerLookupParameters[]>(leaderboardTalent.xuids);
 
-            try
-            {
-                result = await this.Services.UserManagementService.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get users IDs for player lookup parameters. (userGroupId: {LeaderboardTalentGroupId})", ex);
-            }
+            result = await this.Services.UserManagementService.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
 
             var identityResults = this.mapper.SafeMap<IList<IdentityResultAlpha>>(result.playerLookupResult);
             identityResults.SetErrorsForInvalidXuids();
@@ -310,16 +296,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 searchParams.DeviceTypes = this.mapper.SafeMap<ForzaLiveDeviceType[]>(deviceTypes);
             }
 
-            try
-            {
-                var result = await this.Services.ScoreboardManagementService.SearchLeaderboardsV2(searchParams, startAt, maxResults).ConfigureAwait(false);
+            var result = await this.Services.ScoreboardManagementService.SearchLeaderboardsV2(searchParams, startAt, maxResults).ConfigureAwait(false);
 
-                return this.mapper.SafeMap<IEnumerable<LeaderboardScore>>(result.results.Rows);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get leaderboard scores with params: {this.BuildParametersErrorString(searchParams)}", ex);
-            }
+            return this.mapper.SafeMap<IEnumerable<LeaderboardScore>>(result.results.Rows);
         }
 
         /// <summary>
@@ -352,22 +331,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 searchParams.DeviceTypes = this.mapper.SafeMap<ForzaLiveDeviceType[]>(deviceTypes);
             }
 
-            try
+            var result = await this.Services.ScoreboardManagementService.SearchLeaderboardsV2(searchParams, 0, maxResults).ConfigureAwait(false);
+
+            if (result.results.Rows.Length <= 0)
             {
-
-                var result = await this.Services.ScoreboardManagementService.SearchLeaderboardsV2(searchParams, 0, maxResults).ConfigureAwait(false);
-
-                if (result.results.Rows.Length <= 0)
-                {
-                    throw new NotFoundStewardException($"Could not find player XUID in leaderboard: {xuid}");
-                }
-
-                return this.mapper.SafeMap<IEnumerable<LeaderboardScore>>(result.results.Rows);
+                throw new NotFoundStewardException($"Could not find player XUID in leaderboard: {xuid}");
             }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get leaderboard scores with params: {this.BuildParametersErrorString(searchParams)}", ex);
-            }
+
+            return this.mapper.SafeMap<IEnumerable<LeaderboardScore>>(result.results.Rows);
         }
 
         /// <summary>
@@ -380,14 +351,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException($"Cannot provided empty array of score ids.");
             }
 
-            try
-            {
-                await this.Services.ScoreboardManagementService.DeleteScores(scoreIds).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException("Failed to delete leaderboard scores.", ex);
-            }
+            await this.Services.ScoreboardManagementService.DeleteScores(scoreIds).ConfigureAwait(false);
         }
 
         /// <summary>

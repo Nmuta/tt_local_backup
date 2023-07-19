@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { mergedParamMap$ } from '@helpers/param-map';
 import { GameTitle } from '@models/enums';
-import { PlayerUgcItem } from '@models/player-ugc-item';
+import { SteelheadPlayerUgcItem, SteelheadGeoFlags } from '@models/player-ugc-item';
 import { UgcType } from '@models/ugc-filters';
 import { SteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
@@ -11,7 +11,7 @@ import { SteelheadUgcReportService } from '@services/api-v2/steelhead/ugc/report
 import { OldPermissionServiceTool, OldPermissionsService } from '@services/old-permissions';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { cloneDeep, first, keys } from 'lodash';
+import { chain, cloneDeep, first, keys } from 'lodash';
 import {
   map,
   startWith,
@@ -22,8 +22,15 @@ import {
   catchError,
   of,
   takeUntil,
+  EMPTY,
 } from 'rxjs';
 import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service';
+import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
+import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
+import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
+import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-flags/steelhead-ugc-geo-flags.service';
+
+const GEO_FLAGS_ORDER = chain(SteelheadGeoFlags).sortBy().value();
 
 /** Routed component that displays details about a steelhead UGC item. */
 @Component({
@@ -31,13 +38,21 @@ import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/vi
   styleUrls: ['./steelhead-lookup.component.scss'],
 })
 export class SteelheadLookupComponent extends BaseComponent implements OnInit {
-  public ugcItem: PlayerUgcItem;
+  public ugcItem: SteelheadPlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('Post Hide UGC');
   public unhideMonitor = new ActionMonitor('POST Unhide UGC');
   public reportMonitor = new ActionMonitor('Post Report UGC');
   public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
 
+  public geoFlagsToggleListEzContract: ToggleListEzContract = {
+    initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
+    order: GEO_FLAGS_ORDER,
+    title: 'Geo Flags',
+    gameTitle: GameTitle.FM8,
+    permAttribute: PermAttributeName.SetUgcGeoFlag,
+    submitModel$: () => EMPTY,
+  };
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
@@ -57,11 +72,12 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
+    private readonly ugcLookupService: SteelheadUgcLookupService,
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: SteelheadUgcReportService,
     private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
     private readonly ugcVisibilityService: SteelheadUgcVisibilityService,
+    private readonly ugcGeoFlagsService: SteelheadUgcGeoFlagsService,
   ) {
     super();
   }
@@ -91,10 +107,10 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
         map(([_prev, cur]) => cur),
         switchMap(params =>
           combineLatest([
-            this.steelheadUgcLookupService
+            this.ugcLookupService
               .getUgcBySharecode$(params.id, params.type)
               .pipe(catchError(() => of(null))),
-            this.steelheadUgcLookupService
+            this.ugcLookupService
               .getPlayerUgcItem$(params.id, params.type)
               .pipe(catchError(() => of(null))),
           ]),
@@ -105,6 +121,29 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       )
       .subscribe(([shareCodeItems, idItem]) => {
         this.ugcItem = idItem ?? first(shareCodeItems);
+
+        if (!!this.ugcItem?.geoFlags) {
+          const newGeoFlagsContract = cloneDeep(this.geoFlagsToggleListEzContract);
+          newGeoFlagsContract.initialModel = toCompleteRecord(
+            GEO_FLAGS_ORDER,
+            this.ugcItem.geoFlags ?? [],
+          );
+          newGeoFlagsContract.submitModel$ = model => {
+            const trueKeys = chain(model)
+              .toPairs()
+              .filter(([_k, v]) => !!v)
+              .map(([k, _v]) => k)
+              .value();
+            return this.ugcGeoFlagsService.setUgcGeoFlag$(this.ugcItem.id, trueKeys);
+          };
+          this.geoFlagsToggleListEzContract = newGeoFlagsContract;
+        } else {
+          const newGeoFlagsContract = cloneDeep(this.geoFlagsToggleListEzContract);
+          newGeoFlagsContract.error = 'Could not read geo-flags';
+          newGeoFlagsContract.submitModel$ = () => EMPTY;
+          this.geoFlagsToggleListEzContract = newGeoFlagsContract;
+        }
+
         this.canFeatureUgc = this.canFeatureUgc && this.ugcItem?.isPublic && this.userHasWritePerms;
         this.canGenerateSharecode = !this.ugcItem?.shareCode;
 
@@ -167,6 +206,13 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
         this.ugcItem.isHidden = false;
         this.ugcItem.isPublic = true;
       });
+  }
+
+  /** Updates the geoflags contract after submit. */
+  public updateGeoFlagsModel(geoFlags: ToggleListOptions): void {
+    const newGeoFlagsContract = cloneDeep(this.geoFlagsToggleListEzContract);
+    newGeoFlagsContract.initialModel = geoFlags;
+    this.geoFlagsToggleListEzContract = newGeoFlagsContract;
   }
 
   /** Report a Ugc item in Steelhead */
