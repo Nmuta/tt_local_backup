@@ -13,6 +13,20 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add Retail endpoint for Steelhead',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '69e6005d-7d90-484a-b45c-4eb3c8a86c43',
+      shortText: 'Force VIP to be checked if Ultimate VIP is checked',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '8c3092e0-a248-4d3a-9ec1-8dd867c2b209',
+      shortText: 'Improve local re-build times',
+      longText: [
+        'Developer re-build times took 60+ seconds. Now they take 10.',
+        'Build commands have also been adjusted and restructured.',
+      ],
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e9977caf-bbd6-429a-9804-6493094b456c',
       shortText: 'Address stylesheet size warnings',
