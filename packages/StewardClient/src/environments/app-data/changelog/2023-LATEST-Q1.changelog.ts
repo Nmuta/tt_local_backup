@@ -14,6 +14,15 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: '8c3092e0-a248-4d3a-9ec1-8dd867c2b209',
+      shortText: 'Improve local re-build times',
+      longText: [
+        'Developer re-build times took 60+ seconds. Now they take 10.',
+        'Build commands have also been adjusted and restructured.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'e9977caf-bbd6-429a-9804-6493094b456c',
       shortText: 'Address stylesheet size warnings',
       longText: [
