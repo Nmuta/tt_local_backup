@@ -14,7 +14,7 @@ describe('TaskManagementComponent', () => {
   let component: TaskManagementComponent;
   let fixture: ComponentFixture<TaskManagementComponent>;
 
-  const mockService: TaskManagementContract = {
+  const mockContract: TaskManagementContract = {
     gameTitle: GameTitle.FH5,
     getTasks$: () => {
       return of(undefined);
@@ -34,10 +34,26 @@ describe('TaskManagementComponent', () => {
 
     fixture = TestBed.createComponent(TaskManagementComponent);
     component = fixture.debugElement.componentInstance;
-    component.service = mockService;
+    component.service = mockContract;
   }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Method: ngOnInit', () => {
+    describe('When contract is provided', () => {
+      // Provided by default in the test component
+      it('should not throw error', () => {
+        try {
+          fixture.detectChanges();
+
+          expect(true).toBeTruthy();
+        } catch (e) {
+          expect(e).toEqual(null);
+          expect(false).toBeTruthy();
+        }
+      });
+    });
   });
 });
