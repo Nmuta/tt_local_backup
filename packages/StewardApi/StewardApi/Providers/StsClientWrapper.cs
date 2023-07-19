@@ -32,15 +32,14 @@
         ///     Initializes a new instance of the <see cref="StsClientWrapper"/> class.
         /// </summary>
         [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
-        public StsClientWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider, IHttpClientFactory factory)
+        public StsClientWrapper(IConfiguration configuration, IHttpClientFactory httpClientFactory)
         {
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             configuration.ShouldContainSettings(RequiredSettings);
 
             var stsUrl = configuration[ConfigurationKeyConstants.StsUrl];
 
-            this.stsClient = new STSClient(new STSClientOptionsWrapper(new Uri(stsUrl)), factory);
+            this.stsClient = new STSClient(new STSClientOptionsWrapper(new Uri(stsUrl)), httpClientFactory);
         }
 
         /// <inheritdoc/>
