@@ -9,6 +9,20 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'e9977caf-bbd6-429a-9804-6493094b456c',
+      shortText: 'Address stylesheet size warnings',
+      longText: [
+        'Reduce stylesheet sizes for calendar pages.',
+        'Increase stylesheet budget for all pages from 6k to 32k.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5433e9fd-fb43-4702-a5bc-899623a810da',
+      shortText: 'Reduce duplicate style generation',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'caf46095-1749-46e0-bb9c-57682c61dc1f',
       shortText: 'Stylesheet refactoring in preparation for SCSS 2.0',
     },

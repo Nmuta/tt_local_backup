@@ -23,9 +23,9 @@ span.endpoint-selectors {
 .override-section {
   display: flex;
   flex-flow: row wrap;
-  margin: -$gap-small/2;
+  margin: calc(-1 * $gap-small / 2);
   & > * {
-    margin: $gap-small/2;
+    margin: calc($gap-small / 2);
   }
 }
 
