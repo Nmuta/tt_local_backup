@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Net.Http;
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.STS;
 using Turn10.LiveOps.StewardApi.Providers;
 
 namespace Turn10.LiveOps.StewardTest.Unit
@@ -46,16 +47,16 @@ namespace Turn10.LiveOps.StewardTest.Unit
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenKeyVaultProviderNull_Throws()
+        public void Ctor_WhenHttpClientFactoryNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { KeyVaultProvider = null };
+            var dependencies = new Dependencies { HttpClientFactory = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "keyVaultProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "httpClientFactory"));
         }
 
         [TestMethod]
@@ -69,14 +70,13 @@ namespace Turn10.LiveOps.StewardTest.Unit
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.StsUrl},{ConfigurationKeyConstants.StsSecretName}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingMessagePartial}{ConfigurationKeyConstants.StsUrl}");
         }
 
         private sealed class Dependencies
         {
             public Dependencies(bool validConfiguration = true)
             {
-                this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.TestCertificateString);
                 if (validConfiguration)
                 {
                     this.Configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
@@ -91,9 +91,9 @@ namespace Turn10.LiveOps.StewardTest.Unit
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
-            public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
+            public IHttpClientFactory HttpClientFactory { get; set; } = Substitute.For<IHttpClientFactory>();
 
-            public StsClientWrapper Build() => new StsClientWrapper(this.Configuration, this.KeyVaultProvider);
+            public StsClientWrapper Build() => new StsClientWrapper(this.Configuration, this.HttpClientFactory);
         }
     }
 }
