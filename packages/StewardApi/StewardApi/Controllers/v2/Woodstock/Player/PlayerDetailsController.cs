@@ -57,15 +57,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         {
             GetUserDetailsOutput response;
 
-            try
-            {
-                response = await this.Services.UserManagementService.GetUserDetails(xuid)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get player game details. (XUID: {xuid})", ex);
-            }
+            response = await this.Services.UserManagementService.GetUserDetails(xuid)
+                .ConfigureAwait(false);
 
             var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
 

@@ -114,14 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         {
             var convertedEntries = this.mapper.SafeMap<ForzaAuctionBlocklistEntry[]>(entries);
 
-            try
-            {
-                await this.Services.AuctionManagementService.AddToAuctionBlocklist(convertedEntries).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException("Failed to add entires to auction block list.", ex);
-            }
+            await this.Services.AuctionManagementService.AddToAuctionBlocklist(convertedEntries).ConfigureAwait(true);
 
             var blockedCars = entries.Select(entry => Invariant($"{entry.CarId}")).ToList();
             await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.CarId, blockedCars).ConfigureAwait(true);
@@ -144,14 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
-            try
-            {
-                await this.Services.AuctionManagementService.DeleteAuctionBlocklistEntries(new int[] { carId }).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to delete car from auction blocklist. (carId: {carId})", ex);
-            }
+            await this.Services.AuctionManagementService.DeleteAuctionBlocklistEntries(new int[] { carId }).ConfigureAwait(true);
 
             return this.Ok();
         }

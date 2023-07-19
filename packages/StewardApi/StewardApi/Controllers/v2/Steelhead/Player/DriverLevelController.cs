@@ -92,14 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             newDriverLevel.PrestigeRank.ShouldBeGreaterThanOrEqual(0, nameof(newDriverLevel.PrestigeRank));
             newDriverLevel.PrestigeRank.ShouldBeLessThanOrEqual(9, nameof(newDriverLevel.PrestigeRank));
 
-            try
-            {
-                await this.Services.LiveOpsService.SetDriverLevel(xuid, newDriverLevel.DriverLevel, newDriverLevel.PrestigeRank).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to set driver level for player. (XUID: {xuid}) (driverLevel: {newDriverLevel.DriverLevel}) (prestigeRank: {newDriverLevel.PrestigeRank})", ex);
-            }
+            await this.Services.LiveOpsService.SetDriverLevel(xuid, newDriverLevel.DriverLevel, newDriverLevel.PrestigeRank).ConfigureAwait(false);
 
             var mappedResponse = await this.RetrieveDriverLevel(xuid).ConfigureAwait(true);
 
@@ -113,14 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             LiveOpsService.GetDriverLevelOutput response = null;
 
-            try
-            {
-                response = await this.Services.LiveOpsService.GetDriverLevel(xuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"No driver level found for player. (XUID: {xuid})", ex);
-            }
+            response = await this.Services.LiveOpsService.GetDriverLevel(xuid).ConfigureAwait(true);
 
             var mappedResponse = this.mapper.SafeMap<SteelheadDriverLevel>(response);
 

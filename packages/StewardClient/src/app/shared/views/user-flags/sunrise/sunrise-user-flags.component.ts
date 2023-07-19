@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SunriseUserFlags } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
@@ -14,7 +14,10 @@ import { OldPermissionsService } from '@services/old-permissions';
   templateUrl: '../user-flags.component.html',
   styleUrls: ['../user-flags.component.scss'],
 })
-export class SunriseUserFlagsComponent extends UserFlagsBaseComponent<SunriseUserFlags> {
+export class SunriseUserFlagsComponent
+  extends UserFlagsBaseComponent<SunriseUserFlags>
+  implements OnInit
+{
   public gameTitle = GameTitle.FH4;
 
   public formControls = {
@@ -33,6 +36,19 @@ export class SunriseUserFlagsComponent extends UserFlagsBaseComponent<SunriseUse
     permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
+  }
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    // If Ultimate VIP is checked, VIP has to be checked also.
+    this.formControls.isUltimateVip.valueChanges.subscribe((value: boolean) => {
+      if (value) {
+        this.formControls.isVip.setValue(true);
+        this.formControls.isVip.disable();
+      } else {
+        this.formControls.isVip.enable();
+      }
+    });
   }
 
   /** Gets Sunrise user flags. */

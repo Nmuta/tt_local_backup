@@ -275,14 +275,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
 
             GetUGCLiveryOutput livery;
 
-            try
-            {
-                livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryGuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get livery. (liveryId: {liveryId})", ex);
-            }
+            livery = await this.Services.StorefrontManagementService.GetUGCLivery(liveryGuid).ConfigureAwait(true);
 
             if (livery == null)
             {
