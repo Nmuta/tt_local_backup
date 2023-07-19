@@ -1,0 +1,207 @@
+<ng-container *waitForMonitor="getMonitor">
+  <model-dump #source [model]="ugcItem" *ngIf="ugcItem; else noItem">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>UGC Overview</mat-card-title>
+        <mat-card-subtitle>IDs and other text</mat-card-subtitle>
+      </mat-card-header>
+      <div class="sf-wrapper">
+        <div class="sf-vertical">
+          <model-dump-xuids></model-dump-xuids>
+          <model-dump-simple-table
+            [values]="source.processedModel.extractedStrings.ids"
+          ></model-dump-simple-table>
+          <model-dump-humanize-table
+            [values]="source.processedModel.extractedStrings.other"
+          ></model-dump-humanize-table>
+          <model-dump-humanize-array-table
+            [values]="source.processedModel.extractedStringArrays.all"
+          ></model-dump-humanize-array-table>
+          <model-dump-simple-table
+            [values]="source.processedModel.extractedNumbers.ids"
+          ></model-dump-simple-table>
+          <model-dump-simple-table
+            [values]="source.processedModel.extractedDates.all"
+          ></model-dump-simple-table>
+          <model-dump-flags></model-dump-flags>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>UGC Actions</mat-card-title>
+        <mat-card-subtitle>Take actions on UGC</mat-card-subtitle>
+      </mat-card-header>
+      <div class="sf-wrapper">
+        <div class="sf-horizontal do-not-align-items">
+          <div class="sf-vertical">
+            <ugc-download-button
+              class="sf-full-width sf-default-margins sf-action-list-margins"
+              [item]="ugcItem"
+            ></ugc-download-button>
+            <button
+              class="sf-default-margins sf-action-list-margins"
+              [disabled]="!canFeatureUgc"
+              mat-raised-button
+              color="primary"
+              (click)="featureUgcItem()"
+              stateManager
+              [permissionAttribute]="featurePermAttribute"
+              [permissionTitle]="gameTitle"
+            >
+              <span [matTooltip]="featureMatTooltip">{{
+                ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
+              }}</span>
+            </button>
+            <button
+              class="sf-default-margins sf-action-list-margins"
+              [disabled]="!canGenerateSharecode"
+              mat-raised-button
+              color="primary"
+              stateManager
+              [monitor]="generateSharecodeMonitor"
+              monitorDisable
+              monitorWarn
+              monitorWarnSnackbar
+              monitorCompleteSnackbar
+              (click)="generateSharecodeForUgc()"
+            >
+              <span [matTooltip]="generateSharecodeMatTooltip">Generate Sharecode</span>
+            </button>
+            <div class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyReportBtn
+                [permissionAttribute]="reportPermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyReportBtn"
+                (click)="reportUgcItem()"
+                stateManager
+                [monitor]="reportMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                <span>Report</span>
+              </button>
+            </div>
+            <div *ngIf="!ugcItem?.isHidden" class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyHideBtn
+                [permissionAttribute]="hidePermAttribute"
+                [permissionTitle]="gameTitle"
+                [disabled]="!ugcItem?.isPublic"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyHideBtn"
+                (click)="hideUgcItem()"
+                stateManager
+                [monitor]="hideMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Hide UGC
+                <help-popover-icon cardTitle="Hide UGC"
+                  >Private UGC cannot be hidden.</help-popover-icon
+                >
+              </button>
+            </div>
+
+            <div *ngIf="ugcItem.isHidden" class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyUnhideBtn
+                [permissionAttribute]="unhidePermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyUnhideBtn"
+                (click)="unhideUgcItem()"
+                stateManager
+                [monitor]="unhideMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Unhide UGC
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>UGC Timeline</mat-card-title>
+        <mat-card-subtitle>Key dates</mat-card-subtitle>
+      </mat-card-header>
+      <div>
+        <model-dump-datetime-table
+          [values]="source.processedModel.extractedDates.all"
+        ></model-dump-datetime-table>
+        <model-dump-duration-table
+          [values]="source.processedModel.extractedDurations.all"
+        ></model-dump-duration-table>
+        <model-dump-number-table
+          [values]="source.processedModel.extractedNumbers.counts"
+        ></model-dump-number-table>
+      </div>
+      <model-dump-price-table
+        [values]="source.processedModel.extractedNumbers.prices"
+      ></model-dump-price-table>
+      <model-dump-price-table
+        [values]="source.processedModel.extractedNumbers.amounts"
+      ></model-dump-price-table>
+    </mat-card>
+
+    <div>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>UGC Info</mat-card-title>
+          <mat-card-subtitle>Flags, counters, etc</mat-card-subtitle>
+        </mat-card-header>
+        <model-dump-number-table
+          [values]="source.processedModel.extractedNumbers.other"
+        ></model-dump-number-table>
+      </mat-card>
+
+      <toggle-list-ez
+        [contract]="geoFlagsToggleListEzContract"
+        (afterSubmitted)="updateGeoFlagsModel($event)"
+      >
+        <help-popover-icon cardTitle="Geo Flags" confluenceName="Geo Flags Card">
+          <h3>This data is cached</h3>
+          <p>The flags displayed in this card are the same as the ones that the client receives.</p>
+          <p>
+            This means they are on a rolling 5 minute cache per-machine. The flags displayed here
+            will not update until the UGC is not viewed for around 5 minutes, and so the checkboxes
+            will not update immediately.
+          </p>
+        </help-popover-icon>
+      </toggle-list-ez>
+    </div>
+
+    <div class="images">
+      <model-dump-images></model-dump-images>
+    </div>
+  </model-dump>
+</ng-container>
+
+<ng-template #noItem>
+  <p>No Item Found.</p>
+</ng-template>
