@@ -185,14 +185,14 @@ namespace Turn10.LiveOps.StewardApi
                 {
                     HttpClientHandler httpClientHandler = new HttpClientHandler
                     {
-                        AutomaticDecompression = (DecompressionMethods.GZip | DecompressionMethods.Deflate)
+                        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
                     };
 
                     var keyVaultProvider = new KeyVaultProvider(new KeyVaultClientFactory());
-                    var keyVaultUrl = configuration[ConfigurationKeyConstants.KeyVaultUrl];
-                    var stsUrl = configuration[ConfigurationKeyConstants.StsUrl];
-                    var keyVaultCertificateName = configuration[ConfigurationKeyConstants.StsSecretName];
-                    var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultUrl, keyVaultCertificateName).GetAwaiter().GetResult();
+
+                    var certificateSecret = keyVaultProvider.GetSecretAsync(
+                        this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                        this.configuration[ConfigurationKeyConstants.StsSecretName]).GetAwaiter().GetResult();
 
                     var stsForgeryCertificate = StsClientWrapper.ConvertToCertificate(certificateSecret);
                     httpClientHandler.ClientCertificates.Add(stsForgeryCertificate);
@@ -211,7 +211,7 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.Converters = new List<JsonConverter> 
+                options.SerializerSettings.Converters = new List<JsonConverter>
                 {
                     new TimeSpanConverter(),
                     new StringEnumConverter()

@@ -136,7 +136,7 @@
     <PackageReference Include="Turn10.Services.Serialization" Version="1.4.0" />
     <PackageReference Include="Turn10.Services.ServiceClient" Version="2.6.0" />
     <PackageReference Include="Turn10.Services.Storage.Table" Version="1.2.0" />
-    <PackageReference Include="Turn10.Services.STS.Contracts" Version="2.2.0-CI-20230718-225519">
+    <PackageReference Include="Turn10.Services.STS.Contracts" Version="2.2.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.UGC.Contracts" Version="2.7.1" />
