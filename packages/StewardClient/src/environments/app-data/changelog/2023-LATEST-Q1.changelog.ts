@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add Retail endpoint for Steelhead',
     },
     {
+      tag: { title: 'all', tool: NavbarTool.ProductPricing },
+      uuid: 'c2b316d0-e582-490c-aa0a-cdccecd018de',
+      shortText: 'Add product pricing tool',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '69e6005d-7d90-484a-b45c-4eb3c8a86c43',
       shortText: 'Force VIP to be checked if Ultimate VIP is checked',
