@@ -13,8 +13,8 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Improve local re-build times',
       longText: [
         'Developer re-build times took 60+ seconds. Now they take 10.',
-        'Build commands have also been adjusted and restructured.'
-      ]
+        'Build commands have also been adjusted and restructured.',
+      ],
     },
     {
       tag: ChangelogTag.Internal,
@@ -22,8 +22,8 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Address stylesheet size warnings',
       longText: [
         'Reduce stylesheet sizes for calendar pages.',
-        'Increase stylesheet budget for all pages from 6k to 32k.'
-      ]
+        'Increase stylesheet budget for all pages from 6k to 32k.',
+      ],
     },
     {
       tag: ChangelogTag.Internal,
