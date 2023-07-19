@@ -13,8 +13,8 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Address stylesheet size warnings',
       longText: [
         'Reduce stylesheet sizes for calendar pages.',
-        'Increase stylesheet budget for all pages from 6k to 32k.'
-      ]
+        'Increase stylesheet budget for all pages from 6k to 32k.',
+      ],
     },
     {
       tag: ChangelogTag.Internal,
