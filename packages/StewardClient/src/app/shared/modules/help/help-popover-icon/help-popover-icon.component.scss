@@ -1,0 +1,78 @@
+@import '/src/styles/mixins';
+
+mat-card-content {
+  max-width: 20em;
+  width: 100%;
+}
+
+// Force color onto help icon to ignore parent opacity
+mat-icon {
+  position: relative;
+  z-index: 5;
+  color: app-color-default-contrast($app-background);
+}
+
+::ng-deep mat-card > help-popover-icon,
+::ng-deep mat-card-title-group > help-popover-icon,
+::ng-deep mat-card-header > help-popover-icon,
+::ng-deep mat-card-title help-popover-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+::ng-deep mat-checkbox help-popover-icon {
+  position: relative;
+  left: -$gap-small;
+}
+
+// Default help popover icon size
+$help-popover-icon-size: 36px;
+$help-popover-icon-spacing: calc($help-popover-icon-size / 2);
+::ng-deep button,
+::ng-deep a {
+  &:not(.mat-mini-fab) > .mat-button-wrapper > help-popover-icon {
+    position: absolute;
+    overflow: hidden;
+
+    top: -$help-popover-icon-spacing;
+    right: -$help-popover-icon-spacing;
+  }
+
+  &.mat-mini-fab > .mat-button-wrapper > help-popover-icon,
+  &.mat-icon-button > .mat-button-wrapper > help-popover-icon {
+    position: absolute;
+    overflow: hidden;
+
+    // Mini fab button is pretty small, need to add more spacing to icon so its hover
+    // event does not impede the button itself
+    top: -#{$help-popover-icon-spacing + 2};
+    right: -#{$help-popover-icon-spacing + 2};
+  }
+}
+
+::ng-deep .mat-badge-icon .mat-badge-content {
+  font-family: 'Material Icons';
+  background-color: transparent;
+}
+
+// content tweaks for the card itself
+::ng-deep .help-popover-card {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &:first-child {
+      margin-top: 0;
+    }
+
+    margin-bottom: 0;
+  }
+  ul {
+    margin-top: 0;
+    padding-left: 1em;
+  }
+}
