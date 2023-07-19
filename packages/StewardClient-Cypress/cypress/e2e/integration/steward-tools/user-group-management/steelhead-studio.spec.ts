@@ -27,6 +27,7 @@ context('Steward / Tools / User Group Management / Woodstock', () => {
     disableFakeApi();
     cy.visit(stewardUrls.tools.userGroupManagement.steelhead);
     changeEndpoint('Steelhead', 'Flight', 'Studio');
+    cy.get('a').contains('span', 'FM').contains('span', 'Studio').should('exist');
   });
 
   context('Basic Tests', () => {
