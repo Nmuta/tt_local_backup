@@ -51,21 +51,25 @@ export function userDetailsFindProfileNotes(noteText: string): void {
 }
 
 /** Verifies that the searched user has the correct related gamertags in the user details tab */
-export function userDetailsFindRelatedGamertags(relatedXuid: string): void {
-  it('should have a related gtag', () => {
+export function userDetailsFindRelatedGamertags(relatedXuids: string[]): void {
+  it('should have the correct related gtags', () => {
     swapToTab('User Details');
     cy.contains('mat-card', 'Related Gamertags').within(() => {
-      tableHasEntry('xuid', relatedXuid);
+      relatedXuids.forEach(relatedXuid => {
+        tableHasEntry('xuid', relatedXuid);
+      });
     });
   });
 }
 
 /** Verifies that the user has the correct related consoles in the user details tab */
-export function userDetailsFindRelatedConsoles(expectedConsoleId: string): void {
+export function userDetailsFindRelatedConsoles(expectedConsoleIds: string[]): void {
   it('should have a related console ID', () => {
     swapToTab('User Details');
     cy.contains('mat-card', 'Consoles').within(() => {
-      tableHasEntry('consoleId', expectedConsoleId);
+      expectedConsoleIds.forEach(expectedConsoleId => {
+        tableHasEntry('consoleId', expectedConsoleId);
+      });
     });
   });
 }
