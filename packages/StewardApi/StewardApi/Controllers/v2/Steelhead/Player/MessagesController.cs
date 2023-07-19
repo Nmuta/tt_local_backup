@@ -77,17 +77,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             NotificationsManagementService.LiveOpsRetrieveForUserOutput response = null;
 
-            try
-            {
-                response = await this.Services.NotificationManagementService.LiveOpsRetrieveForUser(
-                    xuid,
-                    maxResults).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException(
-                    $"Failed to retrieve messages for player. (xuid: {xuid})", ex);
-            }
+            response = await this.Services.NotificationManagementService.LiveOpsRetrieveForUser(
+                xuid,
+                maxResults).ConfigureAwait(false);
 
             notifications.AddRange(this.mapper.SafeMap<IList<Notification>>(response.results));
 
@@ -109,14 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             //xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
-            try
-            {
-                await this.Services.NotificationManagementService.DeleteNotificationsForUser(xuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"Failed to delete all messages for player. (xuid: {xuid})", ex);
-            }
+            await this.Services.NotificationManagementService.DeleteNotificationsForUser(xuid).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -142,14 +127,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             NotificationsManagementService.GetNotificationOutput response = null;
 
-            try
-            {
-                response = await this.Services.NotificationManagementService.GetNotification(xuid, messageIdAsGuid).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"Failed to get message. (messageId: {messageIdAsGuid})", ex);
-            }
+            response = await this.Services.NotificationManagementService.GetNotification(xuid, messageIdAsGuid).ConfigureAwait(true);
 
             message = this.mapper.SafeMap<Notification>(response.notification);
 
@@ -202,17 +180,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 DeviceType = ForzaLiveDeviceType.Invalid
             };
 
-            try
-            {
-                await this.Services.NotificationManagementService.EditNotification(
-                    messageIdAsGuid,
-                    xuid,
-                    editParams).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"Failed to edit message. (messageId: {messageIdAsGuid})", ex);
-            }
+            await this.Services.NotificationManagementService.EditNotification(
+                messageIdAsGuid,
+                xuid,
+                editParams).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -246,17 +217,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 DeviceType = ForzaLiveDeviceType.Invalid
             };
 
-            try
-            {
-                await this.Services.NotificationManagementService.EditNotification(
-                    messageId,
-                    xuid,
-                    editParams).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToSendStewardException($"Failed to delete message. (messageId: {messageId})", ex);
-            }
+            await this.Services.NotificationManagementService.EditNotification(
+                messageId,
+                xuid,
+                editParams).ConfigureAwait(true);
 
             // TODO Add notification logging for individual users Task(948868)
 

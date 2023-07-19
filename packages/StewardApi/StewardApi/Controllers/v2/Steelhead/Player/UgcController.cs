@@ -80,14 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
                 StorefrontManagementService.GetUGCForUserOutput results = null;
 
-                try
-                {
-                    results = await this.Services.StorefrontManagementService.GetUGCForUser(xuid, mappedContentType, false, this.ugcMaxResults, false).ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    throw new UnknownFailureStewardException($"Failed to get player UGC. (xuid: {xuid}) (ugcType: {ugcType})", ex);
-                }
+                results = await this.Services.StorefrontManagementService.GetUGCForUser(xuid, mappedContentType, false, this.ugcMaxResults, false).ConfigureAwait(false);
 
                 return this.mapper.SafeMap<IList<SteelheadUgcItem>>(results.result);
             }

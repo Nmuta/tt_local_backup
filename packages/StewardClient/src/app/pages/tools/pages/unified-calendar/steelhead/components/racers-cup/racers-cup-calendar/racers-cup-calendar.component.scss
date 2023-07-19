@@ -1,6 +1,6 @@
+// TODO: This angular-calendar.css file should probably be imported globally, rather than in this specific component. 2023-07-17
 @import 'angular-calendar/css/angular-calendar.css';
 @import '/src/styles/mixins';
-@import '../../../../unified-calendar-colors.scss';
 
 mat-card {
   max-height: unset;

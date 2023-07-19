@@ -86,17 +86,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
 
             NotificationsManagementService.GetAllUserGroupMessagesOutput response = null;
 
-            try
-            {
-                response = await this.Services.NotificationManagementService.GetAllUserGroupMessages(
-                    groupId,
-                    maxResults).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException(
-                    $"Failed to retrieve all messages for user group: {groupId}.", ex);
-            }
+            response = await this.Services.NotificationManagementService.GetAllUserGroupMessages(
+                groupId,
+                maxResults).ConfigureAwait(true);
 
             notifications.AddRange(this.mapper.SafeMap<IList<UserGroupNotification>>(response.userGroupMessages));
 
@@ -249,45 +241,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 DeviceType = forzaDeviceType
             };
 
-            try
-            {
-                await this.Services.NotificationManagementService.EditGroupNotification(messageIdAsGuid, editParams)
-                    .ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to edit user group message. (messageId: {messageIdAsGuid}) (groupId: {groupId})", ex);
-            }
+            await this.Services.NotificationManagementService.EditGroupNotification(messageIdAsGuid, editParams)
+                .ConfigureAwait(true);
 
-            try
-            {
-                var notificationInfo = await this.Services.NotificationManagementService.GetUserGroupMessage(messageIdAsGuid).ConfigureAwait(false);
+            var notificationInfo = await this.Services.NotificationManagementService.GetUserGroupMessage(messageIdAsGuid).ConfigureAwait(false);
 
-                var notificationHistory = new NotificationHistory
-                {
-                    Id = messageId.ToString(),
-                    Title = TitleConstants.SteelheadCodeName,
-                    Message = editParameters.LocalizedMessageID.ToString(),
-                    RequesterObjectId = requesterObjectId,
-                    RecipientId = notificationInfo.userGroupMessage.GroupId.ToString(CultureInfo.InvariantCulture),
-                    Type = notificationInfo.userGroupMessage.NotificationType,
-                    RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
-                    DeviceType = editParameters.DeviceType.ToString(),
-                    GiftType = GiftType.None.ToString(),
-                    BatchReferenceId = string.Empty,
-                    Action = NotificationAction.Edit.ToString(),
-                    Endpoint = this.Services.Endpoint,
-                    CreatedDateUtc = editParameters.StartTimeUtc,
-                    ExpireDateUtc = editParameters.ExpireTimeUtc
-                };
-
-                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
-                    notificationHistory).ConfigureAwait(false);
-            }
-            catch (Exception ex)
+            var notificationHistory = new NotificationHistory
             {
-                throw new UnknownFailureStewardException($"Successfully edited message; Failed to log edit event to Kusto. (messageId: {messageId}) (groupId: {groupId})", ex);
-            }
+                Id = messageId.ToString(),
+                Title = TitleConstants.SteelheadCodeName,
+                Message = editParameters.LocalizedMessageID.ToString(),
+                RequesterObjectId = requesterObjectId,
+                RecipientId = notificationInfo.userGroupMessage.GroupId.ToString(CultureInfo.InvariantCulture),
+                Type = notificationInfo.userGroupMessage.NotificationType,
+                RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
+                DeviceType = editParameters.DeviceType.ToString(),
+                GiftType = GiftType.None.ToString(),
+                BatchReferenceId = string.Empty,
+                Action = NotificationAction.Edit.ToString(),
+                Endpoint = this.Services.Endpoint,
+                CreatedDateUtc = editParameters.StartTimeUtc,
+                ExpireDateUtc = editParameters.ExpireTimeUtc
+            };
+
+            await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                notificationHistory).ConfigureAwait(false);
 
             return this.Ok();
         }
@@ -323,46 +301,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 DeviceType = ForzaLiveDeviceType.Invalid
             };
 
-            try
-            {
-
-                await this.Services.NotificationManagementService.EditGroupNotification(messageIdAsGuid, editParams)
-                    .ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to delete user group message. (messageId: {messageIdAsGuid}) (groupId: {groupId})", ex);
-            }
+            await this.Services.NotificationManagementService.EditGroupNotification(messageIdAsGuid, editParams)
+                .ConfigureAwait(true);
 
             var deviceType = this.mapper.SafeMap<DeviceType>(forzaMessage.DeviceType);
 
-            try
+            var notificationHistory = new NotificationHistory
             {
-                var notificationHistory = new NotificationHistory
-                {
-                    Id = messageId.ToString(),
-                    Title = TitleConstants.SteelheadCodeName,
-                    Message = forzaMessage.Message,
-                    RequesterObjectId = requesterObjectId,
-                    RecipientId = groupId.ToString(CultureInfo.InvariantCulture),
-                    Type = forzaMessage.NotificationType,
-                    RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
-                    DeviceType = deviceType.ToString(),
-                    GiftType = GiftType.None.ToString(),
-                    BatchReferenceId = string.Empty,
-                    Action = NotificationAction.Delete.ToString(),
-                    Endpoint = this.Services.Endpoint,
-                    CreatedDateUtc = DateTime.UtcNow,
-                    ExpireDateUtc = DateTime.UtcNow
-                };
+                Id = messageId.ToString(),
+                Title = TitleConstants.SteelheadCodeName,
+                Message = forzaMessage.Message,
+                RequesterObjectId = requesterObjectId,
+                RecipientId = groupId.ToString(CultureInfo.InvariantCulture),
+                Type = forzaMessage.NotificationType,
+                RecipientType = GiftIdentityAntecedent.LspGroupId.ToString(),
+                DeviceType = deviceType.ToString(),
+                GiftType = GiftType.None.ToString(),
+                BatchReferenceId = string.Empty,
+                Action = NotificationAction.Delete.ToString(),
+                Endpoint = this.Services.Endpoint,
+                CreatedDateUtc = DateTime.UtcNow,
+                ExpireDateUtc = DateTime.UtcNow
+            };
 
-                await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
-                    notificationHistory).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Successfully deleted message; Failed to log delete event to Kusto. (messageId: {messageIdAsGuid}) (groupId: {groupId})", ex);
-            }
+            await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
+                notificationHistory).ConfigureAwait(false);
 
             return this.Ok();
         }

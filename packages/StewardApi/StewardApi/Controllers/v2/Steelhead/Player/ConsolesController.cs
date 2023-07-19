@@ -63,14 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             Services.LiveOps.FM8.Generated.UserManagementService.GetConsolesOutput response = null;
 
-            try
-            {
-                response = await this.Services.UserManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"No consoles found. (XUID: {xuid})", ex);
-            }
+            response = await this.Services.UserManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(true);
 
             var result = this.mapper.SafeMap<IList<ConsoleDetails>>(response.consoles);
 
@@ -92,17 +85,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             Services.LiveOps.FM8.Generated.UserManagementService.GetSharedConsoleUsersOutput response = null;
 
-            try
-            {
-                response = await this.Services.UserManagementService.GetSharedConsoleUsers(
-                        xuid,
-                        startIndex,
-                        maxResults).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"No shared console users found. (XUID: {xuid})", ex);
-            }
+            response = await this.Services.UserManagementService.GetSharedConsoleUsers(
+                    xuid,
+                    startIndex,
+                    maxResults).ConfigureAwait(true);
 
             var result = this.mapper.SafeMap<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
 

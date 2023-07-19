@@ -13,6 +13,30 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
       shortText: 'Add product pricing tool',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '69e6005d-7d90-484a-b45c-4eb3c8a86c43',
+      shortText: 'Force VIP to be checked if Ultimate VIP is checked',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e9977caf-bbd6-429a-9804-6493094b456c',
+      shortText: 'Address stylesheet size warnings',
+      longText: [
+        'Reduce stylesheet sizes for calendar pages.',
+        'Increase stylesheet budget for all pages from 6k to 32k.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5433e9fd-fb43-4702-a5bc-899623a810da',
+      shortText: 'Reduce duplicate style generation',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'caf46095-1749-46e0-bb9c-57682c61dc1f',
+      shortText: 'Stylesheet refactoring in preparation for SCSS 2.0',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '1469d347-06f9-40d7-9c47-f901d6af5a9c',
       shortText: 'Add ability to modify Geo Flags on UGC',

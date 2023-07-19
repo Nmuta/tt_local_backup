@@ -83,34 +83,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                 throw new InvalidArgumentsStewardException($"User group provided is part of large user group list. (userGroupId: {userGroupId})");
             }
 
-            try
-            {
-                var users = await this.Services.UserManagementService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
+            var users = await this.Services.UserManagementService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);
 
-                // Temporary code until the service call returns gamertags //
-                var userList = new List<BasicPlayer>();
-                foreach (var xuid in users.xuids)
-                {
-                    var userData = await this.Services.UserService.LiveOpsGetUserDataByXuid(xuid).ConfigureAwait(false);
-                    userList.Add(new BasicPlayer()
-                    {
-                        Gamertag = userData.returnData.wzGamerTag,
-                        Xuid = xuid,
-                    });
-                }
-                // End of temporary code //
-                var response = new GetUserGroupUsersResponse()
-                {
-                    PlayerList = userList,
-                    PlayerCount = users.available
-                };
-
-                return this.Ok(response);
-            }
-            catch (Exception ex)
+            // Temporary code until the service call returns gamertags //
+            var userList = new List<BasicPlayer>();
+            foreach (var xuid in users.xuids)
             {
-                throw new UnknownFailureStewardException($"Get users from user group failed. (userGroupId: {userGroupId}) (startIndex: {startIndex}) (maxResult: {maxResults})", ex);
+                var userData = await this.Services.UserService.LiveOpsGetUserDataByXuid(xuid).ConfigureAwait(false);
+                userList.Add(new BasicPlayer()
+                {
+                    Gamertag = userData.returnData.wzGamerTag,
+                    Xuid = xuid,
+                });
             }
+            // End of temporary code //
+            var response = new GetUserGroupUsersResponse()
+            {
+                PlayerList = userList,
+                PlayerCount = users.available
+            };
+
+            return this.Ok(response);
         }
 
         /// <summary>
@@ -126,20 +119,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         {
             userGroupName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userGroupName));
 
-            try
+            var result = await this.Services.UserManagementService.CreateUserGroup(userGroupName).ConfigureAwait(false);
+            var newGroup = new LspGroup()
             {
-                var result = await this.Services.UserManagementService.CreateUserGroup(userGroupName).ConfigureAwait(false);
-                var newGroup = new LspGroup()
-                {
-                    Id = result.groupId,
-                    Name = userGroupName
-                };
-                return this.Ok(newGroup);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Create user group failed. (userGroupName: {userGroupName})", ex);
-            }
+                Id = result.groupId,
+                Name = userGroupName
+            };
+            return this.Ok(newGroup);
         }
 
         /// <summary>
@@ -208,19 +194,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [Authorize(Policy = UserAttribute.RemoveAllUsersFromGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
-            try
-            {
-                // Block removing all users from All Users and VIP groups.
-                userGroupId.ShouldBeGreaterThanValue(LargeUserGroups.Max(), nameof(userGroupId));
+            // Block removing all users from All Users and VIP groups.
+            userGroupId.ShouldBeGreaterThanValue(LargeUserGroups.Max(), nameof(userGroupId));
 
-                await this.Services.UserManagementService.ClearUserGroup(userGroupId).ConfigureAwait(false);
+            await this.Services.UserManagementService.ClearUserGroup(userGroupId).ConfigureAwait(false);
 
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Remove all users from user group failed. (userGroupId: {userGroupId})", ex);
-            }
+            return this.Ok();
         }
 
         // Add or remove users to a user group using xuids and/or gamertags.
