@@ -48,6 +48,16 @@ export class WoodstockUserFlagsComponent
     // Community Manager in FH5 has additional feature to modertate community challenges through liking and disliking content.
     // Update the alternate label to match the additional feature.
     this.alteredLabels.isCommunityManager = this.fh5CommunityManagerAltLabel;
+
+    // If Ultimate VIP is checked, VIP has to be checked also.
+    this.formControls.isUltimateVip.valueChanges.subscribe((value: boolean) => {
+      if (value) {
+        this.formControls.isVip.setValue(true);
+        this.formControls.isVip.disable();
+      } else {
+        this.formControls.isVip.enable();
+      }
+    });
   }
 
   /** Gets Woodstock user flags. */
