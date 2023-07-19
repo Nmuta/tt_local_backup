@@ -8,9 +8,8 @@
 /// the helpers in _use-theme.scss, which retrieves these values depending on various
 /// settings. See usages of this function to determine conditions that cause different themes to load.
 /// See https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties for more information on CSS vars
-/// @param {theme} $theme A standard angular theme with the additiona property `colors.extra-bg`
+/// @param {theme} $theme A standard angular theme with the additional property `colors.extra-bg`
 @mixin init-theme($theme) {
-  @include mat.all-component-themes($theme);
   $color-config: mat.get-color-config($theme);
   $primary-palette: map.get($color-config, 'primary');
   $is-dark: map-get($theme, is-dark);
