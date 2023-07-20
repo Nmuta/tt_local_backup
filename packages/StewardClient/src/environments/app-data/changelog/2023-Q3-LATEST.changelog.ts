@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'e8a27035-dc62-4eaa-96a7-d00d76e21e25',
+      shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
       uuid: '65f7537d-78a4-4e61-8b7e-f581a8e9bfaf',
       shortText: 'Improve Ugc search visual',

@@ -8,11 +8,6 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
-      uuid: 'e8a27035-dc62-4eaa-96a7-d00d76e21e25',
-      shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
-    },
-    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
