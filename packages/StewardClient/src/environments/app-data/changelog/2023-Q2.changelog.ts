@@ -8,11 +8,6 @@ export const CHANGELOG_2023_Q2: ChangelogGroup = {
   id: '61c8581b-b329-44e3-9e73-52e55df21292',
   entries: [
     {
-      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
-      uuid: 'dab5bf51-fd02-46ec-bf29-e20cb13e42f6',
-      shortText: 'Add default icon to create button in create single auction',
-    },
-    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
       uuid: '7bbd5f84-b9ec-4854-b1fc-e1982659d389',
       shortText: 'Implement bulk UGC reporting in UGC Search',
