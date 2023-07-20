@@ -11,6 +11,9 @@ import { GameTitle } from '@models/enums';
 import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service.mock';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
+import { createMockSteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service.mock';
+import { createMockSteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service.mock';
 
 describe('SteelheadUgcTableComponent', () => {
   let component: SteelheadUgcTableComponent;
@@ -21,7 +24,12 @@ describe('SteelheadUgcTableComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
       declarations: [SteelheadUgcTableComponent, BigJsonPipe],
-      providers: [createMockSteelheadUgcLookupService()],
+      providers: [
+        createMockSteelheadUgcLookupService(),
+        createMockBackgroundJobService(),
+        createMockSteelheadUgcVisibilityService(),
+        createMockSteelheadUgcSharecodeService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
