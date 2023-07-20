@@ -2,6 +2,7 @@
 @use '@angular/material' as mat;
 @import './theme/';
 
+$table-tr-highlight: app-color-darker($app-background, 0.25);
 $table-tr-hover: app-color-darker($app-background, 0.5);
 $table-tr-active: app-color-darker($app-background, 0.75);
 $table-row-separator: app-color-darker($app-background);

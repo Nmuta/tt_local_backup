@@ -38,6 +38,7 @@ export enum AppIcon {
   PlayFab = 'hexagon',
   ServicesTableStorage = 'table_rows',
   AcLogReader = 'document_scanner',
+  ProductPricing = 'sell',
   Task = 'terminal',
 }
 

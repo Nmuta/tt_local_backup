@@ -32,6 +32,7 @@ import {
   zendeskExternalTile,
   servicesTableStorageTile,
   acLogReaderTile,
+  productPricingTile,
 } from './tiles';
 import { playFabTile } from './tiles/tools/playfab';
 import { taskTile } from './tiles/tools/task';
@@ -71,6 +72,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
 
   playFabTile,
   acLogReaderTile,
+  productPricingTile,
 
   salusExternalTile,
   zendeskExternalTile,
