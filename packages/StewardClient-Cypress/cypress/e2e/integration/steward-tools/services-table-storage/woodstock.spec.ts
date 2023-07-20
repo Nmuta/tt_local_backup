@@ -5,7 +5,7 @@ import { searchByGtag, searchByT10Id, searchByXuid } from '@support/steward/shar
 import { RetailUsers } from "@support/steward/common/account-info";
 import { testInvalidSearches, testLookup, testLookupWithFilter, testLookupWithInvalidFilter, testPlayerProfilesPopulated, testShowAllRows, woodstockResults } from "./shared-functions";
 
-context('Steward / Tools / Player Details / Woodstock', () => {
+context('Steward / Tools / Services Table Storage / Woodstock', () => {
   beforeEach(() => {
     login();
 

@@ -9,6 +9,7 @@ interface LookupResults {
   version: string;
 };
 
+/** Results for testing Woodstock */
 export const woodstockResults: Record<string, LookupResults> = {
   noFilter: {
     name: '',
@@ -26,6 +27,27 @@ export const woodstockResults: Record<string, LookupResults> = {
     name: '',
     result: 'Gift_3a4297c3-2b92-4163-84b5-9ff162ff9043',
     version: '1022',
+  },
+};
+
+/** Results for testing Steelhead */
+export const steelheadResults: Record<string, LookupResults> = {
+  noFilter: {
+    name: '',
+    result: 'NotificationsUser_',
+    version: '8',
+  },
+
+  CMSOverrideFilter: {
+    name: 'CMSOverride_',
+    result: 'CMSOverride_',
+    version: '1049',
+  },
+
+  showAllRows: {
+    name: '',
+    result: 'GlobalProgressTracker_047d857d-0f0e-4e93-9e38-abdb0a72c758',
+    version: '1064',
   },
 };
 
