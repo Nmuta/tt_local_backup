@@ -1,6 +1,5 @@
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { searchByGtag, searchByT10Id, searchByXuid } from '@support/steward/shared-functions/searching';
-import { stewardUrls } from '@support/steward/urls';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 
 /** Interface for Lookup Results */
 interface LookupResults {
@@ -43,12 +42,6 @@ export function testInvalidSearches(): void{
       cy.contains('h2', 'Request failed').should('exist');
       cy.contains('mat-icon', 'cancel').click();
     });
-
-    // Takes an extremely long time, and the field to use T10 ID is "T10 ID" when the searchByT10Id function looks for "T10 Id"
-    // it('should not find invalid T10 ID', () => {
-    //   searchByT10Id('totallyRealT10ID');
-    //   cy.contains('h2', 'Request failed').should('exist');
-    // });
   })
   
 }
@@ -65,7 +58,7 @@ export function testLookup(results: LookupResults): void {
   it('should find results without a filter', () => {
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
-    //Has to click lookup button twice due to an unknown error after the first press, will require investigation
+    // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
     cy.contains('mat-cell', results.result).should('exist');
@@ -79,7 +72,7 @@ export function testLookupWithFilter(results: LookupResults): void {
   it('should find results with a filter', () => {
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
-    //Has to click lookup button twice due to an unknown error after the first press, will require investigation
+    // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
     cy.get('mat-form-field').contains('mat-label', 'Filter Results').parents('mat-form-field').click();
@@ -95,7 +88,7 @@ export function testShowAllRows(results: LookupResults): void {
   it('should find results with a filter', () => {
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
-    //Has to click lookup button twice due to an unknown error after the first press, will require investigation
+    // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
     cy.contains('mat-cell', results.result).should('not.exist');
@@ -113,11 +106,11 @@ export function testLookupWithInvalidFilter(): void {
   it('should not find results with an invalid filter', () => {
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
-    //Has to click lookup button twice due to an unknown error after the first press, will require investigation
+    // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
     cy.get('mat-form-field').contains('mat-label', 'Filter Results').parents('mat-form-field').click().type('TotallyRealFilter');
-    cy.get('mat-option').should('not.exist');//contains('span', 'TotallyRealFilter').should('not.exist');
+    cy.get('mat-option').should('not.exist');
     cy.contains('mat-cell', 'TotallyRealFilter').should('not.exist');
   });
 }
