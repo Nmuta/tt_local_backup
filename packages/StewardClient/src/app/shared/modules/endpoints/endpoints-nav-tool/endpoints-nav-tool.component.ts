@@ -69,7 +69,7 @@ const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
     apolloEndpointKey: 'Retail',
     sunriseEndpointKey: 'Retail',
     woodstockEndpointKey: 'Retail',
-    steelheadEndpointKey: 'Flight',
+    steelheadEndpointKey: 'Retail',
   },
   {
     name: 'Select All Studio Endpoints',

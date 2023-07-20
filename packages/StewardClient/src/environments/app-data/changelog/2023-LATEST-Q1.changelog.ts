@@ -8,6 +8,44 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
   id: '056f7a46-ee96-4dbf-a689-f3edbef2c34d',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
+      shortText: 'Add Retail endpoint for Steelhead',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.ProductPricing },
+      uuid: 'c2b316d0-e582-490c-aa0a-cdccecd018de',
+      shortText: 'Add product pricing tool',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '69e6005d-7d90-484a-b45c-4eb3c8a86c43',
+      shortText: 'Force VIP to be checked if Ultimate VIP is checked',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '8c3092e0-a248-4d3a-9ec1-8dd867c2b209',
+      shortText: 'Improve local re-build times',
+      longText: [
+        'Developer re-build times took 60+ seconds. Now they take 10.',
+        'Build commands have also been adjusted and restructured.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e9977caf-bbd6-429a-9804-6493094b456c',
+      shortText: 'Address stylesheet size warnings',
+      longText: [
+        'Reduce stylesheet sizes for calendar pages.',
+        'Increase stylesheet budget for all pages from 6k to 32k.',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '5433e9fd-fb43-4702-a5bc-899623a810da',
+      shortText: 'Reduce duplicate style generation',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'caf46095-1749-46e0-bb9c-57682c61dc1f',
       shortText: 'Stylesheet refactoring in preparation for SCSS 2.0',
@@ -29,7 +67,7 @@ export const CHANGELOG_2023_Q1: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Messaging },
-      uuid: '5d178034-3d32-4071-a49f-b941f7e234f3',
+      uuid: '7487083d-5523-4810-a575-5406ab0fb59e',
       shortText: 'Add message title view and editing for player messages',
     },
     {

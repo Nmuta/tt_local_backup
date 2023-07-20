@@ -180,6 +180,26 @@ namespace Turn10.LiveOps.StewardApi
                 options.AllowSynchronousIO = true;
             });
 
+            services.AddHttpClient("STS")
+                .ConfigurePrimaryHttpMessageHandler((Func<IServiceProvider, HttpMessageHandler>)delegate
+                {
+                    HttpClientHandler httpClientHandler = new HttpClientHandler
+                    {
+                        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+                    };
+
+                    var keyVaultProvider = new KeyVaultProvider(new KeyVaultClientFactory());
+
+                    var certificateSecret = keyVaultProvider.GetSecretAsync(
+                        this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                        this.configuration[ConfigurationKeyConstants.StsSecretName]).GetAwaiter().GetResult();
+
+                    var stsForgeryCertificate = StsClientWrapper.ConvertToCertificate(certificateSecret);
+                    httpClientHandler.ClientCertificates.Add(stsForgeryCertificate);
+
+                    return httpClientHandler;
+                });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
@@ -191,7 +211,7 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.Converters = new List<JsonConverter> 
+                options.SerializerSettings.Converters = new List<JsonConverter>
                 {
                     new TimeSpanConverter(),
                     new StringEnumConverter()
