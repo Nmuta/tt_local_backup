@@ -65,10 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
 
 
             var featureEndDate = status.IsFeatured && status.FeaturedExpiry.HasValue ? DateTime.UtcNow.Add(status.FeaturedExpiry.Value) : DateTime.MinValue;
-
-            // NOTE: Disabling the ability to set force featured. Will soon add full configurability to Steward (lugeiken - 2023/01/31) (Copied from Woodstock/Sunrise logic)
-            // var forceFeatureEndDate = status.IsFeatured && status.ForceFeaturedExpiry.HasValue ? DateTime.UtcNow.Add(status.ForceFeaturedExpiry.Value) : DateTime.MinValue;
-            var forceFeatureEndDate = DateTime.MinValue;
+            var forceFeatureEndDate = status.IsFeatured && status.ForceFeaturedExpiry.HasValue ? DateTime.UtcNow.Add(status.ForceFeaturedExpiry.Value) : DateTime.MinValue; // Verify PR is checked in.
 
             await this.SteelheadServices.Value.StorefrontManagementService.SetFeatured(
                 itemIdGuid,
