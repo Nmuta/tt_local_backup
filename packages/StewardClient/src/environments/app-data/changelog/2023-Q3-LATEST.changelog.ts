@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
+      uuid: '65f7537d-78a4-4e61-8b7e-f581a8e9bfaf',
+      shortText: 'Improve Ugc search visual',
+      longText: [
+        'Display new label when featured Ugc has no end date.',
+        'Reduce featured Ugc row opacity to see when they are selected.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
