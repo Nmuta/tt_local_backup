@@ -22,7 +22,8 @@
         [disabled]="!formGroup.valid"
         [verifyWithV2]="verifySubmitBtn"
       >
-        Create Auction <button-spinner [monitor]="submitCreateAuctionMonitor"></button-spinner>
+        Create Auction
+        <button-spinner [monitor]="submitCreateAuctionMonitor" defaultIcon="add"></button-spinner>
       </button>
     </div>
   </mat-card-header>
