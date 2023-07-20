@@ -32,6 +32,9 @@ export class SteelheadPlayerUgcService {
     contentType: UgcType,
   ): Observable<SteelheadPlayerUgcItem[]> {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
-    return this.api.getRequest$<SteelheadPlayerUgcItem[]>(`${this.basePath}/${xuid}/ugc/hidden`, httpParams);
+    return this.api.getRequest$<SteelheadPlayerUgcItem[]>(
+      `${this.basePath}/${xuid}/ugc/hidden`,
+      httpParams,
+    );
   }
 }
