@@ -12,7 +12,7 @@ export class SteelheadUgcFeaturedStatusService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Set feature status for a Ugc item. */
-  public reportUgc$(ugcId: string, status: UgcFeaturedStatus): Observable<void> {
-    return this.api.postRequest$<void>(`${this.basePath}/${ugcId}/featuredStatus`, status);
+  public setUgcItemFeatureStatus$(status: UgcFeaturedStatus): Observable<void> {
+    return this.api.postRequest$<void>(`${this.basePath}/${status.itemId}/featuredStatus`, status);
   }
 }

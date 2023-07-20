@@ -14,10 +14,12 @@ import { EMPTY, Observable } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { SunriseFeatureUgcModalComponent } from './sunrise/sunrise-feature-ugc-modal.component';
 import { WoodstockFeatureUgcModalComponent } from './woodstock/woodstock-feature-ugc-modal.component';
+import { SteelheadFeatureUgcModalComponent } from './steelhead/steelhead-feature-ugc-modal.component';
 
 export type FeatureUgcModalComponentUnion =
   | SunriseFeatureUgcModalComponent
-  | WoodstockFeatureUgcModalComponent;
+  | WoodstockFeatureUgcModalComponent
+  | SteelheadFeatureUgcModalComponent;
 
 /** Base modal component to set featured status of a UGC item. */
 @Component({

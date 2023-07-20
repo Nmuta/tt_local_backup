@@ -8,7 +8,7 @@ export class MockSteelheadUgcFeaturedStatusService {
   public waitUntil$: Observable<unknown> = of(true);
 
   public reportUgc$ = jasmine
-    .createSpy('setUgcFeaturedStatus$')
+    .createSpy('setUgcItemFeatureStatus$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   constructor(private readonly generator$: () => unknown) {}

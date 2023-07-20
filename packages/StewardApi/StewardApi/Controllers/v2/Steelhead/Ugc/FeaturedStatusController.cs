@@ -63,7 +63,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
                 status.FeaturedExpiry?.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.FeaturedExpiry));
             }
 
-
             var featureEndDate = status.IsFeatured && status.FeaturedExpiry.HasValue ? DateTime.UtcNow.Add(status.FeaturedExpiry.Value) : DateTime.MinValue;
             var forceFeatureEndDate = status.IsFeatured && status.ForceFeaturedExpiry.HasValue ? DateTime.UtcNow.Add(status.ForceFeaturedExpiry.Value) : DateTime.MinValue; // Verify PR is checked in.
 
