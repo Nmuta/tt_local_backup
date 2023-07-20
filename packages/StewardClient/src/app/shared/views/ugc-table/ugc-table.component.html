@@ -183,7 +183,14 @@
       <ul>
         <li>
           <b>Featured:</b>
-          {{ entry.featuredByT10 ? (entry.featuredEndDateUtc | utcDate: 'short') : 'No' }}
+          <ng-container *ngIf="!entry.featuredByT10">No</ng-container>
+          <ng-container *ngIf="entry.featuredByT10">
+            {{
+              entry.featuredEndDateUtc
+                ? (entry.featuredEndDateUtc | utcDate: 'short')
+                : 'Featured with no end date'
+            }}
+          </ng-container>
         </li>
         <li><b>Title:</b> {{ entry.title }}</li>
         <li><b>Description:</b> {{ entry.description }}</li>
@@ -297,7 +304,14 @@
         </li>
         <li>
           <b>Featured:</b>
-          {{ entry.featuredByT10 ? (entry.featuredEndDateUtc | utcDate: 'short') : 'No' }}
+          <ng-container *ngIf="!entry.featuredByT10">No</ng-container>
+          <ng-container *ngIf="entry.featuredByT10">
+            {{
+              entry.featuredEndDateUtc
+                ? (entry.featuredEndDateUtc | utcDate: 'short')
+                : 'Featured with no end date'
+            }}
+          </ng-container>
         </li>
         <li><b>Title:</b> {{ entry.title }}</li>
         <li><b>Description:</b> {{ entry.description }}</li>

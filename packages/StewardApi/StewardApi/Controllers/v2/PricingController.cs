@@ -21,6 +21,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps;
 using Turn10.LiveOps.StewardApi;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.BigCat;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -86,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
         ///    Retrieves pricing catalog data for a given productId.
         /// </summary>
         [HttpGet("{productId}")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(IList<BigCatProductPrice>))]
         public async Task<IActionResult> GetProductPricingInfoAsync(string productId)
         {
             productId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(productId));

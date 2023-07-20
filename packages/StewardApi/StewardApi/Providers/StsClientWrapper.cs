@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Turn10.Contracts.STS;
-using Turn10.Contracts.STS.Responses;
-using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Common;
-
-namespace Turn10.LiveOps.StewardApi.Providers
+﻿namespace Turn10.LiveOps.StewardApi.Providers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Net.Http;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Options;
+    using Turn10.Contracts.STS;
+    using Turn10.Contracts.STS.Responses;
+    using Turn10.Data.Common;
+    using Turn10.Data.SecretProvider;
+    using Turn10.LiveOps.StewardApi.Common;
+    using Turn10.LiveOps.StewardApi.Contracts.STS;
+
     /// <inheritdoc/>
     public sealed class StsClientWrapper : IStsClient
     {
@@ -21,7 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             "Sts:Url",
-            "Sts:SecretName"
         };
 
         private readonly STSClient stsClient;
@@ -30,19 +32,14 @@ namespace Turn10.LiveOps.StewardApi.Providers
         ///     Initializes a new instance of the <see cref="StsClientWrapper"/> class.
         /// </summary>
         [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
-        public StsClientWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
+        public StsClientWrapper(IConfiguration configuration, IHttpClientFactory httpClientFactory)
         {
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             configuration.ShouldContainSettings(RequiredSettings);
 
-            var keyVaultUrl = configuration[ConfigurationKeyConstants.KeyVaultUrl];
             var stsUrl = configuration[ConfigurationKeyConstants.StsUrl];
-            var keyVaultCertificateName = configuration[ConfigurationKeyConstants.StsSecretName];
-            var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultUrl, keyVaultCertificateName).GetAwaiter().GetResult();
 
-            var stsForgeryCertificate = this.ConvertToCertificate(certificateSecret);
-            this.stsClient = new STSClient(new Uri(stsUrl), null, stsForgeryCertificate);
+            this.stsClient = new STSClient(new STSClientOptionsWrapper(new Uri(stsUrl)), httpClientFactory);
         }
 
         /// <inheritdoc/>
@@ -64,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             }
         }
 
-        private X509Certificate2 ConvertToCertificate(string certificateSecret)
+        public static X509Certificate2 ConvertToCertificate(string certificateSecret)
         {
             certificateSecret.ShouldNotBeNullEmptyOrWhiteSpace(nameof(certificateSecret));
 

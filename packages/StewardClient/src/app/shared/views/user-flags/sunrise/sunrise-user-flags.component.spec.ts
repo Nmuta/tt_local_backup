@@ -80,7 +80,6 @@ describe('SunriseUserFlagsComponent', () => {
       describe('And getFlagsByXuid$ return valid response', () => {
         const flags = {
           isVip: faker.datatype.boolean(),
-          isUltimateVip: faker.datatype.boolean(),
           isTurn10Employee: faker.datatype.boolean(),
           isEarlyAccess: faker.datatype.boolean(),
           isUnderReview: faker.datatype.boolean(),
@@ -98,7 +97,6 @@ describe('SunriseUserFlagsComponent', () => {
 
           expect(component.currentFlags).toEqual(flags);
           expect(component.formControls.isVip.value).toEqual(flags.isVip);
-          expect(component.formControls.isUltimateVip.value).toEqual(flags.isUltimateVip);
           expect(component.formControls.isTurn10Employee.value).toEqual(flags.isTurn10Employee);
           expect(component.formControls.isEarlyAccess.value).toEqual(flags.isEarlyAccess);
           expect(component.formControls.isUnderReview.value).toEqual(flags.isUnderReview);
