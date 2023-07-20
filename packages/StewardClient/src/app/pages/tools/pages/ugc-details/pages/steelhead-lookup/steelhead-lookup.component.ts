@@ -52,7 +52,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     submitModel$: () => EMPTY,
   };
   public userHasWritePerms: boolean = false;
-  public canFeatureUgc: boolean = false;
+  public canFeatureUgc: boolean = true;
   public canHideUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
   public featureMatTooltip: string = null;
@@ -141,7 +141,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
           this.geoFlagsToggleListEzContract = newGeoFlagsContract;
         }
 
-        this.canFeatureUgc = this.canFeatureUgc && this.ugcItem?.isPublic && this.userHasWritePerms;
+        this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
         this.canGenerateSharecode = !this.ugcItem?.shareCode;
 
         if (!this.userHasWritePerms) {
