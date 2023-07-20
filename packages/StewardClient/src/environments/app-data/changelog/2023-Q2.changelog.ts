@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q2: ChangelogGroup = {
   id: '61c8581b-b329-44e3-9e73-52e55df21292',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '72ccd2b5-fd86-4714-863c-fc83218d54d3',
+      shortText: 'Clear note input field after adding a profile note',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.SearchUGC },
       uuid: '7bbd5f84-b9ec-4854-b1fc-e1982659d389',
       shortText: 'Implement bulk UGC reporting in UGC Search',
