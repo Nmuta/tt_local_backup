@@ -12,6 +12,7 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
     disableFakeApi();
     cy.visit(stewardUrls.tools.createAuction.woodstock);
     changeEndpoint('Woodstock', 'Retail', 'Studio');
+    cy.get('a').contains('span', 'FH5').contains('span', 'Studio').should('exist');
   });
 
   it('should create an auction', () => {

@@ -1,13 +1,13 @@
-import { defineConfig } from "cypress";
+import { defineConfig } from 'cypress';
 
 export default defineConfig({
   chromeWebSecurity: false,
 
   env: {
-    STEWARD_API: "https://steward-api-prod.azurewebsites.net",
+    STEWARD_API: 'https://steward-api-prod.azurewebsites.net',
     TEST_WOODSTOCK: false,
     TEST_STEELHEAD: false,
-    AAD_APP_ENV: "PROD",
+    AAD_APP_ENV: 'PROD',
   },
 
   retries: {
@@ -22,16 +22,8 @@ export default defineConfig({
 
   e2e: {
     experimentalRunAllSpecs: true,
-    baseUrl: "https://steward-ui-prod.azurewebsites.net",
-    specPattern: "cypress/e2e/**/*.spec.*",
-    supportFile: "cypress/support/commands.ts",
-  },
-
-  component: {
-    devServer: {
-      framework: "angular",
-      bundler: "webpack",
-    },
-    specPattern: "**/*.cy.ts",
+    baseUrl: 'https://steward-ui-prod.azurewebsites.net',
+    specPattern: 'cypress/e2e/**/*.spec.*',
+    supportFile: 'cypress/support/commands.ts',
   },
 });

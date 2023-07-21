@@ -3,13 +3,16 @@ import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcTableBaseComponent } from '../ugc-table.component';
 import { UgcType } from '@models/ugc-filters';
-import { Observable, throwError } from 'rxjs';
+import { Observable, switchMap, throwError } from 'rxjs';
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 import { BulkReportUgcResponse } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service';
+import { SteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service';
 
 /** Displays steelhead UGC content in a table. */
 @Component({
@@ -19,11 +22,12 @@ import { BulkReportUgcResponse } from '@services/api-v2/woodstock/ugc/report/woo
 })
 export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements OnChanges {
   public gameTitle = GameTitle.FM8;
-  public supportFeaturing: boolean = false;
-  public ugcHidingSupported = false;
 
   constructor(
     private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
+    private readonly steelheadUgcVisibilityService: SteelheadUgcVisibilityService,
+    private readonly steelheadUgcSharecodeService: SteelheadUgcSharecodeService,
+    private readonly backgroundJobService: BackgroundJobService,
     snackbar: MatSnackBar,
   ) {
     super(snackbar);
@@ -40,18 +44,32 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
   }
 
   /** Hide multiple Ugcs. */
-  public hideUgc(_ugcIds: string[]): Observable<string[]> {
-    return throwError(new Error('Steelhead does not support hiding ugc items.'));
+  public hideUgc(ugcIds: string[]): Observable<string[]> {
+    return this.steelheadUgcVisibilityService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+      switchMap(response => {
+        return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
+      }),
+    );
   }
 
   /** Unhide multiple Ugcs. */
-  public unhideUgc(_ugcIds: string[]): Observable<string[]> {
-    return throwError(new Error('Steelhead does not support bulk unhide UGC.'));
+  public unhideUgc(ugcIds: string[]): Observable<string[]> {
+    return this.steelheadUgcVisibilityService.unhideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+      switchMap(response => {
+        return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
+      }),
+    );
   }
 
   /** Generate multiple Sharecodes. */
-  public generateSharecodes(_ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
-    return throwError(new Error('Steelhead does not support bulk sharecode generation.'));
+  public generateSharecodes(ugcIds: string[]): Observable<BulkGenerateSharecodeResponse[]> {
+    return this.steelheadUgcSharecodeService.ugcGenerateSharecodesUsingBackgroundJob$(ugcIds).pipe(
+      switchMap(response => {
+        return this.backgroundJobService.waitForBackgroundJobToComplete<
+          BulkGenerateSharecodeResponse[]
+        >(response);
+      }),
+    );
   }
 
   /** Report multiple Ugcs. */

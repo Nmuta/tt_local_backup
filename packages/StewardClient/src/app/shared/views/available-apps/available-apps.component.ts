@@ -29,9 +29,6 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
 
   public userProfile: UserModel;
 
-  public areAnyAppsAccessible: boolean = false;
-  public areZendeskAppsAccessible: boolean = false;
-
   public availableIcon = faCheckCircle;
   public unavailableIcon = faTimesCircle;
 
@@ -101,10 +98,5 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
     this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.enableStagingApi = latest.enableStagingApi;
     });
-
-    const role = this.userProfile?.role ?? UserRole.None;
-    this.areAnyAppsAccessible = role !== UserRole.None;
-
-    this.areZendeskAppsAccessible = role === UserRole.LiveOpsAdmin || role === UserRole.GeneralUser;
   }
 }

@@ -71,5 +71,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 
         /// <summary>Gets curate UGC data.</summary>
         Task<GetCuratedUgcOutput> GetCuratedUgc(ForzaUGCContentType contentType, ForzaCurationMethod curationMethod, int maxResults);
+
+        /// <summary>Gets hidden UGC by xuid.</summary>
+        Task<GetHiddenUGCByUserOutput> GetHiddenUGCByUser(ulong xuid, ForzaUGCContentType contentType, int maxResults);
+
+        /// <summary>Sets/Unsets Hidden status for UGC.</summary>
+        Task SetUGCVisibility(System.Guid id, bool shouldBeVisible);
     }
 }

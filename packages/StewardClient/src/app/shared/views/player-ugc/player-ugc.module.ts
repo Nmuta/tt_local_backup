@@ -24,6 +24,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { SteelheadPlayerUgcComponent } from './steelhead/steelhead-player-ugc.component';
 import { WoodstockPlayerHiddenUgcComponent } from './woodstock/hidden/woodstock-player-hidden-ugc.component';
+import { SteelheadPlayerHiddenUgcComponent } from './steelhead/hidden/steelhead-player-hidden-ugc.component';
 
 /** Display for player ugc. */
 @NgModule({
@@ -33,6 +34,7 @@ import { WoodstockPlayerHiddenUgcComponent } from './woodstock/hidden/woodstock-
     WoodstockPlayerHiddenUgcComponent,
     ApolloPlayerUgcComponent,
     SteelheadPlayerUgcComponent,
+    SteelheadPlayerHiddenUgcComponent,
   ],
   imports: [
     CommonModule,
@@ -63,6 +65,7 @@ import { WoodstockPlayerHiddenUgcComponent } from './woodstock/hidden/woodstock-
     WoodstockPlayerHiddenUgcComponent,
     ApolloPlayerUgcComponent,
     SteelheadPlayerUgcComponent,
+    SteelheadPlayerHiddenUgcComponent,
   ],
 })
 export class PlayerUgcModule {}

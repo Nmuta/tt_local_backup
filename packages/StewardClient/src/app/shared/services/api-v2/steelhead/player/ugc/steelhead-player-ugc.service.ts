@@ -14,7 +14,7 @@ export class SteelheadPlayerUgcService {
   public readonly basePath: string = 'title/steelhead/player';
   constructor(private readonly api: ApiV2Service) {}
 
-  /** Get a player's report weight. */
+  /** Get a player's UGC items. */
   public getPlayerUgcByType$(
     xuid: BigNumber,
     contentType: UgcType,
@@ -22,6 +22,18 @@ export class SteelheadPlayerUgcService {
     const httpParams = new HttpParams().append('ugcType', contentType.toString());
     return this.api.getRequest$<SteelheadPlayerUgcItem[]>(
       `${this.basePath}/${xuid}/ugc`,
+      httpParams,
+    );
+  }
+
+  /** Gets a player's hidden UGC items. */
+  public getPlayerHiddenUgcByType$(
+    xuid: BigNumber,
+    contentType: UgcType,
+  ): Observable<SteelheadPlayerUgcItem[]> {
+    const httpParams = new HttpParams().append('ugcType', contentType.toString());
+    return this.api.getRequest$<SteelheadPlayerUgcItem[]>(
+      `${this.basePath}/${xuid}/ugc/hidden`,
       httpParams,
     );
   }

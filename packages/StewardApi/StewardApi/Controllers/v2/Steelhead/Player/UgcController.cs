@@ -21,11 +21,12 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using static Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
     /// <summary>
-    ///     Handles requests for Steelhead player auctions.
+    ///     Handles requests for Steelhead player UGC.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/ugc")]
     [LogTagTitle(TitleLogTags.Steelhead)]
@@ -102,6 +103,53 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
 
             return this.Ok(ugcItems);
+        }
+
+        /// <summary>
+        ///     Gets player hidden UGC items.
+        /// </summary>
+        [HttpGet("hidden")]
+        [SwaggerResponse(200, type: typeof(IList<UgcItem>))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetHiddenUgcItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+
+            var parseUgcType = ugcType.TryParseEnumElseThrow<UgcType>(nameof(ugcType));
+
+            if (parseUgcType == UgcType.Unknown)
+            {
+                throw new InvalidArgumentsStewardException($"Invalid UGC item type to search: (type: {parseUgcType})");
+            }
+
+            var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
+            var results = new List<ForzaUGCDataLight>();
+
+            switch (mappedContentType)
+            {
+                case ForzaUGCContentType.Livery:
+                    var liveries = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Livery, this.ugcMaxResults).ConfigureAwait(false);
+                    results.AddRange(liveries.result);
+                    break;
+
+                case ForzaUGCContentType.Photo:
+                    var photos = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Photo, this.ugcMaxResults).ConfigureAwait(false);
+                    results.AddRange(photos.result);
+                    break;
+
+                case ForzaUGCContentType.TuneBlob:
+                    var tunes = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.TuneBlob, this.ugcMaxResults).ConfigureAwait(false);
+                    results.AddRange(tunes.result);
+                    break;
+
+                default:
+                    throw new UnknownFailureStewardException($"Unsupported UGC type: {parseUgcType}");
+            }
+
+            var convertedResults = this.mapper.SafeMap<List<UgcItem>>(results);
+
+            return this.Ok(convertedResults);
         }
     }
 }
