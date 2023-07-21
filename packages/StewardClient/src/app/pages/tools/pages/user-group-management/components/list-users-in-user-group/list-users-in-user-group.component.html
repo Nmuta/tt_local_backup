@@ -6,9 +6,15 @@
     <div class="sf-spacer"></div>
     <div *ngIf="!!userGroup">
       <div *ngIf="!isAllUsersGroup">
+        <verify-button
+          #verifyDeleteBtn
+          [disabled]="disallowDeleteAllUsers"
+          [permissionAttribute]="removeAllPermAttribute"
+          [permissionTitle]="service.gameTitle"
+        ></verify-button>
         <button
           class="delete-all-button"
-          [disabled]="!verifyDelete.checked || !userHasRemoveAllPerms"
+          [verifyWithV2]="verifyDeleteBtn"
           mat-raised-button
           color="warn"
           (click)="deleteAllUsersInGroup()"
@@ -23,16 +29,6 @@
             <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
           </span>
         </button>
-        <mat-checkbox
-          #verifyDelete
-          stateManager
-          cyid="verifyDeleteAll"
-          [permissionAttribute]="removeAllPermAttribute"
-          [permissionTitle]="service?.gameTitle"
-          [disabled]="disallowDeleteAllUsers"
-          [matTooltip]="disallowDeleteAllUsers ? 'Disabled for this User Group' : 'Verify Deletion'"
-          >Verify</mat-checkbox
-        >
       </div>
     </div>
   </mat-card-header>
@@ -56,12 +52,15 @@
       </mat-form-field>
       <div class="actions-group">
         <div class="action">
+          <verify-button
+            #verifyBulkAddBtn
+            [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
+            [permissionAttribute]="updatePermAttribute"
+            [permissionTitle]="service.gameTitle"
+          ></verify-button>
           <button
-            [disabled]="
-              !verifyBulkAdd.checked ||
-              !formControls.userIdentifications.value ||
-              !userHasWritePerms
-            "
+            [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
+            [verifyWithV2]="verifyBulkAddBtn"
             mat-raised-button
             color="primary"
             (click)="addUsersInGroup()"
@@ -76,23 +75,17 @@
               <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
             </span>
           </button>
-          <mat-checkbox
-            #verifyBulkAdd
-            stateManager
-            cyid="verifyAdd"
-            [permissionAttribute]="updatePermAttribute"
-            [permissionTitle]="service?.gameTitle"
-            matTooltip="Verify Bulk Add"
-            >Verify</mat-checkbox
-          >
         </div>
         <div class="action">
+          <verify-button
+            #verifyBulkDeleteBtn
+            [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
+            [permissionAttribute]="updatePermAttribute"
+            [permissionTitle]="service.gameTitle"
+          ></verify-button>
           <button
-            [disabled]="
-              !verifyBulkDelete.checked ||
-              !formControls.userIdentifications.value ||
-              !userHasWritePerms
-            "
+            [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
+            [verifyWithV2]="verifyBulkDeleteBtn"
             mat-raised-button
             color="warn"
             (click)="deleteUsersInGroup()"
@@ -110,15 +103,6 @@
               ></button-spinner>
             </span>
           </button>
-          <mat-checkbox
-            #verifyBulkDelete
-            stateManager
-            cyid="verifyDelete"
-            [permissionAttribute]="updatePermAttribute"
-            [permissionTitle]="service?.gameTitle"
-            matTooltip="Verify Bulk Deletion"
-            >Verify</mat-checkbox
-          >
         </div>
       </div>
     </form>
