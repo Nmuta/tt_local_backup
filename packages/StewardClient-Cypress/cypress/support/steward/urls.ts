@@ -94,5 +94,9 @@ export const stewardUrls = {
       woodstock: 'app/tools/services-table-storage/woodstock',
       steelhead: 'app/tools/services-table-storage/steelhead',
     },
+    playfab: {
+      default: 'app/tools/playfab',
+      woodstock: 'app/tools/playfab/woodstock',
+    },
   },
 };
