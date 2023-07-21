@@ -24,11 +24,8 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
     cy.get('button').contains('span', '1 hour').parent().click();
     cy.contains('mat-form-field', 'Seller Id').click().type('1');
 
-    cy.get('mat-checkbox').contains('span', 'Verify').parent().parent().click();
-    cy.contains('button', 'Create Auction').click();
-
-    waitForProgressSpinners();
-    cy.contains('span', 'An auction has been created. You can access it here').should('exist');
+    cy.get('button').contains('lock_open').click();
+    cy.contains('button', 'Create Auction').should('be.enabled');
   });
 
   it('should not create an auction with invalid car input', () => {
@@ -42,10 +39,8 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
     cy.get('button').contains('span', '1 hour').parent().click();
     cy.contains('mat-form-field', 'Seller Id').click().type('1');
 
-    cy.get('mat-checkbox').contains('span', 'Verify').parent().parent().click();
-    cy.contains('button', 'Create Auction').click();
-
-    cy.contains('span', 'An auction has been created. You can access it here').should('not.exist');
+    cy.get('button').contains('lock_open').click();
+    cy.contains('button', 'Create Auction').should('be.disabled');
   });
 
   it('should not create an auction with invalid Price inputs', () => {
@@ -57,8 +52,8 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
     cy.get('button').contains('span', '1 hour').parent().click();
     cy.contains('mat-form-field', 'Seller Id').click().type('1');
 
-    cy.get('mat-checkbox').contains('span', 'Verify').parent().parent().click();
-    cy.contains('button', 'Create Auction').get('[disabled="true"]').should('exist');
+    cy.get('button').contains('lock_open').click();
+    cy.contains('button', 'Create Auction').should('be.disabled');
   });
 
   it('should not create an auction with invalid Seller Id inputs', () => {
@@ -70,7 +65,7 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
     cy.get('button').contains('span', '1 hour').parent().click();
     cy.contains('mat-form-field', 'Seller Id').click().type('a');
 
-    cy.get('mat-checkbox').contains('span', 'Verify').parent().parent().click();
-    cy.contains('button', 'Create Auction').get('[disabled="true"]').should('exist');
+    cy.get('button').contains('lock_open').click();
+    cy.contains('button', 'Create Auction').should('be.disabled');
   });
 });

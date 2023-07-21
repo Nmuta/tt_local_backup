@@ -77,5 +77,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 
         /// <summary>Sets/Unsets Hidden status for UGC.</summary>
         Task SetUGCVisibility(System.Guid id, bool shouldBeVisible);
+
+        /// <summary>Updates Title and Description of a UGC item.</summary>
+        Task SetTitleAndDescription(Guid id, string newTitle, string newDescription);
     }
 }
