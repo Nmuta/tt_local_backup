@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '7ad05002-bc70-4022-8dd3-3001ebda96c2',
+      shortText: 'Remove no user role, provide email link in login error page',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.ServicesTableStorage },
       uuid: 'e8f7a5a004-fce6-4772-a015-50a346a6872f',
       shortText: 'Remove T10Id as lookup option',
