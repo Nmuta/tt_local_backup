@@ -8,6 +8,36 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'f77d9fb2-1ace-4fa6-ac1b-c836fb7ab159',
+      shortText: 'Auto-reload player report weight after changing their player flags',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '7ad05002-bc70-4022-8dd3-3001ebda96c2',
+      shortText: 'Remove no user role, provide email link in login error page',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'e8f7a5a004-fce6-4772-a015-50a346a6872f',
+      shortText: 'Remove T10Id as lookup option',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'e8a27035-dc62-4eaa-96a7-d00d76e21e25',
+      shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'dab5bf51-fd02-46ec-bf29-e20cb13e42f6',
+      shortText: 'Add default icon to create button in create single auction',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '72ccd2b5-fd86-4714-863c-fc83218d54d3',
+      shortText: 'Clear note input field after adding a profile note',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
       uuid: '65f7537d-78a4-4e61-8b7e-f581a8e9bfaf',
       shortText: 'Improve Ugc search visual',

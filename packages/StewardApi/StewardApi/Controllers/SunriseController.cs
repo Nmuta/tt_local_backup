@@ -360,6 +360,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var validatedFlags = this.mapper.SafeMap<SunriseUserFlags>(userFlags);
+
+            // If UltimateVip is selected we force normal Vip to true
+            if (validatedFlags.IsUltimateVip)
+            {
+                validatedFlags.IsVip = true;
+            }
+
             await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
                 .ConfigureAwait(true);
 

@@ -24,6 +24,7 @@ import {
   takeUntil,
   EMPTY,
 } from 'rxjs';
+import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
 import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
 import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
@@ -40,6 +41,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: SteelheadPlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('Post Hide UGC');
+  public unhideMonitor = new ActionMonitor('POST Unhide UGC');
   public reportMonitor = new ActionMonitor('Post Report UGC');
   public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
 
@@ -53,7 +55,6 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   };
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
-  public canHideUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
   public featureMatTooltip: string = null;
   public generateSharecodeMatTooltip: string = null;
@@ -66,6 +67,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public featurePermAttribute = PermAttributeName.FeatureUgc;
   public reportPermAttribute = PermAttributeName.ReportUgc;
   public hidePermAttribute = PermAttributeName.HideUgc;
+  public unhidePermAttribute = PermAttributeName.UnhideUgc;
   public gameTitle = GameTitle.FM8;
 
   constructor(
@@ -74,6 +76,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: SteelheadUgcReportService,
     private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
+    private readonly ugcVisibilityService: SteelheadUgcVisibilityService,
     private readonly ugcGeoFlagsService: SteelheadUgcGeoFlagsService,
   ) {
     super();
@@ -176,8 +179,33 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     if (!this.ugcItem) {
       return;
     }
+    this.hideMonitor = this.hideMonitor.repeat();
 
-    throw new Error(`Steelhead does not support hiding UGC.`);
+    this.ugcVisibilityService
+      .hideUgcItems$([this.ugcItem.id])
+      .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = false;
+        this.ugcItem.isHidden = true;
+        this.ugcItem.isPublic = false;
+      });
+  }
+
+  /** Unhide a UGC item in Woodstock */
+  public unhideUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.unhideMonitor = this.unhideMonitor.repeat();
+
+    this.ugcVisibilityService
+      .unhideUgcItems$([this.ugcItem.id])
+      .pipe(this.unhideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = true;
+        this.ugcItem.isHidden = false;
+        this.ugcItem.isPublic = true;
+      });
   }
 
   /** Updates the geoflags contract after submit. */
@@ -187,7 +215,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     this.geoFlagsToggleListEzContract = newGeoFlagsContract;
   }
 
-  /** Report a Ugc item in Woodstock */
+  /** Report a Ugc item in Steelhead */
   public reportUgcItem(): void {
     if (!this.ugcItem) {
       return;
@@ -200,7 +228,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       .subscribe();
   }
 
-  /** Generate sharecode for a UGC item in Woodstock */
+  /** Generate sharecode for a UGC item in Steelhead */
   public generateSharecodeForUgc(): void {
     if (!this.ugcItem) {
       return;
