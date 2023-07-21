@@ -18,6 +18,7 @@ export default defineConfig({
   viewportHeight: 1080,
   e2e: {
     experimentalRunAllSpecs: true,
+    testIsolation: false,
     baseUrl: 'https://steward-ui-dev.azurewebsites.net',
     specPattern: 'cypress/e2e/**/*.spec.*',
     supportFile: 'cypress/support/commands.ts',

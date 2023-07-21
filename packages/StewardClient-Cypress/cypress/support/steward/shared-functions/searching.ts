@@ -1,6 +1,40 @@
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
+import { KnownUser } from '../common/account-info';
 
 const timeoutOverride = 60_000; /*ms*/
+
+/** Finds and fills in Gamertag field. Clears the field when done. */
+export function contextSearchByGtagForPlayerDetails(knownUser: KnownUser): void {
+  if (!knownUser.gtag) {
+    throw new Error('Known user lacked a gtag')
+  }
+
+  before(() => {
+    cy.contains('button', 'GTAG').click();
+    cy.contains('mat-form-field', 'Gamertag').click().type(`${knownUser.gtag}\n`);
+    waitForProgressSpinners(timeoutOverride);
+  });
+
+  after(() => {
+    cy.get('player-selection-single mat-chip mat-icon[matchipremove]').click();
+  });
+}
+
+/** Finds and fills in XUID field. Clears the field when done */
+export function contextSearchByXuidForPlayerDetails(knownUser: KnownUser): void {
+  if (!knownUser.xuid) {
+    throw new Error('Known user lacked a XUID')
+  }
+  before(() => {
+    cy.contains('button', 'XUID').click();
+    cy.contains('mat-form-field', 'XuID', { matchCase: false }).click().type(`${knownUser.xuid}\n`);
+    waitForProgressSpinners(timeoutOverride);
+  });
+
+  after(() => {
+    cy.get('player-selection-single mat-chip mat-icon[matchipremove]').click();
+  });
+}
 
 /** Finds and fills in Gamertag field */
 export function searchByGtag(gtag: string): void {

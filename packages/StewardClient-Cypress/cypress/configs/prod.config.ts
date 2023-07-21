@@ -25,5 +25,6 @@ export default defineConfig({
     baseUrl: 'https://steward-ui-prod.azurewebsites.net',
     specPattern: 'cypress/e2e/**/*.spec.*',
     supportFile: 'cypress/support/commands.ts',
+    testIsolation: false,
   },
 });
