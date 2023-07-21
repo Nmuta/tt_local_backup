@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { GuidLikeString } from './extended-types';
 import BigNumber from 'bignumber.js';
 
-export enum TaskState {
+export enum LspTaskState {
   Pending = 'Pending',
   Processing = 'Processing',
   Complete = 'Complete',
@@ -10,7 +10,7 @@ export enum TaskState {
   Disabled = 'Disabled',
 }
 
-export enum TaskPeriodType {
+export enum LspTaskPeriodType {
   None = 'None',
   Deterministic = 'Deterministic',
   NonDeterministic = 'NonDeterministic',
@@ -28,6 +28,6 @@ export interface LspTask {
   lockTakenUntilUtc: DateTime;
   nextExecutionUtc: DateTime;
   periodInSeconds: BigNumber;
-  periodType: TaskPeriodType;
-  state: TaskState;
+  periodType: LspTaskPeriodType;
+  state: LspTaskState;
 }

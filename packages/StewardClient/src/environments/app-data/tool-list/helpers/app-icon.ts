@@ -39,7 +39,7 @@ export enum AppIcon {
   ServicesTableStorage = 'table_rows',
   AcLogReader = 'document_scanner',
   ProductPricing = 'sell',
-  Task = 'terminal',
+  LspTasks = 'terminal',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */

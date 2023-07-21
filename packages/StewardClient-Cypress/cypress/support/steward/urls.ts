@@ -89,10 +89,10 @@ export const stewardUrls = {
       woodstock: 'app/tools/auction-details/woodstock',
       sunrise: 'app/tools/auction-details/sunrise',
     },
-    tasks: {
-      default: '/app/tools/tasks',
-      steelhead: '/app/tools/tasks/steelhead',
-      woodstock: '/app/tools/tasks/woodstock',
+    lspTasks: {
+      default: '/app/tools/lsp-tasks',
+      steelhead: '/app/tools/lsp-tasks/steelhead',
+      woodstock: '/app/tools/lsp-tasks/woodstock',
     },
   },
 };

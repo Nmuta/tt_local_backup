@@ -10,13 +10,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HelpModule } from '@shared/modules/help/help.module';
-import { TaskComponent } from './task.component';
-import { TaskRoutingModule } from './task.routing';
+import { LspTasksComponent } from './lsp-tasks.component';
+import { LspTasksRoutingModule } from './lsp-tasks.routing';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
-import { TaskManagementComponent } from './components/task-management.component';
-import { WoodstockTaskManagementComponent } from './components/woodstock/woodstock-task-management.component';
-import { SteelheadTaskManagementComponent } from './components/steelhead/steelhead-task-management.component';
+import { LspTaskManagementComponent } from './components/lsp-task-management.component';
+import { WoodstockLspTaskManagementComponent } from './components/woodstock/woodstock-lsp-task-management.component';
+import { SteelheadLspTaskManagementComponent } from './components/steelhead/steelhead-lsp-task-management.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatTableModule } from '@angular/material/table';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
@@ -27,13 +27,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 
-/** Module for displaying the current tasks. */
+/** Module for displaying the current lsp tasks. */
 @NgModule({
   declarations: [
-    TaskComponent,
-    TaskManagementComponent,
-    WoodstockTaskManagementComponent,
-    SteelheadTaskManagementComponent,
+    LspTasksComponent,
+    LspTaskManagementComponent,
+    WoodstockLspTaskManagementComponent,
+    SteelheadLspTaskManagementComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +43,7 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
     RouterModule,
     MatButtonModule,
     MatCardModule,
-    TaskRoutingModule,
+    LspTasksRoutingModule,
     MatInputModule,
     MatTooltipModule,
     TextFieldModule,
@@ -62,4 +62,4 @@ import { StateManagersModule } from '@shared/modules/state-managers/state-manage
     StateManagersModule,
   ],
 })
-export class TaskModule {}
+export class LspTasksModule {}

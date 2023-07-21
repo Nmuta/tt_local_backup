@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TaskComponent } from './task.component';
+import { LspTasksComponent } from './lsp-tasks.component';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
-import { SteelheadTaskManagementComponent } from './components/steelhead/steelhead-task-management.component';
-import { WoodstockTaskManagementComponent } from './components/woodstock/woodstock-task-management.component';
+import { SteelheadLspTaskManagementComponent } from './components/steelhead/steelhead-lsp-task-management.component';
+import { WoodstockLspTaskManagementComponent } from './components/woodstock/woodstock-lsp-task-management.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TaskComponent,
-    data: { tool: 'tasks' },
+    component: LspTasksComponent,
+    data: { tool: 'lspTasks' },
     children: [
       {
         path: '',
@@ -20,13 +20,13 @@ const routes: Routes = [
       {
         path: 'steelhead',
         canActivate: [TitleMemorySetGuard],
-        component: SteelheadTaskManagementComponent,
+        component: SteelheadLspTaskManagementComponent,
         pathMatch: 'full',
       },
       {
         path: 'woodstock',
         canActivate: [TitleMemorySetGuard],
-        component: WoodstockTaskManagementComponent,
+        component: WoodstockLspTaskManagementComponent,
         pathMatch: 'full',
       },
     ],
@@ -38,4 +38,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TaskRoutingModule {}
+export class LspTasksRoutingModule {}

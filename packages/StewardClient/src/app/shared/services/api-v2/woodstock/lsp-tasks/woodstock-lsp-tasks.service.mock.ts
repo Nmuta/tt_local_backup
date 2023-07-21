@@ -1,12 +1,12 @@
 import { ValueProvider } from '@angular/core';
 import { of } from 'rxjs';
-import { WoodstockTaskService } from './woodstock-task.service';
+import { WoodstockLspTaskService } from './woodstock-lsp-tasks.service';
 
 /** Defines the mock for the API Service. */
 export class MockWoodstockTaskService {
-  public getTasks$ = jasmine.createSpy('getTasks').and.returnValue(of());
+  public getLspTasks$ = jasmine.createSpy('getLspTasks').and.returnValue(of());
 
-  public updateTask$ = jasmine.createSpy('updateTask').and.returnValue(of());
+  public updateLspTask$ = jasmine.createSpy('updateLspTask').and.returnValue(of());
 
   constructor(private readonly generator$: () => unknown) {}
 }
@@ -16,7 +16,7 @@ export function createMockWoodstockTaskService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {
-    provide: WoodstockTaskService,
+    provide: WoodstockLspTaskService,
     useValue: new MockWoodstockTaskService(returnValueGenerator),
   };
 }

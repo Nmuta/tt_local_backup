@@ -4,11 +4,11 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
-import { TaskComponent } from './task.component';
+import { LspTasksComponent } from './lsp-tasks.component';
 
 describe('TaskComponent', () => {
-  let component: TaskComponent;
-  let fixture: ComponentFixture<TaskComponent>;
+  let component: LspTasksComponent;
+  let fixture: ComponentFixture<LspTasksComponent>;
 
   const formBuilder: FormBuilder = new FormBuilder();
 
@@ -21,11 +21,11 @@ describe('TaskComponent', () => {
         ReactiveFormsModule,
         MatAutocompleteModule,
       ],
-      declarations: [TaskComponent],
+      declarations: [LspTasksComponent],
       providers: [{ provide: FormBuilder, useValue: formBuilder }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TaskComponent);
+    fixture = TestBed.createComponent(LspTasksComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
-import { LspTask, TaskPeriodType, TaskState } from '@models/lsp-task';
+import { LspTask, LspTaskPeriodType, LspTaskState } from '@models/lsp-task';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { flatten } from 'lodash';
@@ -15,41 +15,41 @@ export interface FormGroupTaskEntry {
   formGroup: FormGroup;
   edit?: boolean;
   postMonitor: ActionMonitor;
-  task: LspTask;
+  lspTask: LspTask;
 }
 
-/** Group notification management contract. */
-export interface TaskManagementContract {
+/** Lsp tasks management contract. */
+export interface LspTaskManagementContract {
   /** Get game title. */
   gameTitle: GameTitle;
-  /** Get tasks. */
-  getTasks$(): Observable<LspTask[]>;
-  /** Update a task. */
-  updateTask$(task: LspTask): Observable<void>;
+  /** Get lsp tasks. */
+  getLspTasks$(): Observable<LspTask[]>;
+  /** Update a single lsp task. */
+  updateLspTask$(task: LspTask): Observable<void>;
 }
 
-/** Displays the tasks. */
+/** Displays the lsp tasks. */
 @Component({
-  selector: 'task-management',
-  templateUrl: './task-management.component.html',
-  styleUrls: ['./task-management.component.scss'],
+  selector: 'lsp-task-management',
+  templateUrl: './lsp-task-management.component.html',
+  styleUrls: ['./lsp-task-management.component.scss'],
 })
-export class TaskManagementComponent extends BaseComponent implements OnInit {
-  /** The task service. */
-  @Input() public service: TaskManagementContract;
+export class LspTaskManagementComponent extends BaseComponent implements OnInit {
+  /** The lsp task management service. */
+  @Input() public service: LspTaskManagementContract;
 
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public allMonitors = [this.getMonitor];
-  public rawTasks: LspTask[];
-  public tasks = new MatTableDataSource<FormGroupTaskEntry>();
+  public rawLspTasks: LspTask[];
+  public lspTasks = new MatTableDataSource<FormGroupTaskEntry>();
   public columnsToDisplay = ['task-info', 'execution-info', 'actions'];
-  public taskPeriodTypes: TaskPeriodType[] = [
-    TaskPeriodType.Deterministic,
-    TaskPeriodType.NonDeterministic,
+  public lspTaskPeriodTypes: LspTaskPeriodType[] = [
+    LspTaskPeriodType.Deterministic,
+    LspTaskPeriodType.NonDeterministic,
   ];
   public minDate: DateTime = DateTime.utc();
-  public taskStateEnum = TaskState;
-  public readonly permAttribute = PermAttributeName.UpdateTask;
+  public lspTaskStateEnum = LspTaskState;
+  public readonly permAttribute = PermAttributeName.UpdateLspTask;
 
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
@@ -65,45 +65,45 @@ export class TaskManagementComponent extends BaseComponent implements OnInit {
     this.getMonitor = this.getMonitor.repeat();
 
     this.service
-      .getTasks$()
+      .getLspTasks$()
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(tasks => {
-        this.rawTasks = tasks;
-        this.tasks.data = tasks.map(entry => {
-          return this.prepareTasks(entry);
+        this.rawLspTasks = tasks;
+        this.lspTasks.data = tasks.map(entry => {
+          return this.prepareLspTask(entry);
         });
-        this.allMonitors = flatten(this.tasks.data.map(v => [v.postMonitor])).concat(
+        this.allMonitors = flatten(this.lspTasks.data.map(v => [v.postMonitor])).concat(
           this.getMonitor,
         );
       });
   }
 
   /** Update notification selected */
-  public updateNotificationEntry(entry: FormGroupTaskEntry): void {
-    const updatedTask: LspTask = entry.task;
+  public updateLspTaskEntry(entry: FormGroupTaskEntry): void {
+    const updatedTask: LspTask = entry.lspTask;
     updatedTask.nextExecutionUtc = entry.formGroup.controls.nextExecutionUtc.value;
     updatedTask.periodInSeconds = entry.formGroup.controls.periodInSeconds.value;
     updatedTask.periodType = entry.formGroup.controls.periodType.value;
 
-    this.updateTask(updatedTask, entry);
+    this.updateLspTask(updatedTask, entry);
   }
 
   /** Puts entry in editable state. */
   public runNow(entry: FormGroupTaskEntry): void {
-    const updatedTask: LspTask = entry.task;
+    const updatedTask: LspTask = entry.lspTask;
     updatedTask.nextExecutionUtc = DateTime.utc();
 
-    this.updateTask(updatedTask, entry);
+    this.updateLspTask(updatedTask, entry);
   }
 
   /** Puts entry in editable state. */
   public changeState(entry: FormGroupTaskEntry): void {
-    const updatedTask: LspTask = entry.task;
+    const updatedTask: LspTask = entry.lspTask;
     const newState =
-      entry.task.state == TaskState.Disabled ? TaskState.Pending : TaskState.Disabled;
+      entry.lspTask.state == LspTaskState.Disabled ? LspTaskState.Pending : LspTaskState.Disabled;
     updatedTask.state = newState;
 
-    this.updateTask(updatedTask, entry);
+    this.updateLspTask(updatedTask, entry);
   }
 
   /** Puts entry in editable state. */
@@ -114,14 +114,14 @@ export class TaskManagementComponent extends BaseComponent implements OnInit {
   /** Reverts an entry from edit state. */
   public revertEntryEdit(entry: FormGroupTaskEntry): void {
     entry.edit = false;
-    const rawEntry = this.rawTasks.find(v => v.id == entry.task.id);
+    const rawEntry = this.rawLspTasks.find(v => v.id == entry.lspTask.id);
     entry.formGroup.controls.nextExecutionUtc.setValue(rawEntry.nextExecutionUtc);
     entry.formGroup.controls.periodInSeconds.setValue(rawEntry.periodInSeconds);
     entry.formGroup.controls.periodType.setValue(rawEntry.periodType);
     entry.postMonitor = new ActionMonitor('Edit Task');
   }
 
-  private prepareTasks(lspTask: LspTask): FormGroupTaskEntry {
+  private prepareLspTask(lspTask: LspTask): FormGroupTaskEntry {
     const formControls = {
       nextExecutionUtc: new FormControl(lspTask.nextExecutionUtc, [Validators.required]),
       periodInSeconds: new FormControl(lspTask.periodInSeconds, [Validators.required]),
@@ -131,28 +131,28 @@ export class TaskManagementComponent extends BaseComponent implements OnInit {
       formGroup: new FormGroup(formControls),
       formControls: formControls,
       postMonitor: new ActionMonitor('Edit Task'),
-      task: lspTask,
+      lspTask: lspTask,
     };
 
     return newControls;
   }
 
-  private updateTask(task: LspTask, entry: FormGroupTaskEntry): void {
+  private updateLspTask(task: LspTask, entry: FormGroupTaskEntry): void {
     entry.postMonitor = entry.postMonitor.repeat();
     this.service
-      .updateTask$(task)
+      .updateLspTask$(task)
       .pipe(entry.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => this.replaceRawEntry(entry));
   }
 
   private replaceRawEntry(entry: FormGroupTaskEntry): void {
     entry.edit = false;
-    const rawEntry = this.rawTasks.find(v => v.id == entry.task.id);
+    const rawEntry = this.rawLspTasks.find(v => v.id == entry.lspTask.id);
 
     rawEntry.nextExecutionUtc = entry.formGroup.controls.nextExecutionUtc.value;
     rawEntry.periodInSeconds = entry.formGroup.controls.periodInSeconds.value;
     rawEntry.periodType = entry.formGroup.controls.periodType.value;
 
-    this.tasks._updateChangeSubscription();
+    this.lspTasks._updateChangeSubscription();
   }
 }

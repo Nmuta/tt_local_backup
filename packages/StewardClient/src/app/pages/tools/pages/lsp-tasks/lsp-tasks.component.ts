@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { getTasksRoute } from '@helpers/route-links';
+import { getLspTasksRoute } from '@helpers/route-links';
 import { GameTitle, GameTitleAbbreviation } from '@models/enums';
 
 /**
- * Routed component which displays the Task Management.
+ * Routed component which displays the Lsp Task Management.
  */
 @Component({
-  templateUrl: './task.component.html',
-  styleUrls: ['./task.component.scss'],
+  templateUrl: './lsp-tasks.component.html',
+  styleUrls: ['./lsp-tasks.component.scss'],
 })
-export class TaskComponent implements OnInit {
+export class LspTasksComponent implements OnInit {
   public navbarRouterLinks = [];
 
   /** Lifecycle hook */
@@ -18,12 +18,12 @@ export class TaskComponent implements OnInit {
       {
         name: GameTitleAbbreviation.FM8,
         codename: GameTitle.FM8,
-        route: getTasksRoute(GameTitle.FM8),
+        route: getLspTasksRoute(GameTitle.FM8),
       },
       {
         name: GameTitleAbbreviation.FH5,
         codename: GameTitle.FH5,
-        route: getTasksRoute(GameTitle.FH5),
+        route: getLspTasksRoute(GameTitle.FH5),
       },
     ];
   }

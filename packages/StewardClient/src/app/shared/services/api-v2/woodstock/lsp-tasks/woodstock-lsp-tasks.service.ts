@@ -7,17 +7,17 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class WoodstockTaskService {
-  public readonly basePath: string = 'title/woodstock/task';
+export class WoodstockLspTaskService {
+  public readonly basePath: string = 'title/woodstock/lsp-task';
   constructor(private readonly api: ApiV2Service) {}
 
-  /** Gets the Tasks. */
-  public getTasks$(): Observable<LspTask[]> {
+  /** Gets the Lsp Tasks. */
+  public getLspTasks$(): Observable<LspTask[]> {
     return this.api.getRequest$<LspTask[]>(`${this.basePath}`);
   }
 
-  /** Gets the Tasks. */
-  public updateTask$(task: LspTask): Observable<void> {
-    return this.api.putRequest$<void>(`${this.basePath}`, task);
+  /** Updates a single Lsp task. */
+  public updateLspTask$(task: LspTask): Observable<void> {
+    return this.api.postRequest$<void>(`${this.basePath}/update-single`, task);
   }
 }

@@ -92,7 +92,7 @@ export function getUserDetailsRoute(gameTitle: string) {
   return ['/app/tools/user-details/', gameTitle];
 }
 
-/** Make tasks route. */
-export function getTasksRoute(gameTitle: GameTitle) {
-  return ['/app/tools/task/', gameTitle];
+/** Make lsp tasks route. */
+export function getLspTasksRoute(gameTitle: GameTitle) {
+  return ['/app/tools/lsp-tasks/', gameTitle];
 }

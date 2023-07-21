@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, waitForAsync, TestBed } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
-import { TaskManagementComponent, TaskManagementContract } from './task-management.component';
+import {
+  LspTaskManagementComponent,
+  LspTaskManagementContract,
+} from './lsp-task-management.component';
 import { GameTitle } from '@models/enums';
 import { of } from 'rxjs';
 import { LspTask } from '@models/lsp-task';
@@ -10,16 +13,16 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('TaskManagementComponent', () => {
-  let component: TaskManagementComponent;
-  let fixture: ComponentFixture<TaskManagementComponent>;
+describe('LspTaskManagementComponent', () => {
+  let component: LspTaskManagementComponent;
+  let fixture: ComponentFixture<LspTaskManagementComponent>;
 
-  const mockContract: TaskManagementContract = {
+  const mockContract: LspTaskManagementContract = {
     gameTitle: GameTitle.FH5,
-    getTasks$: () => {
+    getLspTasks$: () => {
       return of(undefined);
     },
-    updateTask$: (_task: LspTask) => {
+    updateLspTask$: (_task: LspTask) => {
       return of(undefined);
     },
   };
@@ -27,12 +30,12 @@ describe('TaskManagementComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [TaskManagementComponent, HumanizePipe],
+      declarations: [LspTaskManagementComponent, HumanizePipe],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [...createMockMsalServices(), createMockLoggerService()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TaskManagementComponent);
+    fixture = TestBed.createComponent(LspTaskManagementComponent);
     component = fixture.debugElement.componentInstance;
     component.service = mockContract;
   }));
