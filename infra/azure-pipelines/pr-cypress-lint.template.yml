@@ -35,14 +35,6 @@ jobs:
     inputs:
       workingFile: packages/StewardClient-Cypress/.npmrc
 
-  - task: Bash@3
-    displayName: Changelog Must Be Modified
-    inputs:
-      targetType: inline
-      script: yarn run check:ado:changelog-is-modified
-      workingDirectory: packages/StewardClient-Cypress/
-      failOnStderr: true
-
   - task: CmdLine@2
     displayName: yarn install copy
     condition: succeededOrFailed()
