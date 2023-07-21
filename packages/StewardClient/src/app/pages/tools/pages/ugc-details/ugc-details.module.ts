@@ -41,6 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { UgcOperationSnackbarComponent } from './components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { PersistUgcModalModule } from '@views/persist-ugc-modal/persist-ugc-modal.module';
+import { EditUgcModalModule } from '@views/edit-ugc-modal/edit-ugc-modal.module';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -92,6 +93,7 @@ import { PersistUgcModalModule } from '@views/persist-ugc-modal/persist-ugc-moda
     MatIconModule,
     ClipboardModule,
     PersistUgcModalModule,
+    EditUgcModalModule,
   ],
 })
 export class UgcDetailsModule {}
