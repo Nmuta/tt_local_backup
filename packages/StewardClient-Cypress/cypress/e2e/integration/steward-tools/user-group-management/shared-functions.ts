@@ -4,7 +4,6 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 export function findLiveOpsDevGroupTest(group, user): void {
   it('should find LiveOpsTestingGroup', () => {
     selectLspGroupUGM(group);
-    waitForProgressSpinners();
     cy.contains('td', group).should('exist');
     cy.contains('td', user.xuid).should('exist');
   });
@@ -213,4 +212,5 @@ function selectLspGroupUGM(groupName: string): void {
   waitForProgressSpinners();
   cy.contains('mat-form-field', 'Select LSP Group').click().type(`${groupName}`);
   cy.contains('div', `${groupName}`).click('top');
+  waitForProgressSpinners();
 }
