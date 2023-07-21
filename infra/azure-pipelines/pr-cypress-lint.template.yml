@@ -1,6 +1,6 @@
 jobs:
 - job: Job_2
-  displayName: Cypress (Lint)
+  displayName: Cypress (Lint & Build)
   pool:
     vmImage: ubuntu-20.04
 
