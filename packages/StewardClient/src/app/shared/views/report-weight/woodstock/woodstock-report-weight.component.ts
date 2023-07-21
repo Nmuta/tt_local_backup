@@ -3,6 +3,7 @@ import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { WoodstockPlayerService } from '@services/api-v2/woodstock/player/woodstock-player.service';
 import { ReportWeightServiceContract } from '../report-weight.component';
+import { cloneDeep } from 'lodash';
 
 /**
  *  Woodstock report weight component.
@@ -24,5 +25,11 @@ export class WoodstockReportWeightComponent {
       setUserReportWeight$: (xuid, reportWeight) =>
         woodstockPlayerService.setUserReportWeight$(xuid, reportWeight),
     };
+  }
+
+  /** Reloads the identity's report weight. */
+  public reloadReportWeight(): void {
+    // Fake identity change so ngOnChanges is fired
+    this.identity = cloneDeep(this.identity);
   }
 }
