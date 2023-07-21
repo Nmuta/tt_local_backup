@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GameTitle } from '@models/enums';
 import { LspTask } from '@models/lsp-task';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
@@ -9,6 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class SteelheadLspTaskService {
   public readonly basePath: string = 'title/steelhead/lsp-task';
+  public gameTitle: GameTitle.FM8;
+
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the Lsp Tasks. */
