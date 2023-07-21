@@ -56,7 +56,7 @@
             #verifyBulkAddBtn
             [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
             [permissionAttribute]="updatePermAttribute"
-            [permissionTitle]="service.gameTitle"
+            [permissionTitle]="service?.gameTitle"
           ></verify-button>
           <button
             [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
@@ -81,7 +81,7 @@
             #verifyBulkDeleteBtn
             [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
             [permissionAttribute]="updatePermAttribute"
-            [permissionTitle]="service.gameTitle"
+            [permissionTitle]="service?.gameTitle"
           ></verify-button>
           <button
             [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
