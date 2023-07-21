@@ -53,5 +53,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 
         /// <summary>Gets curated UGC data.</summary>
         Task<GetCuratedUgcOutput> GetCuratedUgc(ForzaUGCContentType contentType, ForzaCurationMethod curationMethod, int maxResults);
+
+        /// <summary>Updates Title and Description of a UGC item.</summary>
+        Task SetTitleAndDescription(Guid id, string newTitle, string newDescription);
     }
 }

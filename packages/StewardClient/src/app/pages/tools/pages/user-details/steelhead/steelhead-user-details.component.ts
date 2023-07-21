@@ -6,6 +6,7 @@ import { UgcType } from '@models/ugc-filters';
 import { GuidLikeString } from '@models/extended-types';
 import { SteelheadPlayerProfileManagementComponent } from '@views/player-profile-management/steelhead/steelhead-player-profile-management.component';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { SteelheadReportWeightComponent } from '@views/report-weight/steelhead/steelhead-report-weight.component';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
@@ -15,7 +16,9 @@ import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 })
 export class SteelheadUserDetailsComponent {
   @ViewChild(SteelheadPlayerProfileManagementComponent)
-  profileManager: SteelheadPlayerProfileManagementComponent;
+  public profileManager: SteelheadPlayerProfileManagementComponent;
+  @ViewChild(SteelheadReportWeightComponent)
+  public reportWeight: SteelheadReportWeightComponent;
   public profile: FullPlayerInventoryProfile;
 
   public readonly UgcType = UgcType;
@@ -61,5 +64,6 @@ export class SteelheadUserDetailsComponent {
   /** Called when player flags are changed. */
   public flagsUpdated(): void {
     this.profileManager.checkUserGroupMembership();
+    this.reportWeight.reloadReportWeight();
   }
 }

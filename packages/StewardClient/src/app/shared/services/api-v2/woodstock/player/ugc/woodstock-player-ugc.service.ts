@@ -21,7 +21,7 @@ export class WoodstockPlayerUgcService {
   }
 
   /** Gets a player's hidden UGC item. */
-  public getPlayerHiddenUgcByXuid$(
+  public getPlayerHiddenUgcByType$(
     xuid: BigNumber,
     contentType: UgcType,
   ): Observable<PlayerUgcItem[]> {

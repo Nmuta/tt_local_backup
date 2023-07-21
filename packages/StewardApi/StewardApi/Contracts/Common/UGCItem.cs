@@ -35,6 +35,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public int TimesUsed { get; set; }
         public int TimesLiked { get; set; }
         public int TimesDownloaded { get; set; }
+        public bool IsHidden { get; set; }
+        public DateTime HiddenTimeUtc { get; set; }
 
         /// <remarks>Mapped from 'Searchable' property on LSP.</remarks>
         public bool IsPublic { get; set; }

@@ -37,6 +37,7 @@ import { UgcOperationSnackbarComponent } from '../../components/ugc-action-snack
 import { WoodstockPersistUgcModalComponent } from '@views/persist-ugc-modal/woodstock/woodstock-persist-ugc-modal.component';
 import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 import { WoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service';
+import { WoodstockEditUgcModalComponent } from '@views/edit-ugc-modal/woodstock/woodstock-edit-ugc-modal.component';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -49,16 +50,15 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public ugcItem: WoodstockPlayerUgcItem;
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('POST Hide UGC');
+  public unhideMonitor = new ActionMonitor('POST Unhide UGC');
   public reportMonitor = new ActionMonitor('POST Report UGC');
   public persistMonitor = new ActionMonitor('POST Persist UGC');
   public cloneMonitor = new ActionMonitor('POST Clone UGC');
   public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
   public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
-
   public userHasWritePerms: boolean = false;
   public canChangeGeoFlags: boolean = false;
   public canFeatureUgc: boolean = false;
-  public canHideUgc: boolean = false;
   public canCloneUgc: boolean = false;
   public canPersistUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
@@ -84,8 +84,10 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public featurePermAttribute = PermAttributeName.FeatureUgc;
   public reportPermAttribute = PermAttributeName.ReportUgc;
   public hidePermAttribute = PermAttributeName.HideUgc;
+  public unhidePermAttribute = PermAttributeName.UnhideUgc;
   public clonePermAttribute = PermAttributeName.CloneUgc;
   public persistPermAttribute = PermAttributeName.PersistUgc;
+  public editPermAttribute = PermAttributeName.EditUgc;
   public gameTitle = GameTitle.FH5;
 
   public ugcOperationSnackbarComponent = UgcOperationSnackbarComponent;
@@ -177,7 +179,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
         }
 
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
-        this.canHideUgc = this.ugcItem?.isPublic;
         this.canGenerateSharecode = !this.ugcItem?.shareCode && this.ugcItem?.isPublic;
 
         if (!this.userHasWritePerms) {
@@ -225,6 +226,26 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       });
   }
 
+  /** Edits a UGC item in Woodstock */
+  public editUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+
+    this.dialog
+      .open(WoodstockEditUgcModalComponent, {
+        data: this.ugcItem,
+      })
+      .afterClosed()
+      .pipe(
+        filter(data => !!data),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((response: WoodstockPlayerUgcItem) => {
+        this.ugcItem = response;
+      });
+  }
+
   /** Hide a UGC item in Woodstock */
   public hideUgcItem(): void {
     if (!this.ugcItem) {
@@ -237,7 +258,25 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;
-        this.canHideUgc = false;
+        this.ugcItem.isHidden = true;
+        this.ugcItem.isPublic = false;
+      });
+  }
+
+  /** Unhide a UGC item in Woodstock */
+  public unhideUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.unhideMonitor = this.unhideMonitor.repeat();
+
+    this.ugcVisibilityService
+      .unhideUgcItems$([this.ugcItem.id])
+      .pipe(this.unhideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = true;
+        this.ugcItem.isHidden = false;
+        this.ugcItem.isPublic = true;
       });
   }
 

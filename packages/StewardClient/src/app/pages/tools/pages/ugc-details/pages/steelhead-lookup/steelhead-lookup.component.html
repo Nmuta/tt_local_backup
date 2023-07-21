@@ -20,6 +20,9 @@
           <model-dump-simple-table
             [values]="source.processedModel.extractedNumbers.ids"
           ></model-dump-simple-table>
+          <model-dump-simple-table
+            [values]="source.processedModel.extractedDates.all"
+          ></model-dump-simple-table>
           <model-dump-flags></model-dump-flags>
         </div>
       </div>
@@ -50,6 +53,17 @@
               <span [matTooltip]="featureMatTooltip">{{
                 ugcItem?.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status'
               }}</span>
+            </button>
+            <button
+              class="sf-default-margins sf-action-list-margins"
+              mat-raised-button
+              color="primary"
+              (click)="editUgcItem()"
+              stateManager
+              [permissionAttribute]="editPermAttribute"
+              [permissionTitle]="gameTitle"
+            >
+              <span>Edit Ugc</span>
             </button>
             <button
               class="sf-default-margins sf-action-list-margins"
@@ -86,6 +100,55 @@
                 monitorCompleteSnackbar
               >
                 <span>Report</span>
+              </button>
+            </div>
+            <div *ngIf="!ugcItem?.isHidden" class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyHideBtn
+                [permissionAttribute]="hidePermAttribute"
+                [permissionTitle]="gameTitle"
+                [disabled]="!ugcItem?.isPublic"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyHideBtn"
+                (click)="hideUgcItem()"
+                stateManager
+                [monitor]="hideMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Hide UGC
+                <help-popover-icon cardTitle="Hide UGC"
+                  >Private UGC cannot be hidden.</help-popover-icon
+                >
+              </button>
+            </div>
+
+            <div *ngIf="ugcItem.isHidden" class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyUnhideBtn
+                [permissionAttribute]="unhidePermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyUnhideBtn"
+                (click)="unhideUgcItem()"
+                stateManager
+                [monitor]="unhideMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Unhide UGC
               </button>
             </div>
           </div>
