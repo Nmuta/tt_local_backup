@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'e8f7a5a004-fce6-4772-a015-50a346a6872f',
+      shortText: 'Remove T10Id as lookup option',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: 'e8a27035-dc62-4eaa-96a7-d00d76e21e25',
       shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
