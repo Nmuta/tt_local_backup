@@ -4,7 +4,8 @@
   "scripts": {
     "auth": "vsts-npm-auth -config .npmrc",
     "auth:force": "vsts-npm-auth -config .npmrc -F",
-
+    
+    "lint": "yarn run build:check:eslint && yarn run build:check:prettier",
     "lint:fix": "yarn lint:fix:prettier && yarn lint:fix:eslint",
     "lint:fix:prettier": "prettier --write .",
     "lint:fix:eslint": "yarn eslint --fix",
