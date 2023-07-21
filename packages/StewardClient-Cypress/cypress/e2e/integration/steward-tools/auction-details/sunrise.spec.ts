@@ -3,7 +3,6 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { goToTool } from './page';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import {
-  verifyAuctionDeleteButtonUnlock,
   verifyAuctionInformation,
   verifyInvalidAuctionSearch,
 } from './shared-tests';
