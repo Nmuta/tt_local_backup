@@ -18,6 +18,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'dab5bf51-fd02-46ec-bf29-e20cb13e42f6',
+      shortText: 'Add default icon to create button in create single auction',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
       uuid: '65f7537d-78a4-4e61-8b7e-f581a8e9bfaf',
       shortText: 'Improve Ugc search visual',
