@@ -80,6 +80,7 @@ export class ProfileNotesComponent extends BaseComponent implements OnInit, OnCh
       .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.loadProfileNotes();
+        this.formControls.note.setValue(null);
       });
   }
 

@@ -23,6 +23,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add default icon to create button in create single auction',
     },
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '72ccd2b5-fd86-4714-863c-fc83218d54d3',
+      shortText: 'Clear note input field after adding a profile note',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },
       uuid: '65f7537d-78a4-4e61-8b7e-f581a8e9bfaf',
       shortText: 'Improve Ugc search visual',
