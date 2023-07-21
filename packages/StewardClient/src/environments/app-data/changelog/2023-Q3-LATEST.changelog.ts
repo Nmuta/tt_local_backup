@@ -8,19 +8,14 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
-      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.AuctionBlocklist },
+      tag: ChangelogTag.Internal,
       uuid: 'a5ff736e-743e-481a-b659-83f8cc9a51c2',
-      shortText: 'Use Verify V2 checkbox for Auction Blocklist on Woodstock and Sunrise',
-    },
-    {
-      tag: { title: [GameTitle.FH5], tool: NavbarTool.Gifting },
-      uuid: '419bf6bb-b652-4488-94e2-679ad0bf963c',
-      shortText: 'Use Verify V2 checkbox for Gift Special Liveries on Woodstock',
-    },
-    {
-      tag: { title: 'all', tool: NavbarTool.UserGroupManagement },
-      uuid: '8ee4439e-138b-4b79-9d84-660294b310a0',
-      shortText: 'Use Verify V2 checkbox in User Group Management',
+      shortText: 'Switch to using Verify V2 in multiple areas',
+      longText: [
+        'Auction Blocklist on Woodstock and Sunrise',
+        'Gift Special Liveries on Woodstock',
+        'User Group Management on all titles',
+      ],
     },
     {
       tag: ChangelogTag.Internal,
