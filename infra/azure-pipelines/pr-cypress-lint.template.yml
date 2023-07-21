@@ -58,3 +58,11 @@ jobs:
       script: >
         yarn run build:check:prettier
       workingDirectory: packages/StewardClient-Cypress/
+
+  - task: CmdLine@2
+    displayName: Build Check (ESLint)
+    condition: succeededOrFailed()
+    inputs:
+      script: >
+        yarn run build
+      workingDirectory: packages/StewardClient-Cypress/
