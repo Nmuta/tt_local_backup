@@ -4,4 +4,4 @@
 # Variable 'Data' was defined in the Variables tab
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
 jobs:
-- template: infra/azure-pipelines/pr-cypress-execute.template.yml
+- template: infra/azure-pipelines/pr-cypress-execute-changed.template.yml
