@@ -47,5 +47,5 @@ jobs:
     displayName: Execute Changed Specs
     condition: succeededOrFailed()
     inputs:
-      script: ./scipts/execute-changed-specs.sh
+      script: ./scripts/execute-changed-specs.sh
       workingDirectory: packages/StewardClient-Cypress/
