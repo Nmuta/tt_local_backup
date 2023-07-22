@@ -17,13 +17,13 @@ export default defineConfig({
   viewportWidth: 1920,
   viewportHeight: 1080,
 
-  reporter: "cypress-multi-reporters",
+  reporter: 'cypress-multi-reporters',
   reporterOptions: {
-    reporterEnabled: "spec, mocha-junit-reporter",
+    reporterEnabled: 'spec, mocha-junit-reporter',
     mochaJunitReporterReporterOptions: {
-      mochaFile: "reports/mocha-junit/dev/junit-[hash].xml",
+      mochaFile: 'reports/mocha-junit/dev/junit-[hash].xml',
       toConsole: true,
-      attachments: true
+      attachments: true,
     },
   },
 
