@@ -60,3 +60,15 @@ jobs:
     inputs:
       script: chmod +x ./scripts/execute-changed-specs.sh && ./scripts/execute-changed-specs.sh
       workingDirectory: packages/StewardClient-Cypress/
+
+  - task: CmdLine@2
+    displayName: Combine Reports
+    condition: succeededOrFailed()
+    inputs:
+      script: yarn run report:combine
+      workingDirectory: packages/StewardClient-Cypress/
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit' # 'JUnit' | 'NUnit' | 'VSTest' | 'XUnit' | 'CTest'. Alias: testRunner. Required. Test result format. Default: JUnit.
+      testResultsFiles: 'packages/StewardClient-Cypress/reports/mocha-junit/dev.xml' # string. Required. Test results files. Default: **/TEST-*.xml.

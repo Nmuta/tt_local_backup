@@ -130,6 +130,35 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@oozcitak/dom@1.15.10":
+  version "1.15.10"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@oozcitak/dom/-/dom-1.15.10.tgz#dca7289f2b292cff2a901ea4fbbcc0a1ab0b05c2"
+  integrity sha1-3KconyspLP8qkB6k+7zAoasLBcI=
+  dependencies:
+    "@oozcitak/infra" "1.0.8"
+    "@oozcitak/url" "1.0.4"
+    "@oozcitak/util" "8.3.8"
+
+"@oozcitak/infra@1.0.8":
+  version "1.0.8"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@oozcitak/infra/-/infra-1.0.8.tgz#b0b089421f7d0f6878687608301fbaba837a7d17"
+  integrity sha1-sLCJQh99D2h4aHYIMB+6uoN6fRc=
+  dependencies:
+    "@oozcitak/util" "8.3.8"
+
+"@oozcitak/url@1.0.4":
+  version "1.0.4"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@oozcitak/url/-/url-1.0.4.tgz#ca8b1c876319cf5a648dfa1123600a6aa5cda6ba"
+  integrity sha1-yosch2MZz1pkjfoRI2AKaqXNpro=
+  dependencies:
+    "@oozcitak/infra" "1.0.8"
+    "@oozcitak/util" "8.3.8"
+
+"@oozcitak/util@8.3.8":
+  version "8.3.8"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@oozcitak/util/-/util-8.3.8.tgz#10f65fe1891fd8cde4957360835e78fd1936bfdd"
+  integrity sha1-EPZf4Ykf2M3klXNgg154/Rk2v90=
+
 "@types/json-schema@^7.0.12":
   version "7.0.12"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/json-schema/-/json-schema-7.0.12.tgz#d70faba7039d5fca54c83c7dbab41051d2b6f6cb"
@@ -345,6 +374,13 @@ are-docs-informative@^0.0.2:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/are-docs-informative/-/are-docs-informative-0.0.2.tgz#387f0e93f5d45280373d387a59d34c96db321963"
   integrity sha1-OH8Ok/XUUoA3PTh6WdNMltsyGWM=
 
+argparse@^1.0.7:
+  version "1.0.10"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
+  integrity sha1-vNZ5HqWuCXJeF+WtmIE0zUCz2RE=
+  dependencies:
+    sprintf-js "~1.0.2"
+
 argparse@^2.0.1:
   version "2.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
@@ -528,6 +564,11 @@ chalk@^4.0.0, chalk@^4.1.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+charenc@0.0.2:
+  version "0.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
+  integrity sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=
+
 check-more-types@^2.24.0:
   version "2.24.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/check-more-types/-/check-more-types-2.24.0.tgz#1420ffb10fd444dcfc79b43891bbfffd32a84600"
@@ -643,6 +684,11 @@ commander@^6.2.1:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
   integrity sha1-B5LraC37wyWZm7K4T93duhEKxzw=
 
+commander@~10.0.0:
+  version "10.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-10.0.1.tgz#881ee46b4f77d1c1dccc5823433aa39b022cbe06"
+  integrity sha1-iB7ka0930cHczFgjQzqjmwIsvgY=
+
 comment-parser@1.3.1:
   version "1.3.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/comment-parser/-/comment-parser-1.3.1.tgz#3d7ea3adaf9345594aedee6563f422348f165c1b"
@@ -671,6 +717,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypt@0.0.2:
+  version "0.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/crypt/-/crypt-0.0.2.tgz#88d7ff7ec0dfb86f713dc87bbb42d044d3e6c41b"
+  integrity sha1-iNf/fsDfuG9xPch7u0LQRNPmxBs=
 
 cypress-multi-reporters@^1.6.3:
   version "1.6.3"
@@ -1053,6 +1104,11 @@ espree@^9.6.0:
     acorn-jsx "^5.3.2"
     eslint-visitor-keys "^3.4.1"
 
+esprima@^4.0.0:
+  version "4.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
+  integrity sha1-E7BM2z5sXRnfkatph6hpVhmwqnE=
+
 esquery@^1.4.2, esquery@^1.5.0:
   version "1.5.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/esquery/-/esquery-1.5.0.tgz#6ce17738de8577694edd7361c57182ac8cb0db0b"
@@ -1139,6 +1195,17 @@ fast-glob@^3.2.9:
   version "3.2.11"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/fast-glob/-/fast-glob-3.2.11.tgz#a1172ad95ceb8a16e20caa5c5e56480e5129c1d9"
   integrity sha1-oRcq2VzrihbiDKpcXlZIDlEpwdk=
+  dependencies:
+    "@nodelib/fs.stat" "^2.0.2"
+    "@nodelib/fs.walk" "^1.2.3"
+    glob-parent "^5.1.2"
+    merge2 "^1.3.0"
+    micromatch "^4.0.4"
+
+fast-glob@~3.2.11:
+  version "3.2.12"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/fast-glob/-/fast-glob-3.2.12.tgz#7f39ec99c2e6ab030337142da9e0c18f37afae80"
+  integrity sha1-fznsmcLmqwMDNxQtqeDBjzevroA=
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
@@ -1525,6 +1592,11 @@ is-boolean-object@^1.1.0:
     call-bind "^1.0.2"
     has-tostringtag "^1.0.0"
 
+is-buffer@~1.1.6:
+  version "1.1.6"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
+  integrity sha1-76ouqdqg16suoTqXsritUf776L4=
+
 is-builtin-module@^3.2.1:
   version "3.2.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/is-builtin-module/-/is-builtin-module-3.2.1.tgz#f03271717d8654cfcaf07ab0463faa3571581169"
@@ -1686,6 +1758,14 @@ jasmine-core@3.3.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/jasmine-core/-/jasmine-core-3.3.0.tgz#dea1cdc634bc93c7e0d4ad27185df30fa971b10e"
   integrity sha1-3qHNxjS8k8fg1K0nGF3zD6lxsQ4=
 
+js-yaml@3.14.1:
+  version "3.14.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/js-yaml/-/js-yaml-3.14.1.tgz#dae812fdb3825fa306609a8717383c50c36a0537"
+  integrity sha1-2ugS/bOCX6MGYJqHFzg8UMNqBTc=
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
 js-yaml@4.1.0, js-yaml@^4.1.0:
   version "4.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
@@ -1748,6 +1828,15 @@ jsprim@^2.0.2:
     extsprintf "1.3.0"
     json-schema "0.4.0"
     verror "1.10.0"
+
+junit-report-merger@^6.0.2:
+  version "6.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/junit-report-merger/-/junit-report-merger-6.0.2.tgz#ed6b978adce22aaed14ccd97ce2d96df6129cae6"
+  integrity sha1-7WuXitziKq7RTM2Xzi2W32EpyuY=
+  dependencies:
+    commander "~10.0.0"
+    fast-glob "~3.2.11"
+    xmlbuilder2 "3.1.1"
 
 lazy-ass@^1.6.0:
   version "1.6.0"
@@ -1848,6 +1937,15 @@ luxon@^2.5.2:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/luxon/-/luxon-2.5.2.tgz#17ed497f0277e72d58a4756d6a9abee4681457b6"
   integrity sha1-F+1JfwJ35y1YpHVtapq+5GgUV7Y=
 
+md5@^2.3.0:
+  version "2.3.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/md5/-/md5-2.3.0.tgz#c3da9a6aae3a30b46b7b0c349b87b110dc3bda4f"
+  integrity sha1-w9qaaq46MLRreww0m4exENw72k8=
+  dependencies:
+    charenc "0.0.2"
+    crypt "0.0.2"
+    is-buffer "~1.1.6"
+
 merge-stream@^2.0.0:
   version "2.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/merge-stream/-/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
@@ -1906,6 +2004,22 @@ minimist@^1.2.8:
   version "1.2.8"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
   integrity sha1-waRk52kzAuCCoHXO4MBXdBrEdyw=
+
+mkdirp@^3.0.0:
+  version "3.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/mkdirp/-/mkdirp-3.0.1.tgz#e44e4c5607fb279c168241713cc6e0fea9adcb50"
+  integrity sha1-5E5MVgf7J5wWgkFxPMbg/qmty1A=
+
+mocha-junit-reporter@^2.2.1:
+  version "2.2.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/mocha-junit-reporter/-/mocha-junit-reporter-2.2.1.tgz#739f5595d0f051d07af9d74e32c416e13a41cde5"
+  integrity sha1-c59VldDwUdB6+ddOMsQW4TpBzeU=
+  dependencies:
+    debug "^4.3.4"
+    md5 "^2.3.0"
+    mkdirp "^3.0.0"
+    strip-ansi "^6.0.1"
+    xml "^1.0.1"
 
 mocha@~9.2.0:
   version "9.2.2"
@@ -2385,6 +2499,11 @@ spdx-license-ids@^3.0.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/spdx-license-ids/-/spdx-license-ids-3.0.11.tgz#50c0d8c40a14ec1bf449bae69a0ea4685a9d9f95"
   integrity sha1-UMDYxAoU7Bv0Sbrmmg6kaFqdn5U=
 
+sprintf-js@~1.0.2:
+  version "1.0.3"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
+  integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
+
 sshpk@^1.14.1:
   version "1.17.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/sshpk/-/sshpk-1.17.0.tgz#578082d92d4fe612b13007496e543fa0fbcbe4c5"
@@ -2648,6 +2767,21 @@ wrappy@1:
   version "1.0.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
+
+xml@^1.0.1:
+  version "1.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/xml/-/xml-1.0.1.tgz#78ba72020029c5bc87b8a81a3cfcd74b4a2fc1e5"
+  integrity sha1-eLpyAgApxbyHuKgaPPzXS0ovweU=
+
+xmlbuilder2@3.1.1:
+  version "3.1.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/xmlbuilder2/-/xmlbuilder2-3.1.1.tgz#b977ef8a6fb27a1ea7ffa7d850d2c007ff343bc0"
+  integrity sha1-uXfvim+yeh6n/6fYUNLAB/80O8A=
+  dependencies:
+    "@oozcitak/dom" "1.15.10"
+    "@oozcitak/infra" "1.0.8"
+    "@oozcitak/util" "8.3.8"
+    js-yaml "3.14.1"
 
 y18n@^4.0.0:
   version "4.0.3"
