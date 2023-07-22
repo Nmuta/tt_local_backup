@@ -45,7 +45,6 @@ jobs:
 
   - task: AzureKeyVault@2
     displayName: 'Azure Key Vault: steward-keyvault-dev'
-    enabled: False
     inputs:
       ConnectedServiceName: 601c0bc2-7049-4ec7-a48a-76a014ebeab2
       KeyVaultName: steward-keyvault-dev
