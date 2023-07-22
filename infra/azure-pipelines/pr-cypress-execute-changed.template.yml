@@ -1,0 +1,51 @@
+jobs:
+- job: Job_2
+  displayName: Cypress (Lint)
+  pool:
+    vmImage: ubuntu-20.04
+
+  steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: True
+
+  - task: CmdLine@2
+    displayName: Git Command Setup
+    inputs:
+      script: >-
+        git fetch --recurse-submodules=no
+
+  - task: Cache@2
+    displayName: Cache node_modules
+    inputs:
+      key: '"yarn" | "$(Agent.OS)" | **/yarn.lock'
+      path: $(Build.Repository.LocalPath)/packages/StewardClient-Cypress/node_modules
+      restoreKeys: >-
+        yarn | "$(Agent.OS)"
+
+        yarn
+
+  - task: NodeTool@0
+    displayName: Use Node Version
+    inputs:
+      versionSpec: 18.x
+
+  - task: npmAuthenticate@0
+    displayName: Authenticate for private NPM packages copy
+    inputs:
+      workingFile: packages/StewardClient-Cypress/.npmrc
+
+  - task: CmdLine@2
+    displayName: yarn install copy
+    condition: succeededOrFailed()
+    retryCountOnTaskFailure: 3
+    inputs:
+      script: yarn --frozen-lockfile --network-timeout 1000000
+      workingDirectory: packages/StewardClient-Cypress/
+
+  - task: CmdLine@2
+    displayName: Execute Changed Specs
+    condition: succeededOrFailed()
+    inputs:
+      script: ./scipts/execute-changed-specs.sh
+      workingDirectory: packages/StewardClient-Cypress/
