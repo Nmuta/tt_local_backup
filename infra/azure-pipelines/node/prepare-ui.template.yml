@@ -1,3 +1,8 @@
+parameters:
+  - name: 'workingDirectory'
+    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
+    type: string
+
 jobs:
 - job: Prepare_UI
   displayName: Angular UI (Prepare)
@@ -7,6 +12,7 @@ jobs:
   - checkout: self
     submodules: true
   - template: prepare-yarn-project.template.yml
+    workingDirectory: ${{parameters.workingDirectory}}
   # - task: CmdLine@2
   #   displayName: Lint Check (Angular)
   #   enabled: False
