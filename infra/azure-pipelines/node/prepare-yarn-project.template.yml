@@ -38,7 +38,7 @@ steps:
   inputs:
     workingDirectory: ${{parameters.workingDirectory}}
     targetType: 'inline'
-    script: >
+    script: |
       echo Node Version: $(node -v)
       echo Yarn Version: $(yarn -v)
       echo Angular Versions:

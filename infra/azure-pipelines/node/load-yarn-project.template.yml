@@ -12,6 +12,6 @@ steps:
   inputs:
     workingDirectory: $(dropPath)
     targetType: 'inline'
-    script: >
+    script: |
       chmod +x node_modules/.bin/prettier
       chmod +x node_modules/.bin/ng
