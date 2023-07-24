@@ -1,14 +1,3 @@
-parameters:
-  - name: 'repository'
-    displayName: 'Repository. Probably forza'
-    type: string
-  - name: 'package'
-    displayName: 'Package Subdirectory packages/*'
-    type: string
-  - name: 'tag'
-    displayName: 'Extra Build Tag. Probably $(Build.BuildNumber)'
-    type: string
-
 jobs:
 - job: Prepare_UI
   displayName: Angular UI (Prepare)
