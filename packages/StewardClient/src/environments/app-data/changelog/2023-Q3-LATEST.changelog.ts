@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '9e643b0c-00f4-4ac0-a1c9-d32027e22fef',
-      shortText: 'Switch verification mode to V2 for Profile Management ',
+      shortText: 'Switch verification mode to V2 for Profile Management',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
