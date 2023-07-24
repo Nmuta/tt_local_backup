@@ -1,10 +1,18 @@
-import { login } from "@support/steward/auth/login";
-import { stewardUrls } from "@support/steward/urls";
-import { disableFakeApi } from "@support/steward/util/disable-fake-api";
+import { login } from '@support/steward/auth/login';
+import { stewardUrls } from '@support/steward/urls';
+import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
-import { StudioUsers } from "@support/steward/common/account-info";
-import { steelheadResults, testInvalidSearches, testLookup, testLookupWithFilter, testLookupWithInvalidFilter, testPlayerProfilesPopulated, testShowAllRows } from "./shared-functions";
-import { changeEndpoint } from "@support/steward/shared-functions/change-endpoint";
+import { StudioUsers } from '@support/steward/common/account-info';
+import {
+  steelheadResults,
+  testInvalidSearches,
+  testLookup,
+  testLookupWithFilter,
+  testLookupWithInvalidFilter,
+  testPlayerProfilesPopulated,
+  testShowAllRows,
+} from './shared-functions';
+import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
 
 context('Steward / Tools / Services Table Storage / Steelhead', () => {
   beforeEach(() => {
@@ -12,7 +20,7 @@ context('Steward / Tools / Services Table Storage / Steelhead', () => {
 
     disableFakeApi();
     cy.visit(stewardUrls.tools.servicesTableStorage.steelhead);
-    changeEndpoint('Steelhead', 'Flight', 'Studio')
+    changeEndpoint('Steelhead', 'Flight', 'Studio');
   });
 
   testInvalidSearches();

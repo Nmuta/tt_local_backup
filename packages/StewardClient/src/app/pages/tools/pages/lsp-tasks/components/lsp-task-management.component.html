@@ -1,0 +1,207 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>LSP Task Management</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form *waitForMonitor="getMonitor">
+      <table mat-table [dataSource]="lspTasks">
+        <ng-container matColumnDef="task-info">
+          <th mat-header-cell *matHeaderCellDef>Task Info</th>
+          <td mat-cell *matCellDef="let entry">
+            <table class="info-table">
+              <tr>
+                <th>Name</th>
+                <td>
+                  {{ entry.lspTask.executorType }}
+                </td>
+              </tr>
+              <tr>
+                <th>Id</th>
+                <td>
+                  {{ entry.lspTask.id }}
+                </td>
+              </tr>
+              <tr>
+                <th>State</th>
+                <td>
+                  {{ entry.lspTask.state }}
+                </td>
+              </tr>
+              <tr>
+                <th>Custom Properties</th>
+                <td>
+                  {{ entry.lspTask.customProperties }}
+                </td>
+              </tr>
+              <tr>
+                <th>Lock</th>
+                <td>
+                  {{ entry.lspTask.lock }}
+                </td>
+              </tr>
+              <tr>
+                <th>Lock Taken Until</th>
+                <td>
+                  {{ entry.lspTask.lockTakenUntilUtc | utcDate: 'short' }}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="execution-info">
+          <th mat-header-cell *matHeaderCellDef>Execution Info</th>
+          <td mat-cell *matCellDef="let entry">
+            <table class="info-table">
+              <tr>
+                <th>Last Event</th>
+                <td>
+                  {{ entry.lspTask.lastEventUtc | utcDate: 'short' }}
+                </td>
+              </tr>
+              <tr>
+                <th>Last Exception</th>
+                <td>
+                  {{ entry.lspTask.lastException }}
+                </td>
+              </tr>
+              <tr>
+                <th>Last Run Duration</th>
+                <td>{{ entry.lspTask.lastRunDuration }} seconds</td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Next Execution</th>
+                <td>
+                  {{ entry.formGroup.controls.nextExecutionUtc.value | utcDate: 'short' }}
+                </td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Period In Seconds</th>
+                <td>
+                  {{ entry.formGroup.controls.periodInSeconds.value }}
+                </td>
+              </tr>
+              <tr *ngIf="!entry.edit">
+                <th>Period Type</th>
+                <td>
+                  {{ entry.formGroup.controls.periodType.value }}
+                </td>
+              </tr>
+            </table>
+            <ng-container *ngIf="entry.edit">
+              <mat-label>Next Execution Date (mm/dd/yyyy)</mat-label>
+              <datetime-picker
+                [min]="minDate"
+                [formControl]="entry.formControls.nextExecutionUtc"
+              ></datetime-picker>
+              <mat-form-field class="period-in-seconds">
+                <mat-label>Period In Seconds</mat-label>
+                <input
+                  [formControl]="entry.formControls.periodInSeconds"
+                  type="number"
+                  matInput
+                  min="1"
+                  max="999999999"
+                  [value]="entry.lspTask.periodInSeconds"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Period Type</mat-label>
+                <mat-select [formControl]="entry.formControls.periodType">
+                  <mat-option *ngFor="let type of lspTaskPeriodTypes" [value]="type">
+                    {{ type | deppoh }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let entry">
+            <span class="editable" *ngIf="!entry.edit">
+              <button
+                mat-raised-button
+                color="primary"
+                matTooltip="Change the state of the LSP task"
+                (click)="changeState(entry)"
+                clickStop
+                stateManager
+                [monitor]="entry.postMonitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              >
+                {{ entry.lspTask.state === lspTaskStateEnum.Disabled ? 'Enable' : 'Disable' }}
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                matTooltip="Run the LSP task now"
+                (click)="runNow(entry)"
+                clickStop
+                stateManager
+                [monitor]="entry.postMonitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              >
+                Run Now
+              </button>
+              <button
+                class="edit"
+                mat-raised-button
+                color="primary"
+                (click)="editEntry(entry)"
+                stateManager
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              >
+                <span matTooltip="Edit LSP Task">Edit</span>
+              </button>
+            </span>
+            <span class="edit" *ngIf="entry.edit">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="updateLspTaskEntry(entry)"
+                [disabled]="!entry.formGroup.valid"
+                matTooltip="Update LSP task"
+                clickStop
+                stateManager
+                [monitor]="entry.postMonitor"
+                [waitOnMonitors]="allMonitors"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                [permissionAttribute]="permAttribute"
+                [permissionTitle]="gameTitle"
+              >
+                Submit
+              </button>
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="revertEntryEdit(entry)"
+                matTooltip="Cancel LSP task edit"
+              >
+                Undo
+              </button>
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+      </table>
+    </form>
+  </mat-card-content>
+</mat-card>

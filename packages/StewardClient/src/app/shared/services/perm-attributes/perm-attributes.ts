@@ -45,6 +45,7 @@ export enum PermAttributeName {
   UpdateSafetyRating = 'UpdateSafetyRating',
   OverrideSkillRating = 'OverrideSkillRating',
   EditUgc = 'EditUgc',
+  UpdateLspTask = 'UpdateLspTask',
 }
 
 /** Full perm attribute details. */

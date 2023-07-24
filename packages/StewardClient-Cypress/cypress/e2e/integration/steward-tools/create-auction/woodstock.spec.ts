@@ -1,5 +1,4 @@
 import { login } from '@support/steward/auth/login';
-import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
 import { stewardUrls } from '@support/steward/urls';
 import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';

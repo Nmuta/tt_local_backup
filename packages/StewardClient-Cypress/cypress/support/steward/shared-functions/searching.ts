@@ -1,6 +1,40 @@
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
+import { KnownUser } from '../common/account-info';
+import { clickIfExists } from '@support/cypress/click-if-exists';
 
 const timeoutOverride = 60_000; /*ms*/
+
+/** Finds and fills in Gamertag field. Clears the field when done. */
+export function contextSearchByGtagForPlayerDetails(knownUser: KnownUser): void {
+  if (!knownUser.gtag) {
+    throw new Error('Known user lacked a gtag');
+  }
+
+  before(() => {
+    // reset the search if possible.
+    clickIfExists('player-selection-single mat-chip mat-icon[matchipremove]');
+
+    // perform the search
+    cy.contains('button', 'GTAG').click();
+    cy.contains('mat-form-field', 'Gamertag').click().type(`${knownUser.gtag}\n`);
+    waitForProgressSpinners(timeoutOverride);
+  });
+}
+
+/** Finds and fills in XUID field. Clears the field when done */
+export function contextSearchByXuidForPlayerDetails(knownUser: KnownUser): void {
+  if (!knownUser.xuid) {
+    throw new Error('Known user lacked a XUID');
+  }
+  before(() => {
+    // reset the search if possible.
+    clickIfExists('player-selection-single mat-chip mat-icon[matchipremove]');
+
+    cy.contains('button', 'XUID').click();
+    cy.contains('mat-form-field', 'XuID', { matchCase: false }).click().type(`${knownUser.xuid}\n`);
+    waitForProgressSpinners(timeoutOverride);
+  });
+}
 
 /** Finds and fills in Gamertag field */
 export function searchByGtag(gtag: string): void {

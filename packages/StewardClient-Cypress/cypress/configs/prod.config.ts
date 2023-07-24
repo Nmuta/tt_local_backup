@@ -20,10 +20,21 @@ export default defineConfig({
   viewportWidth: 1920,
   viewportHeight: 1080,
 
+  reporter: 'cypress-multi-reporters',
+  reporterOptions: {
+    reporterEnabled: 'spec, mocha-junit-reporter',
+    mochaJunitReporterReporterOptions: {
+      mochaFile: 'reports/mocha-junit/prod/junit-[hash].xml',
+      toConsole: true,
+      attachments: true,
+    },
+  },
+
   e2e: {
     experimentalRunAllSpecs: true,
     baseUrl: 'https://steward-ui-prod.azurewebsites.net',
     specPattern: 'cypress/e2e/**/*.spec.*',
     supportFile: 'cypress/support/commands.ts',
+    testIsolation: false,
   },
 });

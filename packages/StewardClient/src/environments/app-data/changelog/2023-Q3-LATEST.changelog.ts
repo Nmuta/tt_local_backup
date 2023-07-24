@@ -8,9 +8,19 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
-      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
       uuid: 'f65dda02-6560-4ab5-815a-e8b6f41e7552',
       shortText: 'Force featured end date is now selectable in UGC details',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.LspTasks },
+      uuid: 'ded9dabb-5e0b-4e7c-af71-6567f5ac1881',
+      shortText: 'Add new component to view and manage LSP tasks',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '9e643b0c-00f4-4ac0-a1c9-d32027e22fef',
+      shortText: 'Switch verification mode to V2 for Profile Management',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
