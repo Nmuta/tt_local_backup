@@ -25,20 +25,33 @@
 
   <form [formGroup]="formGroup">
     <mat-checkbox [formControl]="formControls.isFeatured" (click)="changedFeatureStatus()"
-      >Feature UGC Item</mat-checkbox>
+      >Feature UGC Item</mat-checkbox
+    >
     <help-popover-icon cardTitle="Featured vs. Force Featured">
       <p>What is the difference between Featured and Force Featured?</p>
       <ul>
         <li>The essential concept involved is that Force Featured establishes a hierarchy.</li>
-        <li>For example, the game client typically displays Featured liveries from most recent to least recent.</li>
-        <li>Force Featuring a livery will move it to the top of the hierarchy, displaying it before all other Featured liveries.</li>
-        <li>If several liveries are Force Featured, then the client will display the Force Featured
-          liveries first and then whichever Featured liveries remain.</li>
-        <li>We can set an expiration date for both Featured and Force Featured items,
-          upon which their Featured or Force Featured status will expire.</li>
-        <li>It is important to note that once Force Featured status expires on an item, it will return to the Featured pool,
-          not be unfeatured entirely. To ensure something is unfeatured entirely when it expires,
-          set the Featured expiration date as well.</li>
+        <li>
+          For example, the game client typically displays Featured liveries from most recent to
+          least recent.
+        </li>
+        <li>
+          Force Featuring a livery will move it to the top of the hierarchy, displaying it before
+          all other Featured liveries.
+        </li>
+        <li>
+          If several liveries are Force Featured, then the client will display the Force Featured
+          liveries first and then whichever Featured liveries remain.
+        </li>
+        <li>
+          We can set an expiration date for both Featured and Force Featured items, upon which their
+          Featured or Force Featured status will expire.
+        </li>
+        <li>
+          It is important to note that once Force Featured status expires on an item, it will return
+          to the Featured pool, not be unfeatured entirely. To ensure something is unfeatured
+          entirely when it expires, set the Featured expiration date as well.
+        </li>
       </ul>
     </help-popover-icon>
     <mat-form-field appearance="fill" class="expiry-date">
