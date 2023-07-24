@@ -1,3 +1,4 @@
 variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
   VM_IMAGE: ubuntu-20.04
+  DROP_NAME: prepare-ui-drop

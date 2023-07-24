@@ -11,10 +11,10 @@ jobs:
   steps:
   - template: prepare-yarn-project.template.yml
     parameters:
-      workingDirectory: ${{parameters.workingDirectory}}
+      workingDirectory: ${{dropPath}}
   - task: Bash@3
     displayName: Build
     inputs:
-      workingDirectory: ${{parameters.workingDirectory}}
+      workingDirectory: ${{dropPath}}
       targetType: 'inline'
       script: yarn run build:dev
