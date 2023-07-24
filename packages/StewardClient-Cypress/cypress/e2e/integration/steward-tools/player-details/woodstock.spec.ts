@@ -16,6 +16,7 @@ import {
   ugcLiveriesFindLivery,
   loyaltyFindTitlesPlayed,
   jsonCheckJson,
+  swapToTab,
 } from './shared-tests';
 import {
   contextSearchByGtagForPlayerDetails,
