@@ -17,7 +17,7 @@ jobs:
   steps:
   - checkout: self
     submodules: true
-  - template: prepare-yarn-project.yml
+  - template: prepare-yarn-project.template.yml
   # - task: CmdLine@2
   #   displayName: Lint Check (Angular)
   #   enabled: False
