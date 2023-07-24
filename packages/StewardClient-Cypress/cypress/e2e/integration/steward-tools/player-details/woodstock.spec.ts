@@ -114,10 +114,10 @@ function testUserDetails(userToSearch: string): void {
     userDetailsFindProfileNotes('test note from Steward API');
 
     // found related gamertags
-    userDetailsFindRelatedGamertags('2535424453525895');
+    userDetailsFindRelatedGamertags(RetailUsers[defaultWoodstockUser].relatedXuids['FH5']);
 
     // found related consoles
-    userDetailsFindRelatedConsoles('18230640064596068933');
+    userDetailsFindRelatedConsoles(RetailUsers[defaultWoodstockUser].relatedConsoles['FH5']);
   });
 }
 

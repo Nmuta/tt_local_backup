@@ -378,6 +378,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var validatedFlags = this.mapper.SafeMap<WoodstockUserFlags>(userFlags);
+
+            // If UltimateVip is selected we force normal Vip to true
+            if (validatedFlags.IsUltimateVip)
+            {
+                validatedFlags.IsVip = true;
+            }
+
             await this.woodstockPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
                 .ConfigureAwait(true);
 

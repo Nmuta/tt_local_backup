@@ -107,10 +107,10 @@ function testUserDetails(userToSearch: string): void {
     userDetailsFindProfileNotes('This is a testing string, not a chicken wing.');
 
     // found related gamertags
-    userDetailsFindRelatedGamertags('2535435129485725');
+    userDetailsFindRelatedGamertags(RetailUsers[defaultSunriseUser].relatedXuids['FH4']);
 
     // found related consoles
-    userDetailsFindRelatedConsoles('18230637609444823812');
+    userDetailsFindRelatedConsoles(RetailUsers[defaultSunriseUser].relatedConsoles['FH4']);
   });
 }
 

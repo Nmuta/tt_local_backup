@@ -13,22 +13,32 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     {
         private static Dictionary<string, NonStandardUserGroups> UserGroupIds => new Dictionary<string, NonStandardUserGroups>()
         {
-            { SteelheadEndpoint.Flight, new NonStandardUserGroups()
+            {
+                SteelheadEndpoint.Retail, new NonStandardUserGroups()
                 {
                     ContentCreatorId = 24,
                 }
             },
-            { SteelheadEndpoint.Studio, new NonStandardUserGroups()
+            {
+                SteelheadEndpoint.Flight, new NonStandardUserGroups()
                 {
                     ContentCreatorId = 24,
                 }
             },
-            { WoodstockEndpoint.Retail, new NonStandardUserGroups()
+            {
+                SteelheadEndpoint.Studio, new NonStandardUserGroups()
                 {
                     ContentCreatorId = 24,
                 }
             },
-            { WoodstockEndpoint.Studio, new NonStandardUserGroups()
+            {
+                WoodstockEndpoint.Retail, new NonStandardUserGroups()
+                {
+                    ContentCreatorId = 24,
+                }
+            },
+            {
+                WoodstockEndpoint.Studio, new NonStandardUserGroups()
                 {
                     ContentCreatorId = 24,
                 }

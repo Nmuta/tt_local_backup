@@ -78,7 +78,7 @@ table {
   }
 
   .is-featured-item {
-    background-color: $table-tr-hover;
+    background-color: $table-tr-highlight;
   }
 
   .inline-buttons > button,
@@ -113,7 +113,7 @@ img {
 }
 
 .mat-row {
-  &.selected {
+  &.selected.selected {
     background-color: $table-tr-hover;
   }
 }

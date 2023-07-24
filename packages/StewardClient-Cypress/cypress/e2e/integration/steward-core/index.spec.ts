@@ -1,5 +1,10 @@
 import { login } from '@support/steward/auth/login';
+import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
+import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { stewardUrls } from '@support/steward/urls';
+
 
 //These values may change as tools and games are added or removed from Steward
 const filterValues = {
@@ -325,4 +330,17 @@ context('Steward Index', () => {
       });
     });
   });
+
+  context('Endpoints', () => {
+    it('should change Woodstock endpoint from Retail to Studio and confirm the change in Player Details by checking a Retail and Studio account', () => {
+      changeEndpoint('Woodstock', 'Retail', 'Studio');
+      cy.visit(stewardUrls.tools.playerDetails.woodstock);
+      cy.get('a').contains('span', 'FH5').contains('span', 'Studio').should('exist');
+      searchByGtag(RetailUsers['chad'].gtag);
+      cy.contains('h2', 'Request failed').should('exist');
+      cy.get('mat-chip').contains('mat-icon', 'cancel').click();
+      searchByXuid('2814649032001718');
+      cy.get('player-identity-results').contains('span', '2814649032001718').should('exist');
+    });
+  })
 });

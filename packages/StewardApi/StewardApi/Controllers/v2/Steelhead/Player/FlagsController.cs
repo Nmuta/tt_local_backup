@@ -112,6 +112,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var validatedFlags = this.mapper.SafeMap<SteelheadUserFlags>(userFlags);
 
+            // If UltimateVip is selected we force normal Vip to true
+            if (validatedFlags.IsGamecoreUltimateVip)
+            {
+                validatedFlags.IsGamecoreVip = true;
+            }
+
+            if (validatedFlags.IsSteamUltimateVip)
+            {
+                validatedFlags.IsSteamVip = true;
+            }
+
             var service = this.Services.UserManagementService;
             try
             {

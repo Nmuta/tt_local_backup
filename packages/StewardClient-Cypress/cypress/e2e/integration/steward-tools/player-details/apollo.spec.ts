@@ -79,10 +79,10 @@ function testUserDetails(userToSearch: string): void {
     userDetailsFindBans();
 
     // found related gamertags
-    userDetailsFindRelatedGamertags('2535435129485725');
+    userDetailsFindRelatedGamertags(RetailUsers[defaultApolloUser].relatedXuids['FM7']);
 
     // found related consoles
-    userDetailsFindRelatedConsoles('18230637609444823812');
+    userDetailsFindRelatedConsoles(RetailUsers[defaultApolloUser].relatedConsoles['FM7']);
   });
 }
 

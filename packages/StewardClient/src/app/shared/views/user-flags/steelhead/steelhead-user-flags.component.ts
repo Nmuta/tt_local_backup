@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
@@ -14,7 +14,10 @@ import { SteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/f
   templateUrl: '../user-flags.component.html',
   styleUrls: ['../user-flags.component.scss'],
 })
-export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<SteelheadUserFlags> {
+export class SteelheadUserFlagsComponent
+  extends UserFlagsBaseComponent<SteelheadUserFlags>
+  implements OnInit
+{
   public gameTitle = GameTitle.FM8;
 
   public formControls = {
@@ -37,6 +40,27 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
     permissionsService: OldPermissionsService,
   ) {
     super(permissionsService);
+  }
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    // If Ultimate VIP is checked, VIP has to be checked also.
+    this.formControls.isGamecoreUltimateVip.valueChanges.subscribe((value: boolean) => {
+      if (value) {
+        this.formControls.isGamecoreVip.setValue(true);
+        this.formControls.isGamecoreVip.disable();
+      } else {
+        this.formControls.isGamecoreVip.enable();
+      }
+    });
+    this.formControls.isSteamUltimateVip.valueChanges.subscribe((value: boolean) => {
+      if (value) {
+        this.formControls.isSteamVip.setValue(true);
+        this.formControls.isSteamVip.disable();
+      } else {
+        this.formControls.isSteamVip.enable();
+      }
+    });
   }
 
   /** Gets Steelhead user flags. */

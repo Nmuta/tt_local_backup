@@ -4,25 +4,34 @@
   "scripts": {
     "auth": "vsts-npm-auth -config .npmrc",
     "auth:force": "vsts-npm-auth -config .npmrc -F",
-    "fix": "yarn prettier:fix && yarn eslint --fix",
-    "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
-    "prettier:fix": "prettier --write .",
-    "check:prettier": "prettier --check .",
-    "check:changelog-is-modified": "C:\\Windows\\system32\\bash.exe ./scripts/changelog-is-modified-or-fail.sh",
-    "check:ado:changelog-is-modified": "bash ./scripts/changelog-is-modified-or-fail.sh",
-    "open": "cypress open --config-file cypress/configs/localhost.json",
-    "open:local": "cypress open --config-file cypress/configs/localhost.json",
-    "open:local-dev": "cypress open --config-file cypress/configs/localhost-dev.json",
+
+    "lint:fix": "yarn lint:fix:prettier && yarn lint:fix:eslint",
+    "lint:fix:prettier": "prettier --write .",
+    "lint:fix:eslint": "yarn eslint --fix",
+
+    "config": "yarn run config:cypress",
+    "config:cypress": "bash ./scripts/make-cypress-env.sh",
+
+    "open": "cypress open --config-file cypress/configs/localhost.config.ts",
+    "open:local": "cypress open --config-file cypress/configs/localhost.config.ts",
+    "open:local-dev": "cypress open --config-file cypress/configs/localhost-dev.config.ts",
     "open:dev": "cypress open --config-file cypress/configs/dev.config.ts",
-    "open:prod": "cypress open --config-file cypress/configs/prod.json",
-    "open:prod-staging": "cypress open --config-file cypress/configs/prod-staging.json",
-    "run": "cypress run --config-file cypress/configs/localhost.json",
-    "run:local": "cypress run --config-file cypress/configs/localhost.json",
-    "run:local-dev": "cypress run --config-file cypress/configs/localhost-dev.json",
+    "open:prod": "cypress open --config-file cypress/configs/prod.config.ts",
+    "open:prod-staging": "cypress open --config-file cypress/configs/prod-staging.config.ts",
+
+    "run": "cypress run --config-file cypress/configs/localhost.config.ts",
+    "run:local": "cypress run --config-file cypress/configs/localhost.config.ts",
+    "run:local-dev": "cypress run --config-file cypress/configs/localhost-dev.config.ts",
     "run:dev": "cypress run --config-file cypress/configs/dev.config.ts",
-    "run:prod": "cypress run --config-file cypress/configs/prod.json",
-    "run:prod-staging": "cypress run --config-file cypress/configs/prod-staging.json",
-    "run:dev:parallel": "cypress-parallel -s run:dev -t 4 -d cypress/e2e"
+    "run:prod": "cypress run --config-file cypress/configs/prod.config.ts",
+    "run:prod-staging": "cypress run --config-file cypress/configs/prod-staging.config.ts",
+    "run:dev:parallel": "cypress-parallel -s run:dev -t 4 -d cypress/e2e",
+    
+    "check:prettier": "prettier --check .",
+    
+    "_old-commands-below": "echo Try another command.",
+    "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
+    "prettier:fix": "yarn run lint:fix:prettier"
   },
   "private": true,
   "dependencies": {},

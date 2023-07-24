@@ -25,6 +25,6 @@ export class WoodstockPlayerHiddenUgcComponent extends PlayerUgcBaseComponent im
       throw new Error(`${GameTitle.FH5} Player Hidden UGC does not support Sharecode lookup.`);
     }
 
-    return this.service.getPlayerHiddenUgcByXuid$(this.identity.xuid, contentType);
+    return this.service.getPlayerHiddenUgcByType$(this.identity.xuid, contentType);
   }
 }
