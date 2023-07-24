@@ -4,7 +4,8 @@ variables:
   - template: 'infra/azure-pipelines/node/ui-variables.yml'
 
 stages:
-- stage: Prepare Directory (UI)
+- stage: UI_Prepare_Directory
+  displayName: Prepare Directory (UI)
   jobs:
   - template: infra/azure-pipelines/node/prepare-ui.template.yml
     parameters:
