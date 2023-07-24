@@ -1,0 +1,18 @@
+parameters:
+  - name: 'workingDirectory'
+    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
+    type: string
+
+jobs:
+- job: UI_Test_Build
+  displayName: Build
+  steps:
+  - template: prepare-yarn-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+  - task: Bash@3
+    displayName: Prettier Check
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      script: yarn run build:dev

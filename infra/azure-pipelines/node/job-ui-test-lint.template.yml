@@ -1,0 +1,20 @@
+parameters:
+  - name: 'workingDirectory'
+    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
+    type: string
+
+jobs:
+- job: UI_Test_Lint
+  displayName: Lint
+  pool:
+    vmImage: ubuntu-20.04
+  steps:
+  - template: prepare-yarn-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+  - task: Bash@3
+    displayName: Lint Check
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      script: yarn run lint

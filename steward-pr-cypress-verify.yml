@@ -2,6 +2,9 @@
 #       env:
 #           MY_ACCESS_TOKEN: $(System.AccessToken)
 # Variable 'Data' was defined in the Variables tab
+trigger: none
+
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
+
 jobs:
 - template: infra/azure-pipelines/pr-cypress-lint.template.yml

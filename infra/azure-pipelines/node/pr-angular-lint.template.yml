@@ -11,8 +11,6 @@ parameters:
 jobs:
 - job: PR_Angular_Lint
   displayName: Angular (Lint & Test)
-  pool:
-    vmImage: ubuntu-20.04
   steps:
   - checkout: self
     submodules: true

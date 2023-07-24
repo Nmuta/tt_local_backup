@@ -2,13 +2,10 @@ parameters:
 - name: 'workingDirectory'
   displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
   type: string
-- name: 'dropName'
-  displayName: 'Identifier for the created intermediate drop'
-  type: string
 
 steps:
 - task: Cache@2
-  displayName: Cache yarn packages for ${{parameters.workingDirectory}}/yarn.lock
+  displayName: "Prepare: Cache yarn packages for ${{parameters.workingDirectory}}/yarn.lock"
   inputs:
     key: 'yarn | "$(Agent.OS)" | ${{parameters.workingDirectory}}/yarn.lock'
     restoreKeys: |
@@ -17,23 +14,14 @@ steps:
     path: $(YARN_CACHE_FOLDER)
 
 - task: NodeTool@0
-  displayName: Use Node 18.x
+  displayName: "Prepare: Use Node 18.x"
   inputs:
     versionSpec: 18.x
 
 - task: npmAuthenticate@0
-  displayName: Authenticate for private NPM packages copy
+  displayName: "Prepare: Private NPM Auth"
   inputs:
     workingFile: ${{parameters.workingDirectory}}/.npmrc
-
-- task: Bash@3
-  displayName: Log Versions
-  inputs:
-    workingDirectory: ${{parameters.workingDirectory}}
-    targetType: 'inline'
-    script: >
-      echo Node Version: $(node -v)
-      echo Yarn Version: $(yarn -v)
 
 - task: Bash@3
   displayName: Yarn Install
@@ -42,6 +30,13 @@ steps:
     targetType: 'inline'
     script: yarn --frozen-lockfile
 
-- publish: ${{parameters.workingDirectory}}
-  displayName: Publish Intermedia Artifact (prepare-${{parameters.dropName}}-drop)
-  artifact: prepare-${{parameters.dropName}}-drop
+- task: Bash@3
+  displayName: "Prepare: Log Versions"
+  inputs:
+    workingDirectory: ${{parameters.workingDirectory}}
+    targetType: 'inline'
+    script: >
+      echo Node Version: $(node -v)
+      echo Yarn Version: $(yarn -v)
+      echo Angular Versions:
+      yarn ng version

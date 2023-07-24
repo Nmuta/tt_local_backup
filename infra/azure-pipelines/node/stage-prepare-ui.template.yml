@@ -6,15 +6,12 @@ parameters:
 jobs:
 - job: Prepare_UI
   displayName: Angular UI (Prepare)
-  pool:
-    vmImage: ubuntu-20.04
   steps:
   - checkout: self
     submodules: true
   - template: prepare-yarn-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
-      dropName: ui
   # - task: CmdLine@2
   #   displayName: Lint Check (Angular)
   #   enabled: False
