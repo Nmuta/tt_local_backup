@@ -33,8 +33,9 @@ import {
   servicesTableStorageTile,
   acLogReaderTile,
   productPricingTile,
+  playFabTile,
+  lspTasksTile,
 } from './tiles';
-import { playFabTile } from './tiles/tools/playfab';
 
 /** The unprocessed tool list. Use @see environment.tools instead. */
 export const unprocessedToolList: HomeTileInfo[] = [
@@ -86,4 +87,5 @@ export const unprocessedToolList: HomeTileInfo[] = [
 
   permissionManagementInternalTile,
   metaToolsInternalTile,
+  lspTasksTile,
 ];

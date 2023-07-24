@@ -30,6 +30,7 @@ import { TitleMemoryModel } from './title-memory.model';
     servicesTableStorage: GameTitleCodeName.FM8,
     showroomCalendar: GameTitleCodeName.FM8,
     acLogReader: GameTitleCodeName.FM8,
+    lspTasks: GameTitleCodeName.FM8,
   },
 })
 @Injectable()

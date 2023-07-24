@@ -1,5 +1,3 @@
-import { login } from '@support/steward/auth/login';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import { RetailUsers } from '@support/steward/common/account-info';
@@ -14,86 +12,69 @@ import {
   inventoryFindPlayerInventoryData,
   notificationsFindNotification,
   userDetailsVerifyFlagData,
-  swapToTab,
   auctionsFindCreatedAuction,
   ugcLiveriesFindLivery,
   loyaltyFindTitlesPlayed,
   jsonCheckJson,
+  swapToTab,
 } from './shared-tests';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import {
+  contextSearchByGtagForPlayerDetails,
+  contextSearchByXuidForPlayerDetails,
+} from '@support/steward/shared-functions/searching';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const defaultWoodstockUser = 'luke';
 const platformName = 'woodstock';
 
 context('Steward / Tools / Player Details / Woodstock', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
+    cy.visit(stewardUrls.tools.playerDetails.default);
+    selectWoodstock();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
-      cy.visit(stewardUrls.tools.playerDetails.default);
-      selectWoodstock();
-    });
-
     context('With default user', () => {
-      beforeEach(() => {
-        searchByGtag(RetailUsers[defaultWoodstockUser].gtag);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers[defaultWoodstockUser]);
+
       testUserDetails(defaultWoodstockUser);
-
       testDeepDive();
-
       testInventory();
-
       testNotifications();
-
       testJson();
     });
 
     context('With Madden user', () => {
-      beforeEach(() => {
-        searchByGtag(RetailUsers['madden'].gtag);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers.madden);
+
       testAuctions();
-
       testUgc();
-
       testLoyalty(['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
     });
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
       selectWoodstock();
     });
 
     context('With default user', () => {
-      beforeEach(() => {
-        searchByXuid(RetailUsers[defaultWoodstockUser].xuid);
-      });
+      contextSearchByXuidForPlayerDetails(RetailUsers[defaultWoodstockUser]);
+
       testUserDetails(defaultWoodstockUser);
-
       testDeepDive();
-
       testInventory();
-
       testNotifications();
-
       testJson();
     });
 
     context('With Madden user', () => {
-      beforeEach(() => {
-        searchByXuid(RetailUsers['madden'].xuid);
-      });
+      contextSearchByXuidForPlayerDetails(RetailUsers.madden);
+
       testAuctions();
-
       testUgc();
-
       testLoyalty(['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
     });
   });
@@ -101,6 +82,10 @@ context('Steward / Tools / Player Details / Woodstock', () => {
 
 function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
+    before(() => {
+      swapToTab('User Details');
+    });
+
     // found user
     userDetailsVerifyPlayerIdentityResults(userToSearch);
 
@@ -123,6 +108,10 @@ function testUserDetails(userToSearch: string): void {
 
 function testDeepDive(): void {
   context('Deep Dive', () => {
+    before(() => {
+      swapToTab('Deep Dive');
+    });
+
     // found overview data
     deepDiveFindOverviewData();
 
@@ -133,6 +122,10 @@ function testDeepDive(): void {
 
 function testInventory(): void {
   context('Inventory', () => {
+    before(() => {
+      swapToTab('Inventory');
+    });
+
     // found player inventory data
     inventoryFindPlayerInventoryData();
   });
@@ -140,6 +133,10 @@ function testInventory(): void {
 
 function testNotifications(): void {
   context('Notifications', () => {
+    before(() => {
+      swapToTab('Notifications');
+    });
+
     // found player inventory data
     notificationsFindNotification();
   });
@@ -147,6 +144,10 @@ function testNotifications(): void {
 
 function testAuctions(): void {
   context('Auctions', () => {
+    before(() => {
+      swapToTab('Auctions');
+    });
+
     //The auction filter labels are currently using sunrise instead of woodstock, check in shared tests file for details
     auctionsFindCreatedAuction(
       platformName,
@@ -160,18 +161,30 @@ function testAuctions(): void {
 
 function testUgc(): void {
   context('Ugc', () => {
+    before(() => {
+      swapToTab('Ugc');
+    });
+
     ugcLiveriesFindLivery(platformName, 'Hot Wheels', '2JetZ', 'metadata');
   });
 }
 
 function testLoyalty(titles: string[]): void {
   context('Loyalty', () => {
+    before(() => {
+      swapToTab('Loyalty');
+    });
+
     loyaltyFindTitlesPlayed(platformName, titles);
   });
 }
 
 function testJson(): void {
   context('JSON', () => {
+    before(() => {
+      swapToTab('JSON');
+    });
+
     jsonCheckJson();
   });
 }

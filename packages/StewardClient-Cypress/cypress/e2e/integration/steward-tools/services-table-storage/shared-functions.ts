@@ -6,7 +6,7 @@ interface LookupResults {
   name: string;
   result: string;
   version: string;
-};
+}
 
 /** Results for testing Woodstock */
 export const woodstockResults: Record<string, LookupResults> = {
@@ -51,7 +51,7 @@ export const steelheadResults: Record<string, LookupResults> = {
 };
 
 /** Tests Invalid ID Searches */
-export function testInvalidSearches(): void{
+export function testInvalidSearches(): void {
   context('Invalid Searches', () => {
     it('should not find invalid gtag', () => {
       searchByGtag('totallyRealGtag');
@@ -64,8 +64,7 @@ export function testInvalidSearches(): void{
       cy.contains('h2', 'Request failed').should('exist');
       cy.contains('mat-icon', 'cancel').click();
     });
-  })
-  
+  });
 }
 
 /** Tests that Player Profiles is populated */
@@ -84,7 +83,12 @@ export function testLookup(results: LookupResults): void {
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
     cy.contains('mat-cell', results.result).should('exist');
-    cy.get('mat-row').contains('mat-cell', results.result).parents('mat-row').contains('mat-icon', 'expand_more').parents('button').click();
+    cy.get('mat-row')
+      .contains('mat-cell', results.result)
+      .parents('mat-row')
+      .contains('mat-icon', 'expand_more')
+      .parents('button')
+      .click();
     cy.get('tr').contains('div', results.version).should('exist');
   });
 }
@@ -97,10 +101,18 @@ export function testLookupWithFilter(results: LookupResults): void {
     // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
-    cy.get('mat-form-field').contains('mat-label', 'Filter Results').parents('mat-form-field').click();
+    cy.get('mat-form-field')
+      .contains('mat-label', 'Filter Results')
+      .parents('mat-form-field')
+      .click();
     cy.get('mat-option').contains('span', results.name).parents('mat-option').click();
     cy.contains('mat-cell', results.result).should('exist');
-    cy.get('mat-row').contains('mat-cell', results.result).parents('mat-row').contains('mat-icon', 'expand_more').parents('button').click();
+    cy.get('mat-row')
+      .contains('mat-cell', results.result)
+      .parents('mat-row')
+      .contains('mat-icon', 'expand_more')
+      .parents('button')
+      .click();
     cy.get('tr').contains('div', results.version).should('exist');
   });
 }
@@ -118,7 +130,12 @@ export function testShowAllRows(results: LookupResults): void {
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
     cy.contains('mat-cell', results.result).should('exist');
-    cy.get('mat-row').contains('mat-cell', results.result).parents('mat-row').contains('mat-icon', 'expand_more').parents('button').click();
+    cy.get('mat-row')
+      .contains('mat-cell', results.result)
+      .parents('mat-row')
+      .contains('mat-icon', 'expand_more')
+      .parents('button')
+      .click();
     cy.get('tr').contains('div', results.version).should('exist');
   });
 }
@@ -131,7 +148,11 @@ export function testLookupWithInvalidFilter(): void {
     // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
-    cy.get('mat-form-field').contains('mat-label', 'Filter Results').parents('mat-form-field').click().type('TotallyRealFilter');
+    cy.get('mat-form-field')
+      .contains('mat-label', 'Filter Results')
+      .parents('mat-form-field')
+      .click()
+      .type('TotallyRealFilter');
     cy.get('mat-option').should('not.exist');
     cy.contains('mat-cell', 'TotallyRealFilter').should('not.exist');
   });
