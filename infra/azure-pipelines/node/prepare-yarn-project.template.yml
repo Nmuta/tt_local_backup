@@ -3,9 +3,6 @@ parameters:
     displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
     type: string
 
-variables:
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
-
 steps:
 - task: Cache@2
   displayName: Cache yarn packages for ${{parameters.workingDirectory}}/yarn.lock
