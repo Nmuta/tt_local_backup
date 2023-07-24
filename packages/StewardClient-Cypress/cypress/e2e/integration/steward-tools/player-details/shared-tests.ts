@@ -1,7 +1,6 @@
 import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
 import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
 
 export function swapToTab(tabName: string): void {

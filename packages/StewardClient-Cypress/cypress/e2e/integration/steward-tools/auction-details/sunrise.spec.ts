@@ -2,11 +2,7 @@ import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { goToTool } from './page';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
-import {
-  verifyAuctionDeleteButtonUnlock,
-  verifyAuctionInformation,
-  verifyInvalidAuctionSearch,
-} from './shared-tests';
+import { verifyAuctionInformation, verifyInvalidAuctionSearch } from './shared-tests';
 
 // The following is an auction ID belonging to the dev account chada AKA r2dubs
 // TODO: Bug should perhaps be filed if necessary, as this same ID works in both sunrise and woodstock but likely originates from woodstock.
