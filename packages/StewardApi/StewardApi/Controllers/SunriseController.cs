@@ -684,14 +684,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (status.IsFeatured && status.FeaturedExpiry.HasValue)
             {
                 status.FeaturedExpiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.FeaturedExpiry));
+                status.ForceFeaturedExpiry?.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.ForceFeaturedExpiry));
             }
 
-            // NOTE: Disabling the ability to set force featured. Will soon add full configurability to Steward (lugeiken - 2023/01/31)
             await this.storefrontProvider.SetUgcFeaturedStatusAsync(
                 itemIdGuid,
                 status.IsFeatured,
                 status.FeaturedExpiry,
-                null, // Force featured expiry
+                status.ForceFeaturedExpiry,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok();
