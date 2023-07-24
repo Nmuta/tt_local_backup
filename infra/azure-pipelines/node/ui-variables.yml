@@ -1,0 +1,2 @@
+variables:
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn

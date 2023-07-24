@@ -1,4 +1,8 @@
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
+
+variables:
+  - template: 'infra/azure-pipelines/node/ui-variables.yml'
+
 stages:
 - stage: Prepare Directory (UI)
   jobs:
