@@ -34,7 +34,12 @@
               <mat-checkbox [formControl]="loadFormControls.continueOnBreakingChanges"
                 >Continue On Breaking Changes</mat-checkbox
               >
-              <div class="sf-horizontal">
+              <div>
+                <verify-button
+                  #verifyUpdateBtn
+                  [permissionAttribute]="updatePermAttribute"
+                  [permissionTitle]="gameTitle"
+                ></verify-button>
                 <button
                   mat-raised-button
                   color="primary"
@@ -42,6 +47,7 @@
                   (click)="loadTemplateToProfile()"
                   clickStop
                   [monitor]="loadTemplateMonitor"
+                  [verifyWithV2]="verifyUpdateBtn"
                   stateManager
                   monitorDisable
                   monitorWarnSnackbar
@@ -53,9 +59,9 @@
                     defaultIcon="upload"
                   ></button-spinner>
                 </button>
-                <mat-checkbox class="inline" [formControl]="loadFormControls.verifyAction">{{
-                  playerConsentText
-                }}</mat-checkbox>
+              </div>
+              <div>
+                {{ playerConsentText }}
               </div>
             </div>
           </form>
@@ -74,24 +80,29 @@
             <mat-checkbox [formControl]="saveFormControls.overwriteIfExists"
               >Overwrite If Template Name Exists</mat-checkbox
             >
-            <button
-              mat-raised-button
-              color="primary"
-              [disabled]="!saveFormGroup.valid"
-              (click)="saveProfileToTemplate()"
-              clickStop
-              [monitor]="saveTemplateMonitor"
-              stateManager
-              monitorDisable
-              monitorWarnSnackbar
-              monitorCompleteSnackbar
-            >
-              Save Profile
-              <button-spinner [monitor]="loadTemplateMonitor" defaultIcon="save"></button-spinner>
-            </button>
-            <mat-checkbox class="inline" [formControl]="saveFormControls.verifyAction"
-              >Verify action</mat-checkbox
-            >
+            <div>
+              <verify-button
+                #verifySaveBtn
+                [permissionAttribute]="updatePermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                mat-raised-button
+                color="primary"
+                [disabled]="!saveFormGroup.valid"
+                (click)="saveProfileToTemplate()"
+                clickStop
+                [monitor]="saveTemplateMonitor"
+                [verifyWithV2]="verifySaveBtn"
+                stateManager
+                monitorDisable
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Save Profile
+                <button-spinner [monitor]="loadTemplateMonitor" defaultIcon="save"></button-spinner>
+              </button>
+            </div>
           </form>
         </div>
       </ng-template>
@@ -112,27 +123,35 @@
               <mat-list-item> - User Safety Rating Data </mat-list-item>
               <mat-list-item> - UGC Profile Data</mat-list-item>
             </mat-list>
-            <button
-              mat-raised-button
-              color="primary"
-              [disabled]="!resetFormGroup.valid"
-              (click)="resetProfile()"
-              clickStop
-              [monitor]="resetTemplateMonitor"
-              stateManager
-              monitorDisable
-              monitorWarnSnackbar
-              monitorCompleteSnackbar
-            >
-              Reset Profile
-              <button-spinner
-                [monitor]="loadTemplateMonitor"
-                defaultIcon="restart_alt"
-              ></button-spinner>
-            </button>
-            <mat-checkbox class="inline" [formControl]="resetFormControls.verifyAction">{{
-              playerConsentText
-            }}</mat-checkbox>
+            <div>
+              <verify-button
+                #verifyResetBtn
+                [permissionAttribute]="updatePermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                mat-raised-button
+                color="primary"
+                [disabled]="!resetFormGroup.valid"
+                (click)="resetProfile()"
+                clickStop
+                [monitor]="resetTemplateMonitor"
+                [verifyWithV2]="verifyResetBtn"
+                stateManager
+                monitorDisable
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Reset Profile
+                <button-spinner
+                  [monitor]="loadTemplateMonitor"
+                  defaultIcon="restart_alt"
+                ></button-spinner>
+              </button>
+            </div>
+            <div>
+              {{ playerConsentText }}
+            </div>
           </form>
         </div>
       </ng-template>

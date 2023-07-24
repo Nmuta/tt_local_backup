@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '9e643b0c-00f4-4ac0-a1c9-d32027e22fef',
+      shortText: 'Switch verification mode to V2 for Profile Management ',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '25ecd357-16eb-40c9-bc58-24ccbc8fc21a',
       shortText: 'Add ability to edit title and description for UGC',
