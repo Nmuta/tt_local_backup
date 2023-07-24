@@ -1,0 +1,7 @@
+name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
+stages:
+- stage: Prepare Directory (UI)
+  jobs:
+  - template: infra/azure-pipelines/node/prepare-ui.template.yml
+    parameters:
+      workingDirectory: packages/StewardClient

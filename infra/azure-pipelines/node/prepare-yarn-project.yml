@@ -1,0 +1,43 @@
+parameters:
+  - name: 'workingDirectory'
+    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
+    type: string
+
+variables:
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+
+steps:
+- task: Cache@2
+  displayName: Cache yarn packages for ${{parameters.workingDirectory}}/yarn.lock
+  inputs:
+    key: 'yarn | "$(Agent.OS)" | ${{parameters.workingDirectory}}/yarn.lock'
+    restoreKeys: |
+       yarn | "$(Agent.OS)"
+       yarn
+    path: $(YARN_CACHE_FOLDER)
+
+- task: NodeTool@0
+  displayName: Use Node 18.x
+  inputs:
+    versionSpec: 18.x
+
+- task: npmAuthenticate@0
+  displayName: Authenticate for private NPM packages copy
+  inputs:
+    workingFile: ${{parameters.workingDirectory}}/.npmrc
+
+- task: Bash@3
+  displayName: Log Versions
+  inputs:
+    workingDirectory: ${{parameters.workingDirectory}}
+    targetType: 'inline'
+    script: >
+      echo Node Version: $(node -v)
+      echo Yarn Version: $(yarn -v)
+
+- task: Bash@3
+  displayName: Yarn Install
+  inputs:
+    workingDirectory: ${{parameters.workingDirectory}}
+    targetType: 'inline'
+    script: yarn --frozen-lockfile
