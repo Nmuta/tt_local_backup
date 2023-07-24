@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: 'f65dda02-6560-4ab5-815a-e8b6f41e7552',
+      shortText: 'Force featured end date is now selectable in UGC details',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '25ecd357-16eb-40c9-bc58-24ccbc8fc21a',
       shortText: 'Add ability to edit title and description for UGC',

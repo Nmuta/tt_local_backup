@@ -21,8 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HelpModule } from '../../modules/help/help.module';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
@@ -50,7 +49,6 @@ import { HelpModule } from '../../modules/help/help.module';
         StandardDateModule,
         VerifyButtonModule,
         PermissionsModule,
-        FontAwesomeModule,
         HelpModule
     ]
 })
