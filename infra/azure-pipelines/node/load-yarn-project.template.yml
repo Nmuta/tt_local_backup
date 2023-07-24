@@ -4,6 +4,7 @@ parameters:
   type: string
 
 steps:
+- checkout: none
 - download: current
   artifact: ${{parameters.dropName}}
   displayName: "Prepare: Load Intermedia Artifact (${{parameters.dropName}})"
@@ -13,7 +14,6 @@ steps:
     workingDirectory: $(dropPath)
     targetType: 'inline'
     script: |
-      chmod +x node_modules/.bin/prettier
-      chmod +x node_modules/.bin/ng
+      chmod -R +x node_modules/.bin/
       ls
       yarn
