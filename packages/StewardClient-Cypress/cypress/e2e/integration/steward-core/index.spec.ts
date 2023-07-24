@@ -21,7 +21,7 @@ context('Steward Index', () => {
     cy.visit('/');
   });
 
-  it.only('should lead to Tools homepage', () => {
+  it('should lead to Tools homepage', () => {
     // Verfiy cards
     cy.get('.mat-card-title').contains('Player Details');
     cy.get('.mat-card-title').contains('UGC Search');

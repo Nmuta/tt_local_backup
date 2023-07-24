@@ -23,6 +23,7 @@
     "run:prod": "cypress run --config-file cypress/configs/prod.config.ts",
     "run:prod-staging": "cypress run --config-file cypress/configs/prod-staging.config.ts",
     "run:dev:parallel": "cypress-parallel -s run:dev -t 4 -d cypress/e2e",
+    "run:changes-only": "bash ./scripts/execute-changed-specs.sh",
     "build": "yarn tsc",
     "build:check:eslint": "yarn run eslint",
     "build:check:prettier": "prettier --check .",
