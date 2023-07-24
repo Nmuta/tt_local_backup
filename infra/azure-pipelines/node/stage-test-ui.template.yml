@@ -15,7 +15,6 @@ jobs:
       dropName: ui
   - task: Bash@3
     displayName: Lint Check
-    enabled: False
     inputs:
       workingDirectory: ${{parameters.workingDirectory}}
       targetType: 'inline'
@@ -31,7 +30,6 @@ jobs:
       dropName: ui
   - task: Bash@3
     displayName: Prettier Check
-    enabled: False
     inputs:
       workingDirectory: ${{parameters.workingDirectory}}
       targetType: 'inline'
