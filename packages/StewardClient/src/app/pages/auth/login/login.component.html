@@ -1,10 +1,18 @@
 <center-contents class="text-center">
   <mat-card>
     <h1>Login</h1>
-    <p>
-      If you do not see the login popup,
-      <a [routerLink]="[]" (click)="login$()">click here to try again</a>
-    </p>
+    <div>
+      <p>
+        If you do not see the login popup,
+        <a [routerLink]="[]" (click)="login$()">click here to try again</a>
+      </p>
+    </div>
+    <div>
+      <p>
+        If you do not have permission to access Steward, please email
+        <a [href]="'mailto:' + EmailAddresses.LiveOpsAdmins" target="_blank">Turn 10 Live Ops</a>
+      </p>
+    </div>
   </mat-card>
 </center-contents>
 

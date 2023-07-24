@@ -144,5 +144,13 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
             var serviceProxy = service.ProxyInterface<ConfigurationManagementService, IConfigurationManagementService>();
             return serviceProxy;
         }
+
+        /// <inheritdoc/>
+        public ITaskManagementService PrepareTaskManagementService(string endpoint)
+        {
+            var service = new TaskManagementService(this.ForzaClient, endpoint, this.Settings.AdminXuid, this.ForgedCredentialProvider.SteelheadToken, false);
+            var serviceProxy = service.ProxyInterface<TaskManagementService, ITaskManagementService>();
+            return serviceProxy;
+        }
     }
 }

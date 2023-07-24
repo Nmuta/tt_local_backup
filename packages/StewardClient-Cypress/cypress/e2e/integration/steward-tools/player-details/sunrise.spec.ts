@@ -14,7 +14,6 @@ import {
   userDetailsVerifyPlayerIdentityResults,
   userDetailsVerifyFlagData,
   ugcLiveriesFindLivery,
-  auctionsFindCreatedAuction,
   jsonCheckJson,
 } from './shared-tests';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';

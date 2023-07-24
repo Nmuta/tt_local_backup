@@ -29,6 +29,7 @@ import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-
 import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
 import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
 import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-flags/steelhead-ugc-geo-flags.service';
+import { SteelheadEditUgcModalComponent } from '@views/edit-ugc-modal/steelhead/steelhead-edit-ugc-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SteelheadFeatureUgcModalComponent } from '@views/feature-ugc-modal/steelhead/steelhead-feature-ugc-modal.component';
 
@@ -70,6 +71,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public reportPermAttribute = PermAttributeName.ReportUgc;
   public hidePermAttribute = PermAttributeName.HideUgc;
   public unhidePermAttribute = PermAttributeName.UnhideUgc;
+  public editPermAttribute = PermAttributeName.EditUgc;
   public gameTitle = GameTitle.FM8;
 
   constructor(
@@ -176,6 +178,26 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
 
     this.dialog
       .open(SteelheadFeatureUgcModalComponent, {
+        data: this.ugcItem,
+      })
+      .afterClosed()
+      .pipe(
+        filter(data => !!data),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((response: SteelheadPlayerUgcItem) => {
+        this.ugcItem = response;
+      });
+  }
+
+  /** Edits a UGC item in Woodstock */
+  public editUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+
+    this.dialog
+      .open(SteelheadEditUgcModalComponent, {
         data: this.ugcItem,
       })
       .afterClosed()

@@ -62,5 +62,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         ///     Prepares a <see cref="IConfigurationManagementService" />.
         /// </summary>
         IConfigurationManagementService PrepareConfigurationManagementService(string endpoint);
+
+        /// <summary>
+        ///     Prepares a <see cref="ITaskManagementService" />.
+        /// </summary>
+        ITaskManagementService PrepareTaskManagementService(string endpoint);
     }
 }

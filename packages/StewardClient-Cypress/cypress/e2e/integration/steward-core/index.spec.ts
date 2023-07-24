@@ -5,7 +5,6 @@ import { changeEndpoint } from '@support/steward/shared-functions/change-endpoin
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { stewardUrls } from '@support/steward/urls';
 
-
 //These values may change as tools and games are added or removed from Steward
 const filterValues = {
   allTools: '33',
@@ -342,5 +341,5 @@ context('Steward Index', () => {
       searchByXuid('2814649032001718');
       cy.get('player-identity-results').contains('span', '2814649032001718').should('exist');
     });
-  })
+  });
 });

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
-import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -38,10 +37,8 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
     UserState.latestValidProfile$(this.profile$)
       .pipe(this.waitOnProfileMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(profile => {
-        if (profile?.role !== UserRole.None) {
-          this.tryAutoRedirectToToolsHome();
-        }
+      .subscribe(() => {
+        this.tryAutoRedirectToToolsHome();
       });
   }
 

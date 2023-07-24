@@ -24,20 +24,12 @@ module.exports = {
       files: ['*.ts'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
-        project: [
-          './src/tsconfig.eslint.json',
-          // "e2e/tsconfig.json" // we deleted this
-        ],
         createDefaultProgram: true,
       },
-      extends: [
-        'plugin:@angular-eslint/recommended',
-        'plugin:@typescript-eslint/recommended',
-        'prettier',
-        'plugin:jsdoc/recommended',
-      ],
-      plugins: ['jsdoc', 'rxjs'],
+      extends: ['plugin:@typescript-eslint/recommended', 'prettier', 'plugin:jsdoc/recommended'],
+      plugins: ['jsdoc', 'no-only-tests'],
       rules: {
+        "no-only-tests/no-only-tests": "error", // why? this breaks expectations with automated testing
         /**
          * Any TypeScript related rules you wish to use/reconfigure over and above the
          * recommended set provided by the @angular-eslint project would go here.
@@ -46,23 +38,6 @@ module.exports = {
          */
         '@typescript-eslint/no-inferrable-types': 'off', // why? over-specification of inferrable types is a style choice
         'max-len': 'off', // why? prettier may go above or below the target max length. just let it do its thing
-        '@angular-eslint/directive-selector': [
-          'error',
-          { type: 'attribute', prefix: 'app', style: 'camelCase' },
-        ],
-        '@angular-eslint/component-selector': [
-          'error',
-          { type: 'element', prefix: 'app', style: 'kebab-case' },
-        ],
-        quotes: ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
-        '@angular-eslint/component-selector': [
-          'error',
-          { type: 'element', prefix: [], style: 'kebab-case' },
-        ], // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
-        '@angular-eslint/directive-selector': [
-          'error',
-          { type: 'attribute', prefix: [], style: 'camelCase' },
-        ], // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
         // '@typescript-eslint/member-ordering': ['error', { default: []} ], // temporarily disabling member ordering lint rules
         '@typescript-eslint/member-ordering': [
           'error',
@@ -91,7 +66,6 @@ module.exports = {
               // Methods
               'public-abstract-method',
               'protected-abstract-method',
-              'private-abstract-method',
               'public-instance-method',
               'protected-instance-method',
               'private-instance-method',
@@ -112,8 +86,8 @@ module.exports = {
         'no-console': ['error'], // why? console statements should not be left in committed code
         'no-sparse-arrays': 'error', // why? sparse arrays can break .routing and .module files
         'jsdoc/check-alignment': 'error', // why? automatically configured by tslint port tool
-          // removed because this rule does not exist
-          // 'jsdoc/newline-after-description': 'error', // why? automatically configured by tslint port tool
+        // removed because this rule does not exist
+        // 'jsdoc/newline-after-description': 'error', // why? automatically configured by tslint port tool
         'jsdoc/require-returns': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
         'jsdoc/require-returns-type': 'off', // why? we already know these from TS
         'jsdoc/require-param': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
@@ -145,70 +119,12 @@ module.exports = {
             },
           },
         ],
-        /**
-         * RXJS rules.
-         * List of rules: https://yarnpkg.com/package/eslint-plugin-rxjs
-         */
-        'rxjs/no-unsafe-takeuntil': 'error',
       },
       settings: {
         jsdoc: {
           ignorePrivate: true, // why? allows use of @private to suppress doc rules
         },
       },
-    },
-
-    /**
-     * -----------------------------------------------------
-     * COMPONENT TEMPLATES
-     * -----------------------------------------------------
-     *
-     * If you use inline templates, make sure you read the notes on the configuration
-     * object after this one to understand how they relate to this configuration directly
-     * below.
-     */
-    {
-      files: ['*.component.html'],
-      extends: ['plugin:@angular-eslint/template/recommended'],
-      rules: {
-        /**
-         * Any template/HTML related rules you wish to use/reconfigure over and above the
-         * recommended set provided by the @angular-eslint project would go here.
-         *
-         * There is an example below from ESLint core (note, this specific example is not
-         * necessarily recommended for all projects):
-         */
-        'max-len': ['error', { code: 140 }],
-      },
-    },
-
-    /**
-     * -----------------------------------------------------
-     * EXTRACT INLINE TEMPLATES (from within .component.ts)
-     * -----------------------------------------------------
-     *
-     * This extra piece of configuration is necessary to extract inline
-     * templates from within Component metadata, e.g.:
-     *
-     * @Component({
-     *  template: `<h1>Hello, World!</h1>`
-     * })
-     * ...
-     *
-     * It works by extracting the template part of the file and treating it as
-     * if it were a full .html file, and it will therefore match the configuration
-     * specific for *.component.html above when it comes to actual rules etc.
-     *
-     * NOTE: This processor will skip a lot of work when it runs if you don't use
-     * inline templates in your projects currently, so there is no great benefit
-     * in removing it, but you can if you want to.
-     *
-     * You won't specify any rules here. As noted above, the rules that are relevant
-     * to inline templates are the same as the ones defined for *.component.html.
-     */
-    {
-      files: ['*.component.ts'],
-      extends: ['plugin:@angular-eslint/template/process-inline-templates'],
     },
   ],
 };

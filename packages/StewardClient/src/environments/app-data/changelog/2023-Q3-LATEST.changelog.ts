@@ -13,9 +13,59 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add UGC featuring modal for Steelhead',
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.LspTasks },
+      uuid: 'ded9dabb-5e0b-4e7c-af71-6567f5ac1881',
+      shortText: 'Add new component to view and manage LSP tasks',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '9e643b0c-00f4-4ac0-a1c9-d32027e22fef',
+      shortText: 'Switch verification mode to V2 for Profile Management',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '25ecd357-16eb-40c9-bc58-24ccbc8fc21a',
+      shortText: 'Add ability to edit title and description for UGC',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'f77d9fb2-1ace-4fa6-ac1b-c836fb7ab159',
+      shortText: 'Auto-reload player report weight after changing their player flags',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a5ff736e-743e-481a-b659-83f8cc9a51c2',
+      shortText: 'Switch to using Verify V2 in multiple areas',
+      longText: [
+        'Auction Blocklist on Woodstock and Sunrise',
+        'Gift Special Liveries on Woodstock',
+        'User Group Management on all titles',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '7ad05002-bc70-4022-8dd3-3001ebda96c2',
+      shortText: 'Remove no user role, provide email link in login error page',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.ServicesTableStorage },
+      uuid: 'e8f7a5a004-fce6-4772-a015-50a346a6872f',
+      shortText: 'Remove T10Id as lookup option',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: 'e8a27035-dc62-4eaa-96a7-d00d76e21e25',
       shortText: 'Hidden UGC is a seperate tab and split up by UGC type',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.CreateAuction },
+      uuid: 'dab5bf51-fd02-46ec-bf29-e20cb13e42f6',
+      shortText: 'Add default icon to create button in create single auction',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UserDetails },
+      uuid: '72ccd2b5-fd86-4714-863c-fc83218d54d3',
+      shortText: 'Clear note input field after adding a profile note',
     },
     {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.SearchUGC },

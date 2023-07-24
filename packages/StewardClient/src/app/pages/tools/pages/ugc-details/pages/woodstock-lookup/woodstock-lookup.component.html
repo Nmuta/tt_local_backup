@@ -54,6 +54,17 @@
             </button>
             <button
               class="sf-default-margins sf-action-list-margins"
+              mat-raised-button
+              color="primary"
+              (click)="editUgcItem()"
+              stateManager
+              [permissionAttribute]="editPermAttribute"
+              [permissionTitle]="gameTitle"
+            >
+              <span>Edit Ugc</span>
+            </button>
+            <button
+              class="sf-default-margins sf-action-list-margins"
               [disabled]="!canGenerateSharecode"
               mat-raised-button
               color="primary"
