@@ -17,9 +17,9 @@ stages:
       workingDirectory: packages/StewardClient
       dropName: $(DROP_NAME)
 
-# - stage: UI_Test
-#   displayName: Test (UI)
-#   jobs:
-#   - template: infra/azure-pipelines/node/stage-verify-ui.template.yml
-#     parameters:
-#       dropName: $(DROP_NAME)
+- stage: UI_Test
+  displayName: Test (UI)
+  jobs:
+  - template: infra/azure-pipelines/node/stage-verify-ui.template.yml
+    parameters:
+      dropName: $(DROP_NAME)
