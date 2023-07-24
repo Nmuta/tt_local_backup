@@ -29,6 +29,16 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: 'a5ff736e-743e-481a-b659-83f8cc9a51c2',
+      shortText: 'Switch to using Verify V2 in multiple areas',
+      longText: [
+        'Auction Blocklist on Woodstock and Sunrise',
+        'Gift Special Liveries on Woodstock',
+        'User Group Management on all titles',
+      ],
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '7ad05002-bc70-4022-8dd3-3001ebda96c2',
       shortText: 'Remove no user role, provide email link in login error page',
     },
