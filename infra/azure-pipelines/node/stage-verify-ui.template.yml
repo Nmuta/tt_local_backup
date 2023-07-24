@@ -6,13 +6,13 @@ parameters:
 jobs:
 - template: job-ui-test-lint.template.yml
   parameters:
-    dropName: $(DROP_NAME)
+    dropName: ${{parameters.dropName}}
 - template: job-ui-test-prettier.template.yml
   parameters:
-    dropName: $(DROP_NAME)
+    dropName: ${{parameters.dropName}}
 - template: job-ui-test-build.template.yml
   parameters:
-    dropName: $(DROP_NAME)
+    dropName: ${{parameters.dropName}}
 - template: job-ui-test-unit.template.yml
   parameters:
-    dropName: $(DROP_NAME)
+    dropName: ${{parameters.dropName}}
