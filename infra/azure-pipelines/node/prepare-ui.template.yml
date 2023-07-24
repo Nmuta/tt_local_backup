@@ -12,7 +12,8 @@ jobs:
   - checkout: self
     submodules: true
   - template: prepare-yarn-project.template.yml
-    workingDirectory: ${{parameters.workingDirectory}}
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
   # - task: CmdLine@2
   #   displayName: Lint Check (Angular)
   #   enabled: False
