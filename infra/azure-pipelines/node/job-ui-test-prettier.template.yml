@@ -6,8 +6,6 @@ parameters:
 jobs:
 - job: UI_Test_Prettier
   displayName: Prettier
-  pool:
-    vmImage: ubuntu-20.04
   steps:
   - template: prepare-yarn-project.template.yml
     parameters:
@@ -17,4 +15,4 @@ jobs:
     inputs:
       workingDirectory: ${{parameters.workingDirectory}}
       targetType: 'inline'
-      script: yarn run prettier:check
+      script: yarn run build:check:prettier

@@ -8,6 +8,7 @@ parameters:
   - name: 'tag'
     displayName: 'Extra Build Tag. Probably $(Build.BuildNumber)'
     type: string
+
 jobs:
 - job: PR_Angular_Lint
   displayName: Angular (Lint & Test)

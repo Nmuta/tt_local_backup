@@ -17,7 +17,8 @@
     "lint:fix": "yarn prettier:fix && yarn lint --fix",
     "prettier:fix": "prettier --write .",
     
-    "build:check:prettier": "prettier --check .",
+    "build:check:lint": "yarn run ng lint",
+    "build:check:prettier": "yarn run prettier --check .",
     "build:check:changelog-is-modified": "C:\\Windows\\system32\\bash.exe ./scripts/changelog-is-modified-or-fail.sh",
     "build:check:ado:changelog-is-modified": "bash ./scripts/changelog-is-modified-or-fail.sh",
     
