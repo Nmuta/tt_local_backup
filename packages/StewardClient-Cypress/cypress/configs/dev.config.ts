@@ -1,4 +1,4 @@
-import { defineConfig } from 'cypress'
+import { defineConfig } from 'cypress';
 
 export default defineConfig({
   chromeWebSecurity: false,
@@ -23,4 +23,4 @@ export default defineConfig({
     specPattern: 'cypress/e2e/**/*.spec.*',
     supportFile: 'cypress/support/commands.ts',
   },
-})
+});

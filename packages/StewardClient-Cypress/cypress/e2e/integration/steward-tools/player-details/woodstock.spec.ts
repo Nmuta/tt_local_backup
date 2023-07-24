@@ -12,7 +12,6 @@ import {
   inventoryFindPlayerInventoryData,
   notificationsFindNotification,
   userDetailsVerifyFlagData,
-  swapToTab,
   auctionsFindCreatedAuction,
   ugcLiveriesFindLivery,
   loyaltyFindTitlesPlayed,
