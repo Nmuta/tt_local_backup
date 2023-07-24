@@ -4,30 +4,38 @@ parameters:
     type: string
 
 jobs:
-- job: Prepare_UI
-  displayName: Angular UI (Prepare)
+- job: UI_Test_Lint
+  displayName: Lint
   pool:
     vmImage: ubuntu-20.04
   steps:
-  - checkout: self
-    submodules: true
-  - template: prepare-yarn-project.template.yml
+  - template: load-yarn-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
-  # - task: CmdLine@2
-  #   displayName: Lint Check (Angular)
-  #   enabled: False
-  #   inputs:
-  #     script: >
-  #       yarn run lint
-  #     workingDirectory: packages/StewardClient/
-  # - task: CmdLine@2
-  #   displayName: Lint Check (Prettier)
-  #   enabled: False
-  #   inputs:
-  #     script: >
-  #       yarn run prettier:check
-  #     workingDirectory: packages/StewardClient/
+      dropName: ui
+  - task: Bash@3
+    displayName: Lint Check
+    enabled: False
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      script: yarn run lint
+- job: UI_Test_Prettier
+  displayName: Prettier
+  pool:
+    vmImage: ubuntu-20.04
+  steps:
+  - template: load-yarn-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+      dropName: ui
+  - task: Bash@3
+    displayName: Prettier Check
+    enabled: False
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      script: yarn run prettier:check
   # - task: CmdLine@2
   #   displayName: Tests & Code Coverage
   #   inputs:

@@ -1,7 +1,10 @@
 parameters:
-  - name: 'workingDirectory'
-    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
-    type: string
+- name: 'workingDirectory'
+  displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
+  type: string
+- name: 'dropName'
+  displayName: 'Identifier for the created intermediate drop'
+  type: string
 
 steps:
 - task: Cache@2
@@ -38,3 +41,7 @@ steps:
     workingDirectory: ${{parameters.workingDirectory}}
     targetType: 'inline'
     script: yarn --frozen-lockfile
+
+- publish: ${{parameters.workingDirectory}}
+  displayName: Publish Intermedia Artifact (prepare-${{parameters.dropName}}-drop)
+  artifact: prepare-${{parameters.dropName}}-drop

@@ -1,0 +1,67 @@
+parameters:
+  - name: 'workingDirectory'
+    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
+    type: string
+
+jobs:
+- job: Prepare_UI
+  displayName: Angular UI (Prepare)
+  pool:
+    vmImage: ubuntu-20.04
+  steps:
+  - checkout: self
+    submodules: true
+  - template: prepare-yarn-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+      dropName: ui
+  # - task: CmdLine@2
+  #   displayName: Lint Check (Angular)
+  #   enabled: False
+  #   inputs:
+  #     script: >
+  #       yarn run lint
+  #     workingDirectory: packages/StewardClient/
+  # - task: CmdLine@2
+  #   displayName: Lint Check (Prettier)
+  #   enabled: False
+  #   inputs:
+  #     script: >
+  #       yarn run prettier:check
+  #     workingDirectory: packages/StewardClient/
+  # - task: CmdLine@2
+  #   displayName: Tests & Code Coverage
+  #   inputs:
+  #     script: >-
+  #       # Tests may not fail when code coverage is enabled
+
+  #       yarn run test:ado --code-coverage
+  #     workingDirectory: packages/StewardClient/
+  # - task: PublishTestResults@2
+  #   displayName: Publish Test Results
+  #   condition: succeededOrFailed()
+  #   continueOnError: True
+  #   inputs:
+  #     testResultsFiles: '**/TESTS-Chrome_Headless_*.xml'
+  #     mergeTestResults: true
+  #     failTaskOnFailedTests: true
+  # - task: PublishCodeCoverageResults@1
+  #   displayName: Publish Code Coverage
+  #   condition: succeededOrFailed()
+  #   continueOnError: True
+  #   inputs:
+  #     codeCoverageTool: Cobertura
+  #     summaryFileLocation: $(System.DefaultWorkingDirectory)/**/*coverage.xml
+  #     reportDirectory: $(System.DefaultWorkingDirectory)/**/coverage
+  #     failIfCoverageEmpty: true
+  # - task: ArchiveFiles@2
+  #   displayName: Archive Files
+  #   enabled: False
+  #   inputs:
+  #     rootFolderOrFile: packages/StewardClient/
+  #     archiveFile: $(Build.ArtifactStagingDirectory)/lint-test-ui.zip
+  # - task: PublishBuildArtifacts@1
+  #   displayName: 'Publish Artifact: lint-test-ui'
+  #   enabled: False
+  #   inputs:
+  #     ArtifactName: $(Build.ArtifactStagingDirectory)/lint-test-ui.zip
