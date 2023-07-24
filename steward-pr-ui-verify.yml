@@ -18,6 +18,6 @@ stages:
 - stage: UI_Test
   displayName: Test (UI)
   jobs:
-  - template: infra/azure-pipelines/node/stage-test-ui.template.yml
+  - template: infra/azure-pipelines/node/stage-verify-ui.template.yml
     parameters:
       workingDirectory: packages/StewardClient
