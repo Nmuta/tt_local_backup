@@ -37,6 +37,7 @@ import { UgcOperationSnackbarComponent } from '../../components/ugc-action-snack
 import { WoodstockPersistUgcModalComponent } from '@views/persist-ugc-modal/woodstock/woodstock-persist-ugc-modal.component';
 import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 import { WoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service';
+import { WoodstockEditUgcModalComponent } from '@views/edit-ugc-modal/woodstock/woodstock-edit-ugc-modal.component';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -86,6 +87,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
   public unhidePermAttribute = PermAttributeName.UnhideUgc;
   public clonePermAttribute = PermAttributeName.CloneUgc;
   public persistPermAttribute = PermAttributeName.PersistUgc;
+  public editPermAttribute = PermAttributeName.EditUgc;
   public gameTitle = GameTitle.FH5;
 
   public ugcOperationSnackbarComponent = UgcOperationSnackbarComponent;
@@ -212,6 +214,26 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
     this.dialog
       .open(WoodstockFeatureUgcModalComponent, {
+        data: this.ugcItem,
+      })
+      .afterClosed()
+      .pipe(
+        filter(data => !!data),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((response: WoodstockPlayerUgcItem) => {
+        this.ugcItem = response;
+      });
+  }
+
+  /** Edits a UGC item in Woodstock */
+  public editUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+
+    this.dialog
+      .open(WoodstockEditUgcModalComponent, {
         data: this.ugcItem,
       })
       .afterClosed()

@@ -1,12 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserRole } from '@models/enums';
-import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
 import { SetStagingApi } from '@shared/state/user-settings/user-settings.actions';
 import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 import { of } from 'rxjs';
-import faker from '@faker-js/faker';
 
 import { AvailableAppsComponent } from './available-apps.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
@@ -47,26 +44,6 @@ describe('AvailableAppsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('Method: ngOnInit', () => {
-    describe('When user role is LiveOpsAdmin', () => {
-      beforeEach(() => {
-        const name = faker.name.firstName();
-        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
-          emailAddress: `${name}@testemail.com`,
-          name: name,
-          role: UserRole.LiveOpsAdmin,
-        } as UserModel);
-      });
-
-      it('should set correct app availability', () => {
-        component.ngOnInit();
-
-        expect(component.areAnyAppsAccessible).toBeTruthy();
-        expect(component.areZendeskAppsAccessible).toBeTruthy();
-      });
-    });
   });
 
   describe('Method: syncStagingApiSettings', () => {

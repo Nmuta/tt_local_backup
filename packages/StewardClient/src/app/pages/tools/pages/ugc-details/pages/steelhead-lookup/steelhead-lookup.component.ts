@@ -29,6 +29,8 @@ import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-
 import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
 import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
 import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-flags/steelhead-ugc-geo-flags.service';
+import { SteelheadEditUgcModalComponent } from '@views/edit-ugc-modal/steelhead/steelhead-edit-ugc-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 const GEO_FLAGS_ORDER = chain(SteelheadGeoFlags).sortBy().value();
 
@@ -68,6 +70,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public reportPermAttribute = PermAttributeName.ReportUgc;
   public hidePermAttribute = PermAttributeName.HideUgc;
   public unhidePermAttribute = PermAttributeName.UnhideUgc;
+  public editPermAttribute = PermAttributeName.EditUgc;
   public gameTitle = GameTitle.FM8;
 
   constructor(
@@ -78,6 +81,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
     private readonly ugcVisibilityService: SteelheadUgcVisibilityService,
     private readonly ugcGeoFlagsService: SteelheadUgcGeoFlagsService,
+    private readonly dialog: MatDialog,
   ) {
     super();
   }
@@ -172,6 +176,26 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     }
 
     throw new Error(`Steelhead does not support featuring UGC.`);
+  }
+
+  /** Edits a UGC item in Woodstock */
+  public editUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+
+    this.dialog
+      .open(SteelheadEditUgcModalComponent, {
+        data: this.ugcItem,
+      })
+      .afterClosed()
+      .pipe(
+        filter(data => !!data),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((response: SteelheadPlayerUgcItem) => {
+        this.ugcItem = response;
+      });
   }
 
   /** Hide a UGC item in Steelhead */
