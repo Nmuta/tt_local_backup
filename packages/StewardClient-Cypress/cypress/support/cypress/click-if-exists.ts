@@ -4,7 +4,7 @@
  */
 export function clickIfExists(selector: string): void {
   // TODO: Find a package with this in Chainable format, or make our own.
-  cy.get('body').then((body) => {
+  cy.get('body').then(body => {
     if (body.find(selector).length > 0) {
       cy.get(selector).click();
     }

@@ -7,7 +7,7 @@ const timeoutOverride = 60_000; /*ms*/
 /** Finds and fills in Gamertag field. Clears the field when done. */
 export function contextSearchByGtagForPlayerDetails(knownUser: KnownUser): void {
   if (!knownUser.gtag) {
-    throw new Error('Known user lacked a gtag')
+    throw new Error('Known user lacked a gtag');
   }
 
   before(() => {
@@ -24,7 +24,7 @@ export function contextSearchByGtagForPlayerDetails(knownUser: KnownUser): void 
 /** Finds and fills in XUID field. Clears the field when done */
 export function contextSearchByXuidForPlayerDetails(knownUser: KnownUser): void {
   if (!knownUser.xuid) {
-    throw new Error('Known user lacked a XUID')
+    throw new Error('Known user lacked a XUID');
   }
   before(() => {
     // reset the search if possible.

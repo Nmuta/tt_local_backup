@@ -1,6 +1,6 @@
-import { isolateTests } from "@support/cypress/isolate-tests";
-import { login } from "@support/steward/auth/login";
-import { disableFakeApi } from "@support/steward/util/disable-fake-api";
+import { isolateTests } from '@support/cypress/isolate-tests';
+import { login } from '@support/steward/auth/login';
+import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
 /**
  * Reset test context to a default state.

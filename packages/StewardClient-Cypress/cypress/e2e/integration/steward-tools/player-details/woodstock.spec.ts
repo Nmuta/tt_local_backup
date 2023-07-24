@@ -17,7 +17,10 @@ import {
   loyaltyFindTitlesPlayed,
   jsonCheckJson,
 } from './shared-tests';
-import { contextSearchByGtagForPlayerDetails, contextSearchByXuidForPlayerDetails, searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import {
+  contextSearchByGtagForPlayerDetails,
+  contextSearchByXuidForPlayerDetails,
+} from '@support/steward/shared-functions/searching';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const defaultWoodstockUser = 'luke';
@@ -25,13 +28,12 @@ const platformName = 'woodstock';
 
 context('Steward / Tools / Player Details / Woodstock', () => {
   before(() => {
-    resetToDefaultState()
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.playerDetails.default);
     selectWoodstock();
   });
 
   context('GTAG Lookup', () => {
-
     context('With default user', () => {
       contextSearchByGtagForPlayerDetails(RetailUsers[defaultWoodstockUser]);
 
@@ -81,7 +83,7 @@ function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
     before(() => {
       swapToTab('User Details');
-    })
+    });
 
     // found user
     userDetailsVerifyPlayerIdentityResults(userToSearch);
@@ -133,7 +135,7 @@ function testNotifications(): void {
     before(() => {
       swapToTab('Notifications');
     });
-    
+
     // found player inventory data
     notificationsFindNotification();
   });
@@ -143,7 +145,7 @@ function testAuctions(): void {
   context('Auctions', () => {
     before(() => {
       swapToTab('Auctions');
-    })
+    });
 
     //The auction filter labels are currently using sunrise instead of woodstock, check in shared tests file for details
     auctionsFindCreatedAuction(
@@ -160,8 +162,8 @@ function testUgc(): void {
   context('Ugc', () => {
     before(() => {
       swapToTab('Ugc');
-    })
-    
+    });
+
     ugcLiveriesFindLivery(platformName, 'Hot Wheels', '2JetZ', 'metadata');
   });
 }
@@ -171,7 +173,7 @@ function testLoyalty(titles: string[]): void {
     before(() => {
       swapToTab('Loyalty');
     });
-    
+
     loyaltyFindTitlesPlayed(platformName, titles);
   });
 }
