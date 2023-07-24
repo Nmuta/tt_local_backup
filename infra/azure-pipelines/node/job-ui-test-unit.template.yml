@@ -1,20 +1,21 @@
 parameters:
-  - name: 'workingDirectory'
-    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
-    type: string
+- name: 'dropName'
+  displayName: "Name of the intermediate drop. Like 'prepare-ui-drop'."
+  type: string
 
 jobs:
-
 - job: UI_Test_Run_Unit_Tests
   displayName: Unit Test
+  variables:
+    dropPath: $(Pipeline.Workspace)/drop/${{parameters.dropName}}
   steps:
-  - template: prepare-yarn-project.template.yml
+  - template: load-yarn-project.template.yml
     parameters:
-      workingDirectory: ${{parameters.workingDirectory}}
+      dropName: ${{parameters.dropName}}
   - task: Bash@3
-    displayName: Prettier Check
+    displayName: ADO Code Coverage
     inputs:
-      workingDirectory: ${{parameters.workingDirectory}}
+      workingDirectory: $(dropPath)
       targetType: 'inline'
       script: yarn run test:ado --code-coverage
       
@@ -23,7 +24,7 @@ jobs:
     condition: succeededOrFailed()
     continueOnError: True
     inputs:
-      testResultsFiles: '**/TESTS-Chrome_Headless_*.xml'
+      testResultsFiles: '$(dropPath)/**/TESTS-Chrome_Headless_*.xml'
       mergeTestResults: true
       failTaskOnFailedTests: true
 
@@ -33,8 +34,8 @@ jobs:
     continueOnError: True
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: $(System.DefaultWorkingDirectory)/**/*coverage.xml
-      reportDirectory: $(System.DefaultWorkingDirectory)/**/coverage
+      summaryFileLocation: $(dropPath)/**/*coverage.xml
+      reportDirectory: $(dropPath)/**/coverage
       failIfCoverageEmpty: true
   # - task: CmdLine@2
   #   displayName: Tests & Code Coverage

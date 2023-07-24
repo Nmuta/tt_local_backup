@@ -1,7 +1,10 @@
 parameters:
-  - name: 'workingDirectory'
-    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
-    type: string
+- name: 'workingDirectory'
+  displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
+  type: string
+- name: 'dropName'
+  displayName: "Name of the intermediate drop. Like 'prepare-ui-drop'."
+  type: string
 
 jobs:
 - job: Prepare_UI
@@ -12,6 +15,7 @@ jobs:
   - template: prepare-yarn-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
+      dropName: ${{parameters.dropName}}
   # - task: CmdLine@2
   #   displayName: Lint Check (Angular)
   #   enabled: False

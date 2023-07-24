@@ -1,18 +1,18 @@
 parameters:
-  - name: 'workingDirectory'
-    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
-    type: string
+- name: 'dropName'
+  displayName: "Name of the intermediate drop. Like 'prepare-ui-drop'."
+  type: string
 
 jobs:
 - template: job-ui-test-lint.template.yml
   parameters:
-    workingDirectory: ${{parameters.workingDirectory}}
+    dropName: $(DROP_NAME)
 - template: job-ui-test-prettier.template.yml
   parameters:
-    workingDirectory: ${{parameters.workingDirectory}}
+    dropName: $(DROP_NAME)
 - template: job-ui-test-build.template.yml
   parameters:
-    workingDirectory: ${{parameters.workingDirectory}}
+    dropName: $(DROP_NAME)
 - template: job-ui-test-unit.template.yml
   parameters:
-    workingDirectory: ${{parameters.workingDirectory}}
+    dropName: $(DROP_NAME)

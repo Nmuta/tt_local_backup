@@ -1,0 +1,9 @@
+parameters:
+- name: 'dropName'
+  displayName: "Name of the intermediate drop. Like 'prepare-ui-drop'."
+  type: string
+
+steps:
+- download: current
+  artifact: ${{parameters.dropName}}
+  displayName: Load Intermedia Artifact (${{parameters.dropName}})

@@ -1,17 +1,19 @@
 parameters:
-  - name: 'workingDirectory'
-    displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
-    type: string
+- name: 'dropName'
+  displayName: "Name of the intermediate drop. Like 'prepare-ui-drop'."
+  type: string
 
 jobs:
 - job: UI_Test_Build
   displayName: Build
+  variables:
+    dropPath: $(Pipeline.Workspace)/drop/${{parameters.dropName}}
   steps:
   - template: prepare-yarn-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
   - task: Bash@3
-    displayName: Prettier Check
+    displayName: Build
     inputs:
       workingDirectory: ${{parameters.workingDirectory}}
       targetType: 'inline'

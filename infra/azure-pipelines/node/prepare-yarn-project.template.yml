@@ -1,6 +1,9 @@
 parameters:
 - name: 'workingDirectory'
-  displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
+  displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."
+  type: string
+- name: 'dropName'
+  displayName: "Name of the intermediate drop. Like 'prepare-ui-drop'."
   type: string
 
 steps:
@@ -24,7 +27,7 @@ steps:
     workingFile: ${{parameters.workingDirectory}}/.npmrc
 
 - task: Bash@3
-  displayName: Yarn Install
+  displayName: "Prepare: Yarn Install"
   inputs:
     workingDirectory: ${{parameters.workingDirectory}}
     targetType: 'inline'
@@ -40,3 +43,7 @@ steps:
       echo Yarn Version: $(yarn -v)
       echo Angular Versions:
       yarn ng version
+
+- publish: ${{parameters.workingDirectory}}
+  displayName: Publish Intermedia Artifact (${{parameters.dropName}})
+  artifact: ${{parameters.dropName}}
