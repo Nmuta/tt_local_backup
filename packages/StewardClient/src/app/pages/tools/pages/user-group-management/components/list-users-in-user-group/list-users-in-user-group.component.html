@@ -24,7 +24,7 @@
           monitorWarn
           monitorWarnSnackbar
         >
-          <span [matTooltip]="!userHasRemoveAllPerms ? incorrectPermsTooltip : null">
+          <span>
             Delete All Users
             <button-spinner [monitor]="deleteAllMonitor" defaultIcon="delete"></button-spinner>
           </span>
@@ -54,12 +54,12 @@
         <div class="action">
           <verify-button
             #verifyBulkAddBtn
-            [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
+            [disabled]="!formControls.userIdentifications.value"
             [permissionAttribute]="updatePermAttribute"
             [permissionTitle]="service?.gameTitle"
           ></verify-button>
           <button
-            [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
+            [disabled]="!formControls.userIdentifications.value"
             [verifyWithV2]="verifyBulkAddBtn"
             mat-raised-button
             color="primary"
@@ -70,7 +70,7 @@
             monitorWarn
             monitorWarnSnackbar
           >
-            <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+            <span>
               Add Users
               <button-spinner [monitor]="addPlayersMonitor" defaultIcon="add"></button-spinner>
             </span>
@@ -79,12 +79,12 @@
         <div class="action">
           <verify-button
             #verifyBulkDeleteBtn
-            [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
+            [disabled]="!formControls.userIdentifications.value"
             [permissionAttribute]="updatePermAttribute"
             [permissionTitle]="service?.gameTitle"
           ></verify-button>
           <button
-            [disabled]="!formControls.userIdentifications.value || !userHasWritePerms"
+            [disabled]="!formControls.userIdentifications.value"
             [verifyWithV2]="verifyBulkDeleteBtn"
             mat-raised-button
             color="warn"
@@ -95,7 +95,7 @@
             monitorWarn
             monitorWarnSnackbar
           >
-            <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+            <span>
               Delete Users
               <button-spinner
                 [monitor]="deletePlayersMonitor"
@@ -153,8 +153,13 @@
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef>Actions</th>
               <td mat-cell *matCellDef="let element">
+                <verify-button
+                  #verifyDeleteActionBtn
+                  [permissionAttribute]="updatePermAttribute"
+                  [permissionTitle]="service?.gameTitle"
+                ></verify-button>
                 <button
-                  [disabled]="!verifyDelete.checked || !userHasWritePerms"
+                  [verifyWithV2]="verifyDeleteActionBtn"
                   mat-raised-button
                   color="warn"
                   (click)="deletePlayerFromUserGroup(element)"
@@ -164,7 +169,7 @@
                   monitorWarn
                   monitorWarnSnackbar
                 >
-                  <span [matTooltip]="!userHasWritePerms ? incorrectPermsTooltip : null">
+                  <span>
                     Remove
                     <button-spinner
                       [monitor]="element.deleteMonitor"
@@ -172,14 +177,6 @@
                     ></button-spinner>
                   </span>
                 </button>
-                <mat-checkbox
-                  #verifyDelete
-                  stateManager
-                  [permissionAttribute]="updatePermAttribute"
-                  [permissionTitle]="service?.gameTitle"
-                  matTooltip="Verify Deletion"
-                  >Verify</mat-checkbox
-                >
               </td>
             </ng-container>
 
