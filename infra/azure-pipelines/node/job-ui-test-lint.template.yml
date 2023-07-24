@@ -11,10 +11,10 @@ jobs:
   steps:
   - template: prepare-yarn-project.template.yml
     parameters:
-      workingDirectory: ${{dropPath}}
+      workingDirectory: $(dropPath)
   - task: Bash@3
     displayName: Lint Check
     inputs:
-      workingDirectory: ${{dropPath}}
+      workingDirectory: $(dropPath)
       targetType: 'inline'
       script: yarn run lint
