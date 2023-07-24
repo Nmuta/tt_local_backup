@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
     /// <summary>
     ///     Manages featured status Steelhead UGC.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/ugc/{id}/featuredStatus")]
+    [Route("api/v{version:apiVersion}/title/steelhead/ugc/{ugcId}/featuredStatus")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [AuthorizeRoles(
         UserRole.GeneralUser,

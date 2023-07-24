@@ -25,7 +25,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
-  declarations: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent, SteelheadFeatureUgcModalComponent],
+  declarations: [
+    SunriseFeatureUgcModalComponent,
+    WoodstockFeatureUgcModalComponent,
+    SteelheadFeatureUgcModalComponent,
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -49,6 +53,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     VerifyButtonModule,
     PermissionsModule,
   ],
-  exports: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent, SteelheadFeatureUgcModalComponent],
+  exports: [
+    SunriseFeatureUgcModalComponent,
+    WoodstockFeatureUgcModalComponent,
+    SteelheadFeatureUgcModalComponent,
+  ],
 })
 export class FeatureUgcModalModule {}

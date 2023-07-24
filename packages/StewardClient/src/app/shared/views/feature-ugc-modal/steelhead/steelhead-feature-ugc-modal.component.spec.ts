@@ -5,27 +5,32 @@ import faker from '@faker-js/faker';
 import { fakePlayerUgcItem, PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcFeaturedStatus } from '@models/ugc-featured-status';
 import { UgcType } from '@models/ugc-filters';
-import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DateTime, Duration } from 'luxon';
 import { of } from 'rxjs';
-import { WoodstockFeatureUgcModalComponent } from './woodstock-feature-ugc-modal.component';
+import { SteelheadFeatureUgcModalComponent } from './steelhead-feature-ugc-modal.component';
+import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service.mock';
+import { createMockSteelheadUgcFeaturedStatusService } from '@services/api-v2/steelhead/ugc/featured-status/steelhead-ugc-featured-status.service.mock';
+import { SteelheadUgcFeaturedStatusService } from '@services/api-v2/steelhead/ugc/featured-status/steelhead-ugc-featured-status.service';
+import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 
-describe('WoodstockFeatureUgcModalComponent', () => {
+describe('SteelheadFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
-  let fixture: ComponentFixture<WoodstockFeatureUgcModalComponent>;
-  let component: WoodstockFeatureUgcModalComponent;
+  let fixture: ComponentFixture<SteelheadFeatureUgcModalComponent>;
+  let component: SteelheadFeatureUgcModalComponent;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mockMatDialogRef: any;
-  let mockWoodstockService: WoodstockService;
+  let mockSteelheadUgcLookupService: SteelheadUgcLookupService = undefined;
+  let mockSteelheadUgcFeaturedStatusService: SteelheadUgcFeaturedStatusService = undefined;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WoodstockFeatureUgcModalComponent],
+      declarations: [SteelheadFeatureUgcModalComponent],
       imports: [MatButtonModule, MatDialogModule, PipesModule],
       providers: [
-        createMockWoodstockService(),
+        createMockSteelheadUgcLookupService(),
+        createMockSteelheadUgcFeaturedStatusService(),
         {
           provide: MatDialogRef,
           useValue: { close: () => null, beforeClosed: () => of() },
@@ -37,22 +42,16 @@ describe('WoodstockFeatureUgcModalComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(WoodstockFeatureUgcModalComponent);
+    fixture = TestBed.createComponent(SteelheadFeatureUgcModalComponent);
     component = fixture.componentInstance;
-    mockWoodstockService = TestBed.inject(WoodstockService);
+    mockSteelheadUgcLookupService = TestBed.inject(SteelheadUgcLookupService);
+    mockSteelheadUgcFeaturedStatusService = TestBed.inject(SteelheadUgcFeaturedStatusService);
 
     fixture.detectChanges();
 
     mockMatDialogRef = TestBed.inject(MatDialogRef);
     mockMatDialogRef.close = jasmine.createSpy('close');
     mockMatDialogRef.beforeClosed = jasmine.createSpy('beforeClosed').and.returnValue(of());
-
-    mockWoodstockService.getPlayerUgcItem$ = jasmine
-      .createSpy('setUgcItemFeatureStatus')
-      .and.returnValue(of(null));
-    mockWoodstockService.setUgcItemFeatureStatus = jasmine
-      .createSpy('setUgcItemFeatureStatus')
-      .and.returnValue(of());
   });
 
   it('should be created', () => {
@@ -98,10 +97,10 @@ describe('WoodstockFeatureUgcModalComponent', () => {
     const expireDate = DateTime.local().plus(Duration.fromMillis(10_000));
     const expireDuration = expireDate.diff(DateTime.local().startOf('day'));
 
-    it('should call WoodstockService.setUgcItemFeatureStatus() with correct params', () => {
+    it('should call SteelheadUgcFeaturedStatusService.setUgcItemFeatureStatus() with correct params', () => {
       component.changeFeaturedStatus$(itemId, true, expireDate);
 
-      expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
+      expect(mockSteelheadUgcFeaturedStatusService.setUgcItemFeatureStatus$).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: true,
         featuredExpiry: expireDuration,
@@ -113,10 +112,10 @@ describe('WoodstockFeatureUgcModalComponent', () => {
     const itemId = faker.datatype.uuid().toString();
     const type = UgcType.Livery;
 
-    it('should call WoodstockService.getPlayerUgcItem$() with correct params', () => {
+    it('should call SteelheadUgcLookupService.getPlayerUgcItem$() with correct params', () => {
       component.getUgcItem$(itemId, type);
 
-      expect(mockWoodstockService.getPlayerUgcItem$).toHaveBeenCalledWith(itemId, type);
+      expect(mockSteelheadUgcLookupService.getPlayerUgcItem$).toHaveBeenCalledWith(itemId, type);
     });
   });
 });

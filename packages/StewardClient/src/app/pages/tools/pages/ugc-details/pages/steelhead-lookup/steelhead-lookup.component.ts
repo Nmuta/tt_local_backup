@@ -29,6 +29,8 @@ import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-
 import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
 import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
 import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-flags/steelhead-ugc-geo-flags.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SteelheadFeatureUgcModalComponent } from '@views/feature-ugc-modal/steelhead/steelhead-feature-ugc-modal.component';
 
 const GEO_FLAGS_ORDER = chain(SteelheadGeoFlags).sortBy().value();
 
@@ -78,6 +80,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
     private readonly ugcVisibilityService: SteelheadUgcVisibilityService,
     private readonly ugcGeoFlagsService: SteelheadUgcGeoFlagsService,
+    private readonly dialog: MatDialog,
   ) {
     super();
   }
@@ -171,7 +174,18 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    throw new Error(`Steelhead does not support featuring UGC.`);
+    this.dialog
+      .open(SteelheadFeatureUgcModalComponent, {
+        data: this.ugcItem,
+      })
+      .afterClosed()
+      .pipe(
+        filter(data => !!data),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe((response: SteelheadPlayerUgcItem) => {
+        this.ugcItem = response;
+      });
   }
 
   /** Hide a UGC item in Steelhead */

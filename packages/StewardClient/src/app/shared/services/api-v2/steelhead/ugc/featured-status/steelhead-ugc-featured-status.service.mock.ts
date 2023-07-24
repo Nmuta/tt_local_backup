@@ -7,19 +7,15 @@ export class MockSteelheadUgcFeaturedStatusService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public reportUgc$ = jasmine
+  public setUgcItemFeatureStatus$ = jasmine
     .createSpy('setUgcItemFeatureStatus$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
-
-  constructor(private readonly generator$: () => unknown) {}
 }
 
 /** Creates an injectable mock for Steelhead Ugc Featured Status Service. */
-export function createMockSteelheadUgcFeaturedStatusService(
-  returnValueGenerator: () => unknown = () => new Object(),
-): ValueProvider {
+export function createMockSteelheadUgcFeaturedStatusService(): ValueProvider {
   return {
     provide: SteelheadUgcFeaturedStatusService,
-    useValue: new MockSteelheadUgcFeaturedStatusService(returnValueGenerator),
+    useValue: new MockSteelheadUgcFeaturedStatusService(),
   };
 }
