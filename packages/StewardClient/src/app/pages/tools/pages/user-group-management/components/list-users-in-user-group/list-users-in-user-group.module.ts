@@ -23,11 +23,18 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 
 /** The create user group module. */
 @NgModule({
   declarations: [
     ListUsersInGroupComponent,
+    WoodstockListUsersInGroupComponent,
+    SunriseListUsersInGroupComponent,
+    ApolloListUsersInGroupComponent,
+    SteelheadListUsersInGroupComponent,
+  ],
+  exports: [
     WoodstockListUsersInGroupComponent,
     SunriseListUsersInGroupComponent,
     ApolloListUsersInGroupComponent,
@@ -54,12 +61,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     PipesModule,
     StandardCopyModule,
     PermissionsModule,
-  ],
-  exports: [
-    WoodstockListUsersInGroupComponent,
-    SunriseListUsersInGroupComponent,
-    ApolloListUsersInGroupComponent,
-    SteelheadListUsersInGroupComponent,
+    VerifyButtonModule,
   ],
 })
 export class ListUsersInUserGroupModule {}

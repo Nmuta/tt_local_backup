@@ -30,6 +30,7 @@ import { AuctionBlocklistNewEntryComponent } from './components/auction-blocklis
 import { SunriseAuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/sunrise/sunrise-auction-blocklist-new-entry.component';
 import { WoodstockAuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/woodstock/woodstock-auction-blocklist-new-entry.component';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -69,6 +70,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     EndpointSelectionModule,
     StateManagersModule,
     PermissionsModule,
+    VerifyButtonModule,
   ],
 })
 export class StewardAuctionBlocklistModule {}
