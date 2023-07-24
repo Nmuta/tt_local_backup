@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add UGC featuring modal for Steelhead',
     },
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'f65dda02-6560-4ab5-815a-e8b6f41e7552',
+      shortText: 'Force featured end date is now selectable in UGC details',
+    },
+    {
       tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.LspTasks },
       uuid: 'ded9dabb-5e0b-4e7c-af71-6567f5ac1881',
       shortText: 'Add new component to view and manage LSP tasks',

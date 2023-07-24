@@ -99,12 +99,13 @@ describe('WoodstockFeatureUgcModalComponent', () => {
     const expireDuration = expireDate.diff(DateTime.local().startOf('day'));
 
     it('should call WoodstockService.setUgcItemFeatureStatus() with correct params', () => {
-      component.changeFeaturedStatus$(itemId, true, expireDate);
+      component.changeFeaturedStatus$(itemId, true, expireDate, expireDate);
 
       expect(mockWoodstockService.setUgcItemFeatureStatus).toHaveBeenCalledWith({
         itemId: itemId,
         isFeatured: true,
         featuredExpiry: expireDuration,
+        forceFeaturedExpiry: expireDuration,
       } as UgcFeaturedStatus);
     });
   });

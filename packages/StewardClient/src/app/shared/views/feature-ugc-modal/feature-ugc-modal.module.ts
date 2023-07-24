@@ -22,6 +22,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
@@ -52,6 +53,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     StandardDateModule,
     VerifyButtonModule,
     PermissionsModule,
+    HelpModule,
   ],
   exports: [
     SunriseFeatureUgcModalComponent,

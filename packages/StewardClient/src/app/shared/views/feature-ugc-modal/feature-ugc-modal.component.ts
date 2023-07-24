@@ -30,6 +30,7 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
   public formControls = {
     isFeatured: new FormControl(''),
     featuredDate: new FormControl('', [DateValidators.isAfter(DateTime.local())]),
+    forceFeaturedDate: new FormControl('', [DateValidators.isAfter(DateTime.local())]),
   };
   public formGroup = new FormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Set Featured Status');
@@ -80,6 +81,7 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
 
     if (data.featuredByT10) {
       this.formControls.featuredDate.setValue(data.featuredEndDateUtc);
+      this.formControls.forceFeaturedDate.setValue(data.forceFeaturedEndDateUtc);
     }
 
     this.formControls.isFeatured.setValue(data.featuredByT10);
@@ -90,6 +92,7 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
     itemId: string,
     isFeatured: boolean,
     expireDate?: DateTime,
+    forceExpireDate?: DateTime,
   ): Observable<void>;
 
   public abstract getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem>;
@@ -104,6 +107,7 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
       this.ugcItem.id,
       this.formControls.isFeatured.value,
       this.formControls.featuredDate.value,
+      this.formControls.forceFeaturedDate.value,
     );
     this.postMonitor = this.postMonitor.repeat();
     this.dialogRef.disableClose = true;
@@ -123,8 +127,9 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
       });
   }
 
-  /** Logic when changing the feature status checbox. */
+  /** Logic when changing the feature status checkbox. */
   public changedFeatureStatus(): void {
     this.formControls.featuredDate.setValue(null);
+    this.formControls.forceFeaturedDate.setValue(null);
   }
 }
