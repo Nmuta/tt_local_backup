@@ -15,3 +15,5 @@ steps:
     script: |
       chmod +x node_modules/.bin/prettier
       chmod +x node_modules/.bin/ng
+      ls
+      yarn
