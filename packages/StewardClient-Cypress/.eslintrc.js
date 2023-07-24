@@ -24,9 +24,6 @@ module.exports = {
       files: ['*.ts'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
-        // project: [
-        //   './tsconfig.eslint.json',
-        // ],
         createDefaultProgram: true,
       },
       extends: ['plugin:@typescript-eslint/recommended', 'prettier', 'plugin:jsdoc/recommended'],
