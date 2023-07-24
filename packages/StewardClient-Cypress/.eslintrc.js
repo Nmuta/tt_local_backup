@@ -27,8 +27,9 @@ module.exports = {
         createDefaultProgram: true,
       },
       extends: ['plugin:@typescript-eslint/recommended', 'prettier', 'plugin:jsdoc/recommended'],
-      plugins: ['jsdoc'],
+      plugins: ['jsdoc', 'no-only-tests'],
       rules: {
+        "no-only-tests/no-only-tests": "error", // why? this breaks expectations with automated testing
         /**
          * Any TypeScript related rules you wish to use/reconfigure over and above the
          * recommended set provided by the @angular-eslint project would go here.
