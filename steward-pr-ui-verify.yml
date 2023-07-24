@@ -15,11 +15,11 @@ stages:
   - template: infra/azure-pipelines/node/stage-prepare-ui.template.yml
     parameters:
       workingDirectory: packages/StewardClient
-      dropName: ui-drop
+      dropName: $(DROP_NAME)
 
 # - stage: UI_Test
 #   displayName: Test (UI)
 #   jobs:
 #   - template: infra/azure-pipelines/node/stage-verify-ui.template.yml
 #     parameters:
-#       dropName: ui-drop
+#       dropName: $(DROP_NAME)
