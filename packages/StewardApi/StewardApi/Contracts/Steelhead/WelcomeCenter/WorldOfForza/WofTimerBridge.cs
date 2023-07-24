@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
     public class TextOverrideBridge
     {
-        public Guid RefId { get; set; }
+        public string RefId { get; set; }
     }
 
     public class TimerCustomRangeBridge

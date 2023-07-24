@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         [WriteToPegasus]
         [XmlAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public Guid RefId { get; set; }
+        public string RefId { get; set; }
     }
 
     [Serializable]
@@ -243,10 +243,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         [WriteToPegasus]
         [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public Guid locdef { get; set; }
+        public string locdef { get; set; }
 
         [WriteToPegasus]
         [XmlAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public Guid locref { get; set; }
+        public string locref { get; set; }
     }
 }
