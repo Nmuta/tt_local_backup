@@ -17,7 +17,9 @@ jobs:
     inputs:
       workingDirectory: $(dropPath)
       targetType: 'inline'
-      script: yarn run test:ado --code-coverage
+      script: >
+        yarn run test:prepare
+        yarn run test:ado
       
   - task: PublishTestResults@2
     displayName: Publish Test Results

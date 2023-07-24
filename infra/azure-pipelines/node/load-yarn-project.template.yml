@@ -6,4 +6,12 @@ parameters:
 steps:
 - download: current
   artifact: ${{parameters.dropName}}
-  displayName: Load Intermedia Artifact (${{parameters.dropName}})
+  displayName: "Prepare: Load Intermedia Artifact (${{parameters.dropName}})"
+- task: Bash@3
+  displayName: "Prepare: Make commands executable"
+  inputs:
+    workingDirectory: $(dropPath)
+    targetType: 'inline'
+    script: >
+      chmod +x node_modules/.bin/prettier
+      chmod +x node_modules/.bin/ng
