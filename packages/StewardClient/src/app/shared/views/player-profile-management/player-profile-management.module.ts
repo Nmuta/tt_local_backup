@@ -15,6 +15,8 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PlayerProfileManagementComponent } from './player-profile-management.component';
 import { SteelheadPlayerProfileManagementComponent } from './steelhead/steelhead-player-profile-management.component';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
+import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 
 /** Module for displaying the player profile management component. */
 @NgModule({
@@ -36,6 +38,8 @@ import { SteelheadPlayerProfileManagementComponent } from './steelhead/steelhead
     StateManagersModule,
     MatButtonToggleModule,
     HelpModule,
+    VerifyButtonModule,
+    PermissionsModule,
   ],
   exports: [SteelheadPlayerProfileManagementComponent],
 })

@@ -118,7 +118,6 @@ describe('PlayerProfileManagementComponent', () => {
       // Make sure required params are defined
       component.hasAccessToTool = true;
       component.saveFormControls.template.setValue(faker.random.word());
-      component.saveFormControls.verifyAction.setValue(true);
     });
 
     it('should call savePlayerProfileTemplate$', () => {
@@ -141,7 +140,6 @@ describe('PlayerProfileManagementComponent', () => {
       // Make sure required params are defined
       component.hasAccessToTool = true;
       component.loadFormControls.template.setValue(faker.random.word());
-      component.loadFormControls.verifyAction.setValue(true);
     });
 
     it('should call loadPlayerProfileTemplate$', () => {
@@ -163,7 +161,6 @@ describe('PlayerProfileManagementComponent', () => {
 
       // Make sure required params are defined
       component.hasAccessToTool = true;
-      component.resetFormControls.verifyAction.setValue(true);
     });
 
     it('should call resetPlayerProfile$', () => {
