@@ -31,7 +31,7 @@ steps:
   inputs:
     workingDirectory: ${{parameters.workingDirectory}}
     targetType: 'inline'
-    script: yarn --frozen-lockfile
+    script: yarn --frozen-lockfile --no-bin-links
 
 - task: Bash@3
   displayName: "Prepare: Log Versions"
