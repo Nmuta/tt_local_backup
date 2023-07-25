@@ -57,7 +57,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     submitModel$: () => EMPTY,
   };
   public userHasWritePerms: boolean = false;
-  public canFeatureUgc: boolean = true;
+  public canFeatureUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
   public featureMatTooltip: string = null;
   public generateSharecodeMatTooltip: string = null;
