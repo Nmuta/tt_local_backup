@@ -14,7 +14,7 @@ jobs:
   - task: Bash@3
     displayName: ADO Code Coverage
     inputs:
-      workingDirectory: $(dropPath)
+      workingDirectory: ${{parameters.workingDirectory}}
       targetType: 'inline'
       script: |
         yarn run test:prepare
@@ -25,7 +25,7 @@ jobs:
     condition: succeededOrFailed()
     continueOnError: True
     inputs:
-      testResultsFiles: '$(dropPath)/**/TESTS-Chrome_Headless_*.xml'
+      testResultsFiles: '${{parameters.workingDirectory}}/**/TESTS-Chrome_Headless_*.xml'
       mergeTestResults: true
       failTaskOnFailedTests: true
 
@@ -35,8 +35,8 @@ jobs:
     continueOnError: True
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: $(dropPath)/**/*coverage.xml
-      reportDirectory: $(dropPath)/**/coverage
+      summaryFileLocation: ${{parameters.workingDirectory}}/**/*coverage.xml
+      reportDirectory: ${{parameters.workingDirectory}}/**/coverage
       failIfCoverageEmpty: true
   # - task: CmdLine@2
   #   displayName: Tests & Code Coverage
