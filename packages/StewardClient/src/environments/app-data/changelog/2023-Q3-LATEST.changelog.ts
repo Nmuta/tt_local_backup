@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '8f63c75e-619b-4608-a9fe-8d4b91ebe394',
+      shortText: 'Refactor deeplink destination component',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '2f4e2a73-f8f5-4bdf-a242-169a3a5d9ead',
       shortText: 'Add UGC featuring modal for Steelhead',

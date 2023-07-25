@@ -34,6 +34,11 @@ import { ImageTextTileComponent } from './steelhead/tile-components/image-text/s
 import { GenericPopupTileComponent } from './steelhead/tile-components/generic-popup/steelhead-generic-popup-tile.component';
 import { DeeplinkTileComponent } from './steelhead/tile-components/deeplink/steelhead-deeplink-tile.component';
 import { ActivePullRequestsModule } from '@views/active-pull-requests/active-pull-requests.module';
+import { DeeplinkStoreComponent } from './steelhead/tile-components/deeplink/components/store/steelhead-deeplink-store.component';
+import { DeeplinkShowroomComponent } from './steelhead/tile-components/deeplink/components/showroom/steelhead-deeplink-showroom.component';
+import { DeeplinkRivalsComponent } from './steelhead/tile-components/deeplink/components/rivals/steelhead-deeplink-rivals.component';
+import { DeeplinkBuildersCupComponent } from './steelhead/tile-components/deeplink/components/builders-cup/steelhead-deeplink-builders-cup.component';
+import { DeeplinkRacersCupComponent } from './steelhead/tile-components/deeplink/components/racers-cup/steelhead-deeplink-racers-cup.component';
 
 /** Module for displaying welcome center tiles tool. */
 @NgModule({
@@ -44,6 +49,11 @@ import { ActivePullRequestsModule } from '@views/active-pull-requests/active-pul
     GeneralTileComponent,
     GenericPopupTileComponent,
     DeeplinkTileComponent,
+    DeeplinkStoreComponent,
+    DeeplinkShowroomComponent,
+    DeeplinkRivalsComponent,
+    DeeplinkBuildersCupComponent,
+    DeeplinkRacersCupComponent,
   ],
   imports: [
     WelcomeCenterTilesRouterModule,
