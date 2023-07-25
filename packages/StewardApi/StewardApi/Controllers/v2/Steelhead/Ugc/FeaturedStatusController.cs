@@ -61,6 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
             if (status.IsFeatured)
             {
                 status.FeaturedExpiry?.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.FeaturedExpiry));
+                status.ForceFeaturedExpiry?.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.ForceFeaturedExpiry));
             }
 
             var featureEndDate = status.IsFeatured && status.FeaturedExpiry.HasValue ? DateTime.UtcNow.Add(status.FeaturedExpiry.Value) : DateTime.MinValue;
