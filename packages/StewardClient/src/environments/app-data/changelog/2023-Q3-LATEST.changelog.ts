@@ -8,9 +8,44 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '2f4e2a73-f8f5-4bdf-a242-169a3a5d9ead',
+      shortText: 'Add UGC featuring modal for Steelhead',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FH4], tool: NavbarTool.UgcDetails },
+      uuid: 'f65dda02-6560-4ab5-815a-e8b6f41e7552',
+      shortText: 'Force featured end date is now selectable in UGC details',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.LspTasks },
+      uuid: 'ded9dabb-5e0b-4e7c-af71-6567f5ac1881',
+      shortText: 'Add new component to view and manage LSP tasks',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '9e643b0c-00f4-4ac0-a1c9-d32027e22fef',
+      shortText: 'Switch verification mode to V2 for Profile Management',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '25ecd357-16eb-40c9-bc58-24ccbc8fc21a',
+      shortText: 'Add ability to edit title and description for UGC',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'f77d9fb2-1ace-4fa6-ac1b-c836fb7ab159',
       shortText: 'Auto-reload player report weight after changing their player flags',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a5ff736e-743e-481a-b659-83f8cc9a51c2',
+      shortText: 'Switch to using Verify V2 in multiple areas',
+      longText: [
+        'Auction Blocklist on Woodstock and Sunrise',
+        'Gift Special Liveries on Woodstock',
+        'User Group Management on all titles',
+      ],
     },
     {
       tag: ChangelogTag.Internal,

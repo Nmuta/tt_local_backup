@@ -586,6 +586,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
                 .ReverseMap();
+
+            this.CreateMap<ForzaTask, LspTask>()
+                .ForMember(dest => dest.LastEventUtc, opt => opt.MapFrom(source => source.LastEvent))
+                .ForMember(dest => dest.LockTakenUntilUtc, opt => opt.MapFrom(source => source.LockTakenUntil))
+                .ForMember(dest => dest.NextExecutionUtc, opt => opt.MapFrom(source => source.NextExecution));
+
+            this.CreateMap<LspTask, ForzaTaskUpdateParameters>()
+                .ForMember(dest => dest.NextExecution, opt => opt.MapFrom(source => source.NextExecutionUtc));
         }
 
         private DeeplinkDestination PrepareBridgeDestination(WofBaseDestination destination)

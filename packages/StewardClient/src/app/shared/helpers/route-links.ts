@@ -91,3 +91,8 @@ export function getUnifiedCalendarRoute(gameTitle: GameTitle) {
 export function getUserDetailsRoute(gameTitle: string) {
   return ['/app/tools/user-details/', gameTitle];
 }
+
+/** Make lsp tasks route. */
+export function getLspTasksRoute(gameTitle: GameTitle) {
+  return ['/app/tools/lsp-tasks/', gameTitle];
+}

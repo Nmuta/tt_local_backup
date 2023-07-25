@@ -1,6 +1,6 @@
 @import '/src/styles/mixins';
 
-ul {
+.info-list {
   padding: 0;
   margin: 0;
   li {
@@ -11,7 +11,7 @@ ul {
 mat-dialog-content {
   display: block;
   height: auto;
-  max-width: 500px;
+  max-width: $mat-dialog-max-width;
 
   img {
     width: 100%;

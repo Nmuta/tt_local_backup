@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SunriseFeatureUgcModalComponent } from './sunrise/sunrise-feature-ugc-modal.component';
 import { WoodstockFeatureUgcModalComponent } from './woodstock/woodstock-feature-ugc-modal.component';
+import { SteelheadFeatureUgcModalComponent } from './steelhead/steelhead-feature-ugc-modal.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -21,10 +22,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
-  declarations: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
+  declarations: [
+    SunriseFeatureUgcModalComponent,
+    WoodstockFeatureUgcModalComponent,
+    SteelheadFeatureUgcModalComponent,
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -47,7 +53,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     StandardDateModule,
     VerifyButtonModule,
     PermissionsModule,
+    HelpModule,
   ],
-  exports: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
+  exports: [
+    SunriseFeatureUgcModalComponent,
+    WoodstockFeatureUgcModalComponent,
+    SteelheadFeatureUgcModalComponent,
+  ],
 })
 export class FeatureUgcModalModule {}

@@ -95,6 +95,11 @@
                 >
                   Edit
                 </button>
+                <verify-button
+                  #verifyDeleteBtn
+                  [permissionAttribute]="updatePermAttribute"
+                  [permissionTitle]="gameTitle"
+                ></verify-button>
                 <button
                   mat-raised-button
                   color="warn"
@@ -103,25 +108,15 @@
                   (click)="removeBlocklistEntry(entry)"
                   clickStop
                   stateManager
+                  [verifyWithV2]="verifyDeleteBtn"
                   [monitor]="asFormGroupBlocklistEntry(entry).deleteMonitor"
                   [waitOnMonitors]="allMonitors"
                   monitorDisable
                   monitorWarn
                   monitorWarnSnackbar
-                  [disabled]="!verifyDelete.checked"
                 >
                   Delete
                 </button>
-                <mat-checkbox
-                  class="sf-verify-checkbox"
-                  #verifyDelete
-                  stateManager
-                  [permissionAttribute]="updatePermAttribute"
-                  [permissionTitle]="gameTitle"
-                  matTooltip="Verify Deletion"
-                  aria-label="Verify Deletion"
-                  >Verify Deletion</mat-checkbox
-                >
               </span>
 
               <span class="edit" *ngIf="asFormGroupBlocklistEntry(entry).edit">

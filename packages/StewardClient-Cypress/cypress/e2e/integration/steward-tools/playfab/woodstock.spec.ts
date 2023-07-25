@@ -2,7 +2,7 @@ import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
-interface playfabBuild{
+interface playfabBuild {
   name: string;
   id: string;
 }
@@ -15,9 +15,9 @@ const builds: Record<string, playfabBuild> = {
 
   build2: {
     name: 'Escrow_6A07F63E.603217..A0A17.Dev.-1_Life_Secure.woodstock.20230721020822',
-    id: '0ef14c70-cbcf-408c-89c9-3bef46a9806f'
-  }
-}
+    id: '0ef14c70-cbcf-408c-89c9-3bef46a9806f',
+  },
+};
 
 context('Steward / Tools / PlayFab / Woodstock', () => {
   beforeEach(() => {

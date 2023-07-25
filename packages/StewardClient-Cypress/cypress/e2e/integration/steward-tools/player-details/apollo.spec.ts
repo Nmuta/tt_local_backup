@@ -8,7 +8,6 @@ import {
   userDetailsFindRelatedConsoles,
   userDetailsFindRelatedGamertags,
   inventoryFindPlayerInventoryData,
-  swapToTab,
   userDetailsVerifyPlayerIdentityResults,
   userDetailsVerifyFlagData,
   jsonCheckJson,

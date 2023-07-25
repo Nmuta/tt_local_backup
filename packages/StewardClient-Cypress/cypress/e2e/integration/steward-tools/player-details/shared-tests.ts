@@ -1,7 +1,6 @@
 import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
 import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
 
 export function swapToTab(tabName: string): void {
@@ -11,7 +10,6 @@ export function swapToTab(tabName: string): void {
 /** Verifies that the user details match a searched user */
 export function userDetailsVerifyPlayerIdentityResults(user: string): void {
   it('should verify the player identity results', () => {
-    swapToTab('User Details');
     verifyPlayerIdentityResults({
       gtag: RetailUsers[user].gtag,
       xuid: RetailUsers[user].xuid,
@@ -23,7 +21,6 @@ export function userDetailsVerifyPlayerIdentityResults(user: string): void {
 /** Verifies that the flag data is correct for a searched user in the user details tab */
 export function userDetailsVerifyFlagData(flagName: string, flagValue: boolean): void {
   it('should find flag data', () => {
-    swapToTab('User Details');
     checkboxHasValue(flagName, flagValue);
   });
 }
@@ -31,7 +28,6 @@ export function userDetailsVerifyFlagData(flagName: string, flagValue: boolean):
 /** Verifies that the searched user has ban details in the user details tab */
 export function userDetailsFindBans(): void {
   it('should have ban history for a known user', () => {
-    swapToTab('User Details');
     cy.contains('mat-card', 'Ban History')
       .within(() => {
         tableHasEntry('banDetails', 'All Requests');
@@ -43,7 +39,6 @@ export function userDetailsFindBans(): void {
 /** Verifies that the searched user has a specified profile note in the user details tab */
 export function userDetailsFindProfileNotes(noteText: string): void {
   it('should have a profile note', () => {
-    swapToTab('User Details');
     cy.contains('mat-card', 'Profile Notes').within(() => {
       tableHasEntry('text', noteText);
     });
@@ -53,7 +48,6 @@ export function userDetailsFindProfileNotes(noteText: string): void {
 /** Verifies that the searched user has the correct related gamertags in the user details tab */
 export function userDetailsFindRelatedGamertags(relatedXuids: string[]): void {
   it('should have the correct related gtags', () => {
-    swapToTab('User Details');
     cy.contains('mat-card', 'Related Gamertags').within(() => {
       relatedXuids.forEach(relatedXuid => {
         tableHasEntry('xuid', relatedXuid);
@@ -65,7 +59,6 @@ export function userDetailsFindRelatedGamertags(relatedXuids: string[]): void {
 /** Verifies that the user has the correct related consoles in the user details tab */
 export function userDetailsFindRelatedConsoles(expectedConsoleIds: string[]): void {
   it('should have a related console ID', () => {
-    swapToTab('User Details');
     cy.contains('mat-card', 'Consoles').within(() => {
       expectedConsoleIds.forEach(expectedConsoleId => {
         tableHasEntry('consoleId', expectedConsoleId);
@@ -105,7 +98,6 @@ export function inventoryFindPlayerInventoryData(): void {
 /** Verifies that the user has a notification in the notifications tab */
 export function notificationsFindNotification(): void {
   it('should have a notification', () => {
-    swapToTab('Notifications');
     cy.contains('mat-card', 'Notifications')
       .within(() => {
         cy.contains('Notification');
@@ -122,7 +114,6 @@ export function ugcLiveriesFindLivery(
   columnToLookAt: string,
 ): void {
   it('should have a searchable livery', () => {
-    swapToTab('Ugc');
     cy.contains('.mat-tab-label', 'Liveries').click();
     cy.get(`${platform}-make-model-autocomplete`)
       .find('input')
@@ -149,7 +140,6 @@ export function auctionsFindCreatedAuction(
   rowDataExpected: string,
 ): void {
   it('should have a searchable created auction', () => {
-    swapToTab('Auctions');
     cy.get(platform + '-player-auctions').within(() => {
       cy.contains('.mat-expansion-panel', 'Created Auctions').click();
       //somebody left this named as sunrise in woodstock
@@ -174,7 +164,6 @@ export function auctionsFindCreatedAuction(
 /** Verifies that the user has the correct titles in the loyalties tab */
 export function loyaltyFindTitlesPlayed(platform: string, titlesOwned: string[]): void {
   it('should have the correct titles owned', () => {
-    swapToTab('Loyalty');
     cy.get(platform + '-loyalty-rewards').within(() => {
       cy.get('.mat-table').within(() => {
         titlesOwned.forEach(title => {
