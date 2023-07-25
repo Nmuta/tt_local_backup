@@ -7,6 +7,7 @@ import { GuidLikeString } from '@models/extended-types';
 import { ResetProfileOptions } from '@models/reset-profile-options';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
@@ -55,6 +56,7 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
   @Output() public externalProfileIdUpdated = new EventEmitter<GuidLikeString>();
 
   private readonly getGroupMembership$ = new Subject<void>();
+  public readonly updatePermAttribute = PermAttributeName.UpdateProfile;
 
   public hasAccessToTool: boolean = false;
 
@@ -66,19 +68,18 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
 
   public profileTemplates: string[] = [];
 
-  public playerConsentText: string = 'I have received player consent for this action';
+  public playerConsentText: string =
+    'Please ensure you have obtained player consent for this action';
 
   public forzaSandboxEnumDefault: string[] = [ForzaSandbox.Retail];
   public forzaSandboxEnumEmployee: string[] = [ForzaSandbox.Retail, ForzaSandbox.Test];
   public forzaSandboxEnum: string[] = this.forzaSandboxEnumDefault;
 
   public saveFormDefaults = {
-    verifyAction: false,
     template: '',
     overwriteIfExists: false,
   };
   public saveFormControls = {
-    verifyAction: new FormControl(this.saveFormDefaults.verifyAction, Validators.requiredTrue),
     template: new FormControl(this.saveFormDefaults.template, Validators.required),
     overwriteIfExists: new FormControl(
       this.saveFormDefaults.overwriteIfExists,
@@ -88,13 +89,11 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
   public saveFormGroup = new FormGroup(this.saveFormControls);
 
   public loadFormDefaults = {
-    verifyAction: false,
     template: '',
     continueOnBreakingChanges: false,
     forzaSandbox: ForzaSandbox.Retail,
   };
   public loadFormControls = {
-    verifyAction: new FormControl(this.loadFormDefaults.verifyAction, Validators.requiredTrue),
     template: new FormControl(this.loadFormDefaults.template, Validators.required),
     continueOnBreakingChanges: new FormControl(
       this.loadFormDefaults.continueOnBreakingChanges,
@@ -105,7 +104,6 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
   public loadFormGroup = new FormGroup(this.loadFormControls);
 
   public resetFormDefaults = {
-    verifyAction: false,
     resetCarProgressData: false,
     resetLeaderboardsData: false,
     resetRaceRankingData: false,
@@ -116,7 +114,6 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     resetUgcProfileData: false,
   };
   public resetFormControls = {
-    verifyAction: new FormControl(this.resetFormDefaults.verifyAction, Validators.requiredTrue),
     resetCarProgressData: new FormControl(
       this.resetFormDefaults.resetCarProgressData,
       Validators.required,
@@ -156,6 +153,11 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
 
   constructor(private readonly store: Store) {
     super();
+  }
+
+  /** Gets the service contract game title. */
+  public get gameTitle(): GameTitle {
+    return this.service.gameTitle;
   }
 
   /** Lifecycle hook. */

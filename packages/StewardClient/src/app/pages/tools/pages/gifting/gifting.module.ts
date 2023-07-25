@@ -40,6 +40,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/player-inventory-profile-picker.module';
+import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -87,6 +88,7 @@ import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/
     MatSelectModule,
     MatFormFieldModule,
     PermissionsModule,
+    VerifyButtonModule,
   ],
 })
 export class GiftingsModule {}

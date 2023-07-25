@@ -3,7 +3,6 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   QueryList,
   ViewChild,
   ViewChildren,
@@ -12,7 +11,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
-import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
@@ -26,11 +24,9 @@ import {
   ForzaBulkOperationType,
   UserGroupBulkOperationStatus,
 } from '@models/user-group-bulk-operation';
-import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { UserState } from '@shared/state/user/user.state';
 import BigNumber from 'bignumber.js';
 import { chain, remove } from 'lodash';
 import { Observable, takeUntil, switchMap, tap, retry, map, of } from 'rxjs';
@@ -89,10 +85,7 @@ export interface PlayerInUserGroup {
   templateUrl: './list-users-in-user-group.component.html',
   styleUrls: ['./list-users-in-user-group.component.scss'],
 })
-export class ListUsersInGroupComponent
-  extends BaseComponent
-  implements OnChanges, OnInit, AfterViewInit
-{
+export class ListUsersInGroupComponent extends BaseComponent implements OnChanges, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChildren(MatCheckbox) checkboxes: QueryList<MatCheckbox>;
 
@@ -117,8 +110,6 @@ export class ListUsersInGroupComponent
   public userGamertags: boolean = false;
   public userCount: number;
 
-  public userHasWritePerms: boolean = false;
-  public userHasRemoveAllPerms: boolean = false;
   public isGroupTooLarge: boolean = false;
   public readonly incorrectPermsTooltip = 'This action is restricted for your user role';
   public displayedColumns = ['xuid', 'gamertag', 'actions'];
@@ -133,21 +124,6 @@ export class ListUsersInGroupComponent
 
   constructor(private readonly store: Store) {
     super();
-  }
-
-  /** Angular lifecycle hook. */
-  public ngOnInit(): void {
-    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.userHasWritePerms = hasV1AccessToV1RestrictedFeature(
-      V1RestrictedFeature.UserGroupWrite,
-      this.service.gameTitle,
-      user.role,
-    );
-    this.userHasRemoveAllPerms = hasV1AccessToV1RestrictedFeature(
-      V1RestrictedFeature.UserGroupRemoveAll,
-      this.service.gameTitle,
-      user.role,
-    );
   }
 
   /** Lifecycle hook */

@@ -192,6 +192,10 @@
             }}
           </ng-container>
         </li>
+        <li>
+          <b>Force Featured:</b>
+          {{ entry.featuredByT10 ? (entry.forceFeaturedEndDateUtc | utcDate: 'short') : 'No' }}
+        </li>
         <li><b>Title:</b> {{ entry.title }}</li>
         <li><b>Description:</b> {{ entry.description }}</li>
         <li><b>Created:</b> {{ entry.createdDateUtc | utcDate: 'short' }}</li>
@@ -312,6 +316,10 @@
                 : 'Featured with no end date'
             }}
           </ng-container>
+        </li>
+        <li>
+          <b>Force Featured:</b>
+          {{ entry.featuredByT10 ? (entry.forceFeaturedEndDateUtc | utcDate: 'short') : 'No' }}
         </li>
         <li><b>Title:</b> {{ entry.title }}</li>
         <li><b>Description:</b> {{ entry.description }}</li>

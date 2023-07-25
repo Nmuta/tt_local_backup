@@ -74,16 +74,23 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <verify-button
+      #verifyGiftBtn
+      [disabled]="!isGiftLiveryReady()"
+      [permissionAttribute]="activePermAttribute"
+      [permissionTitle]="contract.gameTitle"
+    ></verify-button>
     <button
       mat-raised-button
       color="primary"
       stateManager
+      [verifyWithV2]="verifyGiftBtn"
       [monitor]="sendGiftMonitor"
       [waitOnMonitors]="allMonitors"
       monitorDisable
       monitorWarn
       monitorWarnSnackbar
-      [disabled]="!verifyGift.checked || !isGiftLiveryReady()"
+      [disabled]="!isGiftLiveryReady()"
       (click)="sendGiftLiveries()"
     >
       <span>Send Liveries</span>
@@ -91,13 +98,5 @@
       <span *ngIf="!usingPlayerIdentities"> To LSP Groups</span>
       <button-spinner [monitor]="sendGiftMonitor" defaultIcon="outgoing_mail"></button-spinner>
     </button>
-    <mat-checkbox
-      #verifyGift
-      stateManager
-      [permissionAttribute]="activePermAttribute"
-      [permissionTitle]="contract.gameTitle"
-      matTooltip="Verify Gift"
-      >Verify Gift</mat-checkbox
-    >
   </mat-card-actions>
 </mat-card>

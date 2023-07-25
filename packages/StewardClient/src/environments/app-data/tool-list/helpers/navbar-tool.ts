@@ -45,4 +45,5 @@ export enum NavbarTool {
   ShowroomCalendar = 'showroom-calendar',
   AcLogReader = 'ac-log-reader',
   ProductPricing = 'product-pricing',
+  LspTasks = 'lsp-tasks',
 }
