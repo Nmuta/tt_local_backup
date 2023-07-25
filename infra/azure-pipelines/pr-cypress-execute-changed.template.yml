@@ -63,7 +63,7 @@ jobs:
   - task: CmdLine@2
     displayName: Execute Changed Specs
     condition: succeededOrFailed()
-    timeoutInMinutes: ${{timeoutInMinutes}}
+    timeoutInMinutes: ${{parameters.timeoutInMinutes}}
     env:
       CYPRESS_DEV_CLIENT_SECRET: $(aad-auth-client-secret)
       CYPRESS_DEV_CLIENT_ID: 'cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4'
