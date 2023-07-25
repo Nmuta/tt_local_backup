@@ -13,4 +13,4 @@ name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
 jobs:
 - template: infra/azure-pipelines/pr-cypress-execute-changed.template.yml
   parameters:
-    timeoutInMinutes: 10
+    timeoutInMinutes: '10'
