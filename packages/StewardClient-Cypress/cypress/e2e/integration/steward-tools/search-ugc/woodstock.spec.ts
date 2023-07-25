@@ -5,13 +5,7 @@ import { searchByGtag } from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { tableHasEntry } from '@support/mat-form/table-has-entry';
-import {
-  clickSearch,
-  selectCar,
-  selectCuratedUgcType,
-  selectUgcType,
-  orderUgcBy,
-} from './page';
+import { clickSearch, selectCar, selectCuratedUgcType, selectUgcType, orderUgcBy } from './page';
 import { clickIfExists } from '@support/cypress/click-if-exists';
 
 const defaultWoodstockUser = RetailUsers['ben'];
