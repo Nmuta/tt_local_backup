@@ -1,4 +1,4 @@
-# This file stores variables common to all UI build pipelines.
+# This file stores variables common to all node/yarn build pipelines.
 
 variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn

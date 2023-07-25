@@ -12,10 +12,10 @@ trigger: none
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
 
 variables:
-- template: 'infra/azure-pipelines/node/ui-variables.yml'
+- template: 'infra/azure-pipelines/node/node-variables.yml'
 
 pool:
-  vmImage: ubuntu-20.04
+  vmImage: $(VM_IMAGE)
 
 stages:
 - stage: UI_Prepare_Directory
