@@ -3,11 +3,15 @@
 # Variable 'PROD_CLIENT_ID' was defined in the Variables tab
 # Cron Schedules have been converted using UTC Time Zone and may need to be updated for your location
 # Agent Queue 'Azure Pipelines' was used with unrecognized Agent Specification, vmImage property must be specified to determine image - https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software
+trigger: none
+
 schedules:
 - cron: 0 6 * * 1
   branches:
     include:
-    - refs/heads/main
+    - main
+
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)_scan
+
 jobs:
 - template: infra/azure-pipelines/original-scanning.template.yml

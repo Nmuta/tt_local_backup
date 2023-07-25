@@ -1,3 +1,13 @@
+# This file executes recently-changed Cypress e2e tests with a time limit.
+# TODO: Update to use shared `node/` templates
+# TODO: Update to run tests in parallel
+
+parameters:
+- name: 'timeoutInMinutes'
+  displayName: 'How many minutes to allow tests to run for. Default 10. Total pipeline duration limit is 60m'
+  default: 10
+  type: number
+
 jobs:
 - job: Job_2
   displayName: Cypress (Execute Changed Tests)
@@ -53,6 +63,7 @@ jobs:
   - task: CmdLine@2
     displayName: Execute Changed Specs
     condition: succeededOrFailed()
+    timeoutInMinutes: ${{timeoutInMinutes}}
     env:
       CYPRESS_DEV_CLIENT_SECRET: $(aad-auth-client-secret)
       CYPRESS_DEV_CLIENT_ID: 'cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4'

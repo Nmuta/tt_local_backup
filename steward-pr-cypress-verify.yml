@@ -1,0 +1,14 @@
+# The purpose of this pipeline is to verify the state of
+# packages/StewardClient-Cypress code being merged into main.
+# It is for use on PRs.
+# 
+# What it does:
+# - Check that StewardClient-Cypress project will build
+# - Check that StewardClient-Cypress project complies with linters
+
+trigger: none
+
+name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
+
+jobs:
+- template: infra/azure-pipelines/pr-cypress-lint.template.yml

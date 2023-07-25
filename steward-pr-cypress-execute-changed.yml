@@ -1,0 +1,16 @@
+# The purpose of this pipeline is to verify Cypree e2e tests being checked in to main.
+# It is for use on PRs.
+# 
+# What it does:
+# - Runs changed StewardClient-Cypress test files (ONLY the changed ones)
+# - Fails if the changed tests take longer than 10m
+# - Produces a report
+
+trigger: none
+
+name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
+
+jobs:
+- template: infra/azure-pipelines/pr-cypress-execute-changed.template.yml
+  parameters:
+    timeoutInMinutes: 10
