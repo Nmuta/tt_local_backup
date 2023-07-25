@@ -1,19 +1,46 @@
 parameters:
-- name: 'dropName'
-  displayName: "Name of the intermediate drop. Like 'prepare-ui-drop'."
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."
   type: string
 
 steps:
-- checkout: none
-- download: current
-  artifact: ${{parameters.dropName}}
-  displayName: "Prepare: Load Intermedia Artifact (${{parameters.dropName}})"
-- task: Bash@3
-  displayName: "Prepare: Make commands executable"
+- checkout: self
+  fetchDepth: 1
+  submodules: false
+
+# TODO: I couldn't get this package handoff to work, but if it did work it seems to be faster
+# - download: current
+#   artifact: ${{parameters.dropName}}
+#   displayName: "Prepare: Load Intermedia Artifact (${{parameters.dropName}})"
+# - task: Bash@3
+#   displayName: "Prepare: Make commands executable"
+#   inputs:
+#     workingDirectory: $(dropPath)
+#     targetType: 'inline'
+#     script: |
+#       chmod -R +x node_modules/.bin/
+#       ls
+#       yarn
+
+- task: Cache@2
+  displayName: "Prepare: Cache yarn packages for ${{parameters.workingDirectory}}/yarn.lock"
   inputs:
-    workingDirectory: $(dropPath)
+    key: 'yarn | "$(Agent.OS)" | ${{parameters.workingDirectory}}/yarn.lock'
+    restoreKeys: |
+       yarn | "$(Agent.OS)"
+       yarn
+    path: $(YARN_CACHE_FOLDER)
+    cacheHitVar: CACHE_RESTORED
+
+- bash: |
+    echo "Cache could not be restored."
+    exit 1
+  condition: ne(variables.CACHE_RESTORED, 'true')
+  displayName: Cache could not be restored.
+
+- task: Bash@3
+  displayName: "Prepare: Yarn Install"
+  inputs:
+    workingDirectory: ${{parameters.workingDirectory}}
     targetType: 'inline'
-    script: |
-      chmod -R +x node_modules/.bin/
-      ls
-      yarn
+    script: yarn --frozen-lockfile --offline

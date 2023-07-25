@@ -10,9 +10,6 @@ jobs:
 - job: Prepare_UI
   displayName: Angular UI (Prepare)
   steps:
-  - checkout: self
-    fetchDepth: 1
-    submodules: true
   - template: prepare-yarn-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
