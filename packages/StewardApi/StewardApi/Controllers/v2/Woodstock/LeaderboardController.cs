@@ -122,7 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
                 deviceTypes,
                 startAt,
                 maxResults,
-                this.ServicesWithLiveStewardCms).ConfigureAwait(true);
+                this.Services).ConfigureAwait(true);
 
             return this.Ok(scores);
         }
@@ -153,7 +153,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
                 pivotId,
                 deviceTypes,
                 maxResults,
-                this.ServicesWithLiveStewardCms).ConfigureAwait(true);
+                this.Services).ConfigureAwait(true);
 
             return this.Ok(scores);
         }
@@ -176,7 +176,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
 
             try
             {
-                await this.ServicesWithLiveStewardCms.ScoreboardManagementService.DeleteScores(scoreIds).ConfigureAwait(false);
+                await this.Services.ScoreboardManagementService.DeleteScores(scoreIds).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
