@@ -17,7 +17,8 @@
     "lint:fix": "yarn prettier:fix && yarn lint --fix",
     "prettier:fix": "prettier --write .",
     
-    "build:check:prettier": "prettier --check .",
+    "build:check:lint": "yarn run ng lint",
+    "build:check:prettier": "yarn run prettier --check .",
     "build:check:changelog-is-modified": "C:\\Windows\\system32\\bash.exe ./scripts/changelog-is-modified-or-fail.sh",
     "build:check:ado:changelog-is-modified": "bash ./scripts/changelog-is-modified-or-fail.sh",
     
@@ -28,6 +29,10 @@
     "build:prod": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production --crossOrigin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",
     "build:prod-api": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=prod-api --crossOrigin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",
 
+    "test:prepare": "find src -name '*.scss' -print0 | xargs -0 -I {} bash -c 'cp -f empty.not-scss {}'",
+    "test:prepare:add": "git add * && git reset *.scss",
+    "test:prepare:reset": "git restore *.scss",
+
     "test:cc": "ng test --karma-config=src/karma-coverage.conf.js --source-map=true --code-coverage",
     "test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",
     "test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
@@ -35,9 +40,6 @@
     "test:ado:ncc": "ng test --karma-config=src/karma-ado.conf.js",
 
     "_old-commands-below": "echo Try another command.",
-    "test:prepare": "find src -name '*.scss' -print0 | xargs -0 -I {} bash -c 'cp -f empty.not-scss {}'",
-    "test:prepare:add": "git add * && git reset *.scss",
-    "test:prepare:reset": "git restore *.scss",
     "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
     "find:missing_no_errors_schema": "grep -rn -C 0 --include \\*.component.spec.ts -L \"\\[NO_ERRORS_SCHEMA\\]\" ./src/*",
     "changes-with-main": "git diff-tree --no-commit-id --name-status -r HEAD main",

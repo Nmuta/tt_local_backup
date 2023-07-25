@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SunriseFeatureUgcModalComponent } from './sunrise/sunrise-feature-ugc-modal.component';
 import { WoodstockFeatureUgcModalComponent } from './woodstock/woodstock-feature-ugc-modal.component';
+import { SteelheadFeatureUgcModalComponent } from './steelhead/steelhead-feature-ugc-modal.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -25,8 +26,11 @@ import { HelpModule } from '@shared/modules/help/help.module';
 
 /** Module for setting UGC item's featured status with a modal. */
 @NgModule({
-  declarations: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
-  exports: [SunriseFeatureUgcModalComponent, WoodstockFeatureUgcModalComponent],
+  declarations: [
+    SunriseFeatureUgcModalComponent,
+    WoodstockFeatureUgcModalComponent,
+    SteelheadFeatureUgcModalComponent,
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -50,6 +54,11 @@ import { HelpModule } from '@shared/modules/help/help.module';
     VerifyButtonModule,
     PermissionsModule,
     HelpModule,
+  ],
+  exports: [
+    SunriseFeatureUgcModalComponent,
+    WoodstockFeatureUgcModalComponent,
+    SteelheadFeatureUgcModalComponent,
   ],
 })
 export class FeatureUgcModalModule {}
