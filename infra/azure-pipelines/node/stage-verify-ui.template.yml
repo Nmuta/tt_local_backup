@@ -1,3 +1,7 @@
+# This file is the main stage of the Verify UI pipeline for PRs.
+# It runs all the relevant jobs in parallel.
+# It must be run after the caching stage.
+
 parameters:
 - name: 'workingDirectory'
   displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'

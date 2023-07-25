@@ -1,3 +1,7 @@
+# This file executes recently-changed Cypress e2e tests with a time limit.
+# TODO: Update to use shared `node/` templates
+# TODO: Update to run tests in parallel
+
 parameters:
 - name: 'timeoutInMinutes'
   displayName: 'How many minutes to allow tests to run for. Default 10. Total pipeline duration limit is 60m'

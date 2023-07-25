@@ -1,3 +1,5 @@
+# This file stores variables common to all UI build pipelines.
+
 variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
   VM_IMAGE: ubuntu-20.04

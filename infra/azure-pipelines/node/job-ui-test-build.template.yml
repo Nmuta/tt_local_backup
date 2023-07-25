@@ -1,3 +1,6 @@
+# This file runs a test build as a single parallel job.
+# It is intended to be run only after a `yarn` cache is made.
+
 parameters:
 - name: 'workingDirectory'
   displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."

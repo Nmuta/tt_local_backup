@@ -1,3 +1,6 @@
+# This file contains the prep steps for any node/yarn project.
+# It configures the environment, retrieves packages, and ensures they are cached.
+
 parameters:
 - name: 'workingDirectory'
   displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."

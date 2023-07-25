@@ -1,3 +1,6 @@
+# This file confirms Cypress will build.
+# TODO: Update to use shared `node/` templates
+
 jobs:
 - job: Job_2
   displayName: Cypress (Lint & Build)

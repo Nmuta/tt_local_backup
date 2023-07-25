@@ -1,3 +1,6 @@
+# This file is the prep stage of the Verify UI pipeline for PRs.
+# It ensures our yarn packages are cached.
+
 parameters:
 - name: 'workingDirectory'
   displayName: 'Path to a working directory where yarn can be run. Like packages/StewardClient'
