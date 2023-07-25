@@ -11,7 +11,7 @@ import {
   selectCuratedUgcType,
   selectUgcType,
   orderUgcBy,
-} from './shared-tests';
+} from '.';
 import { clickIfExists } from '@support/cypress/click-if-exists';
 
 const defaultWoodstockUser = RetailUsers['ben'];
