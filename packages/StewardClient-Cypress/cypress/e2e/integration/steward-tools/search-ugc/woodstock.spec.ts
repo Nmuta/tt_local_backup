@@ -60,6 +60,8 @@ context('Steward / Tools / UGC Details / Woodstock', () => {
 
   it('Should load all types of user UGC for a valid user, filter for specific models, and sort them properly', () => {
     searchByGtag(defaultWoodstockUser.gtag);
+
+    //Load all ugc types and ensure they have ugc
     ugcTypes.forEach(ugcType => {
       selectUgcType(ugcType);
       clickSearch();
@@ -69,6 +71,8 @@ context('Steward / Tools / UGC Details / Woodstock', () => {
         })
         .should('exist');
     });
+
+    //Search for a specific Livery and sort by oldest to ensure we get the oldest vehicle
     selectUgcType('Livery');
     selectCar('DB5');
     orderUgcBy('Oldest first');
