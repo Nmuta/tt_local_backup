@@ -3,7 +3,7 @@ import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
-context('Steward / Support / Car Details / Woodstock', () => {
+context('Steward / Support / Car Details / Woodstock test', () => {
   beforeEach(() => {
     login();
 
