@@ -70,8 +70,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         ///     Gets full permissions list.
         /// </summary>
         [HttpGet]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
         [SwaggerResponse(200, type: typeof(Dictionary<string, IList<string>>))]
+        [Authorize(Policy = UserAttribute.ManageStewardTeam)]
         public async Task<IActionResult> GetAllPermissionsAsync()
         {
             var permissionsKey = $"AllPermAttributes";
@@ -165,7 +166,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.UserPermissions)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttribute.ManageStewardTeam)]
         public async Task<IActionResult> SetUserPermissionsAsync(string userId, [FromBody] IEnumerable<AuthorizationAttribute> attributes)
         {
             if (this.HttpContext.User.IsInRole(UserRole.GeneralUser))
