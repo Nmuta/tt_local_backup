@@ -75,7 +75,7 @@ jobs:
     displayName: Combine Reports
     condition: succeededOrFailed()
     inputs:
-      script: yarn run report:combine
+      script: yarn run report:combine:dev
       workingDirectory: packages/StewardClient-Cypress/
 
   - task: PublishTestResults@2
