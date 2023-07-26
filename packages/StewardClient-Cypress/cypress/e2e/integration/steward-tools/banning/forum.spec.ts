@@ -22,9 +22,9 @@ context('Steward / Tools / Banning / Forum', () => {
   context('GTAG Lookup', () => {
     before(() => {
       cy.visit(stewardUrls.tools.banning.forum);
+      testSearchForUserByGtag(forumUser, 'Forum');
     });
     context('With default user', () => {
-      testSearchForUserByGtag(forumUser, 'Forum');
       testFillOutBan();
       testFillOutBanCustomReason();
       testInvalidBanConditions();
@@ -34,9 +34,9 @@ context('Steward / Tools / Banning / Forum', () => {
   context('XUID Lookup', () => {
     before(() => {
       cy.visit(stewardUrls.tools.banning.forum);
+      testSearchForUserByXuid(forumUser, 'Forum');
     });
     context('With default user', () => {
-      testSearchForUserByXuid(forumUser, 'Forum');
       testFillOutBan();
       testFillOutBanCustomReason();
       testInvalidBanConditions();
