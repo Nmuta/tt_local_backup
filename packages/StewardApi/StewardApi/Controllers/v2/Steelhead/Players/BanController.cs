@@ -186,9 +186,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                         requesterObjectId).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
+
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
                         .ConfigureAwait(true);
-
                     var bannedXuids = results.Where(banResult => banResult.Error == null)
                         .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
 

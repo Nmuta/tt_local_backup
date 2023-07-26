@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -24,8 +25,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         private const string ToolsAvailabilityBlobName = "tool-availability.json";
         private const string PlayFabSettingsBlobName = "playfab.json";
 
+        private const string LeaderboardContainerName = "leaderboards";
+
         private readonly BlobClient toolsBlobClient;
         private readonly BlobClient playFabBlobClient;
+        private readonly BlobContainerClient leaderboardsContainerClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BlobStorageProvider"/> class.
@@ -41,9 +45,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             var blobConnectionString = keyVaultProvider.GetSecretAsync(keyVaultUrl, blobConnectionSecretName).GetAwaiter().GetResult();
 
             var serviceClient = new BlobServiceClient(blobConnectionString);
-            var containerClient = serviceClient.GetBlobContainerClient(SettingsContainerName);
-            this.toolsBlobClient = containerClient.GetBlobClient(ToolsAvailabilityBlobName);
-            this.playFabBlobClient = containerClient.GetBlobClient(PlayFabSettingsBlobName);
+
+            var settingsContainerClient = serviceClient.GetBlobContainerClient(SettingsContainerName);
+            this.toolsBlobClient = settingsContainerClient.GetBlobClient(ToolsAvailabilityBlobName);
+            this.playFabBlobClient = settingsContainerClient.GetBlobClient(PlayFabSettingsBlobName);
+
+            this.leaderboardsContainerClient = serviceClient.GetBlobContainerClient(LeaderboardContainerName);
         }
 
         /// <inheritdoc />
@@ -154,6 +161,47 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
 
             return await this.GetStewardPlayFabSettingsAsync().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task SetLeaderboardDataAsync(Guid leaderboardId)
+        {
+            //BlobClient leaderboardClient = null;
+
+            // Create client for given leaderboard.
+            //await this.leaderboardsContainerClient.CreateIfNotExistsAsync().ConfigureAwait(false);
+            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(leaderboardId.ToString());
+
+            //if (!await this.EnsureBlobClientExistsAsync(leaderboardClient).ConfigureAwait(false))
+            //{
+            //    throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {LeaderboardContainerName}. Blob name: {leaderboardId.ToString()}.");
+            //}
+
+            try
+            {
+                //var blobLease = leaderboardClient.GetBlobLeaseClient();
+                //var lease = await blobLease.AcquireAsync(new TimeSpan(TimeSpan.TicksPerSecond * 15)).ConfigureAwait(false);
+
+                // We won't be serializing, instead we'll be doing something to coerce into excel ready CSV.
+                //var serializedContent = JsonConvert.SerializeObject(updatedToolsAvailability, new JsonSerializerSettings
+                //{
+                //    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                //});
+
+                var dataBytes = Encoding.UTF8.GetBytes($"2Test Content for leaderboard with ID: {leaderboardId.ToString()}");
+                await leaderboardClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
+                {
+                    //Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
+                }).ConfigureAwait(false);
+
+                //await blobLease.ReleaseAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Could not update tools availability JSON in blob storage. Container name: {SettingsContainerName}. Blob name: {ToolsAvailabilityBlobName}.", ex);
+            }
+
+            return;
         }
 
         private async Task<bool> EnsureBlobClientExistsAsync(BlobClient blobClient)
