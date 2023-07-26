@@ -108,5 +108,8 @@ export const stewardUrls = {
       default: '/app/tools/search-ugc',
       woodstock: '/app/tools/search-ugc/woodstock',
     },
+    metaTools: {
+      default: '/app/tools/steward-management',
+    },
   },
 };
