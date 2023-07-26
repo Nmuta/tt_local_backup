@@ -99,5 +99,9 @@ export const stewardUrls = {
       steelhead: '/app/tools/lsp-tasks/steelhead',
       woodstock: '/app/tools/lsp-tasks/woodstock',
     },
+    searchUgc: {
+      default: '/app/tools/search-ugc',
+      woodstock: '/app/tools/search-ugc/woodstock',
+    },
   },
 };
