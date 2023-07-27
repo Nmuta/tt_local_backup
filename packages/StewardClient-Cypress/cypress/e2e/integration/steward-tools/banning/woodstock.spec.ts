@@ -12,23 +12,23 @@ import {
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
-const forumUser = RetailUsers['madden'];
+const woodstockUser = RetailUsers['luke'];
 
-context('Steward / Tools / Banning / Forum', () => {
+context('Steward / Tools / Banning / Woodstock', () => {
   before(() => {
     resetToDefaultState();
-    cy.visit(stewardUrls.tools.banning.forum);
+    cy.visit(stewardUrls.tools.banning.woodstock);
   });
 
   context('GTAG Lookup', () => {
     before(() => {
-      cy.visit(stewardUrls.tools.banning.forum);
-      searchByGtag(forumUser.gtag);
+      cy.visit(stewardUrls.tools.banning.woodstock);
+      searchByGtag(woodstockUser.gtag);
       waitForProgressSpinners();
     });
     context('With default user', () => {
-      testVerifySearchForUser('Forum');
-      testFillOutBan('Personal Attacks', 'Forum');
+      testVerifySearchForUser('All Requests');
+      testFillOutBan('Testing', 'Woodstock');
       testFillOutBanCustomReason();
       testInvalidBanConditions();
     });
@@ -36,20 +36,20 @@ context('Steward / Tools / Banning / Forum', () => {
 
   context('XUID Lookup', () => {
     before(() => {
-      cy.visit(stewardUrls.tools.banning.forum);
-      searchByXuid(forumUser.xuid);
+      cy.visit(stewardUrls.tools.banning.woodstock);
+      searchByXuid(woodstockUser.xuid);
       waitForProgressSpinners();
     });
     context('With default user', () => {
-      testVerifySearchForUser('Forum');
-      testFillOutBan('Personal Attacks', 'Forum');
+      testVerifySearchForUser('All Requests');
+      testFillOutBan('Testing', 'Woodstock');
       testFillOutBanCustomReason();
       testInvalidBanConditions();
     });
   });
 
   context('Common Tests', () => {
-    testClearAll('Forum');
+    testClearAll('All Requests');
     testHelpCard();
   });
 });
