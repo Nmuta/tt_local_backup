@@ -10,7 +10,6 @@ import {
   testVerifySearchForUser,
 } from './shared-functions';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
-import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
 const forumUser = RetailUsers['madden'];
 
@@ -24,7 +23,6 @@ context('Steward / Tools / Banning / Forum', () => {
     before(() => {
       cy.visit(stewardUrls.tools.banning.forum);
       searchByGtag(forumUser.gtag);
-      waitForProgressSpinners();
     });
     context('With default user', () => {
       testVerifySearchForUser('Forum');
@@ -38,7 +36,6 @@ context('Steward / Tools / Banning / Forum', () => {
     before(() => {
       cy.visit(stewardUrls.tools.banning.forum);
       searchByXuid(forumUser.xuid);
-      waitForProgressSpinners();
     });
     context('With default user', () => {
       testVerifySearchForUser('Forum');
