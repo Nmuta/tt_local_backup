@@ -10,7 +10,6 @@ import {
   testVerifySearchForUser,
 } from './shared-functions';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
-import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 
 const sunriseUser = RetailUsers['luke'];
 
@@ -24,7 +23,6 @@ context('Steward / Tools / Banning / Sunrise', () => {
     before(() => {
       cy.visit(stewardUrls.tools.banning.sunrise);
       searchByGtag(sunriseUser.gtag);
-      waitForProgressSpinners();
     });
     context('With default user', () => {
       testVerifySearchForUser('All Requests');
@@ -38,7 +36,6 @@ context('Steward / Tools / Banning / Sunrise', () => {
     before(() => {
       cy.visit(stewardUrls.tools.banning.sunrise);
       searchByXuid(sunriseUser.xuid);
-      waitForProgressSpinners();
     });
     context('With default user', () => {
       testVerifySearchForUser('All Requests');
