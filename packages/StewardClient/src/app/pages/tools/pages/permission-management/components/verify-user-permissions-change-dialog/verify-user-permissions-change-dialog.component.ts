@@ -6,7 +6,7 @@ import { UserModel } from '@models/user.model';
 import { PermissionsService } from '@services/api-v2/permissions/permissions.service';
 import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { cloneDeep, find, flatMap } from 'lodash';
+import { find } from 'lodash';
 import { catchError, EMPTY, takeUntil } from 'rxjs';
 
 export interface VerifyUserPermissionChangeDialogData {
@@ -36,8 +36,10 @@ interface VerifyPermissionChangeEntry {
 export class VerifyUserPermissionChangeDialogComponent extends BaseComponent implements OnInit {
   public savePermissionsMonitor = new ActionMonitor('POST save user permissions');
   public newPermsList: PermAttribute[];
-  public addedPermissions: VerifyPermissionChangeEntry[];
-  public removedPermissions: VerifyPermissionChangeEntry[];
+  public addedPermissions: PermAttribute[];
+  public addedPermissionsChangeEntry: VerifyPermissionChangeEntry[];
+  public removedPermissions: PermAttribute[];
+  public removedPermissionsChangeEntry: VerifyPermissionChangeEntry[];
 
   public user: UserModel;
 
@@ -53,13 +55,19 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
   public ngOnInit(): void {
     this.user = this.data.user;
     this.newPermsList = this.data.updatedPerms;
-    this.addedPermissions = this.findPermDifferences(
+    this.addedPermissions = this.findPermAttributeDifferences(
       this.data.currentPerms,
       this.data.updatedPerms,
     );
-    this.removedPermissions = this.findPermDifferences(
+    this.addedPermissionsChangeEntry = this.generatePermAttributeChangeEntries(
+      this.addedPermissions,
+    );
+    this.removedPermissions = this.findPermAttributeDifferences(
       this.data.updatedPerms,
       this.data.currentPerms,
+    );
+    this.removedPermissionsChangeEntry = this.generatePermAttributeChangeEntries(
+      this.removedPermissions,
     );
   }
 
@@ -68,18 +76,8 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
     this.savePermissionsMonitor = this.savePermissionsMonitor.repeat();
     this.dialogRef.disableClose = true;
 
-    const attributesToAdd = flatMap(
-      this.addedPermissions.map(perm =>
-        this.convertVerifyPermissionChangeEntryToPermAttributes(perm),
-      ),
-    );
-    const attributesToRemove = flatMap(
-      this.removedPermissions.map(perm =>
-        this.convertVerifyPermissionChangeEntryToPermAttributes(perm),
-      ),
-    );
     this.permissionsService
-      .setUserPermissionAttributes$(this.user, attributesToAdd, attributesToRemove)
+      .setUserPermissionAttributes$(this.user, this.addedPermissions, this.removedPermissions)
       .pipe(
         this.savePermissionsMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
@@ -93,23 +91,26 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
       });
   }
 
-  private findPermDifferences(
+  private findPermAttributeDifferences(
     source: PermAttribute[],
     changes: PermAttribute[],
-  ): VerifyPermissionChangeEntry[] {
-    const diffs: VerifyPermissionChangeEntry[] = [];
-
-    for (const change of changes) {
+  ): PermAttribute[] {
+    return changes.filter(change => {
       const isDiff = !find(source, {
         attribute: change.attribute,
         title: change.title,
         environment: change.environment,
       });
+      return isDiff;
+    });
+  }
 
-      if (!isDiff) {
-        continue;
-      }
+  private generatePermAttributeChangeEntries(
+    changes: PermAttribute[],
+  ): VerifyPermissionChangeEntry[] {
+    const diffs: VerifyPermissionChangeEntry[] = [];
 
+    for (const change of changes) {
       const existingChangeEntry = find(diffs, { attribute: change.attribute });
       if (!!existingChangeEntry) {
         const titleEntry = find(existingChangeEntry.titles, {
@@ -142,30 +143,5 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
     }
 
     return diffs;
-  }
-
-  private convertVerifyPermissionChangeEntryToPermAttributes(
-    changeEntry: VerifyPermissionChangeEntry,
-  ): PermAttribute[] {
-    const baseAttribute = {
-      attribute: changeEntry.attribute,
-      title: '',
-      environment: '',
-    } as PermAttribute;
-
-    if (changeEntry.titles.length <= 0) {
-      return [baseAttribute];
-    }
-
-    return flatMap(
-      changeEntry.titles.map(titleChangeEntry => {
-        return titleChangeEntry.environments.map(environment => {
-          const attribute = cloneDeep(baseAttribute);
-          attribute.title = titleChangeEntry.title;
-          attribute.environment = environment;
-          return attribute;
-        });
-      }),
-    );
   }
 }
