@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.Scoreboard.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Azure;
@@ -24,6 +25,7 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -231,12 +233,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Updates leaderboard scores files.
+        ///     Creates or Replaces leaderboard scores files.
         /// </summary>
         [HttpPut("scores/generate")]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
-        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Leaderboards)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
         [Authorize(Policy = UserAttribute.GenerateLeaderboardScoresFile)]
         public async Task<IActionResult> GenerateLeaderboardScoresFile(
             [FromQuery] ScoreboardType scoreboardType,
@@ -248,10 +250,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
-            //used to clear out existing job if I kill process early
-            //await this.jobTracker.UpdateJobAsync("a31e9d43-963d-481d-bfdf-0b0d2d7f3baf", requesterObjectId, BackgroundJobStatus.Failed, null).ConfigureAwait(true);
             var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
             var leaderboard = await this.GetLeaderboardMetadataAsync(scoreboardType, scoreType, trackId, pivotId, environment).ConfigureAwait(true);
+
+            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{leaderboard.GameScoreboardId}";
 
             var jobs = await this.jobTracker.GetInProgressJobsAsync().ConfigureAwait(true);
 
@@ -260,8 +262,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 return this.Conflict("Leaderboard file generation already in progress, please try again later.");
             }
 
-            // Is the leaderboard the correct thing to pass in as first parameter, it should be 'request body' but there really isn't one in this API.
-            var jobId = await this.jobTracker.CreateNewJobAsync(leaderboard.Id.ToString(), requesterObjectId, $"Generate Leaderboard Scores File ({leaderboard.Id})", this.Response).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(leaderboardIdentifier, requesterObjectId, $"Generate Leaderboard Scores File ({leaderboardIdentifier})", this.Response).ConfigureAwait(true);
+            var scoreboardManagementService = this.Services.ScoreboardManagementService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -269,9 +271,65 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 // Do not throw.
                 try
                 {
-                    
+                    var scores = new List<LeaderboardScore>();
 
-                    await this.blobStorageProvider.SetLeaderboardDataAsync(leaderboard.Id).ConfigureAwait(true);
+                    // Retry for dormant leaderboards, query until you get real data.
+                    var retries = 0;
+                    var retry = true;
+                    var waitTimeInMilliseconds = 1000;
+
+                    do
+                    {
+                        var results = await this.GetLeaderboardScoresAsync(scoreboardManagementService, scoreboardType, scoreType, trackId, pivotId, new List<DeviceType>(), 0, 1000).ConfigureAwait(true);
+
+                        if (results.Count() > 0)
+                        {
+                            retry = false;
+                        }
+                        else
+                        {
+                            if (retries > 4)
+                            {
+                                throw new Exception("No scores found.");
+                            }
+
+                            Thread.Sleep(waitTimeInMilliseconds);
+
+                            waitTimeInMilliseconds *= 2;
+                            retries++;
+                        }
+                    }
+                    while (retry);
+
+                    // Successfully pulling scores, now pull them all.
+                    var scoresToPull = 100_000;
+                    var scoreIndex = 0;
+                    var keepQuerying = true;
+
+                    while (keepQuerying)
+                    {
+                        var scoreResults = await this.GetLeaderboardScoresAsync(scoreboardManagementService, scoreboardType, scoreType, trackId, pivotId, new List<DeviceType>(), scoreIndex, scoresToPull).ConfigureAwait(true);
+
+                        if (scoreResults.Count() < scoresToPull)
+                        {
+                            keepQuerying = false;
+                        }
+
+                        scoreIndex = +scoresToPull;
+                        scores.AddRange(scoreResults);
+                    }
+
+                    var csv = new StringBuilder();
+                    csv.AppendLine("Position, Xuid, Score, IsClean");
+
+                    foreach (var score in scores)
+                    {
+                        // TODO: Use gamertag from score object once Services adds it.
+                        var newLine = $"{score.Position}, GamertagPlaceholder, {score.Score}, {score.IsClean},";
+                        csv.AppendLine(newLine);
+                    }
+
+                    await this.blobStorageProvider.SetLeaderboardDataAsync(leaderboardIdentifier, csv.ToString()).ConfigureAwait(true);
 
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, null).ConfigureAwait(true);
                 }
@@ -370,6 +428,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             int startAt,
             int maxResults)
         {
+            return await this.GetLeaderboardScoresAsync(this.Services.ScoreboardManagementService, scoreboardType, scoreType, trackId, pivotId, deviceTypes, startAt, maxResults).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Gets leaderboard scores.
+        /// </summary>
+        /// <remarks>Takes a ScoreboardManagementService, making it safe for use in background jobs.</remarks>
+        private async Task<IEnumerable<LeaderboardScore>> GetLeaderboardScoresAsync(
+            IScoreboardManagementService scoreboardManagementService,
+            ScoreboardType scoreboardType,
+            ScoreType scoreType,
+            int trackId,
+            string pivotId,
+            IEnumerable<DeviceType> deviceTypes,
+            int startAt,
+            int maxResults)
+        {
             pivotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pivotId));
 
             var searchParams = new ForzaSearchLeaderboardsParametersV2()
@@ -388,7 +463,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 searchParams.DeviceTypes = this.mapper.SafeMap<ForzaLiveDeviceType[]>(deviceTypes);
             }
 
-            var result = await this.Services.ScoreboardManagementService.SearchLeaderboardsV2(searchParams, startAt, maxResults).ConfigureAwait(false);
+            var result = await scoreboardManagementService.SearchLeaderboardsV2(searchParams, startAt, maxResults).ConfigureAwait(false);
 
             return this.mapper.SafeMap<IEnumerable<LeaderboardScore>>(result.results.Rows);
         }

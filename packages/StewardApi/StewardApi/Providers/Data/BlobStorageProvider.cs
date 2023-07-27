@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
@@ -164,41 +166,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task SetLeaderboardDataAsync(Guid leaderboardId)
+        public async Task SetLeaderboardDataAsync(string leaderboardIdentifier, string csv)
         {
-            //BlobClient leaderboardClient = null;
-
-            // Create client for given leaderboard.
-            //await this.leaderboardsContainerClient.CreateIfNotExistsAsync().ConfigureAwait(false);
-            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(leaderboardId.ToString());
-
-            //if (!await this.EnsureBlobClientExistsAsync(leaderboardClient).ConfigureAwait(false))
-            //{
-            //    throw new UnknownFailureStewardException($"Blob client could not be found. Container name: {LeaderboardContainerName}. Blob name: {leaderboardId.ToString()}.");
-            //}
+            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(leaderboardIdentifier);
 
             try
             {
-                //var blobLease = leaderboardClient.GetBlobLeaseClient();
-                //var lease = await blobLease.AcquireAsync(new TimeSpan(TimeSpan.TicksPerSecond * 15)).ConfigureAwait(false);
-
-                // We won't be serializing, instead we'll be doing something to coerce into excel ready CSV.
-                //var serializedContent = JsonConvert.SerializeObject(updatedToolsAvailability, new JsonSerializerSettings
-                //{
-                //    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                //});
-
-                var dataBytes = Encoding.UTF8.GetBytes($"2Test Content for leaderboard with ID: {leaderboardId.ToString()}");
-                await leaderboardClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
-                {
-                    //Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
-                }).ConfigureAwait(false);
-
-                //await blobLease.ReleaseAsync().ConfigureAwait(false);
+                var dataBytes = Encoding.UTF8.GetBytes(csv);
+                await leaderboardClient.UploadAsync(new BinaryData(dataBytes)).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Could not update tools availability JSON in blob storage. Container name: {SettingsContainerName}. Blob name: {ToolsAvailabilityBlobName}.", ex);
+                throw new UnknownFailureStewardException($"Could not upload leaderboard scores to blob storage. Container name: {LeaderboardContainerName}. Blob name: {leaderboardIdentifier}.", ex);
             }
 
             return;
