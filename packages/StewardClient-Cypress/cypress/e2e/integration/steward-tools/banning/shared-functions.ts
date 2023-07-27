@@ -1,6 +1,4 @@
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { KnownUser } from '@support/steward/common/account-info';
 import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 
 /** Searches for a user by Gtag and displays ban history */
@@ -17,29 +15,18 @@ export function testFillOutBan(reason: string, page: string): void {
   it('should fill out form for a ban', () => {
     cy.get('mat-form-field').contains('mat-label', 'Ban Reason').parents('mat-form-field').click();
     cy.get('mat-option').contains('span', reason).parents('mat-option').click();
-    if (page == 'Woodstock') {
+    if(page == 'Woodstock'){
       waitForProgressSpinners();
       clickTopLeftOfBody();
       cy.get('[aria-disabled="true"]').should('exist');
-      cy.get('mat-checkbox')
-        .contains('span', 'Override Ban Behavior')
-        .parents('mat-checkbox')
-        .click('left');
+      cy.get('mat-checkbox').contains('span', 'Override Ban Behavior').parents('mat-checkbox').click('left');
       cy.get('button').contains('span', '1 day').parents('button').click();
-    } else if (page == 'Apollo' || page == 'Sunrise') {
+    }
+    else if(page == 'Apollo' || page == 'Sunrise'){
       cy.get('button').contains('span', '1 minute').parents('button').click();
-      cy.get('mat-checkbox')
-        .contains('span', 'Ban all Xboxes (No expiry)')
-        .parents('mat-checkbox')
-        .click('left');
-      cy.get('mat-checkbox')
-        .contains('span', 'Ban all PCs (No expiry)')
-        .parents('mat-checkbox')
-        .click('left');
-      cy.get('mat-checkbox')
-        .contains('span', 'Delete all leaderboard entries (Permanent)')
-        .parents('mat-checkbox')
-        .click('left');
+      cy.get('mat-checkbox').contains('span', 'Ban all Xboxes (No expiry)').parents('mat-checkbox').click('left');
+      cy.get('mat-checkbox').contains('span', 'Ban all PCs (No expiry)').parents('mat-checkbox').click('left');
+      cy.get('mat-checkbox').contains('span', 'Delete all leaderboard entries (Permanent)').parents('mat-checkbox').click('left');
     }
     cy.get('button').contains('mat-icon', 'lock_open').click();
     cy.get('button').contains('[disabled="true"]').should('not.exist');
