@@ -24,6 +24,12 @@ export function testFillOutBan(reason: string, page: string): void {
       cy.get('mat-checkbox').contains('span', 'Override Ban Behavior').parents('mat-checkbox').click('left');
       cy.get('button').contains('span', '1 day').parents('button').click();
     }
+    else if(page == 'Apollo' || page == 'Sunrise'){
+      cy.get('button').contains('span', '1 minute').parents('button').click();
+      cy.get('mat-checkbox').contains('span', 'Ban all Xboxes (No expiry)').parents('mat-checkbox').click('left');
+      cy.get('mat-checkbox').contains('span', 'Ban all PCs (No expiry)').parents('mat-checkbox').click('left');
+      cy.get('mat-checkbox').contains('span', 'Delete all leaderboard entries (Permanent)').parents('mat-checkbox').click('left');
+    }
     cy.get('button').contains('mat-icon', 'lock_open').click();
     cy.get('button').contains('[disabled="true"]').should('not.exist');
     cy.get('button').contains('mat-icon', 'lock').click();
