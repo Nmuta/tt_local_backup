@@ -1,6 +1,4 @@
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { KnownUser } from '@support/steward/common/account-info';
 import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 
 /** Searches for a user by Gtag and displays ban history */
