@@ -107,7 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var mappedUsers = this.mapper.SafeMap<IEnumerable<StewardUser>>(users);
 
             // If user is a GeneralUser & team lead, then only return Steward users a part of their team
-            var requestorInternal = this.stewardUserProvider.GetStewardUserAsync(this.User.UserClaims().ObjectId).ConfigureAwait(true);
+            var requestorInternal = await this.stewardUserProvider.GetStewardUserAsync(this.User.UserClaims().ObjectId).ConfigureAwait(true);
             var requestor = this.mapper.SafeMap<StewardUser>(requestorInternal);
             if (requestor.Role == UserRole.GeneralUser)
             {

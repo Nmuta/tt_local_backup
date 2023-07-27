@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.PermissionManagement },
+      uuid: '54f931b4-a4b9-452f-b7a6-340799459e45',
+      shortText: 'Add support for team leads',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '2f4e2a73-f8f5-4bdf-a242-169a3a5d9ead',
       shortText: 'Add UGC featuring modal for Steelhead',

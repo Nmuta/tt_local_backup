@@ -6,7 +6,7 @@ import { UserModel } from '@models/user.model';
 import { PermissionsService } from '@services/api-v2/permissions/permissions.service';
 import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { find } from 'lodash';
+import { cloneDeep, find, flatMap } from 'lodash';
 import { catchError, EMPTY, takeUntil } from 'rxjs';
 
 export interface VerifyUserPermissionChangeDialogData {
@@ -68,8 +68,18 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
     this.savePermissionsMonitor = this.savePermissionsMonitor.repeat();
     this.dialogRef.disableClose = true;
 
+    const attributesToAdd = flatMap(
+      this.addedPermissions.map(perm =>
+        this.convertVerifyPermissionChangeEntryToPermAttributes(perm),
+      ),
+    );
+    const attributesToRemove = flatMap(
+      this.removedPermissions.map(perm =>
+        this.convertVerifyPermissionChangeEntryToPermAttributes(perm),
+      ),
+    );
     this.permissionsService
-      .setUserPermissionAttributes$(this.user, this.newPermsList)
+      .setUserPermissionAttributes$(this.user, attributesToAdd, attributesToRemove)
       .pipe(
         this.savePermissionsMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
@@ -96,39 +106,66 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
         environment: change.environment,
       });
 
-      if (isDiff) {
-        const existingChangeEntry = find(diffs, { attribute: change.attribute });
-        if (!!existingChangeEntry) {
-          const titleEntry = find(existingChangeEntry.titles, {
+      if (!isDiff) {
+        continue;
+      }
+
+      const existingChangeEntry = find(diffs, { attribute: change.attribute });
+      if (!!existingChangeEntry) {
+        const titleEntry = find(existingChangeEntry.titles, {
+          title: change.title,
+        }) as VerifyPermissionChangeEntryTitle;
+        if (!!titleEntry) {
+          titleEntry.environments.push(change.environment);
+        } else {
+          existingChangeEntry.titles.push({
             title: change.title,
-          }) as VerifyPermissionChangeEntryTitle;
-          if (!!titleEntry) {
-            titleEntry.environments.push(change.environment);
-          } else {
-            existingChangeEntry.titles.push({
+            environments: [change.environment],
+          } as VerifyPermissionChangeEntryTitle);
+        }
+      } else {
+        let titles: VerifyPermissionChangeEntryTitle[] = [];
+        if (change.title !== '') {
+          titles = [
+            {
               title: change.title,
               environments: [change.environment],
-            } as VerifyPermissionChangeEntryTitle);
-          }
-        } else {
-          let titles: VerifyPermissionChangeEntryTitle[] = [];
-          if (change.title !== '') {
-            titles = [
-              {
-                title: change.title,
-                environments: [change.environment],
-              } as VerifyPermissionChangeEntryTitle,
-            ];
-          }
-
-          diffs.push({
-            attribute: change.attribute,
-            titles: titles,
-          } as VerifyPermissionChangeEntry);
+            } as VerifyPermissionChangeEntryTitle,
+          ];
         }
+
+        diffs.push({
+          attribute: change.attribute,
+          titles: titles,
+        } as VerifyPermissionChangeEntry);
       }
     }
 
     return diffs;
+  }
+
+  private convertVerifyPermissionChangeEntryToPermAttributes(
+    changeEntry: VerifyPermissionChangeEntry,
+  ): PermAttribute[] {
+    const baseAttribute = {
+      attribute: changeEntry.attribute,
+      title: '',
+      environment: '',
+    } as PermAttribute;
+
+    if (changeEntry.titles.length <= 0) {
+      return [baseAttribute];
+    }
+
+    return flatMap(
+      changeEntry.titles.map(titleChangeEntry => {
+        return titleChangeEntry.environments.map(environment => {
+          const attribute = cloneDeep(baseAttribute);
+          attribute.title = titleChangeEntry.title;
+          attribute.environment = environment;
+          return attribute;
+        });
+      }),
+    );
   }
 }
