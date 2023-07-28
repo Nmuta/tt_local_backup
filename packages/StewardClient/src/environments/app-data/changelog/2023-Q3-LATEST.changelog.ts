@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '2c662d23-a44a-471f-862a-918f0e00c22e',
+      shortText: 'Re-add Cypress Id (cyid) to verify buttons in UGM Tool',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
       uuid: 'a3590af3-e45c-4f9e-a2a8-0104d1b99745',
       shortText: 'Add multiple improvements',
