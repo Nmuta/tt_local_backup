@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { PlayFabBuildLock, PlayFabBuildSummary } from '@models/playfab';
-import { WoodstockPlayFabEnvironments } from '@models/woodstock';
 import { WoodstockPlayFabBuildsService } from '@services/api-v2/woodstock/playfab/builds/woodstock-playfab-builds.service';
 import { Observable } from 'rxjs';
 import { PlayFabBuildsManagementServiceContract } from '../playfab-builds-management.component';
@@ -20,23 +19,16 @@ export class WoodstockPlayFabBuildsManagementComponent {
     this.service = {
       gameTitle: GameTitle.FH5,
       getPlayFabBuilds$(): Observable<PlayFabBuildSummary[]> {
-        return woodstockPlayFabBuildsService.getBuilds$(WoodstockPlayFabEnvironments.Dev);
+        return woodstockPlayFabBuildsService.getBuilds$();
       },
       getPlayFabBuildLocks$(): Observable<PlayFabBuildLock[]> {
-        return woodstockPlayFabBuildsService.getBuildLocks$(WoodstockPlayFabEnvironments.Dev);
+        return woodstockPlayFabBuildsService.getBuildLocks$();
       },
       addPlayFabBuildLock$(buildLockId: GuidLikeString, reason: string) {
-        return woodstockPlayFabBuildsService.addBuildLock$(
-          WoodstockPlayFabEnvironments.Dev,
-          buildLockId,
-          reason,
-        );
+        return woodstockPlayFabBuildsService.addBuildLock$(buildLockId, reason);
       },
       deletePlayFabBuildLock$(buildLockId: GuidLikeString) {
-        return woodstockPlayFabBuildsService.deleteBuildLock$(
-          WoodstockPlayFabEnvironments.Dev,
-          buildLockId,
-        );
+        return woodstockPlayFabBuildsService.deleteBuildLock$(buildLockId);
       },
     };
   }

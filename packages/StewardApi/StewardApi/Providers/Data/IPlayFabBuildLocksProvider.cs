@@ -31,6 +31,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Deletes build lock entry.
         /// </summary>
-        Task<PlayFabBuildLock> DeleteAsync(Guid buildId);
+        Task<PlayFabBuildLock> DeleteAsync(WoodstockPlayFabEnvironment environment, Guid buildId);
     }
 }

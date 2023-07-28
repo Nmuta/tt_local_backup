@@ -323,7 +323,7 @@ namespace Turn10.LiveOps.StewardApi
 
             // Woodstock PlayFab Service
             var woodstockPlayFabConfig = new WoodstockPlayFabConfig();
-            woodstockPlayFabConfig.Environments.Add(WoodstockPlayFabEnvironment.Dev, new PlayFabEnvironment()
+            woodstockPlayFabConfig.Environments.Add(WoodstockPlayFabEnvironment.Dev, new PlayFabConfig()
             {
                 TitleId = keyVaultProvider.GetSecretAsync(
                     this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
@@ -331,6 +331,15 @@ namespace Turn10.LiveOps.StewardApi
                 Key = keyVaultProvider.GetSecretAsync(
                     this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
                     this.configuration[ConfigurationKeyConstants.WoodstockPlayFabDevKey]).GetAwaiter().GetResult(),
+            });
+            woodstockPlayFabConfig.Environments.Add(WoodstockPlayFabEnvironment.Retail, new PlayFabConfig()
+            {
+                TitleId = keyVaultProvider.GetSecretAsync(
+                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabProdTitleId]).GetAwaiter().GetResult(),
+                Key = keyVaultProvider.GetSecretAsync(
+                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
+                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabProdKey]).GetAwaiter().GetResult(),
             });
             builder.Register(c => new WoodstockPlayFabService(woodstockPlayFabConfig, mapper)).As<IWoodstockPlayFabService>().SingleInstance();
 

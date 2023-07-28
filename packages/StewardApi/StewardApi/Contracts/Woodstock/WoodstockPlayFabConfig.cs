@@ -13,6 +13,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
     /// </summary>
     public class WoodstockPlayFabConfig
     {
-        public Dictionary<WoodstockPlayFabEnvironment, PlayFabEnvironment> Environments { get; } = new Dictionary<WoodstockPlayFabEnvironment, PlayFabEnvironment>();
+        public Dictionary<WoodstockPlayFabEnvironment, PlayFabConfig> Environments { get; } = new Dictionary<WoodstockPlayFabEnvironment, PlayFabConfig>();
     }
 }
