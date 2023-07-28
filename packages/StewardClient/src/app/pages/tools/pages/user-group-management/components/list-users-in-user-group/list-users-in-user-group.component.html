@@ -8,6 +8,7 @@
       <div *ngIf="!isAllUsersGroup">
         <verify-button
           #verifyDeleteBtn
+          cyid="verifyDeleteAll"
           [disabled]="disallowDeleteAllUsers"
           [permissionAttribute]="removeAllPermAttribute"
           [permissionTitle]="service?.gameTitle"
@@ -54,6 +55,7 @@
         <div class="action">
           <verify-button
             #verifyBulkAddBtn
+            cyid="verifyAdd"
             [disabled]="!formControls.userIdentifications.value"
             [permissionAttribute]="updatePermAttribute"
             [permissionTitle]="service?.gameTitle"
@@ -79,6 +81,7 @@
         <div class="action">
           <verify-button
             #verifyBulkDeleteBtn
+            cyid="verifyDelete"
             [disabled]="!formControls.userIdentifications.value"
             [permissionAttribute]="updatePermAttribute"
             [permissionTitle]="service?.gameTitle"
