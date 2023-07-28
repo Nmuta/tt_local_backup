@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
                 return proxyBundle;
             });
 
-            this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockProdLiveProxyBundle"));
+            this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockProdLiveStewardProxyBundle"));
 
             this.ApolloServices = new Lazy<ApolloProxyBundle>(() =>
             {

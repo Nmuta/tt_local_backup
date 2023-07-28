@@ -426,17 +426,6 @@ namespace Turn10.LiveOps.StewardApi
 
         private void RegisterForzaClients(ContainerBuilder builder)
         {
-            builder.RegisterType<Client>().Named<Client>("woodstockClientProdLive")
-                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
-                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
-                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion);
-
-            builder.RegisterType<Client>().Named<Client>("woodstockClientDevLive")
-                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
-                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
-                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<WoodstockSettings>().ClientVersion)
-                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(WoodstockPegasusEnvironment.Dev, WoodstockPegasusSlot.Live));
-
             builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())

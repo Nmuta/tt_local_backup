@@ -24,37 +24,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets leaderboards.
         /// </summary>
-        Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.Live);
+        Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.LiveSteward);
 
         /// <summary>
         ///     Gets cars.
         /// </summary>
-        Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = WoodstockPegasusSlot.Live);
+        Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = WoodstockPegasusSlot.LiveSteward);
 
         /// <summary>
         ///     Gets car makes.
         /// </summary>
-        Task<IEnumerable<ListCarMake>> GetCarMakesAsync(string slotId = WoodstockPegasusSlot.Live);
+        Task<IEnumerable<ListCarMake>> GetCarMakesAsync(string slotId = WoodstockPegasusSlot.LiveSteward);
 
         /// <summary>
         ///     Gets car horns.
         /// </summary>
-        Task<IEnumerable<CarHorn>> GetCarHornsAsync(string slotId = WoodstockPegasusSlot.Live);
+        Task<IEnumerable<CarHorn>> GetCarHornsAsync(string slotId = WoodstockPegasusSlot.LiveSteward);
 
         /// <summary>
         ///     Gets vanity items.
         /// </summary>
-        Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = WoodstockPegasusSlot.Live);
+        Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = WoodstockPegasusSlot.LiveSteward);
 
         /// <summary>
         ///     Gets emotes.
         /// </summary>
-        Task<IEnumerable<EmoteData>> GetEmotesAsync(string slotId = WoodstockPegasusSlot.Live);
+        Task<IEnumerable<EmoteData>> GetEmotesAsync(string slotId = WoodstockPegasusSlot.LiveSteward);
 
         /// <summary>
         ///     Gets quick chat lines.
         /// </summary>
-        Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync(string slotId = WoodstockPegasusSlot.Live);
+        Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync(string slotId = WoodstockPegasusSlot.LiveSteward);
 
         /// <summary>
         ///     Gets Ugc reporting reasons.
@@ -69,6 +69,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <summary>
         ///     Gets ban configurations.
         /// </summary>
-        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.Live);
+        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.LiveSteward);
     }
 }

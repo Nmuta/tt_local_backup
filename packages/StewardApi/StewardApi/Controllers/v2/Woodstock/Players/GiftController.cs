@@ -126,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             groupGift.Xuids.EnsureValidXuids();
 
-            var proxyBundle = this.ServicesWithLiveStewardCms;
+            var proxyBundle = this.Services;
 
             await proxyBundle.EnsurePlayersExistAsync(groupGift.Xuids).ConfigureAwait(true);
 
@@ -214,7 +214,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Players
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var proxyBundle = this.ServicesWithLiveStewardCms;
+            var proxyBundle = this.Services;
 
             await proxyBundle.EnsurePlayersExistAsync(groupGift.Xuids).ConfigureAwait(true);
 
