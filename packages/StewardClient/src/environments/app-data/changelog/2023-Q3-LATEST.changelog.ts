@@ -13,6 +13,26 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add support for team leads',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: '2c662d23-a44a-471f-862a-918f0e00c22e',
+      shortText: 'Re-add Cypress Id (cyid) to verify buttons in UGM Tool',
+    },
+    {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '6745e1e0-74ff-4bb0-acaa-01cfc74e8264',
+      shortText: 'Fix typo in UGC Edit',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: 'a3590af3-e45c-4f9e-a2a8-0104d1b99745',
+      shortText: 'Add multiple improvements',
+      longText: [
+        'Cursor is not a pointer for calendar links',
+        'Events show as multliple days on the week view for Rivals and Showroom',
+        'Display showroom dates as Utc',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '2f4e2a73-f8f5-4bdf-a242-169a3a5d9ead',
       shortText: 'Add UGC featuring modal for Steelhead',

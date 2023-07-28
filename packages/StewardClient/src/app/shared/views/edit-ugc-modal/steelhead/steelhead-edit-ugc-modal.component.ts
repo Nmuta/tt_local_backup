@@ -24,7 +24,7 @@ export class SteelheadEditUgcModalComponent extends BaseComponent {
     super();
 
     this.service = {
-      gameTitle: GameTitle.FH5,
+      gameTitle: GameTitle.FM8,
       getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem> {
         return steelheadUgcLookupService.getPlayerUgcItem$(itemId, type);
       },

@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
             GetNextBanPeriodOutput nextBanPeriod;
             try
             {
-                nextBanPeriod = await this.ServicesWithLiveStewardCms.UserManagementService.GetNextBanPeriod(xuid, banconfig).ConfigureAwait(true);
+                nextBanPeriod = await this.Services.UserManagementService.GetNextBanPeriod(xuid, banconfig).ConfigureAwait(true);
             }
             catch (Exception ex)
             {

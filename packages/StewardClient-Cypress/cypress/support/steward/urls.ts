@@ -33,6 +33,7 @@ export const stewardUrls = {
       steelhead: '/app/tools/user-banning/steelhead',
       sunrise: '/app/tools/user-banning/sunrise',
       apollo: '/app/tools/user-banning/apollo',
+      forum: '/app/tools/user-banning/forum',
     },
     giftHistory: {
       default: '/app/tools/gift-history',
@@ -106,6 +107,9 @@ export const stewardUrls = {
     searchUgc: {
       default: '/app/tools/search-ugc',
       woodstock: '/app/tools/search-ugc/woodstock',
+    },
+    metaTools: {
+      default: '/app/tools/steward-management',
     },
   },
 };
