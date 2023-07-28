@@ -1,5 +1,3 @@
-import { login } from '@support/steward/auth/login';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import {
@@ -16,7 +14,10 @@ import {
   ugcLiveriesFindLivery,
   jsonCheckJson,
 } from './shared-tests';
-import { contextSearchByGtagForPlayerDetails, contextSearchByXuidForPlayerDetails, searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import {
+  contextSearchByGtagForPlayerDetails,
+  contextSearchByXuidForPlayerDetails,
+} from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 

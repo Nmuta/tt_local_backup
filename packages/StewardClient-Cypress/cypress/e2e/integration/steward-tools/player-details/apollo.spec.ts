@@ -10,7 +10,10 @@ import {
   userDetailsVerifyFlagData,
   jsonCheckJson,
 } from './shared-tests';
-import { contextSearchByGtagForPlayerDetails, contextSearchByXuidForPlayerDetails, searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import {
+  contextSearchByGtagForPlayerDetails,
+  contextSearchByXuidForPlayerDetails,
+} from '@support/steward/shared-functions/searching';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const defaultApolloUser = 'jordan';

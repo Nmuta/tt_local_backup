@@ -167,7 +167,7 @@ export function auctionsFindCreatedAuction(
 /** Verifies that the user has the correct titles in the loyalties tab */
 export function loyaltyFindTitlesPlayed(platform: string, titlesOwned: string[]): void {
   it('should have the correct titles owned', () => {
-    swapToTab('Loyalty')
+    swapToTab('Loyalty');
     cy.get(platform + '-loyalty-rewards').within(() => {
       cy.get('.mat-table').within(() => {
         titlesOwned.forEach(title => {
