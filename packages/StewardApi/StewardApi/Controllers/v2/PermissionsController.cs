@@ -188,11 +188,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 // Verify the current user has the attributes they are attempting to assign to another user
                 var requestorAttributes = requestor.AuthorizationAttributes();
 
-                var leadMissingPermissions = permChanges.AttributesToAdd.Where(attribute => requestorAttributes.FirstOrDefault(requestionAttribute => requestionAttribute.Matches(attribute)) == null).ToList();
-                var leadMissingPermissionsToRemove = permChanges.AttributesToRemove.Where(attribute => requestorAttributes.FirstOrDefault(requestionAttribute => requestionAttribute.Matches(attribute)) == null).ToList();
-                leadMissingPermissions.AddRange(leadMissingPermissionsToRemove);
-
-                if (leadMissingPermissions.Count > 0)
+                var allPermChanges = permChanges.AttributesToAdd.Concat(permChanges.AttributesToRemove).ToList();
+                var leadMissingPermissions = allPermChanges.All(attribute => requestorAttributes.FirstOrDefault(requestionAttribute => requestionAttribute.Matches(attribute)) != null);
+                if (leadMissingPermissions)
                 {
                     throw new BadRequestStewardException("Team lead cannot assign permissions they do not have to a team member.");
                 }
