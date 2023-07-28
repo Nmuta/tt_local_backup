@@ -16,76 +16,58 @@ import {
   ugcLiveriesFindLivery,
   jsonCheckJson,
 } from './shared-tests';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { contextSearchByGtagForPlayerDetails, contextSearchByXuidForPlayerDetails, searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const defaultSunriseUser = 'jordan';
 
 context('Steward / Tools / Player Details / Sunrise', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
+    cy.visit(stewardUrls.tools.playerDetails.default);
+    selectSunrise();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
-      cy.visit(stewardUrls.tools.playerDetails.default);
-      selectSunrise();
-    });
-
     context('With default user', () => {
-      beforeEach(() => {
-        searchByGtag(RetailUsers[defaultSunriseUser].gtag);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers[defaultSunriseUser]);
+
       testUserDetails(defaultSunriseUser);
-
       testDeepDive();
-
       testInventory();
-
       testNotifications();
-
       testJson();
     });
 
     context('With Madden user', () => {
-      beforeEach(() => {
-        searchByGtag(RetailUsers['madden'].gtag);
-      });
-      testAuctions();
+      contextSearchByGtagForPlayerDetails(RetailUsers.madden);
 
+      testAuctions();
       testUgc();
     });
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
       selectSunrise();
     });
 
     context('With default user', () => {
-      beforeEach(() => {
-        searchByXuid(RetailUsers[defaultSunriseUser].xuid);
-      });
+      contextSearchByXuidForPlayerDetails(RetailUsers[defaultSunriseUser]);
+
       testUserDetails(defaultSunriseUser);
-
       testDeepDive();
-
       testInventory();
-
       testNotifications();
-
       testJson();
     });
 
     context('With Madden user', () => {
-      beforeEach(() => {
-        searchByXuid(RetailUsers['madden'].xuid);
-      });
-      testAuctions();
+      contextSearchByXuidForPlayerDetails(RetailUsers.madden);
 
+      testAuctions();
       testUgc();
     });
   });

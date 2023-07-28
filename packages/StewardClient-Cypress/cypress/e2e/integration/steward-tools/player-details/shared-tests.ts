@@ -98,6 +98,7 @@ export function inventoryFindPlayerInventoryData(): void {
 /** Verifies that the user has a notification in the notifications tab */
 export function notificationsFindNotification(): void {
   it('should have a notification', () => {
+    swapToTab('Notifications');
     cy.contains('mat-card', 'Notifications')
       .within(() => {
         cy.contains('Notification');
@@ -114,6 +115,7 @@ export function ugcLiveriesFindLivery(
   columnToLookAt: string,
 ): void {
   it('should have a searchable livery', () => {
+    swapToTab('Ugc');
     cy.contains('.mat-tab-label', 'Liveries').click();
     cy.get(`${platform}-make-model-autocomplete`)
       .find('input')
@@ -140,6 +142,7 @@ export function auctionsFindCreatedAuction(
   rowDataExpected: string,
 ): void {
   it('should have a searchable created auction', () => {
+    swapToTab('Auctions');
     cy.get(platform + '-player-auctions').within(() => {
       cy.contains('.mat-expansion-panel', 'Created Auctions').click();
       //somebody left this named as sunrise in woodstock
@@ -164,6 +167,7 @@ export function auctionsFindCreatedAuction(
 /** Verifies that the user has the correct titles in the loyalties tab */
 export function loyaltyFindTitlesPlayed(platform: string, titlesOwned: string[]): void {
   it('should have the correct titles owned', () => {
+    swapToTab('Loyalty')
     cy.get(platform + '-loyalty-rewards').within(() => {
       cy.get('.mat-table').within(() => {
         titlesOwned.forEach(title => {

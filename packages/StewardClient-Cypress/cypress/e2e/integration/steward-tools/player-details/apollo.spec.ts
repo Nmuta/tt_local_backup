@@ -1,6 +1,4 @@
-import { login } from '@support/steward/auth/login';
 import { RetailUsers } from '@support/steward/common/account-info';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { selectApollo } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import {
@@ -12,55 +10,41 @@ import {
   userDetailsVerifyFlagData,
   jsonCheckJson,
 } from './shared-tests';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { contextSearchByGtagForPlayerDetails, contextSearchByXuidForPlayerDetails, searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const defaultApolloUser = 'jordan';
 
 context('Steward / Tools / Player Details / Apollo', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
+    cy.visit(stewardUrls.tools.playerDetails.default);
+    selectApollo();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
-      cy.visit(stewardUrls.tools.playerDetails.default);
-      selectApollo();
-    });
-
     context('With default user', () => {
-      beforeEach(() => {
-        searchByGtag(RetailUsers[defaultApolloUser].gtag);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers[defaultApolloUser]);
 
       testUserDetails(defaultApolloUser);
-
       testInventory();
-
       testLiveries();
-
       testJson();
     });
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
       selectApollo();
     });
 
     context('With default user', () => {
-      beforeEach(() => {
-        searchByXuid(RetailUsers[defaultApolloUser].xuid);
-      });
+      contextSearchByXuidForPlayerDetails(RetailUsers[defaultApolloUser]);
 
       testUserDetails(defaultApolloUser);
-
       testInventory();
-
       testLiveries();
-
       testJson();
     });
   });
