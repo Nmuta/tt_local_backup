@@ -53,7 +53,7 @@
             *ngSwitchCase="CalendarView.Week"
             [viewDate]="viewDate"
             [events]="events"
-            [eventTemplate]="weekEventTemplate"
+            (eventClicked)="eventClicked($event.event)"
           >
           </mwl-calendar-week-view>
           <mwl-calendar-day-view
@@ -114,28 +114,4 @@
       {{ dayEvent.event.title }}
     </div>
   </div>
-</ng-template>
-
-<ng-template
-  #weekEventTemplate
-  let-weekEvent="weekEvent"
-  let-tooltipPlacement="tooltipPlacement"
-  let-eventClicked="eventClicked"
-  let-tooltipTemplate="tooltipTemplate"
-  let-tooltipAppendToBody="tooltipAppendToBody"
-  let-tooltipDisabled="tooltipDisabled"
-  let-tooltipDelay="tooltipDelay"
-  let-column="column"
-  let-daysInWeek="daysInWeek"
-  let-locale="locale"
->
-  <div
-    class="cal-event week-view-event"
-    [mwlCalendarTooltip]="!tooltipDisabled ? weekEvent.event.title : ''"
-    [tooltipPlacement]="tooltipPlacement"
-    [tooltipEvent]="weekEvent.event"
-    [tooltipTemplate]="tooltipTemplate"
-    [tooltipAppendToBody]="tooltipAppendToBody"
-    [tooltipDelay]="tooltipDelay"
-  ></div>
 </ng-template>
