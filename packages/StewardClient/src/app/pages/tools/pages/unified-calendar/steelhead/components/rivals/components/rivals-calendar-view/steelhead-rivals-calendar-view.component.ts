@@ -78,7 +78,7 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
           uniqueEvents.length
         }`,
         meta: rivalsEvent,
-        allDay: false,
+        allDay: true,
         resizable: {
           beforeStart: false,
           afterEnd: false,

@@ -1,0 +1,22 @@
+# This file runs prettier as a single parallel job.
+# It is intended to be run only after a `yarn` cache is made.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."
+  type: string
+
+jobs:
+- job: UI_Test_Prettier
+  displayName: Prettier
+  steps:
+  - template: load-yarn-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+
+  - task: Bash@3
+    displayName: Prettier Check
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      script: yarn run build:check:prettier

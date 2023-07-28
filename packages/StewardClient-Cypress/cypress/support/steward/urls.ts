@@ -33,6 +33,7 @@ export const stewardUrls = {
       steelhead: '/app/tools/user-banning/steelhead',
       sunrise: '/app/tools/user-banning/sunrise',
       apollo: '/app/tools/user-banning/apollo',
+      forum: '/app/tools/user-banning/forum',
     },
     giftHistory: {
       default: '/app/tools/gift-history',
@@ -94,10 +95,21 @@ export const stewardUrls = {
       woodstock: 'app/tools/services-table-storage/woodstock',
       steelhead: 'app/tools/services-table-storage/steelhead',
     },
+    playfab: {
+      default: 'app/tools/playfab',
+      woodstock: 'app/tools/playfab/woodstock',
+    },
     lspTasks: {
       default: '/app/tools/lsp-tasks',
       steelhead: '/app/tools/lsp-tasks/steelhead',
       woodstock: '/app/tools/lsp-tasks/woodstock',
+    },
+    searchUgc: {
+      default: '/app/tools/search-ugc',
+      woodstock: '/app/tools/search-ugc/woodstock',
+    },
+    metaTools: {
+      default: '/app/tools/steward-management',
     },
   },
 };

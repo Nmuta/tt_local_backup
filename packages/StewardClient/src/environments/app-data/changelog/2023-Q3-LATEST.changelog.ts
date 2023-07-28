@@ -8,6 +8,16 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: 'a3590af3-e45c-4f9e-a2a8-0104d1b99745',
+      shortText: 'Add multiple improvements',
+      longText: [
+        'Cursor is not a pointer for calendar links',
+        'Events show as multliple days on the week view for Rivals and Showroom',
+        'Display showroom dates as Utc',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },
       uuid: '2f4e2a73-f8f5-4bdf-a242-169a3a5d9ead',
       shortText: 'Add UGC featuring modal for Steelhead',
