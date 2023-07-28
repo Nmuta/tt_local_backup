@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetMasterInventoryList([FromQuery] string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IActionResult> GetMasterInventoryList([FromQuery] string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             slotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(slotId));
 

@@ -38,7 +38,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers
             var mockProxyBundle = CreateWoodstockProxyBundle(Fixture);
 
             var builder = new ContainerBuilder();
-            builder.Register(c => mockProxyBundle).Named<WoodstockProxyBundle>("woodstockProdLiveProxyBundle").As<WoodstockProxyBundle>();
             builder.Register(c => mockProxyBundle).Named<WoodstockProxyBundle>("woodstockProdLiveStewardProxyBundle").As<WoodstockProxyBundle>();
             var container = builder.Build();
 

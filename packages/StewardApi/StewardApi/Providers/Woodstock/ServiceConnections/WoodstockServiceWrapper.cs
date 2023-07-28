@@ -25,7 +25,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         };
 
         private readonly bool allowGiftingToAllUsers;
-        private readonly ILiveProjectionWoodstockServiceFactory liveProjectionServiceFactory;
         private readonly IStewardProjectionWoodstockServiceFactory stewardProjectionServiceFactory;
 
         /// <summary>
@@ -33,16 +32,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// </summary>
         public WoodstockServiceWrapper(
             IConfiguration configuration,
-            ILiveProjectionWoodstockServiceFactory liveProjectionServiceFactory,
             IStewardProjectionWoodstockServiceFactory stewardProjectionServiceFactory)
         {
             configuration.ShouldNotBeNull(nameof(configuration));
             configuration.ShouldContainSettings(RequiredSettings);
-            liveProjectionServiceFactory.ShouldNotBeNull(nameof(liveProjectionServiceFactory));
             stewardProjectionServiceFactory.ShouldNotBeNull(nameof(stewardProjectionServiceFactory));
 
             this.allowGiftingToAllUsers = configuration[ConfigurationKeyConstants.StewardEnvironment] == "prod";
-            this.liveProjectionServiceFactory = liveProjectionServiceFactory;
             this.stewardProjectionServiceFactory = stewardProjectionServiceFactory;
         }
 
@@ -51,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             string endpoint)
         {
-            var userLookupService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+            var userLookupService = await this.stewardProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userLookupService.GetLiveOpsUserDataByXuidV2(xuid).ConfigureAwait(false);
         }
@@ -61,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string gamertag,
             string endpoint)
         {
-            var userLookupService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+            var userLookupService = await this.stewardProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userLookupService.GetLiveOpsUserDataByGamerTagV2(gamertag).ConfigureAwait(false);
         }
@@ -71,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ServicesLiveOps.ForzaPlayerLookupParameters[] parameters,
             string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetUserIds(parameters.Length, parameters).ConfigureAwait(false);
         }
@@ -81,7 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             string endpoint)
         {
-            var liveOpsService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+            var liveOpsService = await this.stewardProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await liveOpsService.GetProfileSummary(xuid).ConfigureAwait(false);
         }
@@ -93,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int maxResults,
             string endpoint)
         {
-            var liveOpsService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+            var liveOpsService = await this.stewardProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await liveOpsService.GetCreditUpdateEntries(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
@@ -104,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int maxResults,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(false);
         }
@@ -112,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc />
         public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned, string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(false);
         }
@@ -124,7 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int maxResults,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetSharedConsoleUsers(xuid, startAt, maxResults).ConfigureAwait(false);
         }
@@ -135,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int maxResults,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetAdminComments(xuid, maxResults).ConfigureAwait(false);
         }
@@ -143,7 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc/>
         public async Task AddProfileNoteAsync(ulong xuid, string text, string author, string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.AddAdminComment(xuid, text, author).ConfigureAwait(false);
         }
@@ -154,7 +150,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int maxResults,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetUserGroups(startIndex, maxResults).ConfigureAwait(false);
         }
@@ -166,7 +162,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int maxResults,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetUserGroupMemberships(xuid, groupFilter, maxResults)
                 .ConfigureAwait(false);
@@ -175,7 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc />
         public async Task RemoveFromUserGroupsAsync(ulong xuid, int[] groupIds, string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.RemoveFromUserGroups(xuid, groupIds).ConfigureAwait(false);
         }
@@ -183,7 +179,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc />
         public async Task AddToUserGroupsAsync(ulong xuid, int[] groupIds, string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.AddToUserGroups(xuid, groupIds).ConfigureAwait(false);
         }
@@ -193,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetIsUnderReview(xuid).ConfigureAwait(false);
         }
@@ -201,7 +197,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc />
         public async Task SetIsUnderReviewAsync(ulong xuid, bool isUnderReview, string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.SetIsUnderReview(xuid, isUnderReview).ConfigureAwait(false);
         }
@@ -211,7 +207,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong[] xuids,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetUserBanSummaries(xuids, xuids.Length).ConfigureAwait(false);
         }
@@ -223,7 +219,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int maxResults,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetUserBanHistory(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
@@ -234,7 +230,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int xuidCount,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.BanUsers(banParameters, xuidCount).ConfigureAwait(false);
         }
@@ -245,7 +241,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int entryCount,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.ExpireBanEntries(banParameters, entryCount).ConfigureAwait(false);
         }
@@ -255,7 +251,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int[] banParameters,
             string endpoint)
         {
-            var userManagementService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userManagementService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.DeleteBanEntries(banParameters).ConfigureAwait(false);
         }
@@ -265,7 +261,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetUserReportWeight(xuid).ConfigureAwait(false);
         }
@@ -276,7 +272,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int reportWeight,
             string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userService.SetUserReportWeight(xuid, reportWeight).ConfigureAwait(false);
         }
@@ -287,7 +283,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ForzaUserReportWeightType reportWeightType,
             string endpoint)
         {
-          var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+          var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
           await userService.SetUserReportWeightType(xuid, reportWeightType).ConfigureAwait(false);
         }
@@ -298,7 +294,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid externalProfileId,
             string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetHasPlayedRecord(xuid, externalProfileId).ConfigureAwait(false);
         }
@@ -310,7 +306,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             bool hasPlayed,
             string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userService.SetHasPlayedRecord(xuid, title, hasPlayed).ConfigureAwait(false);
         }
@@ -322,7 +318,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int[] titles,
             string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userService.ResendProfileHasPlayedNotification(xuid, externalProfileId, titles).ConfigureAwait(false);
         }
@@ -332,7 +328,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             string endpoint)
         {
-            var rareCarShopService = await this.liveProjectionServiceFactory.PrepareRareCarShopServiceAsync(endpoint).ConfigureAwait(false);
+            var rareCarShopService = await this.stewardProjectionServiceFactory.PrepareRareCarShopServiceAsync(endpoint).ConfigureAwait(false);
 
             return await rareCarShopService.AdminGetTokenBalance(xuid).ConfigureAwait(false);
         }
@@ -340,7 +336,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc/>
         public async Task SetTokenBalanceAsync(ulong xuid, uint newBalance, string endpoint)
         {
-            var rareCarShopService = await this.liveProjectionServiceFactory.PrepareRareCarShopServiceAsync(endpoint).ConfigureAwait(false);
+            var rareCarShopService = await this.stewardProjectionServiceFactory.PrepareRareCarShopServiceAsync(endpoint).ConfigureAwait(false);
 
             await rareCarShopService.AdminSetBalance(xuid, newBalance).ConfigureAwait(false);
         }
@@ -350,7 +346,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             string endpoint)
         {
-            var rareCarShopService = await this.liveProjectionServiceFactory.PrepareRareCarShopServiceAsync(endpoint).ConfigureAwait(false);
+            var rareCarShopService = await this.stewardProjectionServiceFactory.PrepareRareCarShopServiceAsync(endpoint).ConfigureAwait(false);
 
             return await rareCarShopService.AdminGetTransactions(xuid).ConfigureAwait(false);
         }
@@ -360,7 +356,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ulong xuid,
             string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserInventory(xuid).ConfigureAwait(false);
         }
@@ -369,7 +365,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public async Task<LiveOpsService.GetAdminUserInventoryByProfileIdOutput>
             GetAdminUserInventoryByProfileIdAsync(int profileId, string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserInventoryByProfileId(profileId).ConfigureAwait(false);
         }
@@ -378,7 +374,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public async Task<ServicesLiveOps.UserInventoryManagementService.GetAdminUserProfilesOutput>
             GetAdminUserProfilesAsync(ulong xuid, uint maxProfiles, string endpoint)
         {
-            var userService = await this.liveProjectionServiceFactory.PrepareUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareUserInventoryManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserProfiles(xuid, maxProfiles).ConfigureAwait(false);
         }
@@ -387,7 +383,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public async Task<ServicesLiveOps.GiftingManagementService.AdminGetSupportedGiftTypesV2Output>
             AdminGetSupportedGiftTypesAsync(int maxResults, string endpoint)
         {
-            var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.stewardProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminGetSupportedGiftTypesV2(maxResults).ConfigureAwait(false);
         }
@@ -401,7 +397,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             uint expireTimeSpanInDays,
             string endpoint)
         {
-            var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.stewardProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             // For now using quantity of 1, but we can do better!
             await giftingService.AdminSendItemGiftV3(xuid, itemType.ToString(), itemValue, 1, false, 0).ConfigureAwait(false);
@@ -422,7 +418,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                     "Sending to All User group is blocked outside of the production environment.");
             }
 
-            var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.stewardProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await giftingService.AdminSendItemGroupGiftV2(groupId, itemType.ToString(), itemValue, hasExpiration, expireTimeSpanInDays).ConfigureAwait(false);
         }
@@ -435,7 +431,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             uint expireTimeSpanInDays,
             string endpoint)
         {
-            var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.stewardProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminSendLiveryGift(xuids, xuids.Length, liveryId, hasExpiration, expireTimeSpanInDays).ConfigureAwait(false);
         }
@@ -454,7 +450,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                     "Sending to All User group is blocked outside of the production environment.");
             }
 
-            var giftingService = await this.liveProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var giftingService = await this.stewardProjectionServiceFactory.PrepareGiftingManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminSendGroupLiveryGift(groupId, liveryId, hasExpiration, expireTimeSpanInDays).ConfigureAwait(false);
         }
@@ -463,7 +459,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public async Task<ServicesLiveOps.NotificationsManagementService.LiveOpsRetrieveForUserOutput>
             LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults, string endpoint)
         {
-            var notificationsService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
+            var notificationsService = await this.stewardProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
 
             return await notificationsService.LiveOpsRetrieveForUser(xuid, maxResults).ConfigureAwait(false);
@@ -475,7 +471,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int maxResults,
             string endpoint)
         {
-            var notificationsManagementService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var notificationsManagementService = await this.stewardProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await notificationsManagementService.GetAllUserGroupMessages(groupId, maxResults)
                 .ConfigureAwait(false);
@@ -487,7 +483,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid notificationId,
             string endpoint)
         {
-            var notificationsManagementService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var notificationsManagementService = await this.stewardProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await notificationsManagementService.GetNotification(xuid, notificationId).ConfigureAwait(false);
         }
@@ -497,7 +493,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid notificationId,
             string endpoint)
         {
-            var notificationsManagementService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var notificationsManagementService = await this.stewardProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await notificationsManagementService.GetUserGroupMessage(notificationId).ConfigureAwait(false);
         }
@@ -511,7 +507,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 DateTime expireTimeUtc,
                 string endpoint)
         {
-            var notificationsService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
+            var notificationsService = await this.stewardProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
 
             return await notificationsService.SendMessageNotificationToMultipleUsers(
@@ -539,7 +535,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                     "Sending to All User group is blocked outside of the production environment.");
             }
 
-            var notificationsService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
+            var notificationsService = await this.stewardProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
 
             return await notificationsService.SendGroupMessageNotification(
@@ -558,7 +554,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters messageParams,
             string endpoint)
         {
-            var notificationsManagementService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var notificationsManagementService = await this.stewardProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await notificationsManagementService.EditNotification(notificationId, xuid, messageParams)
                 .ConfigureAwait(false);
@@ -570,7 +566,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ServicesLiveOps.ForzaCommunityMessageNotificationEditParameters messageParams,
             string endpoint)
         {
-            var notificationsManagementService = await this.liveProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var notificationsManagementService = await this.stewardProjectionServiceFactory.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await notificationsManagementService.EditGroupNotification(notificationId, messageParams)
                 .ConfigureAwait(false);
@@ -581,7 +577,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ServicesLiveOps.ForzaAuctionFilters filters,
             string endpoint)
         {
-            var auctionService = await this.liveProjectionServiceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var auctionService = await this.stewardProjectionServiceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await auctionService.SearchAuctionHouse(filters).ConfigureAwait(false);
         }
@@ -591,7 +587,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid auctionId,
             string endpoint)
         {
-            var auctionService = await this.liveProjectionServiceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var auctionService = await this.stewardProjectionServiceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
             var result = await auctionService.GetAuctionData(auctionId).ConfigureAwait(false);
             return result?.auction;
         }
@@ -601,14 +597,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid auctionId,
             string endpoint)
         {
-            var auctionService = await this.liveProjectionServiceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var auctionService = await this.stewardProjectionServiceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
             return await auctionService.DeleteAuctions(new[] { auctionId }).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
         public async Task<ServicesLiveOps.AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults, string endpoint)
         {
-            var auctionService = await this.liveProjectionServiceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var auctionService = await this.stewardProjectionServiceFactory.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await auctionService.GetAuctionBlocklist(maxResults).ConfigureAwait(false);
         }
@@ -636,7 +632,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint,
             bool includeThumbnails = false)
         {
-            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.stewardProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await storefrontManagementService.GetUGCForUser(xuid, contentType, includeThumbnails, 8_000, false).ConfigureAwait(false);
         }
@@ -648,7 +644,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint,
             bool includeThumbnails = false)
         {
-            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.stewardProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await storefrontManagementService.SearchUGC(filters, contentType, includeThumbnails, 5_000).ConfigureAwait(false);
         }
@@ -658,7 +654,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid liveryId,
             string endpoint)
         {
-            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.stewardProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await storefrontManagementService.GetUGCLivery(liveryId).ConfigureAwait(false);
         }
@@ -668,7 +664,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid photoId,
             string endpoint)
         {
-            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.stewardProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await storefrontManagementService.GetUGCPhoto(photoId).ConfigureAwait(false);
         }
@@ -678,7 +674,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid tuneId,
             string endpoint)
         {
-            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.stewardProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await storefrontManagementService.GetUGCTune(tuneId).ConfigureAwait(false);
         }
@@ -688,7 +684,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid eventBlueprintId,
             string endpoint)
         {
-            var liveOpsService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+            var liveOpsService = await this.stewardProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await liveOpsService.GetUGCEventBlueprint(eventBlueprintId).ConfigureAwait(false);
         }
@@ -698,7 +694,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             Guid communityChallengeId,
             string endpoint)
         {
-            var liveOpsService = await this.liveProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
+            var liveOpsService = await this.stewardProjectionServiceFactory.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
             return await liveOpsService.GetUGCCommunityChallenge(communityChallengeId).ConfigureAwait(false);
         }
@@ -711,7 +707,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             DateTime forceFeatureEndDate,
             string endpoint)
         {
-            var storefrontManagementService = await this.liveProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var storefrontManagementService = await this.stewardProjectionServiceFactory.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await storefrontManagementService.SetFeatured(contentId, isFeatured, featureEndDate, forceFeatureEndDate)
                 .ConfigureAwait(false);
