@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FH5, GameTitle.FM8], tool: NavbarTool.UgcDetails },
+      uuid: '6745e1e0-74ff-4bb0-acaa-01cfc74e8264',
+      shortText: 'Fix typo in UGC Edit',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
       uuid: 'a3590af3-e45c-4f9e-a2a8-0104d1b99745',
       shortText: 'Add multiple improvements',
