@@ -5,7 +5,7 @@ import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body
 export function testVerifySearchForUser(keyword: string): void {
   it('should verify the player identity results', () => {
     cy.get('ban-chip-icon').should('exist');
-    cy.get('ban-chip-icon').click();
+    cy.get('ban-chip-icon').click({force: true});
     cy.get('mat-card-content').contains(keyword).should('exist');
   });
 }
