@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: '2c662d23-a44a-471f-862a-918f0e00c22e',
-      shortText: 'Readd cyid to verify buttons in UGM Tool',
+      shortText: 'Re-add Cypress Id (cyid) to verify buttons in UGM Tool',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
