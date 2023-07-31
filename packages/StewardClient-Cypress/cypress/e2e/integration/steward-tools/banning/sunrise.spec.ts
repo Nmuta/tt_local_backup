@@ -11,22 +11,22 @@ import {
 } from './shared-functions';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 
-const forumUser = RetailUsers['madden'];
+const sunriseUser = RetailUsers['luke'];
 
-context('Steward / Tools / Banning / Forum', () => {
+context('Steward / Tools / Banning / Sunrise', () => {
   before(() => {
     resetToDefaultState();
-    cy.visit(stewardUrls.tools.banning.forum);
+    cy.visit(stewardUrls.tools.banning.sunrise);
   });
 
   context('GTAG Lookup', () => {
     before(() => {
-      cy.visit(stewardUrls.tools.banning.forum);
-      searchByGtag(forumUser.gtag);
+      cy.visit(stewardUrls.tools.banning.sunrise);
+      searchByGtag(sunriseUser.gtag);
     });
     context('With default user', () => {
-      testVerifySearchForUser('Forum');
-      testFillOutBan('Personal Attacks', 'Forum');
+      testVerifySearchForUser('All Requests');
+      testFillOutBan('Testing', 'Sunrise');
       testFillOutBanCustomReason();
       testInvalidBanConditions();
     });
@@ -34,19 +34,19 @@ context('Steward / Tools / Banning / Forum', () => {
 
   context('XUID Lookup', () => {
     before(() => {
-      cy.visit(stewardUrls.tools.banning.forum);
-      searchByXuid(forumUser.xuid);
+      cy.visit(stewardUrls.tools.banning.sunrise);
+      searchByXuid(sunriseUser.xuid);
     });
     context('With default user', () => {
-      testVerifySearchForUser('Forum');
-      testFillOutBan('Personal Attacks', 'Forum');
+      testVerifySearchForUser('All Requests');
+      testFillOutBan('Testing', 'Sunrise');
       testFillOutBanCustomReason();
       testInvalidBanConditions();
     });
   });
 
   context('Common Tests', () => {
-    testClearAll('Forum');
+    testClearAll('All Requests');
     testHelpCard();
   });
 });

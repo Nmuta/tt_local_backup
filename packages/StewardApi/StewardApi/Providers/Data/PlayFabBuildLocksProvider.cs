@@ -125,10 +125,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<PlayFabBuildLock> DeleteAsync(Guid buildId)
+        public async Task<PlayFabBuildLock> DeleteAsync(WoodstockPlayFabEnvironment environment, Guid buildId)
         {
             var existingBuildLock = await this.GetAsync(buildId).ConfigureAwait(true);
             var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
+            var parsedExistingLockEnvironment = existingBuildLockInternal.PlayFabEnvironment.TryParseEnumElseThrow<WoodstockPlayFabEnvironment>(nameof(existingBuildLockInternal.PlayFabEnvironment));
+            if (parsedExistingLockEnvironment != environment)
+            {
+                throw new InvalidArgumentsStewardException($"PlayFab build was found, but incorrect environment was provided. (environment: {environment}) (buildId: {buildId})");
+            }
 
             try
             {

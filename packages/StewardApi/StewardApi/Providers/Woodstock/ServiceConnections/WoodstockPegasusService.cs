@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
 
@@ -113,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
 
@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ListCarMake>> GetCarMakesAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<ListCarMake>> GetCarMakesAsync(string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
 
@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<CarHorn>> GetCarHornsAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<CarHorn>> GetCarHornsAsync(string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
 
@@ -190,7 +190,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
 
@@ -216,7 +216,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<EmoteData>> GetEmotesAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<EmoteData>> GetEmotesAsync(string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
 
@@ -242,7 +242,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<QuickChat>> GetQuickChatLinesAsync(string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
 
@@ -304,7 +304,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.Live)
+        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var banConfigurationKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_BanConfiguration";
 

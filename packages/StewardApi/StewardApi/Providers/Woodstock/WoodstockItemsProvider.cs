@@ -41,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
         /// <inheritdoc />
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
-        public async Task<WoodstockMasterInventory> GetMasterInventoryAsync(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<WoodstockMasterInventory> GetMasterInventoryAsync(string slotId = WoodstockPegasusSlot.LiveSteward)
         {
             var getCars = this.pegasusService.GetCarsAsync(slotId).SuccessOrDefault(Array.Empty<DataCar>(), new Action<Exception>(ex =>
             {
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<T>> GetCarsAsync<T>(string slotId = WoodstockPegasusSlot.Live)
+        public async Task<IEnumerable<T>> GetCarsAsync<T>(string slotId = WoodstockPegasusSlot.LiveSteward)
             where T : SimpleCar
         {
             IEnumerable<DataCar> cars = null;

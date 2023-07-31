@@ -14,16 +14,20 @@
       </tr>
       <tr>
         <th>Start Time</th>
-        <td><standard-absolute-time [timeUtc]="data?.startTimeUtc"></standard-absolute-time></td>
+        <td>
+          <standard-absolute-time-utc [timeUtc]="data?.startTimeUtc"></standard-absolute-time-utc>
+        </td>
       </tr>
       <tr>
         <th>End Time</th>
-        <td><standard-absolute-time [timeUtc]="data?.endTimeUtc"></standard-absolute-time></td>
+        <td>
+          <standard-absolute-time-utc [timeUtc]="data?.endTimeUtc"></standard-absolute-time-utc>
+        </td>
       </tr>
     </table>
     <div class="scroll-pane grid">
       <mat-card *ngFor="let carSale of data.cars">
-        <mat-card-title>{{ carSale.carId }} - {{ carSale.modelShort }}</mat-card-title>
+        <mat-card-title>[{{ carSale.carId }}] - {{ carSale.modelShort }}</mat-card-title>
         <mat-card-content class="respect-newline">
           <table class="info-table">
             <tr>
