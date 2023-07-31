@@ -1,0 +1,89 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
+using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using Microsoft.AspNetCore.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
+using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+
+#pragma warning disable CA1308 // Use .ToUpperInvariant
+namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
+{
+    /// <summary>
+    ///     Handles requests for Woodstock PlayFab build integrations.
+    /// </summary>
+    [Route("api/v{version:apiVersion}/title/woodstock/playfab/vouchers")]
+    [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
+    [LogTagTitle(TitleLogTags.Woodstock)]
+    [ApiController]
+    [ApiVersion("2.0")]
+    [StandardTags(Title.Woodstock, Target.PlayFab)]
+    public class VouchersController : V2WoodstockControllerBase
+    {
+        private readonly IWoodstockPlayFabService playFabService;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="VouchersController"/> class for Woodstock.
+        /// </summary>
+        public VouchersController(IWoodstockPlayFabService playFabService)
+        {
+            playFabService.ShouldNotBeNull(nameof(playFabService));
+
+            this.playFabService = playFabService;
+        }
+
+        /// <summary>
+        ///     Retrieves list of PlayFab vouchers from the catalog.
+        /// </summary>
+        [HttpGet]
+        [SwaggerResponse(200, type: typeof(IList<PlayFabBuildSummary>))]
+        [LogTagDependency(DependencyLogTags.PlayFab)]
+        public async Task<IActionResult> GetPlayFabVouchers()
+        {
+            var playFabEnvironment = this.GetPlayFabEnvironmentFromServices(this.Services.Endpoint);
+
+            try
+            {
+                var vouchers = await this.playFabService.GetVouchersAsync(playFabEnvironment).ConfigureAwait(true);
+
+                return this.Ok(vouchers);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get vouchers from PlayFab catalog. (playFabEnvironment: {playFabEnvironment})", ex);
+            }
+        }
+
+        private WoodstockPlayFabEnvironment GetPlayFabEnvironmentFromServices(string servicesEnvironment)
+        {
+            if (servicesEnvironment == WoodstockContracts.WoodstockEndpoint.Retail)
+            {
+                return WoodstockPlayFabEnvironment.Retail;
+            }
+            else if (servicesEnvironment == WoodstockContracts.WoodstockEndpoint.Studio)
+            {
+                return WoodstockPlayFabEnvironment.Dev;
+            }
+            else 
+            {
+                throw new InvalidArgumentsStewardException($"Provided invalid environment to PlayFab. (env: {servicesEnvironment})");
+            }
+        }
+    }
+}
