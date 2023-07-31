@@ -32,8 +32,9 @@ context('Steward / Tools / Player Details / Sunrise', () => {
 
   context('GTAG Lookup', () => {
     context('With default user', () => {
-      contextSearchByGtagForPlayerDetails(RetailUsers[defaultSunriseUser]);
-
+      before(() => {
+        contextSearchByGtagForPlayerDetails(RetailUsers[defaultSunriseUser]);
+      });
       testUserDetails(defaultSunriseUser);
       testDeepDive();
       testInventory();
@@ -42,8 +43,9 @@ context('Steward / Tools / Player Details / Sunrise', () => {
     });
 
     context('With Madden user', () => {
-      contextSearchByGtagForPlayerDetails(RetailUsers.madden);
-
+      before(() => {
+        contextSearchByGtagForPlayerDetails(RetailUsers.madden);
+      });
       testAuctions();
       testUgc();
     });
@@ -56,8 +58,9 @@ context('Steward / Tools / Player Details / Sunrise', () => {
     });
 
     context('With default user', () => {
-      contextSearchByXuidForPlayerDetails(RetailUsers[defaultSunriseUser]);
-
+      before(() => {
+        contextSearchByXuidForPlayerDetails(RetailUsers[defaultSunriseUser]);
+      });
       testUserDetails(defaultSunriseUser);
       testDeepDive();
       testInventory();
@@ -66,8 +69,9 @@ context('Steward / Tools / Player Details / Sunrise', () => {
     });
 
     context('With Madden user', () => {
-      contextSearchByXuidForPlayerDetails(RetailUsers.madden);
-
+      before(() => {
+        contextSearchByXuidForPlayerDetails(RetailUsers.madden);
+      });
       testAuctions();
       testUgc();
     });

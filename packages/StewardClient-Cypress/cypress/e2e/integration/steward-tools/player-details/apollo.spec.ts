@@ -27,8 +27,9 @@ context('Steward / Tools / Player Details / Apollo', () => {
 
   context('GTAG Lookup', () => {
     context('With default user', () => {
-      contextSearchByGtagForPlayerDetails(RetailUsers[defaultApolloUser]);
-
+      before(() => {
+        contextSearchByGtagForPlayerDetails(RetailUsers[defaultApolloUser]);
+      });
       testUserDetails(defaultApolloUser);
       testInventory();
       testLiveries();
@@ -43,8 +44,9 @@ context('Steward / Tools / Player Details / Apollo', () => {
     });
 
     context('With default user', () => {
-      contextSearchByXuidForPlayerDetails(RetailUsers[defaultApolloUser]);
-
+      before(() => {
+        contextSearchByXuidForPlayerDetails(RetailUsers[defaultApolloUser]);
+      });
       testUserDetails(defaultApolloUser);
       testInventory();
       testLiveries();
