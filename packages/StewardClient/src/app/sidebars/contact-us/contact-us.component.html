@@ -203,32 +203,35 @@
       </div>
     </form>
 
-  <ng-container *waitForMonitor="getTeamLeadMonitor">
-    <ng-container *ngIf="!!teamLead">
-      <tr>
-        <th>Team Name</th>
-        <td>
-          <standard-copy>{{ !!teamLead ? teamLead?.team?.name : 'N/A' }}</standard-copy>
-        </td>
-      </tr>
-      <tr>
-        <th>Team Lead</th>
-        <td>
-          <standard-copy>{{ !!teamLead ? teamLead.name : adminTeamLead }}</standard-copy>
-        </td>
-      </tr>
-      <tr>
-        <th>Team Lead Email</th>
-        <td>
-          <standard-copy>{{
-            !!teamLead ? teamLead.emailAddress : adminTeamLeadEmail
-          }}</standard-copy>
-        </td>
-      </tr>
+    <ng-container *waitForMonitor="getTeamLeadMonitor">
+      <ng-container *ngIf="!!teamLead">
+        <tr>
+          <th>Team Name</th>
+          <td>
+            <standard-copy>{{ !!teamLead ? teamLead?.team?.name : 'N/A' }}</standard-copy>
+          </td>
+        </tr>
+        <tr>
+          <th>Team Lead</th>
+          <td>
+            <standard-copy>{{ !!teamLead ? teamLead.name : adminTeamLead }}</standard-copy>
+          </td>
+        </tr>
+        <tr>
+          <th>Team Lead Email</th>
+          <td>
+            <standard-copy>{{
+              !!teamLead ? teamLead.emailAddress : adminTeamLeadEmail
+            }}</standard-copy>
+          </td>
+        </tr>
+      </ng-container>
     </ng-container>
-  </ng-container>
 
-    <form [formGroup]="formGroupPermission" *ngIf="selectedRequestType === RequestType.Permission && !teamLead">
+    <form
+      [formGroup]="formGroupPermission"
+      *ngIf="selectedRequestType === RequestType.Permission && !teamLead"
+    >
       <div class="sf-horizontal">
         <mat-label
           >If you'd like to request specific Steward permissions, please fill out the form below.
@@ -290,10 +293,10 @@
         <mat-form-field appearance="fill" class="sf-default-hint">
           <mat-label>Question</mat-label>
           <textarea
-          matInput
-          [formControl]="formControlsQuestion.question"
-          dkTextareaAutosize
-        ></textarea>
+            matInput
+            [formControl]="formControlsQuestion.question"
+            dkTextareaAutosize
+          ></textarea>
         </mat-form-field>
       </div>
       <div class="sf-horizontal">
