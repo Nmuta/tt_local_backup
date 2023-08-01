@@ -12,7 +12,7 @@ trigger: none
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
 
 variables:
-- template: 'infra/azure-pipelines/node/node-variables.yml'
+- template: 'infra/azure-pipelines/dotnet-core/dotnet-variables.yml'
 
 pool:
   vmImage: $(VM_IMAGE)
@@ -21,6 +21,13 @@ stages:
 - stage: API_Prepare_Directory
   displayName: Prepare Directory (API)
   jobs:
-  - template: infra/azure-pipelines/dotnet-core/stage-prepare-api.template.yml
+  - template: infra/azure-pipelines/dotnet-core/stage-api-prepare.template.yml
+    parameters:
+      workingDirectory: packages/StewardApi
+
+- stage: API_Test
+  displayName: Test (API)
+  jobs:
+  - template: infra/azure-pipelines/dotnet-core/stage-api-verify.template.yml
     parameters:
       workingDirectory: packages/StewardApi
