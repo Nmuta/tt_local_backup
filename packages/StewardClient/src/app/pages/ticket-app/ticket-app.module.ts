@@ -23,6 +23,7 @@ import { SteelheadComponent } from './pages/steelhead/steelhead.component';
 import { WoodstockComponent } from './pages/woodstock/woodstock.component';
 import { MatIconModule } from '@angular/material/icon';
 import { GiftHistoryResultsModule } from '@views/gift-history-results/gift-history-results.module';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -40,6 +41,7 @@ import { GiftHistoryResultsModule } from '@views/gift-history-results/gift-histo
     MatIconModule,
     JsonDumpModule,
     GiftHistoryResultsModule,
+    TourMatMenuModule,
   ],
   providers: [],
   declarations: [

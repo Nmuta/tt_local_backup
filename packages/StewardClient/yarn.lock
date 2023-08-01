@@ -7286,6 +7286,21 @@ ngx-pipes@^2.7.6:
   dependencies:
     tslib "^2.0.0"
 
+ngx-ui-tour-core@8.0.1:
+  version "8.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-ui-tour-core/-/ngx-ui-tour-core-8.0.1.tgz#ddec51a17d733c48e17aefa333870d97bb050598"
+  integrity sha1-3exRoX1zPEjheu+jM4cNl7sFBZg=
+  dependencies:
+    tslib "^2.0.0"
+
+ngx-ui-tour-md-menu@8.0:
+  version "8.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-ui-tour-md-menu/-/ngx-ui-tour-md-menu-8.0.2.tgz#11de4da246542fb34d2a686bbfafbebca0018973"
+  integrity sha1-Ed5NokZUL7NNKmhrv6++vKABiXM=
+  dependencies:
+    ngx-ui-tour-core "8.0.1"
+    tslib "^2.0.0"
+
 nice-napi@^1.0.2:
   version "1.0.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/nice-napi/-/nice-napi-1.0.2.tgz#dc0ab5a1eac20ce548802fc5686eaa6bc654927b"

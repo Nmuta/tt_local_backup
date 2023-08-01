@@ -31,6 +31,8 @@ import { UserState } from '@shared/state/user/user.state';
 import { keys } from 'lodash';
 import { Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { SetHomeTour, SetUserTours } from '@shared/state/tours/tours.actions';
+import { TourState, TourStateModel } from '@shared/state/tours/tours.state';
 
 /** Component for handling user settings. */
 @Component({
@@ -40,6 +42,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 export class SettingsComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
+  @Select(TourState) public tourState$: Observable<TourStateModel>;
 
   public guestAccountStatus: undefined | boolean = undefined;
   public activeRole: UserRole;
@@ -65,6 +68,9 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public InvalidPermActionType = InvalidPermActionType;
   public PermAttributeName = PermAttributeName;
   public GameTitle = GameTitle;
+
+  public enableHomeTour: boolean;
+  public enableUserTours: boolean;
 
   constructor(private readonly store: Store, private readonly windowService: WindowService) {
     super();
@@ -114,6 +120,11 @@ export class SettingsComponent extends BaseComponent implements OnInit {
       this.steelheadEndpointKey = latest.steelheadEndpointKey;
       this.forteEndpointKey = latest.forteEndpointKey;
     });
+
+    this.tourState$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
+      this.enableHomeTour = latest.enableHomeTour;
+      this.enableUserTours = latest.enableUserTours;
+    });
   }
 
   /** Fired when any setting changes. */
@@ -161,6 +172,16 @@ export class SettingsComponent extends BaseComponent implements OnInit {
     });
   }
 
+  /** Fired when any setting changes. */
+  public syncHomeTour(): void {
+    this.store.dispatch(new SetHomeTour(this.enableHomeTour));
+  }
+  
+  /** Fired when any setting changes. */
+  public syncUserTours(): void {
+    this.store.dispatch(new SetUserTours(this.enableUserTours));
+  }
+
   /** Sets the new active role to the live ops secondary role in state profile. */
   public changeActiveRole($event: MatSelectChange): void {
     this.store.dispatch(new ApplyProfileOverrides({ role: $event.value })).subscribe(() => {
@@ -180,5 +201,15 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   /** Sets the show verify checkbox popup value in settings. */
   public setShowVerifyCheckboxPopup(): void {
     this.store.dispatch(new ConfigureShowVerifyCheckboxPopup(this.showVerifyCheckboxPopup));
+  }
+
+  /** Sets the home tour boolean in settings. */
+  public setHomeTour(): void {  
+    this.store.dispatch(new SetHomeTour(true));
+  }
+
+  /** Sets all tour booleans in settings. */
+  public setAllTours(): void {
+    this.store.dispatch(new SetUserTours(!this.enableUserTours));
   }
 }

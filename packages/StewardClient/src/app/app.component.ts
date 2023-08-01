@@ -12,6 +12,7 @@ import { ThemeService } from '@shared/modules/theme/theme.service';
 import { SyncChangelog } from '@shared/state/changelog/changelog.actions';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { PermissionsService } from '@services/api-v2/permissions/permissions.service';
+import { UserTourService } from '@tools-app/pages/home/tour/tour.component';
 
 /** Defines the app component. */
 @Component({
@@ -27,6 +28,7 @@ export class AppComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: PermissionsService,
     private readonly permAttributesService: PermAttributesService,
     private readonly themeService: ThemeService, // just loading this as a dependency is enough to force synchronization
+    private readonly userTourService: UserTourService,
   ) {
     super();
     this.registryService.initialize();

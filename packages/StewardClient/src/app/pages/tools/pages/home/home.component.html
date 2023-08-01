@@ -59,19 +59,21 @@
       }}</mat-chip>
     </ng-template>
 
-    <home-tile-grid
-      *ngIf="availableTiles.filtered?.length > 0; else noAvailableResultsTemplate"
-      [tiles]="availableTiles.filtered"
-    ></home-tile-grid>
-    <div *ngIf="availableTiles.rejected?.length > 0" class="horizontal-divider">
-      <span>Tools below do not match filters</span>
+    <div class="tools-anchor" tourAnchor="home-tour.step.four">
+      <home-tile-grid
+        *ngIf="availableTiles.filtered?.length > 0; else noAvailableResultsTemplate"
+        [tiles]="availableTiles.filtered"
+      ></home-tile-grid>
+      <div *ngIf="availableTiles.rejected?.length > 0" class="horizontal-divider">
+        <span>Tools below do not match filters</span>
+      </div>
+      <home-tile-grid
+        *ngIf="availableTiles.rejected?.length > 0"
+        [tiles]="availableTiles.rejected"
+      ></home-tile-grid>
     </div>
-    <home-tile-grid
-      *ngIf="availableTiles.rejected?.length > 0"
-      [tiles]="availableTiles.rejected"
-    ></home-tile-grid>
   </mat-tab>
-
+  
   <mat-tab>
     <ng-template mat-tab-label>
       Disabled Tools

@@ -1,57 +1,66 @@
 <span>
-  <a
-    [routerLink]="[{ outlets: { sidebar: 'changelog' } }]"
-    queryParamsHandling="preserve"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Changelog"
-    #changelogLink
-  >
-    <mat-icon
-      [matBadge]="changelogNotificationCount > 0 ? changelogNotificationCount : null"
-      matBadgeColor="accent"
-      matBadgeSize="small"
-      >sticky_note_2</mat-icon
+  <div class="changelog-anchor" tourAnchor="home-tour.step.three">
+    <a
+      [routerLink]="[{ outlets: { sidebar: 'changelog' } }]"
+      queryParamsHandling="preserve"
+      mat-icon-button
+      routerLinkActive="stroked-icon-button"
+      matTooltip="Changelog"
+      #changelogLink
     >
-  </a>
+      <mat-icon
+        [matBadge]="changelogNotificationCount > 0 ? changelogNotificationCount : null"
+        matBadgeColor="accent"
+        matBadgeSize="small"
+        >sticky_note_2</mat-icon
+      >
+    </a>
+  </div>
 </span>
 <span class="short-spacer"></span>
 <span class="info">
-  <a
-    href="https://confluence.turn10studios.com/x/r4GiE"
-    target="_blank"
-    mat-icon-button
-    matTooltip="Documentation"
-  >
-    <mat-icon>info</mat-icon>
-  </a>
+  <div class="docs-anchor" tourAnchor="home-tour.step.nine">
+    <a
+      href="https://confluence.turn10studios.com/x/r4GiE"
+      target="_blank"
+      mat-icon-button
+      matTooltip="Documentation"
+    >
+      <mat-icon>info</mat-icon>
+    </a>
+  </div>
 </span>
 <span>
-  <a
-    [routerLink]="[{ outlets: { sidebar: 'contactus' } }]"
-    queryParamsHandling="preserve"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Contact Us"
-  >
-    <mat-icon>contact_support</mat-icon>
-  </a>
+  <div class="contact-anchor" tourAnchor="home-tour.step.eight">
+    <a
+      [routerLink]="[{ outlets: { sidebar: 'contactus' } }]"
+      queryParamsHandling="preserve"
+      mat-icon-button
+      routerLinkActive="stroked-icon-button"
+      matTooltip="Contact Us"
+    >
+      <mat-icon>contact_support</mat-icon>
+    </a>
+  </div>
 </span>
 <span class="short-spacer"></span>
 <span>
-  <a
-    [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
-    queryParamsHandling="preserve"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Settings"
-  >
-    <mat-icon
-      [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
-      matBadgeSize="small"
-      >settings</mat-icon
+  <div class="settings-anchor" tourAnchor="home-tour.step.two">
+    <a
+      [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
+      queryParamsHandling="preserve"
+      mat-icon-button
+      routerLinkActive="stroked-icon-button"
+      matTooltip="Settings"
     >
-  </a>
+      <mat-icon
+        [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
+        matBadgeSize="small"
+        tourAnchor="home-tour.step.two"
+        >settings</mat-icon
+      >
+    </a>
+  </div>
 </span>
 
 <span>

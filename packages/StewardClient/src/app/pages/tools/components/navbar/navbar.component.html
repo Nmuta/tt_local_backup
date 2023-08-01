@@ -1,51 +1,56 @@
 <!-- Useful example https://stackblitz.com/edit/angular-v6xwte?file=src%2Fapp%2Fapp.component.html -->
 <mat-toolbar color="primary">
-  <a
-    [routerLink]="parentRoute + '/home'"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    [ngSwitch]="environmentWarningOption"
-    class="home-icon"
-  >
-    <mat-icon
-      *ngSwitchCase="'warn'"
-      [matBadge]="environmentWarningLabel"
-      matBadgeColor="warn"
-      matBadgePosition="before"
-      >home</mat-icon
+  <div class="home-anchor" tourAnchor="home-tour.step.one">
+    <a
+      [routerLink]="parentRoute + '/home'"
+      mat-icon-button
+      routerLinkActive="stroked-icon-button"
+      [ngSwitch]="environmentWarningOption"
+      class="home-icon"
     >
-    <mat-icon
-      *ngSwitchCase="'accent'"
-      [matBadge]="environmentWarningLabel"
-      matBadgeColor="accent"
-      matBadgePosition="before"
-      >home</mat-icon
-    >
-    <mat-icon *ngSwitchDefault>home</mat-icon>
-  </a>
-  <div *ngIf="!inEditMode" class="link-list-wrapper">
-    <ng-container *ngFor="let item of listedTools">
-      <a
-        *ngIf="!item.navComponent"
-        mat-button
-        [routerLink]="parentRoute + item.tool"
-        [target]="item.target"
-        routerLinkActive="mat-stroked-button"
-        [matTooltip]="item.tooltipDescription"
+      <mat-icon
+        *ngSwitchCase="'warn'"
+        [matBadge]="environmentWarningLabel"
+        matBadgeColor="warn"
+        matBadgePosition="before"
+        >home</mat-icon
       >
-        <span
-          *ngIf="!!item.extraIcon"
-          [matBadge]="item.extraIcon"
-          matBadgeIcon
-          matBadgeOverlap="false"
-          >{{ item.title }}</span
+      <mat-icon
+        *ngSwitchCase="'accent'"
+        [matBadge]="environmentWarningLabel"
+        matBadgeColor="accent"
+        matBadgePosition="before"
+        >home</mat-icon
+      >
+      <mat-icon *ngSwitchDefault>home</mat-icon>
+    </a>
+  </div>
+
+  <div class="navbar-anchor" tourAnchor="home-tour.step.six">
+    <div *ngIf="!inEditMode" class="link-list-wrapper">
+      <ng-container *ngFor="let item of listedTools">
+        <a
+          *ngIf="!item.navComponent"
+          mat-button
+          [routerLink]="parentRoute + item.tool"
+          [target]="item.target"
+          routerLinkActive="mat-stroked-button"
+          [matTooltip]="item.tooltipDescription"
         >
-        <span *ngIf="!item.extraIcon">{{ item.title }}</span>
-      </a>
-      <span *ngIf="item.navComponent"
-        ><span [navAnchor]="item.navComponent" [navItem]="item"></span
-      ></span>
-    </ng-container>
+          <span
+            *ngIf="!!item.extraIcon"
+            [matBadge]="item.extraIcon"
+            matBadgeIcon
+            matBadgeOverlap="false"
+            >{{ item.title }}</span
+          >
+          <span *ngIf="!item.extraIcon">{{ item.title }}</span>
+        </a>
+        <span *ngIf="item.navComponent"
+          ><span [navAnchor]="item.navComponent" [navItem]="item"></span
+        ></span>
+      </ng-container>
+    </div>
   </div>
   <div
     *ngIf="inEditMode"
@@ -110,26 +115,28 @@
   >
 
   <span class="spacer"></span>
-  <button
-    mat-icon-button
-    color="default"
-    class="edit-button edit-button-begin"
-    *ngIf="!inEditMode"
-    (click)="setEditMode(true)"
-    matTooltip="Click to allow re-ordering the navbar (disables links)"
-  >
-    <mat-icon>edit</mat-icon>
-  </button>
-  <button
-    mat-mini-fab
-    color="warn"
-    class="edit-button edit-button-end"
-    *ngIf="inEditMode"
-    (click)="setEditMode(false)"
-    matTooltip="Click to lock the navbar (enables links)"
-  >
-    <mat-icon>edit</mat-icon>
-  </button>
+  <div class="edit-anchor" tourAnchor="home-tour.step.seven">
+    <button
+      mat-icon-button
+      color="default"
+      class="edit-button edit-button-begin"
+      *ngIf="!inEditMode"
+      (click)="setEditMode(true)"
+      matTooltip="Click to allow re-ordering the navbar (disables links)"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      color="warn"
+      class="edit-button edit-button-end"
+      *ngIf="inEditMode"
+      (click)="setEditMode(false)"
+      matTooltip="Click to lock the navbar (enables links)"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
   <span *ngIf="missingZendesk$ | async" class="warnings">
     <mat-icon matTooltip="Zendesk API missing">warning</mat-icon>
     <mat-icon matTooltip="Refresh page">refresh</mat-icon>

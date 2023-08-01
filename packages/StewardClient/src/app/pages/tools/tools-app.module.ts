@@ -33,6 +33,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ToolsAppHomeTileGridComponent } from './pages/home/components/home-tile-grid/home-tile-grid.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 /** A module for all tools, with a configurable navbar. */
 @NgModule({
@@ -78,6 +79,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
     MatTabsModule,
     ReactiveFormsModule,
     MonitorActionModule,
+    TourMatMenuModule,
   ],
 })
 export class ToolsAppModule {}

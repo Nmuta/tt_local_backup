@@ -5,6 +5,10 @@
     [class.activated]="isEnabled[item.tool]"
     [class.no-access]="!item.hasAccess"
   >
+    <div
+      class="center-anchor"
+      [tourAnchor]="i === 0 ? 'home-tour.step.ten' : ''"
+    ></div>
     <div class="tile-aspect"></div>
     <div class="tile-content">
       <mat-card>
@@ -38,7 +42,7 @@
           [alt]="item.imageAlt"
         />
         <mat-card-content>
-          <p *ngFor="let paragraph of item.shortDescription">{{ paragraph }}</p>
+          <p *ngFor="let paragraph of item.shortDescription, let i = index">{{ paragraph }}</p>
           <div
             *ngIf="item.tileContentComponent"
             [navAnchor]="item.tileContentComponent"
@@ -46,14 +50,19 @@
           ></div>
         </mat-card-content>
         <mat-card-actions align="end">
-          <mat-checkbox
-            [matTooltip]="item.hasAccess ? 'Check to include in nav' : undefined"
-            [disabled]="!isEnabled[item.tool] && !item.hasAccess"
-            [ngModel]="isEnabled[item.tool]"
-            (ngModelChange)="onCheckboxChecked(item.tool, $event)"
-          >
-            In Nav
-          </mat-checkbox>
+          <div
+            class="nav-anchor"
+            [tourAnchor]="i === 0 ? 'home-tour.step.five' : ''"
+            >
+            <mat-checkbox
+              [matTooltip]="item.hasAccess ? 'Check to include in nav' : undefined"
+              [disabled]="!isEnabled[item.tool] && !item.hasAccess"
+              [ngModel]="isEnabled[item.tool]"
+              (ngModelChange)="onCheckboxChecked(item.tool, $event)"
+            >
+              In Nav
+            </mat-checkbox>
+          </div>
           <div class="spacer"></div>
           <a
             *ngIf="!item.tileActionComponent && item.hasAccess && !item.hideLink"

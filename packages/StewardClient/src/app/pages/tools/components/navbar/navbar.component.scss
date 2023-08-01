@@ -84,3 +84,8 @@
   flex: 0.25 0 2em;
   max-width: fit-content;
 }
+
+.navbar-anchor.touranchor--is-active {
+  padding: 10px;
+  margin: -15px -15px;
+}
