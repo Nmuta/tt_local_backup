@@ -42,6 +42,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Name, opt => opt.MapFrom(src => src.BuildName))
                 .ReverseMap();
             this.CreateMap<CatalogItem, PlayFabVoucher>().ReverseMap();
+            this.CreateMap<Transaction, PlayFabTransaction>().ReverseMap();
             this.CreateMap<StewardUserInternal, StewardUser>()
                 .ForMember(des => des.Attributes, opt =>
                     opt.MapFrom(src => src.AuthorizationAttributes()))

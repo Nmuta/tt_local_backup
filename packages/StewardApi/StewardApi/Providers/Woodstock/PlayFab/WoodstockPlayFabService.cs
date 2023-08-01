@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PlayFab;
@@ -7,11 +8,13 @@ using PlayFab.AuthenticationModels;
 using PlayFab.EconomyModels;
 using PlayFab.Internal;
 using PlayFab.MultiplayerModels;
+using PlayFab.ServerModels;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
+using EntityKey = PlayFab.EconomyModels.EntityKey;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
 {
@@ -131,15 +134,71 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<object> GetPlayerEntityAsync(ulong xuid, WoodstockPlayFabEnvironment environment)
+        public async Task<Dictionary<ulong, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
         {
-            return null;
+            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
+            async Task<GetPlayFabIDsFromXboxLiveIDsResult> GetPlayFabPlayerEntityAsync(WoodstockPlayFabEnvironment environment, GetPlayFabIDsFromXboxLiveIDsRequest request)
+            {
+                var config = this.GetPlayFabConfig(environment);
+                //var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
+                var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+                // GetPlayFabIDsFromXboxLiveIDs DOES NOT support EntityToken. Must use secret key with PlayFabServerAPI
+                object obj = await PlayFabHttp.DoPost("/Server/GetPlayFabIDsFromXboxLiveIDs", request, "X-SecretKey", config.Key, null, instanceSettings).ConfigureAwait(false);
+                if (obj is PlayFabError)
+                {
+                    PlayFabError error = (PlayFabError)obj;
+                    throw new UnknownFailureStewardException($"Failed to get player entity ids. ${error.ErrorMessage}");
+                }
+
+                string serialized = (string)obj;
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetPlayFabIDsFromXboxLiveIDsResult>>(serialized).data;
+            }
+
+            var xuidsAsStrings = xuids.Select(xuid => xuid.ToString()).ToList();
+
+            var response = await GetPlayFabPlayerEntityAsync(environment, new GetPlayFabIDsFromXboxLiveIDsRequest()
+            {
+                XboxLiveAccountIDs = xuidsAsStrings,
+            }).ConfigureAwait(false);
+
+            var resultDictionary = new Dictionary<ulong, string>();
+            response.Data.ForEach(player => {
+                resultDictionary.Add(Convert.ToUInt64(player.XboxLiveAccountId), player.PlayFabId);
+            });
+
+            return resultDictionary;
         }
 
         /// <inheritdoc />
-        public async Task<object> GetTransactionHistoryAsync(object playerEntity, WoodstockPlayFabEnvironment environment)
+        public async Task<object> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
         {
-            return null;
+            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
+            async Task<GetTransactionHistoryResponse> GetPlayFabTransactionHistoryAsync(WoodstockPlayFabEnvironment environment, GetTransactionHistoryRequest request)
+            {
+                var config = this.GetPlayFabConfig(environment);
+                var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
+                var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+                object obj = await PlayFabHttp.DoPost("/Inventory/GetTransactionHistory", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
+                if (obj is PlayFabError)
+                {
+                    PlayFabError error = (PlayFabError)obj;
+                    throw new UnknownFailureStewardException($"Failed to get vouchers. ${error.ErrorMessage}");
+                }
+
+                string serialized = (string)obj;
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetTransactionHistoryResponse>>(serialized).data;
+            }
+
+            var response = await GetPlayFabTransactionHistoryAsync(environment, new GetTransactionHistoryRequest()
+            {
+                Entity = new EntityKey()
+                { 
+                    Type = "title_player_account",
+                    Id = playfabEntityId,
+                },
+            }).ConfigureAwait(false);
+
+            return this.mapper.SafeMap<IEnumerable<PlayFabTransaction>>(response.Transactions);
         }
 
         /// <inheritdoc />

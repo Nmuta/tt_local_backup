@@ -30,9 +30,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         Task<IEnumerable<PlayFabVoucher>> GetVouchersAsync(WoodstockPlayFabEnvironment environment);
 
         /// <summary>
-        ///     Gets PlayFab player entity. Used to lookup and change player information.
+        ///     Gets PlayFab player entity ids. Used to lookup and change player information.
         /// </summary>
-        Task<object> GetPlayerEntityAsync(ulong xuid, WoodstockPlayFabEnvironment environment);
+        Task<Dictionary<ulong, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Gets PlayFab player's transaction history.

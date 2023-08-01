@@ -1,20 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
-using Turn10.Services.LiveOps.FH5_main.Generated;
-using ApolloContracts = Turn10.LiveOps.StewardApi.Contracts.Apollo;
-using SteelheadContracts = Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using SunriseContracts = Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
@@ -42,6 +29,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 }
 
                 return this.WoodstockServicesWithProdLiveStewardCms.Value;
+            }
+        }
+
+        /// <summary>Gets the Woodstock proxy service with live-steward CMS slot set.</summary>
+        protected WoodstockPlayFabEnvironment PlayFabEnvironment
+        {
+            get
+            {
+                var endpoint = this.WoodstockEndpoint.Value;
+                if (endpoint == WoodstockContracts.WoodstockEndpoint.Retail)
+                {
+                    return WoodstockPlayFabEnvironment.Retail;
+                }
+                else if (endpoint == WoodstockContracts.WoodstockEndpoint.Studio)
+                {
+                    return WoodstockPlayFabEnvironment.Dev;
+                }
+                else
+                {
+                    throw new InvalidArgumentsStewardException($"Provided invalid environment to PlayFab. (env: {endpoint})");
+                }
             }
         }
 

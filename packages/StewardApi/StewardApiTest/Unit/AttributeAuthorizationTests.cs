@@ -53,6 +53,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
                        skip("AcLogReader", "RunAcLogReader")||
                        skip("MsTeams", "CreateMsTeamsBugReport") ||
                        skip("MsTeams", "CreateMsTeamsFeatureRequest") ||
+                       skip("PlayFab", "GetPlayFabEntityIds") ||
                        skip("AcLogReader", "RunAcLogReader") ||
                        skip("Sharecode", "GenerateSharecode"))
                     {
