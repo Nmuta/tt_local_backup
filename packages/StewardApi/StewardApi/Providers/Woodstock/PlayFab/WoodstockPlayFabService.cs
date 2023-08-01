@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<string, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
+        public async Task<Dictionary<ulong, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             async Task<GetPlayFabIDsFromXboxLiveIDsResult> GetPlayFabPlayerEntityAsync(WoodstockPlayFabEnvironment environment, GetPlayFabIDsFromXboxLiveIDsRequest request)
@@ -158,12 +158,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             var response = await GetPlayFabPlayerEntityAsync(environment, new GetPlayFabIDsFromXboxLiveIDsRequest()
             {
                 XboxLiveAccountIDs = xuidsAsStrings,
+                Sandbox = environment == WoodstockPlayFabEnvironment.Retail ? "RETAIL" : "TURN.1",
             }).ConfigureAwait(false);
 
-            var resultDictionary = new Dictionary<string, string>();
+            var resultDictionary = new Dictionary<ulong, string>();
             response.Data.ForEach(player =>
             {
-                resultDictionary.Add(player.XboxLiveAccountId, player.PlayFabId);
+                resultDictionary.Add(Convert.ToUInt64(player.XboxLiveAccountId), player.PlayFabId);
             });
 
             return resultDictionary;
