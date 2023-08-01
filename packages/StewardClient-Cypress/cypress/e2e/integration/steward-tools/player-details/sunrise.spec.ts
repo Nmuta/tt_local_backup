@@ -13,6 +13,7 @@ import {
   userDetailsVerifyFlagData,
   ugcLiveriesFindLivery,
   jsonCheckJson,
+  swapToTab,
 } from './shared-tests';
 import {
   contextSearchByGtagForPlayerDetails,
@@ -32,9 +33,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
 
   context('GTAG Lookup', () => {
     context('With default user', () => {
-      before(() => {
-        contextSearchByGtagForPlayerDetails(RetailUsers[defaultSunriseUser]);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers[defaultSunriseUser]);
       testUserDetails(defaultSunriseUser);
       testDeepDive();
       testInventory();
@@ -43,9 +42,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
     });
 
     context('With Madden user', () => {
-      before(() => {
-        contextSearchByGtagForPlayerDetails(RetailUsers.madden);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers.madden);
       testAuctions();
       testUgc();
     });
@@ -58,9 +55,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
     });
 
     context('With default user', () => {
-      before(() => {
-        contextSearchByXuidForPlayerDetails(RetailUsers[defaultSunriseUser]);
-      });
+       contextSearchByXuidForPlayerDetails(RetailUsers[defaultSunriseUser]);
       testUserDetails(defaultSunriseUser);
       testDeepDive();
       testInventory();
@@ -69,9 +64,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
     });
 
     context('With Madden user', () => {
-      before(() => {
-        contextSearchByXuidForPlayerDetails(RetailUsers.madden);
-      });
+      contextSearchByXuidForPlayerDetails(RetailUsers.madden);
       testAuctions();
       testUgc();
     });
@@ -80,6 +73,10 @@ context('Steward / Tools / Player Details / Sunrise', () => {
 
 function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
+    before(() => {
+      swapToTab('User Details');
+    });
+    
     // found user
     userDetailsVerifyPlayerIdentityResults(userToSearch);
 
@@ -102,6 +99,9 @@ function testUserDetails(userToSearch: string): void {
 
 function testDeepDive(): void {
   context('Deep Dive', () => {
+    before(() => {
+      swapToTab('Deep Dive');
+    });
     // found overview data
     deepDiveFindOverviewData();
 
@@ -112,6 +112,9 @@ function testDeepDive(): void {
 
 function testInventory(): void {
   context('Inventory', () => {
+    before(() => {
+      swapToTab('Inventory');
+    });
     // found player inventory data
     inventoryFindPlayerInventoryData();
   });
@@ -119,6 +122,9 @@ function testInventory(): void {
 
 function testNotifications(): void {
   context('Notifications', () => {
+    before(() => {
+      swapToTab('Notifications');
+    });
     // found player inventory data
     notificationsFindNotification();
   });
@@ -126,6 +132,9 @@ function testNotifications(): void {
 
 function testAuctions(): void {
   context('Auctions', () => {
+    before(() => {
+      swapToTab('Auctions');
+    });
     //TODO: Nobody has any auction history for this title 07/10
     //auctionsFindCreatedAuction(userToSearch, isXuidTest, 'sunrise', 'rsx', 'Acura RSX Type-S', 'Auction Info', 'Acura RSX Type S (2002)')
   });
@@ -133,12 +142,18 @@ function testAuctions(): void {
 
 function testUgc(): void {
   context('Ugc', () => {
+    before(() => {
+      swapToTab('Ugc');
+    });
     ugcLiveriesFindLivery('sunrise', 'Aston Martin', 'One-77', 'metadata');
   });
 }
 
 function testJson(): void {
   context('JSON', () => {
+    before(() => {
+      swapToTab('JSON');
+    });
     jsonCheckJson();
   });
 }

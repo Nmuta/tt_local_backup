@@ -9,6 +9,7 @@ import {
   userDetailsVerifyPlayerIdentityResults,
   userDetailsVerifyFlagData,
   jsonCheckJson,
+  swapToTab,
 } from './shared-tests';
 import {
   contextSearchByGtagForPlayerDetails,
@@ -27,9 +28,7 @@ context('Steward / Tools / Player Details / Apollo', () => {
 
   context('GTAG Lookup', () => {
     context('With default user', () => {
-      before(() => {
-        contextSearchByGtagForPlayerDetails(RetailUsers[defaultApolloUser]);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers[defaultApolloUser]);
       testUserDetails(defaultApolloUser);
       testInventory();
       testLiveries();
@@ -44,9 +43,7 @@ context('Steward / Tools / Player Details / Apollo', () => {
     });
 
     context('With default user', () => {
-      before(() => {
-        contextSearchByXuidForPlayerDetails(RetailUsers[defaultApolloUser]);
-      });
+      contextSearchByXuidForPlayerDetails(RetailUsers[defaultApolloUser]);
       testUserDetails(defaultApolloUser);
       testInventory();
       testLiveries();
@@ -57,6 +54,9 @@ context('Steward / Tools / Player Details / Apollo', () => {
 
 function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
+    before(() => {
+      swapToTab('User Details');
+    });
     // found user
     userDetailsVerifyPlayerIdentityResults(userToSearch);
 
@@ -76,6 +76,9 @@ function testUserDetails(userToSearch: string): void {
 
 function testInventory(): void {
   context('Inventory', () => {
+    before(() => {
+      swapToTab('Inventory');
+    });
     // found player inventory data
     inventoryFindPlayerInventoryData();
   });
@@ -83,6 +86,9 @@ function testInventory(): void {
 
 function testLiveries(): void {
   context('Liveries', () => {
+    before(() => {
+      swapToTab('Liveries');
+    });
     // TODO: Create liveries tests for Apollo
     // Currently, no test users have liveries in Apollo on the prod server
   });
@@ -90,6 +96,9 @@ function testLiveries(): void {
 
 function testJson(): void {
   context('JSON', () => {
+    before(() => {
+      swapToTab('JSON');
+    });
     jsonCheckJson();
   });
 }
