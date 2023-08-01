@@ -4,7 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <!--<Nullable>enable</Nullable>-->
-	<CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
