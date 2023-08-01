@@ -8,6 +8,12 @@ parameters:
   type: string
 
 jobs:
-- template: job-api-test-build.template.yml
+- template: job-api-test-build-steward.template.yml
+  parameters:
+    workingDirectory: ${{parameters.workingDirectory}}
+- template: job-api-test-unit.template.yml
+  parameters:
+    workingDirectory: ${{parameters.workingDirectory}}
+- template: job-api-test-lint.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}

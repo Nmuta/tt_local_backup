@@ -31,11 +31,3 @@ steps:
     exit 1
   condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: Cache could not be restored.
-
-- task: DotNetCoreCLI@2
-  displayName: dotnet restore
-  condition: ne(variables.CACHE_RESTORED, true)
-  inputs:
-    command: restore
-    selectOrConfig: config
-    nugetConfigPath: ${{parameters.workingDirectory}}/nuget.config

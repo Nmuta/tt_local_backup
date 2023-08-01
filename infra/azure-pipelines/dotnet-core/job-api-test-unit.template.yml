@@ -1,0 +1,41 @@
+# This file runs unit tests build as a single parallel job.
+# It is intended to be run only after a `dotnet` cache is made.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."
+  type: string
+
+jobs:
+- job: API_Test_Unit
+  displayName: Unit Tests (API)
+  steps:
+  - template: load-nuget-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+
+  - task: DotNetCoreCLI@2
+    displayName: dotnet test
+    inputs:
+      command: test
+      projects: ${{parameters.workingDirectory}}/*Test/*.csproj
+      arguments: --filter TestCategory=Unit
+
+  # - task: PublishSymbols@2
+  #   displayName: Publish symbols path
+  #   enabled: False
+  #   inputs:
+  #     SymbolsFolder: ''
+  #     SymbolServerType: TeamServices
+
+  # - task: PublishBuildArtifacts@1
+  #   displayName: 'Publish Artifact: api-drop'
+  #   inputs:
+  #     PathtoPublish: $(build.artifactstagingdirectory)
+  #     ArtifactName: api-drop
+
+  # - task: PublishPipelineArtifact@1
+  #   displayName: 'Publish Pipeline Artifact: api-tests'
+  #   inputs:
+  #     path: $(System.DefaultWorkingDirectory)
+  #     artifactName: Steward Test Package
