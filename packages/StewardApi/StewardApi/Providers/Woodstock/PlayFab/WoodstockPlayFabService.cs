@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<ulong, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
+        public async Task<Dictionary<string, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             async Task<GetPlayFabIDsFromXboxLiveIDsResult> GetPlayFabPlayerEntityAsync(WoodstockPlayFabEnvironment environment, GetPlayFabIDsFromXboxLiveIDsRequest request)
@@ -155,15 +155,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             }
 
             var xuidsAsStrings = xuids.Select(xuid => xuid.ToString()).ToList();
-
             var response = await GetPlayFabPlayerEntityAsync(environment, new GetPlayFabIDsFromXboxLiveIDsRequest()
             {
                 XboxLiveAccountIDs = xuidsAsStrings,
             }).ConfigureAwait(false);
 
-            var resultDictionary = new Dictionary<ulong, string>();
-            response.Data.ForEach(player => {
-                resultDictionary.Add(Convert.ToUInt64(player.XboxLiveAccountId), player.PlayFabId);
+            var resultDictionary = new Dictionary<string, string>();
+            response.Data.ForEach(player =>
+            {
+                resultDictionary.Add(player.XboxLiveAccountId, player.PlayFabId);
             });
 
             return resultDictionary;
@@ -204,6 +204,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <inheritdoc />
         public async Task<object> AddCurrencyToPlayerAsync(object playerEntity, object currency, int amount, WoodstockPlayFabEnvironment environment)
         {
+            //PlayFabEconomyAPI.AddInventoryItemsAsync();
+
+            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
+            async Task<GetTransactionHistoryResponse> GetPlayFabTransactionHistoryAsync(WoodstockPlayFabEnvironment environment, GetTransactionHistoryRequest request)
+            {
+                var config = this.GetPlayFabConfig(environment);
+                var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
+                var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+                object obj = await PlayFabHttp.DoPost("/Inventory/GetTransactionHistory", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
+                if (obj is PlayFabError)
+                {
+                    PlayFabError error = (PlayFabError)obj;
+                    throw new UnknownFailureStewardException($"Failed to get vouchers. ${error.ErrorMessage}");
+                }
+
+                string serialized = (string)obj;
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetTransactionHistoryResponse>>(serialized).data;
+            }
+
             return null;
         }
 

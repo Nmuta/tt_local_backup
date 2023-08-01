@@ -32,12 +32,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <summary>
         ///     Gets PlayFab player entity ids. Used to lookup and change player information.
         /// </summary>
-        Task<Dictionary<ulong, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment);
+        Task<Dictionary<string, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Gets PlayFab player's transaction history.
         /// </summary>
-        Task<object> GetTransactionHistoryAsync(object playerEntity, WoodstockPlayFabEnvironment environment);
+        Task<object> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Adds currency to player's account.
