@@ -53,11 +53,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
                                     ""weight"": ""Bolder"",
                                     ""size"": ""ExtraLarge""
                                 },
-                                {   
-                                    ""type"": ""TextBlock"",
-                                    ""text"": ""${question}"",
-                                    ""wrap"": true
-                                },
                                 {
                                     ""type"": ""FactSet"",
                                     ""facts"": [
@@ -71,6 +66,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
                                         },
                                     ]
                                 }
+                            ]
+                        },
+                        {
+                            ""type"": ""Container"",
+                            ""items"": [
+                                {   
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""${question}"",
+                                    ""wrap"": true
+                                },
                             ]
                         }
                     ],

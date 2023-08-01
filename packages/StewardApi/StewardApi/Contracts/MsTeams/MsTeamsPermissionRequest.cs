@@ -20,6 +20,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
     {
         public string Permission { get; set; }
 
+        public string Titles { get; set; }
+
+        public string Environments { get; set; }
+
         public string Justification { get; set; }
     }
 
@@ -55,11 +59,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
                                     ""weight"": ""Bolder"",
                                     ""size"": ""ExtraLarge""
                                 },
-                                {   
-                                    ""type"": ""TextBlock"",
-                                    ""text"": ""${permission}"",
-                                    ""wrap"": true
-                                },
                                 {
                                     ""type"": ""FactSet"",
                                     ""facts"": [
@@ -78,6 +77,42 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
                         {
                             ""type"": ""Container"",
                             ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""Permission(s) Needed"",
+                                    ""wrap"": true,
+                                    ""weight"": ""Bolder"",
+                                    ""size"": ""Large""
+                                },
+                                {   
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""${permission}"",
+                                    ""wrap"": true
+                                },
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""Title(s)"",
+                                    ""wrap"": true,
+                                    ""weight"": ""Bolder"",
+                                    ""size"": ""Large""
+                                },
+                                {   
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""${titles}"",
+                                    ""wrap"": true
+                                },
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""Environment(s)"",
+                                    ""wrap"": true,
+                                    ""weight"": ""Bolder"",
+                                    ""size"": ""Large""
+                                },
+                                {   
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""${environments}"",
+                                    ""wrap"": true
+                                },
                                 {
                                     ""type"": ""TextBlock"",
                                     ""text"": ""Business Justification"",
@@ -115,6 +150,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
                 Name = user.Name,
                 Email = user.EmailAddress,
                 Permission = permissionRequest?.Permission,
+                Titles = permissionRequest?.Titles,
+                Environments = permissionRequest?.Environments,
                 Justification = permissionRequest?.Justification,
                 CreatedDate = DateTime.UtcNow.ToString("R", new CultureInfo("en-US")),
             });

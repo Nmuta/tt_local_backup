@@ -45,6 +45,8 @@ export type BugReport = {
 /** A permission request for Steward. */
 export type PermissionRequest = {
   permission: string;
+  titles: string;
+  environments: string;
   justification: string;
 };
 
@@ -83,6 +85,7 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
   public RequestType = RequestType;
   public RequestImpact = RequestImpact;
   public submitReportMonitor = new ActionMonitor('Submit bug/feature');
+  public getTeamLeadMonitor = new ActionMonitor(`GET user's team lead`);
 
   public defaultFeature: FeatureRequest = {
     title: '',
@@ -118,10 +121,14 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
 
   public defaultPermission: PermissionRequest = {
     permission: '',
+    titles: '',
+    environments: '',
     justification: '',
   };
   public formControlsPermission = {
     permission: new FormControl('', [Validators.required]),
+    titles: new FormControl('', [Validators.required]),
+    environments: new FormControl('', [Validators.required]),
     justification: new FormControl('', [Validators.required]),
   };
   public formGroupPermission = new FormGroup(this.formControlsPermission);
@@ -153,6 +160,7 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
           this.userProfile = user;
           return this.v2UsersService.getTeamLead$(user.objectId);
         }),
+        this.getTeamLeadMonitor.monitorSingleFire(),
         takeUntil(this.onDestroy$),
       )
       .subscribe(teamLead => {
@@ -203,8 +211,10 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
   /** Submit permission request. */
   public submitPermission(): void {
     const permissionRequest: PermissionRequest = {
-      permission: this.formControlsFeature.title.value,
-      justification: this.formControlsFeature.description.value,
+      permission: this.formControlsPermission.permission.value,
+      titles: this.formControlsPermission.titles.value,
+      environments: this.formControlsPermission.environments.value,
+      justification: this.formControlsPermission.justification.value,
     };
 
     this.submitReportMonitor = this.submitReportMonitor.repeat();
@@ -219,7 +229,7 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
   /** Submit permission request. */
   public submitQuestion(): void {
     const question: Question = {
-      question: this.formControlsFeature.title.value,
+      question: this.formControlsQuestion.question.value,
     };
 
     this.submitReportMonitor = this.submitReportMonitor.repeat();
