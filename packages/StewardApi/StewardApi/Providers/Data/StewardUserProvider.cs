@@ -189,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             return authorized.Any();
 
-            bool Equals(string str, string attr)
+            static bool Equals(string str, string attr)
             {
                 return str?.Equals(attr, StringComparison.OrdinalIgnoreCase) == true;
             }
