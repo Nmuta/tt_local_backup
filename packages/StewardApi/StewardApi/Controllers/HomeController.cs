@@ -7,7 +7,7 @@ using System.Linq;
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
     /// <summary>
-    ///     Provides an OIDC-integrated way of retrieving complex user claims.
+    ///     Controller for home page and misc Health routes.
     /// </summary>
     [ApiController]
     [Tags("Misc")]
