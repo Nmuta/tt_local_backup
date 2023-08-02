@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -21,11 +22,13 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
+using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using SteelheadContracts = Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 {
@@ -43,6 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     public class BanController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
+        private readonly ISteelheadPegasusService pegasusService;
         private readonly IMapper mapper;
         private readonly IActionLogger actionLogger;
         private readonly IJobTracker jobTracker;
@@ -55,6 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         ///     Initializes a new instance of the <see cref="BanController"/> class for Steelhead.
         /// </summary>
         public BanController(
+            ISteelheadPegasusService pegasusService,
             IMapper mapper,
             IActionLogger actionLogger,
             IJobTracker jobTracker,
@@ -63,6 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             ISteelheadBanHistoryProvider banHistoryProvider,
             IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator)
         {
+            pegasusService.ShouldNotBeNull(nameof(pegasusService));
             mapper.ShouldNotBeNull(nameof(mapper));
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -71,6 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
 
+            this.pegasusService = pegasusService;
             this.mapper = mapper;
             this.actionLogger = actionLogger;
             this.jobTracker = jobTracker;
@@ -78,6 +85,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             this.loggingService = loggingService;
             this.banHistoryProvider = banHistoryProvider;
             this.banParametersRequestValidator = banParametersRequestValidator;
+        }
+
+        /// <summary>
+        ///    Return a list of ugc ban configuration.
+        /// </summary>
+        [HttpGet("banConfigurations")]
+        [SwaggerResponse(200, type: typeof(IList<BanConfiguration>))]
+        public async Task<IActionResult> GetBanConfigurations()
+        {
+            var pegasusEnvironment = this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Studio
+                ? SteelheadPegasusEnvironment.Dev : SteelheadPegasusEnvironment.Prod;
+
+            var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync(pegasusEnvironment).ConfigureAwait(true);
+
+            var banConfigurations = new List<BanConfiguration>();
+
+            foreach (var config in banConfiguration)
+            {
+                var stewardConfig = this.mapper.SafeMap<BanConfiguration>(config.Value);
+                stewardConfig.BanConfigurationId = config.Key;
+                banConfigurations.Add(stewardConfig);
+            }
+
+            return this.Ok(banConfigurations);
         }
 
         /// <summary>
