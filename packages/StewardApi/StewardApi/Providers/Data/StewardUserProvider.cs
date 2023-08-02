@@ -279,7 +279,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 throw new BadRequestStewardException($"Null or empty {environmentKey} header.");
             }
 
-            environment = env.ToString().Contains("|") ? env.ToString().Split("|")[1] : env;
+            environment = env.ToString().Contains('|') ? env.ToString().Split("|")[1] : env;
 
             return;
         }
