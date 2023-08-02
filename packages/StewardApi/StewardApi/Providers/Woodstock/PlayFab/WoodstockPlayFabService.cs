@@ -179,6 +179,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 var config = this.GetPlayFabConfig(environment);
                 var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
                 var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+
                 object obj = await PlayFabHttp.DoPost("/Inventory/GetTransactionHistory", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
                 if (obj is PlayFabError)
                 {
@@ -193,7 +194,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             var response = await GetPlayFabTransactionHistoryAsync(environment, new GetTransactionHistoryRequest()
             {
                 Entity = new EntityKey()
-                { 
+                {
                     Type = "title_player_account",
                     Id = playfabEntityId,
                 },
@@ -203,34 +204,75 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<object> AddCurrencyToPlayerAsync(object playerEntity, object currency, int amount, WoodstockPlayFabEnvironment environment)
+        public async Task AddCurrencyToPlayerAsync(string playfabEntityId, string currencyId, int amount, WoodstockPlayFabEnvironment environment)
         {
-            //PlayFabEconomyAPI.AddInventoryItemsAsync();
-
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
-            async Task<GetTransactionHistoryResponse> GetPlayFabTransactionHistoryAsync(WoodstockPlayFabEnvironment environment, GetTransactionHistoryRequest request)
+            async Task<AddInventoryItemsResponse> AddPlayFabInventoryItemsAsync(WoodstockPlayFabEnvironment environment, AddInventoryItemsRequest request)
             {
                 var config = this.GetPlayFabConfig(environment);
                 var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
                 var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
-                object obj = await PlayFabHttp.DoPost("/Inventory/GetTransactionHistory", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
+
+                object obj = await PlayFabHttp.DoPost("/Inventory/AddInventoryItems", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
                 if (obj is PlayFabError)
                 {
                     PlayFabError error = (PlayFabError)obj;
-                    throw new UnknownFailureStewardException($"Failed to get vouchers. ${error.ErrorMessage}");
+                    throw new UnknownFailureStewardException($"Failed to add currency to player (playerEntityId: {playfabEntityId}) (currencyId: {currencyId}) (amount: {amount}). ${error.ErrorMessage}");
                 }
 
                 string serialized = (string)obj;
-                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetTransactionHistoryResponse>>(serialized).data;
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<AddInventoryItemsResponse>>(serialized).data;
             }
 
-            return null;
+            await AddPlayFabInventoryItemsAsync(environment, new AddInventoryItemsRequest()
+            {
+                Entity = new EntityKey()
+                {
+                    Type = "title_player_account",
+                    Id = playfabEntityId,
+                },
+                Amount = amount,
+                Item = new InventoryItemReference()
+                {
+                    Id = currencyId,
+                },
+            }).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<object> RemoveCurrencyFromPlayerAsync(object playerEntity, object currency, int amount, WoodstockPlayFabEnvironment environment)
+        public async Task RemoveCurrencyFromPlayerAsync(string playfabEntityId, string currencyId, int amount, WoodstockPlayFabEnvironment environment)
         {
-            return null;
+            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
+            async Task<SubtractInventoryItemsResponse> SubtractPlayFabInventoryItemsAsync(WoodstockPlayFabEnvironment environment, SubtractInventoryItemsRequest request)
+            {
+                var config = this.GetPlayFabConfig(environment);
+                var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
+                var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+
+                object obj = await PlayFabHttp.DoPost("/Inventory/SubtractInventoryItems", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
+                if (obj is PlayFabError)
+                {
+                    PlayFabError error = (PlayFabError)obj;
+                    throw new UnknownFailureStewardException($"Failed to add currency to player (playerEntityId: {playfabEntityId}) (currencyId: {currencyId}) (amount: {amount}). ${error.ErrorMessage}");
+                }
+
+                string serialized = (string)obj;
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<SubtractInventoryItemsResponse>>(serialized).data;
+            }
+
+            await SubtractPlayFabInventoryItemsAsync(environment, new SubtractInventoryItemsRequest()
+            {
+                Entity = new EntityKey()
+                {
+                    Type = "title_player_account",
+                    Id = playfabEntityId,
+                },
+                Amount = amount,
+                Item = new InventoryItemReference()
+                {
+                    Id = currencyId,
+                },
+            }).ConfigureAwait(false);
         }
 
         /// <summary>

@@ -42,11 +42,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <summary>
         ///     Adds currency to player's account.
         /// </summary>
-        Task<object> AddCurrencyToPlayerAsync(object playerEntity, object currency, int amount, WoodstockPlayFabEnvironment environment);
+        Task AddCurrencyToPlayerAsync(string playfabEntityId, string currencyId, int amount, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Removes currency from player's account.
         /// </summary>
-        Task<object> RemoveCurrencyFromPlayerAsync(object playerEntity, object currency, int amount, WoodstockPlayFabEnvironment environment);
+        Task RemoveCurrencyFromPlayerAsync(string playfabEntityId, string currencyId, int amount, WoodstockPlayFabEnvironment environment);
     }
 }
