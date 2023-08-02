@@ -5,6 +5,9 @@
     <IsPackable>false</IsPackable>
     <RootNamespace>Turn10.LiveOps.StewardTest</RootNamespace>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <AnalysisMode>None</AnalysisMode>
+    <NoWarn>CA1506,CS0618,NU1701</NoWarn> <!-- Excessive Class Coupling , Obsolete , Restored using another version of .NET-->
+    <Nullable>disable</Nullable> <!-- TODO: We should probably spend some time to enable this. -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

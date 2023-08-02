@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         public async Task RunQuery_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
-            var controller = new Dependencies().Build();
+            using var controller = new Dependencies().Build();
             var query = $"database('{Fixture.Create<string>()}'). {Fixture.Create<string>()}";
 
             // Act.
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         public void RunQuery_WithNullEmtpyWhitespaceQuery_Throws()
         {
             // Arrange.
-            var controller = new Dependencies().Build();
+            using var controller = new Dependencies().Build();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -107,7 +107,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         public void RunQuery_WithBadlyFormedQuery_Throws()
         {
             // Arrange.
-            var controller = new Dependencies().Build();
+            using var controller = new Dependencies().Build();
             var query = Fixture.Create<string>();
 
             Func<Task<IActionResult>> action = async () => await controller.RunQuery(query).ConfigureAwait(false);
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         public void SaveQuery_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
-            var controller = new Dependencies().Build();
+            using var controller = new Dependencies().Build();
             var query = Fixture.Create<KustoQuery>();
 
             // Act.
@@ -136,7 +136,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         public void SaveQuery_WithNullQueries_Throws()
         {
             // Arrange.
-            var controller = new Dependencies().Build();
+            using var controller = new Dependencies().Build();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.SaveQueries(null).ConfigureAwait(false);
@@ -151,7 +151,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         public async Task RetrieveQueries_ReturnsCorrectType()
         {
             // Arrange.
-            var controller = new Dependencies().Build();
+            using var controller = new Dependencies().Build();
 
             // Act.
             async Task<IActionResult> Action() => await controller.RetrieveQueries().ConfigureAwait(false);
@@ -170,7 +170,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         public void DeleteQuery_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
-            var controller = new Dependencies().Build();
+            using var controller = new Dependencies().Build();
             var name = Fixture.Create<string>();
 
             // Act.
@@ -185,7 +185,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         public void DeleteQuery_WithNullEmptyWhitespaceQueryId_DoesNotThrow()
         {
             // Arrange.
-            var controller = new Dependencies().Build();
+            using var controller = new Dependencies().Build();
             var name = Fixture.Create<string>();
 
             // Act.

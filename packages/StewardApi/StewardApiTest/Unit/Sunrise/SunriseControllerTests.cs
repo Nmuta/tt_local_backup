@@ -1924,6 +1924,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public IRequestValidator<SunriseUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseUserFlagsInput>>();
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test")]
             public SunriseController Build() => new SunriseController(
                 new MemoryCache(new MemoryCacheOptions()),
                 this.ActionLogger,

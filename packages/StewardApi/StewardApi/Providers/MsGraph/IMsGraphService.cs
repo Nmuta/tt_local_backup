@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.MsGraph
         /// <summary>
         ///     Gets all AAD app users.
         /// </summary>
-        /// <remarks>The users returned in this only contain their ObjectId, Name, & Role.</remarks>
+        /// <remarks>The users returned in this only contain their ObjectId, Name, and Role.</remarks>
         Task<IEnumerable<StewardUser>> GetAadAppUsersAsync();
 
         /// <summary>

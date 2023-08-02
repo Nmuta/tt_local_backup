@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task Ctor_WhenItemsProviderNull_Throws()
+        public void Ctor_WhenItemsProviderNull_Throws()
         {
             // Arrange.
             var dependencies = new Dependencies { ItemsProvider = null };

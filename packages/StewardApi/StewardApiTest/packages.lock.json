@@ -3116,7 +3116,6 @@
           "Swashbuckle.AspNetCore": "[6.4.0, )",
           "Swashbuckle.AspNetCore.Annotations": "[6.4.0, )",
           "Swashbuckle.AspNetCore.Newtonsoft": "[6.4.0, )",
-          "System.Diagnostics.DiagnosticSource": "[7.0.2, )",
           "System.Text.Encodings.Web": "[5.0.1, )",
           "Turn10.Data.Azure": "[3.0.0, )",
           "Turn10.Data.Common": "[2.1.0, )",

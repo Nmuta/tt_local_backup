@@ -1413,6 +1413,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             public IRequestValidator<WoodstockUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockUserFlagsInput>>();
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test")]
             public WoodstockController Build() => new WoodstockController(
                 new MemoryCache(new MemoryCacheOptions()),
                 this.ActionLogger,

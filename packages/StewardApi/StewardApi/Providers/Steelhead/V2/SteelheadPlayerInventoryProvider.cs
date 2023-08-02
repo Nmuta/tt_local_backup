@@ -396,7 +396,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     {
                         await serviceCall(type, item.Id, (uint)item.Quantity).ConfigureAwait(false);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         var error = new FailedToSendStewardError($"Failed to gift item. (type: {type}) (id: {item.Id}) (quantity: {item.Quantity})");
                         item.Error = error;
