@@ -53,6 +53,8 @@ namespace Turn10.LiveOps.StewardTest.Unit
                        skip("AcLogReader", "RunAcLogReader")||
                        skip("MsTeams", "CreateMsTeamsBugReport") ||
                        skip("MsTeams", "CreateMsTeamsFeatureRequest") ||
+                       skip("MsTeams", "CreateMsTeamsPermissionRequest") ||
+                       skip("MsTeams", "CreateMsTeamsQuestion") ||
                        skip("AcLogReader", "RunAcLogReader") ||
                        skip("Sharecode", "GenerateSharecode"))
                     {

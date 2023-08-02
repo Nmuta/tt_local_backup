@@ -26,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         private readonly string allStewardUsersCacheKey = "AllStewardUserIds";
 
         private readonly ITableStorageClientFactory tableStorageClientFactory;
-        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly KeyVaultConfig keyVaultConfig;
         private readonly IConfiguration configuration;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private ITableStorageClient tableStorageClient;
@@ -37,15 +37,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public StewardUserProvider(
             ITableStorageClientFactory tableStorageClientFactory,
             IConfiguration configuration,
-            IKeyVaultProvider keyVaultProvider,
+            KeyVaultConfig keyVaultConfig,
             IRefreshableCacheStore refreshableCacheStore)
         {
             tableStorageClientFactory.ShouldNotBeNull(nameof(tableStorageClientFactory));
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
 
-            this.keyVaultProvider = keyVaultProvider;
+            this.keyVaultConfig = keyVaultConfig;
             this.configuration = configuration;
             this.tableStorageClientFactory = tableStorageClientFactory;
             this.refreshableCacheStore = refreshableCacheStore;
@@ -55,9 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public async Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
-                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                this.configuration[ConfigurationKeyConstants.CosmosTableSecretName]).ConfigureAwait(false);
+            var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
 
             this.configuration.Bind("StewardUserStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     public sealed class KustoQueryProvider : IKustoQueryProvider, IInitializeable
     {
         private readonly ITableStorageClientFactory tableStorageClientFactory;
-        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly KeyVaultConfig keyVaultConfig;
         private readonly IConfiguration configuration;
         private readonly IMapper mapper;
         private ITableStorageClient tableStorageClient;
@@ -31,14 +31,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             ITableStorageClientFactory tableStorageClientFactory,
             IMapper mapper,
             IConfiguration configuration,
-            IKeyVaultProvider keyVaultProvider)
+            KeyVaultConfig keyVaultConfig)
         {
             tableStorageClientFactory.ShouldNotBeNull(nameof(tableStorageClientFactory));
             mapper.ShouldNotBeNull(nameof(mapper));
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
 
-            this.keyVaultProvider = keyVaultProvider;
+            this.keyVaultConfig = keyVaultConfig;
             this.configuration = configuration;
             this.tableStorageClientFactory = tableStorageClientFactory;
             this.mapper = mapper;
@@ -48,9 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public async Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
-                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                this.configuration[ConfigurationKeyConstants.CosmosTableSecretName]).ConfigureAwait(false);
+            var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
 
             this.configuration.Bind("KustoQueryStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

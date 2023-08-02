@@ -284,5 +284,10 @@
         ///    The Teams Help Channel Webhook Secret Name.
         /// </summary>
         public const string TeamsHelpChannelWebhook = "TeamsHelpChannelWebhookSecretName";
+
+        /// <summary>
+        ///    The Obligation Client Secret Name.
+        /// </summary>
+        public const string ObligationClientSecretName = "ObligationClientSecretName";
     }
 }

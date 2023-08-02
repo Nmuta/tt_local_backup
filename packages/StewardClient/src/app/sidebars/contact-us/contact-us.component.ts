@@ -13,6 +13,8 @@ import { Observable, switchMap, takeUntil } from 'rxjs';
 enum RequestType {
   Feature,
   Bug,
+  Permission,
+  Question,
 }
 
 enum RequestImpact {
@@ -40,6 +42,19 @@ export type BugReport = {
   hasWorkaround: boolean;
 };
 
+/** A permission request for Steward. */
+export type PermissionRequest = {
+  permission: string;
+  titles: string;
+  environments: string;
+  justification: string;
+};
+
+/** A question for the Steward team. */
+export type Question = {
+  question: string;
+};
+
 /** Component for handling "Contact Us" forms. */
 @Component({
   templateUrl: './contact-us.component.html',
@@ -63,13 +78,14 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
   public readonly teamsHelpChannel =
     'https://teams.microsoft.com/l/channel/19%3ada7d498f9e0941f0842a1aa17d2f3127%40thread.tacv2/Contact%2520Us?groupId=041c1fd8-9880-4947-9f7e-bfde634c48cd&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47';
 
-  public selectedRequestType = RequestType.Feature;
+  public selectedRequestType = null;
   public isSubmitted = false;
   public userProfile: UserModel;
   public teamLead: UserModel;
   public RequestType = RequestType;
   public RequestImpact = RequestImpact;
   public submitReportMonitor = new ActionMonitor('Submit bug/feature');
+  public getTeamLeadMonitor = new ActionMonitor(`GET user's team lead`);
 
   public defaultFeature: FeatureRequest = {
     title: '',
@@ -103,6 +119,28 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
   };
   public formGroupBug = new FormGroup(this.formControlsBug);
 
+  public defaultPermission: PermissionRequest = {
+    permission: '',
+    titles: '',
+    environments: '',
+    justification: '',
+  };
+  public formControlsPermission = {
+    permission: new FormControl('', [Validators.required]),
+    titles: new FormControl('', [Validators.required]),
+    environments: new FormControl('', [Validators.required]),
+    justification: new FormControl('', [Validators.required]),
+  };
+  public formGroupPermission = new FormGroup(this.formControlsPermission);
+
+  public defaultQuestion: Question = {
+    question: '',
+  };
+  public formControlsQuestion = {
+    question: new FormControl('', [Validators.required]),
+  };
+  public formGroupQuestion = new FormGroup(this.formControlsQuestion);
+
   public readonly adminTeamLead = 'Live Ops Admins';
   public readonly adminTeamLeadEmail = EmailAddresses.LiveOpsAdmins;
 
@@ -122,6 +160,7 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
           this.userProfile = user;
           return this.v2UsersService.getTeamLead$(user.objectId);
         }),
+        this.getTeamLeadMonitor.monitorSingleFire(),
         takeUntil(this.onDestroy$),
       )
       .subscribe(teamLead => {
@@ -169,10 +208,45 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
       });
   }
 
+  /** Submit permission request. */
+  public submitPermission(): void {
+    const permissionRequest: PermissionRequest = {
+      permission: this.formControlsPermission.permission.value,
+      titles: this.formControlsPermission.titles.value,
+      environments: this.formControlsPermission.environments.value,
+      justification: this.formControlsPermission.justification.value,
+    };
+
+    this.submitReportMonitor = this.submitReportMonitor.repeat();
+    this.msTeamsService
+      .sendPermissionRequestMessage$(permissionRequest)
+      .pipe(this.submitReportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.isSubmitted = true;
+      });
+  }
+
+  /** Submit permission request. */
+  public submitQuestion(): void {
+    const question: Question = {
+      question: this.formControlsQuestion.question.value,
+    };
+
+    this.submitReportMonitor = this.submitReportMonitor.repeat();
+    this.msTeamsService
+      .sendQuestionMessage$(question)
+      .pipe(this.submitReportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.isSubmitted = true;
+      });
+  }
+
   /** Reset the contact us form. */
   public resetForm(): void {
     this.formGroupBug.setValue(this.defaultBug);
     this.formGroupFeature.setValue(this.defaultFeature);
+    this.formGroupPermission.setValue(this.defaultPermission);
+    this.formGroupQuestion.setValue(this.defaultQuestion);
     this.isSubmitted = false;
   }
 }

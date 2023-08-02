@@ -111,5 +111,8 @@ export const stewardUrls = {
     metaTools: {
       default: '/app/tools/steward-management',
     },
+    permissionManagement: {
+      default: 'app/tools/permission-management',
+    },
   },
 };

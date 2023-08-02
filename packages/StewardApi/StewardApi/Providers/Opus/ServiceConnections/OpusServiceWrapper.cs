@@ -36,19 +36,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections
         ///     Initializes a new instance of the <see cref="OpusServiceWrapper"/> class.
         /// </summary>
         [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
-        public OpusServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
+        public OpusServiceWrapper(IConfiguration configuration, KeyVaultConfig keyVaultConfig)
         {
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.environmentUri = configuration[ConfigurationKeyConstants.OpusUri];
             this.clientVersion = configuration[ConfigurationKeyConstants.OpusClientVersion];
             this.adminXuid = Convert.ToUInt64(configuration[ConfigurationKeyConstants.OpusAdminXuid], CultureInfo.InvariantCulture);
-            var keyVaultName = configuration[ConfigurationKeyConstants.OpusCertificateKeyVaultName];
-            var secretName = configuration[ConfigurationKeyConstants.OpusCertificateSecretName];
 
-            var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultName, secretName).GetAwaiter().GetResult();
+            var certificateSecret = keyVaultConfig.OpusCertificateSecret;
             this.lspCertificate = this.ConvertToCertificate(certificateSecret);
 
             this.forzaClient = new Client(
