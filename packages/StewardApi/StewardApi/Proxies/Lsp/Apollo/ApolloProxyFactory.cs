@@ -27,12 +27,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo
         public ApolloProxyFactory(
             ApolloSettings settingsProvider,
             ForgedCredentialProvider forgedCredentialProvider,
-            IKeyVaultProvider keyVaultProvider)
+            KeyVaultConfig keyVaultConfig)
         {
             this.Settings = settingsProvider;
             this.ForgedCredentialProvider = forgedCredentialProvider;
-            var certificateSecret = keyVaultProvider.GetSecretAsync(settingsProvider.CertificateKeyVaultName, settingsProvider.CertificateSecretName)
-                .GetAwaiter().GetResult();
+            var certificateSecret = keyVaultConfig.ApolloCertificateSecret;
             this.lspCertificate = this.ConvertToCertificate(certificateSecret);
 
             // TODO: This should also be injected

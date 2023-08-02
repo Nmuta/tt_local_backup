@@ -262,10 +262,13 @@ namespace Turn10.LiveOps.StewardApi
             this.RegisterSteelheadTypes(builder);
             this.RegisterApolloTypes(builder);
 
-            // Kusto
             // This is the first place we pull from KV. Errors here may be related to needing to
             // re-verify your VS account. Click File -> Account Settings -> Check under "All Accounts"
-            var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
+            var keyVaultConfig = KeyVaultConfig.FromKeyVaultUrlAsync(this.configuration).GetAwaiter().GetResult();
+            builder.Register(c => keyVaultConfig).As<KeyVaultConfig>().SingleInstance();
+
+            // Kusto
+            var kustoClientSecret = keyVaultConfig.KustoClientSecret;
 
             var kustoLoggerConfiguration = new KustoConfiguration();
 
@@ -284,9 +287,7 @@ namespace Turn10.LiveOps.StewardApi
             var tenantId = this.configuration[ConfigurationKeyConstants.AzureTenantId];
             var clientId = this.configuration[ConfigurationKeyConstants.AzureClientId];
             var servicePrincipalId = this.configuration[ConfigurationKeyConstants.AzureServicePrincipalId];
-            var clientSecret = keyVaultProvider.GetSecretAsync(
-               this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-               this.configuration[ConfigurationKeyConstants.AzureClientSecretKey]).GetAwaiter().GetResult();
+            var clientSecret = keyVaultConfig.AzureAuthClientSecret;
 
             var clientSecretCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
             var scopes = new[] { "https://graph.microsoft.com/.default" };
@@ -294,9 +295,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.Register(c => new MsGraphService(graphServiceClient, servicePrincipalId)).As<IMsGraphService>().SingleInstance();
 
             // MS Teams Service
-            var teamsHelpChannelWebhook = keyVaultProvider.GetSecretAsync(
-               this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-               this.configuration[ConfigurationKeyConstants.TeamsHelpChannelWebhook]).GetAwaiter().GetResult();
+            var teamsHelpChannelWebhook = keyVaultConfig.TeamsHelpChannelWebhook;
             builder.Register(c => new MsTeamsService(teamsHelpChannelWebhook)).As<IMsTeamsService>().SingleInstance();
 
             builder.Register(c => this.configuration).As<IConfiguration>().SingleInstance();
@@ -325,21 +324,13 @@ namespace Turn10.LiveOps.StewardApi
             var woodstockPlayFabConfig = new WoodstockPlayFabConfig();
             woodstockPlayFabConfig.Environments.Add(WoodstockPlayFabEnvironment.Dev, new PlayFabConfig()
             {
-                TitleId = keyVaultProvider.GetSecretAsync(
-                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabDevTitleId]).GetAwaiter().GetResult(),
-                Key = keyVaultProvider.GetSecretAsync(
-                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabDevKey]).GetAwaiter().GetResult(),
+                TitleId = keyVaultConfig.WoodstockPlayFabDevTitleId,
+                Key = keyVaultConfig.WoodstockPlayFabDevKey,
             });
             woodstockPlayFabConfig.Environments.Add(WoodstockPlayFabEnvironment.Retail, new PlayFabConfig()
             {
-                TitleId = keyVaultProvider.GetSecretAsync(
-                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabProdTitleId]).GetAwaiter().GetResult(),
-                Key = keyVaultProvider.GetSecretAsync(
-                    this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                    this.configuration[ConfigurationKeyConstants.WoodstockPlayFabProdKey]).GetAwaiter().GetResult(),
+                TitleId = keyVaultConfig.WoodstockPlayFabProdTitleId,
+                Key = keyVaultConfig.WoodstockPlayFabProdKey,
             });
             builder.Register(c => new WoodstockPlayFabService(woodstockPlayFabConfig, mapper)).As<IWoodstockPlayFabService>().SingleInstance();
 
@@ -355,7 +346,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<BlobStorageProvider>().As<IBlobStorageProvider>().SingleInstance();
             builder.RegisterType<AzureDevOpsFactory>().As<IAzureDevOpsFactory>().SingleInstance();
 
-            var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
+            var blobConnectionString = keyVaultConfig.BlobConnectionString;
             var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString));
             builder.Register(c => blobRepo).As<IBlobRepository>().SingleInstance();
 

@@ -69,18 +69,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public SteelheadPegasusService(
             PegasusCmsProvider pegasusCmsProvider,
             IAzureDevOpsFactory azureDevOpsFactory,
-            IKeyVaultProvider keyVaultProvider,
             IRefreshableCacheStore refreshableCacheStore,
             IMapper mapper,
             IConfiguration configuration,
-            ILoggingService loggingService)
+            ILoggingService loggingService,
+            KeyVaultConfig keyVaultConfig)
         {
             pegasusCmsProvider.ShouldNotBeNull(nameof(pegasusCmsProvider));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             mapper.ShouldNotBeNull(nameof(mapper));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             azureDevOpsFactory.ShouldNotBeNull(nameof(azureDevOpsFactory));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
 
             configuration.ShouldNotBeNull(nameof(configuration));
             configuration.ShouldContainSettings(RequiredSettings);
@@ -99,9 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
             this.formatPipelineBuildDefinition = configuration[ConfigurationKeyConstants.SteelheadFormatPipelineBuildDefinition];
 
-            string steelheadContentPAT = keyVaultProvider.GetSecretAsync(
-                configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                configuration[ConfigurationKeyConstants.SteelheadContentAccessToken]).GetAwaiter().GetResult();
+            string steelheadContentPAT = keyVaultConfig.SteelheadContentAccessToken;
 
             this.azureDevOpsManager = azureDevOpsFactory.Create(
                 configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl],

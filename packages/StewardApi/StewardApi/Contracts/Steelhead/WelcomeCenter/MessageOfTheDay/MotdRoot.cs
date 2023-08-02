@@ -57,10 +57,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         public string Date { get; set; }
 
         [WriteToPegasus]
-        public LocTextMotdNoDesc ContentHeader { get; set; }
+        public LocTextMotd ContentHeader { get; set; }
 
         [WriteToPegasus]
-        public LocTextMotdNoDesc ContentBody { get; set; }
+        public LocTextMotd ContentBody { get; set; }
 
         [WriteToPegasus]
         public string ContentImagePath { get; set; }
@@ -101,26 +101,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
 
         [XmlElement(Namespace = "scribble:x")]
         public string description { get; set; }
-
-        [XmlElement(Namespace = "scribble:x")]
-        public string skiploc { get; set; }
-
-        [WriteToPegasus]
-        [XmlAttribute("loc-def", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public Guid locdef { get; set; }
-
-        [WriteToPegasus]
-        [XmlAttributeAttribute("loc-ref", Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public Guid locref { get; set; }
-    }
-
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class LocTextMotdNoDesc
-    {
-        [XmlElement(Namespace = "scribble:x")]
-        public string @base { get; set; }
 
         [XmlElement(Namespace = "scribble:x")]
         public string skiploc { get; set; }

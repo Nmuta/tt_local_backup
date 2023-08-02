@@ -210,6 +210,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
             public IOpusPlayerInventoryProvider OpusPlayerInventoryProvider { get; set; } = Substitute.For<IOpusPlayerInventoryProvider>();
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Tests")]
             public OpusController Build() => new OpusController(new MemoryCache(new MemoryCacheOptions()), this.OpusPlayerDetailsProvider, this.OpusPlayerInventoryProvider);
         }
     }
