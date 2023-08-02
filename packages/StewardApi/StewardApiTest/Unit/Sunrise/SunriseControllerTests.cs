@@ -33,7 +33,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
     {
         private static readonly Fixture Fixture = new Fixture();
         private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
-        private static readonly ulong InvalidXuid = 1234;
 
         [TestMethod]
         [TestCategory("Unit")]
