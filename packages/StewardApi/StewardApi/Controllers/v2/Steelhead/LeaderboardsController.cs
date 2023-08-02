@@ -235,7 +235,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Creates or Replaces leaderboard scores files.
         /// </summary>
-        [HttpPut("scores/generate")]
+        [HttpPost("scores/generate")]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
@@ -247,6 +247,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string pivotId,
             [FromQuery] string pegasusEnvironment = null)
         {
+            const int scoresToPull = 100_000;
+
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
@@ -302,7 +304,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     while (retry);
 
                     // Successfully pulling scores, now pull them all.
-                    var scoresToPull = 100_000;
                     var scoreIndex = 0;
                     var keepQuerying = true;
 
