@@ -14,6 +14,8 @@ jobs:
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
 
+  - task: NuGetAuthenticate@1
+
   - task: DotNetCoreCLI@2
     displayName: dotnet test
     inputs:

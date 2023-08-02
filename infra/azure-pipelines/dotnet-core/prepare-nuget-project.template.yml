@@ -26,6 +26,9 @@ steps:
     path: '$(NUGET_PACKAGES)'
     cacheHitVar: 'CACHE_RESTORED'
 
+
+- task: NuGetAuthenticate@1
+
 - task: DotNetCoreCLI@2
   displayName: dotnet restore
   condition: ne(variables.CACHE_RESTORED, true)
