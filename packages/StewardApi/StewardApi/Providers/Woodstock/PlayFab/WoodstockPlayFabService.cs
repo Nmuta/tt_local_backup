@@ -15,6 +15,10 @@ using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using EntityKey = PlayFab.EconomyModels.EntityKey;
+using AuthEntityKey = PlayFab.AuthenticationModels.EntityKey;
+using ProfileEntityKey = PlayFab.ProfilesModels.EntityKey;
+using PlayFab.ProfilesModels;
+using Newtonsoft.Json.Linq;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
 {
@@ -135,14 +139,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<ulong, string>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
+        public async Task<Dictionary<ulong, PlayFabProfile>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
         {
-            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
-            async Task<GetPlayFabIDsFromXboxLiveIDsResult> GetPlayFabPlayerEntityAsync(WoodstockPlayFabEnvironment environment, GetPlayFabIDsFromXboxLiveIDsRequest request)
-            {
-                var config = this.GetPlayFabConfig(environment);
-                var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+            var config = this.GetPlayFabConfig(environment);
+            var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
+            var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
 
+            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
+            async Task<GetPlayFabIDsFromXboxLiveIDsResult> GetPlayFabMasterEntityAsync(WoodstockPlayFabEnvironment environment, GetPlayFabIDsFromXboxLiveIDsRequest request)
+            {
                 // GetPlayFabIDsFromXboxLiveIDs DOES NOT support EntityToken. Must use secret key with PlayFabServerAPI
                 object obj = await PlayFabHttp.DoPost("/Server/GetPlayFabIDsFromXboxLiveIDs", request, "X-SecretKey", config.Key, null, instanceSettings).ConfigureAwait(false);
                 if (obj is PlayFabError)
@@ -155,17 +160,55 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetPlayFabIDsFromXboxLiveIDsResult>>(serialized).data;
             }
 
+            async Task<GetTitlePlayersFromMasterPlayerAccountIdsResponse> GetPlayFabTitleEntityAsync(WoodstockPlayFabEnvironment environment, GetTitlePlayersFromMasterPlayerAccountIdsRequest request)
+            {
+                // GetPlayFabIDsFromXboxLiveIDs DOES NOT support EntityToken. Must use secret key with PlayFabServerAPI
+                object obj = await PlayFabHttp.DoPost("/Profile/GetTitlePlayersFromMasterPlayerAccountIds", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
+                if (obj is PlayFabError)
+                {
+                    PlayFabError error = (PlayFabError)obj;
+                    throw new UnknownFailureStewardException($"Failed to get title entity ids. ${error.ErrorMessage}");
+                }
+
+                string serialized = (string)obj;
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetTitlePlayersFromMasterPlayerAccountIdsResponse>>(serialized).data;
+            }
+
             var xuidsAsStrings = xuids.Select(xuid => xuid.ToString()).ToList();
-            var response = await GetPlayFabPlayerEntityAsync(environment, new GetPlayFabIDsFromXboxLiveIDsRequest()
+            var masterResponse = await GetPlayFabMasterEntityAsync(environment, new GetPlayFabIDsFromXboxLiveIDsRequest()
             {
                 XboxLiveAccountIDs = xuidsAsStrings,
                 Sandbox = environment == WoodstockPlayFabEnvironment.Retail ? "RETAIL" : "TURN.1",
             }).ConfigureAwait(false);
 
-            var resultDictionary = new Dictionary<ulong, string>();
-            response.Data.ForEach(player =>
+            var masterIds = masterResponse.Data.Where(masterAccount => masterAccount.PlayFabId != null).Select(masterAccount => masterAccount.PlayFabId).ToList();
+            var titleDictionary = new Dictionary<string, ProfileEntityKey>();
+            if (masterIds.Count > 0)
             {
-                resultDictionary.Add(Convert.ToUInt64(player.XboxLiveAccountId), player.PlayFabId);
+                var titleResponse = await GetPlayFabTitleEntityAsync(environment, new GetTitlePlayersFromMasterPlayerAccountIdsRequest()
+                {
+                    MasterPlayerAccountIds = masterIds,
+                    TitleId = config.TitleId,
+                }).ConfigureAwait(false);
+
+                titleDictionary = titleResponse.TitlePlayerAccounts;
+            }
+
+            var resultDictionary = new Dictionary<ulong, PlayFabProfile>();
+            masterResponse.Data.ForEach(player =>
+            {
+                string titleId = null;
+                if (player.PlayFabId != null)
+                {
+                    titleId = titleDictionary.GetValueOrDefault(player.PlayFabId)?.Id ?? null;
+                }
+
+                var profile = new PlayFabProfile()
+                { 
+                    Master = player.PlayFabId,
+                    Title = titleId,
+                };
+                resultDictionary.Add(Convert.ToUInt64(player.XboxLiveAccountId), profile);
             });
 
             return resultDictionary;
@@ -174,9 +217,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <inheritdoc />
         public async Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
         {
+            var entity = new EntityKey()
+            {
+                Type = "title_player_account",
+                Id = playfabEntityId,
+            };
+
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             async Task<GetTransactionHistoryResponse> GetPlayFabTransactionHistoryAsync(WoodstockPlayFabEnvironment environment, GetTransactionHistoryRequest request)
             {
+                //PlayFabEconomyAPI.GetTransactionHistoryAsync();
+
                 var config = this.GetPlayFabConfig(environment);
                 var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
                 var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
@@ -194,11 +245,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
 
             var response = await GetPlayFabTransactionHistoryAsync(environment, new GetTransactionHistoryRequest()
             {
-                Entity = new EntityKey()
-                {
-                    Type = "title_player_account",
-                    Id = playfabEntityId,
-                },
+                Entity = entity,
+                CollectionId = "default",
+                Count = 10,
             }).ConfigureAwait(false);
 
             return this.mapper.SafeMap<IEnumerable<PlayFabTransaction>>(response.Transactions);
