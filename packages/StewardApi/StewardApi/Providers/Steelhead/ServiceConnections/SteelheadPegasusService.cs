@@ -100,12 +100,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.formatPipelineBuildDefinition = configuration[ConfigurationKeyConstants.SteelheadFormatPipelineBuildDefinition];
 
             string steelheadContentPAT = keyVaultConfig.SteelheadContentAccessToken;
-
-            this.azureDevOpsManager = azureDevOpsFactory.Create(
-                configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl],
-                steelheadContentPAT,
-                Guid.Parse(configuration[ConfigurationKeyConstants.SteelheadContentProjectId]),
-                Guid.Parse(configuration[ConfigurationKeyConstants.SteelheadContentRepoId]));
+            try
+            {
+                this.azureDevOpsManager = azureDevOpsFactory.Create(
+                    configuration[ConfigurationKeyConstants.SteelheadContentOrganizationUrl],
+                    steelheadContentPAT,
+                    Guid.Parse(configuration[ConfigurationKeyConstants.SteelheadContentProjectId]),
+                    Guid.Parse(configuration[ConfigurationKeyConstants.SteelheadContentRepoId]));
+            }
+            catch (Exception ex)
+            {
+                loggingService.LogException(new AppInsightsException($"Unable to initialize ADO connection", ex));
+            }
         }
 
         /// <inheritdoc />
