@@ -35,7 +35,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
         private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
-        private static readonly ulong InvalidXuid = 1234;
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -1413,6 +1412,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             public IRequestValidator<WoodstockUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockUserFlagsInput>>();
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test")]
             public WoodstockController Build() => new WoodstockController(
                 new MemoryCache(new MemoryCacheOptions()),
                 this.ActionLogger,

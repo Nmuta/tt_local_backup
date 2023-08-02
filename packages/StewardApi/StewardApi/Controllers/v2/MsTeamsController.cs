@@ -92,5 +92,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
 
             return this.Ok();
         }
+
+        /// <summary>
+        ///    Create permission request on MS Teams.
+        /// </summary>
+        [HttpPost("permissionRequest")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> CreateMsTeamsPermissionRequestAsync([FromBody] MsTeamsPermissionRequest permissionRequest)
+        {
+            var user = this.User.UserClaims();
+            await this.msTeamsService.SendHelpChannelMessageAsync(permissionRequest.ToMsTeamsAdaptiveCardJson(user)).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///    Create question on MS Teams.
+        /// </summary>
+        [HttpPost("question")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> CreateMsTeamsQuestionAsync([FromBody] MsTeamsQuestion question)
+        {
+            var user = this.User.UserClaims();
+            await this.msTeamsService.SendHelpChannelMessageAsync(question.ToMsTeamsAdaptiveCardJson(user)).ConfigureAwait(true);
+
+            return this.Ok();
+        }
     }
 }

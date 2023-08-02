@@ -1089,6 +1089,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
 
             public IRequestValidator<ApolloUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloUserFlagsInput>>();
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Tests")]
             public ApolloController Build() => new ApolloController(
                 new MemoryCache(new MemoryCacheOptions()),
                 this.ActionLogger,

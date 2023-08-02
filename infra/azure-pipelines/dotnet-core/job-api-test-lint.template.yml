@@ -1,0 +1,27 @@
+# This file runs a test build as a single parallel job.
+# Designed for use with Steward.
+# It is intended to be run only after a `dotnet` cache is made.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where dotnet can be run. Like 'packages/StewardApi'."
+  type: string
+
+jobs:
+- job: API_Test_Lint
+  displayName: Lint (API)
+  steps:
+  - template: load-nuget-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+
+  - task: NuGetAuthenticate@1
+
+  - task: DotNetCoreCLI@2
+    displayName: dotnet build
+    inputs:
+      projects: >-
+        ${{parameters.workingDirectory}}/**/*.csproj
+      arguments: /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(Agent.TempDirectory)\WebAppContent\\" -warnaserror
+      selectOrConfig: config
+      feedRestore: /2cea4146-e4d1-416d-9823-c02540cc01a9

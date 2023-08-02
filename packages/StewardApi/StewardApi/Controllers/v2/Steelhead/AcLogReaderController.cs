@@ -1,29 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
-using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
-using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
     /// <summary>
@@ -68,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                var p = new Process();
+                using var p = new Process();
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.FileName = $"{path}\\{this.exeName}";
                 p.StartInfo.Arguments = $"-f {uniqueFullPath}";
@@ -105,3 +92,4 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
     }
 }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously

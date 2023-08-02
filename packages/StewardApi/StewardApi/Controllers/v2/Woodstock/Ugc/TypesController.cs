@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetUgcLivery(string id)
-            => this.UgcLookupWithCarDataAsync<GetUGCLiveryOutput, WoodstockUgcLiveryItem>(id, this.ServicesWithLiveStewardCms.StorefrontManagementService.GetUGCLivery, o => o.result);
+            => this.UgcLookupWithCarDataAsync<GetUGCLiveryOutput, WoodstockUgcLiveryItem>(id, this.Services.StorefrontManagementService.GetUGCLivery, o => o.result);
 
         /// <summary>
         ///     Gets a UGC photo by ID.
@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetUgcPhoto(string id)
-            => this.UgcLookupWithCarDataAsync(id, this.ServicesWithLiveStewardCms.StorefrontManagementService.GetUGCPhoto, o => o.result);
+            => this.UgcLookupWithCarDataAsync(id, this.Services.StorefrontManagementService.GetUGCPhoto, o => o.result);
 
         /// <summary>
         ///     Gets a UGC tune by ID.
@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetUgcTune(string id)
-            => this.UgcLookupWithCarDataAsync(id, this.ServicesWithLiveStewardCms.StorefrontManagementService.GetUGCTune, o => o.result);
+            => this.UgcLookupWithCarDataAsync(id, this.Services.StorefrontManagementService.GetUGCTune, o => o.result);
 
         /// <summary>
         ///     Gets a UGC blueprint by ID.
@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetUgcEventBlueprint(string id)
-            => this.SimpleUgcLookupAsync(id, this.ServicesWithLiveStewardCms.LiveOpsService.GetUGCEventBlueprint, o => o.result);
+            => this.SimpleUgcLookupAsync(id, this.Services.LiveOpsService.GetUGCEventBlueprint, o => o.result);
 
         /// <summary>
         ///     Gets a UGC community challenge by ID.
@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetUgcCommunityChallenge(string id)
-            => this.SimpleUgcLookupAsync(id, this.ServicesWithLiveStewardCms.LiveOpsService.GetUGCCommunityChallenge, o => o.communityChallengeData);
+            => this.SimpleUgcLookupAsync(id, this.Services.LiveOpsService.GetUGCCommunityChallenge, o => o.communityChallengeData);
 
         /// <summary>
         ///     Gets a UGC layer group by ID.
@@ -109,7 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public Task<IActionResult> GetLayerGroup(string id)
-            => this.SimpleUgcLookupAsync(id, this.ServicesWithLiveStewardCms.StorefrontManagementService.GetUGCLayerGroup, o => o.result);
+            => this.SimpleUgcLookupAsync(id, this.Services.StorefrontManagementService.GetUGCLayerGroup, o => o.result);
 
 
         private Task<IActionResult> SimpleUgcLookupAsync<TempT>(

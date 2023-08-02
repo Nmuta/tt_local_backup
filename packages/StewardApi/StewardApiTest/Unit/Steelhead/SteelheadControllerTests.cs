@@ -1413,6 +1413,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public IRequestValidator<SteelheadBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadBanParametersInput>>();
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test")]
             public SteelheadController Build() => new SteelheadController(
                 new MemoryCache(new MemoryCacheOptions()),
                 this.ActionLogger,

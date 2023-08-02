@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.Services.Orm.SqlGen;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
@@ -82,7 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Generate a CreatedResult to be returned by the controller for background jobs.
         /// </summary>
-        public static CreatedResult GetCreatedResult(Func<Uri, object?, CreatedResult> createdResultMethod, string scheme, HostString host, string jobId)
+        public static CreatedResult GetCreatedResult(Func<Uri, object, CreatedResult> createdResultMethod, string scheme, HostString host, string jobId)
         {
             return createdResultMethod(
                 new Uri($"{scheme}://{host}/api/v1/jobs/jobId({jobId})"),

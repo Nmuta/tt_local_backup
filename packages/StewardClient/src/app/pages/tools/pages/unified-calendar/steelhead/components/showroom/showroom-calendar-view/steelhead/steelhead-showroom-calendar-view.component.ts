@@ -253,7 +253,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
       title: title,
       cssClass: cssClass,
       meta: meta,
-      allDay: false,
+      allDay: true,
       resizable: {
         beforeStart: false,
         afterEnd: false,
