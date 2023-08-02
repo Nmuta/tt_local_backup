@@ -1,4 +1,6 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿using SteelheadLiveOpsContent;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents Pegasus localized string data.
@@ -18,6 +20,7 @@
         /// <summary>
         ///     Gets or sets the category.
         /// </summary>
+        /// <remarks><see cref="LocCategory" />.</remarks>
         public string Category { get; set; }
     }
 }
