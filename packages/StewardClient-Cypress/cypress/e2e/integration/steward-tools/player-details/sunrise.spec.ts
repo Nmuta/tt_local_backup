@@ -55,7 +55,7 @@ context('Steward / Tools / Player Details / Sunrise', () => {
     });
 
     context('With default user', () => {
-       contextSearchByXuidForPlayerDetails(RetailUsers[defaultSunriseUser]);
+      contextSearchByXuidForPlayerDetails(RetailUsers[defaultSunriseUser]);
       testUserDetails(defaultSunriseUser);
       testDeepDive();
       testInventory();
@@ -76,7 +76,7 @@ function testUserDetails(userToSearch: string): void {
     before(() => {
       swapToTab('User Details');
     });
-    
+
     // found user
     userDetailsVerifyPlayerIdentityResults(userToSearch);
 
