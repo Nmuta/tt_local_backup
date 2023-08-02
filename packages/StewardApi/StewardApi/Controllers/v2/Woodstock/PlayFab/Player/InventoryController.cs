@@ -13,6 +13,9 @@ using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
+using Microsoft.AspNetCore.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
@@ -46,6 +49,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         [HttpPost("add")]
         [SwaggerResponse(200, type: typeof(IList<PlayFabBuildSummary>))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.PlayFabInventory)]
+        [Authorize(Policy = UserAttribute.ManagePlayFabInventory)]
         public async Task<IActionResult> AddPlayFabInventoryItem(string playFabEntityId, [FromBody] PlayFabInventoryChangeRequest inventoryChange)
         {
             inventoryChange.ShouldNotBeNull(nameof(inventoryChange));
@@ -76,6 +81,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         [HttpPost("remove")]
         [SwaggerResponse(200, type: typeof(IList<PlayFabBuildSummary>))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.PlayFabInventory)]
+        [Authorize(Policy = UserAttribute.ManagePlayFabInventory)]
         public async Task<IActionResult> RemovePlayFabInventoryItem(string playFabEntityId, [FromBody] PlayFabInventoryChangeRequest inventoryChange)
         {
             inventoryChange.ShouldNotBeNull(nameof(inventoryChange));
