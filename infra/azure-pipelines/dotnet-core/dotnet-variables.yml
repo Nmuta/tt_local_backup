@@ -1,0 +1,5 @@
+# This file stores variables common to all node/yarn build pipelines.
+
+variables:
+  NUGET_PACKAGES: $(Pipeline.Workspace)/.nuget/packages
+  VM_IMAGE: ubuntu-20.04

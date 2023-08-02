@@ -11,7 +11,6 @@ namespace Turn10.LiveOps.StewardApi.Common
 {
     /// <summary>
     ///     Container for all secrets stored in KeyVault.
-    ///     Call <see cref="Initialize"/> before use.
     /// </summary>
     public class KeyVaultConfig
     {

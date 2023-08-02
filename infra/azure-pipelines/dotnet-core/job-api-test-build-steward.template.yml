@@ -1,0 +1,49 @@
+# This file runs a test build as a single parallel job.
+# Designed for use with Steward.
+# It is intended to be run only after a `dotnet` cache is made.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where dotnet can be run. Like 'packages/StewardApi'."
+  type: string
+
+jobs:
+- job: API_Test_Build
+  displayName: Build (API)
+  steps:
+  - template: load-nuget-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+
+  - task: NuGetAuthenticate@1
+
+  - task: DotNetCoreCLI@2
+    displayName: dotnet build
+    inputs:
+      projects: >-
+        ${{parameters.workingDirectory}}/StewardApi/*.csproj
+      arguments: /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(Agent.TempDirectory)\WebAppContent\\"
+      selectOrConfig: config
+      feedRestore: /2cea4146-e4d1-416d-9823-c02540cc01a9
+
+  - task: UniversalPackages@0
+    displayName: Universal download
+    inputs:
+      downloadDirectory: $(Agent.TempDirectory)/WebAppContent
+      feedListDownload: d177fc04-c782-4ae5-8a8b-b291393a1163
+      packageListDownload: 8a3d77cb-3e1a-415a-a881-de0793d11628
+      versionListDownload: '*'
+
+  - task: ArchiveFiles@2
+    displayName: Archive Files
+    inputs:
+      rootFolderOrFile: $(Agent.TempDirectory)/WebAppContent
+      includeRootFolder: false
+      sevenZipCompression: 5
+      archiveFile: $(Build.ArtifactStagingDirectory)/api.zip
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: api-drop'
+    inputs:
+      PathtoPublish: $(build.artifactstagingdirectory)
+      ArtifactName: api-drop

@@ -1,0 +1,43 @@
+# This file contains the prep steps for any nuget project.
+# It configures the environment, retrieves packages, and ensures they are cached.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where dotnet commands can be run. Like 'packages/StewardApi'."
+  type: string
+
+steps:
+- checkout: self
+  fetchDepth: 1
+  submodules: true
+
+- task: Assembly-Info-NetCore@2
+  displayName: Set Assembly Version
+  inputs:
+    InformationalVersion: $(Build.BuildNumber)
+
+- task: Cache@2
+  displayName: Cache
+  inputs:
+    key: 'nuget | "$(Agent.OS)" | ${{parameters.workingDirectory}}/**/packages.lock.json,!**/bin/**,!**/obj/**'
+    restoreKeys: |
+       nuget | "$(Agent.OS)"
+       nuget
+    path: '$(NUGET_PACKAGES)'
+    cacheHitVar: 'CACHE_RESTORED'
+
+
+- task: NuGetAuthenticate@1
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet restore
+  condition: ne(variables.CACHE_RESTORED, true)
+  inputs:
+    command: restore
+    projects: >-
+      ${{parameters.workingDirectory}}/StewardApi/*.csproj
+
+      ${{parameters.workingDirectory}}/StewardApiTest/*.csproj
+    selectOrConfig: config
+    feedRestore: /2cea4146-e4d1-416d-9823-c02540cc01a9
+    nugetConfigPath: ${{parameters.workingDirectory}}/nuget.config

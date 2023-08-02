@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
             var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
@@ -61,6 +61,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
             this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
+
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -88,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 await this.tableStorageClient.ExecuteAsync(insertOrReplaceOperation).ConfigureAwait(false);
 
                 // Update all user ids mem cache. No need to await, letting it run in the background
-                this.QueryUserIdsAsync();
+                await this.QueryUserIdsAsync();
             }
             catch (Exception ex)
             {
@@ -212,7 +214,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     await this.UpdateStewardUserAsync(id, name, email, role, user.Attributes, user.Team).ConfigureAwait(false);
                 }
             }
-            catch (NotFoundStewardException _)
+            catch (NotFoundStewardException)
             {
                 await this.CreateStewardUserAsync(id, name, email, role, string.Empty, string.Empty).ConfigureAwait(false);
             }
