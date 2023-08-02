@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode); //This is not failing, because the API returns an empty object instead of throwing. Park on how we want to handle these as we go forwards.
+                Assert.AreEqual(HttpStatusCode.NotFound, ex.StatusCode);
             }
         }
 
