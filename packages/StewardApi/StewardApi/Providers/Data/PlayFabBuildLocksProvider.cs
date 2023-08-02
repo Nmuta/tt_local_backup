@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
             var tableStorageConnectionString = keyVaultConfig.SharedTableStorageConnectionString;
@@ -57,6 +57,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
             this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
+
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />

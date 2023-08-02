@@ -295,7 +295,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
             var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
@@ -304,6 +304,8 @@ namespace Turn10.LiveOps.StewardApi.Providers
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
             this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
+
+            return Task.CompletedTask;
         }
 
         private void AddFinalStatusToCache(BackgroundJobInternal backgroundJob, string jobId)
