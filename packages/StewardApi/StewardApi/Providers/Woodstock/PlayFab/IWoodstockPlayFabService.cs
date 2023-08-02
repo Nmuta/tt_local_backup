@@ -37,16 +37,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <summary>
         ///     Gets PlayFab player's transaction history.
         /// </summary>
-        Task<object> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment);
+        Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Adds currency to player's account.
         /// </summary>
-        Task AddCurrencyToPlayerAsync(string playfabEntityId, string currencyId, int amount, WoodstockPlayFabEnvironment environment);
+        Task AddInventoryItemToPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Removes currency from player's account.
         /// </summary>
-        Task RemoveCurrencyFromPlayerAsync(string playfabEntityId, string currencyId, int amount, WoodstockPlayFabEnvironment environment);
+        Task RemoveInventoryItemFromPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment);
     }
 }

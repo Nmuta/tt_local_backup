@@ -50,7 +50,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
                 var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
 
-                request.AuthenticationContext = authContext;
                 object obj = await PlayFabHttp.DoPost("/MultiplayerServer/ListBuildSummariesV2", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
                 if (obj is PlayFabError)
                 {
@@ -86,6 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 var config = this.GetPlayFabConfig(environment);
                 var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
                 var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+
                 object obj = await PlayFabHttp.DoPost("/MultiplayerServer/GetBuild", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false); ;
                 if (obj is PlayFabError)
                 {
@@ -114,6 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 var config = this.GetPlayFabConfig(environment);
                 var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
                 var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+
                 object obj = await PlayFabHttp.DoPost("/Catalog/SearchItems", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
                 if (obj is PlayFabError)
                 {
@@ -140,8 +141,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             async Task<GetPlayFabIDsFromXboxLiveIDsResult> GetPlayFabPlayerEntityAsync(WoodstockPlayFabEnvironment environment, GetPlayFabIDsFromXboxLiveIDsRequest request)
             {
                 var config = this.GetPlayFabConfig(environment);
-                //var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
                 var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+
                 // GetPlayFabIDsFromXboxLiveIDs DOES NOT support EntityToken. Must use secret key with PlayFabServerAPI
                 object obj = await PlayFabHttp.DoPost("/Server/GetPlayFabIDsFromXboxLiveIDs", request, "X-SecretKey", config.Key, null, instanceSettings).ConfigureAwait(false);
                 if (obj is PlayFabError)
@@ -171,7 +172,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<object> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
+        public async Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             async Task<GetTransactionHistoryResponse> GetPlayFabTransactionHistoryAsync(WoodstockPlayFabEnvironment environment, GetTransactionHistoryRequest request)
@@ -204,7 +205,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task AddCurrencyToPlayerAsync(string playfabEntityId, string currencyId, int amount, WoodstockPlayFabEnvironment environment)
+        public async Task AddInventoryItemToPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             async Task<AddInventoryItemsResponse> AddPlayFabInventoryItemsAsync(WoodstockPlayFabEnvironment environment, AddInventoryItemsRequest request)
@@ -217,7 +218,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 if (obj is PlayFabError)
                 {
                     PlayFabError error = (PlayFabError)obj;
-                    throw new UnknownFailureStewardException($"Failed to add currency to player (playerEntityId: {playfabEntityId}) (currencyId: {currencyId}) (amount: {amount}). ${error.ErrorMessage}");
+                    throw new UnknownFailureStewardException(error.ErrorMessage);
                 }
 
                 string serialized = (string)obj;
@@ -234,13 +235,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 Amount = amount,
                 Item = new InventoryItemReference()
                 {
-                    Id = currencyId,
+                    Id = itemId,
                 },
             }).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task RemoveCurrencyFromPlayerAsync(string playfabEntityId, string currencyId, int amount, WoodstockPlayFabEnvironment environment)
+        public async Task RemoveInventoryItemFromPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             async Task<SubtractInventoryItemsResponse> SubtractPlayFabInventoryItemsAsync(WoodstockPlayFabEnvironment environment, SubtractInventoryItemsRequest request)
@@ -253,7 +254,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 if (obj is PlayFabError)
                 {
                     PlayFabError error = (PlayFabError)obj;
-                    throw new UnknownFailureStewardException($"Failed to add currency to player (playerEntityId: {playfabEntityId}) (currencyId: {currencyId}) (amount: {amount}). ${error.ErrorMessage}");
+                    throw new UnknownFailureStewardException(error.ErrorMessage);
                 }
 
                 string serialized = (string)obj;
@@ -270,7 +271,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 Amount = amount,
                 Item = new InventoryItemReference()
                 {
-                    Id = currencyId,
+                    Id = itemId,
                 },
             }).ConfigureAwait(false);
         }

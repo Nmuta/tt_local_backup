@@ -20,7 +20,6 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using Microsoft.AspNetCore.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
-using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab

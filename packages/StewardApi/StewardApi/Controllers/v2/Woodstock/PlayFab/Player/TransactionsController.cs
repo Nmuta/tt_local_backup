@@ -14,25 +14,25 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Players
+namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
 {
     /// <summary>
     ///     Handles requests for Woodstock players PlayFab integrations.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/players/playfab")]
+    [Route("api/v{version:apiVersion}/title/woodstock/playfab/player/{playFabEntityId}/transactions")]
     [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
     [StandardTags(Title.Woodstock, Target.PlayFab)]
-    public class PlayFabController : V2WoodstockControllerBase
+    public class TransactionsController : V2WoodstockControllerBase
     {
         private readonly IWoodstockPlayFabService playFabService;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PlayFabController"/> class for Woodstock.
+        ///     Initializes a new instance of the <see cref="TransactionsController"/> class for Woodstock.
         /// </summary>
-        public PlayFabController(IWoodstockPlayFabService playFabService)
+        public TransactionsController(IWoodstockPlayFabService playFabService)
         {
             playFabService.ShouldNotBeNull(nameof(playFabService));
 
@@ -40,24 +40,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.Players
         }
 
         /// <summary>
-        ///     Retrieves list of PlayFab player ids.
+        ///     Retrieves playfab
         /// </summary>
-        [HttpPost("ids")]
-        [SwaggerResponse(200, type: typeof(IList<PlayFabBuildSummary>))]
+        [HttpGet]
+        [SwaggerResponse(200, type: typeof(IList<PlayFabTransaction>))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
-        public async Task<IActionResult> GetPlayFabEntityIds([FromBody] IList<ulong> xuids)
+        public async Task<IActionResult> GetPlayFabTransactionHistory(string playFabEntityId)
         {
             var playFabEnvironment = this.PlayFabEnvironment;
 
             try
             {
-                var response = await this.playFabService.GetPlayerEntityIdsAsync(xuids, playFabEnvironment).ConfigureAwait(true);
+                var response = await this.playFabService.GetTransactionHistoryAsync(playFabEntityId, playFabEnvironment).ConfigureAwait(true);
 
                 return this.Ok(response);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Failed to get PlayFab entity ids. (playFabEnvironment: {playFabEnvironment})", ex);
+                throw new UnknownFailureStewardException($"Failed to get player PlayFab transaction history. (playFabId: {playFabEntityId}) (playFabEnvironment: {playFabEnvironment})", ex);
             }
         }
     }
