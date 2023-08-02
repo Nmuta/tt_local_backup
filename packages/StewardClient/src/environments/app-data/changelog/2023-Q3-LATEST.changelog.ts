@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'ca1658d4-d493-48f3-ae8d-3fcc57a0b530',
+      shortText: 'Add request Permission or ask Question to Contact Us sidebar',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.PlayFab },
       uuid: 'bf0278c0-45d2-408e-99a8-bcab7cc85caa',
       shortText: 'Support PlayFab retail environment',
