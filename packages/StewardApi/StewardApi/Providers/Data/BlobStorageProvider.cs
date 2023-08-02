@@ -31,14 +31,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Initializes a new instance of the <see cref="BlobStorageProvider"/> class.
         /// </summary>
         [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
-        public BlobStorageProvider(IKeyVaultProvider keyVaultProvider, IConfiguration configuration)
+        public BlobStorageProvider(KeyVaultConfig keyVaultConfig)
         {
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
-            configuration.ShouldNotBeNull(nameof(configuration));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
 
-            var keyVaultUrl = configuration[ConfigurationKeyConstants.KeyVaultUrl];
-            var blobConnectionSecretName = configuration[ConfigurationKeyConstants.BlobConnectionSecretName];
-            var blobConnectionString = keyVaultProvider.GetSecretAsync(keyVaultUrl, blobConnectionSecretName).GetAwaiter().GetResult();
+            var blobConnectionString = keyVaultConfig.BlobConnectionString;
 
             var serviceClient = new BlobServiceClient(blobConnectionString);
             var containerClient = serviceClient.GetBlobContainerClient(SettingsContainerName);

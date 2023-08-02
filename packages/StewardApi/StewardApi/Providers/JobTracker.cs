@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         private readonly ITableStorageClientFactory tableStorageClientFactory;
         private readonly IBlobRepository blobRepository;
         private readonly IRefreshableCacheStore refreshableCacheStore;
-        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly KeyVaultConfig keyVaultConfig;
         private readonly IConfiguration configuration;
         private readonly HubManager hubManager;
         private ITableStorageClient tableStorageClient;
@@ -46,16 +46,16 @@ namespace Turn10.LiveOps.StewardApi.Providers
             IConfiguration configuration,
             IBlobRepository blobRepository,
             IRefreshableCacheStore refreshableCacheStore,
-            IKeyVaultProvider keyVaultProvider)
+            KeyVaultConfig keyVaultConfig)
         {
             hubManager.ShouldNotBeNull(nameof(hubManager));
             tableStorageClientFactory.ShouldNotBeNull(nameof(tableStorageClientFactory));
             blobRepository.ShouldNotBeNull(nameof(blobRepository));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
 
-            this.keyVaultProvider = keyVaultProvider;
+            this.keyVaultConfig = keyVaultConfig;
             this.configuration = configuration;
             this.tableStorageClientFactory = tableStorageClientFactory;
             this.hubManager = hubManager;
@@ -298,9 +298,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         public async Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
-                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                this.configuration[ConfigurationKeyConstants.CosmosTableSecretName]).ConfigureAwait(false);
+            var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
 
             this.configuration.Bind("BackgroundJobStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

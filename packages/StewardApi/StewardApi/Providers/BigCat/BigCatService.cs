@@ -41,23 +41,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.BigCat
         private readonly string clientId;
         private string clientSecret;
 
-        private readonly IKeyVaultProvider keyVaultProvider;
-        private readonly IConfiguration configuration;
+        private readonly KeyVaultConfig keyVaultConfig;
         private readonly IRefreshableCacheStore refreshableCacheStore;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BigCatService"/> class.
         /// </summary>
-        public BigCatService(IKeyVaultProvider keyVaultProvider, IRefreshableCacheStore refreshableCacheStore, IConfiguration configuration)
+        public BigCatService(KeyVaultConfig keyVaultConfig, IRefreshableCacheStore refreshableCacheStore, IConfiguration configuration)
         {
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
-            configuration.ShouldNotBeNull(nameof(configuration));
 
             this.tenantId = configuration[ConfigurationKeyConstants.AzureTenantId];
             this.clientId = configuration[ConfigurationKeyConstants.AzureClientId];
-            this.keyVaultProvider = keyVaultProvider;
-            this.configuration = configuration;
+            this.keyVaultConfig = keyVaultConfig;
             this.refreshableCacheStore = refreshableCacheStore;
         }
 
@@ -76,9 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.BigCat
         /// <inheritdoc />
         public async Task InitializeAsync()
         {
-            this.clientSecret = await this.keyVaultProvider.GetSecretAsync(
-                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                this.configuration[ConfigurationKeyConstants.AzureClientSecretKey]).ConfigureAwait(false);
+            this.clientSecret = keyVaultConfig.AzureAuthClientSecret;
 
             await this.MintAuthTokenAsync().ConfigureAwait(false);
         }
