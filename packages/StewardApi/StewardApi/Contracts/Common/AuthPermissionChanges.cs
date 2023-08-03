@@ -11,11 +11,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the list of perm attributes to add.
         /// </summary>
-        public IEnumerable<AuthorizationAttribute> AttributesToAdd { get; set; }
+        public IEnumerable<AuthorizationAttributeData> AttributesToAdd { get; set; }
 
         /// <summary>
         ///     Gets or sets the list of perm attributes to remove.
         /// </summary>
-        public IEnumerable<AuthorizationAttribute> AttributesToRemove { get; set; }
+        public IEnumerable<AuthorizationAttributeData> AttributesToRemove { get; set; }
     }
 }
