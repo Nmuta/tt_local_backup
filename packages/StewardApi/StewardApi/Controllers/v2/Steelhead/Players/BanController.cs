@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -231,30 +232,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         ///     Bans players.
         /// </summary>
         [HttpPost]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(201, type: typeof(List<BanResult>))]
-        [SwaggerResponse(202)]
+        [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Banning)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         [Authorize(Policy = UserAttribute.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
-            [FromBody] IList<SteelheadBanParametersInput> banInput)
+            [FromBody] IList<SteelheadBanParametersInput> banInput,
+            [FromQuery] bool useBackgroundProcessing = false)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            var endpoint = this.SteelheadEndpoint.Value;
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
-
-            var banParameters = this.mapper.SafeMap<IList<SteelheadBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -262,63 +259,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var results = await this.BanUsersAsync(
-                banParameters,
-                this.Services.LiveOpsService,
-                this.Services.UserManagementService,
-                requesterObjectId).ConfigureAwait(true);
-
-            var bannedXuids = results.Where(banResult => banResult.Error == null)
-                .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
-
-            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
-                .ConfigureAwait(true);
-
-            return this.Ok(results);
+            if (useBackgroundProcessing)
+            {
+                var response = await this.BanPlayersUseBackgroundProcessing(banInput, requesterObjectId).ConfigureAwait(true);
+                return response;
+            }
+            else
+            {
+                var userManagementService = this.Services.UserManagementService;
+                var liveOpsService = this.Services.LiveOpsService;
+                var response = await this.BanPlayers(banInput, requesterObjectId, liveOpsService, userManagementService).ConfigureAwait(true);
+                return this.Ok(response);
+            }
         }
 
-        /// <summary>
-        ///     Bans players.
-        /// </summary>
-        [HttpPost("useBackgroundProcessing")]
-        [AuthorizeRoles(
-            UserRole.GeneralUser,
-            UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
-        public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
-            [FromBody] IList<SteelheadBanParametersInput> banInput)
+        // Bans players using a background job.
+        private async Task<CreatedResult> BanPlayersUseBackgroundProcessing(IList<SteelheadBanParametersInput> banInput, string requesterObjectId)
         {
-            var userClaims = this.User.UserClaims();
-            var requesterObjectId = userClaims.ObjectId;
-
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            banInput.ShouldNotBeNull(nameof(banInput));
-
-            var endpoint = this.SteelheadEndpoint.Value;
-            foreach (var banParam in banInput)
-            {
-                this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
-                this.banParametersRequestValidator.Validate(banParam, this.ModelState);
-            }
-
-            var banParameters = this.mapper.SafeMap<IList<SteelheadBanParameters>>(banInput);
-
-            if (!this.ModelState.IsValid)
-            {
-                var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
-                throw new InvalidArgumentsStewardException(result);
-            }
-
             var jobId = await this.jobTracker.CreateNewJobAsync(
-                banParameters.ToJson(),
+                banInput.ToJson(),
                 requesterObjectId,
-                $"Steelhead Banning: {banParameters.Count} recipients.",
+                $"Woodstock Banning: {banInput.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
-            var liveOpsService = this.Services.LiveOpsService;
             var userManagementService = this.Services.UserManagementService;
+            var liveOpsService = this.Services.LiveOpsService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -326,57 +291,41 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 // Do not throw.
                 try
                 {
-                    var results = await this.BanUsersAsync(
-                        banParameters,
-                        liveOpsService,
-                        userManagementService,
-                        requesterObjectId).ConfigureAwait(true);
+                    var response = await this.BanPlayers(banInput, requesterObjectId, liveOpsService, userManagementService).ConfigureAwait(false);
 
-                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(results);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
-                        .ConfigureAwait(true);
-
-                    var bannedXuids = results.Where(banResult => banResult.Error == null)
-                        .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
-
-                    await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
-                        .ConfigureAwait(true);
+                    var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
                     this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
 
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
-                        .ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Created(
-                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
-                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
         }
 
-        private async Task<IList<BanResult>> BanUsersAsync(
-            IList<SteelheadBanParameters> banParameters,
+        // Bans players.
+        private async Task<IList<BanResult>> BanPlayers(
+            IList<SteelheadBanParametersInput> banInput,
+            string requesterObjectId,
             ILiveOpsService liveOpsService,
-            IUserManagementService userManagementService,
-            string requesterObjectId)
+            IUserManagementService userManagementService)
         {
-            banParameters.ShouldNotBeNull(nameof(banParameters));
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            var banResults = new List<BanResult>();
 
             const int maxXuidsPerRequest = 10;
-            var endpoint = this.SteelheadEndpoint.Value;
+            var emptyDuration = new ForzaTimeSpan();
 
-            foreach (var param in banParameters)
+            foreach (var ban in banInput)
             {
-                param.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(param.FeatureArea));
-
-                if (param.Xuid == default)
+                if (ban.Xuid == default)
                 {
-                    if (string.IsNullOrWhiteSpace(param.Gamertag))
+                    if (string.IsNullOrWhiteSpace(ban.Gamertag))
                     {
                         throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
                     }
@@ -384,37 +333,60 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     try
                     {
                         var userResult = await liveOpsService.GetLiveOpsUserDataByGamerTag(
-                                param.Gamertag).ConfigureAwait(true);
+                                ban.Gamertag).ConfigureAwait(true);
 
-                        param.Xuid = userResult.userData.qwXuid;
+                        ban.Xuid = userResult.userData.qwXuid;
                     }
                     catch (Exception ex)
                     {
-                        throw new NotFoundStewardException($"No profile found. (Gamertag: {param.Gamertag}).", ex);
+                        throw new NotFoundStewardException(
+                            $"No profile found for Gamertag: {ban.Gamertag}.",
+                            ex);
                     }
                 }
             }
 
             try
             {
-                var banResults = new List<BanResult>();
-
-                for (var i = 0; i < banParameters.Count; i += maxXuidsPerRequest)
+                // This assume that the parameters are the same for every ban input which is how Steward currently works
+                var banReasonGroup = this.banReasonGroups.First(x => x.Name == banInput[0].ReasonGroupName);
+                var formattedBanAreas = string.Join(", ", banReasonGroup.FeatureAreas);
+                var calculatedBanAreas = banReasonGroup.FeatureAreas.Select(x => (uint)x).Aggregate((a, b) => a | b);
+                for (var i = 0; i < banInput.Count; i += maxXuidsPerRequest)
                 {
-                    var paramBatch = banParameters.ToList()
-                        .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
-                    var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                    var result = await userManagementService
-                        .BanUsers(mappedBanParameters.ToArray(), mappedBanParameters.Count)
-                        .ConfigureAwait(true);
+                    var paramBatch = banInput.ToList().GetRange(i, Math.Min(maxXuidsPerRequest, banInput.Count - i));
 
-                    banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
+                    var mappedBanParameters = paramBatch.Select(x => new ForzaUserBanParametersV2()
+                    {
+                        xuids = new ulong[] { x.Xuid.Value },
+                        DeleteLeaderboardEntries = x.DeleteLeaderboardEntries.Value,
+                        BanEntryReason = x.Reason,
+                        PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
+                        FeatureArea = calculatedBanAreas,
+                        OverrideBanDuration = x.Override,
+                        // ForzaBanDuration is completely ignored by services if OverrideBanDuration is not set to true
+                        BanDurationOverride = new ForzaBanDuration()
+                        {
+                            IsDeviceBan = x.OverrideBanConsoles.Value,
+                            IsPermaBan = x.OverrideDurationPermanent.Value,
+                            BanDuration = x.OverrideDuration.HasValue ? new ForzaTimeSpan()
+                            {
+                                Days = (uint)x.OverrideDuration.Value.Days,
+                                Hours = (uint)x.OverrideDuration.Value.Hours,
+                                Minutes = (uint)x.OverrideDuration.Value.Minutes,
+                                Seconds = (uint)x.OverrideDuration.Value.Seconds,
+                            }
+                            : emptyDuration,
+                        }
+                    });
+                    var result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
+
+                    banResults.AddRange(this.mapper.SafeMap<IList<BanResult>>(result.banResults));
                 }
 
                 foreach (var result in banResults)
                 {
-                    var parameters = banParameters.Where(banAttempt => banAttempt.Xuid == result.Xuid)
-                        .FirstOrDefault();
+                    var parameters = banInput.Where(banAttempt => banAttempt.Xuid == result.Xuid).FirstOrDefault();
 
                     if (result.Error == null)
                     {
@@ -422,11 +394,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                         {
                             await
                                 this.banHistoryProvider.UpdateBanHistoryAsync(
-                                        parameters.Xuid,
+                                        parameters.Xuid.Value,
+                                        result.BanDescription.BanEntryId,
                                         TitleConstants.SteelheadCodeName,
                                         requesterObjectId,
                                         parameters,
-                                        endpoint).ConfigureAwait(true);
+                                        result,
+                                        this.SteelheadEndpoint.Value,
+                                        formattedBanAreas).ConfigureAwait(false);
                         }
                         catch (Exception ex)
                         {
@@ -436,13 +411,107 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                         }
                     }
                 }
-
-                return banResults;
             }
             catch (Exception ex)
             {
+                // More detail in ex?
                 throw new UnknownFailureStewardException("User banning has failed.", ex);
             }
+
+            var bannedXuids = banResults.Where(banResult => banResult.Error == null)
+                .Select(banResult => Invariant($"{banResult.Xuid}")).ToList();
+
+            await this.actionLogger.UpdateActionTrackingTableAsync(RecipientType.Xuid, bannedXuids)
+                .ConfigureAwait(true);
+
+            return banResults;
         }
+
+        //private async Task<IList<BanResult>> BanUsersAsync(
+        //    IList<SteelheadBanParameters> banParameters,
+        //    ILiveOpsService liveOpsService,
+        //    IUserManagementService userManagementService,
+        //    string requesterObjectId)
+        //{
+        //    banParameters.ShouldNotBeNull(nameof(banParameters));
+        //    requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+
+        //    const int maxXuidsPerRequest = 10;
+        //    var endpoint = this.SteelheadEndpoint.Value;
+
+        //    foreach (var param in banParameters)
+        //    {
+        //        param.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(param.FeatureArea));
+
+        //        if (param.Xuid == default)
+        //        {
+        //            if (string.IsNullOrWhiteSpace(param.Gamertag))
+        //            {
+        //                throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
+        //            }
+
+        //            try
+        //            {
+        //                var userResult = await liveOpsService.GetLiveOpsUserDataByGamerTag(
+        //                        param.Gamertag).ConfigureAwait(true);
+
+        //                param.Xuid = userResult.userData.qwXuid;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                throw new NotFoundStewardException($"No profile found. (Gamertag: {param.Gamertag}).", ex);
+        //            }
+        //        }
+        //    }
+
+        //    try
+        //    {
+        //        var banResults = new List<BanResult>();
+
+        //        for (var i = 0; i < banParameters.Count; i += maxXuidsPerRequest)
+        //        {
+        //            var paramBatch = banParameters.ToList()
+        //                .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
+        //            var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
+        //            var result = await userManagementService
+        //                .BanUsers(mappedBanParameters.ToArray(), mappedBanParameters.Count)
+        //                .ConfigureAwait(true);
+
+        //            banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
+        //        }
+
+        //        foreach (var result in banResults)
+        //        {
+        //            var parameters = banParameters.Where(banAttempt => banAttempt.Xuid == result.Xuid)
+        //                .FirstOrDefault();
+
+        //            if (result.Error == null)
+        //            {
+        //                try
+        //                {
+        //                    await
+        //                        this.banHistoryProvider.UpdateBanHistoryAsync(
+        //                                parameters.Xuid,
+        //                                TitleConstants.SteelheadCodeName,
+        //                                requesterObjectId,
+        //                                parameters,
+        //                                endpoint).ConfigureAwait(true);
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    result.Error = new FailedToSendStewardError(
+        //                        $"Ban Successful. Ban history upload failed for XUID: {result.Xuid}.",
+        //                        ex);
+        //                }
+        //            }
+        //        }
+
+        //        return banResults;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new UnknownFailureStewardException("User banning has failed.", ex);
+        //    }
+        //}
     }
 }

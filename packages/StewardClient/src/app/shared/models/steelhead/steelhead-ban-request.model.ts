@@ -19,13 +19,13 @@ export enum SteelheadBanArea {
 
 /** A single part of the bulk /v1/title/steelhead/players/ban request model */
 export interface SteelheadBanRequest {
-  xuid: BigNumber;
-  gamertag: GamertagString;
-  banAllConsoles: boolean;
-  banAllPcs: boolean;
+  xuid?: BigNumber;
+  gamertag?: string;
   deleteLeaderboardEntries: boolean;
-  sendReasonNotification: boolean;
+  reasonGroupName: string;
   reason: string;
-  featureArea: SteelheadBanArea;
-  duration: Duration;
+  override: boolean;
+  overrideDuration?: Duration;
+  overrideDurationPermanent?: boolean;
+  overrideBanConsoles?: boolean;
 }
