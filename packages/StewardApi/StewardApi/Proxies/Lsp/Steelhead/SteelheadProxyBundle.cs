@@ -159,7 +159,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         private async Task EnsurePlayerExistsInternalAsync(IEnumerable<ForzaPlayerLookupParameters> players)
         {
             var stringBuilder = new StringBuilder();
-            var playerLookupResults = await this.UserManagementService.GetUserIds(players.Count(), players.ToArray()).ConfigureAwait(false);
+            var playersArray = players.ToArray();
+            var playerLookupResults = await this.UserManagementService.GetUserIds(playersArray.Length, playersArray).ConfigureAwait(false);
 
             foreach (var player in playerLookupResults.playerLookupResult)
             {

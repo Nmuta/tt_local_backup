@@ -103,6 +103,9 @@ dotnet_diagnostic.CA1724.severity = suggestion
 # CA2234: Pass system uri objects instead of strings
 dotnet_diagnostic.CA2234.severity = suggestion
 
+# CA5399: HttpClients should enable certificate revocation list checks
+dotnet_diagnostic.CA5399.severity = suggestion
+
 [*.{cs,vb}]
 #### Naming styles ####
 

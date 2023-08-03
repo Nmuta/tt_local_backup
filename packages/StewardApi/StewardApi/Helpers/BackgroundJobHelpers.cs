@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static IList<GiftResponse<T>> MergeResponses<T>(
             IList<IList<GiftResponse<T>>> results)
         {
-            var flatResults = results.SelectMany(v => v);
+            var flatResults = results.SelectMany(v => v).ToList();
             var userFlatResults = flatResults.Where(r => r.TargetXuid.HasValue && !r.TargetLspGroupId.HasValue);
             var lspFlatResults = flatResults.Where(r => r.TargetLspGroupId.HasValue && !r.TargetXuid.HasValue);
             var badFlatResults = flatResults.Where(r =>

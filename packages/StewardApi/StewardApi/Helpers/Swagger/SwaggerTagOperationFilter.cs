@@ -38,9 +38,11 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
                             .Where(t => !string.IsNullOrWhiteSpace(t))
                             .Select(t => new OpenApiTag { Name = t })
                         ?? Enumerable.Empty<OpenApiTag>());
-                if (validTags.Any())
+
+                var validTagsList = validTags.ToList();
+                if (validTagsList.Any())
                 {
-                    operation.Tags = validTags.ToList();
+                    operation.Tags = validTagsList.ToList();
                 }
             }
         }
