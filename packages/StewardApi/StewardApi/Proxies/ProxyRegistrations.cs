@@ -25,19 +25,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies
             builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().SingleInstance();
             builder.RegisterType<SteelheadProxyBundle>().SingleInstance();
 
-            builder.RegisterType<WoodstockProxyFactory>().As<IWoodstockProxyFactory>().Named<IWoodstockProxyFactory>("woodstockProdLiveFactory")
-                .WithParameter(Named("client"), With<Client>("woodstockClientProdLive")).SingleInstance();
-            builder.RegisterType<WoodstockProxyFactory>().As<IWoodstockProxyFactory>().Named<IWoodstockProxyFactory>("woodstockDevLiveFactory")
-                .WithParameter(Named("client"), With<Client>("woodstockClientDevLive")).SingleInstance();
             builder.RegisterType<WoodstockProxyFactory>().As<IWoodstockProxyFactory>().Named<IWoodstockProxyFactory>("woodstockProdLiveStewardFactory")
                 .WithParameter(Named("client"), With<Client>("woodstockClientProdLiveSteward")).SingleInstance();
             builder.RegisterType<WoodstockProxyFactory>().As<IWoodstockProxyFactory>().Named<IWoodstockProxyFactory>("woodstockDevLiveStewardFactory")
                 .WithParameter(Named("client"), With<Client>("woodstockClientDevLiveSteward")).SingleInstance();
 
-            builder.RegisterType<WoodstockProxyBundle>().Named<WoodstockProxyBundle>("woodstockProdLiveProxyBundle")
-                    .WithParameter(Named("woodstockFactory"), With<IWoodstockProxyFactory>("woodstockProdLiveFactory")).SingleInstance();
-            builder.RegisterType<WoodstockProxyBundle>().Named<WoodstockProxyBundle>("woodstockDevLiveProxyBundle")
-                    .WithParameter(Named("woodstockFactory"), With<IWoodstockProxyFactory>("woodstockDevLiveFactory")).SingleInstance();
             builder.RegisterType<WoodstockProxyBundle>().Named<WoodstockProxyBundle>("woodstockProdLiveStewardProxyBundle")
                     .WithParameter(Named("woodstockFactory"), With<IWoodstockProxyFactory>("woodstockProdLiveStewardFactory")).SingleInstance();
             builder.RegisterType<WoodstockProxyBundle>().Named<WoodstockProxyBundle>("woodstockDevLiveStewardProxyBundle")

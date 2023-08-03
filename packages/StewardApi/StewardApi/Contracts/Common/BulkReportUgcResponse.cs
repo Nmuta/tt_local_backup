@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common

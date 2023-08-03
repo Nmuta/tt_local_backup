@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Azure;
 using Turn10.Data.SecretProvider;
+using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
@@ -79,16 +80,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenKeyVaultProviderNull_Throws()
+        public void Ctor_WhenKeyVaultConfigNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { KeyVaultProvider = null };
+            var dependencies = new Dependencies { KeyVaultConfig = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "keyVaultProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "keyVaultConfig"));
         }
 
         [TestMethod]
@@ -269,13 +270,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
-            public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
+            public KeyVaultConfig KeyVaultConfig { get; set; } = Substitute.For<KeyVaultConfig>();
 
             private ITableStorageClient TableStorageClient { get; set; } = Substitute.For<ITableStorageClient>();
             
             public KustoQueryProvider Build()
             {
-                var provider = new KustoQueryProvider(TableStorageClientFactory, Mapper, Configuration, KeyVaultProvider);
+                var provider = new KustoQueryProvider(TableStorageClientFactory, Mapper, Configuration, KeyVaultConfig);
 
                 provider.InitializeAsync().GetAwaiter().GetResult();
 

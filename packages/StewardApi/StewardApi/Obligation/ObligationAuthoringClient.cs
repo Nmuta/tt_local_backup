@@ -36,14 +36,11 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     Initializes a new instance of the <see cref="ObligationAuthoringClient"/> class.
         /// </summary>
         [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
-        public ObligationAuthoringClient(IKeyVaultProvider keyVaultProvider, IConfiguration configuration)
+        public ObligationAuthoringClient(KeyVaultConfig keyVaultConfig)
         {
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
-            configuration.ShouldNotBeNull(nameof(configuration));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
 
-            var keyVaultName = configuration[ConfigurationKeyConstants.KeyVaultUrl];
-
-            var secret = keyVaultProvider.GetSecretAsync(keyVaultName, "obligation-aad-client-secret").GetAwaiter().GetResult();
+            var secret = keyVaultConfig.ObligationClientSecret;
 
             this.confidentialClientApplication = ConfidentialClientApplicationBuilder
                                                     .Create(T10ObligationClientId)

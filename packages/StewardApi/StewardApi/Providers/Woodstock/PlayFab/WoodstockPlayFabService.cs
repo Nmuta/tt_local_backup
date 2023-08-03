@@ -12,6 +12,7 @@ using Microsoft.Graph;
 using PlayFab;
 using PlayFab.AuthenticationModels;
 using PlayFab.ClientModels;
+using PlayFab.Internal;
 using PlayFab.MultiplayerModels;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
@@ -22,6 +23,7 @@ using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
 {
@@ -46,26 +48,38 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <inheritdoc />
         public async Task<IList<PlayFabBuildSummary>> GetBuildsAsync(WoodstockPlayFabEnvironment environment)
         {
-            await this.InitialisePlayFabSdkAsync(environment).ConfigureAwait(false);
-
             var builds = new List<BuildSummary>();
             string skipToken = null;
             var finished = false;
 
+            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
+            async Task<ListBuildSummariesResponse> ListPlayFabBuildSummariesV2Async(WoodstockPlayFabEnvironment environment, ListBuildSummariesRequest request)
+            {
+                var config = this.GetPlayFabConfig(environment);
+                var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
+                var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+
+                request.AuthenticationContext = authContext;
+                object obj = await PlayFabHttp.DoPost("/MultiplayerServer/ListBuildSummariesV2", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
+                if (obj is PlayFabError)
+                {
+                    PlayFabError error = (PlayFabError)obj;
+                    throw new UnknownFailureStewardException($"Failed to get PlayFab build summaries. ${error.ErrorMessage}");
+                }
+
+                string serialized = (string)obj;
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<ListBuildSummariesResponse>>(serialized).data; ;
+            }
+
             while (!finished)
             {
-                var response = await PlayFabMultiplayerAPI.ListBuildSummariesV2Async(new ListBuildSummariesRequest()
+                var response = await ListPlayFabBuildSummariesV2Async(environment, new ListBuildSummariesRequest()
                 {
                     SkipToken = skipToken,
                 }).ConfigureAwait(false);
 
-                if (response.Error != null)
-                {
-                    throw new UnknownFailureStewardException(response.Error.ErrorMessage);
-                }
-
-                builds.AddRange(response.Result.BuildSummaries);
-                skipToken = response.Result.SkipToken;
+                builds.AddRange(response.BuildSummaries);
+                skipToken = response.SkipToken;
                 finished = skipToken == null;
             }
 
@@ -75,36 +89,74 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <inheritdoc />
         public async Task<PlayFabBuildSummary> GetBuildAsync(Guid buildId, WoodstockPlayFabEnvironment environment)
         {
-            await this.InitialisePlayFabSdkAsync(environment).ConfigureAwait(false);
+            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
+            async Task<GetBuildResponse> GetPlayFabBuildAsync(WoodstockPlayFabEnvironment environment, GetBuildRequest request)
+            {
+                var config = this.GetPlayFabConfig(environment);
+                var authContext = await this.GeneratePlayFabAuthContextAsync(config).ConfigureAwait(false);
+                var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+                object obj = await PlayFabHttp.DoPost("/MultiplayerServer/GetBuild", request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false); ;
+                if (obj is PlayFabError)
+                {
+                    PlayFabError error = (PlayFabError)obj;
+                    throw new UnknownFailureStewardException($"Failed to get PlayFab build (buildId: {buildId}). ${error.ErrorMessage}");
+                }
 
-            var response = await PlayFabMultiplayerAPI.GetBuildAsync(new GetBuildRequest()
+                string serialized = (string)obj;
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetBuildResponse>>(serialized).data;
+            }
+
+            var response = await GetPlayFabBuildAsync(environment, new GetBuildRequest()
             {
                 BuildId = buildId.ToString(),
             }).ConfigureAwait(false);
 
-            if (response.Error != null)
-            {
-                return null;
-            }
-
-            return this.mapper.SafeMap<PlayFabBuildSummary>(response.Result);
+            return this.mapper.SafeMap<PlayFabBuildSummary>(response);
         }
 
         /// <summary>
-        ///  Gets the provided PlayFab title's API.
+        ///     Gets the PlayFab config based on provided environment.
         /// </summary>
-        private async Task InitialisePlayFabSdkAsync(WoodstockPlayFabEnvironment environment) {
-            // We can make this smart by checking the current environment/title. If its the same, verify that the entity token is still good to go.
-            // Else, Set new environment settings and get new entity token
-            if (!this.playerFabConfig.Environments.TryGetValue(environment, out var environmentConfig))
+        private PlayFabConfig GetPlayFabConfig(WoodstockPlayFabEnvironment environment)
+        {
+            if (!this.playerFabConfig.Environments.TryGetValue(environment, out var config))
             {
-                throw new UnknownFailureStewardException($"Failed to initialize PlayFab SDK. Invalid {nameof(WoodstockPlayFabEnvironment)} provided: {environment}");
+                throw new UnknownFailureStewardException($"Failed to get PlayFab config. Invalid {nameof(WoodstockPlayFabEnvironment)} provided: {environment}");
             }
 
-            PlayFabSettings.staticSettings.TitleId = environmentConfig.TitleId;
-            PlayFabSettings.staticSettings.DeveloperSecretKey = environmentConfig.Key;
-
-            await PlayFabAuthenticationAPI.GetEntityTokenAsync(new GetEntityTokenRequest()).ConfigureAwait(false);
+            return config;
         }
+
+        /// <summary>
+        ///     Generates a PlayFab auth context to be passed into PlayFab SDK requests.
+        /// </summary>
+        private async Task<PlayFabAuthenticationContext> GeneratePlayFabAuthContextAsync(PlayFabConfig config)
+        {
+            // We need to manage auth outside of static settings and handle it per request as multiple people could be making requests on different titles are the same time
+            var response = await this.GetEntityTokenAsync(config).ConfigureAwait(false);
+            var authContext = new PlayFabAuthenticationContext()
+            {
+                PlayFabId = config.TitleId,
+                EntityToken = response.EntityToken,
+            };
+
+            return authContext;
+        }
+
+        private async Task<GetEntityTokenResponse> GetEntityTokenAsync(PlayFabConfig config)
+        {
+            var instanceSettings = new PlayFabApiSettings() { TitleId = config.TitleId };
+            object obj = await PlayFabHttp.DoPost("/Authentication/GetEntityToken", new GetEntityTokenRequest(), "X-SecretKey", config.Key, null, instanceSettings).ConfigureAwait(false);
+            if (obj is PlayFabError)
+            {
+                PlayFabError error = (PlayFabError)obj;
+                throw new UnknownFailureStewardException($"Failed to generate PlayFab entity token. ${error.ErrorMessage}");
+            }
+
+            string serialized = (string)obj;
+            GetEntityTokenResponse data = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<GetEntityTokenResponse>>(serialized).data;
+            return data;
+        }
+
     }
 }

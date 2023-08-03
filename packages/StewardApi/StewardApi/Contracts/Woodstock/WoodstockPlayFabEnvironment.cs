@@ -10,5 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
     public enum WoodstockPlayFabEnvironment
     {
         Dev,
+        Retail,
     }
 }

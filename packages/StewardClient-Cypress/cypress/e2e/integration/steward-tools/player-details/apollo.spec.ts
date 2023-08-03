@@ -1,6 +1,4 @@
-import { login } from '@support/steward/auth/login';
 import { RetailUsers } from '@support/steward/common/account-info';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { selectApollo } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import {
@@ -11,56 +9,44 @@ import {
   userDetailsVerifyPlayerIdentityResults,
   userDetailsVerifyFlagData,
   jsonCheckJson,
+  swapToTab,
 } from './shared-tests';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import {
+  contextSearchByGtagForPlayerDetails,
+  contextSearchByXuidForPlayerDetails,
+} from '@support/steward/shared-functions/searching';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const defaultApolloUser = 'jordan';
 
 context('Steward / Tools / Player Details / Apollo', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
+    cy.visit(stewardUrls.tools.playerDetails.default);
+    selectApollo();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
-      cy.visit(stewardUrls.tools.playerDetails.default);
-      selectApollo();
-    });
-
     context('With default user', () => {
-      beforeEach(() => {
-        searchByGtag(RetailUsers[defaultApolloUser].gtag);
-      });
-
+      contextSearchByGtagForPlayerDetails(RetailUsers[defaultApolloUser]);
       testUserDetails(defaultApolloUser);
-
       testInventory();
-
       testLiveries();
-
       testJson();
     });
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
       selectApollo();
     });
 
     context('With default user', () => {
-      beforeEach(() => {
-        searchByXuid(RetailUsers[defaultApolloUser].xuid);
-      });
-
+      contextSearchByXuidForPlayerDetails(RetailUsers[defaultApolloUser]);
       testUserDetails(defaultApolloUser);
-
       testInventory();
-
       testLiveries();
-
       testJson();
     });
   });
@@ -68,6 +54,9 @@ context('Steward / Tools / Player Details / Apollo', () => {
 
 function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
+    before(() => {
+      swapToTab('User Details');
+    });
     // found user
     userDetailsVerifyPlayerIdentityResults(userToSearch);
 
@@ -87,6 +76,9 @@ function testUserDetails(userToSearch: string): void {
 
 function testInventory(): void {
   context('Inventory', () => {
+    before(() => {
+      swapToTab('Inventory');
+    });
     // found player inventory data
     inventoryFindPlayerInventoryData();
   });
@@ -94,6 +86,9 @@ function testInventory(): void {
 
 function testLiveries(): void {
   context('Liveries', () => {
+    before(() => {
+      swapToTab('Liveries');
+    });
     // TODO: Create liveries tests for Apollo
     // Currently, no test users have liveries in Apollo on the prod server
   });
@@ -101,6 +96,9 @@ function testLiveries(): void {
 
 function testJson(): void {
   context('JSON', () => {
+    before(() => {
+      swapToTab('JSON');
+    });
     jsonCheckJson();
   });
 }

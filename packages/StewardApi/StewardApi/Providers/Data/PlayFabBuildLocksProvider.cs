@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     public sealed class PlayFabBuildLocksProvider : IPlayFabBuildLocksProvider, IInitializeable
     {
         private readonly ITableStorageClientFactory tableStorageClientFactory;
-        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly KeyVaultConfig keyVaultConfig;
         private readonly IConfiguration configuration;
         private readonly IMapper mapper;
         private ITableStorageClient tableStorageClient;
@@ -34,31 +34,31 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             ITableStorageClientFactory tableStorageClientFactory,
             IMapper mapper,
             IConfiguration configuration,
-            IKeyVaultProvider keyVaultProvider)
+            KeyVaultConfig keyVaultConfig)
         {
             tableStorageClientFactory.ShouldNotBeNull(nameof(tableStorageClientFactory));
             mapper.ShouldNotBeNull(nameof(mapper));
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
 
-            this.keyVaultProvider = keyVaultProvider;
+            this.keyVaultConfig = keyVaultConfig;
             this.configuration = configuration;
             this.tableStorageClientFactory = tableStorageClientFactory;
             this.mapper = mapper;
         }
 
         /// <inheritdoc />
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
-                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                this.configuration[ConfigurationKeyConstants.CosmosSharedTableSecretName]).ConfigureAwait(false);
+            var tableStorageConnectionString = keyVaultConfig.SharedTableStorageConnectionString;
 
             this.configuration.Bind("PlayFabBuildLocksStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
             this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
+
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -125,10 +125,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<PlayFabBuildLock> DeleteAsync(Guid buildId)
+        public async Task<PlayFabBuildLock> DeleteAsync(WoodstockPlayFabEnvironment environment, Guid buildId)
         {
             var existingBuildLock = await this.GetAsync(buildId).ConfigureAwait(true);
             var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
+            var parsedExistingLockEnvironment = existingBuildLockInternal.PlayFabEnvironment.TryParseEnumElseThrow<WoodstockPlayFabEnvironment>(nameof(existingBuildLockInternal.PlayFabEnvironment));
+            if (parsedExistingLockEnvironment != environment)
+            {
+                throw new InvalidArgumentsStewardException($"PlayFab build was found, but incorrect environment was provided. (environment: {environment}) (buildId: {buildId})");
+            }
 
             try
             {

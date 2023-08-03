@@ -388,10 +388,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForPath(dest => dest.LocString.@base, opt => opt.MapFrom(src => src.TextToLocalize))
                 .ForPath(dest => dest.LocString.description, opt => opt.MapFrom(src => src.Description));
 
-            this.CreateMap<LocTextMotdNoDesc, LocTextBridge>()
-                .ForMember(dest => dest.Description, act => act.Ignore())
-                .ReverseMap();
             this.CreateMap<LocTextMotd, LocTextBridge>()
+                .ForMember(dest => dest.Locdef, opt => opt.MapFrom(src => (src.locdef == Guid.Empty) ? (Guid?)null : src.locdef))
+                .ForMember(dest => dest.Locref, opt => opt.MapFrom(src => (src.locref == Guid.Empty) ? (Guid?)null : src.locref))
                 .ReverseMap();
             this.CreateMap<WofGenericPopupEntry, WofGenericPopupBridge>()
                 .ReverseMap();
@@ -401,6 +400,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Destination, opt => opt.MapFrom(src => this.PrepareRootDestination(src)));
 
             this.CreateMap<LocTextBaseWof, LocTextBridge>()
+                .ForMember(dest => dest.Locdef, opt => opt.MapFrom(src => (src.locdef == Guid.Empty) ? (Guid?)null : src.locdef))
+                .ForMember(dest => dest.Locref, opt => opt.MapFrom(src => (src.locref == Guid.Empty) ? (Guid?)null : src.locref))
                 .ReverseMap();
             this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
                 .ReverseMap();

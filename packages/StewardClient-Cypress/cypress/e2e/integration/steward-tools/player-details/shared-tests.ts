@@ -70,7 +70,6 @@ export function userDetailsFindRelatedConsoles(expectedConsoleIds: string[]): vo
 /** Verifies that the user has current credits information in the overview of the deep dive tab */
 export function deepDiveFindOverviewData(): void {
   it('should have an overview', () => {
-    swapToTab('Deep Dive');
     cy.contains('th', 'Current Credits').should('exist');
   });
 }
@@ -78,7 +77,6 @@ export function deepDiveFindOverviewData(): void {
 /** Verifies that the user has credit history in the deep dive tab */
 export function deepDiveFindCreditHistory(deviceType: string) {
   it('should have credit history', () => {
-    swapToTab('Deep Dive');
     cy.contains('mat-card', 'Credit History').within(() => {
       tableHasEntry('deviceType', deviceType);
     });
@@ -88,7 +86,6 @@ export function deepDiveFindCreditHistory(deviceType: string) {
 /** Verifies that the user has a credit reward in their inventory in the inventory tab */
 export function inventoryFindPlayerInventoryData(): void {
   it('should have a credit reward in the inventory', () => {
-    swapToTab('Inventory');
     cy.contains('mat-card', 'Player Inventory').within(() => {
       cy.contains('Credit Rewards');
     });
@@ -142,8 +139,8 @@ export function auctionsFindCreatedAuction(
   it('should have a searchable created auction', () => {
     cy.get(platform + '-player-auctions').within(() => {
       cy.contains('.mat-expansion-panel', 'Created Auctions').click();
-      //somebody left this named as sunrise in woodstock
-      //replace this once that's fixed
+      // TODO: somebody left this named as sunrise in woodstock
+      // replace this once that's fixed
       cy.get('sunrise' + '-auction-filters').within(() => {
         cy.get('[formcontrolname="makeModelInput"]')
           .click({ force: true })
@@ -177,8 +174,7 @@ export function loyaltyFindTitlesPlayed(platform: string, titlesOwned: string[])
 /** Verifies that the user has JSON search info in the JSON tab */
 export function jsonCheckJson(): void {
   it('should have JSON for a user searched', () => {
-    swapToTab('JSON');
     cy.contains('.mat-expansion-panel-header', 'Click to expand JSON').click();
-    // here we could check the formatting of the JSON with some regex and/or jsonify some class to compare
+    // TODO: here we could check the formatting of the JSON with some regex and/or jsonify some class to compare
   });
 }

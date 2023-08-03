@@ -1,5 +1,3 @@
-import { login } from '@support/steward/auth/login';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import {
@@ -15,77 +13,59 @@ import {
   userDetailsVerifyFlagData,
   ugcLiveriesFindLivery,
   jsonCheckJson,
+  swapToTab,
 } from './shared-tests';
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import {
+  contextSearchByGtagForPlayerDetails,
+  contextSearchByXuidForPlayerDetails,
+} from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const defaultSunriseUser = 'jordan';
 
 context('Steward / Tools / Player Details / Sunrise', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
+    cy.visit(stewardUrls.tools.playerDetails.default);
+    selectSunrise();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
-      cy.visit(stewardUrls.tools.playerDetails.default);
-      selectSunrise();
-    });
-
     context('With default user', () => {
-      beforeEach(() => {
-        searchByGtag(RetailUsers[defaultSunriseUser].gtag);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers[defaultSunriseUser]);
       testUserDetails(defaultSunriseUser);
-
       testDeepDive();
-
       testInventory();
-
       testNotifications();
-
       testJson();
     });
 
     context('With Madden user', () => {
-      beforeEach(() => {
-        searchByGtag(RetailUsers['madden'].gtag);
-      });
+      contextSearchByGtagForPlayerDetails(RetailUsers.madden);
       testAuctions();
-
       testUgc();
     });
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       cy.visit(stewardUrls.tools.playerDetails.default);
       selectSunrise();
     });
 
     context('With default user', () => {
-      beforeEach(() => {
-        searchByXuid(RetailUsers[defaultSunriseUser].xuid);
-      });
+      contextSearchByXuidForPlayerDetails(RetailUsers[defaultSunriseUser]);
       testUserDetails(defaultSunriseUser);
-
       testDeepDive();
-
       testInventory();
-
       testNotifications();
-
       testJson();
     });
 
     context('With Madden user', () => {
-      beforeEach(() => {
-        searchByXuid(RetailUsers['madden'].xuid);
-      });
+      contextSearchByXuidForPlayerDetails(RetailUsers.madden);
       testAuctions();
-
       testUgc();
     });
   });
@@ -93,6 +73,10 @@ context('Steward / Tools / Player Details / Sunrise', () => {
 
 function testUserDetails(userToSearch: string): void {
   context('User Details', () => {
+    before(() => {
+      swapToTab('User Details');
+    });
+
     // found user
     userDetailsVerifyPlayerIdentityResults(userToSearch);
 
@@ -115,6 +99,9 @@ function testUserDetails(userToSearch: string): void {
 
 function testDeepDive(): void {
   context('Deep Dive', () => {
+    before(() => {
+      swapToTab('Deep Dive');
+    });
     // found overview data
     deepDiveFindOverviewData();
 
@@ -125,6 +112,9 @@ function testDeepDive(): void {
 
 function testInventory(): void {
   context('Inventory', () => {
+    before(() => {
+      swapToTab('Inventory');
+    });
     // found player inventory data
     inventoryFindPlayerInventoryData();
   });
@@ -132,6 +122,9 @@ function testInventory(): void {
 
 function testNotifications(): void {
   context('Notifications', () => {
+    before(() => {
+      swapToTab('Notifications');
+    });
     // found player inventory data
     notificationsFindNotification();
   });
@@ -139,6 +132,9 @@ function testNotifications(): void {
 
 function testAuctions(): void {
   context('Auctions', () => {
+    before(() => {
+      swapToTab('Auctions');
+    });
     //TODO: Nobody has any auction history for this title 07/10
     //auctionsFindCreatedAuction(userToSearch, isXuidTest, 'sunrise', 'rsx', 'Acura RSX Type-S', 'Auction Info', 'Acura RSX Type S (2002)')
   });
@@ -146,12 +142,18 @@ function testAuctions(): void {
 
 function testUgc(): void {
   context('Ugc', () => {
+    before(() => {
+      swapToTab('Ugc');
+    });
     ugcLiveriesFindLivery('sunrise', 'Aston Martin', 'One-77', 'metadata');
   });
 }
 
 function testJson(): void {
   context('JSON', () => {
+    before(() => {
+      swapToTab('JSON');
+    });
     jsonCheckJson();
   });
 }

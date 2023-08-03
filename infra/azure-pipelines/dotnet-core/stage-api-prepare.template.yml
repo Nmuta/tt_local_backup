@@ -1,0 +1,15 @@
+# This file is the main stage of the Verify API pipeline for PRs.
+# It runs all the relevant jobs in parallel.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: 'Path to a working directory where dotnet commands can be run. Like packages/StewardApi'
+  type: string
+
+jobs:
+- job: Prepare_API
+  displayName: DotNetCore (Prepare)
+  steps:
+  - template: prepare-nuget-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}

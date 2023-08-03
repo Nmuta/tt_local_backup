@@ -43,20 +43,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenLiveProjectionWoodstockServiceFactoryNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { LiveProjectionWoodstockServiceFactory = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "liveProjectionServiceFactory"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Ctor_WhenStewardProjectionWoodstockServiceFactoryNull_Throws()
         {
             // Arrange.
@@ -80,7 +66,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
             public ILiveProjectionWoodstockServiceFactory LiveProjectionWoodstockServiceFactory { get; set; } = Substitute.For<ILiveProjectionWoodstockServiceFactory>();
             public IStewardProjectionWoodstockServiceFactory StewardProjectionWoodstockServiceFactory { get; set; } = Substitute.For<IStewardProjectionWoodstockServiceFactory>();
 
-            public WoodstockServiceWrapper Build() => new WoodstockServiceWrapper(this.Configuration, this.LiveProjectionWoodstockServiceFactory, this.StewardProjectionWoodstockServiceFactory);
+            public WoodstockServiceWrapper Build() => new WoodstockServiceWrapper(this.Configuration, this.StewardProjectionWoodstockServiceFactory);
         }
     }
 }

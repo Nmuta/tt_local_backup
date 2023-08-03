@@ -35,6 +35,10 @@ button {
   }
 }
 
+.mat-icon {
+  flex-grow: 0;
+}
+
 .large-icon {
   transform: scale(3);
 }

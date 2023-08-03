@@ -8,21 +8,21 @@
         /// <summary>
         ///     Value to pass into carId filter when you want that field to be ignored during the search.
         /// </summary>
-        public static int NoCarId = -1;
+        public static readonly int NoCarId = -1;
 
         /// <summary>
         ///     Value to pass into keywordId* filter when you want that field to be ignored during the search.
         /// </summary>
-        public static int NoKeywordId = -1;
+        public static readonly int NoKeywordId = -1;
 
         /// <summary>
         ///     Value to pass into xuid filter when you want that field to be ignored during the search.
         /// </summary>
-        public static ulong NoXuid = ulong.MaxValue;
+        public static readonly ulong NoXuid = ulong.MaxValue;
 
         /// <summary>
         ///     Value to pass into keywords filter when you want that field to be ignored during the search.
         /// </summary>
-        public static string NoKeywords = string.Empty;
+        public static readonly string NoKeywords = string.Empty;
     }
 }

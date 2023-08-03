@@ -12,10 +12,10 @@ echo "$CHANGED_SPECS"
 
 echo
 echo Reformatting argument:
-CHANGED_SPECS_CSV=$(echo $CHANGED_SPECS | sed 's/ /,/gp' | sed -E -z "s/\n/,/gp")
+CHANGED_SPECS_CSV=$(echo $CHANGED_SPECS | sed 's/ /,/g' | sed -E -z "s/\n/,/g" | sed -E -z "s/,$//g")
 echo
 echo "$CHANGED_SPECS_CSV"
 
 echo
 echo "Running changed specs on dev:"
-yarn run:dev --spec=$CHANGED_SPECS_CSV
+yarn run:dev --spec="$CHANGED_SPECS_CSV"
