@@ -88,8 +88,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
 
             await Task.WhenAll(getAadUsers, getDbUsers).ConfigureAwait(true);
 
-            var aadUsers = getAadUsers.Result;
-            var dbUsers = getDbUsers.Result;
+            var aadUsers = getAadUsers.GetAwaiter().GetResult();
+            var dbUsers = getDbUsers.GetAwaiter().GetResult();
 
             var usersToAdd = new List<StewardUser>();
             var usersToUpdate = new List<StewardUserInternal>();
