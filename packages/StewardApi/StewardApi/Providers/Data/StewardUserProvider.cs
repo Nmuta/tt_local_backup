@@ -26,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         private readonly string allStewardUsersCacheKey = "AllStewardUserIds";
 
         private readonly ITableStorageClientFactory tableStorageClientFactory;
-        private readonly IKeyVaultProvider keyVaultProvider;
+        private readonly KeyVaultConfig keyVaultConfig;
         private readonly IConfiguration configuration;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private ITableStorageClient tableStorageClient;
@@ -37,32 +37,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public StewardUserProvider(
             ITableStorageClientFactory tableStorageClientFactory,
             IConfiguration configuration,
-            IKeyVaultProvider keyVaultProvider,
+            KeyVaultConfig keyVaultConfig,
             IRefreshableCacheStore refreshableCacheStore)
         {
             tableStorageClientFactory.ShouldNotBeNull(nameof(tableStorageClientFactory));
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
 
-            this.keyVaultProvider = keyVaultProvider;
+            this.keyVaultConfig = keyVaultConfig;
             this.configuration = configuration;
             this.tableStorageClientFactory = tableStorageClientFactory;
             this.refreshableCacheStore = refreshableCacheStore;
         }
 
         /// <inheritdoc />
-        public async Task InitializeAsync()
+        public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = await this.keyVaultProvider.GetSecretAsync(
-                this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                this.configuration[ConfigurationKeyConstants.CosmosTableSecretName]).ConfigureAwait(false);
+            var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
 
             this.configuration.Bind("StewardUserStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
             this.tableStorageClient = this.tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
+
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 await this.tableStorageClient.ExecuteAsync(insertOrReplaceOperation).ConfigureAwait(false);
 
                 // Update all user ids mem cache. No need to await, letting it run in the background
-                this.QueryUserIdsAsync();
+                await this.QueryUserIdsAsync();
             }
             catch (Exception ex)
             {
@@ -189,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             return authorized.Any();
 
-            bool Equals(string str, string attr)
+            static bool Equals(string str, string attr)
             {
                 return str?.Equals(attr, StringComparison.OrdinalIgnoreCase) == true;
             }
@@ -214,7 +214,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     await this.UpdateStewardUserAsync(id, name, email, role, user.Attributes, user.Team).ConfigureAwait(false);
                 }
             }
-            catch (NotFoundStewardException _)
+            catch (NotFoundStewardException)
             {
                 await this.CreateStewardUserAsync(id, name, email, role, string.Empty, string.Empty).ConfigureAwait(false);
             }
@@ -279,7 +279,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 throw new BadRequestStewardException($"Null or empty {environmentKey} header.");
             }
 
-            environment = env.ToString().Contains("|") ? env.ToString().Split("|")[1] : env;
+            environment = env.ToString().Contains('|') ? env.ToString().Split("|")[1] : env;
 
             return;
         }

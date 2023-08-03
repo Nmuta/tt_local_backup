@@ -46,16 +46,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenKeyVaultProviderNull_Throws()
+        public void Ctor_WhenKeyVaultConfigNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { KeyVaultProvider = null };
+            var dependencies = new Dependencies { KeyVaultConfig = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "keyVaultProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "keyVaultConfig"));
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         {
             public Dependencies(bool validConfiguration = true)
             {
-                this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.TestCertificateString);
+                this.KeyVaultConfig.OpusCertificateSecret = TestConstants.TestCertificateString;
                 if (validConfiguration)
                 {
                     this.Configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
@@ -90,9 +90,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
-            public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
+            public KeyVaultConfig KeyVaultConfig { get; set; } = Substitute.For<KeyVaultConfig>();
 
-            public OpusServiceWrapper Build() => new OpusServiceWrapper(this.Configuration, this.KeyVaultProvider);
+            public OpusServiceWrapper Build() => new OpusServiceWrapper(this.Configuration, this.KeyVaultConfig);
         }
     }
 }

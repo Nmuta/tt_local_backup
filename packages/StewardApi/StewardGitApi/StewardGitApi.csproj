@@ -3,21 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <!--<Nullable>enable</Nullable>-->
-	<CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
+    <AnalysisMode>None</AnalysisMode>
+    <Nullable>disable</Nullable> <!-- TODO: We should probably spend some time to enable this. -->
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="16.170.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-		<PrivateAssets>all</PrivateAssets>
-		<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-	</PackageReference>
-	<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1">
-		<PrivateAssets>all</PrivateAssets>
-		<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-	</PackageReference>
   </ItemGroup>
 
 </Project>

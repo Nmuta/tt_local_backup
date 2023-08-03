@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             Func<Task> action = async () => await controller.AddUsersToGroup(userGroupId, false, playerList).ConfigureAwait(false);
 
             // Assert.
-            action.Should().NotThrow();
+            await action.Should().NotThrowAsync();
         }
 
         [TestMethod]
@@ -73,12 +73,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             Func<Task> action = async () => await controller.RemoveUsersFromGroup(userGroupId, false, playerList).ConfigureAwait(false);
 
             // Assert.
-            action.Should().NotThrow();
+            await action.Should().NotThrowAsync();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void AddUsersToGroup_UseBulkProcessing_ShouldNotThrow()
+        public async Task AddUsersToGroup_UseBulkProcessing_ShouldNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -90,12 +90,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             Func<Task> action = async () => await controller.AddUsersToGroup(userGroupId, true, playerList).ConfigureAwait(false);
 
             // Assert.
-            action.Should().NotThrow();
+            await action.Should().NotThrowAsync();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void RemoveUsersFromGroup_UseBulkProcessing_ShouldNotThrow()
+        public async Task RemoveUsersFromGroup_UseBulkProcessing_ShouldNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -107,7 +107,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             Func<Task> action = async () => await controller.RemoveUsersFromGroup(userGroupId, true, playerList).ConfigureAwait(false);
 
             // Assert.
-            action.Should().NotThrow();
+            await action.Should().NotThrowAsync();
         }
 
         private sealed class Dependencies

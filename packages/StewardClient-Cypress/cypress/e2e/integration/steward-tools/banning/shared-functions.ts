@@ -1,24 +1,57 @@
-import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { KnownUser } from '@support/steward/common/account-info';
 import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 
 /** Searches for a user by Gtag and displays ban history */
-export function testSearchForUserByGtag(user: KnownUser, page: string): void {
+export function testVerifySearchForUser(keyword: string): void {
   it('should verify the player identity results', () => {
-    searchByGtag(user.gtag);
-    waitForProgressSpinners();
     cy.get('ban-chip-icon').should('exist');
-    cy.get('ban-chip-icon').click();
-    cy.get('mat-card-content').contains(page).should('exist');
+    cy.get('ban-chip-icon').click({ force: true });
+    cy.get('mat-card-content').contains(keyword).should('exist');
   });
 }
 
 /** Fills out the form to create a ban, but does not initiate a ban fully */
-export function testFillOutBan(): void {
+export function testFillOutBan(reason: string, page: string): void {
   it('should fill out form for a ban', () => {
     cy.get('mat-form-field').contains('mat-label', 'Ban Reason').parents('mat-form-field').click();
-    cy.get('mat-option').contains('span', 'Personal Attacks').parents('mat-option').click();
+    cy.get('mat-option').contains('span', reason).parents('mat-option').click();
+    if (page == 'Woodstock') {
+      waitForProgressSpinners();
+      cy.get('[aria-disabled="true"]').should('exist');
+      cy.get('mat-checkbox')
+        .contains('span', 'Override Ban Behavior')
+        .parents('mat-checkbox')
+        .click('left');
+      cy.get('button').contains('span', '1 day').parents('button').click();
+    } else if (page == 'Apollo' || page == 'Sunrise') {
+      cy.get('button').contains('span', '1 minute').parents('button').click();
+      cy.get('mat-checkbox')
+        .contains('span', 'Ban all Xboxes (No expiry)')
+        .parents('mat-checkbox')
+        .click('left');
+      cy.get('mat-checkbox')
+        .contains('span', 'Ban all PCs (No expiry)')
+        .parents('mat-checkbox')
+        .click('left');
+      cy.get('mat-checkbox')
+        .contains('span', 'Delete all leaderboard entries (Permanent)')
+        .parents('mat-checkbox')
+        .click('left');
+    } else if (page == 'Apollo' || page == 'Sunrise') {
+      cy.get('button').contains('span', '1 minute').parents('button').click();
+      cy.get('mat-checkbox')
+        .contains('span', 'Ban all Xboxes (No expiry)')
+        .parents('mat-checkbox')
+        .click('left');
+      cy.get('mat-checkbox')
+        .contains('span', 'Ban all PCs (No expiry)')
+        .parents('mat-checkbox')
+        .click('left');
+      cy.get('mat-checkbox')
+        .contains('span', 'Delete all leaderboard entries (Permanent)')
+        .parents('mat-checkbox')
+        .click('left');
+    }
     cy.get('button').contains('mat-icon', 'lock_open').click();
     cy.get('button').contains('[disabled="true"]').should('not.exist');
     cy.get('button').contains('mat-icon', 'lock').click();
@@ -59,25 +92,14 @@ export function testInvalidBanConditions(): void {
   });
 }
 
-/** Searches for a user by Xuid and displays ban history */
-export function testSearchForUserByXuid(user: KnownUser, page: string): void {
-  it('should verify the player identity results', () => {
-    searchByXuid(user.xuid);
-    waitForProgressSpinners();
-    cy.get('ban-chip-icon').should('exist');
-    cy.get('ban-chip-icon').click();
-    cy.get('mat-card-content').contains(page).should('exist');
-  });
-}
-
 /** Ensures that user is cleared and bans are removed from the screen */
-export function testClearAll(page: string): void {
+export function testClearAll(keyword: string): void {
   it('should clear user and repopulate accordingly', () => {
     cy.get('button').contains('span', 'Clear All').click();
     cy.get('mat-card')
       .contains('Ban History')
       .parents('mat-card')
-      .contains('mat-card-content', page)
+      .contains('mat-card-content', keyword)
       .should('not.exist');
   });
 }
@@ -87,7 +109,7 @@ export function testHelpCard(): void {
   it('should show and hide Help Card', () => {
     cy.contains('mat-icon', 'help').click();
     cy.contains('mat-card-title', 'Verify Button').should('exist');
-    cy.contains('span', 'Hide Verify Help Icon').click();
+    clickTopLeftOfBody();
     cy.contains('mat-card-title', 'Verify Button').should('not.exist');
   });
 }

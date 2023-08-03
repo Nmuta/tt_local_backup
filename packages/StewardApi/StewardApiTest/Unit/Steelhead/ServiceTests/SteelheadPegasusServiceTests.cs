@@ -166,10 +166,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
-            public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
+            public KeyVaultConfig KeyVaultConfig { get; set; } = Substitute.For<KeyVaultConfig>();
             public IAzureDevOpsFactory AzureDevOpsFactory { get; set; } = Substitute.For<IAzureDevOpsFactory>();
 
-            public SteelheadPegasusService Build() => new SteelheadPegasusService(this.PegasusCmsProvider, this.AzureDevOpsFactory, this.KeyVaultProvider, this.RefreshableCacheStore, this.Mapper, this.Configuration, this.LoggingService);
+            public SteelheadPegasusService Build() => new SteelheadPegasusService(this.PegasusCmsProvider, this.AzureDevOpsFactory, this.RefreshableCacheStore, this.Mapper, this.Configuration, this.LoggingService, this.KeyVaultConfig);
         }
     }
 }

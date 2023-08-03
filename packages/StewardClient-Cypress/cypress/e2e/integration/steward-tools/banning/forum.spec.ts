@@ -7,9 +7,9 @@ import {
   testFillOutBanCustomReason,
   testHelpCard,
   testInvalidBanConditions,
-  testSearchForUserByGtag,
-  testSearchForUserByXuid,
+  testVerifySearchForUser,
 } from './shared-functions';
+import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 
 const forumUser = RetailUsers['madden'];
 
@@ -22,10 +22,11 @@ context('Steward / Tools / Banning / Forum', () => {
   context('GTAG Lookup', () => {
     before(() => {
       cy.visit(stewardUrls.tools.banning.forum);
-      testSearchForUserByGtag(forumUser, 'Forum');
+      searchByGtag(forumUser.gtag);
     });
     context('With default user', () => {
-      testFillOutBan();
+      testVerifySearchForUser('Forum');
+      testFillOutBan('Personal Attacks', 'Forum');
       testFillOutBanCustomReason();
       testInvalidBanConditions();
     });
@@ -34,10 +35,11 @@ context('Steward / Tools / Banning / Forum', () => {
   context('XUID Lookup', () => {
     before(() => {
       cy.visit(stewardUrls.tools.banning.forum);
-      testSearchForUserByXuid(forumUser, 'Forum');
+      searchByXuid(forumUser.xuid);
     });
     context('With default user', () => {
-      testFillOutBan();
+      testVerifySearchForUser('Forum');
+      testFillOutBan('Personal Attacks', 'Forum');
       testFillOutBanCustomReason();
       testInvalidBanConditions();
     });
