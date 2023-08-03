@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.DeleteAll, StewardSubject.PlayerMessages)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> DeleteAllPlayerNotifications(ulong xuid)
         {
             xuid.EnsureValidXuid();

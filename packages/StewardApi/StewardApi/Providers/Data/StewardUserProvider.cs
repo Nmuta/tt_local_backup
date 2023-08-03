@@ -301,7 +301,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             var segment = segments[index];
 
-            return capitalize ? char.ToUpper(segment[0]) + segment[1..] : segment;
+            return capitalize ? char.ToUpperInvariant(segment[0]) + segment[1..] : segment;
         }
     }
 }

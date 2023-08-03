@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.UgcReport)]
-        [Authorize(Policy = UserAttribute.ReportUgc)]
+        [Authorize(Policy = UserAttributeValues.ReportUgc)]
         public async Task<IActionResult> ReportUgc([FromQuery] bool useBackgroundProcessing, [FromQuery] string reasonId, [FromBody] Guid[] ugcIds)
         {
             var storefrontManagementService = this.Services.StorefrontManagementService;

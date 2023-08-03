@@ -88,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Contracts.Git.PullRequest))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.AddLocalizedString)]
+        [Authorize(Policy = UserAttributeValues.AddLocalizedString)]
         public async Task<IActionResult> WriteLocalizedStringsToPegasus([FromBody] LocalizedStringBridge localizedStringBridge)
         {
             localizedStringBridge.ShouldNotBeNull(nameof(localizedStringBridge));

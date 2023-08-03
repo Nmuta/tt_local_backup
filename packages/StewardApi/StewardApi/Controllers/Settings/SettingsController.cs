@@ -71,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("tools/availability")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(ToolsAvailability))]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> SetToolsAvailable([FromBody] ToolsAvailability updatedToolsAvailability)
         {
             updatedToolsAvailability.ShouldNotBeNull(nameof(updatedToolsAvailability));
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("playfab")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
         [SwaggerResponse(200, type: typeof(StewardPlayFabSettings))]
-        [Authorize(Policy = UserAttribute.ManagePlayFabSettings)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayFabSettings)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.PlayFabSettings)]
         public async Task<IActionResult> SetPlayFabSettings([FromBody] StewardPlayFabSettings updatedPlayfabSettings)
         {

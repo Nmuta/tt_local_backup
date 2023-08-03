@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Forum
         [LogTagDependency(DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Banning)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Add, StewardSubject.Ban)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
+        [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> ForumBanPlayers(
             [FromBody] IList<ForumBanParametersInput> banInput)
         {

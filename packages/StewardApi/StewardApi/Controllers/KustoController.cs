@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("queries")]
         [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> SaveQueries([FromBody] IList<KustoQuery> queries)
         {
             queries.ShouldNotBeNull(nameof(queries));
@@ -84,7 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("queries/id({queryId})")]
         [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> ReplaceQuery(string queryId, [FromBody] KustoQuery query)
         {
             queryId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(queryId));
@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpDelete("queries/id({queryId})")]
         [AuthorizeRoles(UserRole.GeneralUser, UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> DeleteQuery(string queryId)
         {
             queryId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(queryId));

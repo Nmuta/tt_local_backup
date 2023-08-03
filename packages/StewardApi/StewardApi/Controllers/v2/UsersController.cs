@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.Users)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> SyncUsers()
         {
             var getAadUsers = this.msGraphService.GetAadAppUsersAsync();
@@ -163,7 +163,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.UserTeam)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> SetTeamAsync(string userId, [FromBody] Team team)
         {
             var internalUser = await this.stewardUserProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
@@ -190,7 +190,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Delete, StewardSubject.UserTeam)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> DeleteTeamAsync(string userId)
         {
             var user = await this.stewardUserProvider.GetStewardUserAsync(userId).ConfigureAwait(true);

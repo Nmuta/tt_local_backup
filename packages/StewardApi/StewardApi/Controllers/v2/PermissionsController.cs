@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             {
                 var permissions = new Dictionary<string, IList<string>>();
 #pragma warning disable CA1308 // Normalize strings to uppercase, UI string enum is expecting title lowercased
-                permissions.Add(UserAttribute.TitleAccess, new List<string>()
+                permissions.Add(UserAttributeValues.TitleAccess, new List<string>()
                 {
                         nameof(TitleCodeName.Forte).ToLowerInvariant(),
                 });
@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         ///     Gets user permission attributes.
         /// </summary>
         [HttpGet("user/{userId}")]
-        [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttribute>))]
+        [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttributeData>))]
         public async Task<IActionResult> GetUserPermissionsAsync(string userId)
         {
             var user = await this.userProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
@@ -150,12 +150,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         /// </summary>
         [HttpPost("user/{userId}")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
-        [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttribute>))]
+        [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttributeData>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.UserPermissions)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
-        public async Task<IActionResult> SetUserPermissionsAsync(string userId, [FromBody] IEnumerable<AuthorizationAttribute> attributes)
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
+        public async Task<IActionResult> SetUserPermissionsAsync(string userId, [FromBody] IEnumerable<AuthorizationAttributeData> attributes)
         {
             if (this.HttpContext.User.IsInRole(UserRole.GeneralUser))
             {

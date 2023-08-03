@@ -9,31 +9,31 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
     /// <summary>
-    ///     Contains assorted extension methods for types that utilize <see cref="AuthorizationAttribute"/>s.
+    ///     Contains assorted extension methods for types that utilize <see cref="AuthorizationAttributeData"/>s.
     /// </summary>
     public static class AuthorizationAttributeExtensions
     {
         /// <summary>
-        ///     Returns true if attribute list include the <see cref="UserAttribute.ManageStewardTeam"/> attribute.
+        ///     Returns true if attribute list include the <see cref="UserAttributeValues.ManageStewardTeam"/> attribute.
         /// </summary>
-        public static bool HasManageTeamAttribute(this IEnumerable<AuthorizationAttribute> attributes)
+        public static bool HasManageTeamAttribute(this IEnumerable<AuthorizationAttributeData> attributes)
         {
-            var manageTeamAttr = attributes.FirstOrDefault(attr => attr.Attribute == UserAttribute.ManageStewardTeam);
+            var manageTeamAttr = attributes.FirstOrDefault(attr => attr.Attribute == UserAttributeValues.ManageStewardTeam);
             return manageTeamAttr != null;
         }
 
         /// <summary>
-        ///     Adds the <see cref="UserAttribute.ManageStewardTeam"/> attribute to attributes list.
+        ///     Adds the <see cref="UserAttributeValues.ManageStewardTeam"/> attribute to attributes list.
         /// </summary>
-        public static IList<AuthorizationAttribute> AddManageTeamAttribute(this IEnumerable<AuthorizationAttribute> attributes)
+        public static IList<AuthorizationAttributeData> AddManageTeamAttribute(this IEnumerable<AuthorizationAttributeData> attributes)
         {
             var attributesAsList = attributes.ToList();
-            var manageTeamAttr = attributesAsList.FirstOrDefault(attr => attr.Attribute == UserAttribute.ManageStewardTeam);
+            var manageTeamAttr = attributesAsList.FirstOrDefault(attr => attr.Attribute == UserAttributeValues.ManageStewardTeam);
             if (manageTeamAttr == null)
             {
-                attributesAsList.Add(new AuthorizationAttribute()
+                attributesAsList.Add(new AuthorizationAttributeData()
                 {
-                    Attribute = UserAttribute.ManageStewardTeam,
+                    Attribute = UserAttributeValues.ManageStewardTeam,
                 });
             }
 
@@ -41,12 +41,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         }
 
         /// <summary>
-        ///     Removes the <see cref="UserAttribute.ManageStewardTeam"/> attribute to attributes list.
+        ///     Removes the <see cref="UserAttributeValues.ManageStewardTeam"/> attribute to attributes list.
         /// </summary>
-        public static IList<AuthorizationAttribute> RemoveManageTeamAttribute(this IEnumerable<AuthorizationAttribute> attributes)
+        public static IList<AuthorizationAttributeData> RemoveManageTeamAttribute(this IEnumerable<AuthorizationAttributeData> attributes)
         {
             var attributesAsList = attributes.ToList();
-            var manageTeamAttr = attributesAsList.FirstOrDefault(attr => attr.Attribute == UserAttribute.ManageStewardTeam);
+            var manageTeamAttr = attributesAsList.FirstOrDefault(attr => attr.Attribute == UserAttributeValues.ManageStewardTeam);
             if (manageTeamAttr != null)
             {
                 attributesAsList.Remove(manageTeamAttr);

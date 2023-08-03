@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
+        [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SteelheadBanParametersInput> banInput)
         {
@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             UserRole.LiveOpsAdmin)]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
+        [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<SteelheadBanParametersInput> banInput)
         {

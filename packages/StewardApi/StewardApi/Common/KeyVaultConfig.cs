@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Common
         /// <summary>
         /// True when all secrets have been successfully loaded.
         /// </summary>
-        public bool IsInitialized { get; set; } = false;
+        public bool IsInitialized { get; set; }
 
         public string SteelheadContentAccessToken { get; set; }
 

@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UgcGeoFlags)]
-        [Authorize(Policy = UserAttribute.SetUgcGeoFlag)]
+        [Authorize(Policy = UserAttributeValues.SetUgcGeoFlag)]
         public async Task<IActionResult> SetGeoFlags(string ugcId, [FromBody] IList<SteelheadUgcGeoFlagOption> geoFlags)
         {
             if (!Guid.TryParse(ugcId, out var parsedUgcId))

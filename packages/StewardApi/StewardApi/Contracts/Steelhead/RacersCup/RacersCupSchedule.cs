@@ -8,6 +8,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 {
     public sealed class RacersCupSchedule
     {
-        public List<RacersCupChampionship> Championships;
+        public List<RacersCupChampionship> Championships { get; set; }
     }
 }
