@@ -55,9 +55,17 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
   public ngOnInit(): void {
     this.user = this.data.user;
     this.newPermsList = this.data.updatedPerms;
-    this.addedPermissions = differenceWith(this.data.updatedPerms, this.data.currentPerms, this.permAttributeComparer);
-    this.removedPermissions = differenceWith(this.data.currentPerms, this.data.updatedPerms, this.permAttributeComparer);
-    
+    this.addedPermissions = differenceWith(
+      this.data.updatedPerms,
+      this.data.currentPerms,
+      this.permAttributeComparer,
+    );
+    this.removedPermissions = differenceWith(
+      this.data.currentPerms,
+      this.data.updatedPerms,
+      this.permAttributeComparer,
+    );
+
     this.addedPermissionsChangeEntry = this.generatePermAttributeChangeEntries(
       this.addedPermissions,
     );
@@ -128,8 +136,6 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
   }
 
   private permAttributeComparer(a: PermAttribute, b: PermAttribute): boolean {
-    return a.attribute === b.attribute &&
-      a.environment === b.environment && 
-      a.title === b.title; 
+    return a.attribute === b.attribute && a.environment === b.environment && a.title === b.title;
   }
 }

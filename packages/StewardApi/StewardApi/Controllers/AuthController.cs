@@ -113,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (requestor.Role == UserRole.GeneralUser)
             {
                 var teamMembers = requestor.Team?.Members ?? new List<Guid>();
-                mappedUsers = mappedUsers.Where(user => teamMembers.FirstOrDefault(teamMember => teamMember.ToString() == user.ObjectId) != null);
+                mappedUsers = mappedUsers.Where(user => teamMembers.FirstOrDefault(teamMember => teamMember.ToString() == user.ObjectId) != default(Guid));
             }
 
             return this.Ok(mappedUsers);
