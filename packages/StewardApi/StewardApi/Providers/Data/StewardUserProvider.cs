@@ -267,7 +267,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             // v1 apis use endpointKey, value is Title|environment
             // v2 apis use Endpoint-Title, value is environment
-            var environmentKey = "v1".Equals(api) ? "endpointKey" : $"Endpoint-{title}";
+            var environmentKey = "v1".Equals(api, StringComparison.OrdinalIgnoreCase) ? "endpointKey" : $"Endpoint-{title}";
 
             if (!httpContext.Request.Headers.TryGetValue(environmentKey, out var env))
             {
