@@ -17,7 +17,7 @@ using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
 {
     /// <summary>
-    ///     Handles requests for Woodstock PlayFab build integrations.
+    ///     Handles requests for Woodstock PlayFab voucher (currency) integrations.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/playfab/vouchers")]
     [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]

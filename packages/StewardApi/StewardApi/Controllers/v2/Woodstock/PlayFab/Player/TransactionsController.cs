@@ -17,7 +17,7 @@ using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
 {
     /// <summary>
-    ///     Handles requests for Woodstock players PlayFab integrations.
+    ///     Handles requests for Woodstock players PlayFab Transaction integrations.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/playfab/player/{playFabEntityId}/transactions")]
     [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
@@ -40,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         }
 
         /// <summary>
-        ///     Retrieves playfab
+        ///     Retrieves transaction history for PlayFab player.
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, type: typeof(IList<PlayFabTransaction>))]

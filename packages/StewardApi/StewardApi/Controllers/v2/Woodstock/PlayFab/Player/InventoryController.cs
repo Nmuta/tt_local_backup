@@ -21,7 +21,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
 {
     /// <summary>
-    ///     Handles requests for Woodstock PlayFab build integrations.
+    ///     Handles requests for Woodstock players PlayFab Inventory integrations.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/woodstock/playfab/player/{playFabEntityId}/inventory")]
     [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
@@ -55,6 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         {
             inventoryChange.ShouldNotBeNull(nameof(inventoryChange));
             inventoryChange.ItemId.ShouldNotBeNull(nameof(inventoryChange.ItemId));
+            inventoryChange.Amount.ShouldBeGreaterThanValue(0, nameof(inventoryChange.Amount));
 
             if(inventoryChange.Amount > 10)
             {
@@ -87,6 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         {
             inventoryChange.ShouldNotBeNull(nameof(inventoryChange));
             inventoryChange.ItemId.ShouldNotBeNull(nameof(inventoryChange.ItemId));
+            inventoryChange.Amount.ShouldBeGreaterThanValue(0, nameof(inventoryChange.Amount));
 
             if (inventoryChange.Amount > 10)
             {

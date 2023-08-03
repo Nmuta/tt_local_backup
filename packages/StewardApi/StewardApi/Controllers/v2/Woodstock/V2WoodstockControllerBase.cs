@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             }
         }
 
-        /// <summary>Gets the Woodstock proxy service with live-steward CMS slot set.</summary>
+        /// <summary>Gets the Woodstock PlayFab environment from the endpoint set in headers.</summary>
         protected WoodstockPlayFabEnvironment PlayFabEnvironment
         {
             get
