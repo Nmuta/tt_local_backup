@@ -17,6 +17,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using EntityKey = PlayFab.EconomyModels.EntityKey;
 using ProfileEntityKey = PlayFab.ProfilesModels.EntityKey;
+using System.Globalization;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
 {
@@ -91,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <inheritdoc />
         public async Task<Dictionary<ulong, PlayFabProfile>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
         {
-            var xuidsAsStrings = xuids.Select(xuid => xuid.ToString()).ToList();
+            var xuidsAsStrings = xuids.Select(xuid => xuid.ToInvariantString()).ToList();
             var config = this.GetPlayFabConfig(environment);
 
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
@@ -131,7 +132,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                     Master = player.PlayFabId,
                     Title = titleId,
                 };
-                resultDictionary.Add(Convert.ToUInt64(player.XboxLiveAccountId), profile);
+                resultDictionary.Add(Convert.ToUInt64(player.XboxLiveAccountId, CultureInfo.InvariantCulture), profile);
             });
 
             return resultDictionary;
