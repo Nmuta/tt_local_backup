@@ -42,7 +42,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [StandardTags(Title.Steelhead, Topic.Calendar, Topic.RacersCup, Target.Details, Dev.ReviseTags)]
     public class RacersCupController : V2SteelheadControllerBase
     {
-        private const int GroupLookupMaxResults = 1000;
         private readonly IMapper mapper;
         private readonly ILoggingService loggingService;
         private readonly ISteelheadPegasusService pegasusService;
