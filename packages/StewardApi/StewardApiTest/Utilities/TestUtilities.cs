@@ -1,11 +1,7 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Identity.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardTest.Integration.Steelhead;
 
 namespace Turn10.LiveOps.StewardTest.Utilities
 {
