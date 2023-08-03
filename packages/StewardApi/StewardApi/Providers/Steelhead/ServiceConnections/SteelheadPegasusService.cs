@@ -29,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
@@ -702,6 +703,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 slot: pegasusSlot).ConfigureAwait(false);
 
             return featuredCupData.Single();
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        {
+            var banConfigurationKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_BanConfiguration";
+
+            async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
+            {
+                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(banConfigurationKey, TimeSpan.FromDays(1), banConfigurations);
+
+                return banConfigurations;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, BanConfiguration>>(banConfigurationKey)
+                   ?? await GetBanConfigurations().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

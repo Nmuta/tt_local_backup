@@ -55,6 +55,8 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string OverrideSkillRating = nameof(OverrideSkillRating);
         public const string EditUgc = nameof(EditUgc);
         public const string UpdateLspTask = nameof(UpdateLspTask);
+        public const string ManagePlayFabInventory = nameof(ManagePlayFabInventory);
+        public const string GenerateLeaderboardScoresFile = nameof(GenerateLeaderboardScoresFile);
 
         public static IEnumerable<string> AllAttributes()
         {

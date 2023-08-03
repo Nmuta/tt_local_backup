@@ -9,6 +9,11 @@ import { Observable, of, tap } from 'rxjs';
 /** Key/value pairing of permission attribute name with supported game titles. */
 export type PermissionAttributeList = { [key: string]: GameTitle[] };
 
+interface AuthPermissionChanges {
+  attributesToAdd: PermAttribute[];
+  attributesToRemove: PermAttribute[];
+}
+
 /** The /v2/title/permissionss endpoints. */
 @Injectable({
   providedIn: 'root',
@@ -41,11 +46,12 @@ export class PermissionsService {
   /** Gets the user perm attributes. */
   public setUserPermissionAttributes$(
     user: UserModel,
-    attributes: PermAttribute[],
+    attributesToAdd: PermAttribute[],
+    attributesToRemove: PermAttribute[],
   ): Observable<PermAttribute[]> {
-    return this.api.postRequest$<PermAttribute[]>(
-      `${this.basePath}/user/${user.objectId}`,
-      attributes,
-    );
+    return this.api.postRequest$<PermAttribute[]>(`${this.basePath}/user/${user.objectId}`, {
+      attributesToAdd: attributesToAdd,
+      attributesToRemove: attributesToRemove,
+    } as AuthPermissionChanges);
   }
 }

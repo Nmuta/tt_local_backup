@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
@@ -93,14 +96,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets all Steward users.
+        ///     Gets all available Steward users from caller's user context.
         /// </summary>
         [HttpGet("allUsers")]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
+        [Authorize(Policy = UserAttributeValues.ManageStewardTeam)]
         public async Task<IActionResult> GetAllStewardUsers()
         {
             var users = await this.stewardUserProvider.GetAllStewardUsersAsync().ConfigureAwait(true);
             var mappedUsers = this.mapper.SafeMap<IEnumerable<StewardUser>>(users);
+
+            // If user is a GeneralUser & team lead, then only return Steward users a part of their team.
+            // We know they are a team if they are able to bypass the auth policy attribute attached to this endpoint.
+            var requestorInternal = await this.stewardUserProvider.GetStewardUserAsync(this.User.UserClaims().ObjectId).ConfigureAwait(true);
+            var requestor = this.mapper.SafeMap<StewardUser>(requestorInternal);
+            if (requestor.Role == UserRole.GeneralUser)
+            {
+                var teamMembers = requestor.Team?.Members ?? new List<Guid>();
+                mappedUsers = mappedUsers.Where(user => teamMembers.FirstOrDefault(teamMember => teamMember.ToString() == user.ObjectId) != default(Guid));
+            }
 
             return this.Ok(mappedUsers);
         }
