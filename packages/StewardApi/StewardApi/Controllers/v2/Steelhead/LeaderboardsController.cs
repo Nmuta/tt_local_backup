@@ -284,7 +284,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     {
                         var results = await this.GetLeaderboardScoresAsync(scoreboardManagementService, scoreboardType, scoreType, trackId, pivotId, new List<DeviceType>(), 0, 1000).ConfigureAwait(true);
 
-                        if (results.Count() > 0)
+                        if (results.Any())
                         {
                             retry = false;
                         }
