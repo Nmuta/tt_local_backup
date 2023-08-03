@@ -46,7 +46,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private const int DefaultMaxResults = 100;
-        private const int DefaultMaxuserGroupResults = 5_000;
 
         private readonly INotificationHistoryProvider notificationHistoryProvider;
         private readonly ISteelheadServiceManagementProvider serviceManagementProvider;

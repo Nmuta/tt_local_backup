@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
                 var validTagsList = validTags.ToList();
                 if (validTagsList.Any())
                 {
-                    operation.Tags = validTagsList.ToList();
+                    operation.Tags = validTagsList;
                 }
             }
         }

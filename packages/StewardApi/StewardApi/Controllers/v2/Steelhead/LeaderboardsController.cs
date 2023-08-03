@@ -259,7 +259,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             var jobs = await this.jobTracker.GetInProgressJobsAsync().ConfigureAwait(true);
 
-            if (jobs.Any(job => job.Reason != null && job.Reason.Contains("Generate Leaderboard Scores File")))
+            if (jobs.Any(job => job.Reason != null && job.Reason.Contains("Generate Leaderboard Scores File", StringComparison.InvariantCultureIgnoreCase)))
             {
                 return this.Conflict("Leaderboard file generation already in progress, please try again later.");
             }
