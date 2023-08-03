@@ -14,7 +14,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -26,6 +25,7 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
+using Xls.Security.FM8.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using SteelheadContracts = Turn10.LiveOps.StewardApi.Contracts.Steelhead;
@@ -46,6 +46,112 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     public class BanController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
+        private readonly IList<SteelheadBanReasonGroup> banReasonGroups = new List<SteelheadBanReasonGroup>()
+        {
+            new SteelheadBanReasonGroup()
+            {
+                Name = "Extreme Violations",
+                Reasons = new List<string>
+                {
+                    "Hate Speech",
+                    "Credible threat of violent acts",
+                    "CSEAI - child sexual exploitive abusive imagery",
+                    "TVEC - terrorism or violent extremism content",
+                    "Sexual/Nude imagery",
+                    "Credit/XP/Wheelspin hacking",
+                    "Ban dodging",
+                    "Employee harassment",
+                    "Breaching NDA"
+                },
+                BanConfigurationId = new Guid("1049fa1f-7ffe-4188-ae21-89ef661e1a7b"),
+                FeatureAreas = new List<FeatureAreas>
+                {
+                    FeatureAreas.AllRequests
+                }
+            },
+            new SteelheadBanReasonGroup()
+            {
+                Name = "Cheating/Unallowed Modding",
+                Reasons = new List<string>
+                {
+                    "Obtaining unreleased cars",
+                    "Device exploitation",
+                    "In-game glitches or exploits",
+                    "Modifying game files",
+                    "Running cheat software on client alongside game",
+                    "Audio Mods",
+                    "Fraudulent leaderboards",
+                    "Auction house automated scripts",
+                    "Stream-Sniping",
+                },
+                BanConfigurationId = new Guid("5394efb9-8cc1-4f93-98ea-ab7e2693b7d2"),
+                FeatureAreas = new List<FeatureAreas>
+                {
+                    FeatureAreas.AllRequests
+                }
+            },
+            new SteelheadBanReasonGroup()
+            {
+                Name = "Inappropriate User Generated Content (UGC)",
+                Reasons = new List<string>
+                {
+                    "Pornographic logo",
+                    "Notorious iconography",
+                    "Drug/Marijuana Symbolism & Imagery",
+                    "Profanity",
+                    "Sharing Personal Information",
+                    "Spam/Advertising",
+                    "Political Statement",
+                    "Defamation & Impersonation",
+                    "Harm Against People/Animals",
+                    "Crude Humor/Imagery",
+                    "Low Effort/Quality Content",
+                    "Child Endangerment",
+                    "Sexually Inappropriate/Suggestive",
+                    "Threat of Self Harm"
+                },
+                BanConfigurationId = new Guid("563a4a85-9f0d-4678-a86c-f4d71fb9f424"),
+                FeatureAreas = new List<FeatureAreas>
+                {
+                    FeatureAreas.UserGeneratedContent,
+                    FeatureAreas.AuctionHouse
+                }
+            },
+            new SteelheadBanReasonGroup()
+            {
+                Name = "Unsportsmanlike Conduct",
+                Reasons = new List<string>
+                {
+                    "Intentional ramming/wrecking, pinning, pitting, spearing, shoving, and blocking in races",
+                    "Light Bullying",
+                    "Vulgar language",
+                    "Track cutting/extending to pass"
+                },
+                BanConfigurationId = new Guid("253c7ad6-68ac-4ac7-b784-1452753acaef"),
+                FeatureAreas = new List<FeatureAreas>
+                {
+                    FeatureAreas.Matchmaking,
+                    FeatureAreas.DailyCredit,
+                    FeatureAreas.Community,
+                    FeatureAreas.Drivatar
+                }
+            },
+            new SteelheadBanReasonGroup()
+            {
+                Name = "Developer",
+                Reasons = new List<string>
+                {
+                    "Testing"
+                },
+                BanConfigurationId = new Guid("c8ec2fac-6132-4c87-85dc-1b799e08aca4"),
+                FeatureAreas = new List<FeatureAreas>
+                {
+                    FeatureAreas.Test
+                }
+            }
+        };
+
+
         private readonly ISteelheadPegasusService pegasusService;
         private readonly IMapper mapper;
         private readonly IActionLogger actionLogger;
@@ -85,6 +191,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             this.loggingService = loggingService;
             this.banHistoryProvider = banHistoryProvider;
             this.banParametersRequestValidator = banParametersRequestValidator;
+        }
+
+        /// <summary>
+        ///    Return a list of report reason group.
+        /// </summary>
+        [HttpGet("banReasonGroups")]
+        [SwaggerResponse(200, type: typeof(Dictionary<string, SteelheadBanReasonGroup>))]
+        public IActionResult GetBanReasonGroups()
+        {
+            return this.Ok(this.banReasonGroups);
         }
 
         /// <summary>
