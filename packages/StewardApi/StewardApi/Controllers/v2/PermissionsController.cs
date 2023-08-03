@@ -180,7 +180,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             var user = this.mapper.SafeMap<StewardUser>(internalUser);
             if (this.HttpContext.User.IsInRole(UserRole.GeneralUser))
             {
-                // If the user is a general user, they must be a team lead
+                // If the user is a general user, they must be a team lead due to auth policy restrictions set in the auth attribute.
                 var requestor = await this.userProvider.GetStewardUserAsync(this.User.UserClaims().ObjectId).ConfigureAwait(false);
                 if (!requestor.DeserializeTeam().Members.Contains(new Guid(userId)))
                 {
