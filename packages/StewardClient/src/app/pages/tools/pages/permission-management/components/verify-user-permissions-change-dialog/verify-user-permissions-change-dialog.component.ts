@@ -6,7 +6,7 @@ import { UserModel } from '@models/user.model';
 import { PermissionsService } from '@services/api-v2/permissions/permissions.service';
 import { PermAttribute, PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { find } from 'lodash';
+import { differenceWith, find } from 'lodash';
 import { catchError, EMPTY, takeUntil } from 'rxjs';
 
 export interface VerifyUserPermissionChangeDialogData {
@@ -55,17 +55,13 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
   public ngOnInit(): void {
     this.user = this.data.user;
     this.newPermsList = this.data.updatedPerms;
-    this.addedPermissions = this.findPermAttributeDifferences(
-      this.data.currentPerms,
-      this.data.updatedPerms,
-    );
+    this.addedPermissions = differenceWith(this.data.updatedPerms, this.data.currentPerms, this.permAttributeComparer);
+    this.removedPermissions = differenceWith(this.data.currentPerms, this.data.updatedPerms, this.permAttributeComparer);
+    
     this.addedPermissionsChangeEntry = this.generatePermAttributeChangeEntries(
       this.addedPermissions,
     );
-    this.removedPermissions = this.findPermAttributeDifferences(
-      this.data.updatedPerms,
-      this.data.currentPerms,
-    );
+
     this.removedPermissionsChangeEntry = this.generatePermAttributeChangeEntries(
       this.removedPermissions,
     );
@@ -89,20 +85,6 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
         // TODO: It looks like `true` here is a value to return to the dialog opener, in which case it should be an object and never a simple type. Primarily for readability, but also so extensibility isn't a large quest
         this.dialogRef.close(true);
       });
-  }
-
-  private findPermAttributeDifferences(
-    source: PermAttribute[],
-    changes: PermAttribute[],
-  ): PermAttribute[] {
-    return changes.filter(change => {
-      const isDiff = !find(source, {
-        attribute: change.attribute,
-        title: change.title,
-        environment: change.environment,
-      });
-      return isDiff;
-    });
   }
 
   private generatePermAttributeChangeEntries(
@@ -143,5 +125,11 @@ export class VerifyUserPermissionChangeDialogComponent extends BaseComponent imp
     }
 
     return diffs;
+  }
+
+  private permAttributeComparer(a: PermAttribute, b: PermAttribute): boolean {
+    return a.attribute === b.attribute &&
+      a.environment === b.environment && 
+      a.title === b.title; 
   }
 }

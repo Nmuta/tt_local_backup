@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             Func<Task> action = async () => await controller.SetUserReportWeight(xuid, reportWeight).ConfigureAwait(false);
 
             // Assert.
-            action.Should().NotThrow();
+            await action.Should().NotThrowAsync();
         }
 
         private sealed class Dependencies

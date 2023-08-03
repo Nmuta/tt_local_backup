@@ -38,10 +38,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         ///     Initializes a new instance of the <see cref="ApolloServiceWrapper"/> class.
         /// </summary>
         [SuppressMessage("Usage", "VSTHRD002:Avoid problematic synchronous waits", Justification = "Constructor")]
-        public ApolloServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
+        public ApolloServiceWrapper(IConfiguration configuration, KeyVaultConfig keyVaultConfig)
         {
             configuration.ShouldNotBeNull(nameof(configuration));
-            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            keyVaultConfig.ShouldNotBeNull(nameof(keyVaultConfig));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.allowGiftingToAllUsers = configuration[ConfigurationKeyConstants.StewardEnvironment] == "prod";
@@ -50,11 +50,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             this.adminXuid = Convert.ToUInt64(
                 configuration[ConfigurationKeyConstants.ApolloAdminXuid],
                 CultureInfo.InvariantCulture);
-            var keyVaultName = configuration[ConfigurationKeyConstants.ApolloCertificateKeyVaultName];
-            var secretName = configuration[ConfigurationKeyConstants.ApolloCertificateSecretName];
 
-            var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultName, secretName)
-                .GetAwaiter().GetResult();
+            var certificateSecret = keyVaultConfig.ApolloCertificateSecret;
             this.lspCertificate = this.ConvertToCertificate(certificateSecret);
 
             this.forzaClient = new Client(

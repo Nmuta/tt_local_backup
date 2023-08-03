@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Turn10.Data.SecretProvider;
@@ -15,11 +14,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         private static string endpoint;
         private static string authKey;
         private static ulong xuid;
-        private static ulong consoleId;
-        private static string gamertag;
-        private static int profileId;
-        private static int lspGroupId;
-        private static Guid liveryUgcId;
         private static KeyVaultProvider KeyVaultProvider;
         private static SteelheadStewardTestingClient stewardClient;
         private static SteelheadStewardTestingClient unauthorizedClient;

@@ -13,6 +13,21 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add support for team leads',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '6c597f0d-b61f-4a33-80dc-e1caecf03a92',
+      shortText: 'Display additional info when banning user for UGC',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'ca1658d4-d493-48f3-ae8d-3fcc57a0b530',
+      shortText: 'Add request Permission or ask Question to Contact Us sidebar',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.PlayFab },
+      uuid: 'bf0278c0-45d2-408e-99a8-bcab7cc85caa',
+      shortText: 'Support PlayFab retail environment',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '2c662d23-a44a-471f-862a-918f0e00c22e',
       shortText: 'Re-add Cypress Id (cyid) to verify buttons in UGM Tool',

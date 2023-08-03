@@ -31,6 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         Task<GetUGCObjectOutput> GetUGCObject(Guid id);
 
         /// <summary>Sets a UGC Geo Flag.</summary>
+        /// <param name="id">The UGC ID.</param>
         /// <param name="geoFlags">Array of integers representing the flags that should be set after this call.</param>
         Task SetUGCGeoFlag(Guid id, int[] geoFlags);
 

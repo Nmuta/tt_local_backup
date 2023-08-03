@@ -12,7 +12,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
     /// <summary>
     ///     Applies Swagger UI tags to the given operation and child operations. May be applied at class or method level.
     ///     Tags on the Swagger UI page to appear in a certain order: <br/>
-    ///     1. Priority tags in a custom order (see <see cref="PriorityThenAlphanumericComparer.PriorityOrder"/>). <br/>
+    ///     1. Priority tags in a custom order (see PriorityThenAlphanumericComparer.PriorityOrder). <br/>
     ///     2. Alphabetic. <br/>
     /// </summary>
     /// <remarks>

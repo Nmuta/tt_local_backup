@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.VisualStudio.Services.Common;
+using Microsoft.Identity.Web;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -23,6 +24,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 namespace Turn10.LiveOps.StewardApi.Controllers.v2
 {
     /// <summary>
@@ -186,10 +188,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 }
 
                 // Verify the current user has the attributes they are attempting to assign to another user
-                var requestorAttributes = requestor.AuthorizationAttributes();
-
+                var requestorAttributes = requestor.AuthorizationAttributes().ToList();               
                 var allPermChanges = permChanges.AttributesToAdd.Concat(permChanges.AttributesToRemove).ToList();
-                var leadMissingPermissions = allPermChanges.All(attribute => requestorAttributes.FirstOrDefault(requestionAttribute => requestionAttribute.Matches(attribute)) != null);
+                var leadMissingPermissions = allPermChanges.Exists(attribute => requestorAttributes.FirstOrDefault(requestionAttribute => requestionAttribute.Matches(attribute)) == null);
                 if (leadMissingPermissions)
                 {
                     throw new BadRequestStewardException("Team lead cannot assign permissions they do not have to a team member.");
@@ -223,3 +224,4 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         }
     }
 }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
