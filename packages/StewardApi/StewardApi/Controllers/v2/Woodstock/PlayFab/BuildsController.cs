@@ -128,7 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.PlayFabBuildLock)]
-        [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> AddNewPlayFabBuildLock(string buildId, [FromBody] string reason)
         {
             var userClaims = this.User.UserClaims();
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.PlayFabBuildLock)]
-        [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> DeletePlayFabBuildLock(string buildId)
         {
             var playFabEnvironment = this.PlayFabEnvironment;

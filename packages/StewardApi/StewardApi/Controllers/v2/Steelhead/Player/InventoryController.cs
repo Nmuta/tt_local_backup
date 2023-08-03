@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SteelheadPlayerInventory))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Inventory)]
-        [Authorize(Policy = UserAttribute.ManagePlayerInventory)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayerInventory)]
         public async Task<IActionResult> EditPlayerProfileItems(ulong xuid, string externalProfileId, [FromBody]SteelheadPlayerInventory inventoryUpdates)
         {
             if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
@@ -298,7 +298,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(PlayerInventoryItem[]))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Inventory)]
-        [Authorize(Policy = UserAttribute.ManagePlayerInventory)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayerInventory)]
         public async Task<IActionResult> RemovePlayerProfileItems(ulong xuid, string externalProfileId, [FromBody] SteelheadPlayerInventory inventoryUpdates)
         {
             var externalProfileIdGuid = externalProfileId.TryParseGuidElseThrow("External Profile ID could no be parsed as GUID.");

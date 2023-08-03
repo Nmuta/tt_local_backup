@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SafetyRating))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.UpdateSafetyRating)]
+        [Authorize(Policy = UserAttributeValues.UpdateSafetyRating)]
         public async Task<IActionResult> ClearSafetyRatingAsync(
             ulong xuid)
         {
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SafetyRating))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.UpdateSafetyRating)]
+        [Authorize(Policy = UserAttributeValues.UpdateSafetyRating)]
         public async Task<IActionResult> SetSafetyRatingAsync(
             ulong xuid, [FromBody] SafetyRatingInput safetyRating)
         {

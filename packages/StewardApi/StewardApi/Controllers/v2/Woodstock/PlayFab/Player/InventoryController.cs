@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         [SwaggerResponse(200, type: typeof(IList<PlayFabBuildSummary>))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.PlayFabInventory)]
-        [Authorize(Policy = UserAttribute.ManagePlayFabInventory)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayFabInventory)]
         public async Task<IActionResult> AddPlayFabInventoryItem(string playFabEntityId, [FromBody] PlayFabInventoryChangeRequest inventoryChange)
         {
             inventoryChange.ShouldNotBeNull(nameof(inventoryChange));
@@ -83,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         [SwaggerResponse(200, type: typeof(IList<PlayFabBuildSummary>))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.PlayFabInventory)]
-        [Authorize(Policy = UserAttribute.ManagePlayFabInventory)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayFabInventory)]
         public async Task<IActionResult> RemovePlayFabInventoryItem(string playFabEntityId, [FromBody] PlayFabInventoryChangeRequest inventoryChange)
         {
             inventoryChange.ShouldNotBeNull(nameof(inventoryChange));

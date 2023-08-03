@@ -1,12 +1,13 @@
+using System;
 using Turn10.LiveOps.StewardApi.Authorization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents a Steward User Authorization Attribute.
-    ///     See <see cref="UserAttribute"/>.
+    ///     See <see cref="UserAttributeValues"/>.
     /// </summary>
-    public class AuthorizationAttribute
+    public class AuthorizationAttributeData
     {
         /// <summary>
         ///     Gets or sets attribute.
@@ -28,11 +29,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// </summary>
         /// <param name="b">Attribute to compare.</param>
         /// <returns>True if attributes match.</returns>
-        public bool Matches(AuthorizationAttribute b)
+        public bool Matches(AuthorizationAttributeData b)
         {
-            return string.Compare(this.Attribute ?? string.Empty, b.Attribute ?? string.Empty, true, System.Globalization.CultureInfo.InvariantCulture) == 0 &&
-                    string.Compare(this.Environment ?? string.Empty, b.Environment ?? string.Empty, true, System.Globalization.CultureInfo.InvariantCulture) == 0 &&
-                    string.Compare(this.Title ?? string.Empty, b.Title ?? string.Empty, true, System.Globalization.CultureInfo.InvariantCulture) == 0;
+            return string.Equals(this.Attribute ?? string.Empty, b.Attribute ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(this.Environment ?? string.Empty, b.Environment ?? string.Empty, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(this.Title ?? string.Empty, b.Title ?? string.Empty, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.UgcItem, ActionAreaLogTags.Action | ActionAreaLogTags.Ugc)]
-        [Authorize(Policy = UserAttribute.CloneUgc)]
+        [Authorize(Policy = UserAttributeValues.CloneUgc)]
         public async Task<IActionResult> Post(string id, [FromBody] CloneConfigurationModel configuration)
         {
             if (!Guid.TryParse(id, out var ugcId))

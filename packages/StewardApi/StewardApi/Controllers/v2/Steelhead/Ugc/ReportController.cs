@@ -41,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.UgcReport)]
-        [Authorize(Policy = UserAttribute.ReportUgc)]
+        [Authorize(Policy = UserAttributeValues.ReportUgc)]
         public async Task<IActionResult> ReportUgc(string ugcId)
         {
             if (!Guid.TryParse(ugcId, out var parsedUgcId))

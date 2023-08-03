@@ -100,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("allUsers")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
-        [Authorize(Policy = UserAttribute.ManageStewardTeam)]
+        [Authorize(Policy = UserAttributeValues.ManageStewardTeam)]
         public async Task<IActionResult> GetAllStewardUsers()
         {
             var users = await this.stewardUserProvider.GetAllStewardUsersAsync().ConfigureAwait(true);

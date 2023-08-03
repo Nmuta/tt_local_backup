@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
     /// </summary>
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable SA1600 // Elements should be documented
-    public static class UserAttribute
+    public static class UserAttributeValues
     {
         public const string TitleAccess = nameof(TitleAccess);
         public const string AddLocalizedString = nameof(AddLocalizedString);
@@ -60,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
         public static IEnumerable<string> AllAttributes()
         {
-            return typeof(UserAttribute).GetFields().Select(field => field.Name);
+            return typeof(UserAttributeValues).GetFields().Select(field => field.Name);
         }
     }
 }

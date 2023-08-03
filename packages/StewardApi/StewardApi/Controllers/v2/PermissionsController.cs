@@ -23,6 +23,7 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using Microsoft.VisualStudio.Services.Users;
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 namespace Turn10.LiveOps.StewardApi.Controllers.v2
@@ -62,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [HttpGet]
         [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
         [SwaggerResponse(200, type: typeof(Dictionary<string, IList<string>>))]
-        [Authorize(Policy = UserAttribute.ManageStewardTeam)]
+        [Authorize(Policy = UserAttributeValues.ManageStewardTeam)]
         public async Task<IActionResult> GetAllPermissionsAsync()
         {
             var permissionsKey = $"AllPermAttributes";
@@ -71,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             {
                 var permissions = new Dictionary<string, IList<string>>();
 #pragma warning disable CA1308 // Normalize strings to uppercase, UI string enum is expecting title lowercased
-                permissions.Add(UserAttribute.TitleAccess, new List<string>()
+                permissions.Add(UserAttributeValues.TitleAccess, new List<string>()
                 {
                         nameof(TitleCodeName.Forte).ToLowerInvariant(),
                 });
@@ -115,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 }
 
                 // Remove all non-manageable attributes from list
-                permissions.Remove(UserAttribute.ManageStewardTeam);
+                permissions.Remove(UserAttributeValues.ManageStewardTeam);
 
                 // Sort each action's titles
                 foreach (KeyValuePair<string, IList<string>> entry in permissions)
@@ -138,7 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         ///     Gets user permission attributes.
         /// </summary>
         [HttpGet("user/{userId}")]
-        [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttribute>))]
+        [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttributeData>))]
         public async Task<IActionResult> GetUserPermissionsAsync(string userId)
         {
             var user = await this.userProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
@@ -155,11 +156,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         /// </summary>
         [HttpPost("user/{userId}")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
-        [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttribute>))]
+        [SwaggerResponse(200, type: typeof(IEnumerable<AuthorizationAttributeData>))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.UserPermissions)]
-        [Authorize(Policy = UserAttribute.ManageStewardTeam)]
+        [Authorize(Policy = UserAttributeValues.ManageStewardTeam)]
         public async Task<IActionResult> SetUserPermissionsAsync(string userId, [FromBody] AuthPermissionChanges permChanges)
         {
             // Throw if any attributes contain an null or empty string attribute name
@@ -188,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 }
 
                 // Verify the current user has the attributes they are attempting to assign to another user
-                var requestorAttributes = requestor.AuthorizationAttributes().ToList();               
+                var requestorAttributes = requestor.AuthorizationAttributes().ToList();
                 var allPermChanges = permChanges.AttributesToAdd.Concat(permChanges.AttributesToRemove).ToList();
                 var leadMissingPermissions = allPermChanges.Exists(attribute => requestorAttributes.FirstOrDefault(requestionAttribute => requestionAttribute.Matches(attribute)) == null);
                 if (leadMissingPermissions)

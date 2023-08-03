@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            var xuidAndProfId = xuid.ToString() + '_' + externalProfileId;
+            var xuidAndProfId = xuid.ToInvariantString() + '_' + externalProfileId;
 
             var response = await this.Services.ConfigurationManagementService.GetTableConfiguration().ConfigureAwait(true);
 
@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                 var atp = tableProviderFactory.GetAzureTableProvider();
 
-                var xuidResponse = await atp.RetrieveAllFromPartitionAsync<DynamicTableEntity>(xuid.ToString()).ConfigureAwait(true);
+                var xuidResponse = await atp.RetrieveAllFromPartitionAsync<DynamicTableEntity>(xuid.ToInvariantString()).ConfigureAwait(true);
                 var xuidAndProfIdResponse = await atp.RetrieveAllFromPartitionAsync<DynamicTableEntity>(xuidAndProfId).ConfigureAwait(true);
 
                 var combinedResponse = xuidResponse.Concat(xuidAndProfIdResponse);

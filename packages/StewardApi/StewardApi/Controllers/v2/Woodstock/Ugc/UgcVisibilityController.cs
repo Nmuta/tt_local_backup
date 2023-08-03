@@ -68,7 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.UnhideUgc)]
+        [Authorize(Policy = UserAttributeValues.UnhideUgc)]
         public async Task<IActionResult> UnhideUgc([FromQuery] bool useBackgroundProcessing, [FromBody] Guid[] ugcIds)
         {
             if (useBackgroundProcessing)
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.HideUgc)]
+        [Authorize(Policy = UserAttributeValues.HideUgc)]
         public async Task<IActionResult> HideUgc([FromQuery] bool useBackgroundProcessing, [FromBody] Guid[] ugcIds)
         {
             if (useBackgroundProcessing)

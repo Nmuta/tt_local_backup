@@ -83,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.ProfileNotes)]
-        [Authorize(Policy = UserAttribute.AddProfileNote)]
+        [Authorize(Policy = UserAttributeValues.AddProfileNote)]
         public async Task<IActionResult> AddProfileNoteAsync(
             ulong xuid,
             [FromBody] string profileNote)

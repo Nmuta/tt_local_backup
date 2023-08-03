@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         [SwaggerResponse(200, type: typeof(string))]
         [LogTagDependency(DependencyLogTags.AuctionHouse)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Auctions)]
-        [Authorize(Policy = UserAttribute.CreateAuctions)]
+        [Authorize(Policy = UserAttributeValues.CreateAuctions)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.Auction)]
         public async Task<IActionResult> CreateSingleAuction(
             [FromQuery] int carId,
@@ -109,7 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         [SwaggerResponse(200, type: typeof(IList<string>))]
         [LogTagDependency(DependencyLogTags.AuctionHouse)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Auctions)]
-        [Authorize(Policy = UserAttribute.CreateAuctions)]
+        [Authorize(Policy = UserAttributeValues.CreateAuctions)]
         [ManualActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.Auction)]
         public async Task<IActionResult> CreateBulkAuctions(
             [FromQuery] ulong sellerId,

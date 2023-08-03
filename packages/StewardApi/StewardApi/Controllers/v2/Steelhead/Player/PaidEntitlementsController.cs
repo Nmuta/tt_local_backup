@@ -84,7 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.PaidEntitlements)]
-        [Authorize(Policy = UserAttribute.GrantPaidEntitlements)]
+        [Authorize(Policy = UserAttributeValues.GrantPaidEntitlements)]
         public async Task<IActionResult> PutPaidEntitlement(ulong xuid, string productId)
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);

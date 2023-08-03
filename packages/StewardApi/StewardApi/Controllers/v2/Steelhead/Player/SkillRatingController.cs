@@ -72,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SkillRatingSummary))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.OverrideSkillRating)]
+        [Authorize(Policy = UserAttributeValues.OverrideSkillRating)]
         public async Task<IActionResult> OverrideSkillRatingAsync(
             ulong xuid, string profileId, [FromBody] double skillRating)
         {
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SkillRatingSummary))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.OverrideSkillRating)]
+        [Authorize(Policy = UserAttributeValues.OverrideSkillRating)]
         public async Task<IActionResult> ClearSkillRatingOverrideAsync(ulong xuid, string profileId)
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);

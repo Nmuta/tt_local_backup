@@ -77,7 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                     throw new ConversionFailedStewardException($"No credit update query available. (Title: {title})");
             }
 
-            var ordering = $" | order by {column} {sortDirection.ToString().ToLower()}";
+            var ordering = $" | order by {column} {sortDirection.ToString().ToLowerInvariant()}";
 
             return unorderedQuery + ordering;
         }
