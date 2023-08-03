@@ -239,7 +239,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
-        [Authorize(Policy = UserAttribute.GenerateLeaderboardScoresFile)]
+        [Authorize(Policy = UserAttributeValues.GenerateLeaderboardScoresFile)]
         public async Task<IActionResult> GenerateLeaderboardScoresFile(
             [FromQuery] ScoreboardType scoreboardType,
             [FromQuery] ScoreType scoreType,
@@ -292,7 +292,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         {
                             if (retries > 4)
                             {
-                                throw new Exception("No scores found.");
+                                throw new NotFoundStewardException("No scores found.");
                             }
 
                             Thread.Sleep(waitTimeInMilliseconds);
@@ -406,7 +406,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var leaderboard = allLeaderboards.FirstOrDefault(leaderboard => leaderboard.ScoreboardTypeId == (int)scoreboardType
                 && leaderboard.ScoreTypeId == (int)scoreType
                 && leaderboard.TrackId == trackId
-                && leaderboard.GameScoreboardId.ToString() == pivotId);
+                && leaderboard.GameScoreboardId.ToInvariantString() == pivotId);
 
             if (leaderboard == null)
             {
