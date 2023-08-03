@@ -34,6 +34,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 attributesAsList.Add(new AuthorizationAttribute()
                 {
                     Attribute = UserAttribute.ManageStewardTeam,
+                    Title = string.Empty,
+                    Environment = string.Empty,
                 });
             }
 
