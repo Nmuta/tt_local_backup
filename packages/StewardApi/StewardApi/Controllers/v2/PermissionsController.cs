@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.VisualStudio.Services.Common;
 using Microsoft.Identity.Web;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -59,8 +60,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         ///     Gets full permissions list.
         /// </summary>
         [HttpGet]
-        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
         [SwaggerResponse(200, type: typeof(Dictionary<string, IList<string>>))]
+        [Authorize(Policy = UserAttribute.ManageStewardTeam)]
         public async Task<IActionResult> GetAllPermissionsAsync()
         {
             var permissionsKey = $"AllPermAttributes";
@@ -112,6 +114,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                     }
                 }
 
+                // Remove all non-manageable attributes from list
+                permissions.Remove(UserAttribute.ManageStewardTeam);
+
                 // Sort each action's titles
                 foreach (KeyValuePair<string, IList<string>> entry in permissions)
                 {
@@ -154,46 +159,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.UserPermissions)]
-        [Authorize(Policy = UserAttributeValues.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.ManageStewardTeam)]
         public async Task<IActionResult> SetUserPermissionsAsync(string userId, [FromBody] IEnumerable<AuthorizationAttributeData> attributes)
         {
-            if (this.HttpContext.User.IsInRole(UserRole.GeneralUser))
-            {
-                // If the user is a general user, they must be a team lead
-                var objectId = this.HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimConstants.ObjectId);
-
-                if (objectId == null)
-                {
-                    throw new BadRequestStewardException("ObjectId Claim must be provided");
-                }
-
-                var thisUser = await this.userProvider.GetStewardUserAsync(objectId.Value).ConfigureAwait(false);
-                if (thisUser == null)
-                {
-                    throw new InvalidArgumentsStewardException($"Steward user was not found. (userId: {objectId.Value})");
-                }
-
-                if (!thisUser.DeserializeTeam().Members.Contains(new Guid(userId)))
-                {
-                    throw new BadRequestStewardException("Team lead cannot assign permissions to member not in their team.");
-                }
-
-                // Also verify the current user has the attributes they are attempting to assign to another user
-                var matches = thisUser.AuthorizationAttributes().SelectMany(a => attributes.Where(b => a.Matches(b)));
-                if (matches.Count() != attributes.Count())
-                {
-                    throw new BadRequestStewardException("Team lead cannot assign permissions they do not have to a team member.");
-                }
-            }
-
             // Throw if any attributes contain an null or empty string attribute name
-            attributes.ForEach(value =>
+            foreach (var attribute in permChanges.AttributesToAdd)
             {
-                if (value.Attribute.IsNullOrEmpty())
+                if (attribute.Attribute.IsNullOrEmpty())
                 {
                     throw new BadRequestStewardException("Cannot assign permission attribute with a null or empty attribute name");
                 }
-            });
+            }
 
             var internalUser = await this.userProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
             if (internalUser == null)
@@ -202,13 +178,45 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             }
 
             var user = this.mapper.SafeMap<StewardUser>(internalUser);
-            // If user is team lead, add manage team attribute to new attributes list
-            if (user.Attributes.HasManageTeamAttribute())
+            if (this.HttpContext.User.IsInRole(UserRole.GeneralUser))
             {
-                attributes = attributes.AddManageTeamAttribute();
+                // If the user is a general user, they must be a team lead due to auth policy restrictions set in the auth attribute.
+                var requestor = await this.userProvider.GetStewardUserAsync(this.User.UserClaims().ObjectId).ConfigureAwait(false);
+                if (!requestor.DeserializeTeam().Members.Contains(new Guid(userId)))
+                {
+                    throw new BadRequestStewardException("Team lead cannot assign permissions to member not in their team.");
+                }
+
+                // Verify the current user has the attributes they are attempting to assign to another user
+                var requestorAttributes = requestor.AuthorizationAttributes().ToList();               
+                var allPermChanges = permChanges.AttributesToAdd.Concat(permChanges.AttributesToRemove).ToList();
+                var leadMissingPermissions = allPermChanges.Exists(attribute => requestorAttributes.FirstOrDefault(requestionAttribute => requestionAttribute.Matches(attribute)) == null);
+                if (leadMissingPermissions)
+                {
+                    throw new BadRequestStewardException("Team lead cannot assign permissions they do not have to a team member.");
+                }
             }
 
-            user.Attributes = attributes;
+            var newAttributeList = user.Attributes.ToList();
+            foreach (var attribute in permChanges.AttributesToAdd)
+            {
+                var foundAttribute = newAttributeList.FirstOrDefault(existingAttribute => existingAttribute.Matches(attribute));
+                if (foundAttribute == null)
+                {
+                    newAttributeList.Add(attribute);
+                }
+            }
+
+            foreach (var attribute in permChanges.AttributesToRemove)
+            {
+                var foundAttribute = newAttributeList.FirstOrDefault(existingAttribute => existingAttribute.Matches(attribute));
+                if (foundAttribute != null)
+                {
+                    newAttributeList.Remove(foundAttribute);
+                }
+            }
+
+            user.Attributes = newAttributeList;
 
             await this.userProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
 
