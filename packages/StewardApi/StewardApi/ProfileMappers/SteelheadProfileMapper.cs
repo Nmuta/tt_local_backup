@@ -58,9 +58,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 }))
                 .ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
-            this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
-                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
-                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
             this.CreateMap<SteelheadBanParameters, ForzaUserBanParameters>()
                 .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.Xuid }))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))

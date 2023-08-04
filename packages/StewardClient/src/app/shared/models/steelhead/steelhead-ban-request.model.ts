@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import { GamertagString } from '@models/extended-types';
 import { Duration } from 'luxon';
 
 export enum SteelheadBanArea {
