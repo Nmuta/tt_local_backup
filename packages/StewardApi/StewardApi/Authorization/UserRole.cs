@@ -11,12 +11,12 @@ namespace Turn10.LiveOps.StewardApi.Authorization
     public static class UserRole
     {
         /// <summary>
-        ///     Auth V2 LiveOps admin user.
+        ///     Auth V2 LiveOps admin user.
         /// </summary>
         public const string LiveOpsAdmin = "LiveOpsAdmin";
 
         /// <summary>
-        ///     Auth V2 general user.
+        ///     Auth V2 general user.
         /// </summary>
         /// <remarks>Access to all GET endpoints. Other endpoints are dynamic based on set attributes.</remarks>
         public const string GeneralUser = "GeneralUser";

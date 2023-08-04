@@ -338,7 +338,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
-                $"Steelhead Banning: {banParameters.Count} recipients.", this.Response).ConfigureAwait(true);
+                $"Steelhead Banning: {banParameters.Count} recipients.",
+                this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {

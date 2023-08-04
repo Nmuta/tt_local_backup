@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
             // Some results have the external profile ID as part of the row key instead of the partition key.
             // If that guid doesn't match the external profile ID we're using, we need to filter them out.
-            string guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
+            var guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
 
             var filteredResponse = filterResults ? finalResponse.Where(entry =>
             {
@@ -129,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
         private string GetTableName(string instanceName)
         {
-            Regex invalidTableNameCharacters = new Regex("[^a-zA-Z0-9]");
+            var invalidTableNameCharacters = new Regex("[^a-zA-Z0-9]");
             if (!string.IsNullOrEmpty(instanceName))
             {
                 return invalidTableNameCharacters.Replace(instanceName, string.Empty).ToLowerInvariant();
@@ -140,7 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             }
         }
 
-        private JToken EntityPropertyDeserializer( EntityProperty property)
+        private JToken EntityPropertyDeserializer(EntityProperty property)
         {
             switch (property.PropertyType)
             {

@@ -173,16 +173,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             {
                 foreach (var cycledSeriesData in seriesCollection.CycledSeriesData)
                 {
-                    //ChampionshipPlaylistDataV3 playlistInfo = racersCupPlaylistDataV3[cycledSeriesData.CycledSeries.ChampionshipPlaylistData.First()];
+                    ////ChampionshipPlaylistDataV3 playlistInfo = racersCupPlaylistDataV3[cycledSeriesData.CycledSeries.ChampionshipPlaylistData.First()];
                     var playlistInfoCollection = cycledSeriesData.CycledSeries.ChampionshipPlaylistData.Select(x => racersCupPlaylistDataV3[x]);
 
                     var events = new List<RacersCupEvent>();
 
-                    foreach (BaseChampionshipEventData eventData in cycledSeriesData.CycledSeries.ChampionshipEventData)
+                    foreach (var eventData in cycledSeriesData.CycledSeries.ChampionshipEventData)
                     {
                         // Propogate event windows for each event.
-                        WindowData[] eventWindows = eventGeneration.EventWindowData.FirstOrDefault(x => x.EventDataId == eventData.EventDataId)?.Windows;
-                        if (eventWindows == null) //If there's no event windows to chart, we don't care about it.
+                        var eventWindows = eventGeneration.EventWindowData.FirstOrDefault(x => x.EventDataId == eventData.EventDataId)?.Windows;
+                        if (eventWindows == null) // If there's no event windows to chart, we don't care about it.
                         {
                             continue;
                         }
@@ -190,12 +190,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         var playlistName = playlistInfoCollection.Where(playlistData => playlistData.EventPlaylistEventData.Select(tuple => tuple.Item1)
                                             .Where(championshipEventData => championshipEventData.EventDataId == eventData.EventDataId).Any()).Single().EventPlaylistName;
 
-                        RacersCupEvent newEvent = new RacersCupEvent()
+                        var newEvent = new RacersCupEvent()
                         {
                             Name = eventData.Name,
-                            PlaylistName = playlistName, //PlaylistName = playlistInfo.EventPlaylistName,
+                            PlaylistName = playlistName, ////PlaylistName = playlistInfo.EventPlaylistName,
                             EventWindows = this.mapper.SafeMap<List<RacersCupEventWindow>>(eventWindows),
-                            GameOptions = new List<RacersCupGameOptions>(), //TODO use real game options
+                            GameOptions = new List<RacersCupGameOptions>(), // TODO: use real game options
                             QualificationOptions = this.mapper.SafeMap<RacersCupQualificationOptions>(cycledSeriesData.CycledSeries.DefaultEventOverrides.QualificationOptions),
                         };
 
@@ -222,11 +222,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                     var carRestriction = scheduledSeriesData.ScheduledSeries.DefaultEventOverrides.Buckets.First().CarRestrictions.CarClassId.ToString();
 
-                    foreach (BaseChampionshipEventData eventData in scheduledSeriesData.ScheduledSeries.ChampionshipEventData)
+                    foreach (var eventData in scheduledSeriesData.ScheduledSeries.ChampionshipEventData)
                     {
                         // Propogate event windows for each event.
-                        WindowData[] eventWindows = eventGeneration.EventWindowData.FirstOrDefault(x => x.EventDataId == eventData.EventDataId)?.Windows;
-                        if (eventWindows == null) //If there's no event windows to chart, we don't care about it.
+                        var eventWindows = eventGeneration.EventWindowData.FirstOrDefault(x => x.EventDataId == eventData.EventDataId)?.Windows;
+                        if (eventWindows == null) // If there's no event windows to chart, we don't care about it.
                         {
                             continue;
                         }
@@ -234,7 +234,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         var playlistName = playlistInfoCollection.Where(playlistData => playlistData.EventPlaylistEventData.Select(tuple => tuple.Item1)
                                             .Where(championshipEventData => championshipEventData.EventDataId == eventData.EventDataId).Any()).Single().EventPlaylistName;
 
-                        RacersCupEvent newEvent = new RacersCupEvent()
+                        var newEvent = new RacersCupEvent()
                         {
                             Name = eventData.Name,
                             PlaylistName = playlistName,

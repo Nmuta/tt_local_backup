@@ -113,11 +113,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         }
 
         // Report list of UgcIds with reason
-        private async Task<List<BulkReportUgcResponse>> ReportUgcItems (IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
+        private async Task<List<BulkReportUgcResponse>> ReportUgcItems(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
         {
             var parsedReasonId = reasonId.TryParseGuidElseThrow(nameof(reasonId));
 
-            List<BulkReportUgcResponse> response = new List<BulkReportUgcResponse>();
+            var response = new List<BulkReportUgcResponse>();
 
             foreach (var ugcId in ugcIds)
             {
@@ -153,7 +153,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 {
                     var results = await this.ReportUgcItems(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(true);
 
-                    bool foundErrors = results.Any(results => results.Error != null);
+                    var foundErrors = results.Any(results => results.Error != null);
                     var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results).ConfigureAwait(true);
                 }

@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                         fh4UgcType = null;
                     }
                 }
-                catch {/* Do nothing */}
+                catch { /* Do nothing */ }
                 try
                 {
                     var fh5UgcContext = await fh5StorefrontService.GetUGCObject(ugcId).ConfigureAwait(true);
@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                         fh5UgcType = null;
                     }
                 }
-                catch {/* Do nothing */}
+                catch { /* Do nothing */ }
 
                 try
                 {
@@ -110,9 +110,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                         fm8UgcType = null;
                     }
                 }
-                catch {/* Do nothing */}
-
-
+                catch { /* Do nothing */ }
 
                 return this.Ok(new OutputModel
                 {

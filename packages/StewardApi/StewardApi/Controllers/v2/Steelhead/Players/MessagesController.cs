@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             [FromBody] BulkLocalizedMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
-            //communityMessage.Xuids.EnsureValidXuids();
+            ////communityMessage.Xuids.EnsureValidXuids();
             communityMessage.LocalizedTitleID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.LocalizedTitleID));
             communityMessage.LocalizedMessageID.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.LocalizedMessageID));
             communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));

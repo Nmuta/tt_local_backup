@@ -118,6 +118,21 @@ dotnet_diagnostic.CA2246.severity = warning
 # SA1501: Statement should not be on a single line
 dotnet_diagnostic.SA1501.severity = suggestion
 
+# SA1127: Generic type constraints should be on their own line
+dotnet_diagnostic.SA1127.severity = suggestion
+
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = none
+
+# SA1130: Use lambda syntax
+dotnet_diagnostic.SA1130.severity = suggestion
+
+# SA1300: Element should begin with upper-case letter
+dotnet_diagnostic.SA1300.severity = suggestion
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
 [*.{cs,vb}]
 #### Naming styles ####
 
@@ -277,3 +292,6 @@ dotnet_diagnostic.CA3077.severity = warning
 dotnet_diagnostic.CA3076.severity = warning
 dotnet_diagnostic.CA3075.severity = warning
 dotnet_diagnostic.CA3061.severity = warning
+
+# IDE0060: Remove unused parameter
+dotnet_diagnostic.IDE0060.severity = suggestion

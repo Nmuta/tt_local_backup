@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> SavePlayerProfile(ulong xuid, string profileId, [FromBody] string templateName, [FromQuery] bool overwriteIfExists)
         {
             var services = this.SteelheadServices.Value;
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
 
             var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             [FromQuery] string forzaSandbox)
         {
             var services = this.SteelheadServices.Value;
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
 
             var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             string profileId)
         {
             var services = this.SteelheadServices.Value;
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
 
             var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 

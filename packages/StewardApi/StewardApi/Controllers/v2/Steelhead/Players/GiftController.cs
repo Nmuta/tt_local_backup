@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            //groupGift.Xuids.EnsureValidXuids();
+            ////groupGift.Xuids.EnsureValidXuids();
 
             await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
 

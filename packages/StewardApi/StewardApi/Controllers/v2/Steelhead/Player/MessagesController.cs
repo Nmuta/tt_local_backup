@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             var notifications = new List<Notification>();
@@ -98,7 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> DeleteAllPlayerMessages(ulong xuid)
         {
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             await this.Services.NotificationManagementService.DeleteNotificationsForUser(xuid).ConfigureAwait(true);
@@ -120,7 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
             }
 
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             Notification message = null;
@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var localizedTitleIdAsGuid = editParameters.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
             var localizedMessageIdAsGuid = editParameters.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
 
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             /* TODO: Verify notification exists and is a CommunityMessageNotification before allowing edit.
@@ -202,7 +202,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> DeletePlayerMessage(Guid messageId, ulong xuid)
         {
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             var userClaims = this.User.UserClaims();

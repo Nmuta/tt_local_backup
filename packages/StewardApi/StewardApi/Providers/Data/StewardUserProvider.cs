@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
+            var tableStorageConnectionString = this.keyVaultConfig.TableStorageConnectionString;
 
             this.configuration.Bind("StewardUserStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

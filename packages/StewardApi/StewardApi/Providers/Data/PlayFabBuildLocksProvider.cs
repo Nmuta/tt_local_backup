@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultConfig.SharedTableStorageConnectionString;
+            var tableStorageConnectionString = this.keyVaultConfig.SharedTableStorageConnectionString;
 
             this.configuration.Bind("PlayFabBuildLocksStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

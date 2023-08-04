@@ -116,9 +116,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                                 xuid,
                                 itemId,
                                 gift.BodyMessageId,
-                                gift.TitleMessageId
+                                gift.TitleMessageId)
                                 /* hasExpiration, */
-                                /* gift.ExpireTimeSpanInDays */).ConfigureAwait(false);
+                                /* gift.ExpireTimeSpanInDays) */
+                                .ConfigureAwait(false);
                         }
                     }
                     else
@@ -218,7 +219,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                         // TODO: Switch this with the LSP endpoint once it becomes available
                         // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1363280
                         throw new InvalidArgumentsStewardException($"Failed to gift car to a group. This feature is currently not supported. (groupId: {groupId}) (carId: {itemId}), (quantity: {quantity})");
-                    } 
+                    }
                     else
                     {
                         await service.GiftingManagementService.AdminSendInventoryItemGroupGift(

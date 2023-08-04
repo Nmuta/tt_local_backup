@@ -240,7 +240,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTimeUtc =pegasusShowcase.StartEndDate.From,
+                        StartTimeUtc = pegasusShowcase.StartEndDate.From,
                         EndTimeUtc = pegasusShowcase.StartEndDate.To,
                         ManufacturerId = carListing.FullCarInfo.Car.MakeID.Value,
                         ManufacturerName = carListing.FullCarInfo.Car.MakeDisplayName,

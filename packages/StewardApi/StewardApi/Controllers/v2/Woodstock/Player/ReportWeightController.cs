@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetUserReportWeight(ulong xuid)
         {
-            //xuid.IsValidXuid();
+            ////xuid.IsValidXuid();
 
             var reportWeight = await this.playerDetailsProvider.GetUserReportWeightAsync(xuid, this.WoodstockEndpoint.Value).ConfigureAwait(true);
             return this.Ok(reportWeight);

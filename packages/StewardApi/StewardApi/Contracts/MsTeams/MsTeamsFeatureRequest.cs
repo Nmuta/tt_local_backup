@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
                 }
             }]}";
 
-            AdaptiveCardTemplate template = new AdaptiveCardTemplate(cardSchema);
+            var template = new AdaptiveCardTemplate(cardSchema);
             return template.Expand(new
             {
                 UserId = user.ObjectId,

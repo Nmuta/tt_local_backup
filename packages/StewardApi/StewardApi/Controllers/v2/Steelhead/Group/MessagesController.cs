@@ -126,25 +126,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
             }
 
             var forzaDeviceType = this.mapper.SafeMap<ForzaLiveDeviceType>(communityMessage.DeviceType);
-            Guid notificationId = Guid.Empty;
+            var notificationId = Guid.Empty;
             var messageResponse = new MessageSendResult<int>
             {
                 PlayerOrLspGroup = groupId,
-                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
             };
 
             try
             {
-                var response = await this.Services.NotificationManagementService.SendGroupMessage(
-                    groupId,
-                    localizedTitleGuid,
-                    localizedMessageGuid,
-                    forzaDeviceType != ForzaLiveDeviceType.Invalid,
-                    forzaDeviceType,
-                    communityMessage.StartTimeUtc,
-                    communityMessage.ExpireTimeUtc,
-                    communityMessage.NotificationType
-                    ).ConfigureAwait(true);
+                var response =
+                    await this.Services.NotificationManagementService.SendGroupMessage(
+                        groupId,
+                        localizedTitleGuid,
+                        localizedMessageGuid,
+                        forzaDeviceType != ForzaLiveDeviceType.Invalid,
+                        forzaDeviceType,
+                        communityMessage.StartTimeUtc,
+                        communityMessage.ExpireTimeUtc,
+                        communityMessage.NotificationType)
+                    .ConfigureAwait(true);
 
                 notificationId = response.notificationId;
                 messageResponse.NotificationId = response.notificationId;
@@ -199,6 +200,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
         [Authorize(Policy = UserAttributeValues.MessageGroup)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Part of route.")]
         public async Task<IActionResult> EditGroupMessage(
             int groupId,
             string messageId,

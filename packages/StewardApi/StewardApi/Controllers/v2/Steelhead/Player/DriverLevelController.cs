@@ -83,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.SetDriverLevel)]
         public async Task<IActionResult> SetDriverLevel(ulong xuid, [FromBody] SteelheadDriverLevel newDriverLevel)
         {
-            //xuid.IsValidXuid();
+            ////xuid.IsValidXuid();
 
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 

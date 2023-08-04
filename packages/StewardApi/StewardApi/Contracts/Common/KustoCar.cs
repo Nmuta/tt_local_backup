@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System.Data;
+﻿using System.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common

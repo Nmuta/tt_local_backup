@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetHasPlayedRecordAsync(
             ulong xuid)
         {
-            //xuid.IsValidXuid();
+            ////xuid.IsValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             ForzaLoyaltyRewardsSupportedTitles[] titlesPlayed = null;
@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.SendLoyaltyRewards)]
         public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, [FromBody] IList<string> gameTitles)
         {
-            //xuid.IsValidXuid();
+            ////xuid.IsValidXuid();
             gameTitles.ShouldNotBeNull(nameof(gameTitles));
 
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);

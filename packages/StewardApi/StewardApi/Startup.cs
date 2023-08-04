@@ -183,7 +183,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddHttpClient("STS")
                 .ConfigurePrimaryHttpMessageHandler((Func<IServiceProvider, HttpMessageHandler>)delegate
                 {
-                    HttpClientHandler httpClientHandler = new HttpClientHandler
+                    var httpClientHandler = new HttpClientHandler
                     {
                         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
                     };

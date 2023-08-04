@@ -1,10 +1,10 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.STS
-{
-    using System;
-    using Microsoft.Extensions.Options;
-    using Turn10.Contracts.STS;
-    using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+﻿using System;
+using Microsoft.Extensions.Options;
+using Turn10.Contracts.STS;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
+namespace Turn10.LiveOps.StewardApi.Contracts.STS
+{
     /// <inheritdoc />
     /// <remarks>This class is required to instantiate an STSClient.</remarks>
     public class STSClientOptionsWrapper : IOptionsMonitor<STSClientOptions>
@@ -23,10 +23,10 @@
         }
 
         /// <inheritdoc />
-        public STSClientOptions CurrentValue => options;
+        public STSClientOptions CurrentValue => this.options;
 
         /// <inheritdoc />
-        public STSClientOptions Get(string name) => options;
+        public STSClientOptions Get(string name) => this.options;
 
         /// <inheritdoc />
         public IDisposable OnChange(Action<STSClientOptions, string> listener)
