@@ -200,6 +200,10 @@ dotnet_style_qualification_for_event = true:warning
 
 # IDE0270: Use coalesce expression
 dotnet_diagnostic.IDE0270.severity = none
+
+# IDE2001: Embedded statements must be on their own line
+dotnet_diagnostic.IDE2001.severity = suggestion
+
 dotnet_diagnostic.CA1010.severity = warning
 dotnet_diagnostic.CA1041.severity = warning
 dotnet_diagnostic.CA1050.severity = warning
