@@ -1,5 +1,11 @@
 <ng-container *ngIf="identity && !identity?.error; else noIdentity">
   <h1><player-identity-results [identity]="identity"></player-identity-results></h1>
+  <ng-container *waitForMonitor="getPlayFabProfileMonitor">
+    <h2>
+      PlayFab Master Account: {{ playfabProfile?.master }} PlayFab Title Account:
+      {{ playfabProfile?.title }}
+    </h2>
+  </ng-container>
   <section>
     <mat-tab-group animationDuration="0ms" (selectedTabChange)="tabChanged($event)">
       <mat-tab *ngIf="!isSpecialXuid" label="User Details">
@@ -17,6 +23,13 @@
           <woodstock-profile-notes [identity]="identity"></woodstock-profile-notes>
           <woodstock-gamertags [identity]="identity"></woodstock-gamertags>
           <woodstock-consoles [identity]="identity"></woodstock-consoles>
+        </div>
+      </mat-tab>
+      <mat-tab *ngIf="!isSpecialXuid" label="PlayFab">
+        <div class="sf-wrapper sf-tab-container">
+          <woodstock-playfab-transaction-history
+            [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+          ></woodstock-playfab-transaction-history>
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Deep Dive">

@@ -8,6 +8,11 @@ import { SpecialXuid1 } from '@models/special-identity';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
 import { PlayerInventoryProfile } from '@models/player-inventory-profile';
+import {
+  PlayFabProfile,
+  WoodstockPlayersPlayFabService,
+} from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({
@@ -16,6 +21,10 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 })
 export class WoodstockUserDetailsComponent extends BaseComponent {
   public profile: PlayerInventoryProfile;
+  public playfabProfile: PlayFabProfile;
+
+  public getPlayFabProfileMonitor = new ActionMonitor('Get PlayFab Profile');
+
   /** Used to hide unwanted tab when dealing with a special xuid. */
   public isSpecialXuid: boolean;
 
@@ -37,6 +46,7 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
   }
 
   constructor(
+    private readonly playersPlayFabService: WoodstockPlayersPlayFabService,
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
   ) {
     super();
@@ -52,6 +62,14 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.profile = newProfile;
+
+    this.getPlayFabProfileMonitor = this.getPlayFabProfileMonitor.repeat();
+    this.playersPlayFabService
+      .getPlayFabProfile$(this.identity.xuid)
+      .pipe(this.getPlayFabProfileMonitor.monitorSingleFire())
+      .subscribe(playfabProfile => {
+        this.playfabProfile = playfabProfile;
+      });
   }
 
   /** Hook when mat-tab changes. */
