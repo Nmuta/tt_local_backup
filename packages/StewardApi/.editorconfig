@@ -106,6 +106,11 @@ dotnet_diagnostic.CA2234.severity = suggestion
 # CA5399: HttpClients should enable certificate revocation list checks
 dotnet_diagnostic.CA5399.severity = suggestion
 csharp_space_around_binary_operators = before_and_after
+dotnet_diagnostic.CA1001.severity = warning
+dotnet_diagnostic.CA1200.severity = warning
+dotnet_diagnostic.CA1309.severity = warning
+dotnet_diagnostic.CA1311.severity = warning
+dotnet_diagnostic.CA1507.severity = warning
 
 [*.{cs,vb}]
 #### Naming styles ####
@@ -196,3 +201,12 @@ dotnet_diagnostic.CA1010.severity = warning
 dotnet_diagnostic.CA1041.severity = warning
 dotnet_diagnostic.CA1050.severity = warning
 dotnet_diagnostic.CA1051.severity = warning
+dotnet_diagnostic.CA1018.severity = warning
+dotnet_diagnostic.CA1036.severity = warning
+dotnet_diagnostic.CA1061.severity = warning
+dotnet_diagnostic.CA1068.severity = warning
+dotnet_diagnostic.CA1069.severity = warning
+dotnet_diagnostic.CA1304.severity = warning
+dotnet_diagnostic.CA1305.severity = suggestion
+dotnet_diagnostic.CA1310.severity = suggestion
+dotnet_diagnostic.CA1707.severity = silent
