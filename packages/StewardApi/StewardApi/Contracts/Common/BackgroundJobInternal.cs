@@ -1,6 +1,6 @@
-﻿using Microsoft.Azure.Cosmos.Table;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
+using Microsoft.Azure.Cosmos.Table;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common

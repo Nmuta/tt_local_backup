@@ -68,7 +68,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             return masterInventory;
         }
 
-        /// <inheritdoc />
         public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily)
         {
             IEnumerable<VanityItem> vanityItems;

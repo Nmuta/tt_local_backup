@@ -1,7 +1,7 @@
-﻿using Kusto.Data.Common;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Kusto.Data.Common;
+using Newtonsoft.Json.Linq;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data

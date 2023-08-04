@@ -422,6 +422,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     try
                     {
                         remainingCurrencyToSend -= creditsToSend;
+
                         // TODO: This is temporary. Services is still figuring out what credit item ids will be.
                         var creditItemId = 0;
                         await serviceCall(type, creditItemId, (uint)creditsToSend).ConfigureAwait(false);

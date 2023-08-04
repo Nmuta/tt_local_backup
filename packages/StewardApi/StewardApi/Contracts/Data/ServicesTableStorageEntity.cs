@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using Newtonsoft.Json.Linq;
 
 #pragma warning disable SA1600 // Elements should be documented
 namespace Turn10.LiveOps.StewardApi.Contracts.Data

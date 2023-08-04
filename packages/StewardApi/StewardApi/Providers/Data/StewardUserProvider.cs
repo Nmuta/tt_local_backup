@@ -280,7 +280,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             return;
         }
 
-        protected string RequestPathSegment(PathString path, string key, bool capitalize = false)
+        private string RequestPathSegment(PathString path, string key, bool capitalize = false)
         {
             if (path == null)
             {

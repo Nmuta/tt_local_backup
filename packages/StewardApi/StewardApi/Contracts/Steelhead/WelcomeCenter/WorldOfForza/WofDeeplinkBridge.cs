@@ -102,7 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         /// <summary>
         ///     Gets or sets the destination.
         /// </summary>
-        [JsonConverter(typeof(DestinationConverter))]
+        [JsonConverter(typeof(DeeplinkDestinationConverter))]
         public DeeplinkDestination Destination { get; set; }
     }
 

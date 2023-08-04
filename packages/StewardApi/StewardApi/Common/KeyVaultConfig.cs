@@ -1,9 +1,9 @@
-﻿using Azure.Security.KeyVault.Secrets;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Configuration;
 using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Common

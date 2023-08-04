@@ -1,5 +1,5 @@
-﻿using Microsoft.Azure.Cosmos.Table;
-using System;
+﻿using System;
+using Microsoft.Azure.Cosmos.Table;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data

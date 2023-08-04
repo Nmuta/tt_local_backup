@@ -174,8 +174,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     {
                         // Propogate event windows for each event.
                         var eventWindows = eventGeneration.EventWindowData.FirstOrDefault(x => x.EventDataId == eventData.EventDataId)?.Windows;
-                        if (eventWindows == null) // If there's no event windows to chart, we don't care about it.
+                        if (eventWindows == null)
                         {
+                            // If there's no event windows to chart, we don't care about it.
                             continue;
                         }
 
@@ -218,8 +219,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     {
                         // Propogate event windows for each event.
                         var eventWindows = eventGeneration.EventWindowData.FirstOrDefault(x => x.EventDataId == eventData.EventDataId)?.Windows;
-                        if (eventWindows == null) // If there's no event windows to chart, we don't care about it.
+                        if (eventWindows == null)
                         {
+                            // If there's no event windows to chart, we don't care about it.
                             continue;
                         }
 

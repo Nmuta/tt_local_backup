@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         /// <summary>
         ///     Gets or sets a list of child nodes.
         /// </summary>
-        public List<Node> Children { get; set; } = new();
+        public List<Node> Children { get; set; } = new ();
 
         /// <summary>
         ///     Gets or sets the relative path to this node.

@@ -67,7 +67,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
         [Authorize(Policy = UserAttributeValues.UpdateProfile)]
         public async Task<IActionResult> LoadPlayerProfile(
-            ulong xuid, string profileId,
+            ulong xuid,
+            string profileId,
             [FromBody] string templateName,
             [FromQuery] bool continueOnBreakingChanges,
             [FromQuery] string forzaSandbox)
