@@ -528,7 +528,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.RegionId, opt => opt.MapFrom(src => src.RegionID))
                 .ForMember(dest => dest.CountryId, opt => opt.MapFrom(src => src.CountryID))
                 .ForMember(dest => dest.IsAvailableInAutoshow, opt => opt.MapFrom(src => src.NotAvailableInAutoshow == null || src.NotAvailableInAutoshow.Value == 0))
-                .ForMember(dest => dest.PerformanceIndex , opt => opt.MapFrom(src => src.PerformanceIndex))
+                .ForMember(dest => dest.PerformanceIndex, opt => opt.MapFrom(src => src.PerformanceIndex))
                 .ForMember(dest => dest.PowertrainName, opt => opt.MapFrom(src => src.PowertrainName))
                 .ForMember(dest => dest.CarTypeName, opt => opt.MapFrom(src => src.CarTypeName))
                 .ForMember(dest => dest.CarClassName, opt => opt.MapFrom(src => src.CarClassName))

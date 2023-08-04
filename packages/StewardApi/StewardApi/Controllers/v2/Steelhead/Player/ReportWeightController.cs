@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetReportWeightAsync(ulong xuid)
         {
-            //xuid.IsValidXuid();
+            ////xuid.IsValidXuid();
 
             UserManagementService.GetUserReportWeightOutput response = null;
 

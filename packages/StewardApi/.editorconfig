@@ -115,6 +115,9 @@ dotnet_diagnostic.CA1805.severity = suggestion
 dotnet_diagnostic.CA2244.severity = warning
 dotnet_diagnostic.CA2246.severity = warning
 
+# SA1501: Statement should not be on a single line
+dotnet_diagnostic.SA1501.severity = suggestion
+
 [*.{cs,vb}]
 #### Naming styles ####
 
@@ -187,7 +190,7 @@ dotnet_style_predefined_type_for_locals_parameters_members = true:warning
 dotnet_style_predefined_type_for_member_access = true:warning
 dotnet_style_require_accessibility_modifiers = always:warning
 dotnet_style_allow_multiple_blank_lines_experimental = false:warning
-dotnet_style_allow_statement_immediately_after_block_experimental = false:warning
+dotnet_style_allow_statement_immediately_after_block_experimental = true:suggestion
 dotnet_code_quality_unused_parameters = all:warning
 dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:suggestion
 dotnet_style_parentheses_in_other_binary_operators = never_if_unnecessary:suggestion

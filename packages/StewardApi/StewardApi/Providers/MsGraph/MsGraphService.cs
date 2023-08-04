@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.MsGraph
             var principal = this.graphServiceClient.ServicePrincipals[this.servicePrincipalId];
             var response = await principal.Request().GetAsync().ConfigureAwait(false);
 
-            return (IEnumerable<AppRole>) response.AppRoles;
+            return (IEnumerable<AppRole>)response.AppRoles;
         }
 
         /// <inheritdoc />
