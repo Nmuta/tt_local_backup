@@ -1,0 +1,36 @@
+<div class="sf-vertical">
+  <ng-container *waitForMonitor="referenceDataMonitor">
+    <mat-form-field class="sf-default-hint" appearance="fill">
+      <mat-label>Select Setting Type</mat-label>
+      <mat-select [formControl]="formControls.rivalsSettingType">
+        <mat-option *ngFor="let setting of rivalsSetting" [value]="setting">
+          {{ setting }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- Only Homepage settings does not have category dropdown -->
+    <ng-container *ngIf="formControls.rivalsSettingType.value !== rivalsSettingTypes.Homepage">
+      <mat-form-field class="sf-default-hint" appearance="fill">
+        <mat-label>Select Category</mat-label>
+        <mat-select [formControl]="formControls.rivalsCategory">
+          <mat-option
+            *ngFor="let rivalsCategory of rivalsCategories | keyvalue"
+            [value]="rivalsCategory.key"
+          >
+            {{ rivalsCategory.value | humanize }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+    <ng-container *ngIf="formControls.rivalsSettingType.value === rivalsSettingTypes.Event">
+      <mat-form-field class="sf-default-hint" appearance="fill">
+        <mat-label>Select Event</mat-label>
+        <mat-select [formControl]="formControls.rivalsEvent">
+          <mat-option *ngFor="let rivalsEvent of rivalsEvents | keyvalue" [value]="rivalsEvent.key">
+            {{ rivalsEvent.value | humanize }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+</div>

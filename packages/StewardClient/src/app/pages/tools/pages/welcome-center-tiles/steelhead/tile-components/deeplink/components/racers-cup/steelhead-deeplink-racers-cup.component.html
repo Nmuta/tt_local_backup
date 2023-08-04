@@ -1,0 +1,12 @@
+<div class="sf-vertical">
+  <ng-container *waitForMonitor="referenceDataMonitor">
+    <mat-form-field class="sf-default-hint" appearance="fill">
+      <mat-label>Select Series</mat-label>
+      <mat-select [formControl]="formControls.racersCupSeries">
+        <mat-option *ngFor="let serie of racersCupSeries | keyvalue" [value]="serie.key">
+          {{ serie.value | humanize }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-container>
+</div>
