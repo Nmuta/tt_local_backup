@@ -1,7 +1,6 @@
-﻿using System;
+﻿using PlayFab.EconomyModels;
+using System;
 using System.Collections.Generic;
-using PlayFab.EconomyModels;
-using PlayFab.MultiplayerModels;
 
 #pragma warning disable SA1600 // Elements should be documented
 

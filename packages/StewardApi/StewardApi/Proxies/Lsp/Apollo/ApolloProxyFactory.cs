@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using Forza.WebServices.FM7.Generated;
+using System;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Forza.WebServices.FM7.Generated;
-using Microsoft.Extensions.Configuration;
-using Turn10.Contracts.STS;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services;

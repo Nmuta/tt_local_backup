@@ -23,5 +23,5 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public DateTimeOffset DateCreatedUtc { get; set; }
 
         public string MetaData { get; set; }
-}
+    }
 }

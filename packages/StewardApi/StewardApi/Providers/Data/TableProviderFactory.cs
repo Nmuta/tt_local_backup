@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage.RetryPolicies;
+using Microsoft.WindowsAzure.Storage.Table;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.WindowsAzure.Storage.RetryPolicies;
-using Microsoft.WindowsAzure.Storage.Table;
 using Turn10.Services.Diagnostics;
-using Turn10.Services.Orm;
 using Turn10.Services.Storage.Table;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member

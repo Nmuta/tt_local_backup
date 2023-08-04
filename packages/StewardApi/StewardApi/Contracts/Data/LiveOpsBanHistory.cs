@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Data;
-using Newtonsoft.Json;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Providers;
 

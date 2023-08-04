@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.ApplicationInsights.DataContracts;
+﻿using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System;
+using System.Collections.Generic;
 using Turn10.LiveOps.StewardApi.Helpers;
 using static System.FormattableString;
 
@@ -39,7 +38,8 @@ namespace Turn10.LiveOps.StewardApi.Filters
     }
 
     [Flags]
-    public enum DependencyLogTags {
+    public enum DependencyLogTags
+    {
         Lsp = 1,
         Kusto = 2,
         AuctionHouse = 4,

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.Data.Azure;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -273,7 +272,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             public KeyVaultConfig KeyVaultConfig { get; set; } = Substitute.For<KeyVaultConfig>();
 
             private ITableStorageClient TableStorageClient { get; set; } = Substitute.For<ITableStorageClient>();
-            
+
             public KustoQueryProvider Build()
             {
                 var provider = new KustoQueryProvider(TableStorageClientFactory, Mapper, Configuration, KeyVaultConfig);
@@ -281,7 +280,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
                 provider.InitializeAsync().GetAwaiter().GetResult();
 
                 return provider;
-            } 
+            }
         }
     }
 }

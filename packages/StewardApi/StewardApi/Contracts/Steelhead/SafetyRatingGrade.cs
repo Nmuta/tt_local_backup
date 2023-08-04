@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
 {

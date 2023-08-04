@@ -1,16 +1,15 @@
-﻿using System;
+﻿using AutoMapper;
+using Forza.WebServices.FM8.Generated;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Forza.WebServices.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
@@ -384,7 +383,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
             catch (Exception ex)
             {
-               throw new UnknownFailureStewardException("Search player auctions failed.", ex);
+                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
             }
 
             return this.mapper.SafeMap<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);

@@ -1,8 +1,8 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise;

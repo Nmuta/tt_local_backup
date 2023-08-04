@@ -1,34 +1,18 @@
-﻿using System;
-using System.Collections;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Kusto.Data.Common;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
-using Microsoft.Identity.Client;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Turn10;
-using Turn10.Data.Azure;
 using Turn10.Data.Common;
-using Turn10.Data.Kusto;
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps;
-using Turn10.LiveOps.StewardApi;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.BigCat;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.BigCat;
-using Turn10.LiveOps.StewardApi.Providers.Data;
-using static System.Net.WebRequestMethods;
 
 namespace Turn10.LiveOps.StewardApi.Providers.BigCat
 {

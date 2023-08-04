@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using Microsoft.Graph;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Azure.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
-using Turn10.LiveOps.StewardApi.Providers.MsGraph;
-using static Kusto.Data.Common.CslCommandGenerator;
-using static Microsoft.VisualStudio.Services.Graph.GraphResourceIds;
 
 namespace Turn10.LiveOps.StewardApi.Providers.MsGraph
 {

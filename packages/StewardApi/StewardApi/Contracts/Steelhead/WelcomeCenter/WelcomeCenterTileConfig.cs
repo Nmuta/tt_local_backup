@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles;
 
 #pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped from Pegasus)

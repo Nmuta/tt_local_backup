@@ -5,15 +5,13 @@
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable SA1516 // Elements should be separated by blank line
 
+using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Newtonsoft.Json.Converters;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
@@ -207,7 +205,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
     public partial class WofBaseDisplayConditions
     {
-        [WriteToPegasus(CreateIfNull=true)]
+        [WriteToPegasus(CreateIfNull = true)]
         [Required]
         [XmlElement(Namespace = "scribble:x")]
         public BaseItem[] item { get; set; }

@@ -19,10 +19,10 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </remarks>
         public static TokenCredential BetterDefaultAzureCredentials
             => new DefaultAzureCredential();
-            // Disabling temporarily to unblock release. Need to change return type back to ChainedTokenCredential as well
-            // BUG to track: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1567851
-            //// => new ChainedTokenCredential(
-            //// new AzureCliCredential(),
-            ////new DefaultAzureCredential());
+        // Disabling temporarily to unblock release. Need to change return type back to ChainedTokenCredential as well
+        // BUG to track: https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1567851
+        //// => new ChainedTokenCredential(
+        //// new AzureCliCredential(),
+        ////new DefaultAzureCredential());
     }
 }

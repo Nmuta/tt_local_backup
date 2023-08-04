@@ -1,9 +1,8 @@
 ﻿#pragma warning disable SA1402 // File may only contain a single type
 
-using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
+using System;
 using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza

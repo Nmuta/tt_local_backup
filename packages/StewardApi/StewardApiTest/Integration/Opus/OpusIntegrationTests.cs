@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardTest.Utilities;
@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         private static KeyVaultProvider KeyVaultProvider;
         private static OpusStewardTestingClient stewardClient;
         private static OpusStewardTestingClient unauthorizedClient;
-        
+
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
         {

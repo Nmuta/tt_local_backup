@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Forza.WebServices.FH3.Generated;
+﻿using Forza.WebServices.FH3.Generated;
+using System.Threading.Tasks;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections
 {

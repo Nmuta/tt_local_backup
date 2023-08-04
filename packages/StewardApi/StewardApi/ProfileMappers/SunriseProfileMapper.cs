@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Forza.UserGeneratedContent.FH4.Generated;
+using Forza.WebServices.FH4.Generated;
+using Forza.WebServices.RareCarShopTransactionObjects.FH4.Generated;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using Forza.UserGeneratedContent.FH4.Generated;
-using Forza.WebServices.FH4.Generated;
-using Forza.WebServices.RareCarShopTransactionObjects.FH4.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Data;

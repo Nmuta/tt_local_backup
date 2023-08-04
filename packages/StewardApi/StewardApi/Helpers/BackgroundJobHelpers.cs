@@ -29,7 +29,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 return neitherValue || bothValues;
             });
 
-            GiftResponse<T> DoAggregate<T2>(IGrouping<T2, GiftResponse<T>> g) {
+            GiftResponse<T> DoAggregate<T2>(IGrouping<T2, GiftResponse<T>> g)
+            {
                 var list = g.ToList();
                 var first = list.First();
                 return new GiftResponse<T>

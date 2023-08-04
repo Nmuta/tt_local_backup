@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Rest;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using static System.Net.Mime.MediaTypeNames;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using FH4UGCContentType = Forza.LiveOps.FH4.Generated.ForzaUGCContentType;
 using FH5UGCContentType = Turn10.Services.LiveOps.FH5_main.Generated.ForzaUGCContentType;
@@ -26,8 +21,6 @@ using FM8UGCContentType = Turn10.Services.LiveOps.FM8.Generated.ForzaUGCContentT
 using ServicesLiveOpsFH4 = Forza.LiveOps.FH4.Generated;
 using ServicesLiveOpsFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 using ServicesLiveOpsFM8 = Turn10.Services.LiveOps.FM8.Generated;
-using SubmoduleFH5 = Forza.WebServices.FH5_main.Generated;
-using T10SubmoduleFH5 = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
 {

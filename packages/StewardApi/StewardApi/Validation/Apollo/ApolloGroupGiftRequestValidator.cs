@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Linq;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 

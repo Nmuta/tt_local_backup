@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Kusto.Cloud.Platform.Utils;
+﻿using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -198,7 +194,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task EnsureStewardUserAsync(StewardClaimsUser user)
         {
-          // We shouldnt pass in the attributes from claim. it doesnt exist
+            // We shouldnt pass in the attributes from claim. it doesnt exist
             await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role).ConfigureAwait(false);
         }
 
@@ -284,7 +280,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             return;
         }
 
-        string RequestPathSegment(PathString path, string key, bool capitalize = false)
+        protected string RequestPathSegment(PathString path, string key, bool capitalize = false)
         {
             if (path == null)
             {

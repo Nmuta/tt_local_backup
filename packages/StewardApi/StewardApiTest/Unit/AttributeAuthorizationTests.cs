@@ -1,14 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Autofac;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Turn10.LiveOps.StewardApi;
-using Microsoft.AspNetCore.Authorization;
-using Autofac;
-
 using static System.Net.WebRequestMethods;
 
 namespace Turn10.LiveOps.StewardTest.Unit
@@ -50,7 +49,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
                        skip("Util", "PostStatus") ||
                        skip("Util", "PutStatus") ||
                        skip("Permissions", "SetUserPermissions") ||
-                       skip("AcLogReader", "RunAcLogReader")||
+                       skip("AcLogReader", "RunAcLogReader") ||
                        skip("MsTeams", "CreateMsTeamsBugReport") ||
                        skip("MsTeams", "CreateMsTeamsFeatureRequest") ||
                        skip("PlayFab", "GetPlayFabEntityIds") ||

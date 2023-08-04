@@ -4,10 +4,7 @@
 #pragma warning disable SA1204 // Static elements should appear before instance elements
 #pragma warning disable SA1402 // File may only contain a single type
 using AdaptiveCards.Templating;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 

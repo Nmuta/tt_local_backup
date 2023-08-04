@@ -1,24 +1,17 @@
-﻿using System;
+﻿using AutoMapper;
+using SteelheadLiveOpsContent;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using SteelheadLiveOpsContent;
-using Turn10;
 using Turn10.Data.Common;
-using Turn10.LiveOps;
-using Turn10.LiveOps.StewardApi;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 {

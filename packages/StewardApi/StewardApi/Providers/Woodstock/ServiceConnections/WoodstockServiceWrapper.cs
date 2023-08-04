@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Forza.UserInventory.FH5_main.Generated;
+using Forza.WebServices.FH5_main.Generated;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Forza.UserGeneratedContent.FH5_main.Generated;
-using Forza.UserInventory.FH5_main.Generated;
-using Forza.WebServices.FH5_main.Generated;
-using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
@@ -283,9 +281,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ForzaUserReportWeightType reportWeightType,
             string endpoint)
         {
-          var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+            var userService = await this.stewardProjectionServiceFactory.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-          await userService.SetUserReportWeightType(xuid, reportWeightType).ConfigureAwait(false);
+            await userService.SetUserReportWeightType(xuid, reportWeightType).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

@@ -1,7 +1,7 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
+using System;
 using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
 
 namespace Turn10.LiveOps.StewardApi.Obligation

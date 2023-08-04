@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;

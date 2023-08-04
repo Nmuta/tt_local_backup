@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Forza.WebServices.FMG.Generated;
+﻿using Forza.WebServices.FMG.Generated;
+using System.Collections.Generic;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common

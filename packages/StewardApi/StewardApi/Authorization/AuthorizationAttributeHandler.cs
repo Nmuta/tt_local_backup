@@ -1,13 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Identity.Web;
 using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
-using Kusto.Cloud.Platform.Utils;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Identity.Web;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 

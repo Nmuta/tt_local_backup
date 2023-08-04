@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using Forza.LiveOps.FH4.Generated;
+﻿using Forza.LiveOps.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
+using System.Threading.Tasks;
 using AuctionManagementService = Forza.LiveOps.FH4.Generated.AuctionManagementService;
 using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
 using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;

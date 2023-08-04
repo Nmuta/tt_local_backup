@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.Azure.Cosmos.Table;
-using Turn10.Data.Common;
+﻿using Microsoft.Azure.Cosmos.Table;
+using System;
 
 #pragma warning disable SA1600 // Elements should be documented
 namespace Turn10.LiveOps.StewardApi.Contracts.Data

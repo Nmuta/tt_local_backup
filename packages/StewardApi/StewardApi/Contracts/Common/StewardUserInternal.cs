@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.Azure.Cosmos.Table;
+﻿using Microsoft.Azure.Cosmos.Table;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common

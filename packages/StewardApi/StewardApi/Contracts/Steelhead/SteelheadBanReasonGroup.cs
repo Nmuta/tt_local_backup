@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using Xls.Security.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Kusto.Data.Common;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Kusto.Data.Common;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Forza.Scoreboard.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5_main.Generated;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
@@ -16,10 +15,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
-using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.Services.LiveOps.FH5_main.Generated;
-using Xls.Security.FH5_main.Generated;
-using static Turn10.Services.LiveOps.FH5_main.Generated.StorefrontManagementService;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
@@ -118,12 +114,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? ServicesLiveOps.ForzaSearchOrderBy.ClosingDateAsc : ServicesLiveOps.ForzaSearchOrderBy.ClosingDateDesc));
 
             this.CreateMap<ServicesLiveOps.ForzaAuctionWithFileData, PlayerAuction>()
-                .ForMember(dest => dest.TextureMapImageBase64,
+                .ForMember(
+                    dest => dest.TextureMapImageBase64,
                     opt => opt.MapFrom(source =>
                         source.AdminTexture.Length > 0
                             ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture)
                             : null))
-                .ForMember(dest => dest.LiveryImageBase64,
+                .ForMember(
+                    dest => dest.LiveryImageBase64,
                     opt => opt.MapFrom(source =>
                         source.LargeThumbnail.Length > 0
                             ? "data:image/jpeg;base64," + Convert.ToBase64String(source.LargeThumbnail)

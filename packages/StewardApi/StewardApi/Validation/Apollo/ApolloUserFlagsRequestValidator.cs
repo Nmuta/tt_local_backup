@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 
 namespace Turn10.LiveOps.StewardApi.Validation.Apollo

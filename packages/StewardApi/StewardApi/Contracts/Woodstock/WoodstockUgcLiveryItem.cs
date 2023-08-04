@@ -10,7 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
     /// </summary>
     public class WoodstockUgcLiveryItem : UgcLiveryItem
     {
-        [JsonProperty(ItemConverterType=typeof(StringEnumConverter))]
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public IEnumerable<WoodstockUgcGeoFlagOption> GeoFlags { get; set; }
     }
 }

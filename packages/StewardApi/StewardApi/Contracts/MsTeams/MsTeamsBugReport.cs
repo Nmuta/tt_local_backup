@@ -6,10 +6,7 @@
 
 using AdaptiveCards.Templating;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams

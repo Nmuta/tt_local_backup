@@ -1,13 +1,12 @@
-﻿using System;
+﻿using Forza.WebServices.FH3.Generated;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using Forza.WebServices.FH3.Generated;
-using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;

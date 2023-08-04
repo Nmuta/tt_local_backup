@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Globalization;
 using System.Xml;
-using Newtonsoft.Json;
 
 namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
 {

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using Forza.Notifications.FM8.Generated;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Forza.Notifications.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -15,7 +15,6 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
-
 // Using this for type safety when sending gifts to LSP.
 using InventoryItemType = Forza.UserInventory.FM8.Generated.InventoryItemType;
 

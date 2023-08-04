@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AutoMapper;
+using Forza.LiveOps.FH4.Generated;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Forza.LiveOps.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -103,9 +103,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                 notification = await this.sunriseService.GetUserGroupNotificationAsync(
-                    notificationId,
-                    endpoint).ConfigureAwait(false);
+                notification = await this.sunriseService.GetUserGroupNotificationAsync(
+                   notificationId,
+                   endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

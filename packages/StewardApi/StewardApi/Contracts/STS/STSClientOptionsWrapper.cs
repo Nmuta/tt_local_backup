@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using System;
 using Turn10.Contracts.STS;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 

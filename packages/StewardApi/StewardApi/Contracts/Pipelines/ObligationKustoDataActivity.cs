@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
 using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Pipelines

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Castle.DynamicProxy;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Castle.DynamicProxy;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Proxies
@@ -67,7 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies
                 throw new LspFailureStewardException($"Failed to invoke LSP call: {method.Name}", ex);
             }
         }
-
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         /// <inheritdoc/>

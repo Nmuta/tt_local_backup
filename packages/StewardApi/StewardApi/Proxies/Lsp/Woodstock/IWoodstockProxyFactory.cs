@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
+﻿using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 {

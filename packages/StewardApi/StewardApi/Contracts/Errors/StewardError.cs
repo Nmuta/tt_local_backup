@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using Newtonsoft.Json.Converters;
+﻿using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Errors
@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Errors
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardError"/> class.
         /// </summary>
-        public StewardError(StewardErrorCode code,  string message, object innerException)
+        public StewardError(StewardErrorCode code, string message, object innerException)
         {
             this.Code = code;
             this.Message = message;
