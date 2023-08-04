@@ -25,7 +25,6 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
         private const int DefaultHttpClientLifetimeSeconds = 60;
         private const int DefaultRequestTimeoutSeconds = 30;
 
-
         private readonly int httpClientLifetimeSeconds;
         private readonly int requestTimeoutSeconds;
         private readonly object lockObj = new object();
@@ -161,7 +160,6 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
             {
                 return this.Deserialize<T>(stream);
             }
-
         }
 
         private async Task<string> GetResponseBodyAsync(HttpResponseMessage response)
@@ -229,6 +227,7 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
             return JsonConvert.SerializeObject(o);
         }
 
+        [SuppressMessage("Security", "CA5364:Do Not Use Deprecated Security Protocols", Justification = "Fine for tests.")]
         private static void EnsureSecurityProtocolSet()
         {
             ServicePointManager.SecurityProtocol =
