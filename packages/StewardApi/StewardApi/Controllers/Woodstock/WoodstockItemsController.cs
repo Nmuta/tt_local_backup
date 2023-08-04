@@ -28,8 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [LogTagTitle(TitleLogTags.Woodstock)]
     public sealed class WoodstockItemsController : ControllerBase
     {
-        private const string DefaultEndpointKey = "Woodstock|Retail";
-
         private readonly ILoggingService loggingService;
         private readonly IWoodstockItemsProvider itemsProvider;
 

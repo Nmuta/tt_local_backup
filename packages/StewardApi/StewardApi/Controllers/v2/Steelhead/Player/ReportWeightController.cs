@@ -40,7 +40,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     public class ReportWeightController : V2SteelheadControllerBase
     {
         private const int DefaultReportWeight = 10; // Value players are initialized with.
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
 
         /// <summary>

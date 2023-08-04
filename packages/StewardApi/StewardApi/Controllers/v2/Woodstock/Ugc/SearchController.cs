@@ -36,8 +36,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
     [StandardTags(Title.Woodstock, Target.Details, Topic.Ugc)]
     public class SearchController : V2WoodstockControllerBase
     {
-        private const int DefaultMaxResults = 500;
-
         private readonly IWoodstockStorefrontProvider storefrontProvider;
         private readonly IWoodstockItemsProvider itemsProvider;
         private readonly ILoggingService loggingService;

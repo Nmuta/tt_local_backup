@@ -55,7 +55,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     public sealed class WoodstockController : ControllerBase
     {
         private const int DefaultMaxResults = 100;
-        private const string DefaultEndpointKey = "Woodstock|Retail";
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
         private static readonly IList<string> RequiredSettings = new List<string>

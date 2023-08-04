@@ -330,12 +330,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new InvalidArgumentsStewardException($"UGC id not found. (ugcId: {ugcId})");
             }
 
-            if (response?.result?.Metadata.ContentType != type)
+            if (response.result?.Metadata.ContentType != type)
             {
                 throw new InvalidArgumentsStewardException($"Cannot attached UGC from one type to another. (ugcId: {ugcId}) (carId: {type})");
             }
 
-            if (response?.result?.Metadata.CarId != carId)
+            if (response.result?.Metadata.CarId != carId)
             {
                 throw new InvalidArgumentsStewardException($"Cannot attached UGC from a specific car to another. (ugcId: {ugcId}) (carId: {carId})");
             }
