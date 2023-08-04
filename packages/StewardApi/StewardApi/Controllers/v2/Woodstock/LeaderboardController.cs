@@ -93,7 +93,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
                 throw new BadRequestStewardException($"Could not find leaderboard from provided params. ScoreboardType: " +
                                                      $"{scoreboardType}, ScoreType: {scoreType}, TrackId: {trackId}, PivotId: {pivotId},");
             }
-
             return this.Ok(leaderboard);
         }
 
