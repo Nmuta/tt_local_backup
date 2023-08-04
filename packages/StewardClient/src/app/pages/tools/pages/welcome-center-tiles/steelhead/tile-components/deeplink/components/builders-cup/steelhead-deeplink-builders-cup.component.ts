@@ -6,6 +6,8 @@ import {
   FormGroup,
   AbstractControl,
   ValidationErrors,
+  ControlValueAccessor,
+  Validator,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -17,12 +19,11 @@ import {
 } from '@models/welcome-center';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { combineLatest, filter, map, pairwise, startWith, takeUntil } from 'rxjs';
-import { BaseTileFormValue } from '../../../steelhead-general-tile.component';
 import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 
 /** The deeplink builders cup component. */
 @Component({
-  selector: 'steelhead-deeplink-builder-cup',
+  selector: 'steelhead-deeplink-builders-cup',
   templateUrl: './steelhead-deeplink-builders-cup.component.html',
   styleUrls: ['../../steelhead-deeplink-tile.component.scss'],
   providers: [
@@ -38,7 +39,10 @@ import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders
     },
   ],
 })
-export class DeeplinkBuildersCupComponent extends BaseComponent {
+export class DeeplinkBuildersCupComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator
+{
   public buildersCupSetting: string[] = [
     BuildersCupSettingType.Homepage,
     BuildersCupSettingType.Ladder,
@@ -95,7 +99,7 @@ export class DeeplinkBuildersCupComponent extends BaseComponent {
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: BaseTileFormValue) => void): void {
+  public registerOnChange(fn: (data: BuildersCupDestination) => void): void {
     this.formGroup.valueChanges
       .pipe(
         startWith(null),
@@ -106,7 +110,23 @@ export class DeeplinkBuildersCupComponent extends BaseComponent {
         map(([_prev, cur]) => cur),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(fn);
+      .subscribe(() => {
+        const buildersCupDestination = {
+          settingType: this.formControls.buildersCupSettingType.value,
+          destinationType: DestinationType.BuildersCup,
+        } as BuildersCupDestination;
+
+        if (buildersCupDestination.settingType == BuildersCupSettingType.Ladder) {
+          buildersCupDestination.championship = this.formControls.buildersCupChampionship.value;
+          buildersCupDestination.ladder = this.formControls.buildersCupLadder.value;
+        }
+        if (buildersCupDestination.settingType == BuildersCupSettingType.Series) {
+          buildersCupDestination.championship = this.formControls.buildersCupChampionship.value;
+          buildersCupDestination.series = this.formControls.buildersCupSeries.value;
+        }
+
+        fn(buildersCupDestination);
+      });
   }
 
   /** Form control hook. */

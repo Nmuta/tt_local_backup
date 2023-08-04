@@ -6,6 +6,8 @@ import {
   FormGroup,
   AbstractControl,
   ValidationErrors,
+  ControlValueAccessor,
+  Validator,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -17,7 +19,6 @@ import {
 } from '@models/welcome-center';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { combineLatest, filter, map, pairwise, startWith, takeUntil } from 'rxjs';
-import { BaseTileFormValue } from '../../../steelhead-general-tile.component';
 import { SteelheadRivalsService } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
 
 /** The deeplink rivals component. */
@@ -38,7 +39,10 @@ import { SteelheadRivalsService } from '@services/api-v2/steelhead/rivals/steelh
     },
   ],
 })
-export class DeeplinkRivalsComponent extends BaseComponent {
+export class DeeplinkRivalsComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator
+{
   public rivalsSetting: string[] = [
     RivalsSettingType.Homepage,
     RivalsSettingType.Event,
@@ -87,7 +91,7 @@ export class DeeplinkRivalsComponent extends BaseComponent {
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: BaseTileFormValue) => void): void {
+  public registerOnChange(fn: (data: RivalsDestination) => void): void {
     this.formGroup.valueChanges
       .pipe(
         startWith(null),
@@ -98,7 +102,22 @@ export class DeeplinkRivalsComponent extends BaseComponent {
         map(([_prev, cur]) => cur),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(fn);
+      .subscribe(() => {
+        const rivalsDestination = {
+          settingType: this.formControls.rivalsSettingType.value,
+          destinationType: DestinationType.Rivals,
+        } as RivalsDestination;
+
+        if (rivalsDestination.settingType == RivalsSettingType.Category) {
+          rivalsDestination.category = this.formControls.rivalsCategory.value;
+        }
+        if (rivalsDestination.settingType == RivalsSettingType.Event) {
+          rivalsDestination.category = this.formControls.rivalsCategory.value;
+          rivalsDestination.event = this.formControls.rivalsEvent.value;
+        }
+
+        fn(rivalsDestination);
+      });
   }
 
   /** Form control hook. */
@@ -122,23 +141,5 @@ export class DeeplinkRivalsComponent extends BaseComponent {
     }
 
     return null;
-  }
-
-  /** Set the fields of a rivals destination using the form values. */
-  public mapFormToDestination() {
-    const rivalsDestination = {
-      settingType: this.formControls.rivalsSettingType.value,
-      destinationType: DestinationType.Rivals,
-    } as RivalsDestination;
-
-    if (rivalsDestination.settingType == RivalsSettingType.Category) {
-      rivalsDestination.category = this.formControls.rivalsCategory.value;
-    }
-    if (rivalsDestination.settingType == RivalsSettingType.Event) {
-      rivalsDestination.category = this.formControls.rivalsCategory.value;
-      rivalsDestination.event = this.formControls.rivalsEvent.value;
-    }
-
-    return rivalsDestination;
   }
 }

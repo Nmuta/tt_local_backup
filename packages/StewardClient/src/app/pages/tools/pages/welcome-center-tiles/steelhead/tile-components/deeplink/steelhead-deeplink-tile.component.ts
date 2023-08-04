@@ -21,11 +21,6 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable, takeUntil } from 'rxjs';
 import { GeneralTileComponent } from '../steelhead-general-tile.component';
 import { VerifyButtonComponent } from '@shared/modules/verify/verify-button/verify-button.component';
-import { DeeplinkStoreComponent } from './components/store/steelhead-deeplink-store.component';
-import { DeeplinkShowroomComponent } from './components/showroom/steelhead-deeplink-showroom.component';
-import { DeeplinkRivalsComponent } from './components/rivals/steelhead-deeplink-rivals.component';
-import { DeeplinkBuildersCupComponent } from './components/builders-cup/steelhead-deeplink-builders-cup.component';
-import { DeeplinkRacersCupComponent } from './components/racers-cup/steelhead-deeplink-racers-cup.component';
 
 /** The deeplink tile component. */
 @Component({
@@ -36,12 +31,6 @@ import { DeeplinkRacersCupComponent } from './components/racers-cup/steelhead-de
 export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
   @ViewChild(VerifyButtonComponent) verifyBtn: VerifyButtonComponent;
   @ViewChild(GeneralTileComponent) generalTileComponent: GeneralTileComponent;
-  @ViewChild(DeeplinkStoreComponent) deeplinkStoreComponent: DeeplinkStoreComponent;
-  @ViewChild(DeeplinkShowroomComponent) deeplinkShowroomComponent: DeeplinkStoreComponent;
-  @ViewChild(DeeplinkRivalsComponent) deeplinkRivalsComponent: DeeplinkRivalsComponent;
-  @ViewChild(DeeplinkBuildersCupComponent)
-  deeplinkBuildersCupComponent: DeeplinkBuildersCupComponent;
-  @ViewChild(DeeplinkRacersCupComponent) deeplinkRacersCupComponent: DeeplinkRacersCupComponent;
 
   /** The deeplink tile representing the currently selected tile. */
   @Input() deeplinkTile: DeeplinkTile;
@@ -119,32 +108,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
     this.changeEditMode.emit(false);
 
     // Deeplink specific field
-    const destinationType = this.formControls.destinationType.value;
-
-    // Racers Cup
-    if (destinationType == DestinationType.RacersCup) {
-      this.deeplinkTile.destination = this.deeplinkRacersCupComponent.mapFormToDestination();
-    }
-
-    // Showroom
-    if (destinationType == DestinationType.Showroom) {
-      this.deeplinkTile.destination = this.deeplinkShowroomComponent.mapFormToDestination();
-    }
-
-    // Builders Cup
-    if (destinationType == DestinationType.BuildersCup) {
-      this.deeplinkTile.destination = this.deeplinkBuildersCupComponent.mapFormToDestination();
-    }
-
-    // Rivals
-    if (destinationType == DestinationType.Rivals) {
-      this.deeplinkTile.destination = this.deeplinkRivalsComponent.mapFormToDestination();
-    }
-
-    // Store
-    if (destinationType == DestinationType.Store) {
-      this.deeplinkTile.destination = this.deeplinkStoreComponent.mapFormToDestination();
-    }
+    this.deeplinkTile.destination = this.formControls.baseDestination.value;
 
     // Base tile fields
     this.generalTileComponent.mapFormToWelcomeCenterTile(this.deeplinkTile);

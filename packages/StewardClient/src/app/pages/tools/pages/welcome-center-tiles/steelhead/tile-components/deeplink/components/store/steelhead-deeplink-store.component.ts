@@ -6,6 +6,8 @@ import {
   FormGroup,
   AbstractControl,
   ValidationErrors,
+  ControlValueAccessor,
+  Validator,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -18,7 +20,6 @@ import {
 import { SteelheadStoreService } from '@services/api-v2/steelhead/store/steelhead-store.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { filter, map, pairwise, startWith, takeUntil } from 'rxjs';
-import { BaseTileFormValue } from '../../../steelhead-general-tile.component';
 
 /** The deeplink store component. */
 @Component({
@@ -38,7 +39,10 @@ import { BaseTileFormValue } from '../../../steelhead-general-tile.component';
     },
   ],
 })
-export class DeeplinkStoreComponent extends BaseComponent {
+export class DeeplinkStoreComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator
+{
   public storeSetting: string[] = [StoreSettingType.Homepage, StoreSettingType.Product];
   public storeProducts: Map<string, string>;
   public storeSettingTypes = StoreSettingType;
@@ -75,7 +79,7 @@ export class DeeplinkStoreComponent extends BaseComponent {
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: BaseTileFormValue) => void): void {
+  public registerOnChange(fn: (data: StoreDestination) => void): void {
     this.formGroup.valueChanges
       .pipe(
         startWith(null),
@@ -86,7 +90,18 @@ export class DeeplinkStoreComponent extends BaseComponent {
         map(([_prev, cur]) => cur),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(fn);
+      .subscribe(() => {
+        const storeDestination = {
+          settingType: this.formControls.storeSettingType.value,
+          destinationType: DestinationType.Store,
+        } as StoreDestination;
+
+        if (storeDestination.settingType == StoreSettingType.Product) {
+          storeDestination.product = this.formControls.storeProduct.value;
+        }
+
+        fn(storeDestination);
+      });
   }
 
   /** Form control hook. */
@@ -110,19 +125,5 @@ export class DeeplinkStoreComponent extends BaseComponent {
     }
 
     return null;
-  }
-
-  /** Set the fields of a store destination using the form values. */
-  public mapFormToDestination() {
-    const storeDestination = {
-      settingType: this.formControls.storeSettingType.value,
-      destinationType: DestinationType.Store,
-    } as StoreDestination;
-
-    if (storeDestination.settingType == StoreSettingType.Product) {
-      storeDestination.product = this.formControls.storeProduct.value;
-    }
-
-    return storeDestination;
   }
 }

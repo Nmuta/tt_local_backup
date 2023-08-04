@@ -6,6 +6,8 @@ import {
   FormGroup,
   AbstractControl,
   ValidationErrors,
+  ControlValueAccessor,
+  Validator,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -17,7 +19,6 @@ import {
 } from '@models/welcome-center';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { combineLatest, filter, map, pairwise, startWith, takeUntil } from 'rxjs';
-import { BaseTileFormValue } from '../../../steelhead-general-tile.component';
 import { SteelheadCarsService } from '@services/api-v2/steelhead/cars/steelhead-cars.service';
 
 /** The deeplink showroom component. */
@@ -38,7 +39,10 @@ import { SteelheadCarsService } from '@services/api-v2/steelhead/cars/steelhead-
     },
   ],
 })
-export class DeeplinkShowroomComponent extends BaseComponent {
+export class DeeplinkShowroomComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator
+{
   public showroomSetting: string[] = [
     ShowroomSettingType.Homepage,
     ShowroomSettingType.Car,
@@ -86,7 +90,7 @@ export class DeeplinkShowroomComponent extends BaseComponent {
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: BaseTileFormValue) => void): void {
+  public registerOnChange(fn: (data: ShowroomDestination) => void): void {
     this.formGroup.valueChanges
       .pipe(
         startWith(null),
@@ -97,7 +101,21 @@ export class DeeplinkShowroomComponent extends BaseComponent {
         map(([_prev, cur]) => cur),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(fn);
+      .subscribe(() => {
+        const showroomDestination = {
+          settingType: this.formControls.showroomSettingType.value,
+          destinationType: DestinationType.Showroom,
+        } as ShowroomDestination;
+
+        if (showroomDestination.settingType == ShowroomSettingType.Car) {
+          showroomDestination.car = this.formControls.showroomCar.value;
+        }
+        if (showroomDestination.settingType == ShowroomSettingType.Manufacturer) {
+          showroomDestination.manufacturer = this.formControls.showroomManufacturer.value;
+        }
+
+        fn(showroomDestination);
+      });
   }
 
   /** Form control hook. */
@@ -121,22 +139,5 @@ export class DeeplinkShowroomComponent extends BaseComponent {
     }
 
     return null;
-  }
-
-  /** Set the fields of a showroom destination using the form values. */
-  public mapFormToDestination() {
-    const showroomDestination = {
-      settingType: this.formControls.showroomSettingType.value,
-      destinationType: DestinationType.Showroom,
-    } as ShowroomDestination;
-
-    if (showroomDestination.settingType == ShowroomSettingType.Car) {
-      showroomDestination.car = this.formControls.showroomCar.value;
-    }
-    if (showroomDestination.settingType == ShowroomSettingType.Manufacturer) {
-      showroomDestination.manufacturer = this.formControls.showroomManufacturer.value;
-    }
-
-    return showroomDestination;
   }
 }

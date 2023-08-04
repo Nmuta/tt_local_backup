@@ -6,13 +6,14 @@ import {
   FormGroup,
   AbstractControl,
   ValidationErrors,
+  ControlValueAccessor,
+  Validator,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { DeeplinkDestination, DestinationType, RacersCupDestination } from '@models/welcome-center';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { filter, map, pairwise, startWith, takeUntil } from 'rxjs';
-import { BaseTileFormValue } from '../../../steelhead-general-tile.component';
 import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
 
 /** The deeplink racers cup component. */
@@ -33,7 +34,10 @@ import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup
     },
   ],
 })
-export class DeeplinkRacersCupComponent extends BaseComponent {
+export class DeeplinkRacersCupComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator
+{
   public racersCupSeries: Map<string, string>;
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
@@ -62,7 +66,7 @@ export class DeeplinkRacersCupComponent extends BaseComponent {
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: BaseTileFormValue) => void): void {
+  public registerOnChange(fn: (data: RacersCupDestination) => void): void {
     this.formGroup.valueChanges
       .pipe(
         startWith(null),
@@ -73,7 +77,12 @@ export class DeeplinkRacersCupComponent extends BaseComponent {
         map(([_prev, cur]) => cur),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(fn);
+      .subscribe(() => {
+        fn({
+          series: this.formControls.racersCupSeries.value,
+          destinationType: DestinationType.RacersCup,
+        } as RacersCupDestination);
+      });
   }
 
   /** Form control hook. */
