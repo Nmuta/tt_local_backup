@@ -56,20 +56,14 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
       this.isSpecialXuid = this.parent.specialIdentitiesAllowed.some(x =>
         x.xuid.isEqualTo(this.identity?.xuid),
       );
+        
+      this.getPlayFabProfile();
     });
   }
 
   /** Called when a new profile is picked. */
   public onProfileChange(newProfile: PlayerInventoryProfile): void {
     this.profile = newProfile;
-
-    this.getPlayFabProfileMonitor = this.getPlayFabProfileMonitor.repeat();
-    this.playersPlayFabService
-      .getPlayFabProfile$(this.identity.xuid)
-      .pipe(this.getPlayFabProfileMonitor.monitorSingleFire())
-      .subscribe(playfabProfile => {
-        this.playfabProfile = playfabProfile;
-      });
   }
 
   /** Hook when mat-tab changes. */
@@ -79,5 +73,19 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
     if ($event.tab.textLabel === 'Deep Dive') {
       window.dispatchEvent(new Event('resize'));
     }
+  }
+
+  private getPlayFabProfile(): void {
+    if (!this.identity?.xuid) {
+      return;
+    }
+    
+    this.getPlayFabProfileMonitor = this.getPlayFabProfileMonitor.repeat();
+    this.playersPlayFabService
+      .getPlayFabProfile$(this.identity.xuid)
+      .pipe(this.getPlayFabProfileMonitor.monitorSingleFire())
+      .subscribe(playfabProfile => {
+        this.playfabProfile = playfabProfile;
+      });
   }
 }

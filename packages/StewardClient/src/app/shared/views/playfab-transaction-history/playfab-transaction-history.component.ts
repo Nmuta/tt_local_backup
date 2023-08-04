@@ -4,6 +4,8 @@ import { GameTitle } from '@models/enums';
 import { Observable } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { PlayFabTransaction } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 
 /** Service contract for the PlayFabTransactionHistoryComponent. */
 export interface PlayFabTransactionHistoryServiceContract {
@@ -26,6 +28,9 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
   /** PlayFab player title entity id. */
   @Input() playfabPlayerTitleId: string;
 
+  public getMonitor = new ActionMonitor('Get PlayFab transaction history');
+  public transactionHistory = new BetterMatTableDataSource<PlayFabTransaction>([]);
+
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
     return this.service.gameTitle;
@@ -38,5 +43,8 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
     }
 
     // Lookup transaction history when a new entity id is provided
+    this.service.getPlayFabTransactionHistory$(this.playfabPlayerTitleId).pipe(this.getMonitor.monitorSingleFire()).subscribe(transactionHistory => {
+      this.transactionHistory.data = transactionHistory;
+    });
   }
 }

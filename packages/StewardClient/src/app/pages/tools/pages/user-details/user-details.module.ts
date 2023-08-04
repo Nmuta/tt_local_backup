@@ -55,6 +55,7 @@ import { PlayerInventoryProfilesModule } from '@views/player-inventory-profiles/
 import { SafetyRatingModule } from '@views/safety-rating/safety-rating.module';
 import { SkillRatingModule } from '@views/skill-rating/skill-rating.module';
 import { PlayFabTransactionHistoryModule } from '@views/playfab-transaction-history/playfab-transaction-history.module';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -119,6 +120,7 @@ import { PlayFabTransactionHistoryModule } from '@views/playfab-transaction-hist
     SafetyRatingModule,
     SkillRatingModule,
     PlayFabTransactionHistoryModule,
+    DirectivesModule,
   ],
 })
 export class UserDetailsModule {}
