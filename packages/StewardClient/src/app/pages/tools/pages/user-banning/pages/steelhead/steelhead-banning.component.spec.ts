@@ -3,35 +3,42 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SteelheadPlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/ban-summaries';
 import { fakeXuid } from '@interceptors/fake-api/utility';
-import { IdentityResultAlpha } from '@models/identity-query.model';
 import faker from '@faker-js/faker';
+import { IdentityResultAlpha } from '@models/identity-query.model';
+import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { keys } from 'lodash';
-import { of } from 'rxjs';
-import { defer } from 'rxjs';
+import { defer, of } from 'rxjs';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
+
 import { SteelheadBanningComponent } from './steelhead-banning.component';
-import { SteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service';
-import { createMockSteelheadPlayersService } from '@services/api-v2/steelhead/players/steelhead-players.service.mock';
 import { toDateTime } from '@helpers/luxon';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { BanResultsUnion } from '../base/user-banning.base.component';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { createMockSteelheadPlayersBanService } from '@services/api-v2/steelhead/players/ban/steelhead-players-ban.service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NgxsModule } from '@ngxs/store';
 
 describe('SteelheadBanningComponent', () => {
   let component: SteelheadBanningComponent;
   let fixture: ComponentFixture<SteelheadBanningComponent>;
-  let steelhead: SteelheadPlayersService;
+  let steelhead: SteelheadService;
 
   let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
       declarations: [SteelheadBanningComponent],
-      providers: [createMockSteelheadPlayersService(), createMockBackgroundJobService()],
+      providers: [
+        createMockSteelheadService(),
+        createMockBackgroundJobService(),
+        createMockSteelheadPlayersBanService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    steelhead = TestBed.inject(SteelheadPlayersService);
+    steelhead = TestBed.inject(SteelheadService);
   });
 
   beforeEach(() => {
