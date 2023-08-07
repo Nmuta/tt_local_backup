@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 BanConfigurationId = new Guid("1b1d4b1e-4111-49be-82e3-74335052338c"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.AllRequests
+                    FeatureAreas.AllRequests,
                 },
             },
             new WoodstockBanReasonGroup()
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 BanConfigurationId = new Guid("0f9d16d9-f53c-42d4-b4b3-8b0cef766ce8"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.AllRequests
+                    FeatureAreas.AllRequests,
                 },
             },
             new WoodstockBanReasonGroup()
@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.UserGeneratedContent,
-                    FeatureAreas.AuctionHouse
+                    FeatureAreas.AuctionHouse,
                 },
             },
             new WoodstockBanReasonGroup()
@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     FeatureAreas.Matchmaking,
                     FeatureAreas.DailyCredit,
                     FeatureAreas.Community,
-                    FeatureAreas.Drivatar
+                    FeatureAreas.Drivatar,
                 },
             },
             new WoodstockBanReasonGroup()
@@ -139,13 +139,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 Name = "Developer",
                 Reasons = new List<string>
                 {
-                    "Testing"
+                    "Testing",
                 },
                 BanConfigurationId = new Guid("2dab05e7-f5a2-4284-b32e-8f980695438c"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.Test
-                }
+                    FeatureAreas.Test,
+                },
             },
         };
 

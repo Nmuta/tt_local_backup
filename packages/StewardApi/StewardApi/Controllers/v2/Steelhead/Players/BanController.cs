@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 BanConfigurationId = new Guid("1049fa1f-7ffe-4188-ae21-89ef661e1a7b"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.AllRequests
+                    FeatureAreas.AllRequests,
                 },
             },
             new SteelheadBanReasonGroup()
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 BanConfigurationId = new Guid("5394efb9-8cc1-4f93-98ea-ab7e2693b7d2"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.AllRequests
+                    FeatureAreas.AllRequests,
                 },
             },
             new SteelheadBanReasonGroup()
@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.UserGeneratedContent,
-                    FeatureAreas.AuctionHouse
+                    FeatureAreas.AuctionHouse,
                 },
             },
             new SteelheadBanReasonGroup()
@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     FeatureAreas.Matchmaking,
                     FeatureAreas.DailyCredit,
                     FeatureAreas.Community,
-                    FeatureAreas.Drivatar
+                    FeatureAreas.Drivatar,
                 },
             },
             new SteelheadBanReasonGroup()
@@ -141,13 +141,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 Name = "Developer",
                 Reasons = new List<string>
                 {
-                    "Testing"
+                    "Testing",
                 },
                 BanConfigurationId = new Guid("c8ec2fac-6132-4c87-85dc-1b799e08aca4"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.Test
-                }
+                    FeatureAreas.Test,
+                },
             },
         };
 
