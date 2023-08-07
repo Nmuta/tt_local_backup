@@ -56,7 +56,7 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
       this.isSpecialXuid = this.parent.specialIdentitiesAllowed.some(x =>
         x.xuid.isEqualTo(this.identity?.xuid),
       );
-        
+
       this.getPlayFabProfile();
     });
   }
@@ -79,7 +79,7 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
     if (!this.identity?.xuid) {
       return;
     }
-    
+
     this.getPlayFabProfileMonitor = this.getPlayFabProfileMonitor.repeat();
     this.playersPlayFabService
       .getPlayFabProfile$(this.identity.xuid)

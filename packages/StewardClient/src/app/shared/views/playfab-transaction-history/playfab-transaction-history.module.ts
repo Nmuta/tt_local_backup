@@ -16,6 +16,7 @@ import { WoodstockPlayFabTransactionHistoryComponent } from './woodstock/woodsto
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { MatTableModule } from '@angular/material/table';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 /** Module for getting and setting a player's cms override. */
 @NgModule({
@@ -37,6 +38,7 @@ import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.
     PermissionsModule,
     VerifyButtonModule,
     StandardCopyModule,
+    MatPaginatorModule,
   ],
   exports: [WoodstockPlayFabTransactionHistoryComponent],
 })

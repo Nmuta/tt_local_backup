@@ -1,12 +1,16 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { Observable } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
-import { PlayFabTransaction, PlayFabTransactionOperation } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
+import {
+  PlayFabTransaction,
+  PlayFabTransactionOperation,
+} from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { PlayFabVoucher } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service';
+import { MatPaginator } from '@angular/material/paginator';
 
 /** Service contract for the PlayFabTransactionHistoryComponent. */
 export interface PlayFabTransactionHistoryServiceContract {
@@ -19,11 +23,11 @@ export interface PlayFabTransactionHistoryServiceContract {
 }
 
 type InternalPlayFabTransactionOperation = PlayFabTransactionOperation & {
-  itemName: string, 
+  itemName: string;
 };
 
 type InternalPlayFabTransaction = PlayFabTransaction & {
-  internalOperations: InternalPlayFabTransactionOperation[]
+  internalOperations: InternalPlayFabTransactionOperation[];
 };
 
 /** Component to get and set a player's cms override. */
@@ -33,6 +37,8 @@ type InternalPlayFabTransaction = PlayFabTransaction & {
   styleUrls: ['./playfab-transaction-history.component.scss'],
 })
 export class PlayFabTransactionHistoryComponent extends BaseComponent implements OnInit, OnChanges {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   /** The component service contract */
   @Input() service: PlayFabTransactionHistoryServiceContract;
 
@@ -53,16 +59,19 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    this.service.getPlayFabVouchers$().pipe(
-      this.getVoucherMonitor.monitorSingleFire()
-    ).subscribe(vouchers => {
-      this.vouchers = vouchers;
+    this.service
+      .getPlayFabVouchers$()
+      .pipe(this.getVoucherMonitor.monitorSingleFire())
+      .subscribe(vouchers => {
+        this.vouchers = vouchers;
 
-      // If pulling tansaction history occurs before getting vouchers, repopulate the table with newly available voucher data
-      if (this.transactionHistory.data?.length > 0) {
-        this.transactionHistory.data = this.convertToInternalTransaction(this.transactionHistory.data);
-      }
-    });
+        // If pulling tansaction history occurs before getting vouchers, repopulate the table with newly available voucher data
+        if (this.transactionHistory.data?.length > 0) {
+          this.transactionHistory.data = this.convertToInternalTransaction(
+            this.transactionHistory.data,
+          );
+        }
+      });
   }
 
   /** Lifecycle hook. */
@@ -71,16 +80,20 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
       throw new Error('No service is defined for PlayFab transaction history component.');
     }
 
-    if(!!changes.playfabPlayerTitleId && !!this.playfabPlayerTitleId) {
-      this.service.getPlayFabTransactionHistory$(this.playfabPlayerTitleId).pipe(
-        this.getTransactionsMonitor.monitorSingleFire()
-      ).subscribe(transactionHistory => {
-        this.transactionHistory.data = this.convertToInternalTransaction(transactionHistory);
-      });
+    if (!!changes.playfabPlayerTitleId && !!this.playfabPlayerTitleId) {
+      this.service
+        .getPlayFabTransactionHistory$(this.playfabPlayerTitleId)
+        .pipe(this.getTransactionsMonitor.monitorSingleFire())
+        .subscribe(transactionHistory => {
+          this.connectPaginatorToTable();
+          this.transactionHistory.data = this.convertToInternalTransaction(transactionHistory);
+        });
     }
   }
 
-  private convertToInternalTransaction(transactions: PlayFabTransaction[]): InternalPlayFabTransaction[] {
+  private convertToInternalTransaction(
+    transactions: PlayFabTransaction[],
+  ): InternalPlayFabTransaction[] {
     if (this.vouchers?.length <= 0) {
       return transactions as InternalPlayFabTransaction[];
     }
@@ -96,5 +109,9 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
 
       return internalTransaction;
     });
+  }
+
+  private connectPaginatorToTable(): void {
+    this.transactionHistory.paginator = this.paginator;
   }
 }

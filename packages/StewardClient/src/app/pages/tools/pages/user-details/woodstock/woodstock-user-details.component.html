@@ -10,8 +10,11 @@
         <div class="sf-wrapper sf-tab-container">
           <ng-container *waitForMonitor="getPlayFabProfileMonitor">
             <h2>
-              Master Id: <span [hoverToCopy]="playfabProfile?.master">{{ playfabProfile?.master }}</span> <br />
-              Title Id: <span [hoverToCopy]="playfabProfile?.title">{{ playfabProfile?.title }}</span>
+              Master Id:
+              <span [hoverToCopy]="playfabProfile?.master">{{ playfabProfile?.master }}</span>
+              <br />
+              Title Id:
+              <span [hoverToCopy]="playfabProfile?.title">{{ playfabProfile?.title }}</span>
             </h2>
 
             <woodstock-playfab-transaction-history
