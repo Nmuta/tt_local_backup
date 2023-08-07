@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserBanning },
+      uuid: '7778ac73-29d8-4820-b582-2a8e57a3cf07',
+      shortText: 'New way of banning implemented',
+      longText: ['Ban reason will decide the ban configuration and areas automatically'],
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
       uuid: '54f931b4-a4b9-452f-b7a6-340799459e45',
       shortText: 'Add support for team leads',
