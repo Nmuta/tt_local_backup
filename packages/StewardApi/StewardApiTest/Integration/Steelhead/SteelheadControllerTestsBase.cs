@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         protected static string authKey;
         protected static KeyVaultProvider KeyVaultProvider;
 
-        public static async Task prepareAuthAsync(TestContext testContext)
+        public static async Task PrepareAuthAsync(TestContext testContext)
         {
             KeyVaultProvider = new KeyVaultProvider(new KeyVaultClientFactory());
 

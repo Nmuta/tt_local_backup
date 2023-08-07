@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
         {
-            await prepareAuthAsync(testContext);
+            await PrepareAuthAsync(testContext);
 
             stewardClient = new PlayerDetailsControllerTestingClient(new Uri(endpoint), authKey);
             unauthedClient = new PlayerDetailsControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetPlayerDetails(xuid).ConfigureAwait(false);
+                var response = await stewardClient.GetPlayerDetails(this.xuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetPlayerDetails(xuid).ConfigureAwait(false);
+                var response = await unauthedClient.GetPlayerDetails(this.xuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetPlayerDetails(gamertag).ConfigureAwait(false);
+                var response = await stewardClient.GetPlayerDetails(this.gamertag).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetPlayerDetails(gamertag).ConfigureAwait(false);
+                var response = await unauthedClient.GetPlayerDetails(this.gamertag).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetPlayerGameDetails(xuid).ConfigureAwait(false);
+                var response = await stewardClient.GetPlayerGameDetails(this.xuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -155,7 +155,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetPlayerGameDetails(xuid).ConfigureAwait(false);
+                var response = await unauthedClient.GetPlayerGameDetails(this.xuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)

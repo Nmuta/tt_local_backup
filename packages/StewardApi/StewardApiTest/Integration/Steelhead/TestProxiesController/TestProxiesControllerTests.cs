@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
         {
-            await prepareAuthAsync(testContext);
+            await PrepareAuthAsync(testContext);
 
             stewardClient = new TestProxiesControllerTestingClient(new Uri(endpoint), authKey);
             unauthedClient = new TestProxiesControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
