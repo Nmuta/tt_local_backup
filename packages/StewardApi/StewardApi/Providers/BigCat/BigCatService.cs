@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.BigCat
         /// <inheritdoc />
         public async Task InitializeAsync()
         {
-            this.clientSecret = keyVaultConfig.AzureAuthClientSecret;
+            this.clientSecret = this.keyVaultConfig.AzureAuthClientSecret;
 
             await this.MintAuthTokenAsync().ConfigureAwait(false);
         }
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.BigCat
                 using (var client = new HttpClient(handler) { BaseAddress = new Uri(uri) })
                 {
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    client.DefaultRequestHeaders.Add(HttpRequestHeader.Authorization.ToString(), $"bearer {AuthToken}");
+                    client.DefaultRequestHeaders.Add(HttpRequestHeader.Authorization.ToString(), $"bearer {this.AuthToken}");
                     client.DefaultRequestHeaders.Add(HttpRequestHeader.Host.ToString(), "frontdoor-displaycatalog.bigcatalog.microsoft.com");
                     client.DefaultRequestHeaders.Add("MS-CV", Guid.NewGuid().ToString());
 
