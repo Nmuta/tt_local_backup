@@ -151,10 +151,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                     Id = playfabEntityId,
                 },
                 CollectionId = "default",
-                Count = 10,
             }).ConfigureAwait(false);
 
             return this.mapper.SafeMap<IEnumerable<PlayFabTransaction>>(response.Transactions);
+        }
+
+        /// <inheritdoc />
+        public async  Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
+        {
+            // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
+            // Taken from: PlayFabEconomyAPI.GetInventoryItemsAsync();
+            var response = await this.MakePlayFabEntityTokenRequestAsync<GetInventoryItemsResponse>(environment, "/Inventory/GetTransactionHistory", new GetInventoryItemsRequest()
+            {
+                Entity = new EntityKey()
+                {
+                    Type = "title_player_account",
+                    Id = playfabEntityId,
+                },
+                CollectionId = "currency"
+            }).ConfigureAwait(false);
+
+            return this.mapper.SafeMap<IEnumerable<PlayFabInventoryItem>>(response.Items);
         }
 
         /// <inheritdoc />

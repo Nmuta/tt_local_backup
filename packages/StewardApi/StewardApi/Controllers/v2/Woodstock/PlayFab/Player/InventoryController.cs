@@ -44,6 +44,28 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         }
 
         /// <summary>
+        ///     Retrieves inventory for PlayFab player.
+        /// </summary>
+        [HttpGet]
+        [SwaggerResponse(200, type: typeof(IList<PlayFabInventoryItem>))]
+        [LogTagDependency(DependencyLogTags.PlayFab)]
+        public async Task<IActionResult> GetPlayFabPlayerInventory(string playFabEntityId)
+        {
+            var playFabEnvironment = this.PlayFabEnvironment;
+
+            try
+            {
+                var response = await this.playFabService.GetPlayerCurrencyInventoryAsync(playFabEntityId, playFabEnvironment).ConfigureAwait(true);
+
+                return this.Ok(response);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get player PlayFab inventory. (playFabId: {playFabEntityId}) (playFabEnvironment: {playFabEnvironment})", ex);
+            }
+        }
+
+        /// <summary>
         ///     Adds inventory item to PlayFab player.
         /// </summary>
         [HttpPost("add")]
