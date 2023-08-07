@@ -10,7 +10,7 @@ export interface PlayFabTransaction {
   operationType: string;
   purchaseDetails: unknown; // Returned by API, leaving unknown unless we need it
   redeemDetails: unknown; // Returned by API, leaving unknown unless we need it
-  timestamp: DateTime;
+  timestampUtc: DateTime;
   transactionId: string;
   transferDetails: unknown; // Returned by API, leaving unknown unless we need it
 }

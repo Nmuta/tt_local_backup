@@ -22,7 +22,7 @@ describe('PlayFabTransactionHistoryComponent', () => {
       operationType: faker.datatype.string(),
       purchaseDetails: null,
       redeemDetails: null,
-      timestamp: toDateTime(faker.datatype.datetime()),
+      timestampUtc: toDateTime(faker.datatype.datetime()),
       transactionId: faker.datatype.string(),
       transferDetails: null,
     },

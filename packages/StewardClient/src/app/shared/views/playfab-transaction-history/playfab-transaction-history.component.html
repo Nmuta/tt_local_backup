@@ -20,9 +20,11 @@
                 </td>
               </tr>
               <tr>
-                <th>Date UTC</th>
+                <th>Date</th>
                 <td>
-                  <standard-copy>{{ transaction.timestamp | utcDate: 'short' }}</standard-copy>
+                  <standard-absolute-time-utc
+                    [timeUtc]="transaction.timestampUtc"
+                  ></standard-absolute-time-utc>
                 </td>
               </tr>
             </table>

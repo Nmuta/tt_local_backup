@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 
         public TransactionRedeemDetails RedeemDetails { get; set; }
 
-        public DateTime Timestamp { get; set; }
+        public DateTime TimestampUtc { get; set; }
 
         public string TransactionId { get; set; }
 
