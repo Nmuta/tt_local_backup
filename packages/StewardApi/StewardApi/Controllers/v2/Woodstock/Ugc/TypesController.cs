@@ -112,9 +112,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             string id, Func<Guid, Task<TempT>> action, Func<TempT, object> mappedObjectSelector)
             => this.SimpleUgcLookupAsync<TempT, WoodstockUgcItem>(id, action, mappedObjectSelector);
 
-        private async Task<IActionResult> SimpleUgcLookupAsync<TempT, OutT>(
-            string id, Func<Guid, Task<TempT>> action, Func<TempT, object> mappedObjectSelector)
-            where OutT : UgcItem
+        private async Task<IActionResult> SimpleUgcLookupAsync<TTemp, TOut>(
+            string id, Func<Guid, Task<TTemp>> action, Func<TTemp, object> mappedObjectSelector)
+            where TOut : UgcItem
         {
             if (!Guid.TryParse(id, out var idAsGuid))
             {
@@ -123,7 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 
             var actionOutput = await action(idAsGuid).ConfigureAwait(true);
             var objectToMap = mappedObjectSelector(actionOutput);
-            var result = this.Mapper.SafeMap<OutT>(objectToMap);
+            var result = this.Mapper.SafeMap<TOut>(objectToMap);
             if (result.GameTitle != (int)GameTitle.FH5)
             {
                 throw new NotFoundStewardException($"ID could not found: {id}");
