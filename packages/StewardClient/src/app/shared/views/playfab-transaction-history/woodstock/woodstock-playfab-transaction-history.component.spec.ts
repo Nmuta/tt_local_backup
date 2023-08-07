@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { WoodstockPlayFabTransactionHistoryComponent } from './woodstock-playfab-transaction-history.component';
-import { createMockWoodstockPlayFabPlayerTransactionsService } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service.mock';
 import { createMockWoodstockPlayFabVouchersService } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service.mock';
+import { createMockWoodstockPlayFabPlayerInventoryService } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service.mock';
 
 describe('WoodstockPlayFabTransactionHistoryComponent', () => {
   let component: WoodstockPlayFabTransactionHistoryComponent;
@@ -14,7 +14,7 @@ describe('WoodstockPlayFabTransactionHistoryComponent', () => {
       declarations: [WoodstockPlayFabTransactionHistoryComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        createMockWoodstockPlayFabPlayerTransactionsService(),
+        createMockWoodstockPlayFabPlayerInventoryService(),
         createMockWoodstockPlayFabVouchersService(),
       ],
     }).compileComponents();

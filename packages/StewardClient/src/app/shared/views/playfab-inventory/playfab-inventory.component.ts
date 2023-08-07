@@ -5,15 +5,14 @@ import { Observable } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
-import { PlayFabVoucher } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service';
-import { PlayFabInventoryItem } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service';
+import { PlayFabCollectionId, PlayFabInventoryItem, PlayFabVoucher } from '@models/playfab';
 
 /** Service contract for the PlayFabInventoryComponent. */
 export interface PlayFabInventoryServiceContract {
   /** Game title the service contract is associated with. */
   gameTitle: GameTitle;
   /** Gets player transaction history. */
-  getPlayFabCurrencyInventory$(playfabPlayerTitleId: string): Observable<PlayFabInventoryItem[]>;
+  getPlayFabCurrencyInventory$(playfabPlayerTitleId: string, playFabCollectionId: PlayFabCollectionId): Observable<PlayFabInventoryItem[]>;
   /** Gets available vouchers. */
   getPlayFabVouchers$(): Observable<PlayFabVoucher[]>;
 }
@@ -30,6 +29,9 @@ export class PlayFabInventoryComponent extends BaseComponent implements OnInit, 
 
   /** PlayFab player title entity id. */
   @Input() playfabPlayerTitleId: string;
+
+  /** PlayFab collection id. */
+  @Input() playfabCollectionId: PlayFabCollectionId;
 
   public getVoucherMonitor = new ActionMonitor('Get PlayFab vouchers');
   public getInventoryMonitor = new ActionMonitor('Get PlayFab inventory');
@@ -59,9 +61,9 @@ export class PlayFabInventoryComponent extends BaseComponent implements OnInit, 
       throw new Error('No service is defined for PlayFab transaction history component.');
     }
 
-    if (!!changes.playfabPlayerTitleId && !!this.playfabPlayerTitleId) {
+    if ((!!changes.playfabPlayerTitleId || !!changes.playfabCollectionId) && !!this.playfabPlayerTitleId && !!this.playfabCollectionId) {
       this.service
-        .getPlayFabCurrencyInventory$(this.playfabPlayerTitleId)
+        .getPlayFabCurrencyInventory$(this.playfabPlayerTitleId, this.playfabCollectionId)
         .pipe(this.getInventoryMonitor.monitorSingleFire())
         .subscribe(inventoryItems => {
           this.inventoryItems.data = inventoryItems;

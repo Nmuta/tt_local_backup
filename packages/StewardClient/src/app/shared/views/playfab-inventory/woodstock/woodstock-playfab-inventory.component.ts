@@ -3,6 +3,7 @@ import { GameTitle } from '@models/enums';
 import { PlayFabInventoryServiceContract } from '../playfab-inventory.component';
 import { WoodstockPlayFabVouchersService } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service';
 import { WoodstockPlayFabPlayerInventoryService } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service';
+import { PlayFabCollectionId } from '@models/playfab';
 
 /**
  *  Woodstock cms override component.
@@ -26,8 +27,8 @@ export class WoodstockPlayFabInventoryComponent implements OnChanges {
   public ngOnChanges(): void {
     this.service = {
       gameTitle: GameTitle.FH5,
-      getPlayFabCurrencyInventory$: (playfabPlayerTitleId: string) =>
-        this.playFabPlayerInventoryService.getCurrencyInventory$(playfabPlayerTitleId),
+      getPlayFabCurrencyInventory$: (playfabPlayerTitleId: string, collectionId: PlayFabCollectionId) =>
+        this.playFabPlayerInventoryService.getCurrencyInventory$(playfabPlayerTitleId, collectionId),
       getPlayFabVouchers$: () => this.playFabVouchersService.getVouchers$(),
     };
   }

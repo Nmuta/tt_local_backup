@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
+        public async Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.GetTransactionHistoryAsync();
@@ -150,14 +150,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                     Type = "title_player_account",
                     Id = playfabEntityId,
                 },
-                CollectionId = "default",
+                CollectionId = collectionId.ToString(),
             }).ConfigureAwait(false);
 
             return this.mapper.SafeMap<IEnumerable<PlayFabTransaction>>(response.Transactions);
         }
 
         /// <inheritdoc />
-        public async  Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
+        public async  Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.GetInventoryItemsAsync();
@@ -168,7 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                     Type = "title_player_account",
                     Id = playfabEntityId,
                 },
-                CollectionId = "default",
+                CollectionId = collectionId.ToString(),
                 Filter = "Type eq 'currency'",
             }).ConfigureAwait(false);
 
@@ -176,7 +176,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task AddInventoryItemToPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment)
+        public async Task AddInventoryItemToPlayerAsync(string playfabEntityId, PlayFabCollectionId collectionId, string itemId, int amount, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.AddInventoryItemsAsync();
@@ -192,11 +192,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 {
                     Id = itemId,
                 },
+                CollectionId = collectionId.ToString(),
             }).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task RemoveInventoryItemFromPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment)
+        public async Task RemoveInventoryItemFromPlayerAsync(string playfabEntityId, PlayFabCollectionId collectionId, string itemId, int amount, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.SubtractInventoryItemsAsync();
@@ -212,6 +213,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 {
                     Id = itemId,
                 },
+                CollectionId = collectionId.ToString(),
             }).ConfigureAwait(false);
         }
 

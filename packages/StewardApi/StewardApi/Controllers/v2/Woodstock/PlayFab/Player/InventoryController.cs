@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Kusto.Cloud.Platform.Utils;
+using Turn10.LiveOps.StewardApi.Helpers;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
@@ -24,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
     /// <summary>
     ///     Handles requests for Woodstock players PlayFab Inventory integrations.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/woodstock/playfab/player/{playFabEntityId}/inventory")]
+    [Route("api/v{version:apiVersion}/title/woodstock/playfab/player/{playFabEntityId}/inventory/{collectionId}")]
     [AuthorizeRoles(UserRole.LiveOpsAdmin, UserRole.GeneralUser)]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
@@ -50,14 +51,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         [HttpGet("currency")]
         [SwaggerResponse(200, type: typeof(IList<PlayFabInventoryItem>))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
-        public async Task<IActionResult> GetPlayFabPlayerInventory(string playFabEntityId)
+        public async Task<IActionResult> GetPlayFabPlayerInventory(string playFabEntityId, string collectionId)
         {
             var playFabEnvironment = this.PlayFabEnvironment;
+            var parsedCollectionId = collectionId.TryParseEnumElseThrow<PlayFabCollectionId>(nameof(collectionId));
 
             try
             {
                 var vouchers = await this.playFabService.GetVouchersAsync(playFabEnvironment).ConfigureAwait(true);
-                var inventoryItems = await this.playFabService.GetPlayerCurrencyInventoryAsync(playFabEntityId, playFabEnvironment).ConfigureAwait(true);
+                var inventoryItems = await this.playFabService.GetPlayerCurrencyInventoryAsync(playFabEntityId, parsedCollectionId, playFabEnvironment).ConfigureAwait(true);
 
                 inventoryItems.ForEach(item => 
                 {
@@ -73,6 +75,40 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
             }
         }
 
+
+        /// <summary>
+        ///     Retrieves transaction history for PlayFab player.
+        /// </summary>
+        [HttpGet("transactions")]
+        [SwaggerResponse(200, type: typeof(IList<PlayFabTransaction>))]
+        [LogTagDependency(DependencyLogTags.PlayFab)]
+        public async Task<IActionResult> GetPlayFabTransactionHistory(string playFabEntityId, string collectionId)
+        {
+            var playFabEnvironment = this.PlayFabEnvironment;
+            var parsedCollectionId = collectionId.TryParseEnumElseThrow<PlayFabCollectionId>(nameof(collectionId));
+
+            try
+            {
+                var vouchers = await this.playFabService.GetVouchersAsync(playFabEnvironment).ConfigureAwait(true);
+                var transactions = await this.playFabService.GetTransactionHistoryAsync(playFabEntityId, parsedCollectionId, playFabEnvironment).ConfigureAwait(true);
+
+                transactions.ForEach(transaction =>
+                {
+                    transaction.Operations.ForEach(operation =>
+                    {
+                        var voucher = vouchers.FirstOrDefault(voucher => voucher.Id == operation.ItemId);
+                        operation.ItemName = voucher.Title["NEUTRAL"] ?? "N/A";
+                    });
+                });
+
+                return this.Ok(transactions);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get player PlayFab transaction history. (playFabId: {playFabEntityId}) (playFabEnvironment: {playFabEnvironment})", ex);
+            }
+        }
+
         /// <summary>
         ///     Adds inventory item to PlayFab player.
         /// </summary>
@@ -81,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         [LogTagDependency(DependencyLogTags.PlayFab)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.PlayFabInventory)]
         [Authorize(Policy = UserAttributeValues.ManagePlayFabInventory)]
-        public async Task<IActionResult> AddPlayFabInventoryItem(string playFabEntityId, [FromBody] PlayFabInventoryChangeRequest inventoryChange)
+        public async Task<IActionResult> AddPlayFabInventoryItem(string playFabEntityId, string collectionId, [FromBody] PlayFabInventoryChangeRequest inventoryChange)
         {
             inventoryChange.ShouldNotBeNull(nameof(inventoryChange));
             inventoryChange.ItemId.ShouldNotBeNull(nameof(inventoryChange.ItemId));
@@ -93,10 +129,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
             }
 
             var playFabEnvironment = this.PlayFabEnvironment;
+            var parsedCollectionId = collectionId.TryParseEnumElseThrow<PlayFabCollectionId>(nameof(collectionId));
 
             try
             {
-                await this.playFabService.AddInventoryItemToPlayerAsync(playFabEntityId, inventoryChange.ItemId, inventoryChange.Amount, playFabEnvironment).ConfigureAwait(true);
+                await this.playFabService.AddInventoryItemToPlayerAsync(playFabEntityId, parsedCollectionId, inventoryChange.ItemId, inventoryChange.Amount, playFabEnvironment).ConfigureAwait(true);
 
                 return this.Ok();
             }
@@ -114,7 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         [LogTagDependency(DependencyLogTags.PlayFab)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.PlayFabInventory)]
         [Authorize(Policy = UserAttributeValues.ManagePlayFabInventory)]
-        public async Task<IActionResult> RemovePlayFabInventoryItem(string playFabEntityId, [FromBody] PlayFabInventoryChangeRequest inventoryChange)
+        public async Task<IActionResult> RemovePlayFabInventoryItem(string playFabEntityId, string collectionId, [FromBody] PlayFabInventoryChangeRequest inventoryChange)
         {
             inventoryChange.ShouldNotBeNull(nameof(inventoryChange));
             inventoryChange.ItemId.ShouldNotBeNull(nameof(inventoryChange.ItemId));
@@ -126,10 +163,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
             }
 
             var playFabEnvironment = this.PlayFabEnvironment;
+            var parsedCollectionId = collectionId.TryParseEnumElseThrow<PlayFabCollectionId>(nameof(collectionId));
 
             try
             {
-                await this.playFabService.RemoveInventoryItemFromPlayerAsync(playFabEntityId, inventoryChange.ItemId, inventoryChange.Amount, playFabEnvironment).ConfigureAwait(true);
+                await this.playFabService.RemoveInventoryItemFromPlayerAsync(playFabEntityId, parsedCollectionId, inventoryChange.ItemId, inventoryChange.Amount, playFabEnvironment).ConfigureAwait(true);
 
                 return this.Ok();
             }

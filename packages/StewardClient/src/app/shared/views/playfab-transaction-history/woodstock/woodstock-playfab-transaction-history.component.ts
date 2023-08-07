@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { PlayFabTransactionHistoryServiceContract } from '../playfab-transaction-history.component';
-import { WoodstockPlayFabPlayerTransactionsService } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
+import { WoodstockPlayFabPlayerInventoryService } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service';
+import { PlayFabCollectionId } from '@models/playfab';
 
 /**
- *  Woodstock cms override component.
+ *  Woodstock PlayFab transaction history component.
  */
 @Component({
   selector: 'woodstock-playfab-transaction-history',
@@ -17,15 +18,15 @@ export class WoodstockPlayFabTransactionHistoryComponent implements OnChanges {
   public service: PlayFabTransactionHistoryServiceContract;
 
   constructor(
-    private readonly playfabTransactionService: WoodstockPlayFabPlayerTransactionsService,
+    private readonly playFabPlayerInventoryService: WoodstockPlayFabPlayerInventoryService,
   ) {}
 
   /** Lifecycle hook. */
   public ngOnChanges(): void {
     this.service = {
       gameTitle: GameTitle.FH5,
-      getPlayFabTransactionHistory$: (playfabPlayerTitleId: string) =>
-        this.playfabTransactionService.getHistory$(playfabPlayerTitleId),
+      getPlayFabTransactionHistory$: (playfabPlayerTitleId: string, collectionId: PlayFabCollectionId) =>
+        this.playFabPlayerInventoryService.getTransactionHistory$(playfabPlayerTitleId, collectionId),
     };
   }
 }

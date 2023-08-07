@@ -13,6 +13,7 @@ import {
   WoodstockPlayersPlayFabService,
 } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { PlayFabCollectionId } from '@models/playfab';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({
@@ -29,6 +30,7 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
   public isSpecialXuid: boolean;
 
   public readonly UgcType = UgcType;
+  public readonly PlayFabCollectionId = PlayFabCollectionId;
 
   /** The lookup type. */
   public get lookupType(): string {
