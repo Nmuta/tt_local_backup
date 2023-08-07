@@ -108,9 +108,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         public Task<IActionResult> GetLayerGroup(string id)
             => this.SimpleUgcLookupAsync(id, this.Services.StorefrontManagementService.GetUGCLayerGroup, o => o.result);
 
-        private Task<IActionResult> SimpleUgcLookupAsync<TempT>(
-            string id, Func<Guid, Task<TempT>> action, Func<TempT, object> mappedObjectSelector)
-            => this.SimpleUgcLookupAsync<TempT, WoodstockUgcItem>(id, action, mappedObjectSelector);
+        private Task<IActionResult> SimpleUgcLookupAsync<TTemp>(
+            string id, Func<Guid, Task<TTemp>> action, Func<TTemp, object> mappedObjectSelector)
+            => this.SimpleUgcLookupAsync<TTemp, WoodstockUgcItem>(id, action, mappedObjectSelector);
 
         private async Task<IActionResult> SimpleUgcLookupAsync<TTemp, TOut>(
             string id, Func<Guid, Task<TTemp>> action, Func<TTemp, object> mappedObjectSelector)
@@ -132,13 +132,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             return this.Ok(result);
         }
 
-        private Task<IActionResult> UgcLookupWithCarDataAsync<TempT>(
-            string id, Func<Guid, Task<TempT>> action, Func<TempT, object> mappedObjectSelector)
-            => this.UgcLookupWithCarDataAsync<TempT, WoodstockUgcItem>(id, action, mappedObjectSelector);
+        private Task<IActionResult> UgcLookupWithCarDataAsync<TTemp>(
+            string id, Func<Guid, Task<TTemp>> action, Func<TTemp, object> mappedObjectSelector)
+            => this.UgcLookupWithCarDataAsync<TTemp, WoodstockUgcItem>(id, action, mappedObjectSelector);
 
-        private async Task<IActionResult> UgcLookupWithCarDataAsync<TempT, OutT>(
-            string id, Func<Guid, Task<TempT>> action, Func<TempT, object> mappedObjectSelector)
-            where OutT : UgcItem
+        private async Task<IActionResult> UgcLookupWithCarDataAsync<TTemp, TOut>(
+            string id, Func<Guid, Task<TTemp>> action, Func<TTemp, object> mappedObjectSelector)
+            where TOut : UgcItem
         {
             if (!Guid.TryParse(id, out var idAsGuid))
             {
@@ -155,7 +155,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 
             var actionOutput = getAction.GetAwaiter().GetResult();
             var objectToMap = mappedObjectSelector(actionOutput);
-            var result = this.Mapper.SafeMap<OutT>(objectToMap);
+            var result = this.Mapper.SafeMap<TOut>(objectToMap);
 
             var query = new ForzaPlayerLookupParameters
             {
