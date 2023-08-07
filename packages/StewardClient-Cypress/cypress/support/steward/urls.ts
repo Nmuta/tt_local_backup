@@ -114,5 +114,8 @@ export const stewardUrls = {
     permissionManagement: {
       default: 'app/tools/permission-management',
     },
+    productPricing: {
+      default: '/app/tools/product-pricing',
+    },
   },
 };
