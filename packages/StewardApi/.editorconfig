@@ -178,6 +178,9 @@ dotnet_diagnostic.SA1623.severity = none
 # SA1618: Generic type parameters should be documented
 dotnet_diagnostic.SA1618.severity = none
 
+# SA1502: Element should not be on a single line
+dotnet_diagnostic.SA1502.severity = suggestion
+
 [*.{cs,vb}]
 #### Naming styles ####
 
