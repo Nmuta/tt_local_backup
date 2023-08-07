@@ -1,0 +1,52 @@
+<div class="sf-vertical">
+  <ng-container *waitForMonitor="referenceDataMonitor">
+    <mat-form-field class="sf-default-hint" appearance="fill">
+      <mat-label>Select Setting Type</mat-label>
+      <mat-select [formControl]="formControls.buildersCupSettingType">
+        <mat-option *ngFor="let setting of buildersCupSetting" [value]="setting">
+          {{ setting }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- Only Homepage settings does not have championship dropdown -->
+    <ng-container
+      *ngIf="formControls.buildersCupSettingType.value !== buildersCupSettingTypes.Homepage"
+    >
+      <mat-form-field class="sf-default-hint" appearance="fill">
+        <mat-label>Select Championship</mat-label>
+        <mat-select [formControl]="formControls.buildersCupChampionship">
+          <mat-option
+            *ngFor="let championship of buildersCupChampionships | keyvalue"
+            [value]="championship.key"
+          >
+            {{ championship.value | humanize }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+    <ng-container
+      *ngIf="formControls.buildersCupSettingType.value === buildersCupSettingTypes.Ladder"
+    >
+      <mat-form-field class="sf-default-hint" appearance="fill">
+        <mat-label>Select Ladder</mat-label>
+        <mat-select [formControl]="formControls.buildersCupLadder">
+          <mat-option *ngFor="let ladder of buildersCupLadders | keyvalue" [value]="ladder.key">
+            {{ ladder.value | humanize }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+    <ng-container
+      *ngIf="formControls.buildersCupSettingType.value === buildersCupSettingTypes.Series"
+    >
+      <mat-form-field class="sf-default-hint" appearance="fill">
+        <mat-label>Select Series</mat-label>
+        <mat-select [formControl]="formControls.buildersCupSeries">
+          <mat-option *ngFor="let serie of buildersCupSeries | keyvalue" [value]="serie.key">
+            {{ serie.value | humanize }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+</div>

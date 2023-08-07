@@ -113,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
             var playerLookupParameters = users.xuids
                                             .Select(xuid => new ServicesLiveOps.ForzaPlayerLookupParameters
                                             {
-                                                UserID = xuid.ToString(),
+                                                UserID = xuid.ToInvariantString(),
                                             }).ToArray();
             var getUserIdsOutput = await this.Services.UserManagementService.GetUserIds(playerLookupParameters.Length, playerLookupParameters).ConfigureAwait(false);
 
@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.UserGroup)]
-        [Authorize(Policy = UserAttribute.CreateUserGroup)]
+        [Authorize(Policy = UserAttributeValues.CreateUserGroup)]
         public async Task<IActionResult> CreateUserGroup(string userGroupName)
         {
             userGroupName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userGroupName));
@@ -168,7 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.UserGroup)]
-        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
+        [Authorize(Policy = UserAttributeValues.UpdateUserGroup)]
         public async Task<IActionResult> AddUsersToGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks adding users to the "All" group
@@ -197,7 +197,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.UserGroup)]
-        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
+        [Authorize(Policy = UserAttributeValues.UpdateUserGroup)]
         public async Task<IActionResult> RemoveUsersFromGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks removing users from the "All" group
@@ -226,7 +226,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.DeleteAll, StewardSubject.UserGroup)]
-        [Authorize(Policy = UserAttribute.RemoveAllUsersFromGroup)]
+        [Authorize(Policy = UserAttributeValues.RemoveAllUsersFromGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
             // Block removing all users from All Users and VIP groups.

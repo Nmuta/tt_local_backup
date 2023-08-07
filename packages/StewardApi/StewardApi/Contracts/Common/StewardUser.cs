@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the authorization attributes.
         /// </summary>
-        public IEnumerable<AuthorizationAttribute> Attributes { get; set; }
+        public IEnumerable<AuthorizationAttributeData> Attributes { get; set; }
 
         /// <summary>
         ///     Gets or sets the team.

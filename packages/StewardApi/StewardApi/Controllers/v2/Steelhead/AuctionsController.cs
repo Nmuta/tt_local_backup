@@ -81,7 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Auctions)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.Auction)]
-        [Authorize(Policy = UserAttribute.DeleteAuction)]
+        [Authorize(Policy = UserAttributeValues.DeleteAuction)]
         public async Task<IActionResult> DeleteAuction(string auctionId)
         {
             if (!Guid.TryParse(auctionId, out var auctionIdAsGuid))

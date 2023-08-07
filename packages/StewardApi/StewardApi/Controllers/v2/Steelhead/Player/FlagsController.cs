@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
-        [Authorize(Policy = UserAttribute.UpdateUserFlags)]
+        [Authorize(Policy = UserAttributeValues.UpdateUserFlags)]
         public async Task<IActionResult> SetFlags(ulong xuid, [FromBody] SteelheadUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));

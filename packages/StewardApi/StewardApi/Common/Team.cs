@@ -1,8 +1,8 @@
+using System;
+using System.Collections.Generic;
+
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     ///     Represents a Steward team.
     /// </summary>

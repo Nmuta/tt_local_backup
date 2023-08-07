@@ -433,7 +433,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Get a community challenge.
         /// </summary>
         Task<LiveOpsService.GetUGCCommunityChallengeOutput> GetCommunityChallengeAsync(
-            Guid eventBlueprintId,
+            Guid communityChallengeId,
             string endpoint);
 
         /// <summary>

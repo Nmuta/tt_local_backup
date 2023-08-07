@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]
-        [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
+        [Authorize(Policy = UserAttributeValues.SendLoyaltyRewards)]
         public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, string externalProfileId, [FromBody] string[] gameTitles)
         {
             xuid.IsValidXuid();

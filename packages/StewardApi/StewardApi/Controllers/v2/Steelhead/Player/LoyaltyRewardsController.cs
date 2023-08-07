@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
-        [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
+        [Authorize(Policy = UserAttributeValues.SendLoyaltyRewards)]
         public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, [FromBody] IList<string> gameTitles)
         {
             //xuid.IsValidXuid();

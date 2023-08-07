@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.DeleteBan)]
+        [Authorize(Policy = UserAttributeValues.DeleteBan)]
         public async Task<IActionResult> ExpireBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.DeleteBan)]
+        [Authorize(Policy = UserAttributeValues.DeleteBan)]
         public async Task<IActionResult> DeleteBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);

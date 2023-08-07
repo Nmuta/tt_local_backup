@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update)]
-        [Authorize(Policy = UserAttribute.UpdateLspTask)]
+        [Authorize(Policy = UserAttributeValues.UpdateLspTask)]
         public async Task<IActionResult> UpdateLspTask([FromBody] LspTask task)
         {
             var taskParameters = this.mapper.SafeMap<ForzaTaskUpdateParameters>(task);

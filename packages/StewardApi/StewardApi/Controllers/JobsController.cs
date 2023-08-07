@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("fake/in-progress/{jobTimeInMilliseconds}")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> PostFakeOngoingAsync(
             int jobTimeInMilliseconds,
             [FromBody] object postBody)
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("fake/failure/{jobTimeInMilliseconds}")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> PostFakeFailureAsync(
             int jobTimeInMilliseconds,
             [FromBody] object postBody)
@@ -136,7 +136,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("fake/success/{jobTimeInMilliseconds}")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> PostFakeSuccessAsync(
             int jobTimeInMilliseconds,
             [FromBody] object postBody)

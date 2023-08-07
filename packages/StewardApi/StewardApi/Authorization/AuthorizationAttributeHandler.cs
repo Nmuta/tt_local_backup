@@ -40,13 +40,13 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
             if (requirement == null)
             {
-                context?.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null {nameof(requirement)} in policy handler."));
+                context.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null {nameof(requirement)} in policy handler."));
                 return Task.CompletedTask;
             }
 
             if (string.IsNullOrEmpty(requirement.Attribute))
             {
-                context?.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null or empty {nameof(requirement.Attribute)} in policy handler."));
+                context.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null or empty {nameof(requirement.Attribute)} in policy handler."));
                 return Task.CompletedTask;
             }
 

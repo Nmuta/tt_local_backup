@@ -40,7 +40,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     public class ReportWeightController : V2SteelheadControllerBase
     {
         private const int DefaultReportWeight = 10; // Value players are initialized with.
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -84,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
-        [Authorize(Policy = UserAttribute.SetReportWeight)]
+        [Authorize(Policy = UserAttributeValues.SetReportWeight)]
         public async Task<IActionResult> SetUserReportWeight(ulong xuid, [FromBody] UserReportWeightType reportWeightType)
         {
             //xuid.IsValidXuid();

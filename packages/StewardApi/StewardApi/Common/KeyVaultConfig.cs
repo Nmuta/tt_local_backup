@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Common
         /// <summary>
         /// True when all secrets have been successfully loaded.
         /// </summary>
-        public bool IsInitialized { get; set; } = false;
+        public bool IsInitialized { get; set; }
 
         public string SteelheadContentAccessToken { get; set; }
 
@@ -84,8 +84,8 @@ namespace Turn10.LiveOps.StewardApi.Common
                 async () => keyVault.TableStorageConnectionString = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.CosmosTableSecretName]).ConfigureAwait(false),
                 async () => keyVault.SharedTableStorageConnectionString = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.CosmosSharedTableSecretName]).ConfigureAwait(false),
                 async () => keyVault.OpusCertificateSecret = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.OpusCertificateSecretName]).ConfigureAwait(false),
-                async () => keyVault.WoodstockPlayFabProdTitleId = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.CosmosSharedTableSecretName]).ConfigureAwait(false),
-                async () => keyVault.WoodstockPlayFabProdKey = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.OpusCertificateSecretName]).ConfigureAwait(false),
+                async () => keyVault.WoodstockPlayFabProdTitleId = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.WoodstockPlayFabProdTitleId]).ConfigureAwait(false),
+                async () => keyVault.WoodstockPlayFabProdKey = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.WoodstockPlayFabProdKey]).ConfigureAwait(false),
             };
 
             var tasks = operations.Select(o => o());

@@ -29,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
@@ -133,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -182,7 +183,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -222,7 +223,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -263,7 +264,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -318,7 +319,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync()
         {
-            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
                     filename,
@@ -334,7 +335,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetRivalsEventsReferenceAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
                     filename,
@@ -350,7 +351,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetRivalsEventCategoriesAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.RivalCategories.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.RivalCategories.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalsCategories =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalCategory>>(
                     filename,
@@ -382,7 +383,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.RacersCupSeries.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.RacersCupSeries.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRacersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipSeriesDataV3>>(
                     filename,
@@ -398,7 +399,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetBuildersCupChampionshipsAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.BuildersCupChampionships.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.BuildersCupChampionships.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupDataV3>>(
                     filename,
@@ -414,7 +415,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetBuildersCupLaddersAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.BuildersCupLadders.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.BuildersCupLadders.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupLadder =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupLadderDataV3>>(
                     filename,
@@ -430,7 +431,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.BuildersCupSeries.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.BuildersCupSeries.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupSeriesDataV3>>(
                     filename,
@@ -564,7 +565,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<IEnumerable<Leaderboard>> GetLeaderboards()
             {
-                var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+                var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
                 var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<RivalEvent>>(filename, pegasusEnvironment, slot: slotId).ConfigureAwait(false);
                 var leaderboards = this.mapper.SafeMap<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
@@ -607,7 +608,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetCarsReferenceAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.DataCars.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.DataCars.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusCars =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(
                     filename,
@@ -694,7 +695,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
         {
             var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
-            var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US");
+            var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US", StringComparison.Ordinal);
 
             var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
                 fileName,
@@ -702,6 +703,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 slot: pegasusSlot).ConfigureAwait(false);
 
             return featuredCupData.Single();
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        {
+            var banConfigurationKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_BanConfiguration";
+
+            async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
+            {
+                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(banConfigurationKey, TimeSpan.FromDays(1), banConfigurations);
+
+                return banConfigurations;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, BanConfiguration>>(banConfigurationKey)
+                   ?? await GetBanConfigurations().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -716,7 +735,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync()
         {
-            var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var wofTileCollection = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
 
             return wofTileCollection;

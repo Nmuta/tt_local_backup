@@ -1008,7 +1008,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var groupGift = CreateGroupGift();
 
-            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await this.UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result[0].Errors?.Count == 0);
@@ -1159,7 +1159,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             }
         }
 
-
         [TestMethod]
         [TestCategory("Integration")]
         public async Task UpdateGroupInventoriesByLspGroupId_Unauthorized()
@@ -1270,7 +1269,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed || status == BackgroundJobStatus.CompletedWithErrors;
+                jobCompleted = status is BackgroundJobStatus.Completed or BackgroundJobStatus.Failed or BackgroundJobStatus.CompletedWithErrors;
 
                 jobResults = JsonConvert.DeserializeObject<IList<BanResult>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
@@ -1307,7 +1306,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed || status == BackgroundJobStatus.CompletedWithErrors;
+                jobCompleted = status is BackgroundJobStatus.Completed or BackgroundJobStatus.Failed or BackgroundJobStatus.CompletedWithErrors;
 
                 jobResult = JsonConvert.DeserializeObject<IList<GiftResponse<ulong>>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));

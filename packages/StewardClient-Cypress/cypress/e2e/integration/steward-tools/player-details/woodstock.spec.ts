@@ -37,7 +37,6 @@ context('Steward / Tools / Player Details / Woodstock', () => {
   context('GTAG Lookup', () => {
     context('With default user', () => {
       contextSearchByGtagForPlayerDetails(RetailUsers[defaultWoodstockUser]);
-
       testUserDetails(defaultWoodstockUser);
       testDeepDive();
       testInventory();
@@ -47,7 +46,6 @@ context('Steward / Tools / Player Details / Woodstock', () => {
 
     context('With Madden user', () => {
       contextSearchByGtagForPlayerDetails(RetailUsers.madden);
-
       testAuctions();
       testUgc();
       testLoyalty(['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);
@@ -62,7 +60,6 @@ context('Steward / Tools / Player Details / Woodstock', () => {
 
     context('With default user', () => {
       contextSearchByXuidForPlayerDetails(RetailUsers[defaultWoodstockUser]);
-
       testUserDetails(defaultWoodstockUser);
       testDeepDive();
       testInventory();
@@ -72,7 +69,6 @@ context('Steward / Tools / Player Details / Woodstock', () => {
 
     context('With Madden user', () => {
       contextSearchByXuidForPlayerDetails(RetailUsers.madden);
-
       testAuctions();
       testUgc();
       testLoyalty(['FH4', 'FH1', 'FH2', 'FH3', 'FM6', 'FM7', 'FM5']);

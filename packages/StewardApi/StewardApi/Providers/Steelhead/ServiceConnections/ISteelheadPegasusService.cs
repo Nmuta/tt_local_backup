@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 using PullRequest = Turn10.LiveOps.StewardApi.Contracts.Git.PullRequest;
@@ -295,5 +296,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets Builders Cup Series.
         /// </summary>
         Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync();
+
+        /// <summary>
+        ///     Gets ban configurations.
+        /// </summary>
+        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
     }
 }

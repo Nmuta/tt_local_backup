@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.WelcomeCenter)]
-        [Authorize(Policy = UserAttribute.UpdateMessageOfTheDay)]
+        [Authorize(Policy = UserAttributeValues.UpdateMessageOfTheDay)]
         public async Task<IActionResult> EditAndSubmitMessageOfTheDay(string id, [FromBody] MotdBridge messageOfTheDayBridge)
         {
             var parsedId = id.TryParseGuidElseThrow(nameof(id));

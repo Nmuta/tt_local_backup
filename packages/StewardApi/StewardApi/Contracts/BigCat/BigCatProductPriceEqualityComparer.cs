@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Turn10;
 using Turn10.LiveOps;
 using Turn10.LiveOps.StewardApi;
@@ -12,33 +13,41 @@ namespace Turn10.LiveOps.StewardApi.Contracts.BigCat
     public class BigCatProductPriceEqualityComparer : IEqualityComparer<BigCatProductPrice>
     {
         /// <inheritdoc />
-        public bool Equals(BigCatProductPrice price1, BigCatProductPrice price2)
+        public bool Equals(BigCatProductPrice x, BigCatProductPrice y)
         {
-            if (price1 == null && price2 == null)
+            if (x == null && y == null)
+            {
                 return true;
-            else if (price1 == null || price2 == null)
+            }
+            else if (x == null || y == null)
+            {
                 return false;
-            else if (price1.CurrencyCode == price2.CurrencyCode
-                    && price1.IsPiRequired == price2.IsPiRequired
-                    && price1.ListPrice == price2.ListPrice
-                    & price1.MSRP == price2.MSRP
-                    & price1.WholesaleCurrencyCode == price2.WholesaleCurrencyCode)
+            }
+            else if (x.CurrencyCode == y.CurrencyCode
+                    && x.IsPiRequired == y.IsPiRequired
+                    && x.ListPrice == y.ListPrice
+                    & x.MSRP == y.MSRP
+                    & x.WholesaleCurrencyCode == y.WholesaleCurrencyCode)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
         /// <inheritdoc />
-        public int GetHashCode(BigCatProductPrice price)
+        public int GetHashCode(BigCatProductPrice obj)
         {
             // Integers 17 and 23 are prime numbers, should help avoid collision
             int hash = 17;
 
-            hash = hash * 23 + price.CurrencyCode.GetHashCode();
-            hash = hash * 23 + price.IsPiRequired.GetHashCode();
-            hash = hash * 23 + price.ListPrice.GetHashCode();
-            hash = hash * 23 + price.MSRP.GetHashCode();
-            hash = hash * 23 + price.WholesaleCurrencyCode.GetHashCode();
+            hash = hash * 23 + obj.CurrencyCode.GetHashCode(StringComparison.Ordinal);
+            hash = hash * 23 + obj.IsPiRequired.GetHashCode();
+            hash = hash * 23 + obj.ListPrice.GetHashCode();
+            hash = hash * 23 + obj.MSRP.GetHashCode();
+            hash = hash * 23 + obj.WholesaleCurrencyCode.GetHashCode(StringComparison.Ordinal);
 
             return hash;
         }

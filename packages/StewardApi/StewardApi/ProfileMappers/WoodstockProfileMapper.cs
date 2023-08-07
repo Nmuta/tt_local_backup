@@ -9,6 +9,7 @@ using Forza.Scoreboard.FH5_main.Generated;
 using Forza.UserGeneratedContent.FH5_main.Generated;
 using Forza.UserInventory.FH5_main.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5_main.Generated;
+using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -140,7 +141,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default ? source.Auction.TimeFlagged : (DateTime?)null));
             this.CreateMap<ulong, ServicesLiveOps.ForzaPlayerLookupParameters>()
                 .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(src => ServicesLiveOps.ForzaUserIdType.Xuid))
-                .ForMember(dest => dest.UserID, opt => opt.MapFrom(xuid => xuid.ToString()));
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(xuid => xuid.ToInvariantString()));
             this.CreateMap<IdentityQueryAlpha, ServicesLiveOps.ForzaPlayerLookupParameters>()
                 .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(
                     src => src.Xuid.HasValue ? ServicesLiveOps.ForzaUserIdType.Xuid : ServicesLiveOps.ForzaUserIdType.Gamertag))

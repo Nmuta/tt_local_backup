@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
-        [Authorize(Policy = UserAttribute.MessagePlayer)]
+        [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> SendMessageToPlayers(
             [FromBody] BulkLocalizedMessage communityMessage)
         {

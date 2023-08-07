@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> GiftItemsToUserGroup(int groupId, [FromBody] WoodstockGift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -115,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
             var response = await this.playerInventoryProvider.UpdateGroupInventoriesAsync(
                 groupId,
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(int groupId, [FromBody] BulkLiveryGift<ExpirableGift> gift)
         {
             var userClaims = this.User.UserClaims();

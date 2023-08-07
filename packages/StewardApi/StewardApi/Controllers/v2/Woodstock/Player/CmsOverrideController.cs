@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.CmsOverride)]
-        [Authorize(Policy = UserAttribute.OverrideCms)]
+        [Authorize(Policy = UserAttributeValues.OverrideCms)]
         public async Task<IActionResult> SetPlayerCmsOverride(
             ulong xuid,
             [FromBody] ForzaCMSOverride cmsOverride)
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.CmsOverride)]
-        [Authorize(Policy = UserAttribute.OverrideCms)]
+        [Authorize(Policy = UserAttributeValues.OverrideCms)]
         public async Task<IActionResult> DeletePlayerCmsOverride(ulong xuid)
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);

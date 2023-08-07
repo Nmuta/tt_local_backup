@@ -88,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] SteelheadGift gift)
@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
             var response = await this.playerInventoryProvider.UpdateGroupInventoriesAsync(
                 this.Services,
@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Gifting)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(int groupId, [FromBody] BulkLiveryGift<LocalizedMessageExpirableGift> gift)
         {
             var userClaims = this.User.UserClaims();

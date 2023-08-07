@@ -42,7 +42,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     [StandardTags(Title.Steelhead, Topic.Calendar, Topic.RacersCup, Target.Details, Dev.ReviseTags)]
     public class RacersCupController : V2SteelheadControllerBase
     {
-        private const int GroupLookupMaxResults = 1000;
         private readonly IMapper mapper;
         private readonly ILoggingService loggingService;
         private readonly ISteelheadPegasusService pegasusService;
@@ -103,9 +102,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 await Task.WhenAll(eventGeneration, racersCupChampionshipScheduleV3, racersCupPlaylistDataV3).ConfigureAwait(true);
 
                 var racersCupChampionshipSchedule = this.BuildChampionship(
-                    eventGeneration.Result.scheduleData,
-                    racersCupChampionshipScheduleV3.Result.Championships.Single(),
-                    racersCupPlaylistDataV3.Result);
+                    eventGeneration.GetAwaiter().GetResult().scheduleData,
+                    racersCupChampionshipScheduleV3.GetAwaiter().GetResult().Championships.Single(),
+                    racersCupPlaylistDataV3.GetAwaiter().GetResult());
 
                 return this.Ok(racersCupChampionshipSchedule);
             }
@@ -151,9 +150,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 await Task.WhenAll(eventGeneration, racersCupChampionshipScheduleV3, racersCupPlaylistDataV3).ConfigureAwait(true);
 
                 var racersCupChampionshipSchedule = this.BuildChampionship(
-                    eventGeneration.Result.scheduleData,
-                    racersCupChampionshipScheduleV3.Result.Championships.Single(),
-                    racersCupPlaylistDataV3.Result);
+                    eventGeneration.GetAwaiter().GetResult().scheduleData,
+                    racersCupChampionshipScheduleV3.GetAwaiter().GetResult().Championships.Single(),
+                    racersCupPlaylistDataV3.GetAwaiter().GetResult());
 
                 return this.Ok(racersCupChampionshipSchedule);
             }
