@@ -80,7 +80,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             return this.Ok(result);
         }
 
-
         /// <summary>
         ///     Sets the user's safety rating history.
         /// </summary>

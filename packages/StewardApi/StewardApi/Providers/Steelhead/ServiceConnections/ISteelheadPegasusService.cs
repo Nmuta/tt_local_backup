@@ -243,7 +243,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// </summary>
         Task<IEnumerable<LiveOpsContracts.CarSale>> GetCarSalesAsync();
 
-
         /// <summary>
         ///     Gets Tracks.
         /// </summary>

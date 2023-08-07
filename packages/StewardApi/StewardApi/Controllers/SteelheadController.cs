@@ -302,7 +302,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return this.Ok(result);
         }
 
-
         /// <summary>
         ///     Bans players.
         /// </summary>

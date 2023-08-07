@@ -10,7 +10,6 @@ using Turn10.Services.Storage.Table;
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable SA1600 // Elements should be documented
 
-
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
     public class TableProviderFactory

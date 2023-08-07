@@ -108,7 +108,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         public Task<IActionResult> GetLayerGroup(string id)
             => this.SimpleUgcLookupAsync(id, this.Services.StorefrontManagementService.GetUGCLayerGroup, o => o.result);
 
-
         private Task<IActionResult> SimpleUgcLookupAsync<TempT>(
             string id, Func<Guid, Task<TempT>> action, Func<TempT, object> mappedObjectSelector)
             => this.SimpleUgcLookupAsync<TempT, WoodstockUgcItem>(id, action, mappedObjectSelector);
