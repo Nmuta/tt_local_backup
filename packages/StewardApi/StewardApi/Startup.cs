@@ -528,6 +528,7 @@ namespace Turn10.LiveOps.StewardApi
     /// <summary>
     /// Startup used for testing.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "Must be here for registration? TODO: Move to test project or another file?")]
     public sealed class ControllerTestStartup
     {
         /// <summary>
