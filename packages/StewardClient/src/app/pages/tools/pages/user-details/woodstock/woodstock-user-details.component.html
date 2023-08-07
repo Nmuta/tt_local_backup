@@ -2,6 +2,23 @@
   <h1><player-identity-results [identity]="identity"></player-identity-results></h1>
   <section>
     <mat-tab-group animationDuration="0ms" (selectedTabChange)="tabChanged($event)">
+      <mat-tab *ngIf="!isSpecialXuid" label="User Details">
+        <div class="sf-wrapper sf-tab-container">
+          <div class="sf-horizontal do-not-align-items">
+            <woodstock-user-flags
+              [identity]="identity"
+              (flagsUpdated)="reportWeight.reloadReportWeight()"
+            ></woodstock-user-flags>
+            <woodstock-report-weight #reportWeight [identity]="identity"></woodstock-report-weight>
+            <woodstock-player-game-details [identity]="identity"></woodstock-player-game-details>
+            <woodstock-cms-override [identity]="identity"></woodstock-cms-override>
+          </div>
+          <woodstock-ban-history [xuid]="identity.xuid"></woodstock-ban-history>
+          <woodstock-profile-notes [identity]="identity"></woodstock-profile-notes>
+          <woodstock-gamertags [identity]="identity"></woodstock-gamertags>
+          <woodstock-consoles [identity]="identity"></woodstock-consoles>
+        </div>
+      </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid">
         <ng-template mat-tab-label>
           PlayFab
@@ -21,23 +38,6 @@
               [playfabPlayerTitleId]="playfabProfile?.title ?? null"
             ></woodstock-playfab-transaction-history>
           </ng-container>
-        </div>
-      </mat-tab>
-      <mat-tab *ngIf="!isSpecialXuid" label="User Details">
-        <div class="sf-wrapper sf-tab-container">
-          <div class="sf-horizontal do-not-align-items">
-            <woodstock-user-flags
-              [identity]="identity"
-              (flagsUpdated)="reportWeight.reloadReportWeight()"
-            ></woodstock-user-flags>
-            <woodstock-report-weight #reportWeight [identity]="identity"></woodstock-report-weight>
-            <woodstock-player-game-details [identity]="identity"></woodstock-player-game-details>
-            <woodstock-cms-override [identity]="identity"></woodstock-cms-override>
-          </div>
-          <woodstock-ban-history [xuid]="identity.xuid"></woodstock-ban-history>
-          <woodstock-profile-notes [identity]="identity"></woodstock-profile-notes>
-          <woodstock-gamertags [identity]="identity"></woodstock-gamertags>
-          <woodstock-consoles [identity]="identity"></woodstock-consoles>
         </div>
       </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Deep Dive">
