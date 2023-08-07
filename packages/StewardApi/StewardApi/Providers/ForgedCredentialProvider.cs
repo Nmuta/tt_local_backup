@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 Gamertag = "UNKNOWN",
                 Sandbox = this.steelheadSettings.Sandbox,
                 TokenLifetimeMinutes = 60,
-                Xuid = this.steelheadSettings.AdminXuid
+                Xuid = this.steelheadSettings.AdminXuid,
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);
@@ -117,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 Gamertag = "UNKNOWN",
                 Sandbox = this.woodstockSettings.Sandbox,
                 TokenLifetimeMinutes = 60,
-                Xuid = this.woodstockSettings.AdminXuid
+                Xuid = this.woodstockSettings.AdminXuid,
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);
@@ -138,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 Gamertag = "UNKNOWN",
                 Sandbox = this.sunriseSettings.Sandbox,
                 TokenLifetimeMinutes = 60,
-                Xuid = this.sunriseSettings.AdminXuid
+                Xuid = this.sunriseSettings.AdminXuid,
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);

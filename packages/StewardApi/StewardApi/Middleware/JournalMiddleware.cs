@@ -117,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Middleware
                 QueryParameters = context.Request.Query.Select(q => new Tuple<string, string>(q.Key, q.Value)).ToList(),
                 TimestampUtc = DateTime.UtcNow,
                 SessionId = GetHeader(SessionIdHeaderParameterOperationFilter.SessionIdHeaderName, context.Request.Headers),
-                Method = context.Request.Method
+                Method = context.Request.Method,
             };
         }
     }

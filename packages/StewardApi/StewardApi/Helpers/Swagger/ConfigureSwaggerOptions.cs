@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
                         AuthorizationUrl = new Uri($"{this.configuration[ConfigurationKeyConstants.AzureInstance]}/{this.configuration[ConfigurationKeyConstants.AzureTenantId]}/oauth2/v2.0/authorize"),
                         Scopes = { { $"api://{this.configuration[ConfigurationKeyConstants.AzureClientId]}/api_access", "API Access" } },
                     }
-                }
+                },
             });
 
             options.OperationFilter<AddRequiredHeaderParameter>();
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
                 Contact = new OpenApiContact
                 {
                     Email = "t10liveopstools@microsoft.com",
-                    Name = "Turn 10 LiveOps Tools"
+                    Name = "Turn 10 LiveOps Tools",
                 },
             };
 

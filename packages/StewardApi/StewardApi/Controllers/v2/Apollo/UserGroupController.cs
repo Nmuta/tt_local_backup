@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             var response = new GetUserGroupUsersResponse()
             {
                 PlayerList = userList,
-                PlayerCount = users.available
+                PlayerCount = users.available,
             };
 
             return this.Ok(response);
@@ -119,7 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             var newGroup = new LspGroup()
             {
                 Id = result.groupId,
-                Name = userGroupName
+                Name = userGroupName,
             };
             return this.Ok(newGroup);
         }
@@ -270,7 +270,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             {
                 var userGroupPageArray = new ForzaUserGroupOperationPage[]
                 {
-                    new ForzaUserGroupOperationPage() { userIds = userIdsChunk }
+                    new ForzaUserGroupOperationPage() { userIds = userIdsChunk },
                 };
                 var bulkOperationOutput = await userManagementService.CreateUserGroupBulkOperationV2(ForzaBulkOperationType.Add, groupId, userGroupPageArray).ConfigureAwait(false);
                 failedUsers.AddRange(this.mapper.SafeMap<IEnumerable<BasicPlayer>>(bulkOperationOutput.failedUsers.SelectMany(x => x.userIds)));

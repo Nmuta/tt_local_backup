@@ -74,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     new MasterInventoryItem { Id = -1, Description = "ForzathonPoints" },
                     new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
                     new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
-                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
+                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" },
                 },
                 Cars = this.mapper.SafeMap<IList<MasterInventoryItem>>(getCars.GetAwaiter().GetResult()),
                 CarHorns = this.mapper.SafeMap<IList<MasterInventoryItem>>(getCarHorns.GetAwaiter().GetResult()),

@@ -540,7 +540,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         : new List<StewardError>
                         {
                             new ServicesFailureStewardError(
-                                $"LSP failed to gift livery to player with XUID: {source.xuid}")
+                                $"LSP failed to gift livery to player with XUID: {source.xuid}"),
                         }));
 
             this.CreateMap<ForzaSafetyRatingLetterGrade, SafetyRatingGrade>();
@@ -604,7 +604,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     Championship = destination.Setting.Championship?.@ref,
                     Ladder = destination.Setting.Ladder?.@ref,
                     Series = destination.Setting.Series?.@ref,
-                    DestinationType = DestinationType.BuildersCup
+                    DestinationType = DestinationType.BuildersCup,
                 };
             }
 
@@ -613,7 +613,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 return new RacersCupDestination()
                 {
                     Series = destination.Series.@ref,
-                    DestinationType = DestinationType.RacersCup
+                    DestinationType = DestinationType.RacersCup,
                 };
             }
 
@@ -624,7 +624,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     SettingType = this.PrepareShowroomSettingType(destination.Setting),
                     Car = destination.Setting.Car?.@ref,
                     Manufacturer = destination.Setting.Manufacturer?.@ref,
-                    DestinationType = DestinationType.Showroom
+                    DestinationType = DestinationType.Showroom,
                 };
             }
 
@@ -635,7 +635,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     SettingType = this.PrepareRivalsSettingType(destination.Setting),
                     Category = destination.Setting.Category?.@ref,
                     Event = destination.Setting.Event?.@ref,
-                    DestinationType = DestinationType.Rivals
+                    DestinationType = DestinationType.Rivals,
                 };
             }
 
@@ -643,7 +643,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             {
                 return new PatchNotesDestination()
                 {
-                    DestinationType = DestinationType.PatchNotes
+                    DestinationType = DestinationType.PatchNotes,
                 };
             }
 
@@ -653,7 +653,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     SettingType = this.PrepareStoreSettingType(destination.Setting),
                     Product = destination.Setting.Product?.@ref,
-                    DestinationType = DestinationType.Store
+                    DestinationType = DestinationType.Store,
                 };
             }
 
@@ -754,7 +754,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new DeeplinkDestinationSetting()
                     {
-                        type = "WorldOfForza.ShowroomDeeplinkHomepageConfigSetting"
+                        type = "WorldOfForza.ShowroomDeeplinkHomepageConfigSetting",
                     };
                 }
 
@@ -781,7 +781,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     type = "WorldOfForza.WoFToShowroomConfig",
                     Setting = settings,
                     CarId = new DeeplinkDestinationCarId(),
-                    CategoryId = new DeeplinkDestinationCategoryId()
+                    CategoryId = new DeeplinkDestinationCategoryId(),
                 };
             }
 
@@ -792,7 +792,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new DeeplinkDestinationSetting()
                     {
-                        type = "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting"
+                        type = "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting",
                     };
                 }
 
@@ -812,7 +812,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     {
                         Championship = new DeeplinkDestinationBuildersCupChampionship() { @ref = buildersCupDestination.Championship.Value },
                         Series = new DeeplinkDestinationBuildersCupSeries() { @ref = buildersCupDestination.Series.Value },
-                        type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting"
+                        type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting",
                     };
                 }
 
@@ -841,7 +841,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new DeeplinkDestinationSetting()
                     {
-                        type = "WorldOfForza.RivalsDeeplinkHomepageConfigSetting"
+                        type = "WorldOfForza.RivalsDeeplinkHomepageConfigSetting",
                     };
                 }
 
@@ -860,7 +860,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     settings = new DeeplinkDestinationSetting()
                     {
                         Category = new DeeplinkDestinationRivalsCategory() { @ref = rivalsDestination.Category.Value },
-                        type = "WorldOfForza.RivalsDeeplinkCategoryConfigSetting"
+                        type = "WorldOfForza.RivalsDeeplinkCategoryConfigSetting",
                     };
                 }
 
@@ -880,7 +880,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new DeeplinkDestinationSetting()
                     {
-                        type = "WorldOfForza.StoreDeeplinkHomepageConfigSetting"
+                        type = "WorldOfForza.StoreDeeplinkHomepageConfigSetting",
                     };
                 }
 
@@ -897,7 +897,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     Setting = settings,
                     type = "WorldOfForza.WoFToStoreConfig",
-                    Product = new DeeplinkDestinationProduct()
+                    Product = new DeeplinkDestinationProduct(),
                 };
             }
 

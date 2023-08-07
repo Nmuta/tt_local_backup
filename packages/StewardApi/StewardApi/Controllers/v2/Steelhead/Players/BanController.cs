@@ -61,13 +61,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     "Credit/XP/Wheelspin hacking",
                     "Ban dodging",
                     "Employee harassment",
-                    "Breaching NDA"
+                    "Breaching NDA",
                 },
                 BanConfigurationId = new Guid("1049fa1f-7ffe-4188-ae21-89ef661e1a7b"),
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.AllRequests
-                }
+                },
             },
             new SteelheadBanReasonGroup()
             {
@@ -88,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.AllRequests
-                }
+                },
             },
             new SteelheadBanReasonGroup()
             {
@@ -108,14 +108,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     "Low Effort/Quality Content",
                     "Child Endangerment",
                     "Sexually Inappropriate/Suggestive",
-                    "Threat of Self Harm"
+                    "Threat of Self Harm",
                 },
                 BanConfigurationId = new Guid("563a4a85-9f0d-4678-a86c-f4d71fb9f424"),
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.UserGeneratedContent,
                     FeatureAreas.AuctionHouse
-                }
+                },
             },
             new SteelheadBanReasonGroup()
             {
@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     "Intentional ramming/wrecking, pinning, pitting, spearing, shoving, and blocking in races",
                     "Light Bullying",
                     "Vulgar language",
-                    "Track cutting/extending to pass"
+                    "Track cutting/extending to pass",
                 },
                 BanConfigurationId = new Guid("253c7ad6-68ac-4ac7-b784-1452753acaef"),
                 FeatureAreas = new List<FeatureAreas>
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     FeatureAreas.DailyCredit,
                     FeatureAreas.Community,
                     FeatureAreas.Drivatar
-                }
+                },
             },
             new SteelheadBanReasonGroup()
             {
@@ -148,7 +148,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 {
                     FeatureAreas.Test
                 }
-            }
+            },
         };
 
 

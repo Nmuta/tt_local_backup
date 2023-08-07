@@ -202,7 +202,7 @@ namespace Turn10.LiveOps.StewardApi
                 options.SerializerSettings.Converters = new List<JsonConverter>
                 {
                     new TimeSpanConverter(),
-                    new StringEnumConverter()
+                    new StringEnumConverter(),
                 };
             });
 

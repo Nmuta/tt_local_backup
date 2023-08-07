@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
             activity.ParallelismLimitTags.Add(new ParallelismLimit
             {
                 Tag = $"{tenant}.{pipelineName}.{activity.Name}",
-                Limit = count
+                Limit = count,
             });
 
             return activity;
@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
             activity.ParallelismLimitTags.Add(new ParallelismLimit
             {
                 Tag = $"{tenant}.{pipelineName}.{activity.Name}",
-                Limit = count
+                Limit = count,
             });
 
             return activity;

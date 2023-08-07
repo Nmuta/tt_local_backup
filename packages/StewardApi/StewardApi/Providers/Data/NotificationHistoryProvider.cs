@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.KustoLoggerDatabase
+            ConfigurationKeyConstants.KustoLoggerDatabase,
         };
 
         private readonly IKustoStreamingLogger kustoStreamingLogger;

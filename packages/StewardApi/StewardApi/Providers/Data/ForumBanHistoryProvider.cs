@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.KustoLoggerDatabase
+            ConfigurationKeyConstants.KustoLoggerDatabase,
         };
 
         private readonly string forumDefaultEndpoint = string.Empty;
@@ -60,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 StartTimeUtc = banParameters.IssuedDateUtc,
                 FeatureArea = TitleConstants.Forum,
                 BanParameters = "N/A",
-                Endpoint = this.forumDefaultEndpoint
+                Endpoint = this.forumDefaultEndpoint,
             };
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     {
                         BanCount = banHistoryResult.Count,
                         AdjustedBanCount = adjustedBanCount,
-                        Xuid = xuid
+                        Xuid = xuid,
                     });
                 }
 

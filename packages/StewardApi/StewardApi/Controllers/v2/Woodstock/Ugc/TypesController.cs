@@ -161,7 +161,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             var query = new ForzaPlayerLookupParameters
             {
                 UserID = result.OwnerXuid.ToInvariantString(),
-                UserIDType = ForzaUserIdType.Xuid
+                UserIDType = ForzaUserIdType.Xuid,
             };
 
             var playerLookup = await this.Services.UserManagementService.GetUserIds(1, new ForzaPlayerLookupParameters[] { query }).ConfigureAwait(true);

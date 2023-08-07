@@ -116,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             {
                 var serializedResults = JsonConvert.SerializeObject(jobResult, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 var tableQuery = new TableQuery<BackgroundJobInternal>()

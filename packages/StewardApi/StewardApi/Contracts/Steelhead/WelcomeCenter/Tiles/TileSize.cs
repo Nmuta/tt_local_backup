@@ -10,6 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.Tiles
     public enum TileSize
     {
         Medium,
-        Large
+        Large,
     }
 }

@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
             { "Forza Motorsport Deluxe Edition", "9PN4DRJDLZT7" },
             { "Forza Motorsport Premium Edition", "9P8PGC771MLP" },
             { "Forza Motorsport Premium Add-Ons Bundle", "9N5MZM3J3LCQ" },
-            { "Forza Horizon 5 Standard Edition", "9NKX70BBCDRN" }
+            { "Forza Horizon 5 Standard Edition", "9NKX70BBCDRN" },
         };
 
             return this.Ok(productIdMap);

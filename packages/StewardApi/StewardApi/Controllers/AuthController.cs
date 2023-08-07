@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     results.Add(new StewardUser
                     {
-                        Error = new NotFoundStewardError($"Lookup failed for Azure object ID: {userObjectId}.", ex)
+                        Error = new NotFoundStewardError($"Lookup failed for Azure object ID: {userObjectId}.", ex),
                     });
                 }
 
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     results.Add(new StewardUser
                     {
-                        Error = new StewardError($"Mapping failed for user: {userObjectId}.", ex)
+                        Error = new StewardError($"Mapping failed for user: {userObjectId}.", ex),
                     });
                 }
             }

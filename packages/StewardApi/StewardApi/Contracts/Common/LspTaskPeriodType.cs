@@ -12,6 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     {
         None = 0,
         Deterministic = 1,
-        NonDeterministic = 2
+        NonDeterministic = 2,
     }
 }

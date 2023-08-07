@@ -116,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
             var response = new GetUserGroupUsersResponse()
             {
                 PlayerList = userList,
-                PlayerCount = users.available
+                PlayerCount = users.available,
             };
 
             return this.Ok(response);
@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
             var newGroup = new LspGroup()
             {
                 Id = result.groupId,
-                Name = userGroupName
+                Name = userGroupName,
             };
             return this.Ok(newGroup);
         }
@@ -234,7 +234,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
 
             return new UserGroupBulkOperationStatusOutput()
             {
-                BlobId = bulkOperationOutput.statusId
+                BlobId = bulkOperationOutput.statusId,
             };
         }
 

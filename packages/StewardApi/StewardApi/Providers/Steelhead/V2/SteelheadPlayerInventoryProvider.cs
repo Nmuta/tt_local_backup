@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             {
                 PlayerOrLspGroup = xuid,
                 TargetXuid = xuid,
-                IdentityAntecedent = GiftIdentityAntecedent.Xuid
+                IdentityAntecedent = GiftIdentityAntecedent.Xuid,
             };
 
             try
@@ -199,7 +199,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             {
                 PlayerOrLspGroup = groupId,
                 TargetLspGroupId = groupId,
-                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
             };
 
             try
@@ -368,7 +368,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     Endpoint = service.Endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
                     ExpireDateUtc = createdDate.AddYears(10),
-                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}"
+                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}",
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -450,7 +450,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             return new Dictionary<InventoryItemType, IList<MasterInventoryItem>>
             {
                 { InventoryItemType.Car, this.EmptyIfNull(giftInventory.Cars) },
-                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) }
+                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) },
             };
         }
 

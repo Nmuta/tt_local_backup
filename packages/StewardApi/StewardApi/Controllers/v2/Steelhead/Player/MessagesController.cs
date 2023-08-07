@@ -165,7 +165,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 MessageStringId = localizedMessageIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = false,
-                DeviceType = ForzaLiveDeviceType.Invalid
+                DeviceType = ForzaLiveDeviceType.Invalid,
             };
 
             await this.Services.NotificationManagementService.EditNotification(
@@ -202,7 +202,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 Message = string.Empty,
                 ExpirationDate = DateTime.UtcNow,
                 HasDeviceType = false,
-                DeviceType = ForzaLiveDeviceType.Invalid
+                DeviceType = ForzaLiveDeviceType.Invalid,
             };
 
             await this.Services.NotificationManagementService.EditNotification(

@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 englishReasons.Add(new UgcReportReason()
                 {
                     Id = reason.Key,
-                    Description = reason.Value.Description.LocalizedStrings[englishId]
+                    Description = reason.Value.Description.LocalizedStrings[englishId],
                 });
             }
 

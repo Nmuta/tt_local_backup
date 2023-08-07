@@ -83,13 +83,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 var serializedContent = JsonConvert.SerializeObject(updatedToolsAvailability, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 var dataBytes = Encoding.UTF8.GetBytes(serializedContent);
                 await this.toolsBlobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
                 {
-                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
+                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId },
                 }).ConfigureAwait(false);
 
                 await blobLease.ReleaseAsync().ConfigureAwait(false);
@@ -138,13 +138,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 var serializedContent = JsonConvert.SerializeObject(updatedPlayFabSettings, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 var dataBytes = Encoding.UTF8.GetBytes(serializedContent);
                 await this.playFabBlobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
                 {
-                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
+                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId },
                 }).ConfigureAwait(false);
 
                 await blobLease.ReleaseAsync().ConfigureAwait(false);

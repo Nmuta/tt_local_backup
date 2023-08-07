@@ -27,6 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         EPlus = 15,
         E = 16,
         EMinus = 17,
-        Unknown = 18
+        Unknown = 18,
     }
 }

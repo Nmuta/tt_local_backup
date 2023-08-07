@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
                 ChapterBridge = new ChapterBridge(),
                 LadderBridge = new LadderBridge(),
                 SeriesBridge = new SeriesBridge(),
-                SeasonBridge = new SeasonBridge()
+                SeasonBridge = new SeasonBridge(),
             };
         }
     }

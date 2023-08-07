@@ -232,7 +232,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 MessageStringId = localizedMessageIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = forzaDeviceType != ForzaLiveDeviceType.Invalid,
-                DeviceType = forzaDeviceType
+                DeviceType = forzaDeviceType,
             };
 
             await this.Services.NotificationManagementService.EditGroupNotification(messageIdAsGuid, editParams)
@@ -255,7 +255,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 Action = NotificationAction.Edit.ToString(),
                 Endpoint = this.Services.Endpoint,
                 CreatedDateUtc = editParameters.StartTimeUtc,
-                ExpireDateUtc = editParameters.ExpireTimeUtc
+                ExpireDateUtc = editParameters.ExpireTimeUtc,
             };
 
             await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -292,7 +292,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 Message = string.Empty,
                 ExpirationDate = DateTime.UtcNow,
                 HasDeviceType = false,
-                DeviceType = ForzaLiveDeviceType.Invalid
+                DeviceType = ForzaLiveDeviceType.Invalid,
             };
 
             await this.Services.NotificationManagementService.EditGroupNotification(messageIdAsGuid, editParams)
@@ -315,7 +315,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Group
                 Action = NotificationAction.Delete.ToString(),
                 Endpoint = this.Services.Endpoint,
                 CreatedDateUtc = DateTime.UtcNow,
-                ExpireDateUtc = DateTime.UtcNow
+                ExpireDateUtc = DateTime.UtcNow,
             };
 
             await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(

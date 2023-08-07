@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.StewardEnvironment
+            ConfigurationKeyConstants.StewardEnvironment,
         };
 
         private readonly bool allowGiftingToAllUsers;

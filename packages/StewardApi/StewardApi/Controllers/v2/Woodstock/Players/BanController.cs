@@ -59,13 +59,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Credit/XP/Wheelspin hacking",
                     "Ban dodging",
                     "Employee harassment",
-                    "Breaching NDA"
+                    "Breaching NDA",
                 },
                 BanConfigurationId = new Guid("1b1d4b1e-4111-49be-82e3-74335052338c"),
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.AllRequests
-                }
+                },
             },
             new WoodstockBanReasonGroup()
             {
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.AllRequests
-                }
+                },
             },
             new WoodstockBanReasonGroup()
             {
@@ -106,14 +106,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Low Effort/Quality Content",
                     "Child Endangerment",
                     "Sexually Inappropriate/Suggestive",
-                    "Threat of Self Harm"
+                    "Threat of Self Harm",
                 },
                 BanConfigurationId = new Guid("4fd94e88-aee9-49dd-a099-d7c293d3a033"),
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.UserGeneratedContent,
                     FeatureAreas.AuctionHouse
-                }
+                },
             },
             new WoodstockBanReasonGroup()
             {
@@ -123,7 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     "Intentional ramming/wrecking, pinning, pitting, spearing, shoving, and blocking in races",
                     "Light Bullying",
                     "Vulgar language",
-                    "Track cutting/extending to pass"
+                    "Track cutting/extending to pass",
                 },
                 BanConfigurationId = new Guid("2dab05e7-f5a2-4284-b32e-8f980695438c"),
                 FeatureAreas = new List<FeatureAreas>
@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     FeatureAreas.DailyCredit,
                     FeatureAreas.Community,
                     FeatureAreas.Drivatar
-                }
+                },
             },
             new WoodstockBanReasonGroup()
             {
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 {
                     FeatureAreas.Test
                 }
-            }
+            },
         };
 
         private readonly IWoodstockPegasusService pegasusService;
@@ -372,7 +372,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                                 Seconds = (uint)x.OverrideDuration.Value.Seconds,
                             }
                             : emptyDuration,
-                        }
+                        },
                     });
                     var result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
 

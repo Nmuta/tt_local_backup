@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Showroom,
         PatchNotes,
         Rivals,
-        Store
+        Store,
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         Homepage,
         Series,
-        Ladder
+        Ladder,
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         Homepage,
         Event,
-        Category
+        Category,
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -39,14 +39,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         Homepage,
         Manufacturer,
-        Car
+        Car,
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
     public enum StoreSettingType
     {
         Homepage,
-        Product
+        Product,
     }
 
     /// <summary>

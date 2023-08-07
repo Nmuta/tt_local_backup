@@ -23,6 +23,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint
         Report = 64,
         RemoveBannedItem = 128,
         ReceiveMoneyAuctionOutbid = 256,
-        ReceiveMoneyAuctionSold = 512
+        ReceiveMoneyAuctionSold = 512,
     }
 }

@@ -14,6 +14,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         Processing = 1,
         Complete = 2,
         Failed = 3,
-        Disabled = 4
+        Disabled = 4,
     }
 }

@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             ConfigurationKeyConstants.ApolloClientVersion,
             ConfigurationKeyConstants.ApolloAdminXuid,
             ConfigurationKeyConstants.ApolloCertificateKeyVaultName,
-            ConfigurationKeyConstants.ApolloCertificateSecretName
+            ConfigurationKeyConstants.ApolloCertificateSecretName,
         };
 
         private readonly bool allowGiftingToAllUsers;

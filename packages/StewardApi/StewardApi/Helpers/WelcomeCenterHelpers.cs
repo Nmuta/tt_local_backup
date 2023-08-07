@@ -340,7 +340,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                                 Value = null,
                                 Path = path,
                                 Parent = root,
-                                IsArray = property.PropertyType.IsArray
+                                IsArray = property.PropertyType.IsArray,
                             });
                         }
 
@@ -357,7 +357,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                             {
                                 Value = null,
                                 Path = path,
-                                Parent = root
+                                Parent = root,
                             });
 
                             ret.Index = k;
@@ -372,7 +372,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                         {
                             Value = null,
                             Path = path,
-                            Parent = root
+                            Parent = root,
                         });
 
                         root.Children.Add(child);

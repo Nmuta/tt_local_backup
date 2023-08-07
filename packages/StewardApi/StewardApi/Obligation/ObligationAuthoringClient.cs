@@ -100,13 +100,13 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             var renamePipelineRequest = new RenamePipelineRequest
             {
                 OldPipelineName = patchOperation.Path,
-                NewPipelineName = patchOperation.Value
+                NewPipelineName = patchOperation.Value,
             };
 
             using var httpRequestMessage =
                 new HttpRequestMessage(HttpMethod.Post, new Uri($"{WebHost}obligation/authoring/pipelines/rename"))
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(renamePipelineRequest), Encoding.UTF8, "application/json")
+                    Content = new StringContent(JsonConvert.SerializeObject(renamePipelineRequest), Encoding.UTF8, "application/json"),
                 };
 
             var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
@@ -131,13 +131,13 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             var pipelineResponse = new PipelineAuthoringModel
             {
                 Etag = pipeline.Etag,
-                Pipeline = pipeline
+                Pipeline = pipeline,
             };
 
             using var httpRequestMessage =
                 new HttpRequestMessage(HttpMethod.Post, new Uri($"{WebHost}obligation/authoring/pipelines"))
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(pipelineResponse), Encoding.UTF8, "application/json")
+                    Content = new StringContent(JsonConvert.SerializeObject(pipelineResponse), Encoding.UTF8, "application/json"),
                 };
 
             var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
