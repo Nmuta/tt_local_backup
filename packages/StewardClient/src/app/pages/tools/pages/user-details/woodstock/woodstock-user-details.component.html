@@ -41,6 +41,10 @@
               </tr>
             </table>
 
+            <woodstock-playfab-inventory
+              [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+            ></woodstock-playfab-inventory>
+
             <woodstock-playfab-transaction-history
               [playfabPlayerTitleId]="playfabProfile?.title ?? null"
             ></woodstock-playfab-transaction-history>
