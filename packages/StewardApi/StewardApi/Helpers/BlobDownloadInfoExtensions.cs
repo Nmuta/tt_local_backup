@@ -1,8 +1,8 @@
-﻿using Azure.Storage.Blobs.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs.Models;
+using Newtonsoft.Json;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {

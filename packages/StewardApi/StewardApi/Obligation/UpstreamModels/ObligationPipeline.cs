@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Turn10.LiveOps.StewardApi.Contracts.Pipelines;
 
 #pragma warning disable CA1724

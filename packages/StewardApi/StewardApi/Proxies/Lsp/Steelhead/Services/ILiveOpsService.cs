@@ -1,7 +1,7 @@
-﻿using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FM8.Generated;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Forza.UserInventory.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
 using static Forza.WebServices.FM8.Generated.LiveOpsService;
 using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 

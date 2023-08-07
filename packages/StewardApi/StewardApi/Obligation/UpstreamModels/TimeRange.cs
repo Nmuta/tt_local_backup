@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
 {

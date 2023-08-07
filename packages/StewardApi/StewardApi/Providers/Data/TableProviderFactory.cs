@@ -1,8 +1,8 @@
-﻿using Microsoft.WindowsAzure.Storage.RetryPolicies;
-using Microsoft.WindowsAzure.Storage.Table;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
+using Microsoft.WindowsAzure.Storage.Table;
 using Turn10.Services.Diagnostics;
 using Turn10.Services.Storage.Table;
 

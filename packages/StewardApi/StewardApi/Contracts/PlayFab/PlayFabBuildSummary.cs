@@ -1,6 +1,6 @@
-﻿using PlayFab.MultiplayerModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PlayFab.MultiplayerModels;
 
 #pragma warning disable SA1600 // Elements should be documented
 

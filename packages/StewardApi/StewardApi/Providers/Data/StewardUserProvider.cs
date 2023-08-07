@@ -1,12 +1,12 @@
-﻿using Kusto.Cloud.Platform.Utils;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;

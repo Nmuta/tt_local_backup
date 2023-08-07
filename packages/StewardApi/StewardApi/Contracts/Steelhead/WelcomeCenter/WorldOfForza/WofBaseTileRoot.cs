@@ -1,17 +1,17 @@
-﻿#pragma warning disable SA1402 // File may only contain a single type
-#pragma warning disable SA1300 // Element should begin with upper-case letter
-#pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable SA1601 // Partial elements should be documented
-#pragma warning disable IDE1006 // Naming Styles
-#pragma warning disable SA1516 // Elements should be separated by blank line
-
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Newtonsoft.Json.Converters;
+
+#pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable SA1300 // Element should begin with upper-case letter
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1601 // Partial elements should be documented
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable SA1516 // Elements should be separated by blank line
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {

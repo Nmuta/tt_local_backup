@@ -4,9 +4,9 @@
 #pragma warning disable SA1204 // Static elements should appear before instance elements
 #pragma warning disable SA1402 // File may only contain a single type
 
-using AdaptiveCards.Templating;
 using System;
 using System.Globalization;
+using AdaptiveCards.Templating;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams

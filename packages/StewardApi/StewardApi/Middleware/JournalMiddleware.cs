@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -59,23 +59,21 @@ namespace Turn10.LiveOps.StewardApi.Middleware
 
             try
             {
-                using (var newResponseBody = new MemoryStream())
-                {
-                    context.Response.Body = newResponseBody;
+                using var newResponseBody = new MemoryStream();
+                context.Response.Body = newResponseBody;
 
-                    await this.requestDelegate(context).ConfigureAwait(false);
+                await this.requestDelegate(context).ConfigureAwait(false);
 
-                    newResponseBody.Position = 0;
+                newResponseBody.Position = 0;
 
-                    using var responseStreamReader = new StreamReader(newResponseBody);
+                using var responseStreamReader = new StreamReader(newResponseBody);
 
-                    var responseBody = await responseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+                var responseBody = await responseStreamReader.ReadToEndAsync().ConfigureAwait(false);
 
-                    newResponseBody.Position = 0;
-                    await newResponseBody.CopyToAsync(originalResponseBody).ConfigureAwait(false);
+                newResponseBody.Position = 0;
+                await newResponseBody.CopyToAsync(originalResponseBody).ConfigureAwait(false);
 
-                    await this.HandleRequestAsync(context, requestBody, responseBody).ConfigureAwait(false);
-                }
+                await this.HandleRequestAsync(context, requestBody, responseBody).ConfigureAwait(false);
             }
             finally
             {

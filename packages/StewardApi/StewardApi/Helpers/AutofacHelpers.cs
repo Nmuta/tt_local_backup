@@ -1,7 +1,7 @@
-﻿using Autofac;
-using Autofac.Core;
-using System;
+﻿using System;
 using System.Reflection;
+using Autofac;
+using Autofac.Core;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {

@@ -1,8 +1,8 @@
-﻿using Microsoft.OpenApi.Any;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;

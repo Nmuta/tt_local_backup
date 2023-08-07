@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 
 namespace Turn10.LiveOps.StewardApi.Validation.Steelhead

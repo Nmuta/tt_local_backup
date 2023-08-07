@@ -1,6 +1,6 @@
-﻿using Forza.UserInventory.FM7.Generated;
+﻿using System.Threading.Tasks;
+using Forza.UserInventory.FM7.Generated;
 using Forza.WebServices.FM7.Generated;
-using System.Threading.Tasks;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
 {

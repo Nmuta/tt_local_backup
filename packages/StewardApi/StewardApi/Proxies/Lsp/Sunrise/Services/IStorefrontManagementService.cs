@@ -1,6 +1,6 @@
-﻿using Forza.LiveOps.FH4.Generated;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Forza.LiveOps.FH4.Generated;
 using static Forza.LiveOps.FH4.Generated.StorefrontManagementService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix

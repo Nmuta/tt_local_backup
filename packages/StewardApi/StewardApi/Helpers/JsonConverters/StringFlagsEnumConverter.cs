@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Linq;
+using Newtonsoft.Json;
 
 // Based on https://stackoverflow.com/questions/43143175/c-sharp-json-net-render-flags-enum-as-string-array
 namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
