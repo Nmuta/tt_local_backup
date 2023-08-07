@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Microsoft.AspNetCore.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Kusto.Cloud.Platform.Utils;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
@@ -44,9 +45,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
         }
 
         /// <summary>
-        ///     Retrieves inventory for PlayFab player.
+        ///     Retrieves currency inventory for PlayFab player.
         /// </summary>
-        [HttpGet]
+        [HttpGet("currency")]
         [SwaggerResponse(200, type: typeof(IList<PlayFabInventoryItem>))]
         [LogTagDependency(DependencyLogTags.PlayFab)]
         public async Task<IActionResult> GetPlayFabPlayerInventory(string playFabEntityId)
@@ -55,9 +56,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
 
             try
             {
-                var response = await this.playFabService.GetPlayerCurrencyInventoryAsync(playFabEntityId, playFabEnvironment).ConfigureAwait(true);
+                var vouchers = await this.playFabService.GetVouchersAsync(playFabEnvironment).ConfigureAwait(true);
+                var inventoryItems = await this.playFabService.GetPlayerCurrencyInventoryAsync(playFabEntityId, playFabEnvironment).ConfigureAwait(true);
 
-                return this.Ok(response);
+                inventoryItems.ForEach(item => 
+                {
+                    var voucher = vouchers.FirstOrDefault(voucher => voucher.Id == item.Id);
+                    item.Name = voucher.Title["NEUTRAL"] ?? "N/A";
+                });
+
+                return this.Ok(inventoryItems);
             }
             catch (Exception ex)
             {

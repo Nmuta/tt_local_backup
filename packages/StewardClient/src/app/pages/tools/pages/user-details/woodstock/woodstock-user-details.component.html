@@ -34,6 +34,10 @@
               <span [hoverToCopy]="playfabProfile?.title">{{ playfabProfile?.title }}</span>
             </h2>
 
+            <woodstock-playfab-inventory
+              [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+            ></woodstock-playfab-inventory>
+
             <woodstock-playfab-transaction-history
               [playfabPlayerTitleId]="playfabProfile?.title ?? null"
             ></woodstock-playfab-transaction-history>

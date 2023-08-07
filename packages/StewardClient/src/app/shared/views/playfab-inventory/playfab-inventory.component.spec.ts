@@ -20,11 +20,12 @@ describe('PlayFabInventoryComponent', () => {
       id: faker.datatype.uuid(),
       stackId: faker.datatype.string(),
       type: faker.datatype.string(),
+      name: faker.datatype.string(),
     },
   ];
   const mockService: PlayFabInventoryServiceContract = {
     gameTitle: GameTitle.FH5,
-    getPlayFabInventory$: () => of(mockInventory),
+    getPlayFabCurrencyInventory$: () => of(mockInventory),
     getPlayFabVouchers$: () => of([]),
   };
 

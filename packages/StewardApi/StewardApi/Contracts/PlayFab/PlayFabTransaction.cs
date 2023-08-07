@@ -11,7 +11,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
     {
         public string ItemType { get; set; }
 
-        public List<TransactionOperation> Operations { get; set; }
+        public List<PlayFabTransactionOperation> Operations { get; set; }
 
         public string OperationType { get; set; }
 

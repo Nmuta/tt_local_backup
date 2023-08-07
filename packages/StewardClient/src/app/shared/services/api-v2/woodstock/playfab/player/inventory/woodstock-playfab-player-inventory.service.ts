@@ -16,6 +16,7 @@ export interface PlayFabInventoryItem {
   stackId: string;
   type: string;
   displayProperties?: unknown; // Leaving as until property is needed in UI
+  name: string;
 }
 
 /** The /v2/woodstock/playfab/player/<player-title-entity-id>/player-inventory endpoints. */
@@ -27,9 +28,9 @@ export class WoodstockPlayFabPlayerInventoryService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets PlayFab player inventory. */
-  public getInventory$(playfabTitleEntityId: string): Observable<PlayFabInventoryItem[]> {
+  public getCurrencyInventory$(playfabTitleEntityId: string): Observable<PlayFabInventoryItem[]> {
     return this.api.getRequest$<PlayFabInventoryItem[]>(
-      `${this.basePath}/${playfabTitleEntityId}/inventory`,
+      `${this.basePath}/${playfabTitleEntityId}/inventory/currency`,
     );
   }
 

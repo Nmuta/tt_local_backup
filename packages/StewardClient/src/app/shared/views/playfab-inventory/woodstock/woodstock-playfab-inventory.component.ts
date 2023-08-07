@@ -26,8 +26,8 @@ export class WoodstockPlayFabInventoryComponent implements OnChanges {
   public ngOnChanges(): void {
     this.service = {
       gameTitle: GameTitle.FH5,
-      getPlayFabInventory$: (playfabPlayerTitleId: string) =>
-        this.playFabPlayerInventoryService.getInventory$(playfabPlayerTitleId),
+      getPlayFabCurrencyInventory$: (playfabPlayerTitleId: string) =>
+        this.playFabPlayerInventoryService.getCurrencyInventory$(playfabPlayerTitleId),
       getPlayFabVouchers$: () => this.playFabVouchersService.getVouchers$(),
     };
   }

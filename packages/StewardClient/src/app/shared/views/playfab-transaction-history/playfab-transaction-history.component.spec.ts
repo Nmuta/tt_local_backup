@@ -30,7 +30,6 @@ describe('PlayFabTransactionHistoryComponent', () => {
   const mockService: PlayFabTransactionHistoryServiceContract = {
     gameTitle: GameTitle.FH5,
     getPlayFabTransactionHistory$: () => of(mockTransactionHistory),
-    getPlayFabVouchers$: () => of([]),
   };
 
   beforeEach(waitForAsync(() => {

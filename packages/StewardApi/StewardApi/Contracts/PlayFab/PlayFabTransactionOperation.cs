@@ -17,5 +17,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
         public string StackId { get; set; }
 
         public string Type { get; set; }
+
+        /// <summary>
+        ///     Name of item. Gathered by cross-referencing with /Catalog/SearchItems endpoint
+        /// </summary>
+        public string ItemName { get; set; }
     }
 }
