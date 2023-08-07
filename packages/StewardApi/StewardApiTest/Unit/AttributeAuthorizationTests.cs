@@ -82,5 +82,4 @@ namespace Turn10.LiveOps.StewardTest.Unit
             Assert.IsTrue(!errors.Any(), string.Join("\n", errors));
         }
     }
-
 }

@@ -383,7 +383,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         leaderboard.CarClass = carClass.DisplayName;
                     }
                 }
-
             }
 
             return leaderboards;

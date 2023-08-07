@@ -312,6 +312,5 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
                 Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
             }
         }
-
     }
 }

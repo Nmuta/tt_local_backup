@@ -31,6 +31,5 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
                 return string.Format(CultureInfo.InvariantCulture, "{0} {1} ({2})", this.Make, this.Model, this.Year);
             }
         }
-
     }
 }

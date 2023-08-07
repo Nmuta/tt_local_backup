@@ -29,7 +29,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
         public string ExternalImpact { get; set; }
 
         public bool HasWorkaround { get; set; }
-
     }
 
     /// <summary>
