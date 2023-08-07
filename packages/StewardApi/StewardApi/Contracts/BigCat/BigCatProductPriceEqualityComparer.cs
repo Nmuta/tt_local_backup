@@ -37,11 +37,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.BigCat
             // Integers 17 and 23 are prime numbers, should help avoid collision
             int hash = 17;
 
-            hash = hash * 23 + obj.CurrencyCode.GetHashCode(StringComparison.Ordinal);
-            hash = hash * 23 + obj.IsPiRequired.GetHashCode();
-            hash = hash * 23 + obj.ListPrice.GetHashCode();
-            hash = hash * 23 + obj.MSRP.GetHashCode();
-            hash = hash * 23 + obj.WholesaleCurrencyCode.GetHashCode(StringComparison.Ordinal);
+            hash = (hash * 23) + obj.CurrencyCode.GetHashCode(StringComparison.Ordinal);
+            hash = (hash * 23) + obj.IsPiRequired.GetHashCode();
+            hash = (hash * 23) + obj.ListPrice.GetHashCode();
+            hash = (hash * 23) + obj.MSRP.GetHashCode();
+            hash = (hash * 23) + obj.WholesaleCurrencyCode.GetHashCode(StringComparison.Ordinal);
 
             return hash;
         }
