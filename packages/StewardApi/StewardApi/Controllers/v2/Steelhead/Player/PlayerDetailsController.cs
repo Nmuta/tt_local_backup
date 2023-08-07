@@ -100,6 +100,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             response = await this.Services.UserManagementService.GetUserDetails(xuid)
                 .ConfigureAwait(false);
 
+            if (response.forzaUser.Xuid == default(ulong))
+            {
+                throw new NotFoundStewardException($"Game details not found. (XUID: {xuid})");
+            }
+
             var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
 
             return this.Ok(result);
