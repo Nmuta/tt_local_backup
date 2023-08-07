@@ -336,7 +336,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
-        [Authorize(Policy = UserAttribute.UpdateUserFlags)]
+        [Authorize(Policy = UserAttributeValues.UpdateUserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] SunriseUserFlagsInput userFlags)
@@ -670,7 +670,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("storefront/itemId({ugcId})/featuredStatus")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.FeatureUgc)]
+        [Authorize(Policy = UserAttributeValues.FeatureUgc)]
         public async Task<IActionResult> SetUgcFeaturedStatus(
             string ugcId,
             [FromBody] UgcFeaturedStatus status)
@@ -720,7 +720,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("storefront/{xuid}/ugc/{fileType}/{ugcId}/unhide")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.HideUgc)]
+        [Authorize(Policy = UserAttributeValues.HideUgc)]
         public async Task<IActionResult> UnhideUGC(ulong xuid, string fileType, string ugcId)
         {
             fileType.ShouldNotBeNull(nameof(fileType));
@@ -776,7 +776,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("auctions/blocklist")]
         [SwaggerResponse(200, type: typeof(IList<AuctionBlockListEntry>))]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.AuctionBlocklistEntry)]
-        [Authorize(Policy = UserAttribute.UpdateAuctionBlocklist)]
+        [Authorize(Policy = UserAttributeValues.UpdateAuctionBlocklist)]
         public async Task<IActionResult> AddEntriesToAuctionBlockList(
             [FromBody] IList<AuctionBlockListEntry> entries)
         {
@@ -796,7 +796,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpDelete("auctions/blocklist/carId({carId})")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.AuctionBlocklistEntry)]
-        [Authorize(Policy = UserAttribute.UpdateAuctionBlocklist)]
+        [Authorize(Policy = UserAttributeValues.UpdateAuctionBlocklist)]
         public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
@@ -837,7 +837,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
+        [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<SunriseBanParametersInput> banInput)
         {
@@ -915,7 +915,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
+        [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SunriseBanParametersInput> banInput)
         {
@@ -964,7 +964,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.DeleteBan)]
+        [Authorize(Policy = UserAttributeValues.DeleteBan)]
         public async Task<IActionResult> ExpireBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -993,7 +993,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.DeleteBan)]
+        [Authorize(Policy = UserAttributeValues.DeleteBan)]
         public async Task<IActionResult> DeleteBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -1075,7 +1075,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
-        [Authorize(Policy = UserAttribute.BanConsole)]
+        [Authorize(Policy = UserAttributeValues.BanConsole)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -1220,7 +1220,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayer)]
+        [Authorize(Policy = UserAttributeValues.GiftPlayer)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] SunriseGroupGift groupGift)
         {
@@ -1270,7 +1270,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requesterObjectId,
                 $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
 
-            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1313,7 +1313,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> UpdateGroupInventories(
             [FromBody] SunriseGroupGift groupGift)
         {
@@ -1358,7 +1358,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
             var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(
                 groupGift,
@@ -1383,7 +1383,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] SunriseGift gift)
@@ -1409,7 +1409,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
             var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(
                 groupId,
@@ -1429,7 +1429,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/livery({liveryId})/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayer)]
+        [Authorize(Policy = UserAttributeValues.GiftPlayer)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(Guid liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -1502,7 +1502,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/livery({liveryId})/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(Guid liveryId, int groupId, [FromBody] Gift gift)
         {
             var userClaims = this.User.UserClaims();
@@ -1645,7 +1645,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
-        [Authorize(Policy = UserAttribute.MessagePlayer)]
+        [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> SendPlayerNotifications(
             [FromBody] BulkCommunityMessage communityMessage)
         {
@@ -1701,7 +1701,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
-        [Authorize(Policy = UserAttribute.MessageGroup)]
+        [Authorize(Policy = UserAttributeValues.MessageGroup)]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
             [FromBody] LspGroupCommunityMessage communityMessage)
@@ -1742,7 +1742,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
-        [Authorize(Policy = UserAttribute.MessagePlayer)]
+        [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> EditPlayerNotification(
             Guid notificationId,
             ulong xuid,
@@ -1784,7 +1784,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
-        [Authorize(Policy = UserAttribute.MessageGroup)]
+        [Authorize(Policy = UserAttributeValues.MessageGroup)]
         public async Task<IActionResult> EditGroupNotification(
             Guid notificationId,
             [FromBody] LspGroupCommunityMessage editParameters)
@@ -1827,7 +1827,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
-        [Authorize(Policy = UserAttribute.MessagePlayer)]
+        [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
             xuid.EnsureValidXuid();
@@ -1860,7 +1860,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.GroupMessages)]
-        [Authorize(Policy = UserAttribute.MessageGroup)]
+        [Authorize(Policy = UserAttributeValues.MessageGroup)]
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);

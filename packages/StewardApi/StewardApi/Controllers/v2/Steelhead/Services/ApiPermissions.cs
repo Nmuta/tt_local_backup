@@ -60,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Services
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.ServiceApis, ActionAreaLogTags.Update)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.ApiPermissions)]
-        [Authorize(Policy = UserAttribute.ServicesFeature)]
+        [Authorize(Policy = UserAttributeValues.ServicesFeature)]
         public async Task<IActionResult> SetServicesApiPermissions([FromBody] ForzaLiveOpsPermissionsUpdateParameters[] parametersList)
         {
             var response = await this.Services.PermissionsManagementService.UpdateApiPermissions(parametersList).ConfigureAwait(true);

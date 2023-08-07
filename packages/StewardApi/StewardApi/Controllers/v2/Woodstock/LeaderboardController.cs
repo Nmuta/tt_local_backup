@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
             var leaderboard = allLeaderboards.FirstOrDefault(leaderboard => leaderboard.ScoreboardTypeId == (int)scoreboardType
                 && leaderboard.ScoreTypeId == (int)scoreType
                 && leaderboard.TrackId == trackId
-                && leaderboard.GameScoreboardId.ToString() == pivotId);
+                && leaderboard.GameScoreboardId.ToInvariantString() == pivotId);
 
             if (leaderboard == null)
             {
@@ -166,10 +166,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Leaderboards)]
         [ManualActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.Leaderboards)]
-        [Authorize(Policy = UserAttribute.DeleteLeaderboardScores)]
+        [Authorize(Policy = UserAttributeValues.DeleteLeaderboardScores)]
         public async Task<IActionResult> DeleteLeaderboardScores([FromBody] Guid[] scoreIds)
         {
-            if (scoreIds.Length <= 0)
+            if (scoreIds == null || scoreIds.Length <= 0)
             {
                 throw new BadRequestStewardException($"Cannot provided empty array of score ids.");
             }

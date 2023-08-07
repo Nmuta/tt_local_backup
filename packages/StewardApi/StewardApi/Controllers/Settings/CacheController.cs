@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.Settings
         /// </summary>
         [HttpDelete("{key}")]
         [SwaggerResponse(200)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public IActionResult DeleteCacheKey(string key)
         {
             if (this.refreshableCacheStore.GetItem<object>(key) == null)

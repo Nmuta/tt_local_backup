@@ -267,7 +267,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             // v1 apis use endpointKey, value is Title|environment
             // v2 apis use Endpoint-Title, value is environment
-            var environmentKey = "v1".Equals(api) ? "endpointKey" : $"Endpoint-{title}";
+            var environmentKey = "v1".Equals(api, StringComparison.OrdinalIgnoreCase) ? "endpointKey" : $"Endpoint-{title}";
 
             if (!httpContext.Request.Headers.TryGetValue(environmentKey, out var env))
             {
@@ -279,7 +279,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 throw new BadRequestStewardException($"Null or empty {environmentKey} header.");
             }
 
-            environment = env.ToString().Contains('|') ? env.ToString().Split("|")[1] : env;
+            environment = env.ToString().Contains('|', StringComparison.OrdinalIgnoreCase) ? env.ToString().Split("|")[1] : env;
 
             return;
         }
@@ -301,7 +301,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             var segment = segments[index];
 
-            return capitalize ? char.ToUpper(segment[0]) + segment[1..] : segment;
+            return capitalize ? char.ToUpperInvariant(segment[0]) + segment[1..] : segment;
         }
     }
 }

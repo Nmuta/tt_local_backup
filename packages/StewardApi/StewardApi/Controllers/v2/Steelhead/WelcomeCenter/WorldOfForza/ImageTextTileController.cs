@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter.World
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.WelcomeCenter)]
-        [Authorize(Policy = UserAttribute.UpdateWelcomeCenterTiles)]
+        [Authorize(Policy = UserAttributeValues.UpdateWelcomeCenterTiles)]
         public async Task<IActionResult> EditAndSubmitImageTextTile(string id, [FromBody] WofImageTextBridge wofTileBridge)
         {
             var parsedId = id.TryParseGuidElseThrow(nameof(id));

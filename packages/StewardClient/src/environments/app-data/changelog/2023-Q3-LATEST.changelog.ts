@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.PermissionManagement },
+      uuid: '54f931b4-a4b9-452f-b7a6-340799459e45',
+      shortText: 'Add support for team leads',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '6c597f0d-b61f-4a33-80dc-e1caecf03a92',
       shortText: 'Display additional info when banning user for UGC',
@@ -41,6 +46,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
         'Events show as multliple days on the week view for Rivals and Showroom',
         'Display showroom dates as Utc',
       ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '8f63c75e-619b-4608-a9fe-8d4b91ebe394',
+      shortText: 'Refactor deeplink destination component',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },

@@ -23,10 +23,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 500;
-        private const int VipUserGroupId = 1;
-        private const int UltimateVipUserGroupId = 2;
-        private const int T10EmployeeUserGroupId = 4;
-        private const int WhitelistUserGroupId = 6;
 
         private readonly ISteelheadService steelheadService;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;

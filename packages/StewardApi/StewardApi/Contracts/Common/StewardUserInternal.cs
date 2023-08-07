@@ -68,15 +68,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets the autorization attributes as an object.
         /// </summary>
-        /// <returns>List of <see cref="AuthorizationAttribute"/>.</returns>
-        public IEnumerable<AuthorizationAttribute> AuthorizationAttributes()
+        /// <returns>List of <see cref="AuthorizationAttributeData"/>.</returns>
+        public IEnumerable<AuthorizationAttributeData> AuthorizationAttributes()
         {
             if (string.IsNullOrEmpty(this.Attributes) || "null".Equals(this.Attributes, System.StringComparison.OrdinalIgnoreCase))
             {
-                return System.Array.Empty<AuthorizationAttribute>();
+                return System.Array.Empty<AuthorizationAttributeData>();
             }
 
-            return JsonConvert.DeserializeObject<IEnumerable<AuthorizationAttribute>>(this.Attributes);
+            return JsonConvert.DeserializeObject<IEnumerable<AuthorizationAttributeData>>(this.Attributes);
         }
 
         /// <summary>

@@ -13,6 +13,7 @@ namespace Turn10.LiveOps.StewardTest.Utilities
         /// <summary>
         ///     Disables SSL validation.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5359:Do Not Disable Certificate Validation", Justification = "Fine for tests.")]
         public static void DisableSSLValidation()
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;

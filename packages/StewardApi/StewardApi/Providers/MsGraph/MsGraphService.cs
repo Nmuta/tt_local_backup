@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.MsGraph
                 {
                     ObjectId = user.PrincipalId.ToString(),
                     Name = user.PrincipalDisplayName,
-                    Role = userRole != null ? userRole.Value : null,
+                    Role = userRole.Value,
                 });
             }
 

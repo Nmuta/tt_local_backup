@@ -114,6 +114,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
 
             /// <summary>For endpoints which perform operations on the LSP.</summary>
             public const string Lsp = "Target: LSP";
+
+            /// <summary>For endpoints which perform operations on PlayFab.</summary>
+            public const string PlayFab = "Target: PlayFab";
         }
 
         /// <summary>
