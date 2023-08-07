@@ -8,14 +8,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
     public class PlayFabTransactionOperation
     {
-        public int? Amount;
+        public int? Amount { get; set; }
 
-        public string ItemId;
+        public string ItemId { get; set; }
 
-        public string ItemType;
+        public string ItemType { get; set; }
 
-        public string StackId;
+        public string StackId { get; set; }
 
-        public string Type;
+        public string Type { get; set; }
     }
 }

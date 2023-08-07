@@ -54,7 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Common
 
             var client = new SecretClient(
                 new Uri("https://" + configuration[ConfigurationKeyConstants.KeyVaultUrl] + ".vault.azure.net/"),
-                new DefaultAzureCredential());
+                AzureCredentials.BetterDefaultAzureCredentials);
 
             async Task<string> GetSecretInternalAsync(string secretName)
             {

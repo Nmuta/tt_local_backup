@@ -15,7 +15,7 @@ describe('PlayFabTransactionHistoryComponent', () => {
   let component: PlayFabTransactionHistoryComponent;
   let fixture: ComponentFixture<PlayFabTransactionHistoryComponent>;
 
-  const mockPullRequest: PlayFabTransaction[] = [
+  const mockTransactionHistory: PlayFabTransaction[] = [
     {
       itemType: faker.datatype.string(),
       operations: [],
@@ -29,7 +29,8 @@ describe('PlayFabTransactionHistoryComponent', () => {
   ];
   const mockService: PlayFabTransactionHistoryServiceContract = {
     gameTitle: GameTitle.FH5,
-    getPlayFabTransactionHistory$: () => of(mockPullRequest),
+    getPlayFabTransactionHistory$: () => of(mockTransactionHistory),
+    getPlayFabVouchers$: () => of([]),
   };
 
   beforeEach(waitForAsync(() => {

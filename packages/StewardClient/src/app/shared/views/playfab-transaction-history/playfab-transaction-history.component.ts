@@ -11,6 +11,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { PlayFabVoucher } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { renderGuard } from '@helpers/rxjs';
 
 /** Service contract for the PlayFabTransactionHistoryComponent. */
 export interface PlayFabTransactionHistoryServiceContract {
@@ -37,7 +38,12 @@ type InternalPlayFabTransaction = PlayFabTransaction & {
   styleUrls: ['./playfab-transaction-history.component.scss'],
 })
 export class PlayFabTransactionHistoryComponent extends BaseComponent implements OnInit, OnChanges {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) set paginatorEl(paginatorEl: MatPaginator) {
+    // initially setter gets called with undefined
+    if (paginatorEl) {
+      this.paginator = paginatorEl;
+    }
+  }
 
   /** The component service contract */
   @Input() service: PlayFabTransactionHistoryServiceContract;
@@ -51,6 +57,8 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
   public displayedColumns = ['metadata', 'details', 'operations'];
   public transactionHistory = new BetterMatTableDataSource<InternalPlayFabTransaction>([]);
   public vouchers: PlayFabVoucher[] = [];
+
+  public paginator: MatPaginator;
 
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
@@ -85,8 +93,11 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
         .getPlayFabTransactionHistory$(this.playfabPlayerTitleId)
         .pipe(this.getTransactionsMonitor.monitorSingleFire())
         .subscribe(transactionHistory => {
-          this.connectPaginatorToTable();
           this.transactionHistory.data = this.convertToInternalTransaction(transactionHistory);
+
+          renderGuard(() => {
+            this.connectPaginatorToTable();
+          });
         });
     }
   }
