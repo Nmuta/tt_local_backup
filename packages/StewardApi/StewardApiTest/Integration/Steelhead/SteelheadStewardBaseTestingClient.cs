@@ -8,11 +8,12 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1051:Do not declare visible instance fields", Justification = "<Pending>")]
     public class SteelheadStewardBaseTestingClient
     {
         protected const string Version = "1";
         protected const string TitlePath = "api/v2/title/steelhead";
-
+        
         protected readonly Uri baseUri;
         protected readonly string authKey;
         protected readonly Dictionary<string, string> headers;
