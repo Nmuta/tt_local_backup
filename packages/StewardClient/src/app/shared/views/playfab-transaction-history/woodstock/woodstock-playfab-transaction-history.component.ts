@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { PlayFabTransactionHistoryServiceContract } from '../playfab-transaction-history.component';
 import { WoodstockPlayFabPlayerTransactionsService } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
+import { WoodstockPlayFabVouchersService } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service';
 
 /**
  *  Woodstock cms override component.
@@ -18,6 +19,7 @@ export class WoodstockPlayFabTransactionHistoryComponent implements OnChanges {
 
   constructor(
     private readonly playfabTransactionService: WoodstockPlayFabPlayerTransactionsService,
+    private readonly playFabVouchersService: WoodstockPlayFabVouchersService,
   ) {}
 
   /** Lifecycle hook. */
@@ -26,6 +28,7 @@ export class WoodstockPlayFabTransactionHistoryComponent implements OnChanges {
       gameTitle: GameTitle.FH5,
       getPlayFabTransactionHistory$: (playfabPlayerTitleId: string) =>
         this.playfabTransactionService.getHistory$(playfabPlayerTitleId),
+      getPlayFabVouchers$: () => this.playFabVouchersService.getVouchers$(),
     };
   }
 }

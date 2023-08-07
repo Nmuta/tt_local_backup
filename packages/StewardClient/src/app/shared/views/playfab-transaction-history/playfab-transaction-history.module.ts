@@ -15,6 +15,7 @@ import { PlayFabTransactionHistoryComponent } from './playfab-transaction-histor
 import { WoodstockPlayFabTransactionHistoryComponent } from './woodstock/woodstock-playfab-transaction-history.component';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { MatTableModule } from '@angular/material/table';
+import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 
 /** Module for getting and setting a player's cms override. */
 @NgModule({
@@ -35,6 +36,7 @@ import { MatTableModule } from '@angular/material/table';
     StateManagersModule,
     PermissionsModule,
     VerifyButtonModule,
+    StandardCopyModule,
   ],
   exports: [WoodstockPlayFabTransactionHistoryComponent],
 })
