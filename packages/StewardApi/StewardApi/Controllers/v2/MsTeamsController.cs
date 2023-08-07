@@ -24,7 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
     [StandardTags(Title.Agnostic)]
     public sealed class MsTeamsController : V2ControllerBase
     {
-
         private readonly IMsTeamsService msTeamsService;
         private readonly IMsGraphService graphService;
 

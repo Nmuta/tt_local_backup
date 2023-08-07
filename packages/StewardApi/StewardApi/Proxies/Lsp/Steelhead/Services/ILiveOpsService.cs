@@ -148,7 +148,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Sets safety rating history by xuid.
         /// </summary>
-
         Task<SetLiveOpsSafetyRatingHistoryOutput> SetLiveOpsSafetyRatingHistory(ulong xuid, double[] ratingHistory);
 
         /// <summary>

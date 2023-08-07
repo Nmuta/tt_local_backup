@@ -76,6 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
 
             var usersToAdd = new List<StewardUser>();
             var usersToUpdate = new List<StewardUserInternal>();
+
             // Figure out which users are new and which need updated in Cosmos DB.
             foreach (var aadUser in aadUsers)
             {

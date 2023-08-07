@@ -70,7 +70,8 @@ namespace Turn10.LiveOps.StewardApi.Common
 
             // Each of these operations is run in parallel to get the secrets while collecting individual errors,
             // then the errors are collected and a new exeception is thrown.
-            var operations = new Func<Task>[] {
+            var operations = new Func<Task>[]
+            {
                 async () => keyVault.SteelheadContentAccessToken = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.SteelheadContentAccessToken]).ConfigureAwait(false),
                 async () => keyVault.KustoClientSecret = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.KustoClientSecretName]).ConfigureAwait(false),
                 async () => keyVault.AzureAuthClientSecret = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.AzureClientSecretKey]).ConfigureAwait(false),

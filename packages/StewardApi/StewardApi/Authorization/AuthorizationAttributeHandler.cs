@@ -10,7 +10,6 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Authorization
 {
-
     /// <summary>
     ///     Verify user authorization attributes.
     /// </summary>

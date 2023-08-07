@@ -34,7 +34,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         /// <inheritdoc />
         public async Task<IList<LspGroup>> GetUserGroupsAsync(SteelheadProxyBundle services)
         {
-
             UserManagementService.GetUserGroupsOutput result = null;
 
             try

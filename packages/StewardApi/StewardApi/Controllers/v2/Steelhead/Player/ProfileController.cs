@@ -29,7 +29,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.Profile)]
     public class ProfileController : V2ControllerBase
     {
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="ProfileController"/> class.
         /// </summary>

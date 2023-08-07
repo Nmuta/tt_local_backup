@@ -359,6 +359,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                         PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
                         FeatureArea = calculatedBanAreas,
                         OverrideBanDuration = x.Override,
+
                         // ForzaBanDuration is completely ignored by services if OverrideBanDuration is not set to true
                         BanDurationOverride = new ForzaBanDuration()
                         {

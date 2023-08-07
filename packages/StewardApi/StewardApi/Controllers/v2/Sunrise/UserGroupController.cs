@@ -112,6 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
                     Xuid = playerLookupResult.Xuid,
                 });
             }
+
             // End of temporary code //
             var response = new GetUserGroupUsersResponse()
             {

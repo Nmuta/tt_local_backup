@@ -43,7 +43,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
         public async Task<SteelheadMasterInventory> GetMasterInventoryAsync()
         {
-
             var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.DataCar>(), new Action<Exception>(ex =>
             {
                 this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus cars.", ex));

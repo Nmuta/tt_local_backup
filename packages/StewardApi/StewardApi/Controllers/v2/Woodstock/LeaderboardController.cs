@@ -105,7 +105,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
             [FromQuery] int startAt = 0,
             [FromQuery] int maxResults = DefaultMaxResults)
         {
-
             var scores = await this.GetLeaderboardScoresAsync(
                 scoreboardType,
                 scoreType,
@@ -246,7 +245,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
 
             try
             {
-
                 var result = await service.ScoreboardManagementService.SearchLeaderboardsV2(searchParams, 0, maxResults).ConfigureAwait(false);
                 var resultRows = result.results.Rows;
 

@@ -151,6 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         Xuid = playerLookupResult.Xuid,
                     });
                 }
+
                 // End of temporary code //
                 var response = new GetUserGroupUsersResponse()
                 {

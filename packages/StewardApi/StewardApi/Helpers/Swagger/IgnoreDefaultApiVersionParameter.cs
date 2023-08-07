@@ -15,7 +15,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
                 .FirstOrDefault(p => p.Name == "api-version" && p.In == ParameterLocation.Query);
 
             if (versionParameter != null)
+            {
                 operation.Parameters.Remove(versionParameter);
+            }
         }
     }
 }

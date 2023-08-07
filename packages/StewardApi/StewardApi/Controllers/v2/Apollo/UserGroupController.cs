@@ -92,6 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                     Xuid = xuid,
                 });
             }
+
             // End of temporary code //
             var response = new GetUserGroupUsersResponse()
             {
