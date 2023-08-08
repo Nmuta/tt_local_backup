@@ -10,12 +10,17 @@ jobs:
 - job: UI_Test_Changelog
   displayName: Changelog Must Be Modified
   steps:
-  - checkout: self
-    submodules: false
-
   - template: load-yarn-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
+
+  - task: Bash@3
+    displayName: Fetch main
+    inputs:
+      targetType: inline
+      script: git fetch origin main
+      workingDirectory: packages/StewardClient/
+      failOnStderr: true
 
   - task: Bash@3
     displayName: Changelog Must Be Modified
