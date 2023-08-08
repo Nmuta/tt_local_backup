@@ -22,13 +22,9 @@ echo "$GIT_CHANGES"
 
 echo
 echo \# Pass/Fail?
-# if [[ "$GIT_CHANGES" != *"$SRC_PATH"* ]]; then
-#   echo Pass1
-#   exit 0 # success
-# fi
 
 if [[ "$GIT_CHANGES" == *"$SUB"* ]]; then
-  echo Pass2
+  echo Pass
   exit 0 # success
 else
   echo Fail
