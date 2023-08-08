@@ -4,7 +4,7 @@ import { PlayFabBuildLock, PlayFabBuildSummary } from '@models/playfab';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
-/** The /v2/woodstock/playfab/<playfab-environment>/builds endpoints. */
+/** The /v2/woodstock/playfab/builds endpoints. */
 @Injectable({
   providedIn: 'root',
 })
