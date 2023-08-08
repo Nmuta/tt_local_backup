@@ -59,7 +59,7 @@
               <form [formGroup]="item.editFormGroup">
                 <mat-form-field>
                   <mat-label>New Amount</mat-label>
-                  <input matInput [formControl]="item.editFormControls.amount" />
+                  <input matInput [formControl]="item.editFormControls.amount" type="number" />
                   <mat-error *ngIf="item.editFormControls.amount.hasError('min')"
                     >Amount must be 0 or above
                   </mat-error>

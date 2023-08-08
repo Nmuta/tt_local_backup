@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
+      uuid: '460ce787-24b6-4537-9fb9-43e61d625f68',
+      shortText: 'Allow modifying PlayFab voucher amounts on each available inventory collection',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
       uuid: '54f931b4-a4b9-452f-b7a6-340799459e45',
       shortText: 'Add support for team leads',
