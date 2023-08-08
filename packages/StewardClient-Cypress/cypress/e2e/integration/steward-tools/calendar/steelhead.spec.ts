@@ -3,7 +3,6 @@ import { resetToDefaultState } from '@support/page-utility/reset-to-default-stat
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import {
-  contextSearchByXuidForPlayerDetails,
   searchByGtag,
   searchByXuid,
 } from '@support/steward/shared-functions/searching';

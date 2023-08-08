@@ -30,7 +30,7 @@ export function calendarTestFitlersEndstateOff(): void {
 }
 
 /* Click first event on today's list of events and ensure it contains the right information */
-export function calendarTestEventDetails(expectedSeriesName: string): void {
+export function calendarTestEventDetails(expectedSeriesName): void {
   cy.get('.cal-today').find('.mat-tooltip-trigger').click({ force: true });
   cy.get('.cdk-overlay-container').should('contain', expectedSeriesName);
   cy.get('racers-cup-event-card').first().click();
