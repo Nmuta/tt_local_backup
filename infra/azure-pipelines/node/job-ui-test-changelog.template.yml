@@ -8,7 +8,7 @@ parameters:
 
 jobs:
 - job: UI_Test_Changelog
-  displayName: Build
+  displayName: Changelog Must Be Modified
   steps:
   - template: load-yarn-project.template.yml
     parameters:
