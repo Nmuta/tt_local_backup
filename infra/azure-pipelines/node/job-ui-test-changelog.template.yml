@@ -10,6 +10,10 @@ jobs:
 - job: UI_Test_Changelog
   displayName: Changelog Must Be Modified
   steps:
+  - checkout: main
+    fetchDepth: 1
+    submodules: false
+
   - template: load-yarn-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
