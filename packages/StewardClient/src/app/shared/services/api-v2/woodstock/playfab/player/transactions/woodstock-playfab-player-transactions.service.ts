@@ -20,6 +20,7 @@ export interface PlayFabTransactionOperation {
   amount?: number;
   itemId: string;
   itemType: string;
+  itemName: string;
   stackId: string;
   type: string;
 }

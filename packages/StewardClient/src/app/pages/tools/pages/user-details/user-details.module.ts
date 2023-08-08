@@ -56,6 +56,7 @@ import { SafetyRatingModule } from '@views/safety-rating/safety-rating.module';
 import { SkillRatingModule } from '@views/skill-rating/skill-rating.module';
 import { PlayFabTransactionHistoryModule } from '@views/playfab-transaction-history/playfab-transaction-history.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { PlayFabInventoryModule } from '@views/playfab-inventory/playfab-inventory.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 
 /** The feature module for the User Details route. */
@@ -121,6 +122,7 @@ import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.
     SafetyRatingModule,
     SkillRatingModule,
     PlayFabTransactionHistoryModule,
+    PlayFabInventoryModule,
     DirectivesModule,
     StandardCopyModule,
   ],

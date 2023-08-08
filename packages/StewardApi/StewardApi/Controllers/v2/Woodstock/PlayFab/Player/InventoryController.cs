@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Microsoft.AspNetCore.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Kusto.Cloud.Platform.Utils;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
@@ -41,6 +42,40 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
             playFabService.ShouldNotBeNull(nameof(playFabService));
 
             this.playFabService = playFabService;
+        }
+
+        /// <summary>
+        ///     Retrieves currency inventory for PlayFab player.
+        /// </summary>
+        [HttpGet("currency")]
+        [SwaggerResponse(200, type: typeof(IList<PlayFabInventoryItem>))]
+        [LogTagDependency(DependencyLogTags.PlayFab)]
+        public async Task<IActionResult> GetPlayFabPlayerInventory(string playFabEntityId)
+        {
+            var playFabEnvironment = this.PlayFabEnvironment;
+
+            try
+            {
+                var getVouchers = this.playFabService.GetVouchersAsync(playFabEnvironment);
+                var getInventoryItems = this.playFabService.GetPlayerCurrencyInventoryAsync(playFabEntityId, playFabEnvironment);
+
+                await Task.WhenAll(getVouchers, getInventoryItems).ConfigureAwait(true);
+
+                var vouchers = getVouchers.GetAwaiter().GetResult();
+                var inventoryItems = getInventoryItems.GetAwaiter().GetResult();
+
+                inventoryItems.ForEach(item => 
+                {
+                    var voucher = vouchers.FirstOrDefault(voucher => voucher.Id == item.Id);
+                    item.Name = voucher.Title["NEUTRAL"] ?? "N/A";
+                });
+
+                return this.Ok(inventoryItems);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Failed to get player PlayFab inventory. (playFabId: {playFabEntityId}) (playFabEnvironment: {playFabEnvironment})", ex);
+            }
         }
 
         /// <summary>

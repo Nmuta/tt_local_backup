@@ -5,42 +5,39 @@ import { faker } from '@interceptors/fake-api/utility';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import {
-  PlayFabTransactionHistoryComponent,
-  PlayFabTransactionHistoryServiceContract,
-} from './playfab-transaction-history.component';
-import { PlayFabTransaction } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
-import { toDateTime } from '@helpers/luxon';
+  PlayFabInventoryComponent,
+  PlayFabInventoryServiceContract,
+} from './playfab-inventory.component';
+import { PlayFabInventoryItem } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service';
 
-describe('PlayFabTransactionHistoryComponent', () => {
-  let component: PlayFabTransactionHistoryComponent;
-  let fixture: ComponentFixture<PlayFabTransactionHistoryComponent>;
+describe('PlayFabInventoryComponent', () => {
+  let component: PlayFabInventoryComponent;
+  let fixture: ComponentFixture<PlayFabInventoryComponent>;
 
-  const mockTransactionHistory: PlayFabTransaction[] = [
+  const mockInventory: PlayFabInventoryItem[] = [
     {
-      itemType: faker.datatype.string(),
-      operations: [],
-      operationType: faker.datatype.string(),
-      purchaseDetails: null,
-      redeemDetails: null,
-      timestampUtc: toDateTime(faker.datatype.datetime()),
-      transactionId: faker.datatype.string(),
-      transferDetails: null,
+      amount: faker.datatype.number(),
+      id: faker.datatype.uuid(),
+      stackId: faker.datatype.string(),
+      type: faker.datatype.string(),
+      name: faker.datatype.string(),
     },
   ];
-  const mockService: PlayFabTransactionHistoryServiceContract = {
+  const mockService: PlayFabInventoryServiceContract = {
     gameTitle: GameTitle.FH5,
-    getPlayFabTransactionHistory$: () => of(mockTransactionHistory),
+    getPlayFabCurrencyInventory$: () => of(mockInventory),
+    getPlayFabVouchers$: () => of([]),
   };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [PipesModule],
-      declarations: [PlayFabTransactionHistoryComponent],
+      declarations: [PlayFabInventoryComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PlayFabTransactionHistoryComponent);
+    fixture = TestBed.createComponent(PlayFabInventoryComponent);
     component = fixture.debugElement.componentInstance;
     component.service = mockService;
   }));

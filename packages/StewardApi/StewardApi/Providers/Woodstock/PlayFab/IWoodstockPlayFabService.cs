@@ -40,6 +40,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
+        ///     Gets PlayFab player's currency inventory.
+        /// </summary>
+        Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment);
+
+        /// <summary>
         ///     Adds currency to player's account.
         /// </summary>
         Task AddInventoryItemToPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment);
