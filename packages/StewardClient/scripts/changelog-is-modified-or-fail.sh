@@ -12,21 +12,23 @@ SUB="$SRC_PATH/environments/app-data/changelog/$CHANGELOG_FILENAME"
 echo Changelog Filename: $CHANGELOG_FILENAME
 echo
 echo \# Git Changes
-echo Checking for: $SUB
+echo Checking for:
+echo $SUB
 echo
 
-GIT_CHANGES=$(git diff-tree --no-commit-id --name-status -r HEAD origin/main)
-echo $GIT_CHANGES;
+GIT_CHANGES=$(git diff --name-only origin/main...HEAD)
+echo Changes Found:
+echo "$GIT_CHANGES"
 
 echo
 echo \# Pass/Fail?
-if [[ "$GIT_CHANGES" != *"$SRC_PATH"* ]]; then
-  echo Pass
-  exit 0 # success
-fi
+# if [[ "$GIT_CHANGES" != *"$SRC_PATH"* ]]; then
+#   echo Pass1
+#   exit 0 # success
+# fi
 
 if [[ "$GIT_CHANGES" == *"$SUB"* ]]; then
-  echo Pass
+  echo Pass2
   exit 0 # success
 else
   echo Fail
