@@ -1495,7 +1495,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return jobResult;
         }
 
-        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(WoodstockStewardTestingClient stewardTestingClient, IList<WoodstockBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(WoodstockStewardTestingClient stewardTestingClient, IList<V2BanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
@@ -1530,11 +1530,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return jobResults;
         }
 
-        private IList<WoodstockBanParametersInput> GenerateBanParameters()
+        private IList<V2BanParametersInput> GenerateBanParameters()
         {
-            return new List<WoodstockBanParametersInput>
+            return new List<V2BanParametersInput>
             {
-                new WoodstockBanParametersInput
+                new V2BanParametersInput
                 {
                     Xuid = xuid,
                     Reason = "Testing",

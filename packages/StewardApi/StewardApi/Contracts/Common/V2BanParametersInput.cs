@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Steelhead ban parameters as sent to the API.
+    ///     V2 ban parameters as sent to the API.
     /// </summary>
-    public sealed class SteelheadBanParametersInput
+    public sealed class V2BanParametersInput
     {
         /// <summary>
         ///     Gets or sets the reason group.

@@ -48,9 +48,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
     public class BanController : V2WoodstockControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
-        private readonly IList<WoodstockBanReasonGroup> banReasonGroups = new List<WoodstockBanReasonGroup>()
+        private readonly IList<BanReasonGroup<FeatureAreas>> banReasonGroups = new List<BanReasonGroup<FeatureAreas>>()
         {
-            new WoodstockBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Extreme Violations",
                 Reasons = new List<string>
@@ -71,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     FeatureAreas.AllRequests
                 }
             },
-            new WoodstockBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Cheating/Unallowed Modding",
                 Reasons = new List<string>
@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     FeatureAreas.AllRequests
                 }
             },
-            new WoodstockBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Inappropriate User Generated Content (UGC)",
                 Reasons = new List<string>
@@ -119,7 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     FeatureAreas.AuctionHouse
                 }
             },
-            new WoodstockBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Unsportsmanlike Conduct",
                 Reasons = new List<string>
@@ -138,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                     FeatureAreas.Drivatar
                 }
             },
-            new WoodstockBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Developer",
                 Reasons = new List<string>
@@ -155,7 +155,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
         private readonly IWoodstockPegasusService pegasusService;
         private readonly IMapper mapper;
-        private readonly IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator;
+        private readonly IRequestValidator<V2BanParametersInput> banParametersRequestValidator;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
         private readonly IActionLogger actionLogger;
         private readonly IJobTracker jobTracker;
@@ -168,7 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         public BanController(
             IWoodstockPegasusService pegasusService,
             IMapper mapper,
-            IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator,
+            IRequestValidator<V2BanParametersInput> banParametersRequestValidator,
             IWoodstockBanHistoryProvider banHistoryProvider,
             IActionLogger actionLogger,
             IJobTracker jobTracker,
@@ -198,7 +198,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         ///    Return a list of report reason group.
         /// </summary>
         [HttpGet("banReasonGroups")]
-        [SwaggerResponse(200, type: typeof(Dictionary<string, WoodstockBanReasonGroup>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<string, BanReasonGroup<FeatureAreas>>))]
         public IActionResult GetBanReasonGroups()
         {
             return this.Ok(this.banReasonGroups);
@@ -238,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
-            [FromBody] IList<WoodstockBanParametersInput> banInput,
+            [FromBody] IList<V2BanParametersInput> banInput,
             [FromQuery] bool useBackgroundProcessing = false)
         {
             var userClaims = this.User.UserClaims();
@@ -273,7 +273,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         }
 
         // Bans players using a background job.
-        private async Task<CreatedResult> BanPlayersUseBackgroundProcessing(IList<WoodstockBanParametersInput> banInput, string requesterObjectId)
+        private async Task<CreatedResult> BanPlayersUseBackgroundProcessing(IList<V2BanParametersInput> banInput, string requesterObjectId)
         {
             var jobId = await this.jobTracker.CreateNewJobAsync(
                 banInput.ToJson(),
@@ -309,7 +309,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
         // Bans players.
         private async Task<IList<BanResult>> BanPlayers(
-            IList<WoodstockBanParametersInput> banInput,
+            IList<V2BanParametersInput> banInput,
             string requesterObjectId,
             IUserManagementService userManagementService)
         {

@@ -78,7 +78,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator;
         private readonly IRequestValidator<SteelheadGift> giftRequestValidator;
         private readonly IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator;
-        private readonly IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SteelheadController"/> class.
@@ -103,8 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IStewardUserProvider userProvider,
             IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SteelheadGift> giftRequestValidator,
-            IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator,
-            IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator)
+            IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
             actionLogger.ShouldNotBeNull(nameof(actionLogger));
@@ -126,7 +124,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
-            banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.memoryCache = memoryCache;
@@ -147,7 +144,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
-            this.banParametersRequestValidator = banParametersRequestValidator;
         }
 
         /// <summary>

@@ -274,20 +274,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenBanParametersRequestValidatorNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { BanParametersRequestValidator = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParametersRequestValidator"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -1328,8 +1314,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public IRequestValidator<SteelheadGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadGroupGift>>();
 
-            public IRequestValidator<SteelheadBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadBanParametersInput>>();
-
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test")]
             public SteelheadController Build() => new SteelheadController(
                 new MemoryCache(new MemoryCacheOptions()),
@@ -1351,8 +1335,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.UserProvider,
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,
-                this.GroupGiftRequestValidator,
-                this.BanParametersRequestValidator)
+                this.GroupGiftRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }

@@ -88,7 +88,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var banEntryId = Fixture.Create<int>();
             var title = Fixture.Create<string>();
             var requesterObjectId = Fixture.Create<string>();
-            var banParameters = Fixture.Create<SteelheadBanParametersInput>();
+            var banParameters = Fixture.Create<V2BanParametersInput>();
             var banResult = Fixture.Create<BanResult>();
             var endpoint = Fixture.Create<string>();
             var featureArea = Fixture.Create<string>();
@@ -109,7 +109,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var xuid = Fixture.Create<ulong>();
             var banEntryId = Fixture.Create<int>();
             var requesterObjectId = Fixture.Create<string>();
-            var banParameters = Fixture.Create<SteelheadBanParametersInput>();
+            var banParameters = Fixture.Create<V2BanParametersInput>();
             var banResult = Fixture.Create<BanResult>();
             var endpoint = Fixture.Create<string>();
             var featureArea = Fixture.Create<string>();
@@ -138,7 +138,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var xuid = Fixture.Create<ulong>();
             var banEntryId = Fixture.Create<int>();
             var title = Fixture.Create<string>();
-            var banParameters = Fixture.Create<SteelheadBanParametersInput>();
+            var banParameters = Fixture.Create<V2BanParametersInput>();
             var banResult = Fixture.Create<BanResult>();
             var endpoint = Fixture.Create<string>();
             var featureArea = Fixture.Create<string>();

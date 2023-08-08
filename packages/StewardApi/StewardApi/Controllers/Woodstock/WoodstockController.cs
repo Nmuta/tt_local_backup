@@ -82,7 +82,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
         private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
         private readonly IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator;
-        private readonly IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator;
         private readonly IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
@@ -110,7 +109,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<WoodstockGift> giftRequestValidator,
             IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator,
-            IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator,
             IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
@@ -134,7 +132,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
-            banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
@@ -156,8 +153,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.mapper = mapper;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
-            this.groupGiftRequestValidator = groupGiftRequestValidator;
-            this.banParametersRequestValidator = banParametersRequestValidator;
             this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 

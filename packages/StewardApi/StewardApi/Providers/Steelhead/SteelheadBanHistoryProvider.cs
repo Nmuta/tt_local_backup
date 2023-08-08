@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             int banEntryId,
             string title,
             string requesterObjectId,
-            SteelheadBanParametersInput banParameters,
+            V2BanParametersInput banParameters,
             BanResult banResult,
             string endpoint,
             string featureAreas)

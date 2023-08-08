@@ -47,9 +47,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
     public class BanController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
-        private readonly IList<SteelheadBanReasonGroup> banReasonGroups = new List<SteelheadBanReasonGroup>()
+        private readonly IList<BanReasonGroup<FeatureAreas>> banReasonGroups = new List<BanReasonGroup<FeatureAreas>>()
         {
-            new SteelheadBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Extreme Violations",
                 Reasons = new List<string>
@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     FeatureAreas.AllRequests
                 }
             },
-            new SteelheadBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Cheating/Unallowed Modding",
                 Reasons = new List<string>
@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     FeatureAreas.AllRequests
                 }
             },
-            new SteelheadBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Inappropriate User Generated Content (UGC)",
                 Reasons = new List<string>
@@ -118,7 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     FeatureAreas.AuctionHouse
                 }
             },
-            new SteelheadBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Unsportsmanlike Conduct",
                 Reasons = new List<string>
@@ -137,7 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     FeatureAreas.Drivatar
                 }
             },
-            new SteelheadBanReasonGroup()
+            new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Developer",
                 Reasons = new List<string>
@@ -160,7 +160,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         private readonly IScheduler scheduler;
         private readonly ILoggingService loggingService;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
-        private readonly IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator;
+        private readonly IRequestValidator<V2BanParametersInput> banParametersRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BanController"/> class for Steelhead.
@@ -173,7 +173,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             IScheduler scheduler,
             ILoggingService loggingService,
             ISteelheadBanHistoryProvider banHistoryProvider,
-            IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator)
+            IRequestValidator<V2BanParametersInput> banParametersRequestValidator)
         {
             pegasusService.ShouldNotBeNull(nameof(pegasusService));
             mapper.ShouldNotBeNull(nameof(mapper));
@@ -198,7 +198,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         ///    Return a list of report reason group.
         /// </summary>
         [HttpGet("banReasonGroups")]
-        [SwaggerResponse(200, type: typeof(Dictionary<string, SteelheadBanReasonGroup>))]
+        [SwaggerResponse(200, type: typeof(Dictionary<string, BanReasonGroup<FeatureAreas>>))]
         public IActionResult GetBanReasonGroups()
         {
             return this.Ok(this.banReasonGroups);
@@ -239,7 +239,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
         [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
-            [FromBody] IList<SteelheadBanParametersInput> banInput,
+            [FromBody] IList<V2BanParametersInput> banInput,
             [FromQuery] bool useBackgroundProcessing = false)
         {
             var userClaims = this.User.UserClaims();
@@ -274,7 +274,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         }
 
         // Bans players using a background job.
-        private async Task<CreatedResult> BanPlayersUseBackgroundProcessing(IList<SteelheadBanParametersInput> banInput, string requesterObjectId)
+        private async Task<CreatedResult> BanPlayersUseBackgroundProcessing(IList<V2BanParametersInput> banInput, string requesterObjectId)
         {
             var jobId = await this.jobTracker.CreateNewJobAsync(
                 banInput.ToJson(),
@@ -310,7 +310,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
 
         // Bans players.
         private async Task<IList<BanResult>> BanPlayers(
-            IList<SteelheadBanParametersInput> banInput,
+            IList<V2BanParametersInput> banInput,
             string requesterObjectId,
             IUserManagementService userManagementService)
         {

@@ -1,17 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Helpers;
 
-namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
+namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
 {
     /// <summary>
-    ///     Validates a <see cref="SteelheadBanParametersInput"/> request.
+    ///     Validates a <see cref="V2BanParametersInput"/> request.
     /// </summary>
-    public sealed class SteelheadBanParametersRequestValidator : RequestValidatorBase, IRequestValidator<SteelheadBanParametersInput>
+    public sealed class V2BanParametersRequestValidator : RequestValidatorBase, IRequestValidator<V2BanParametersInput>
     {
         /// <inheritdoc />
-        public void Validate(SteelheadBanParametersInput model, ModelStateDictionary modelState)
+        public void Validate(V2BanParametersInput model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
@@ -23,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
         }
 
         /// <inheritdoc />
-        public void ValidateIds(SteelheadBanParametersInput model, ModelStateDictionary modelState)
+        public void ValidateIds(V2BanParametersInput model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
@@ -31,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
             if (!model.Xuid.HasValue)
             {
                 modelState.AddModelError(
-                    "BanParameters.Xuid/BanParameters.Gamertag",
+                    "BanParameters.Xuid",
                     $"Properties must have either XUID or Gamertag defined. {nameof(model.Xuid)} was {model.Xuid}.");
             }
 
