@@ -58,8 +58,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
 
             try
             {
-                var vouchers = await this.playFabService.GetVouchersAsync(playFabEnvironment).ConfigureAwait(true);
-                var inventoryItems = await this.playFabService.GetPlayerCurrencyInventoryAsync(playFabEntityId, parsedCollectionId, playFabEnvironment).ConfigureAwait(true);
+                var getVouchers = this.playFabService.GetVouchersAsync(playFabEnvironment);
+                var getInventoryItems = this.playFabService.GetPlayerCurrencyInventoryAsync(playFabEntityId, parsedCollectionId, playFabEnvironment);
+
+                await Task.WhenAll(getVouchers, getInventoryItems).ConfigureAwait(true);
+
+                var vouchers = getVouchers.GetAwaiter().GetResult();
+                var inventoryItems = getInventoryItems.GetAwaiter().GetResult();
 
                 inventoryItems.ForEach(item => 
                 {
@@ -74,7 +79,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
                 throw new UnknownFailureStewardException($"Failed to get player PlayFab inventory. (playFabId: {playFabEntityId}) (playFabEnvironment: {playFabEnvironment})", ex);
             }
         }
-
 
         /// <summary>
         ///     Retrieves transaction history for PlayFab player.
@@ -108,6 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
                 throw new UnknownFailureStewardException($"Failed to get player PlayFab transaction history. (playFabId: {playFabEntityId}) (playFabEnvironment: {playFabEnvironment})", ex);
             }
         }
+
 
         /// <summary>
         ///     Adds inventory item to PlayFab player.
