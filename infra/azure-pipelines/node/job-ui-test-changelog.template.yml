@@ -20,7 +20,6 @@ jobs:
       targetType: inline
       script: git fetch origin main
       workingDirectory: packages/StewardClient/
-      failOnStderr: true
 
   - task: Bash@3
     displayName: Changelog Must Be Modified
@@ -28,4 +27,3 @@ jobs:
       targetType: inline
       script: yarn run check:ado:changelog-is-modified
       workingDirectory: packages/StewardClient/
-      failOnStderr: true
