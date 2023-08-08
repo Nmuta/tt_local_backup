@@ -14,11 +14,6 @@ jobs:
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
 
-  - checkout: self
-    fetchDepth: 0
-    submodules: false
-    persistCredentials: true
-
   - task: Bash@3
     displayName: Fetch main
     inputs:

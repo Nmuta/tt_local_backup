@@ -9,7 +9,7 @@ parameters:
 
 steps:
 - checkout: self
-  fetchDepth: 1
+  fetchDepth: 0
   submodules: false
   persistCredentials: true
 
