@@ -9,7 +9,10 @@
 }
 
 .ban-action-container {
-  margin-top: $gap-medium;
+  margin-bottom: $gap-medium;
+  button {
+    min-width: $button-min-size;
+  }
 }
 
 .ban-override-container {

@@ -46,6 +46,29 @@
       <mat-card-header>
         <mat-card-title>Player Ban</mat-card-title>
         <mat-card-subtitle>Steelhead</mat-card-subtitle>
+        <div class="sf-spacer"></div>
+        <div class="ban-action-container">
+          <verify-button
+            [disabled]="!canBan()"
+            #verifyConfirmBanBtn
+            [permissionAttribute]="permAttribute"
+            [permissionTitle]="gameTitle"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="submitBan()"
+            clickStop
+            stateManager
+            monitorDisable
+            [monitor]="banActionMonitor"
+            [disabled]="!canBan()"
+            [verifyWithV2]="verifyConfirmBanBtn"
+          >
+            Ban
+            <button-spinner [monitor]="banActionMonitor" defaultIcon="gavel"></button-spinner>
+          </button>
+        </div>
       </mat-card-header>
       <mat-card-content>
         <ng-container *waitForMonitor="banActionMonitor">
@@ -193,32 +216,6 @@
                       </mat-checkbox>
                     </div>
                   </div>
-                </div>
-
-                <div class="ban-action-container">
-                  <verify-button
-                    [disabled]="!canBan()"
-                    #verifyConfirmBanBtn
-                    [permissionAttribute]="permAttribute"
-                    [permissionTitle]="gameTitle"
-                  ></verify-button>
-                  <button
-                    mat-raised-button
-                    color="warn"
-                    (click)="submitBan()"
-                    clickStop
-                    stateManager
-                    monitorDisable
-                    [monitor]="banActionMonitor"
-                    [disabled]="!canBan()"
-                    [verifyWithV2]="verifyConfirmBanBtn"
-                  >
-                    Ban
-                    <button-spinner
-                      [monitor]="banActionMonitor"
-                      defaultIcon="gavel"
-                    ></button-spinner>
-                  </button>
                 </div>
               </div>
             </div>
