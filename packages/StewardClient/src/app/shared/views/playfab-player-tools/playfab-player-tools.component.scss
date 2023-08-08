@@ -1,0 +1,5 @@
+@import '/src/styles/mixins';
+
+::ng-deep mat-card {
+  margin: $gap-medium 0;
+}

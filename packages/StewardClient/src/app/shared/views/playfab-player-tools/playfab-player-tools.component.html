@@ -1,0 +1,28 @@
+<ng-container *waitForMonitor="getPlayFabProfileMonitor">
+  <table class="info-table">
+    <tr>
+      <th>Master Id</th>
+      <td>
+        <standard-copy>{{ playfabProfile?.master }}</standard-copy>
+      </td>
+    </tr>
+    <tr>
+      <th>Title Id</th>
+      <td>
+        <standard-copy>{{ playfabProfile?.title }}</standard-copy>
+      </td>
+    </tr>
+  </table>
+
+  <playfab-inventory
+    [service]="inventoryService"
+    [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+    [playfabCollectionId]="PlayFabCollectionId.Default"
+  ></playfab-inventory>
+
+  <playfab-transaction-history
+    [service]="transactionHistoryService"
+    [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+    [playfabCollectionId]="PlayFabCollectionId.Default"
+  ></playfab-transaction-history>
+</ng-container>

@@ -18,6 +18,9 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using EntityKey = PlayFab.EconomyModels.EntityKey;
 using ProfileEntityKey = PlayFab.ProfilesModels.EntityKey;
 using System.Globalization;
+using Microsoft.Graph;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
 {
@@ -150,7 +153,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                     Type = "title_player_account",
                     Id = playfabEntityId,
                 },
-                CollectionId = collectionId.ToString(),
+                CollectionId = collectionId.GetDescription(),
             }).ConfigureAwait(false);
 
             return this.mapper.SafeMap<IEnumerable<PlayFabTransaction>>(response.Transactions);
@@ -168,7 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                     Type = "title_player_account",
                     Id = playfabEntityId,
                 },
-                CollectionId = collectionId.ToString(),
+                CollectionId = collectionId.GetDescription(),
                 Filter = "Type eq 'currency'",
             }).ConfigureAwait(false);
 
@@ -192,7 +195,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 {
                     Id = itemId,
                 },
-                CollectionId = collectionId.ToString(),
+                CollectionId = collectionId.GetDescription(),
             }).ConfigureAwait(false);
         }
 
@@ -213,7 +216,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
                 {
                     Id = itemId,
                 },
-                CollectionId = collectionId.ToString(),
+                CollectionId = collectionId.GetDescription(),
             }).ConfigureAwait(false);
         }
 

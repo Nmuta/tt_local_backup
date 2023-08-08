@@ -9,11 +9,8 @@ import { takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
 import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 import {
-  PlayFabProfile,
   WoodstockPlayersPlayFabService,
 } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
-import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { PlayFabCollectionId } from '@models/playfab';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({
@@ -22,15 +19,11 @@ import { PlayFabCollectionId } from '@models/playfab';
 })
 export class WoodstockUserDetailsComponent extends BaseComponent {
   public profile: PlayerInventoryProfile;
-  public playfabProfile: PlayFabProfile;
-
-  public getPlayFabProfileMonitor = new ActionMonitor('Get PlayFab Profile');
 
   /** Used to hide unwanted tab when dealing with a special xuid. */
   public isSpecialXuid: boolean;
 
   public readonly UgcType = UgcType;
-  public readonly PlayFabCollectionId = PlayFabCollectionId;
 
   /** The lookup type. */
   public get lookupType(): string {
@@ -58,8 +51,6 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
       this.isSpecialXuid = this.parent.specialIdentitiesAllowed.some(x =>
         x.xuid.isEqualTo(this.identity?.xuid),
       );
-
-      this.getPlayFabProfile();
     });
   }
 
@@ -75,19 +66,5 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
     if ($event.tab.textLabel === 'Deep Dive') {
       window.dispatchEvent(new Event('resize'));
     }
-  }
-
-  private getPlayFabProfile(): void {
-    if (!this.identity?.xuid) {
-      return;
-    }
-
-    this.getPlayFabProfileMonitor = this.getPlayFabProfileMonitor.repeat();
-    this.playersPlayFabService
-      .getPlayFabProfile$(this.identity.xuid)
-      .pipe(this.getPlayFabProfileMonitor.monitorSingleFire())
-      .subscribe(playfabProfile => {
-        this.playfabProfile = playfabProfile;
-      });
   }
 }
