@@ -267,8 +267,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             else
             {
                 var userManagementService = this.Services.UserManagementService;
-                var liveOpsService = this.Services.LiveOpsService;
-                var response = await this.BanPlayers(banInput, requesterObjectId, liveOpsService, userManagementService).ConfigureAwait(true);
+                var response = await this.BanPlayers(banInput, requesterObjectId, userManagementService).ConfigureAwait(true);
                 return this.Ok(response);
             }
         }
@@ -283,7 +282,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 this.Response).ConfigureAwait(true);
 
             var userManagementService = this.Services.UserManagementService;
-            var liveOpsService = this.Services.LiveOpsService;
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -291,7 +289,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 // Do not throw.
                 try
                 {
-                    var response = await this.BanPlayers(banInput, requesterObjectId, liveOpsService, userManagementService).ConfigureAwait(false);
+                    var response = await this.BanPlayers(banInput, requesterObjectId, userManagementService).ConfigureAwait(false);
 
                     var jobStatus = BackgroundJobHelpers.GetBackgroundJobStatus(response);
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
@@ -313,37 +311,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
         private async Task<IList<BanResult>> BanPlayers(
             IList<WoodstockBanParametersInput> banInput,
             string requesterObjectId,
-            ILiveOpsService liveOpsService,
             IUserManagementService userManagementService)
         {
             var banResults = new List<BanResult>();
 
             const int maxXuidsPerRequest = 10;
             var emptyDuration = new ForzaTimeSpan();
-
-            foreach (var ban in banInput)
-            {
-                if (ban.Xuid == default)
-                {
-                    if (string.IsNullOrWhiteSpace(ban.Gamertag))
-                    {
-                        throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
-                    }
-
-                    try
-                    {
-                        var userResult = await liveOpsService.GetLiveOpsUserDataByGamerTagV2(ban.Gamertag).ConfigureAwait(false);
-
-                        ban.Xuid = userResult.userData.Xuid;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new NotFoundStewardException(
-                            $"No profile found for Gamertag: {ban.Gamertag}.",
-                            ex);
-                    }
-                }
-            }
 
             try
             {

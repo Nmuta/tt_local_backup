@@ -112,8 +112,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
                 }
                 catch {/* Do nothing */}
 
-
-
                 return this.Ok(new OutputModel
                 {
                     ShareCodeOrId = shareCodeOrId,

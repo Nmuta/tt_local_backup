@@ -28,14 +28,14 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if (!model.Xuid.HasValue && string.IsNullOrWhiteSpace(model.Gamertag))
+            if (!model.Xuid.HasValue)
             {
                 modelState.AddModelError(
                     "BanParameters.Xuid/BanParameters.Gamertag",
-                    $"Properties must have either XUID or Gamertag defined. {nameof(model.Xuid)} was {model.Xuid}. {nameof(model.Gamertag)} was {model.Gamertag}.");
+                    $"Properties must have either XUID or Gamertag defined. {nameof(model.Xuid)} was {model.Xuid}.");
             }
 
-            if (model.Xuid.HasValue && !model.Xuid.Value.IsValidXuid())
+            if (!model.Xuid.Value.IsValidXuid())
             {
                 modelState.AddModelError("BanParameters.Xuid", $"Provided XUID does not meet requirements: {model.Xuid}");
             }

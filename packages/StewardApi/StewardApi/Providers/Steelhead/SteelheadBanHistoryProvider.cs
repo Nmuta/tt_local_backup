@@ -61,9 +61,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             banParameters.ShouldNotBeNull(nameof(banParameters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            // Gamertags must be set to null for NGP. v-joyate 20201123
-            banParameters.Gamertag = null;
-
             var banHistory = new LiveOpsBanHistory(
                 (long)xuid,
                 banEntryId,

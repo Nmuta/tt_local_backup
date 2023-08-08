@@ -19,7 +19,6 @@ export enum SteelheadBanArea {
 /** A single part of the bulk /v1/title/steelhead/players/ban request model */
 export interface SteelheadBanRequest {
   xuid?: BigNumber;
-  gamertag?: string;
   deleteLeaderboardEntries: boolean;
   reasonGroupName: string;
   reason: string;

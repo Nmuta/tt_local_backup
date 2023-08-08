@@ -21,7 +21,6 @@ export enum WoodstockBanArea {
 /** A single part of the bulk /v2/title/Woodstock/players/ban request model */
 export interface WoodstockBanRequest {
   xuid?: BigNumber;
-  gamertag?: string;
   deleteLeaderboardEntries: boolean;
   reasonGroupName: string;
   reason: string;

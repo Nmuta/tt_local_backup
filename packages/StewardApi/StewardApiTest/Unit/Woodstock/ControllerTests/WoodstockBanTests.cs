@@ -99,7 +99,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             {
                 new WoodstockBanParametersInput {
                     Xuid = ValidXuid,
-                    Gamertag = "gamerT1",
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,
@@ -110,7 +109,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 },
                 new WoodstockBanParametersInput {
                     Xuid = ValidXuid,
-                    Gamertag = "gamerT2",
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,
@@ -121,7 +119,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 },
                 new WoodstockBanParametersInput {
                     Xuid = ValidXuid,
-                    Gamertag = "gamerT3",
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,

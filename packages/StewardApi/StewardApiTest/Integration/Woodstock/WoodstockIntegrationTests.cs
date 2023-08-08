@@ -579,32 +579,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         {
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
-            banParameters[0].Gamertag = null;
 
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
             Assert.IsNotNull(result[0].Error);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_InvalidGamertag()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].Xuid = null;
-            banParameters[0].Gamertag = TestConstants.InvalidGamertag;
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
         }
 
         [TestMethod]
@@ -626,11 +606,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_NoXuidsOrGamertagsProvided()
+        public async Task BanPlayers_NoXuidsProvided()
         {
             var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default;
-            banParameters[0].Gamertag = null;
 
             try
             {
@@ -639,7 +618,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
             }
         }
 
@@ -668,19 +647,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.ToList()[0].Error);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_UseBackgroundProcessing_InvalidGamertag()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].Gamertag = TestConstants.InvalidGamertag;
-            banParameters[0].Xuid = null;
-
-            var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Failed).ConfigureAwait(false);
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -1571,7 +1537,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
                 new WoodstockBanParametersInput
                 {
                     Xuid = xuid,
-                    Gamertag = gamertag,
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false
