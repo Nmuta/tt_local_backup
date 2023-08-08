@@ -8,9 +8,7 @@ import { SpecialXuid1 } from '@models/special-identity';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
 import { PlayerInventoryProfile } from '@models/player-inventory-profile';
-import {
-  WoodstockPlayersPlayFabService,
-} from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
+import { WoodstockPlayersPlayFabService } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({

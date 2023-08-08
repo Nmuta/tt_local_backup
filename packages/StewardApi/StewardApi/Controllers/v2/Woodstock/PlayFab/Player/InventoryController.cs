@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
                     transaction.Operations.ForEach(operation =>
                     {
                         var voucher = vouchers.FirstOrDefault(voucher => voucher.Id == operation.ItemId);
-                        operation.ItemName = voucher.Title["NEUTRAL"] ?? "N/A";
+                        operation.ItemName = voucher?.Title["NEUTRAL"] ?? "N/A";
                     });
                 });
 

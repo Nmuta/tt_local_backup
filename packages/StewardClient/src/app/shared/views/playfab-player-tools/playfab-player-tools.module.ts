@@ -20,10 +20,18 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PlayFabInventoryComponent } from './components/playfab-inventory/playfab-inventory.component';
 import { PlayFabTransactionHistoryComponent } from './components/playfab-transaction-history/playfab-transaction-history.component';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 /** Module for getting and setting a player's cms override. */
 @NgModule({
-  declarations: [PlayFabPlayerToolsComponent, WoodstockPlayFabPlayerToolsComponent, PlayFabInventoryComponent, PlayFabTransactionHistoryComponent,],
+  declarations: [
+    PlayFabPlayerToolsComponent,
+    WoodstockPlayFabPlayerToolsComponent,
+    PlayFabInventoryComponent,
+    PlayFabTransactionHistoryComponent,
+  ],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -43,6 +51,9 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     StandardCopyModule,
     MatPaginatorModule,
     StandardDateModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
   exports: [WoodstockPlayFabPlayerToolsComponent],
 })

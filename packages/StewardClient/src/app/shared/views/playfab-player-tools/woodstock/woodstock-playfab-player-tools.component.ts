@@ -34,19 +34,30 @@ export class WoodstockPlayFabPlayerToolsComponent implements OnChanges {
   public ngOnChanges(): void {
     this.service = {
       gameTitle: GameTitle.FH5,
-      getPlayFabProfile$: (xuid: BigNumber) =>
-        this.playersPlayFabService.getPlayFabProfile$(xuid),
-      inventoryService: {      
+      getPlayFabProfile$: (xuid: BigNumber) => this.playersPlayFabService.getPlayFabProfile$(xuid),
+      inventoryService: {
         gameTitle: GameTitle.FH5,
-        getPlayFabCurrencyInventory$: (playfabPlayerTitleId: string, collectionId: PlayFabCollectionId) =>
-          this.playFabPlayerInventoryService.getCurrencyInventory$(playfabPlayerTitleId, collectionId),
+        getPlayFabCurrencyInventory$: (
+          playfabPlayerTitleId: string,
+          collectionId: PlayFabCollectionId,
+        ) =>
+          this.playFabPlayerInventoryService.getCurrencyInventory$(
+            playfabPlayerTitleId,
+            collectionId,
+          ),
         getPlayFabVouchers$: () => this.playFabVouchersService.getVouchers$(),
       },
       transactionHistoryService: {
         gameTitle: GameTitle.FH5,
-        getPlayFabTransactionHistory$: (playfabPlayerTitleId: string, collectionId: PlayFabCollectionId) =>
-          this.playFabPlayerInventoryService.getTransactionHistory$(playfabPlayerTitleId, collectionId),
-      }
+        getPlayFabTransactionHistory$: (
+          playfabPlayerTitleId: string,
+          collectionId: PlayFabCollectionId,
+        ) =>
+          this.playFabPlayerInventoryService.getTransactionHistory$(
+            playfabPlayerTitleId,
+            collectionId,
+          ),
+      },
     };
   }
 }

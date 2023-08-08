@@ -12,7 +12,10 @@ export interface PlayFabInventoryServiceContract {
   /** Game title the service contract is associated with. */
   gameTitle: GameTitle;
   /** Gets player transaction history. */
-  getPlayFabCurrencyInventory$(playfabPlayerTitleId: string, playFabCollectionId: PlayFabCollectionId): Observable<PlayFabInventoryItem[]>;
+  getPlayFabCurrencyInventory$(
+    playfabPlayerTitleId: string,
+    playFabCollectionId: PlayFabCollectionId,
+  ): Observable<PlayFabInventoryItem[]>;
   /** Gets available vouchers. */
   getPlayFabVouchers$(): Observable<PlayFabVoucher[]>;
 }
@@ -61,7 +64,12 @@ export class PlayFabInventoryComponent extends BaseComponent implements OnInit, 
       throw new Error('No service is defined for PlayFab transaction history component.');
     }
 
-    if ((!!changes.playfabPlayerTitleId || !!changes.playfabCollectionId) && !!this.playfabPlayerTitleId && !!this.playfabCollectionId) {
+    if (
+      (!!changes.playfabPlayerTitleId || !!changes.playfabCollectionId) &&
+      !!this.playfabPlayerTitleId &&
+      !!this.playfabCollectionId
+    ) {
+      this.getInventoryMonitor = this.getInventoryMonitor.repeat();
       this.service
         .getPlayFabCurrencyInventory$(this.playfabPlayerTitleId, this.playfabCollectionId)
         .pipe(this.getInventoryMonitor.monitorSingleFire())

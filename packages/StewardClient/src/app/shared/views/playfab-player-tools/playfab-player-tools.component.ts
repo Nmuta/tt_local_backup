@@ -36,6 +36,7 @@ export class PlayFabPlayerToolsComponent extends BaseComponent implements OnChan
   @Input() xuid: BigNumber;
 
   public readonly PlayFabCollectionId = PlayFabCollectionId;
+  public collectionId: PlayFabCollectionId = PlayFabCollectionId.Default;
 
   public playfabProfile: PlayFabProfile;
   public getPlayFabProfileMonitor = new ActionMonitor('Get PlayFab player id');
@@ -61,14 +62,15 @@ export class PlayFabPlayerToolsComponent extends BaseComponent implements OnChan
       throw new Error('No service is defined for PlayFab transaction history component.');
     }
 
-    if (!!changes.xuid && !!this.xuid ) {
+    if (!!changes.xuid && !!this.xuid) {
       this.getPlayFabProfile();
     }
   }
 
   private getPlayFabProfile(): void {
     this.getPlayFabProfileMonitor = this.getPlayFabProfileMonitor.repeat();
-    this.service.getPlayFabProfile$(this.xuid)
+    this.service
+      .getPlayFabProfile$(this.xuid)
       .pipe(this.getPlayFabProfileMonitor.monitorSingleFire())
       .subscribe(playfabProfile => {
         this.playfabProfile = playfabProfile;

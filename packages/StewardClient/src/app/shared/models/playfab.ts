@@ -3,9 +3,9 @@ import { DateTime } from 'luxon';
 
 /** PlayFab inventory collection ids. */
 export enum PlayFabCollectionId {
-  Default='Default',
-  GDK='GDK',
-  Steam='Steam',
+  Default = 'Default',
+  GDK = 'GDK',
+  Steam = 'Steam',
 }
 
 /** PlayFab multiplayer server build summary. */

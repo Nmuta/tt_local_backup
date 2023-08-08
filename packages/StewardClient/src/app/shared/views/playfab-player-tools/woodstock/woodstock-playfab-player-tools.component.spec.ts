@@ -12,9 +12,7 @@ describe('WoodstockPlayFabPlayerToolsComponent', () => {
       imports: [],
       declarations: [WoodstockPlayFabPlayerToolsComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWoodstockPlayersPlayFabService(),
-      ],
+      providers: [createMockWoodstockPlayersPlayFabService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPlayFabPlayerToolsComponent);

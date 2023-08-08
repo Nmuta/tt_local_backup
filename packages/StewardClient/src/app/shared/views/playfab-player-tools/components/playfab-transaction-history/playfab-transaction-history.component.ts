@@ -14,7 +14,10 @@ export interface PlayFabTransactionHistoryServiceContract {
   /** Game title the service contract is associated with. */
   gameTitle: GameTitle;
   /** Gets player transaction history. */
-  getPlayFabTransactionHistory$(playfabPlayerTitleId: string, collectionId: PlayFabCollectionId): Observable<PlayFabTransaction[]>;
+  getPlayFabTransactionHistory$(
+    playfabPlayerTitleId: string,
+    collectionId: PlayFabCollectionId,
+  ): Observable<PlayFabTransaction[]>;
 }
 
 /** Component to get and set a player's cms override. */
@@ -59,8 +62,13 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
     if (!this.service) {
       throw new Error('No service is defined for PlayFab transaction history component.');
     }
-    
-    if ((!!changes.playfabPlayerTitleId || !!changes.playfabCollectionId) && !!this.playfabPlayerTitleId && !!this.playfabCollectionId) {
+
+    if (
+      (!!changes.playfabPlayerTitleId || !!changes.playfabCollectionId) &&
+      !!this.playfabPlayerTitleId &&
+      !!this.playfabCollectionId
+    ) {
+      this.getTransactionsMonitor = this.getTransactionsMonitor.repeat();
       this.service
         .getPlayFabTransactionHistory$(this.playfabPlayerTitleId, this.playfabCollectionId)
         .pipe(this.getTransactionsMonitor.monitorSingleFire())

@@ -1,5 +1,9 @@
 @import '/src/styles/mixins';
 
-table {
-  width: 100%;
+mat-card {
+  max-height: unset;
+
+  table {
+    width: 100%;
+  }
 }
