@@ -1,11 +1,17 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
-import { Observable } from 'rxjs';
+import { Observable, delay } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { PlayFabCollectionId, PlayFabInventoryItem, PlayFabVoucher } from '@models/playfab';
+import { FormGroup, AbstractControl, FormControl, Validators } from '@angular/forms';
+import { cloneDeep } from 'lodash';
+import { PlayFabProfile } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
+import BigNumber from 'bignumber.js';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { HCI } from '@environments/environment';
 
 /** Service contract for the PlayFabInventoryComponent. */
 export interface PlayFabInventoryServiceContract {
@@ -16,9 +22,26 @@ export interface PlayFabInventoryServiceContract {
     playfabPlayerTitleId: string,
     playFabCollectionId: PlayFabCollectionId,
   ): Observable<PlayFabInventoryItem[]>;
-  /** Gets available vouchers. */
-  getPlayFabVouchers$(): Observable<PlayFabVoucher[]>;
+  addPlayFabItem$(
+    playfabPlayerTitleId: string,
+    playFabCollectionId: PlayFabCollectionId,
+    itemId: string,
+    amount: BigNumber,
+  ): Observable<void>;
+  removePlayFabItem$(
+    playfabPlayerTitleId: string,
+    playFabCollectionId: PlayFabCollectionId,
+    itemId: string,
+    amount: BigNumber,
+  ): Observable<void>;
 }
+
+type PlayFabInventoryItemListEntry = PlayFabInventoryItem & {
+  isInEditMode?: boolean;
+  editFormGroup?: FormGroup;
+  editFormControls?: { [key: string]: AbstractControl };
+  editMonitor?: ActionMonitor;
+};
 
 /** Component to get and set a player's cms override. */
 @Component({
@@ -26,36 +49,35 @@ export interface PlayFabInventoryServiceContract {
   templateUrl: './playfab-inventory.component.html',
   styleUrls: ['./playfab-inventory.component.scss'],
 })
-export class PlayFabInventoryComponent extends BaseComponent implements OnInit, OnChanges {
+export class PlayFabInventoryComponent extends BaseComponent implements OnChanges {
   /** The component service contract */
   @Input() service: PlayFabInventoryServiceContract;
 
-  /** PlayFab player title entity id. */
-  @Input() playfabPlayerTitleId: string;
+  /** PlayFab player profile. */
+  @Input() playfabProfile: PlayFabProfile;
 
   /** PlayFab collection id. */
   @Input() playfabCollectionId: PlayFabCollectionId;
 
-  public getVoucherMonitor = new ActionMonitor('Get PlayFab vouchers');
-  public getInventoryMonitor = new ActionMonitor('Get PlayFab inventory');
+  /** Event emitted when any inventory amount changes. */
+  @Output() inventoryChangeEvent = new EventEmitter<void>();
 
-  public displayedColumns = ['amount', 'item', 'metadata'];
-  public inventoryItems = new BetterMatTableDataSource<PlayFabInventoryItem>([]);
+  public currencyFormControls = {
+    amount: new FormControl('', [Validators.required, Validators.min(0), Validators.max(10)]),
+  };
+
+  public getInventoryMonitor = new ActionMonitor('Get PlayFab inventory');
+  public allEditMonitors: ActionMonitor[] = [];
+
+  public displayedColumns = ['item', 'metadata', 'amount', 'actions'];
+  public inventoryItems = new BetterMatTableDataSource<PlayFabInventoryItemListEntry>([]);
   public vouchers: PlayFabVoucher[] = [];
+
+  public permission: PermAttributeName = PermAttributeName.ManagePlayFabInventory;
 
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
     return this.service.gameTitle;
-  }
-
-  /** Lifecycle hook. */
-  public ngOnInit(): void {
-    this.service
-      .getPlayFabVouchers$()
-      .pipe(this.getVoucherMonitor.monitorSingleFire())
-      .subscribe(vouchers => {
-        this.vouchers = vouchers;
-      });
   }
 
   /** Lifecycle hook. */
@@ -65,17 +87,80 @@ export class PlayFabInventoryComponent extends BaseComponent implements OnInit, 
     }
 
     if (
-      (!!changes.playfabPlayerTitleId || !!changes.playfabCollectionId) &&
-      !!this.playfabPlayerTitleId &&
+      (!!changes.playfabProfile || !!changes.playfabCollectionId) &&
+      !!this.playfabProfile?.title &&
       !!this.playfabCollectionId
     ) {
       this.getInventoryMonitor = this.getInventoryMonitor.repeat();
       this.service
-        .getPlayFabCurrencyInventory$(this.playfabPlayerTitleId, this.playfabCollectionId)
+        .getPlayFabCurrencyInventory$(this.playfabProfile?.title, this.playfabCollectionId)
         .pipe(this.getInventoryMonitor.monitorSingleFire())
         .subscribe(inventoryItems => {
-          this.inventoryItems.data = inventoryItems;
+          this.inventoryItems.data = inventoryItems.map(item => {
+            const itemAsListEntry = item as PlayFabInventoryItemListEntry;
+            this.resetItemForms(itemAsListEntry);
+            this.resetItemMonitor(itemAsListEntry);
+            return itemAsListEntry;
+          });
         });
     }
+  }
+
+  /** Disables edit mode for an inventory list entry. */
+  public enableEditMode(item: PlayFabInventoryItemListEntry): void {
+    this.resetItemForms(item);
+    item.isInEditMode = true;
+  }
+
+  /** Disables edit mode for an inventory list entry. */
+  public disableEditMode(item: PlayFabInventoryItemListEntry): void {
+    this.resetItemForms(item);
+    item.isInEditMode = false;
+  }
+
+  /** Changes the currency amount of the item provided. */
+  public changeCurrencyAmount(item: PlayFabInventoryItemListEntry): void {
+    const newAmount = item.editFormControls.amount.value;
+    const oldAmount = item.amount;
+    const changeAmount = Math.abs(newAmount - oldAmount);
+
+    const changeFunc =
+      newAmount > oldAmount ? this.service.addPlayFabItem$ : this.service.removePlayFabItem$;
+
+    changeFunc(
+      this.playfabProfile?.title,
+      this.playfabCollectionId,
+      item.id,
+      new BigNumber(changeAmount),
+    )
+      .pipe(
+        // Give PlayFab time to propagate this action so on reload we get up-to-date data
+        delay(HCI.PlayFabPropagation),
+        item.editMonitor.monitorSingleFire(),
+      )
+      .subscribe(() => {
+        this.resetItemMonitor(item);
+        this.inventoryChangeEvent.emit();
+      });
+  }
+
+  private resetItemForms(item: PlayFabInventoryItemListEntry): void {
+    item.editFormControls = cloneDeep(this.currencyFormControls);
+    item.editFormControls.amount.setValue(item.amount);
+    item.editFormGroup = new FormGroup(item.editFormControls);
+  }
+
+  private resetItemMonitor(item: PlayFabInventoryItemListEntry): void {
+    if (!!item?.editMonitor) {
+      const monitorIndex = this.allEditMonitors.findIndex(
+        monitor => monitor.id === item.editMonitor.id,
+      );
+      if (monitorIndex >= 0) {
+        this.allEditMonitors.splice(monitorIndex, 1);
+      }
+    }
+
+    item.editMonitor = new ActionMonitor('Change PlayFab currency amount');
+    this.allEditMonitors.push(item.editMonitor);
   }
 }

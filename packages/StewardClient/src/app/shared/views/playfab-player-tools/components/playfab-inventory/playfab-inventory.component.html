@@ -2,21 +2,13 @@
   <mat-card-header>
     <mat-card-title>Inventory</mat-card-title>
     <mat-card-subtitle
-      >{{ gameTitle | humanize }} | PlayFab Player Id: {{ playfabPlayerTitleId ?? 'N/A' }} |
+      >{{ gameTitle | humanize }} | PlayFab Player Id: {{ playfabProfile?.title ?? 'N/A' }} |
       Collection Id: {{ playfabCollectionId ?? 'N/A' }}</mat-card-subtitle
     >
   </mat-card-header>
   <mat-card-content>
     <ng-container *waitForMonitor="getInventoryMonitor">
       <table mat-table [dataSource]="inventoryItems">
-        <!-- Amount Column -->
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef>Amount</th>
-          <td mat-cell *matCellDef="let item">
-            <standard-copy>{{ item?.amount }}</standard-copy>
-          </td>
-        </ng-container>
-
         <!-- Item Details Column -->
         <ng-container matColumnDef="item">
           <th mat-header-cell *matHeaderCellDef>Item</th>
@@ -52,10 +44,46 @@
               <tr>
                 <th>Stack Id</th>
                 <td>
-                  <standard-copy>{{ item.stackId }}</standard-copy>
+                  <standard-copy>{{ item?.stackId ?? 'N/A' }}</standard-copy>
                 </td>
               </tr>
             </table>
+          </td>
+        </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let item">
+            <ng-container *ngIf="item.isInEditMode">
+              <form [formGroup]="item.editFormGroup">
+                <mat-form-field>
+                  <mat-label>New Amount</mat-label>
+                  <input matInput [formControl]="item.editFormControls.amount" />
+                  <mat-error *ngIf="item.editFormControls.amount.hasError('min')"
+                    >Amount must be 0 or above
+                  </mat-error>
+                  <mat-error *ngIf="item.editFormControls.amount.hasError('max')"
+                    >Amount must be 10 or below
+                  </mat-error>
+                </mat-form-field>
+              </form>
+            </ng-container>
+            <ng-container *ngIf="!item.isInEditMode">{{ item.amount }}</ng-container>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let item; let index = index">
+            <ng-container
+              [ngTemplateOutlet]="
+                item.isInEditMode ? editModeActionsTemplate : nonEditModeActionsTemplate
+              "
+              [ngTemplateOutletContext]="{ item: item, index: index }"
+            >
+            </ng-container>
           </td>
         </ng-container>
 
@@ -65,3 +93,56 @@
     </ng-container>
   </mat-card-content>
 </mat-card>
+
+<ng-template #editModeActionsTemplate let-item="item" let-index="index">
+  <verify-button
+    #verifyEditButton
+    [disabled]="item.editFormGroup.invalid"
+    stateManager
+    [permissionAttribute]="permission"
+    [permissionTitle]="gameTitle"
+  ></verify-button>
+  <button
+    mat-mini-fab
+    color="primary"
+    clickStop
+    stateManager
+    [verifyWithV2]="verifyEditButton"
+    [monitor]="item.editMonitor"
+    [waitOnMonitors]="allEditMonitors"
+    [disabled]="item.editFormGroup.invalid"
+    monitorDisable
+    monitorCompleteSnackbar
+    monitorWarnSnackbar
+    (click)="changeCurrencyAmount(item)"
+  >
+    <button-spinner [monitor]="item.editMonitor" defaultIcon="save"></button-spinner>
+  </button>
+  <button
+    mat-mini-fab
+    class="undo-button"
+    clickStop
+    stateManager
+    [monitor]="item.editMonitor"
+    [waitOnMonitors]="allEditMonitors"
+    monitorDisable
+    (click)="disableEditMode(item)"
+  >
+    <mat-icon>undo</mat-icon>
+  </button>
+</ng-template>
+
+<ng-template #nonEditModeActionsTemplate let-item="item" let-index="index">
+  <button
+    mat-mini-fab
+    color="primary"
+    clickStop
+    stateManager
+    [monitor]="item.editMonitor"
+    [waitOnMonitors]="allEditMonitors"
+    monitorDisable
+    (click)="enableEditMode(item)"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+</ng-template>

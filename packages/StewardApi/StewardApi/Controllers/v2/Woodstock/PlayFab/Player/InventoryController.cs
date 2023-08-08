@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Kusto.Cloud.Platform.Utils;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Microsoft.VisualStudio.Services.Account;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
@@ -64,12 +65,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
                 await Task.WhenAll(getVouchers, getInventoryItems).ConfigureAwait(true);
 
                 var vouchers = getVouchers.GetAwaiter().GetResult();
-                var inventoryItems = getInventoryItems.GetAwaiter().GetResult();
+                var inventoryItems = getInventoryItems.GetAwaiter().GetResult().ToList();
 
-                inventoryItems.ForEach(item => 
+                // Make sure there is an inventory item of each voucher type, add voucher name
+                vouchers.ForEach(voucher =>
                 {
-                    var voucher = vouchers.FirstOrDefault(voucher => voucher.Id == item.Id);
-                    item.Name = voucher.Title["NEUTRAL"] ?? "N/A";
+                    var inventoryItem = inventoryItems.FirstOrDefault(item => voucher.Id == item.Id);
+                    // Item exists, add voucher name to item
+                    if (inventoryItem != null)
+                    {
+                        inventoryItem.Name = voucher.Title["NEUTRAL"] ?? "N/A";
+                    }
+                    // Item does not exist, add item to inventory with amount = 0
+                    else
+                    {
+                        inventoryItems.Add(new PlayFabInventoryItem()
+                        {
+                            Amount = 0,
+                            Id = voucher.Id,
+                            DisplayProperties = null,
+                            StackId = null,
+                            Type = voucher.Type,
+                            Name = voucher.Title["NEUTRAL"] ?? "N/A",
+                        });
+                    }
                 });
 
                 return this.Ok(inventoryItems);

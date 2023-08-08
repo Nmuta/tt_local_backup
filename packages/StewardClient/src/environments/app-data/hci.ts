@@ -7,6 +7,7 @@ export const HCI = {
   TypingToAutoSearchDebounceMillis: 200,
   DirectiveInputDebounceMillis: 50,
   AutoRetryMillis: 3_000,
+  PlayFabPropagation: 1_000,
   Toast: {
     Duration: {
       Short: 2_000,

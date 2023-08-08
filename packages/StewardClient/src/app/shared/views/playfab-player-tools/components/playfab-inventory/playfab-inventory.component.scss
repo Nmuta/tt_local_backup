@@ -1,5 +1,29 @@
 @import '/src/styles/mixins';
 
+$amount-column-width: 200px;
+$actions-column-width: 160px;
+
+::ng-deep button-spinner .mat-icon {
+  margin: 0px;
+}
+
 table {
   width: 100%;
+
+  .mat-mini-fab {
+    margin-left: $gap-small;
+  }
+
+  .mat-icon {
+    margin: 0px;
+  }
+
+  .mat-column-amount {
+    @include table-width($amount-column-width);
+  }
+
+  .mat-column-actions {
+    @include table-width($actions-column-width);
+    text-align: right;
+  }
 }

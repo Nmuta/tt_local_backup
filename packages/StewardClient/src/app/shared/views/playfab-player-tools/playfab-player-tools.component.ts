@@ -9,6 +9,7 @@ import BigNumber from 'bignumber.js';
 import { PlayFabTransactionHistoryServiceContract } from './components/playfab-transaction-history/playfab-transaction-history.component';
 import { PlayFabInventoryServiceContract } from './components/playfab-inventory/playfab-inventory.component';
 import { PlayFabCollectionId } from '@models/playfab';
+import { cloneDeep } from 'lodash';
 
 /** Service contract for the PlayFabPlayerToolsComponent. */
 export interface PlayFabPlayerToolsServiceContract {
@@ -65,6 +66,12 @@ export class PlayFabPlayerToolsComponent extends BaseComponent implements OnChan
     if (!!changes.xuid && !!this.xuid) {
       this.getPlayFabProfile();
     }
+  }
+
+  /** Logic when inventory item amounts are changed. */
+  public inventoryChangeEvent(): void {
+    // Fake an ngOnChange event for each underlying tool by cloning playfabProfile
+    this.playfabProfile = cloneDeep(this.playfabProfile);
   }
 
   private getPlayFabProfile(): void {
