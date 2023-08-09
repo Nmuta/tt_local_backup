@@ -80,7 +80,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
         private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
-        private readonly IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator;
         private readonly IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>

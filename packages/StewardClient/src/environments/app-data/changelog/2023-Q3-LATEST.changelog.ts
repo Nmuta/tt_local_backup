@@ -16,7 +16,9 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserBanning },
       uuid: '7778ac73-29d8-4820-b582-2a8e57a3cf07',
       shortText: 'Updated so duration and feature area of ban are decided by ban reason',
-      longText: ['If you need to ban for other areas or durations, you can use the override options'],
+      longText: [
+        'If you need to ban for other areas or durations, you can use the override options',
+      ],
     },
     {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
