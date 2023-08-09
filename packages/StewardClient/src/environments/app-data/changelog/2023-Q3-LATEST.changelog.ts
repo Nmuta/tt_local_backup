@@ -2,7 +2,7 @@ import { GameTitle } from '@models/enums';
 import { NavbarTool } from '../tool-list';
 import { ChangelogGroup, ChangelogTag } from './types';
 
-/** User-facing changes to the code. */
+/** A changelog targeted at end-users. */
 export const CHANGELOG_2023_Q3: ChangelogGroup = {
   title: '2023 Q3',
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
