@@ -51,6 +51,11 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
                 this.ValidateItemsAsync(model.VanityItems.ToList(), modelState, nameof(model.VanityItems)).ConfigureAwait(false).GetAwaiter().GetResult();
             }
 
+            if (model.DriverSuits != null)
+            {
+                this.ValidateItemsAsync(model.DriverSuits.ToList(), modelState, nameof(model.DriverSuits)).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+
             if (model.Cars != null)
             {
                 this.ValidateCarsAsync(model.Cars, modelState).ConfigureAwait(false).GetAwaiter().GetResult();

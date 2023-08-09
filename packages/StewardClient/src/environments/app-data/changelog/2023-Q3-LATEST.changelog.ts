@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting, NavbarTool.UserDetails] },
+      uuid: '55fb491b-4b57-4f86-8971-b0a8760d66a7',
+      shortText: 'Added Driver Suit item type to inventory management and gifting',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
       uuid: '54f931b4-a4b9-452f-b7a6-340799459e45',
       shortText: 'Add support for team leads',
