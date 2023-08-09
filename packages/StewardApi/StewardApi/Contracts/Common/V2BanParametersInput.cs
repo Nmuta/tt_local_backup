@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the xuid.
         /// </summary>
-        public ulong? Xuid { get; set; }
+        public ulong Xuid { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether to delete leader board entries.

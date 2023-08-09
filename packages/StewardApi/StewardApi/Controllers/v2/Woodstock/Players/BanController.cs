@@ -330,7 +330,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
                     var mappedBanParameters = paramBatch.Select(x => new ForzaUserBanParametersV2()
                     {
-                        xuids = new ulong[] { x.Xuid.Value },
+                        xuids = new ulong[] { x.Xuid },
                         DeleteLeaderboardEntries = x.DeleteLeaderboardEntries.Value,
                         BanEntryReason = x.Reason,
                         PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
@@ -380,7 +380,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                         {
                             await
                                 this.banHistoryProvider.UpdateBanHistoryAsync(
-                                        parameters.Xuid.Value,
+                                        parameters.Xuid,
                                         result.BanDescription.BanEntryId,
                                         TitleConstants.WoodstockCodeName,
                                         requesterObjectId,
