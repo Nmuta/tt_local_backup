@@ -1059,7 +1059,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
-
         [TestMethod]
         [TestCategory("Unit")]
         public async Task GetGiftHistory_WithValidParameters_ReturnsCorrectType()
@@ -1154,7 +1153,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             communityMessage.StartTimeUtc = DateTime.UtcNow.AddMinutes(1);
             communityMessage.ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5);
             communityMessage.Xuids = new List<ulong>() { ValidXuid };
-
 
             // Act.
             async Task<IActionResult> Action() => await controller.SendPlayerNotifications(communityMessage).ConfigureAwait(false);

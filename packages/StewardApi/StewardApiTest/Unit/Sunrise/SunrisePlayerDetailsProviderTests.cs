@@ -521,7 +521,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "filters"));
         }
 
-
         private List<SunriseBanParameters> GenerateBanParameters()
         {
             var newParams = new SunriseBanParameters

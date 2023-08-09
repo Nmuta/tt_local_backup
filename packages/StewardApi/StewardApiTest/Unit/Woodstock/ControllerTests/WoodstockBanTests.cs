@@ -140,7 +140,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             public IJobTracker JobTracker { get; set; } = Substitute.For<IJobTracker>();
             public IScheduler Scheduler { get; set; } = Substitute.For<IScheduler>();
 
-
             public Dependencies()
             {
                 this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };

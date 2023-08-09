@@ -489,7 +489,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
         }
 
-
         [TestMethod]
         [TestCategory("Integration")]
         public async Task GetCreditUpdates()

@@ -116,7 +116,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-
             public Dependencies()
             {
                 this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };
