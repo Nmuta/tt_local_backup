@@ -346,7 +346,8 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<BigCatService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
             builder.RegisterType<PolicyResultAuthorizationMiddleware>().As<IAuthorizationMiddlewareResultHandler>().SingleInstance();
-            builder.RegisterType<ForumBanHistoryProvider>().As<IForumBanHistoryProvider>().SingleInstance();
+            builder.RegisterType<ForumBanHistoryProvider>().As<IForumBanHistoryProvider>().SingleInstance(); 
+            builder.RegisterType<V2BanParametersRequestValidator>().As<IRequestValidator<V2BanParametersInput>>().SingleInstance();
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             builder.Register(c => pegasusProvider).As<PegasusCmsProvider>().SingleInstance();
@@ -450,7 +451,6 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<SteelheadV2Providers.SteelheadPlayerInventoryProvider>().As<SteelheadV2Providers.ISteelheadPlayerInventoryProvider>().SingleInstance();
             builder.RegisterType<SteelheadV2Providers.SteelheadServiceManagementProvider>().As<SteelheadV2Providers.ISteelheadServiceManagementProvider>().SingleInstance();
 
-            builder.RegisterType<SteelheadBanParametersRequestValidator>().As<IRequestValidator<SteelheadBanParametersInput>>().SingleInstance();
             builder.RegisterType<SteelheadGroupGiftRequestValidator>().As<IRequestValidator<SteelheadGroupGift>>().SingleInstance();
             builder.RegisterType<SteelheadGiftRequestValidator>().As<IRequestValidator<SteelheadGift>>().SingleInstance();
             builder.RegisterType<SteelheadMasterInventoryRequestValidator>().As<IRequestValidator<SteelheadMasterInventory>>().SingleInstance();
@@ -491,7 +491,6 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<WoodstockLeaderboardProvider>().As<IWoodstockLeaderboardProvider>().SingleInstance();
             builder.RegisterType<WoodstockItemsProvider>().As<IWoodstockItemsProvider>().SingleInstance();
 
-            builder.RegisterType<WoodstockBanParametersRequestValidator>().As<IRequestValidator<WoodstockBanParametersInput>>().SingleInstance();
             builder.RegisterType<WoodstockGroupGiftRequestValidator>().As<IRequestValidator<WoodstockGroupGift>>().SingleInstance();
             builder.RegisterType<WoodstockGiftRequestValidator>().As<IRequestValidator<WoodstockGift>>().SingleInstance();
             builder.RegisterType<WoodstockMasterInventoryRequestValidator>().As<IRequestValidator<WoodstockMasterInventory>>().SingleInstance();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 
@@ -15,10 +16,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// </summary>
         Task UpdateBanHistoryAsync(
             ulong xuid,
+            int banEntryId,
             string title,
             string requesterObjectId,
-            SteelheadBanParameters banParameters,
-            string endpoint);
+            V2BanParametersInput banParameters,
+            BanResult banResult,
+            string endpoint,
+            string featureAreas);
 
         /// <summary>
         ///     Gets ban histories.

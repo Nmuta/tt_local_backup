@@ -306,25 +306,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             }
         }
 
-        private List<SteelheadBanParameters> GenerateBanParameters()
-        {
-            var newParams = new SteelheadBanParameters
-            {
-                Xuid = 111,
-                Gamertag = "gamerT1",
-                FeatureArea = "Matchmaking",
-                Reason = "Disgusting license plate.",
-                StartTimeUtc = DateTime.UtcNow,
-                ExpireTimeUtc = DateTime.UtcNow.AddSeconds(1),
-                BanAllConsoles = false,
-                BanAllPcs = false,
-                DeleteLeaderboardEntries = false,
-                SendReasonNotification = false
-            };
-
-            return new List<SteelheadBanParameters> { newParams };
-        }
-
         private sealed class Dependencies
         {
             public Dependencies()

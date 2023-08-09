@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             int banEntryId,
             string title,
             string requesterObjectId,
-            WoodstockBanParametersInput banParameters,
+            V2BanParametersInput banParameters,
             BanResult banResult,
             string endpoint,
             string featureAreas)
@@ -59,9 +59,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             banParameters.ShouldNotBeNull(nameof(banParameters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            // Gamertags must be set to null for NGP. v-joyate 20201123
-            banParameters.Gamertag = null;
 
             var banHistory = new LiveOpsBanHistory(
                 (long)xuid,

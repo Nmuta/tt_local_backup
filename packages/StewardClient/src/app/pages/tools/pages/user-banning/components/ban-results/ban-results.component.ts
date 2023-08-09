@@ -31,7 +31,7 @@ export class BanResultsComponent extends BaseComponent implements OnInit {
     for (const result of this.banResults) {
       this.banCsvData[this.banCsvData.length] = [
         `'${result.xuid}`,
-        result.error ? 'True' : 'False',
+        result.error ? 'False' : 'True',
       ];
     }
   }

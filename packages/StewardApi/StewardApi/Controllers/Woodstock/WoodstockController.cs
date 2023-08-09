@@ -75,9 +75,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
         private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
-        private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
-        private readonly IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator;
-        private readonly IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator;
         private readonly IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
@@ -103,9 +100,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IJobTracker jobTracker,
             IMapper mapper,
             IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator,
-            IRequestValidator<WoodstockGift> giftRequestValidator,
-            IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator,
-            IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator,
             IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
@@ -127,9 +121,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             mapper.ShouldNotBeNull(nameof(mapper));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
-            giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
-            groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
-            banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
@@ -150,9 +141,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.jobTracker = jobTracker;
             this.mapper = mapper;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
-            this.giftRequestValidator = giftRequestValidator;
-            this.groupGiftRequestValidator = groupGiftRequestValidator;
-            this.banParametersRequestValidator = banParametersRequestValidator;
             this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 

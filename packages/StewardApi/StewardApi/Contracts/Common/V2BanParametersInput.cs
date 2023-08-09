@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Woodstock ban parameters as sent to the API.
+    ///     V2 ban parameters as sent to the API.
     /// </summary>
-    public sealed class WoodstockBanParametersInput
+    public sealed class V2BanParametersInput
     {
         /// <summary>
         ///     Gets or sets the reason group.
@@ -20,12 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         /// <summary>
         ///     Gets or sets the xuid.
         /// </summary>
-        public ulong? Xuid { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the gamertag.
-        /// </summary>
-        public string Gamertag { get; set; }
+        public ulong Xuid { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether to delete leader board entries.

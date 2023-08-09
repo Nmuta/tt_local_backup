@@ -1,0 +1,101 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Transaction History</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *waitForMonitor="getTransactionsMonitor">
+      <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons>
+      </mat-paginator>
+      <table mat-table [dataSource]="transactionHistory">
+        <!-- Metadata Column -->
+        <ng-container matColumnDef="metadata">
+          <th mat-header-cell *matHeaderCellDef>Metadata</th>
+          <td mat-cell *matCellDef="let transaction">
+            <table class="info-table">
+              <tr>
+                <th>Transaction Id</th>
+                <td>
+                  <standard-copy>{{ transaction.transactionId }}</standard-copy>
+                </td>
+              </tr>
+              <tr>
+                <th>Date</th>
+                <td>
+                  <standard-absolute-time-utc
+                    [timeUtc]="transaction.timestampUtc"
+                  ></standard-absolute-time-utc>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </ng-container>
+
+        <!-- Details Column -->
+        <ng-container matColumnDef="details">
+          <th mat-header-cell *matHeaderCellDef>Details</th>
+          <td mat-cell *matCellDef="let transaction">
+            <table class="info-table">
+              <tr>
+                <th>Item Type</th>
+                <td>
+                  <standard-copy>{{ transaction.itemType }}</standard-copy>
+                </td>
+              </tr>
+              <tr>
+                <th>Operation Type</th>
+                <td>
+                  <standard-copy>{{ transaction.operationType }}</standard-copy>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </ng-container>
+
+        <!-- Operations -->
+        <ng-container matColumnDef="operations">
+          <th mat-header-cell *matHeaderCellDef>Operations</th>
+          <td mat-cell *matCellDef="let transaction">
+            <ng-container *ngFor="let operation of transaction.operations">
+              <table class="info-table">
+                <tr>
+                  <th>Type</th>
+                  <td>
+                    <standard-copy>{{ operation?.type }}</standard-copy>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Item</th>
+                  <td>
+                    <standard-copy>{{ operation?.itemName ?? 'N/A' }}</standard-copy>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Item Id</th>
+                  <td>
+                    <standard-copy>{{ operation.itemId }}</standard-copy>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Amount</th>
+                  <td>
+                    <standard-copy>{{ operation?.amount }}</standard-copy>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Stack Id</th>
+                  <td>
+                    <standard-copy>{{ operation.stackId }}</standard-copy>
+                  </td>
+                </tr>
+              </table>
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

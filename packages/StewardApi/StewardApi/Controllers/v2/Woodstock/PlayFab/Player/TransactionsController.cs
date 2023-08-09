@@ -12,6 +12,10 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
+using PlayFab.EconomyModels;
+using Kusto.Cloud.Platform.Utils;
+using System.Linq;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
@@ -51,9 +55,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
 
             try
             {
-                var response = await this.playFabService.GetTransactionHistoryAsync(playFabEntityId, playFabEnvironment).ConfigureAwait(true);
+                var getVouchers = this.playFabService.GetVouchersAsync(playFabEnvironment);
+                var getTransactions = this.playFabService.GetTransactionHistoryAsync(playFabEntityId, playFabEnvironment);
 
-                return this.Ok(response);
+                await Task.WhenAll(getVouchers, getTransactions).ConfigureAwait(true);
+
+                var vouchers = getVouchers.GetAwaiter().GetResult();
+                var transactions = getTransactions.GetAwaiter().GetResult();
+
+                transactions.ForEach(transaction => 
+                {
+                    transaction.Operations.ForEach(operation =>
+                    {
+                        var voucher = vouchers.FirstOrDefault(voucher => voucher.Id == operation.ItemId);
+                        operation.ItemName = voucher?.Title["NEUTRAL"] ?? "N/A";
+                    });
+                });
+
+                return this.Ok(transactions);
             }
             catch (Exception ex)
             {

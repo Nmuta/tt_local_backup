@@ -19,6 +19,38 @@
           <woodstock-consoles [identity]="identity"></woodstock-consoles>
         </div>
       </mat-tab>
+      <mat-tab *ngIf="!isSpecialXuid">
+        <ng-template mat-tab-label>
+          PlayFab
+          <inline-spinner [monitor]="getPlayFabProfileMonitor | renderGuard"></inline-spinner>
+        </ng-template>
+        <div class="sf-wrapper sf-tab-container">
+          <ng-container *waitForMonitor="getPlayFabProfileMonitor">
+            <table class="info-table">
+              <tr>
+                <th>Master Id</th>
+                <td>
+                  <standard-copy>{{ playfabProfile?.master }}</standard-copy>
+                </td>
+              </tr>
+              <tr>
+                <th>Title Id</th>
+                <td>
+                  <standard-copy>{{ playfabProfile?.title }}</standard-copy>
+                </td>
+              </tr>
+            </table>
+
+            <woodstock-playfab-inventory
+              [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+            ></woodstock-playfab-inventory>
+
+            <woodstock-playfab-transaction-history
+              [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+            ></woodstock-playfab-transaction-history>
+          </ng-container>
+        </div>
+      </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Deep Dive">
         <div class="sf-wrapper sf-tab-container">
           <woodstock-overview [identity]="identity"></woodstock-overview>
