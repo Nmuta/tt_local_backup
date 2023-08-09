@@ -26,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             ConfigurationKeyConstants.SunriseClientVersion,
             ConfigurationKeyConstants.SunriseAdminXuid,
             ConfigurationKeyConstants.SunriseSandbox,
-            ConfigurationKeyConstants.SunriseTitleId
+            ConfigurationKeyConstants.SunriseTitleId,
         };
 
         private readonly string clientVersion;
@@ -174,7 +174,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
                 Gamertag = "UNKNOWN",
                 Sandbox = this.sandbox,
                 TokenLifetimeMinutes = 60,
-                Xuid = this.adminXuid
+                Xuid = this.adminXuid,
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -39,7 +38,8 @@ namespace Turn10.LiveOps.StewardApi.Filters
     }
 
     [Flags]
-    public enum TitleLogTags {
+    public enum TitleLogTags
+    {
         TitleAgnostic = 1,
         Opus = 2,
         Apollo = 4,

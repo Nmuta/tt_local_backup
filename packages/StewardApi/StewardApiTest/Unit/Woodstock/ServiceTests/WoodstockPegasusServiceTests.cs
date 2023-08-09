@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System;
+using System.Collections.Generic;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Logging;

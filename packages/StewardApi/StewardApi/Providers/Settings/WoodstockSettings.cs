@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             ConfigurationKeyConstants.WoodstockClientVersion,
             ConfigurationKeyConstants.WoodstockAdminXuid,
             ConfigurationKeyConstants.WoodstockSandbox,
-            ConfigurationKeyConstants.WoodstockTitleId
+            ConfigurationKeyConstants.WoodstockTitleId,
         };
 
         /// <summary>

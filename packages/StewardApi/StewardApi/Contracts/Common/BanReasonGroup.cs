@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {

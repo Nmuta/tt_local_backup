@@ -1,5 +1,4 @@
 ﻿using Castle.DynamicProxy;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Turn10.LiveOps.StewardApi.Proxies
 {

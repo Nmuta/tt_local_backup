@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.Services.LiveOps.FH5_main.Generated;
-using Turn10.UGC.Contracts;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
@@ -551,7 +548,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch (Exception ex)
             {
-               throw new UnknownFailureStewardException("Search player auctions failed.", ex);
+                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
             }
 
             return this.mapper.SafeMap<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
@@ -570,7 +567,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 response = await this.woodstockService.GetUserReportWeightAsync(xuid, endpoint).ConfigureAwait(false);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new UnknownFailureStewardException("Failed to get user report weight.", ex);
             }

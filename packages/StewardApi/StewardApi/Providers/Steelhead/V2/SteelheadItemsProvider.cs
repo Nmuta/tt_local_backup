@@ -5,20 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SteelheadLiveOpsContent;
-using Turn10;
 using Turn10.Data.Common;
-using Turn10.LiveOps;
-using Turn10.LiveOps.StewardApi;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
 {
@@ -50,7 +43,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
         [SuppressMessage("Usage", "VSTHRD103:GetResult synchronously blocks", Justification = "Used in conjunction with Task.WhenAll")]
         public async Task<SteelheadMasterInventory> GetMasterInventoryAsync()
         {
-
             var getCars = this.pegasusService.GetCarsAsync().SuccessOrDefault(Array.Empty<SteelheadLiveOpsContent.DataCar>(), new Action<Exception>(ex =>
             {
                 this.loggingService.LogException(new PegasusAppInsightsException("Failed to get Steelhead Pegasus cars.", ex));
@@ -74,6 +66,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             };
 
             return masterInventory;
+        }
+
+        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily)
+        {
+            IEnumerable<VanityItem> vanityItems;
+            try
+            {
+                vanityItems = await this.pegasusService.GetVanityItemsAsync(slotId).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Failed to get Steelhead Pegasus cars.", ex);
+            }
+
+            return vanityItems;
         }
 
         /// <inheritdoc />

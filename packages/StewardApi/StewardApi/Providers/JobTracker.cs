@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,13 +11,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Hubs;
 
 namespace Turn10.LiveOps.StewardApi.Providers
@@ -121,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             {
                 var serializedResults = JsonConvert.SerializeObject(jobResult, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 var tableQuery = new TableQuery<BackgroundJobInternal>()
@@ -298,7 +293,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
+            var tableStorageConnectionString = this.keyVaultConfig.TableStorageConnectionString;
 
             this.configuration.Bind("BackgroundJobStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;

@@ -4,13 +4,11 @@ using System.Text.RegularExpressions;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Table;
 using Turn10.Services.Diagnostics;
-using Turn10.Services.Orm;
 using Turn10.Services.Storage.Table;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable SA1600 // Elements should be documented
-
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {

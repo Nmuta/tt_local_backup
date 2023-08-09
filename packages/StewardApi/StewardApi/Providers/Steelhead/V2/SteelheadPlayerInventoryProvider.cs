@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             {
                 PlayerOrLspGroup = xuid,
                 TargetXuid = xuid,
-                IdentityAntecedent = GiftIdentityAntecedent.Xuid
+                IdentityAntecedent = GiftIdentityAntecedent.Xuid,
             };
 
             try
@@ -116,9 +116,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                                 xuid,
                                 itemId,
                                 gift.BodyMessageId,
-                                gift.TitleMessageId
+                                gift.TitleMessageId)
                                 /* hasExpiration, */
-                                /* gift.ExpireTimeSpanInDays */).ConfigureAwait(false);
+                                /* gift.ExpireTimeSpanInDays) */
+                                .ConfigureAwait(false);
                         }
                     }
                     else
@@ -199,7 +200,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             {
                 PlayerOrLspGroup = groupId,
                 TargetLspGroupId = groupId,
-                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
             };
 
             try
@@ -218,7 +219,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                         // TODO: Switch this with the LSP endpoint once it becomes available
                         // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1363280
                         throw new InvalidArgumentsStewardException($"Failed to gift car to a group. This feature is currently not supported. (groupId: {groupId}) (carId: {itemId}), (quantity: {quantity})");
-                    } 
+                    }
                     else
                     {
                         await service.GiftingManagementService.AdminSendInventoryItemGroupGift(
@@ -368,7 +369,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     Endpoint = service.Endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
                     ExpireDateUtc = createdDate.AddYears(10),
-                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}"
+                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}",
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -422,6 +423,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     try
                     {
                         remainingCurrencyToSend -= creditsToSend;
+
                         // TODO: This is temporary. Services is still figuring out what credit item ids will be.
                         var creditItemId = 0;
                         await serviceCall(type, creditItemId, (uint)creditsToSend).ConfigureAwait(false);

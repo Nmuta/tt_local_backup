@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FM7.Generated;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -20,10 +19,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.Apollo;
-using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services;
-using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
@@ -96,11 +92,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
                     Xuid = xuid,
                 });
             }
+
             // End of temporary code //
             var response = new GetUserGroupUsersResponse()
             {
                 PlayerList = userList,
-                PlayerCount = users.available
+                PlayerCount = users.available,
             };
 
             return this.Ok(response);
@@ -123,7 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             var newGroup = new LspGroup()
             {
                 Id = result.groupId,
-                Name = userGroupName
+                Name = userGroupName,
             };
             return this.Ok(newGroup);
         }
@@ -274,7 +271,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
             {
                 var userGroupPageArray = new ForzaUserGroupOperationPage[]
                 {
-                    new ForzaUserGroupOperationPage() { userIds = userIdsChunk }
+                    new ForzaUserGroupOperationPage() { userIds = userIdsChunk },
                 };
                 var bulkOperationOutput = await userManagementService.CreateUserGroupBulkOperationV2(ForzaBulkOperationType.Add, groupId, userGroupPageArray).ConfigureAwait(false);
                 failedUsers.AddRange(this.mapper.SafeMap<IEnumerable<BasicPlayer>>(bulkOperationOutput.failedUsers.SelectMany(x => x.userIds)));

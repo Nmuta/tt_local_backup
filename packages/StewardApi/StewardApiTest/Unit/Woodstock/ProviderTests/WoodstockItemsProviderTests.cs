@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.Mapper.SafeMap<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.EmoteData>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
                 this.Mapper.SafeMap<IEnumerable<MasterInventoryItem>>(Arg.Any<IEnumerable<WoodstockLiveOpsContent.QuickChat>>()).Returns(Fixture.Create<IEnumerable<MasterInventoryItem>>());
             }
-            
+
             public IWoodstockPegasusService PegasusService { get; set; } = Substitute.For<IWoodstockPegasusService>();
 
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();

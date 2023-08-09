@@ -1,6 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using System.Linq;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Linq;
 
 namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
 {
@@ -15,7 +15,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
                 .FirstOrDefault(p => p.Name == "api-version" && p.In == ParameterLocation.Query);
 
             if (versionParameter != null)
+            {
                 operation.Parameters.Remove(versionParameter);
+            }
         }
     }
 }

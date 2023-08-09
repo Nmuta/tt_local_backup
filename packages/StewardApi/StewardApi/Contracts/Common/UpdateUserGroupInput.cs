@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents a list of xuids and a list of gamertags to add/remove from a User Group.

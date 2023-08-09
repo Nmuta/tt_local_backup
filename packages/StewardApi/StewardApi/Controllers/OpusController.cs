@@ -178,7 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return new IdentityResultAlpha
                     {
                         Error = new InvalidArgumentsStewardError(ex.Message, ex),
-                        Query = query
+                        Query = query,
                     };
                 }
 
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return new IdentityResultAlpha
                     {
                         Error = new NotFoundStewardError(ex.Message, ex),
-                        Query = query
+                        Query = query,
                     };
                 }
 

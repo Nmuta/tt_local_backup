@@ -84,7 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 PlayerOrLspGroup = xuid,
                 TargetXuid = xuid,
-                IdentityAntecedent = GiftIdentityAntecedent.Xuid
+                IdentityAntecedent = GiftIdentityAntecedent.Xuid,
             };
 
             try
@@ -163,7 +163,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 PlayerOrLspGroup = groupId,
                 TargetLspGroupId = groupId,
-                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
             };
 
             try
@@ -267,7 +267,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             return new Dictionary<InventoryItemType, IList<MasterInventoryItem>>
             {
                 { InventoryItemType.Car, this.EmptyIfNull(giftInventory.Cars) },
-                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) }
+                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) },
             };
         }
 

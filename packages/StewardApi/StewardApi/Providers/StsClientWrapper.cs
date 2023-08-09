@@ -1,21 +1,19 @@
-﻿namespace Turn10.LiveOps.StewardApi.Providers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Net.Http;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Options;
-    using Turn10.Contracts.STS;
-    using Turn10.Contracts.STS.Responses;
-    using Turn10.Data.Common;
-    using Turn10.Data.SecretProvider;
-    using Turn10.LiveOps.StewardApi.Common;
-    using Turn10.LiveOps.StewardApi.Contracts.STS;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Turn10.Contracts.STS;
+using Turn10.Contracts.STS.Responses;
+using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.STS;
 
+namespace Turn10.LiveOps.StewardApi.Providers
+{
     /// <inheritdoc/>
     public sealed class StsClientWrapper : IStsClient
     {

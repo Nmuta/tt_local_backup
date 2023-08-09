@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kusto.Cloud.Platform.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
-using Microsoft.AspNetCore.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Kusto.Cloud.Platform.Utils;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
                 var vouchers = getVouchers.GetAwaiter().GetResult();
                 var inventoryItems = getInventoryItems.GetAwaiter().GetResult();
 
-                inventoryItems.ForEach(item => 
+                inventoryItems.ForEach(item =>
                 {
                     var voucher = vouchers.FirstOrDefault(voucher => voucher.Id == item.Id);
                     item.Name = voucher.Title["NEUTRAL"] ?? "N/A";
@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
             inventoryChange.ItemId.ShouldNotBeNull(nameof(inventoryChange.ItemId));
             inventoryChange.Amount.ShouldBeGreaterThanValue(0, nameof(inventoryChange.Amount));
 
-            if(inventoryChange.Amount > 10)
+            if (inventoryChange.Amount > 10)
             {
                 throw new InvalidArgumentsStewardException($"Can not add more than 10 instances of a single inventory item at a time. (amount: {inventoryChange.Amount})");
             }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LiveOpsService = Forza.WebServices.FH5_main.Generated.LiveOpsService;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using LiveOpsService = Forza.WebServices.FH5_main.Generated.LiveOpsService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
 #pragma warning disable SA1516 // Blank lines

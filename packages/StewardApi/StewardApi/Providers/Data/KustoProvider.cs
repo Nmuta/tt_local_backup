@@ -482,6 +482,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                         while (reader.Read())
                         {
                             var saveRollback = SaveRollbackHistory.FromQueryResult(reader);
+
                             // Only add the successful save rollback
                             if (saveRollback.ResultCode == 1)
                             {

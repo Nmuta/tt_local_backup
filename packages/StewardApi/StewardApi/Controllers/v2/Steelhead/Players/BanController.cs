@@ -14,7 +14,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -62,13 +61,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     "Credit/XP/Wheelspin hacking",
                     "Ban dodging",
                     "Employee harassment",
-                    "Breaching NDA"
+                    "Breaching NDA",
                 },
                 BanConfigurationId = new Guid("1049fa1f-7ffe-4188-ae21-89ef661e1a7b"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.AllRequests
-                }
+                    FeatureAreas.AllRequests,
+                },
             },
             new BanReasonGroup<FeatureAreas>()
             {
@@ -88,8 +87,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                 BanConfigurationId = new Guid("5394efb9-8cc1-4f93-98ea-ab7e2693b7d2"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.AllRequests
-                }
+                    FeatureAreas.AllRequests,
+                },
             },
             new BanReasonGroup<FeatureAreas>()
             {
@@ -109,14 +108,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     "Low Effort/Quality Content",
                     "Child Endangerment",
                     "Sexually Inappropriate/Suggestive",
-                    "Threat of Self Harm"
+                    "Threat of Self Harm",
                 },
                 BanConfigurationId = new Guid("563a4a85-9f0d-4678-a86c-f4d71fb9f424"),
                 FeatureAreas = new List<FeatureAreas>
                 {
                     FeatureAreas.UserGeneratedContent,
-                    FeatureAreas.AuctionHouse
-                }
+                    FeatureAreas.AuctionHouse,
+                },
             },
             new BanReasonGroup<FeatureAreas>()
             {
@@ -126,7 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     "Intentional ramming/wrecking, pinning, pitting, spearing, shoving, and blocking in races",
                     "Light Bullying",
                     "Vulgar language",
-                    "Track cutting/extending to pass"
+                    "Track cutting/extending to pass",
                 },
                 BanConfigurationId = new Guid("253c7ad6-68ac-4ac7-b784-1452753acaef"),
                 FeatureAreas = new List<FeatureAreas>
@@ -134,22 +133,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                     FeatureAreas.Matchmaking,
                     FeatureAreas.DailyCredit,
                     FeatureAreas.Community,
-                    FeatureAreas.Drivatar
-                }
+                    FeatureAreas.Drivatar,
+                },
             },
             new BanReasonGroup<FeatureAreas>()
             {
                 Name = "Developer",
                 Reasons = new List<string>
                 {
-                    "Testing"
+                    "Testing",
                 },
                 BanConfigurationId = new Guid("c8ec2fac-6132-4c87-85dc-1b799e08aca4"),
                 FeatureAreas = new List<FeatureAreas>
                 {
-                    FeatureAreas.Test
-                }
-            }
+                    FeatureAreas.Test,
+                },
+            },
         };
 
         private readonly ISteelheadPegasusService pegasusService;
@@ -210,7 +209,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [SwaggerResponse(200, type: typeof(IList<BanConfiguration>))]
         public async Task<IActionResult> GetBanConfigurations()
         {
-            var pegasusEnvironment = this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Studio 
+            var pegasusEnvironment = this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Studio
                                   || this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Flight
                                    ? SteelheadPegasusEnvironment.Dev : SteelheadPegasusEnvironment.Prod;
 
@@ -336,8 +335,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                         PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
                         FeatureArea = calculatedBanAreas,
                         OverrideBanDuration = x.Override,
-                        // ForzaBanDuration is completely ignored by services if OverrideBanDuration is not set to true
-                        BanDurationOverride = new ForzaBanDuration()
+                        BanDurationOverride = new ForzaBanDuration() // ForzaBanDuration is completely ignored by services if OverrideBanDuration is not set to true
                         {
                             IsDeviceBan = x.OverrideBanConsoles.Value,
                             IsPermaBan = x.OverrideDurationPermanent.Value,
@@ -349,7 +347,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                                 Seconds = (uint)x.OverrideDuration.Value.Seconds,
                             }
                             : emptyDuration,
-                        }
+                        },
                     });
 
                     var result = new UserManagementService.BanUsersV2Output();
@@ -364,7 +362,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                         {
                             Xuid = ban.xuids.First(),
                             BanDescription = null,
-                            Error = new ServicesFailureStewardError("Ban Request Failed", ex)
+                            Error = new ServicesFailureStewardError("Ban Request Failed", ex),
                         });
                         banResults.AddRange(failureResult);
                     }

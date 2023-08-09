@@ -22,7 +22,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -57,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.KeyVaultUrl,
-            ConfigurationKeyConstants.GroupGiftPasswordSecretName
+            ConfigurationKeyConstants.GroupGiftPasswordSecretName,
         };
 
         private readonly IMemoryCache memoryCache;
@@ -234,7 +233,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .ConfigureAwait(true);
             if (playerDetails == null)
             {
-               throw new NotFoundStewardException($"Player {xuid} was not found.");
+                throw new NotFoundStewardException($"Player {xuid} was not found.");
             }
 
             return this.Ok(playerDetails);
@@ -1071,7 +1070,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     new MasterInventoryItem { Id = -1, Description = "ForzathonPoints" },
                     new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
                     new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
-                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
+                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" },
                 },
                 Cars = await cars.ConfigureAwait(true),
                 VanityItems = await vanityItems.ConfigureAwait(true),

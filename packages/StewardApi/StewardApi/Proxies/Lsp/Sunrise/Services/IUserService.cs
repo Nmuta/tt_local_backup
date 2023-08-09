@@ -1,6 +1,6 @@
-﻿using Forza.WebServices.FH4.Generated;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Forza.WebServices.FH4.Generated;
 using static Forza.WebServices.FH4.Generated.UserService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix

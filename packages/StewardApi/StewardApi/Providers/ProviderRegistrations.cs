@@ -1,7 +1,4 @@
 ﻿using Autofac;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {

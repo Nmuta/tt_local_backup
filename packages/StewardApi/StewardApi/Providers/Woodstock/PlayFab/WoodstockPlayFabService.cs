@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,8 +9,8 @@ using PlayFab.AuthenticationModels;
 using PlayFab.EconomyModels;
 using PlayFab.Internal;
 using PlayFab.MultiplayerModels;
-using PlayFab.ServerModels;
 using PlayFab.ProfilesModels;
+using PlayFab.ServerModels;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
@@ -17,7 +18,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using EntityKey = PlayFab.EconomyModels.EntityKey;
 using ProfileEntityKey = PlayFab.ProfilesModels.EntityKey;
-using System.Globalization;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
 {
@@ -157,7 +157,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async  Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
+        public async Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.GetInventoryItemsAsync();
@@ -246,7 +246,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             return authContext;
         }
 
-        private async Task<T> MakePlayFabEntityTokenRequestAsync<T>(WoodstockPlayFabEnvironment environment, string path, PlayFabRequestCommon request) 
+        private async Task<T> MakePlayFabEntityTokenRequestAsync<T>(WoodstockPlayFabEnvironment environment, string path, PlayFabRequestCommon request)
             where T : PlayFabResultCommon
         {
             var config = this.GetPlayFabConfig(environment);
@@ -256,11 +256,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             var response = await PlayFabHttp.DoPost(path, request, "X-EntityToken", authContext.EntityToken, null, instanceSettings).ConfigureAwait(false);
             this.VerifyPlayFabResponseElseThrow(response);
 
-            string serialized = (string)response;
+            var serialized = (string)response;
             return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<T>>(serialized).data;
         }
 
-        private async Task<T> MakePlayFabSecretTokenRequestAsync<T>(WoodstockPlayFabEnvironment environment, string path, PlayFabRequestCommon request) 
+        private async Task<T> MakePlayFabSecretTokenRequestAsync<T>(WoodstockPlayFabEnvironment environment, string path, PlayFabRequestCommon request)
             where T : PlayFabResultCommon
         {
             var config = this.GetPlayFabConfig(environment);
@@ -270,7 +270,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             var response = await PlayFabHttp.DoPost(path, request, "X-SecretKey", config.Key, null, instanceSettings).ConfigureAwait(false);
             this.VerifyPlayFabResponseElseThrow(response);
 
-            string serialized = (string)response;
+            var serialized = (string)response;
             return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<T>>(serialized).data;
         }
 
@@ -278,10 +278,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         {
             if (playFabApiResponse is PlayFabError)
             {
-                PlayFabError error = (PlayFabError)playFabApiResponse;
+                var error = (PlayFabError)playFabApiResponse;
                 throw new UnknownFailureStewardException(error.ErrorMessage);
             }
         }
-
     }
 }

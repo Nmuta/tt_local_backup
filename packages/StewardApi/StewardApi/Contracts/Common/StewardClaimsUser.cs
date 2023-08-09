@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
-
-// TODO: this type should probably wrap the ClaimsPrincipal rather than constructing a POCO, or this method should be a static-type method ctor like StewardUser.FromClaims(...). Either option will lend itself to easier extensibility in the future
+﻿// TODO: this type should probably wrap the ClaimsPrincipal rather than constructing a POCO, or this method should be a static-type method ctor like StewardUser.FromClaims(...). Either option will lend itself to easier extensibility in the future
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>

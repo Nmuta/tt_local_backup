@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityNullXuidAndGamertag()
         {
-            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null};
+            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null };
 
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 
@@ -1548,7 +1548,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var message = new BulkCommunityMessage
             {
-                Xuids = new List<ulong> {notificationXuid},
+                Xuids = new List<ulong> { notificationXuid },
                 Message = "Integration Test Message",
             };
             var result = await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
@@ -1773,7 +1773,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendProfileNotes_InvalidXuid()
         {
-            var message = new ProfileNote {Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow};
+            var message = new ProfileNote { Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow };
 
             try
             {
@@ -1973,11 +1973,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                         new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
                         new MasterInventoryItem {Id = -1, Description = "BackstagePasses", Quantity = 1}
                     },
-                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2616, Quantity = 1}},
-                CarHorns = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 22, Quantity = 1}},
-                VanityItems = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 3, Quantity = 1}},
-                Emotes = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 6, Quantity = 1}},
-                QuickChatLines = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 190, Quantity = 1}}
+                Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 2616, Quantity = 1 } },
+                CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 22, Quantity = 1 } },
+                VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 3, Quantity = 1 } },
+                Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 6, Quantity = 1 } },
+                QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 190, Quantity = 1 } }
             };
 
             return giftInventory;

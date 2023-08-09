@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using Forza.WebServices.FMG.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardTest.Utilities;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
@@ -26,7 +21,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
             stewardClient = new PlayerDetailsControllerTestingClient(new Uri(endpoint), authKey);
             unauthedClient = new PlayerDetailsControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
-            
+
         }
 
         [TestMethod]

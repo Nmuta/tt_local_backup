@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.KeyVaultUrl,
-            ConfigurationKeyConstants.GroupGiftPasswordSecretName
+            ConfigurationKeyConstants.GroupGiftPasswordSecretName,
         };
 
         private readonly IMemoryCache memoryCache;
@@ -908,7 +908,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 hasPermissionsToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
             return this.Ok(response);
-            }
+        }
 
         /// <summary>
         ///     Gets the gift histories.
@@ -1058,7 +1058,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return new IdentityResultAlpha
                     {
                         Error = new InvalidArgumentsStewardError(ex.Message, ex),
-                        Query = query
+                        Query = query,
                     };
                 }
 
@@ -1067,7 +1067,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return new IdentityResultAlpha
                     {
                         Error = new NotFoundStewardError(ex.Message, ex),
-                        Query = query
+                        Query = query,
                     };
                 }
 
@@ -1089,7 +1089,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             {
                 CreditRewards = new List<MasterInventoryItem>
                 {
-                        new MasterInventoryItem { Id = -1, Description = "Credits" }
+                        new MasterInventoryItem { Id = -1, Description = "Credits" },
                 },
                 Cars = await cars.ConfigureAwait(true),
                 VanityItems = await vanityItems.ConfigureAwait(true),

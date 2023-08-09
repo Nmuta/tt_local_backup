@@ -1,13 +1,12 @@
-﻿using System;
-using System.Net.Http;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System;
+using System.Net.Http;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts.STS;
 using Turn10.LiveOps.StewardApi.Providers;
 
 namespace Turn10.LiveOps.StewardTest.Unit

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Forza.LiveOps.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -272,7 +272,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();
-            
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public SunriseStorefrontProvider Build() => new SunriseStorefrontProvider(this.SunriseService, this.Mapper);

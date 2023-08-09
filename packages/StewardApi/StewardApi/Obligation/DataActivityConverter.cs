@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         private static readonly JsonSerializerSettings SpecifiedSubclassConversion
             = new JsonSerializerSettings()
             {
-                ContractResolver = new DataActivityBaseSpecifiedConcreteClassConverter()
+                ContractResolver = new DataActivityBaseSpecifiedConcreteClassConverter(),
             };
 
         /// <inheritdoc/>
