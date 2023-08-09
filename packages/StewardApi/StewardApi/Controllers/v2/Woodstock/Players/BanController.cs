@@ -361,7 +361,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                         {
                             Xuid = ban.xuids.First(),
                             BanDescription = null,
-                            Error = new ServicesFailureStewardError("Ban Request Failed", ex)
+                            Error = new ServicesFailureStewardError("Ban Request Failed", ex),
                         });
                         banResults.AddRange(failureResult);
                     }

@@ -14,7 +14,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -210,7 +209,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         [SwaggerResponse(200, type: typeof(IList<BanConfiguration>))]
         public async Task<IActionResult> GetBanConfigurations()
         {
-            var pegasusEnvironment = this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Studio 
+            var pegasusEnvironment = this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Studio
                                   || this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Flight
                                    ? SteelheadPegasusEnvironment.Dev : SteelheadPegasusEnvironment.Prod;
 
@@ -336,8 +335,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                         PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
                         FeatureArea = calculatedBanAreas,
                         OverrideBanDuration = x.Override,
-                        // ForzaBanDuration is completely ignored by services if OverrideBanDuration is not set to true
-                        BanDurationOverride = new ForzaBanDuration()
+                        BanDurationOverride = new ForzaBanDuration() // ForzaBanDuration is completely ignored by services if OverrideBanDuration is not set to true
                         {
                             IsDeviceBan = x.OverrideBanConsoles.Value,
                             IsPermaBan = x.OverrideDurationPermanent.Value,
@@ -349,7 +347,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                                 Seconds = (uint)x.OverrideDuration.Value.Seconds,
                             }
                             : emptyDuration,
-                        }
+                        },
                     });
 
                     var result = new UserManagementService.BanUsersV2Output();
@@ -364,7 +362,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                         {
                             Xuid = ban.xuids.First(),
                             BanDescription = null,
-                            Error = new ServicesFailureStewardError("Ban Request Failed", ex)
+                            Error = new ServicesFailureStewardError("Ban Request Failed", ex),
                         });
                         banResults.AddRange(failureResult);
                     }
