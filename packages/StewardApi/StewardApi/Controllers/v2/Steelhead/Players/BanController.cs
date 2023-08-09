@@ -352,9 +352,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
                             : emptyDuration,
                         }
                     });
-                    var result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
 
-                    banResults.AddRange(this.mapper.SafeMap<IList<BanResult>>(result.banResults));
+                    var result = new UserManagementService.BanUsersV2Output();
+                    try
+                    {
+                        result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
+                        banResults.AddRange(this.mapper.SafeMap<IList<BanResult>>(result.banResults));
+                    }
+                    catch (Exception ex)
+                    {
+                        var failureResult = mappedBanParameters.Select(ban => new BanResult()
+                        {
+                            Xuid = ban.xuids.First(),
+                            BanDescription = null,
+                            Error = new ServicesFailureStewardError("Ban Request Failed", ex)
+                        });
+                        banResults.AddRange(failureResult);
+                    }
                 }
 
                 foreach (var result in banResults)
