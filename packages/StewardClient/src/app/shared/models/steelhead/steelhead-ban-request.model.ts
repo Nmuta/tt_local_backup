@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import { GamertagString } from '@models/extended-types';
 import { Duration } from 'luxon';
 
 export enum SteelheadBanArea {
@@ -19,13 +18,12 @@ export enum SteelheadBanArea {
 
 /** A single part of the bulk /v1/title/steelhead/players/ban request model */
 export interface SteelheadBanRequest {
-  xuid: BigNumber;
-  gamertag: GamertagString;
-  banAllConsoles: boolean;
-  banAllPcs: boolean;
+  xuid?: BigNumber;
   deleteLeaderboardEntries: boolean;
-  sendReasonNotification: boolean;
+  reasonGroupName: string;
   reason: string;
-  featureArea: SteelheadBanArea;
-  duration: Duration;
+  override: boolean;
+  overrideDuration?: Duration;
+  overrideDurationPermanent?: boolean;
+  overrideBanConsoles?: boolean;
 }

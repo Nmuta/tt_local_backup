@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static List<LiveOpsBanHistory> ConsolidateBanHistory(IList<LiveOpsBanHistory> liveOpsBanHistory, IList<LiveOpsBanHistory> servicesBanHistory, ILoggingService loggingService, string gameTitle)
         {
             IEqualityComparer<LiveOpsBanHistory> titleAppropriateBanHistoryComparer =
-                gameTitle == TitleCodeName.Woodstock.ToString()
+                gameTitle == TitleCodeName.Woodstock.ToString() || gameTitle == TitleCodeName.Steelhead.ToString()
                     ? new LiveOpsBanHistoryIdComparer()
                     : new LiveOpsBanHistoryComparer();
 

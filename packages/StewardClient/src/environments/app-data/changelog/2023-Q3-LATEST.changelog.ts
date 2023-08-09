@@ -13,6 +13,19 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Added Driver Suit item type to inventory management and gifting',
     },
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '645aa649-6b61-4fd4-98c1-75edccad1e59',
+      shortText: 'Moved ban submit button to top right of card',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserBanning },
+      uuid: '7778ac73-29d8-4820-b582-2a8e57a3cf07',
+      shortText: 'Updated so duration and feature area of ban are decided by ban reason',
+      longText: [
+        'If you need to ban for other areas or durations, you can use the override options',
+      ],
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.PermissionManagement },
       uuid: '54f931b4-a4b9-452f-b7a6-340799459e45',
       shortText: 'Add support for team leads',
