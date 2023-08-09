@@ -152,7 +152,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             }
         };
 
-
         private readonly ISteelheadPegasusService pegasusService;
         private readonly IMapper mapper;
         private readonly IActionLogger actionLogger;
