@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System;
-using Xls.Security.FM8.Generated;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents a Steelhead ban reason group.
+    ///     Represents a ban reason group.
     /// </summary>
-    public sealed class SteelheadBanReasonGroup
+    public sealed class BanReasonGroup<TFeatureAreas>
     {
         /// <summary>
         ///     Gets or sets the name.
@@ -27,6 +26,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         /// <summary>
         ///     Gets or sets the list of feature areas.
         /// </summary>
-        public IEnumerable<FeatureAreas> FeatureAreas { get; set; }
+        public IEnumerable<TFeatureAreas> FeatureAreas { get; set; }
     }
 }
