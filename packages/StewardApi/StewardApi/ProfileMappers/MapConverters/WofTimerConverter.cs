@@ -1,9 +1,9 @@
-﻿#pragma warning disable SA1649 // File name should match first type name
-#pragma warning disable SA1402 // File may only contain a single type
-
-using System;
+﻿using System;
 using AutoMapper;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+
+#pragma warning disable SA1649 // File name should match first type name
+#pragma warning disable SA1402 // File may only contain a single type
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
 {
@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
                 ChapterBridge = new ChapterBridge(),
                 LadderBridge = new LadderBridge(),
                 SeriesBridge = new SeriesBridge(),
-                SeasonBridge = new SeasonBridge()
+                SeasonBridge = new SeasonBridge(),
             };
         }
     }

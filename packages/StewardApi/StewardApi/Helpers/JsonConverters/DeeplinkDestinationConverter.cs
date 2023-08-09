@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
@@ -11,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
     /// <summary>
     ///     Json converter for DeeplinkDestination into the right inherited class.
     /// </summary>
-    public class DestinationConverter : JsonConverter<DeeplinkDestination>
+    public class DeeplinkDestinationConverter : JsonConverter<DeeplinkDestination>
     {
         public override bool CanWrite => false;
 

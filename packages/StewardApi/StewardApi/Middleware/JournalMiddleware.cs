@@ -59,23 +59,21 @@ namespace Turn10.LiveOps.StewardApi.Middleware
 
             try
             {
-                using (var newResponseBody = new MemoryStream())
-                {
-                    context.Response.Body = newResponseBody;
+                using var newResponseBody = new MemoryStream();
+                context.Response.Body = newResponseBody;
 
-                    await this.requestDelegate(context).ConfigureAwait(false);
+                await this.requestDelegate(context).ConfigureAwait(false);
 
-                    newResponseBody.Position = 0;
+                newResponseBody.Position = 0;
 
-                    using var responseStreamReader = new StreamReader(newResponseBody);
+                using var responseStreamReader = new StreamReader(newResponseBody);
 
-                    var responseBody = await responseStreamReader.ReadToEndAsync().ConfigureAwait(false);
+                var responseBody = await responseStreamReader.ReadToEndAsync().ConfigureAwait(false);
 
-                    newResponseBody.Position = 0;
-                    await newResponseBody.CopyToAsync(originalResponseBody).ConfigureAwait(false);
+                newResponseBody.Position = 0;
+                await newResponseBody.CopyToAsync(originalResponseBody).ConfigureAwait(false);
 
-                    await this.HandleRequestAsync(context, requestBody, responseBody).ConfigureAwait(false);
-                }
+                await this.HandleRequestAsync(context, requestBody, responseBody).ConfigureAwait(false);
             }
             finally
             {
@@ -119,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Middleware
                 QueryParameters = context.Request.Query.Select(q => new Tuple<string, string>(q.Key, q.Value)).ToList(),
                 TimestampUtc = DateTime.UtcNow,
                 SessionId = GetHeader(SessionIdHeaderParameterOperationFilter.SessionIdHeaderName, context.Request.Headers),
-                Method = context.Request.Method
+                Method = context.Request.Method,
             };
         }
     }

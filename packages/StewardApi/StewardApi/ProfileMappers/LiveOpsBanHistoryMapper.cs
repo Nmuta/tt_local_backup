@@ -140,6 +140,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             }
 
             var mappedFeatureAreas = new List<string>();
+
             // Use bitwise AND operator to reverse what the featureAreas were
             foreach (uint value in Enum.GetValues(typeof(FH5Security.FeatureAreas)))
             {
@@ -168,6 +169,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             }
 
             var mappedFeatureAreas = new List<string>();
+
             // Use bitwise AND operator to reverse what the featureAreas were
             foreach (uint value in Enum.GetValues(typeof(FM8Security.FeatureAreas)))
             {

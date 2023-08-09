@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
@@ -266,7 +266,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> {query}).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1052,7 +1052,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
-            
+
             public IApolloPlayerDetailsProvider ApolloPlayerDetailsProvider { get; set; } = Substitute.For<IApolloPlayerDetailsProvider>();
 
             public IApolloPlayerInventoryProvider ApolloPlayerInventoryProvider { get; set; } = Substitute.For<IApolloPlayerInventoryProvider>();

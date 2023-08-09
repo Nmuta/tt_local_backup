@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityNullXuidAndGamertag()
         {
-            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null};
+            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null };
 
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 
@@ -1553,11 +1553,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
                     {
                         new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
                     },
-                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 422, Quantity = 1}},
-                CarHorns = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 10, Quantity = 1}},
-                VanityItems = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 191, Quantity = 1}},
-                Emotes = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 38, Quantity = 1}},
-                QuickChatLines = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 188, Quantity = 1}}
+                Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 422, Quantity = 1 } },
+                CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 10, Quantity = 1 } },
+                VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 191, Quantity = 1 } },
+                Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 38, Quantity = 1 } },
+                QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 188, Quantity = 1 } }
             };
 
             return giftInventory;

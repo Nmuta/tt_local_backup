@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.StewardEnvironment
+            ConfigurationKeyConstants.StewardEnvironment,
         };
 
         private readonly bool allowGiftingToAllUsers;
@@ -513,7 +513,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
             return await storefrontService.SearchUGC(filters, contentType, includeThumbnails, 5_000).ConfigureAwait(false);
         }
-
 
         /// <inheritdoc/>
         public async Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLiveryAsync(

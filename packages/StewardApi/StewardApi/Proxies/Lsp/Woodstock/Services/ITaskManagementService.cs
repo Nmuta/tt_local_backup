@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.Services.LiveOps.FH5_main.Generated.TaskManagementService;
 

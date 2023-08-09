@@ -1,7 +1,7 @@
-﻿using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FM8.Generated;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Forza.UserInventory.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
 using static Forza.WebServices.FM8.Generated.LiveOpsService;
 using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 
@@ -148,7 +148,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         /// <summary>
         ///     Sets safety rating history by xuid.
         /// </summary>
-
         Task<SetLiveOpsSafetyRatingHistoryOutput> SetLiveOpsSafetyRatingHistory(ulong xuid, double[] ratingHistory);
 
         /// <summary>

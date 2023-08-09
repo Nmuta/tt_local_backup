@@ -5,13 +5,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.BigCat;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.MsTeams;
-using Turn10.LiveOps.StewardApi.Controllers;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
-using Turn10.LiveOps.StewardApi.Controllers.V2;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.BigCat;
@@ -56,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
             { "Forza Motorsport Deluxe Edition", "9PN4DRJDLZT7" },
             { "Forza Motorsport Premium Edition", "9P8PGC771MLP" },
             { "Forza Motorsport Premium Add-Ons Bundle", "9N5MZM3J3LCQ" },
-            { "Forza Horizon 5 Standard Edition", "9NKX70BBCDRN" }
+            { "Forza Horizon 5 Standard Edition", "9NKX70BBCDRN" },
         };
 
             return this.Ok(productIdMap);

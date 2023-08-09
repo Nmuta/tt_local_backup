@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Data;
-using System.Globalization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.Services.Orm.SqlGen;
 
 #pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped from Kusto)
 #pragma warning disable CA1304 // Invariant Culture when using String.toLower()
@@ -94,7 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 CreditAmount = reader.Get<long>("CreditAmount"),
                 SceneName = reader.Get<string>("SceneName"),
                 DeviceType = reader.Get<string>("DeviceType"),
-                TotalXp = reader.Get<long>("TotalXp")
+                TotalXp = reader.Get<long>("TotalXp"),
             };
         }
     }

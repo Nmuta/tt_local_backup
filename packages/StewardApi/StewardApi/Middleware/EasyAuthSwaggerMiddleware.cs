@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Middleware
 
             var handler = new HttpClientHandler()
             {
-                CookieContainer = cookieContainer
+                CookieContainer = cookieContainer,
             };
 
             var jsonResult = string.Empty;

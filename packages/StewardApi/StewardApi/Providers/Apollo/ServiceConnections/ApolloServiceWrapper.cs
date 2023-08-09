@@ -8,7 +8,6 @@ using Forza.UserInventory.FM7.Generated;
 using Forza.WebServices.FM7.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.Services.ForzaClient;
@@ -25,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             ConfigurationKeyConstants.ApolloClientVersion,
             ConfigurationKeyConstants.ApolloAdminXuid,
             ConfigurationKeyConstants.ApolloCertificateKeyVaultName,
-            ConfigurationKeyConstants.ApolloCertificateSecretName
+            ConfigurationKeyConstants.ApolloCertificateSecretName,
         };
 
         private readonly bool allowGiftingToAllUsers;

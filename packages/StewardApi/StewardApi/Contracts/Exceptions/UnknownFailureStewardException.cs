@@ -7,7 +7,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
     /// <summary>
     ///     Represents an 'friendly' unknown failure exception.
     /// </summary>
-     public sealed class UnknownFailureStewardException : StewardBaseException
+    public sealed class UnknownFailureStewardException : StewardBaseException
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UnknownFailureStewardException"/> class.

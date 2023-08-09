@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.Scoreboard.FH5_main.Generated;
-using Forza.UserGeneratedContent.FH5_main.Generated;
 using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
@@ -60,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.KeyVaultUrl,
-            ConfigurationKeyConstants.GroupGiftPasswordSecretName
+            ConfigurationKeyConstants.GroupGiftPasswordSecretName,
         };
 
         private readonly IMemoryCache memoryCache;

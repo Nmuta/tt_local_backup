@@ -18,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.KustoLoggerDatabase
+            ConfigurationKeyConstants.KustoLoggerDatabase,
         };
 
         private readonly IKustoStreamingLogger kustoStreamingLogger;
@@ -68,7 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 Reason = banParameters.Reason,
                 FeatureArea = banParameters.FeatureArea,
                 StartTimeUtc = banParameters.StartTimeUtc,
-                ExpireTimeUtc = banParameters.ExpireTimeUtc
+                ExpireTimeUtc = banParameters.ExpireTimeUtc,
             };
 
             var banHistory = new LiveOpsBanHistory(

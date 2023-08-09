@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.KustoLoggerDatabase
+            ConfigurationKeyConstants.KustoLoggerDatabase,
         };
 
         private readonly string forumDefaultEndpoint = string.Empty;
@@ -60,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 StartTimeUtc = banParameters.IssuedDateUtc,
                 FeatureArea = TitleConstants.Forum,
                 BanParameters = "N/A",
-                Endpoint = this.forumDefaultEndpoint
+                Endpoint = this.forumDefaultEndpoint,
             };
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
@@ -115,16 +115,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     if (banDates.Any())
                     {
                         var oldestBanDate = banDates.First();
+
                         // Add today to the banDates list to calculate difference between today and most recent ban
                         banDates.Add(DateTime.Now);
+
                         // Loop through the banDates starting from the second
                         for (int i = 1; i < banDates.Count - 1; i++)
                         {
                             // Increase ban count
                             adjustedBanCount += 1;
+
                             // Count the number of 6 months period between this ban and the next most recent ban (or today if this is the most recent ban)
                             var numberOf6Months = (int)(banDates[i] - banDates[i - 1]).TotalDays / 180;
                             adjustedBanCount -= numberOf6Months;
+
                             // Ban count can't go under 0
                             adjustedBanCount = Math.Max(0, adjustedBanCount);
                         }
@@ -134,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     {
                         BanCount = banHistoryResult.Count,
                         AdjustedBanCount = adjustedBanCount,
-                        Xuid = xuid
+                        Xuid = xuid,
                     });
                 }
 

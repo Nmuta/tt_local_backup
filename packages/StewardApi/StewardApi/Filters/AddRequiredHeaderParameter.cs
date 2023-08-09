@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Filters
                 });
             }
 
-            if (isV2Path) 
+            if (isV2Path)
             {
                 if (isSteelhead || isMultiTitle)
                 {
@@ -108,7 +108,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
                         },
                     });
                 }
-
             }
         }
     }

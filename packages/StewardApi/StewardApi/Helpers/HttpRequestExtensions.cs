@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
