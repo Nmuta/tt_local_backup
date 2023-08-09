@@ -9,6 +9,16 @@ export interface PlayFabInventoryChangeRequest {
   amount: number;
 }
 
+/** Represents a PlayFab inventory item. */
+export interface PlayFabInventoryItem {
+  amount: number;
+  id: string;
+  stackId: string;
+  type: string;
+  displayProperties?: unknown; // Leaving as until property is needed in UI
+  name: string;
+}
+
 /** The /v2/woodstock/playfab/player/<player-title-entity-id>/player-inventory endpoints. */
 @Injectable({
   providedIn: 'root',
@@ -16,6 +26,13 @@ export interface PlayFabInventoryChangeRequest {
 export class WoodstockPlayFabPlayerInventoryService {
   public readonly basePath: string = 'title/woodstock/playfab/player';
   constructor(private readonly api: ApiV2Service) {}
+
+  /** Gets PlayFab player inventory. */
+  public getCurrencyInventory$(playfabTitleEntityId: string): Observable<PlayFabInventoryItem[]> {
+    return this.api.getRequest$<PlayFabInventoryItem[]>(
+      `${this.basePath}/${playfabTitleEntityId}/inventory/currency`,
+    );
+  }
 
   /** Adds item to PlayFab player inventory. */
   public addItem$(

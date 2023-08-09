@@ -1,12 +1,9 @@
-import { Component, Input, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { Observable } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
-import {
-  PlayFabTransaction,
-  PlayFabTransactionOperation,
-} from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
+import { PlayFabTransaction } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { PlayFabVoucher } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service';
@@ -19,17 +16,7 @@ export interface PlayFabTransactionHistoryServiceContract {
   gameTitle: GameTitle;
   /** Gets player transaction history. */
   getPlayFabTransactionHistory$(playfabPlayerTitleId: string): Observable<PlayFabTransaction[]>;
-  /** Gets available vouchers. */
-  getPlayFabVouchers$(): Observable<PlayFabVoucher[]>;
 }
-
-type InternalPlayFabTransactionOperation = PlayFabTransactionOperation & {
-  itemName: string;
-};
-
-type InternalPlayFabTransaction = PlayFabTransaction & {
-  internalOperations: InternalPlayFabTransactionOperation[];
-};
 
 /** Component to get and set a player's cms override. */
 @Component({
@@ -37,7 +24,7 @@ type InternalPlayFabTransaction = PlayFabTransaction & {
   templateUrl: './playfab-transaction-history.component.html',
   styleUrls: ['./playfab-transaction-history.component.scss'],
 })
-export class PlayFabTransactionHistoryComponent extends BaseComponent implements OnInit, OnChanges {
+export class PlayFabTransactionHistoryComponent extends BaseComponent implements OnChanges {
   @ViewChild(MatPaginator) set paginatorEl(paginatorEl: MatPaginator) {
     // initially setter gets called with undefined
     if (paginatorEl) {
@@ -55,7 +42,7 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
   public getTransactionsMonitor = new ActionMonitor('Get PlayFab transaction history');
 
   public displayedColumns = ['metadata', 'details', 'operations'];
-  public transactionHistory = new BetterMatTableDataSource<InternalPlayFabTransaction>([]);
+  public transactionHistory = new BetterMatTableDataSource<PlayFabTransaction>([]);
   public vouchers: PlayFabVoucher[] = [];
 
   public paginator: MatPaginator;
@@ -63,23 +50,6 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
     return this.service.gameTitle;
-  }
-
-  /** Lifecycle hook. */
-  public ngOnInit(): void {
-    this.service
-      .getPlayFabVouchers$()
-      .pipe(this.getVoucherMonitor.monitorSingleFire())
-      .subscribe(vouchers => {
-        this.vouchers = vouchers;
-
-        // If pulling tansaction history occurs before getting vouchers, repopulate the table with newly available voucher data
-        if (this.transactionHistory.data?.length > 0) {
-          this.transactionHistory.data = this.convertToInternalTransaction(
-            this.transactionHistory.data,
-          );
-        }
-      });
   }
 
   /** Lifecycle hook. */
@@ -93,33 +63,13 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
         .getPlayFabTransactionHistory$(this.playfabPlayerTitleId)
         .pipe(this.getTransactionsMonitor.monitorSingleFire())
         .subscribe(transactionHistory => {
-          this.transactionHistory.data = this.convertToInternalTransaction(transactionHistory);
+          this.transactionHistory.data = transactionHistory;
 
           renderGuard(() => {
             this.connectPaginatorToTable();
           });
         });
     }
-  }
-
-  private convertToInternalTransaction(
-    transactions: PlayFabTransaction[],
-  ): InternalPlayFabTransaction[] {
-    if (this.vouchers?.length <= 0) {
-      return transactions as InternalPlayFabTransaction[];
-    }
-
-    return transactions.map(transaction => {
-      const internalTransaction = transaction as InternalPlayFabTransaction;
-      internalTransaction.internalOperations = transaction.operations.map(operation => {
-        const internalOperation = operation as InternalPlayFabTransactionOperation;
-        const voucher = this.vouchers.find(voucher => voucher.id === operation.itemId);
-        internalOperation.itemName = voucher?.title['NEUTRAL'] ?? null;
-        return internalOperation;
-      });
-
-      return internalTransaction;
-    });
   }
 
   private connectPaginatorToTable(): void {
