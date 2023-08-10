@@ -39,6 +39,7 @@ describe('SteelheadPlayersGiftService', () => {
         creditRewards: [],
         cars: [],
         vanityItems: [],
+        driverSuits: [],
       },
     };
 
