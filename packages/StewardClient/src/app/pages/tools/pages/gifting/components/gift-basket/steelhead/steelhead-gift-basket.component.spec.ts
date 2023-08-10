@@ -183,7 +183,7 @@ describe('SteelheadGiftBasketComponent', () => {
         bodyMessageId: faker.datatype.uuid(),
         expireAfterDays: new BigNumber(faker.datatype.number()),
         giftReason: faker.random.words(10),
-        inventory: { creditRewards: [], cars: [], vanityItems: [], driverSuits: []  },
+        inventory: { creditRewards: [], cars: [], vanityItems: [], driverSuits: [] },
       });
 
       expect(mockSteelheadGroupGiftService.postGiftLspGroup$).toHaveBeenCalled();
