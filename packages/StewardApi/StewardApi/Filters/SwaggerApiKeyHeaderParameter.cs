@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Filters
             operation.Parameters ??= new List<OpenApiParameter>();
 
             var path = context.ApiDescription.RelativePath;
-            var isExternalPath = new Regex(@"(?i)^api\/external\/*").IsMatch(path);
+            var isExternalPath = new Regex(@"(?i)^api\/v2\/external\/*").IsMatch(path);
 
             if (isExternalPath)
             {

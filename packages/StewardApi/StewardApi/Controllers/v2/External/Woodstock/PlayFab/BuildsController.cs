@@ -24,15 +24,16 @@ using static Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth.AcceptableApiKeysFro
 using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
-namespace Turn10.LiveOps.StewardApi.Controllers.External.Woodstock.PlayFab
+namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
 {
     /// <summary>
     ///     Handles requests for Woodstock PlayFab build integrations.
     /// </summary>
-    [Route("api/external/title/woodstock/playfab/builds")]
+    [Route("api/v{version:apiVersion}/external/title/woodstock/playfab/builds")]
     [RequireApiKey(ApiKey.PlayFab)]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
+    [ApiVersion("2.0")]
     [StandardTags(Meta.External, Title.Woodstock)]
     public class BuildsController : V2WoodstockControllerBase
     {
