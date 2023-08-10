@@ -61,7 +61,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
                     new MasterInventoryItem { Id = 0, Description = "Credits" },
                 },
                 Cars = this.mapper.SafeMap<IList<MasterInventoryItem>>(getCars.GetAwaiter().GetResult()),
-                VanityItems = this.mapper.SafeMap<IList<MasterInventoryItem>>(getVanityItems.GetAwaiter().GetResult().ToList()),
+                DriverSuits = this.mapper.SafeMap<IList<MasterInventoryItem>>(getVanityItems.GetAwaiter().GetResult().ToList()),
+                VanityItems = new List<MasterInventoryItem>(),
             };
 
             return masterInventory;

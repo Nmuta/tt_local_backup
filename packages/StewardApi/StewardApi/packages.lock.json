@@ -524,9 +524,9 @@
       },
       "Turn10.Services.ForzaClient.FM8": {
         "type": "Direct",
-        "requested": "[2.21.3, )",
-        "resolved": "2.21.3",
-        "contentHash": "mF5RP65v1W5Ay1HhQ2Ifmj3NomZZ8jzixpzfTbVGkps9k5OWosfrhDKI6FpldU4hT3H3OWZf2lvO+8xFzSoBug==",
+        "requested": "[2.22.4, )",
+        "resolved": "2.22.4",
+        "contentHash": "XgiCYjLAsbdZIBO2l0pS6acu8E2q+zDwSg+YYiPjsGYBAfKrb+peJbFhZ0kZf/3JPuNRinIM7USQ48Uef3BGHg==",
         "dependencies": {
           "Turn10.Services.ForzaClient": "3.0.0",
           "Turn10.Services.Serialization": "1.1.0"
