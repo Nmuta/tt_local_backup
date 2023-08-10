@@ -25,6 +25,8 @@ import {
 import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
 import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
+import { SteelheadRivalsService } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
+import { SteelheadShowroomService } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
 import { SteelheadWorldOfForzaService } from '@services/api-v2/steelhead/welcome-center-tiles/world-of-forza/world-of-forza/steelhead-world-of-forza.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DateTime } from 'luxon';
@@ -71,6 +73,8 @@ export class GeneralTileComponent extends BaseComponent {
   public timerTypeEnum = TimerType;
   public timerReferenceOptions: Map<string, string>;
   public ladderReferences: Map<string, string>;
+  public rivalsEventReferences: Map<string, string>;
+  public showroomListingReferences: Map<string, string>;
   public seriesReferences: Map<string, string>;
   public displayConditionReferences: FriendlyNameMap;
   public whenFieldReferences: string[] = [
@@ -111,6 +115,7 @@ export class GeneralTileComponent extends BaseComponent {
     timerReferenceId: new FormControl(),
     timerCustomFromDate: new FormControl(),
     timerCustomToDate: new FormControl(),
+    timerCustomName: new FormControl(),
     displayConditions: new BetterFormArray<DisplayConditionItemFormGroup>([]),
   };
 
@@ -121,6 +126,8 @@ export class GeneralTileComponent extends BaseComponent {
     steelheadWorldOfForzaService: SteelheadWorldOfForzaService,
     steelheadBuildersCupService: SteelheadBuildersCupService,
     steelheadRacersCupService: SteelheadRacersCupService,
+    steelheadRivalsService: SteelheadRivalsService,
+    steelheadShowroomService: SteelheadShowroomService,
   ) {
     super();
 
@@ -190,6 +197,68 @@ export class GeneralTileComponent extends BaseComponent {
                 );
                 this.seriesReferences = mergeMap;
                 this.timerReferenceOptions = this.seriesReferences;
+              });
+          }
+        } else if (data == TimerInstance.DateTimeRange) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.DateTimeRange;
+          this.timerReferenceOptions = new Map([
+            [
+              '39565392-c6d2-48ed-8dc3-f64ffc6ddd5d',
+              '[R.1] Ending Week 2 (10/11/2023 11:59:59 PM)',
+            ],
+            ['b67daceb-08fc-4870-b57d-11e82affcb94', 'Car Pass 2'],
+          ]);
+        } else if (data == TimerInstance.ChallengeData) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.ChallengeData;
+          this.timerReferenceOptions = new Map([
+            ['89c2750f-5d95-41d6-ab42-e20612878996', 'Beat 5 Rivals'],
+          ]);
+        } else if (data == TimerInstance.FeaturedShowcase) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.FeaturedShowcase;
+          this.timerReferenceOptions = new Map([
+            ['cffd5821-02db-4e03-9a49-0347e85286c3', 'Test Manufacturer Showcase'],
+          ]);
+        } else if (data == TimerInstance.RivalsEvent) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.RivalsEvent;
+
+          if (this.rivalsEventReferences) {
+            this.timerReferenceOptions = this.rivalsEventReferences;
+          } else {
+            this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+            steelheadRivalsService
+              .getRivalsEventReference$()
+              .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+              .subscribe(rivalsReference => {
+                this.rivalsEventReferences = rivalsReference;
+                this.timerReferenceOptions = this.rivalsEventReferences;
+              });
+          }
+        } else if (data == TimerInstance.ShowroomListing) {
+          this.selectedTimerReferenceInstance = TimerReferenceInstance.ShowroomListing;
+
+          if (this.showroomListingReferences) {
+            this.timerReferenceOptions = this.showroomListingReferences;
+          } else {
+            this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+            steelheadShowroomService
+              .getCarSales$()
+              .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+              .subscribe(showroomListings => {
+                // Process the list of car sales object into a dictionnary with date added to the listing name to differentiate car sales with the same name
+                const processedShowroomListings = showroomListings.reduce(
+                  (result, showroomListing) => {
+                    result.set(
+                      showroomListing.carSaleId,
+                      `${showroomListing.name} (${showroomListing.startTimeUtc.toLocaleString(
+                        DateTime.DATETIME_SHORT,
+                      )} - ${showroomListing.endTimeUtc.toLocaleString(DateTime.DATETIME_SHORT)})`,
+                    );
+                    return result;
+                  },
+                  new Map<string, string>(),
+                );
+                this.showroomListingReferences = processedShowroomListings;
+                this.timerReferenceOptions = this.showroomListingReferences;
               });
           }
         } else if (data == TimerInstance.Custom) {
@@ -330,6 +399,7 @@ export class GeneralTileComponent extends BaseComponent {
             dateUtc: this.formControls.timerCustomToDate.value,
             when: undefined,
           },
+          name: this.formControls.timerCustomName.value,
         };
       } else {
         welcomeCenterTile.timer.timerReference = {

@@ -52,5 +52,25 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         ///     Gets or sets the display conditions bridge.
         /// </summary>
         public WofDisplayConditionsBridge DisplayConditions { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the popup title.
+        /// </summary>
+        public LocTextBridge PopupTitle { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the popup header.
+        /// </summary>
+        public LocTextBridge PopupHeader { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the popup sub header.
+        /// </summary>
+        public LocTextBridge PopupSubHeader { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the popup description.
+        /// </summary>
+        public LocTextBridge PopupDescription { get; set; }
     }
 }

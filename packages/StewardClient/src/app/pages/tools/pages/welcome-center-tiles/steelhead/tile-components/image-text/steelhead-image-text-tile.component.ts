@@ -51,6 +51,10 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
   public formControls = {
     baseTile: new FormControl(null),
     contentImagePath: new FormControl(null),
+    localizedPopupTitle: new FormControl({ value: {}, disabled: true }),
+    localizedPopupHeader: new FormControl({ value: {}, disabled: true }),
+    localizedPopupSubHeader: new FormControl({ value: {}, disabled: true }),
+    localizedPopupDescription: new FormControl({ value: {}, disabled: true }),
   };
 
   public formGroup: FormGroup = new FormGroup(this.formControls);
@@ -102,6 +106,11 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
 
     // Image text tile specific field
     this.imageTextTile.contentImagePath = this.formControls.contentImagePath.value;
+    this.imageTextTile.popupTitle.locref = this.formControls.localizedPopupTitle.value?.id;
+    this.imageTextTile.popupHeader.locref = this.formControls.localizedPopupHeader.value?.id;
+    this.imageTextTile.popupSubHeader.locref = this.formControls.localizedPopupSubHeader.value?.id;
+    this.imageTextTile.popupDescription.locref =
+      this.formControls.localizedPopupDescription.value?.id;
 
     // Base tile fields
     this.generalTileComponent.mapFormToWelcomeCenterTile(this.imageTextTile);
@@ -119,6 +128,18 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
   /** Set form fields using the ImageTextTile parameter. */
   private setFields(imageTextTile: ImageTextTile): void {
     this.formControls.contentImagePath.setValue(imageTextTile.contentImagePath);
+    this.formControls.localizedPopupTitle.setValue({
+      id: imageTextTile.popupTitle.locref,
+    });
+    this.formControls.localizedPopupHeader.setValue({
+      id: imageTextTile.popupHeader.locref,
+    });
+    this.formControls.localizedPopupSubHeader.setValue({
+      id: imageTextTile.popupSubHeader.locref,
+    });
+    this.formControls.localizedPopupDescription.setValue({
+      id: imageTextTile.popupDescription.locref,
+    });
 
     const baseTile = {
       tileImagePath: imageTextTile.tileImagePath,

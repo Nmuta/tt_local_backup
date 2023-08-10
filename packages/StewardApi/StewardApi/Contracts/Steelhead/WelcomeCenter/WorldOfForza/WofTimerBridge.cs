@@ -56,6 +56,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public RangePointBridge From { get; set; }
 
         public RangePointBridge To { get; set; }
+
+        public string Name { get; set; }
     }
 
     public class RangePointBridge
