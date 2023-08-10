@@ -245,44 +245,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return uniqueManufacturerFeaturedShowcases;
         }
 
-        //public async Task<Dictionary<Guid, string>> GetShowcaseListingsAsync()
-        //{
-        //    var carListings =
-        //        await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-        //            CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
-        //            this.cmsEnvironment,
-        //            slot: "daily").ConfigureAwait(false);
-
-        //    foreach (var carListing in carListings)
-        //    {
-        //        foreach (var pegasusShowcase in carListing.FeaturedShowcase)
-        //        {
-        //            if (pegasusShowcase is not SteelheadLiveOpsContent.ManufacturerFeaturedShowcase)
-        //            {
-        //                continue;
-        //            }
-
-        //            var liveOpsShowcase = new LiveOpsContracts.ManufacturerFeaturedShowcase()
-        //            {
-        //                Title = pegasusShowcase.Title,
-        //                Description = pegasusShowcase.Description,
-        //                StartTimeUtc = pegasusShowcase.StartEndDate.From,
-        //                EndTimeUtc = pegasusShowcase.StartEndDate.To,
-        //                ManufacturerId = carListing.FullCarInfo.Car.MakeID.Value,
-        //                ManufacturerName = carListing.FullCarInfo.Car.MakeDisplayName
-        //            };
-        //            manufacturerFeaturedShowcases = manufacturerFeaturedShowcases.Append(liveOpsShowcase);
-        //        }
-        //    }
-
-        //    var uniqueManufacturerFeaturedShowcases = manufacturerFeaturedShowcases
-        //                                                .GroupBy(x => new { x.ManufacturerId, x.StartTimeUtc, x.EndTimeUtc })
-        //                                                .Select(x => x.First())
-        //                                                .ToList();
-
-        //    return uniqueManufacturerFeaturedShowcases;
-        //}
-
         /// <inheritdoc />
         public async Task<IEnumerable<LiveOpsContracts.CarSale>> GetCarSalesAsync()
         {
@@ -343,7 +305,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync()
+        public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync()
         {
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
@@ -352,7 +314,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
-            var rivalsEvents = this.mapper.SafeMap<IEnumerable<RivalsEvent>>(pegasusRivalEvents);
+            var rivalsEvents = this.mapper.SafeMap<IEnumerable<LiveOpsContracts.RivalsEvent>>(pegasusRivalEvents);
 
             return rivalsEvents;
         }

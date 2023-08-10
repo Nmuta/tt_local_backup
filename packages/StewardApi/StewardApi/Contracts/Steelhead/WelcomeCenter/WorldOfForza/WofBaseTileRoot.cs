@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         DateTimeRange,
         FeaturedShowcase,
         RivalsEvent,
-        ShowroomListing
+        ShowroomListing,
     }
 
     [Serializable]
@@ -130,7 +130,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [XmlElement("ChallengeData", Type = typeof(ChallengeData))]
         [XmlElement("DateRange", Type = typeof(DateRange))]
         [XmlElement("FeaturedShowcase", Type = typeof(FeaturedShowcase))]
-        [XmlElement("Event", Type = typeof(Event))]
+        [XmlElement("Event", Type = typeof(RivalsEvent))]
         [XmlElement("ShowroomListingCategory", Type = typeof(ShowroomListingCategory))]
         public WofBaseTimerReference TimerReference { get; set; }
     }
@@ -162,7 +162,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public class ChallengeData : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ChallengeData; }
     public class DateRange : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.DateTimeRange; }
     public class FeaturedShowcase : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.FeaturedShowcase; }
-    public class Event : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.RivalsEvent; }
+    public class RivalsEvent : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.RivalsEvent; }
     public class ShowroomListingCategory : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ShowroomListing; }
 
     [Serializable]

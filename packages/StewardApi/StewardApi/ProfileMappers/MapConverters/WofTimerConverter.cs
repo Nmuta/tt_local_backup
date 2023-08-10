@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
                 TimerInstance.ChallengeData => new ChallengeData() { RefId = source.RefId },
                 TimerInstance.DateTimeRange => new DateRange() { RefId = source.RefId },
                 TimerInstance.FeaturedShowcase => new FeaturedShowcase() { RefId = source.RefId },
-                TimerInstance.RivalsEvent => new Event() { RefId = source.RefId },
+                TimerInstance.RivalsEvent => new RivalsEvent() { RefId = source.RefId },
                 TimerInstance.ShowroomListing => new ShowroomListingCategory() { RefId = source.RefId },
                 _ => throw new ArgumentException($"Unsupported {nameof(TimerInstance)}: {source.TimerInstance}"),
             };
