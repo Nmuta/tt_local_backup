@@ -76,6 +76,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
       ],
       cars: cars,
       vanityItems: makeFakeItems(200),
+      driverSuits: makeFakeItems(200),
     };
   }
 }

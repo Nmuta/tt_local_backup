@@ -234,7 +234,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var updateCredits = inventoryUpdates.CreditRewards.Select(credit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((credit, InventoryItemType.Credits)));
             var updateVanityItems = inventoryUpdates.VanityItems.Select(vanityItem => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((vanityItem, InventoryItemType.VanityItem)));
-            var updateItems = updateCredits.Concat(updateVanityItems).ToArray();
+            var updateDriverSuits = inventoryUpdates.DriverSuits.Select(driverSuit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((driverSuit, InventoryItemType.DriverSuit)));
+            var updateItems = updateCredits.Concat(updateVanityItems).Concat(updateDriverSuits).ToArray();
 
             // Verify UGC ids for each car to make sure they match the car id and type it is being applied to
             foreach (var car in inventoryUpdates.Cars)
@@ -277,6 +278,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             {
                 CreditRewards = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.Credits)) : new List<PlayerInventoryItem>(),
                 VanityItems = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.VanityItem)) : new List<PlayerInventoryItem>(),
+                DriverSuits = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.DriverSuit)) : new List<PlayerInventoryItem>(),
                 Cars = carRawResults != null ? this.mapper.SafeMap<PlayerInventoryCarItem[]>(carRawResults.carOutput) : new List<PlayerInventoryCarItem>(),
                 Errors = exceptions,
             };
@@ -308,9 +310,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var removeCredits = inventoryUpdates.CreditRewards.Select(credit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((credit, InventoryItemType.Credits)));
             var removeVanityItems = inventoryUpdates.VanityItems.Select(vanityItem => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((vanityItem, InventoryItemType.VanityItem)));
-            var removeItems = removeCredits.Concat(removeVanityItems);
+            var removeDriverSuits = inventoryUpdates.DriverSuits.Select(driverSuit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((driverSuit, InventoryItemType.DriverSuit)));
+            var removeItems = removeCredits.Concat(removeVanityItems).Concat(removeDriverSuits).ToArray();
 
-            await this.Services.LiveOpsService.LiveOpsRemoveInventoryItems(xuid, externalProfileIdGuid, removeItems.ToArray()).ConfigureAwait(true);
+            await this.Services.LiveOpsService.LiveOpsRemoveInventoryItems(xuid, externalProfileIdGuid, removeItems).ConfigureAwait(true);
 
             return this.Ok();
         }

@@ -8,4 +8,5 @@ export interface SteelheadBaseInventory<
   creditRewards: TItem[];
   cars: TCar[];
   vanityItems: TItem[];
+  driverSuits: TItem[];
 }

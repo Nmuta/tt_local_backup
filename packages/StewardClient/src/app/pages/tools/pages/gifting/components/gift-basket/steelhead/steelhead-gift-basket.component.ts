@@ -122,6 +122,9 @@ export class SteelheadGiftBasketComponent
         vanityItems: giftBasketItems
           .filter(item => item.itemType === 'vanityItems')
           .map(item => item as MasterInventoryItem),
+        driverSuits: giftBasketItems
+          .filter(item => item.itemType === 'driverSuits')
+          .map(item => item as MasterInventoryItem),
       },
     };
   }
@@ -149,6 +152,7 @@ export class SteelheadGiftBasketComponent
       ...mapKey('cars'),
       ...mapKey('creditRewards'),
       ...mapKey('vanityItems'),
+      ...mapKey('driverSuits'),
     ]);
   }
 

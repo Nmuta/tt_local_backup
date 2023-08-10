@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting, NavbarTool.UserDetails] },
+      uuid: '55fb491b-4b57-4f86-8971-b0a8760d66a7',
+      shortText: 'Add Driver Suit item type to inventory management and gifting',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '645aa649-6b61-4fd4-98c1-75edccad1e59',
       shortText: 'Moved ban submit button to top right of card',
