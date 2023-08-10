@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting, NavbarTool.UserDetails] },
       uuid: '55fb491b-4b57-4f86-8971-b0a8760d66a7',
-      shortText: 'Added Driver Suit item type to inventory management and gifting',
+      shortText: 'Add Driver Suit item type to inventory management and gifting',
     },
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserBanning },
