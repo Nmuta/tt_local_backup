@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -12,13 +8,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
@@ -270,20 +269,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGiftRequestValidator"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenBanParametersRequestValidatorNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { BanParametersRequestValidator = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParametersRequestValidator"));
         }
 
         [TestMethod]
@@ -599,69 +584,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Assert.
 
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task BanPlayers_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
-
-            // Act.
-            async Task<IActionResult> Action() => await controller.BanPlayers(banParameters).ConfigureAwait(false);
-
-            // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            Action().Should().NotBeNull();
-            var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<BanResult>;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<List<BanResult>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void BanPlayers_WithNullBanParameters_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void BanPlayers_WithValidParameters_UseBackgroundProcessing_DoesNotThrow()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayersUseBackgroundProcessing(banParameters).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().NotThrow();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void BanPlayers_WithNullBanParameters_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
         }
 
         [TestMethod]
@@ -1299,25 +1221,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             result.Should().BeOfType<OkResult>();
         }
 
-        private static List<SteelheadBanParametersInput> GenerateBanParameters()
-        {
-            var newParams = new SteelheadBanParametersInput
-            {
-                Xuid = 111,
-                Gamertag = "gamerT1",
-                FeatureArea = "Matchmaking",
-                Reason = "Disgusting license plate.",
-                StartTimeUtc = DateTime.UtcNow,
-                Duration = TimeSpan.FromSeconds(1),
-                BanAllConsoles = false,
-                BanAllPcs = false,
-                DeleteLeaderboardEntries = false,
-                SendReasonNotification = false
-            };
-
-            return new List<SteelheadBanParametersInput> { newParams };
-        }
-
         private sealed class Dependencies
         {
             private readonly ControllerContext ControllerContext;
@@ -1352,7 +1255,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.SteelheadPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
                 this.SteelheadPlayerDetailsProvider.DoesPlayerExistAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-                this.SteelheadPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<SteelheadBanParameters>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.SteelheadNotificationProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
@@ -1411,8 +1313,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public IRequestValidator<SteelheadGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadGroupGift>>();
 
-            public IRequestValidator<SteelheadBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadBanParametersInput>>();
-
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test")]
             public SteelheadController Build() => new SteelheadController(
                 new MemoryCache(new MemoryCacheOptions()),
@@ -1434,8 +1334,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.UserProvider,
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,
-                this.GroupGiftRequestValidator,
-                this.BanParametersRequestValidator)
+                this.GroupGiftRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }

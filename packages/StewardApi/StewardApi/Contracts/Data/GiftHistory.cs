@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Makes a query for gift history that this model can read.
         /// </summary>
-        #nullable enable
+#nullable enable
         public static string MakeQuery(string playerId, string title, string endpoint1, string? endpoint2, DateTimeOffset? startDate, DateTimeOffset? endDate)
         {
             var dateFilter = string.Empty;
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 return $"GiftHistory | where PlayerId == '{playerId}' and Title == '{title}' and Endpoint == '{endpoint1}' {dateFilter} | project PlayerId, Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory, Endpoint";
             }
         }
-        #nullable restore
+#nullable restore
 
         /// <summary>
         ///     Parses query results into a gift history object.

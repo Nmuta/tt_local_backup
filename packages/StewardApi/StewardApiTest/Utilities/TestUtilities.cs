@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using Microsoft.Identity.Client;
+using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Identity.Client;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardTest.Utilities

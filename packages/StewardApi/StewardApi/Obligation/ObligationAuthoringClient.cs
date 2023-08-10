@@ -8,11 +8,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
@@ -102,13 +100,13 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             var renamePipelineRequest = new RenamePipelineRequest
             {
                 OldPipelineName = patchOperation.Path,
-                NewPipelineName = patchOperation.Value
+                NewPipelineName = patchOperation.Value,
             };
 
             using var httpRequestMessage =
                 new HttpRequestMessage(HttpMethod.Post, new Uri($"{WebHost}obligation/authoring/pipelines/rename"))
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(renamePipelineRequest), Encoding.UTF8, "application/json")
+                    Content = new StringContent(JsonConvert.SerializeObject(renamePipelineRequest), Encoding.UTF8, "application/json"),
                 };
 
             var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
@@ -133,13 +131,13 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             var pipelineResponse = new PipelineAuthoringModel
             {
                 Etag = pipeline.Etag,
-                Pipeline = pipeline
+                Pipeline = pipeline,
             };
 
             using var httpRequestMessage =
                 new HttpRequestMessage(HttpMethod.Post, new Uri($"{WebHost}obligation/authoring/pipelines"))
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(pipelineResponse), Encoding.UTF8, "application/json")
+                    Content = new StringContent(JsonConvert.SerializeObject(pipelineResponse), Encoding.UTF8, "application/json"),
                 };
 
             var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);

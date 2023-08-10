@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityNullXuidAndGamertag()
         {
-            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null};
+            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null };
 
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 
@@ -579,32 +579,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         {
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
-            banParameters[0].Gamertag = null;
 
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
             Assert.IsNotNull(result[0].Error);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_InvalidGamertag()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].Xuid = null;
-            banParameters[0].Gamertag = TestConstants.InvalidGamertag;
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
         }
 
         [TestMethod]
@@ -626,11 +606,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_NoXuidsOrGamertagsProvided()
+        public async Task BanPlayers_NoXuidsProvided()
         {
             var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default;
-            banParameters[0].Gamertag = null;
 
             try
             {
@@ -639,7 +618,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
             }
         }
 
@@ -668,19 +647,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.ToList()[0].Error);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_UseBackgroundProcessing_InvalidGamertag()
-        {
-            var banParameters = GenerateBanParameters();
-            banParameters[0].Gamertag = TestConstants.InvalidGamertag;
-            banParameters[0].Xuid = null;
-
-            var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Failed).ConfigureAwait(false);
-
-            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -1529,7 +1495,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return jobResult;
         }
 
-        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(WoodstockStewardTestingClient stewardTestingClient, IList<WoodstockBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(WoodstockStewardTestingClient stewardTestingClient, IList<V2BanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
@@ -1564,14 +1530,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return jobResults;
         }
 
-        private IList<WoodstockBanParametersInput> GenerateBanParameters()
+        private IList<V2BanParametersInput> GenerateBanParameters()
         {
-            return new List<WoodstockBanParametersInput>
+            return new List<V2BanParametersInput>
             {
-                new WoodstockBanParametersInput
+                new V2BanParametersInput
                 {
                     Xuid = xuid,
-                    Gamertag = gamertag,
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false
@@ -1588,11 +1553,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
                     {
                         new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
                     },
-                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 422, Quantity = 1}},
-                CarHorns = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 10, Quantity = 1}},
-                VanityItems = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 191, Quantity = 1}},
-                Emotes = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 38, Quantity = 1}},
-                QuickChatLines = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 188, Quantity = 1}}
+                Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 422, Quantity = 1 } },
+                CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 10, Quantity = 1 } },
+                VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 191, Quantity = 1 } },
+                Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 38, Quantity = 1 } },
+                QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 188, Quantity = 1 } }
             };
 
             return giftInventory;

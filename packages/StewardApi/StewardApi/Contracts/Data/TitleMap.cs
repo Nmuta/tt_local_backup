@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using Forza.WebServices.MixerObjects.FH4.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {

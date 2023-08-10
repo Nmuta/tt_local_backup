@@ -16,8 +16,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public string RequesterRole { get; set; }
         public string HttpMethod { get; set; }
         public string RouteData { get; set; }
-        //public string RecipientId { get; set; }
-        //public string RecipientType { get; set; }
+        ////public string RecipientId { get; set; }
+        ////public string RecipientType { get; set; }
         public string Title { get; set; }
         public string Endpoint { get; set; }
         public DateTime CreatedDateUtc { get; set; }

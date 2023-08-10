@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Turn10.Services.LiveOps.FH5_main.Generated;
-using static Microsoft.VisualStudio.Services.Graph.GraphResourceIds;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -16,6 +14,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         Processing = 1,
         Complete = 2,
         Failed = 3,
-        Disabled = 4
+        Disabled = 4,
     }
 }

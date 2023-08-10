@@ -463,7 +463,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
                     IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
                     IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
-                    IsUnderReview = suspiciousResults.isUnderReview
+                    IsUnderReview = suspiciousResults.isUnderReview,
                 };
             }
             catch (Exception ex)

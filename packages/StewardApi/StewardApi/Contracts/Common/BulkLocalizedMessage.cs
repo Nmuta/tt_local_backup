@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 #pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped directly from LSP)
 #pragma warning disable CS1591 // XML Comments (POCO mapped directly from LSP)

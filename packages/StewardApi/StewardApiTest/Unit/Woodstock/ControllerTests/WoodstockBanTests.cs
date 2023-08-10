@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -6,21 +7,17 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using AutoMapper;
-using Turn10.Services.LiveOps.FH5_main.Generated;
-using Turn10.LiveOps.StewardApi.Helpers;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Validation;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
-using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
-using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 using Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
@@ -93,13 +90,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
         }
 
-        private IList<WoodstockBanParametersInput> GenerateBanParameters()
+        private IList<V2BanParametersInput> GenerateBanParameters()
         {
-            return new List<WoodstockBanParametersInput>
+            return new List<V2BanParametersInput>
             {
-                new WoodstockBanParametersInput {
+                new V2BanParametersInput {
                     Xuid = ValidXuid,
-                    Gamertag = "gamerT1",
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,
@@ -108,9 +104,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                     OverrideDurationPermanent = false,
                     OverrideDuration = new TimeSpan(0,0,0),
                 },
-                new WoodstockBanParametersInput {
+                new V2BanParametersInput {
                     Xuid = ValidXuid,
-                    Gamertag = "gamerT2",
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,
@@ -119,9 +114,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                     OverrideDurationPermanent = false,
                     OverrideDuration = new TimeSpan(0,0,0),
                 },
-                new WoodstockBanParametersInput {
+                new V2BanParametersInput {
                     Xuid = ValidXuid,
-                    Gamertag = "gamerT3",
                     Reason = "Testing",
                     ReasonGroupName = "Developer",
                     DeleteLeaderboardEntries = false,
@@ -140,7 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
             public IWoodstockPegasusService PegasusService { get; set; } = Substitute.For<IWoodstockPegasusService>();
-            public IRequestValidator<WoodstockBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockBanParametersInput>>();
+            public IRequestValidator<V2BanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<V2BanParametersInput>>();
             public IWoodstockBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IWoodstockBanHistoryProvider>();
             public IActionLogger ActionLogger { get; set; } = Substitute.For<IActionLogger>();
             public IJobTracker JobTracker { get; set; } = Substitute.For<IJobTracker>();
@@ -151,7 +145,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             {
                 this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };
                 this.Mapper.SafeMap<BanConfiguration>(Arg.Any<BanConfiguration>()).Returns(Fixture.Create<BanConfiguration>());
-                this.Mapper.SafeMap<IList<ForzaUserBanParametersV2>>(Arg.Any<IList<WoodstockBanParametersInput>>()).Returns(Fixture.Create<IList<ForzaUserBanParametersV2>>());
+                this.Mapper.SafeMap<IList<ForzaUserBanParametersV2>>(Arg.Any<IList<V2BanParametersInput>>()).Returns(Fixture.Create<IList<ForzaUserBanParametersV2>>());
                 this.Mapper.SafeMap<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
             }
 
@@ -166,5 +160,5 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 Scheduler)
             { ControllerContext = this.ControllerContext };
         }
-    } 
+    }
 }

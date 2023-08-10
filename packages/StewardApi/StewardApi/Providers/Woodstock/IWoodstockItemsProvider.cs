@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
-using WoodstockLiveOpsContent;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {

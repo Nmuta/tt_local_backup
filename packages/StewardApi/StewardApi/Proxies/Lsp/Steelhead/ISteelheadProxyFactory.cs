@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
+﻿using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
 {

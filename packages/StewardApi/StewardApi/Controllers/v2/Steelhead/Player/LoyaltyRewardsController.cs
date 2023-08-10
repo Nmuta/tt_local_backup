@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
 using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -24,9 +17,6 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
-using Turn10.LiveOps.StewardApi.Validation;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
@@ -69,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetHasPlayedRecordAsync(
             ulong xuid)
         {
-            //xuid.IsValidXuid();
+            ////xuid.IsValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             ForzaLoyaltyRewardsSupportedTitles[] titlesPlayed = null;
@@ -95,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.SendLoyaltyRewards)]
         public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, [FromBody] IList<string> gameTitles)
         {
-            //xuid.IsValidXuid();
+            ////xuid.IsValidXuid();
             gameTitles.ShouldNotBeNull(nameof(gameTitles));
 
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);

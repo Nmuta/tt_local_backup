@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FM8.Generated;
 using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;

@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     : "none",
                 EmailAddress = user.HasClaimType(ClaimTypes.Email)
                     ? user.GetClaimValue(ClaimTypes.Email)
-                    : "Email not found"
+                    : "Email not found",
             };
         }
     }

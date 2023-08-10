@@ -1,5 +1,4 @@
-﻿using System.Runtime.Serialization;
-using Microsoft.TeamFoundation.Build.WebApi;
+﻿using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;

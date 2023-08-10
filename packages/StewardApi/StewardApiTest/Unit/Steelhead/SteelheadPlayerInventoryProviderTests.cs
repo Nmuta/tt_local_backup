@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.LiveOps.FM8.Generated;
-
 using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
 
 
@@ -260,7 +259,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             }
 
             public ISteelheadService SteelheadService { get; set; } = Substitute.For<ISteelheadService>();
-            
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public ISteelheadGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISteelheadGiftHistoryProvider>();

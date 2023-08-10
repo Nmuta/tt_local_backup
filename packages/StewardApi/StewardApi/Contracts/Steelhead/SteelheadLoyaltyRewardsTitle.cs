@@ -16,6 +16,6 @@
         FM4,
         FM3,
         FM2,
-        Street
+        Street,
     }
 }

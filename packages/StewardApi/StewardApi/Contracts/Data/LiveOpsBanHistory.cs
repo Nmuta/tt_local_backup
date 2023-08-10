@@ -59,6 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             featureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(featureArea));
             reason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(reason));
             banParameters.ShouldNotBeNullEmptyOrWhiteSpace(nameof(banParameters));
+
             // Forum Ban History do not have endpoint
             if (title != TitleConstants.Forum)
             {

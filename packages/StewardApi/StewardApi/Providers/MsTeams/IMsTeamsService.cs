@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Graph;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
+﻿using System.Threading.Tasks;
 
 namespace Turn10.LiveOps.StewardApi.Providers.MsGraph
 {

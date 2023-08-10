@@ -27,6 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     The job has failed.
         /// </summary>
-        Failed
+        Failed,
     }
 }

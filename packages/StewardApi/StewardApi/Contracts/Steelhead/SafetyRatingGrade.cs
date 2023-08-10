@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
 {
@@ -28,6 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         EPlus = 15,
         E = 16,
         EMinus = 17,
-        Unknown = 18
+        Unknown = 18,
     }
 }

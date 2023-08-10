@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-
-using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
-using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
-using Forza.WebServices.FM8.Generated;
-using Turn10.LiveOps.StewardApi.Helpers;
+using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
+using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
@@ -228,64 +225,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task BanUsersAsync_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
-            var requesterObjectId = Fixture.Create<string>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requesterObjectId, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            var result = await Action().ConfigureAwait(false);
-            result.Should().BeOfType<List<BanResult>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void BanUsersAsync_WithNullEmptyWhitespaceRequesterObjectId_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            var actions = new List<Func<Task<IList<BanResult>>>>
-            {
-                async () => await provider.BanUsersAsync(banParameters, null, endpoint).ConfigureAwait(false),
-                async () => await provider.BanUsersAsync(banParameters, TestConstants.WhiteSpace, endpoint).ConfigureAwait(false),
-                async () => await provider.BanUsersAsync(banParameters, TestConstants.Empty, endpoint).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void BanUsersAsync_WithNullBanParameters_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var requesterObjectId = Fixture.Create<string>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IList<BanResult>>> action = async () => await provider.BanUsersAsync(null, requesterObjectId, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -316,25 +255,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Assert.
             var result = await Action().ConfigureAwait(false);
             result.Should().BeOfType<List<LiveOpsBanHistory>>();
-        }
-
-        private List<SteelheadBanParameters> GenerateBanParameters()
-        {
-            var newParams = new SteelheadBanParameters
-            {
-                Xuid = 111,
-                Gamertag = "gamerT1",
-                FeatureArea = "Matchmaking",
-                Reason = "Disgusting license plate.",
-                StartTimeUtc = DateTime.UtcNow,
-                ExpireTimeUtc = DateTime.UtcNow.AddSeconds(1),
-                BanAllConsoles = false,
-                BanAllPcs = false,
-                DeleteLeaderboardEntries = false,
-                SendReasonNotification = false
-            };
-
-            return new List<SteelheadBanParameters> { newParams };
         }
 
         private sealed class Dependencies

@@ -32,6 +32,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Forza Horizon 5's internal name.
         /// </summary>
-        Woodstock
+        Woodstock,
     }
 }

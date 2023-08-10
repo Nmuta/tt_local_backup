@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH4.Generated;
-using Forza.UserGeneratedContent.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
