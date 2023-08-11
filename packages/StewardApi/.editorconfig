@@ -155,7 +155,7 @@ dotnet_diagnostic.SA1600.severity = none
 dotnet_diagnostic.SA1602.severity = none
 
 # SA1604: Element documentation should have summary
-dotnet_diagnostic.SA1604.severity = none
+dotnet_diagnostic.SA1604.severity = warning
 
 # SA1611: Element parameters should be documented
 dotnet_diagnostic.SA1611.severity = none

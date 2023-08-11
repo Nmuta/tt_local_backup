@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "allowedNamespaceComponents": [
+    "v1",
+    "v2"
+  ],
+  "settings": {
+    "documentationRules": {
+      "documentInterfaces": true,
+      "documentExposedElements": false,
+      "documentInternalElements": false,
+      "documentationCulture": "en-US"
+    }
+  }
+}
