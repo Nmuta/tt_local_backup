@@ -24,6 +24,9 @@ csharp_indent_labels = one_less_than_current
 # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA1032.severity = none
 
+# CA5394: Do not use insecure randomness
+dotnet_diagnostic.CA5394.severity = suggestion
+
 [*.{cs,vb}]
 #### Naming styles ####
 
