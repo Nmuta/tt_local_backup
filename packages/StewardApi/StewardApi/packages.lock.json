@@ -13,6 +13,12 @@
           "Newtonsoft.Json": "11.0.2"
         }
       },
+      "Analyzer_Documentation": {
+        "type": "Direct",
+        "requested": "[1.1.3, )",
+        "resolved": "1.1.3",
+        "contentHash": "QJF89DXlfeEa/THi1s7vWiLoB3uImoLZWDNUwub/SUs1K5osb6LG2idDdxTyUoXC4Ja1As9RQomwkZZxjFfXcg=="
+      },
       "Autofac": {
         "type": "Direct",
         "requested": "[6.4.0, )",
