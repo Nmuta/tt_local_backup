@@ -11,7 +11,7 @@ jobs:
 - job: Nuget_Publish
   displayName: Publish Nuget (Pre-release)
   steps:
-  - template: prepare-nuget-project.template.yml
+  - template: ../prepare-nuget-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
 
