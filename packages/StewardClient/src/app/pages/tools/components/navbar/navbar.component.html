@@ -1,6 +1,6 @@
 <!-- Useful example https://stackblitz.com/edit/angular-v6xwte?file=src%2Fapp%2Fapp.component.html -->
 <mat-toolbar color="primary">
-  <div class="home-anchor" tourAnchor="home-tour.step.one">
+  <!-- <div class="home-anchor" tourAnchor="home-tour.step.one"> -->
     <a
       [routerLink]="parentRoute + '/home'"
       mat-icon-button
@@ -24,9 +24,9 @@
       >
       <mat-icon *ngSwitchDefault>home</mat-icon>
     </a>
-  </div>
+  <!-- </div> -->
 
-  <div class="navbar-anchor" tourAnchor="home-tour.step.six">
+  <!-- <div class="navbar-anchor" tourAnchor="home-tour.step.six"> -->
     <div *ngIf="!inEditMode" class="link-list-wrapper">
       <ng-container *ngFor="let item of listedTools">
         <a
@@ -51,7 +51,7 @@
         ></span>
       </ng-container>
     </div>
-  </div>
+  <!-- </div> -->
   <div
     *ngIf="inEditMode"
     cdkDropList
@@ -115,7 +115,7 @@
   >
 
   <span class="spacer"></span>
-  <div class="edit-anchor" tourAnchor="home-tour.step.seven">
+  <!-- <div class="edit-anchor" tourAnchor="home-tour.step.seven"> -->
     <button
       mat-icon-button
       color="default"
@@ -136,7 +136,7 @@
     >
       <mat-icon>edit</mat-icon>
     </button>
-  </div>
+  <!-- </div> -->
   <span *ngIf="missingZendesk$ | async" class="warnings">
     <mat-icon matTooltip="Zendesk API missing">warning</mat-icon>
     <mat-icon matTooltip="Refresh page">refresh</mat-icon>
