@@ -16,4 +16,6 @@ pool:
   vmImage: $(VM_IMAGE)
 
 jobs:
-- template: infra/azure-pipelines/dotnet-core/nuget/job-nuget-publish-prerelease.template.yml
+- template: 'infra/azure-pipelines/dotnet-core/nuget/job-nuget-publish-prerelease.template.yml'
+  parameters:
+    workingDirectory: packages/Analyzer-Documentation
