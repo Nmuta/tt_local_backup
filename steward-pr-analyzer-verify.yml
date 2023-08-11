@@ -1,17 +1,21 @@
-# Variable 'Data' was defined in the Variables tab
-# Variable 'DEV_CLIENT_ID' was defined in the Variables tab
-# Variable 'PROD_CLIENT_ID' was defined in the Variables tab
-# Cron Schedules have been converted using UTC Time Zone and may need to be updated for your location
-# Agent Queue 'Azure Pipelines' was used with unrecognized Agent Specification, vmImage property must be specified to determine image - https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software
+# The purpose of this pipeline is to publish a preview 
+# 
+# What it does:
+# - Check that StewardApi projects will build
+# - Check that StewardApi project complies with linters. Warnings are treated as errors.
+# - Runs StewardApi unit tests and produces a summary
+
 trigger: none
 
-schedules:
-- cron: 0 6 * * 1
-  branches:
-    include:
-    - main
+name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
 
-name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)_scan
+variables:
+- template: 'infra/azure-pipelines/dotnet-core/dotnet-variables.yml'
+
+pool:
+  vmImage: $(VM_IMAGE)
 
 jobs:
-- template: infra/azure-pipelines/original-scanning.template.yml
+- template: 'infra/azure-pipelines/dotnet-core/nuget/job-nuget-publish-prerelease.template.yml'
+  parameters:
+    workingDirectory: packages/Analyzer-Documentation
