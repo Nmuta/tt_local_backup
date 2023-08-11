@@ -1,7 +1,7 @@
 import { IStepOption } from 'ngx-ui-tour-md-menu';
 
 export const tourSteps: IStepOption[] = [{
-  anchorId: 'home-tour.step.one',
+  anchorId: 'shared-tour.nav',
   content: 'Welcome to <b>Steward</b>!<br /><br />This brief tour will help familiarize you with some of the basic functions of the app.',
 }, {
   anchorId: 'home-tour.step.two',
@@ -38,6 +38,6 @@ export const tourSteps: IStepOption[] = [{
   content: 'Click here to view our <b>Documentation</b> at any time.<br /><br />Be sure to check out our <a href="https://confluence.turn10studios.com/x/r4GiE" target="_blank" class="shepherd-quick-start-guide-link"><b>Quick Start Guide</b></a> to learn more!',
   enableBackdrop: true,
 }, {
-  anchorId: 'home-tour.step.ten',
+  anchorId: 'shared-tour.centered',
   content: 'Now that we\'ve covered the basics, you\'re ready to get started!',
 }];
