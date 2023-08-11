@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { WoodstockPlayFabPlayerToolsComponent } from './woodstock-playfab-player-tools.component';
 import { createMockWoodstockPlayersPlayFabService } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service.mock';
 import { createMockWoodstockPlayFabPlayerInventoryService } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service.mock';
-import { createMockWoodstockPlayFabVouchersService } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service.mock';
 
 describe('WoodstockPlayFabPlayerToolsComponent', () => {
   let component: WoodstockPlayFabPlayerToolsComponent;

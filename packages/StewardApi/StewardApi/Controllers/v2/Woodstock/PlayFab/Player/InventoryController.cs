@@ -69,12 +69,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
                 vouchers.ForEach(voucher =>
                 {
                     var inventoryItem = inventoryItems.FirstOrDefault(item => voucher.Id == item.Id);
+
                     // Item exists, add voucher name to item
+                    // Item does not exist, add item to inventory with amount = 0
                     if (inventoryItem != null)
                     {
                         inventoryItem.Name = voucher.Title["NEUTRAL"] ?? "N/A";
                     }
-                    // Item does not exist, add item to inventory with amount = 0
                     else
                     {
                         inventoryItems.Add(new PlayFabInventoryItem()

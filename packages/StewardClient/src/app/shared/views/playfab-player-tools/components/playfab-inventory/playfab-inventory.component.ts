@@ -1,18 +1,17 @@
-import { Component, OnChanges, Input, Output, EventEmitter } from "@angular/core";
-import { FormGroup, AbstractControl, FormControl, Validators } from "@angular/forms";
-import { BaseComponent } from "@components/base-component/base.component";
-import { HCI } from "@environments/environment";
-import { BetterMatTableDataSource } from "@helpers/better-mat-table-data-source";
-import { BetterSimpleChanges } from "@helpers/simple-changes";
-import { GameTitle } from "@models/enums";
-import { PlayFabCollectionId, PlayFabInventoryItem, PlayFabVoucher } from "@models/playfab";
-import { PlayFabProfile } from "@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service";
-import { PermAttributeName } from "@services/perm-attributes/perm-attributes";
-import { ActionMonitor } from "@shared/modules/monitor-action/action-monitor";
-import BigNumber from "bignumber.js";
-import { cloneDeep } from "lodash";
-import { Observable, delay } from "rxjs";
-
+import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup, AbstractControl, FormControl, Validators } from '@angular/forms';
+import { BaseComponent } from '@components/base-component/base.component';
+import { HCI } from '@environments/environment';
+import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
+import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { GameTitle } from '@models/enums';
+import { PlayFabCollectionId, PlayFabInventoryItem, PlayFabVoucher } from '@models/playfab';
+import { PlayFabProfile } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
+import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import BigNumber from 'bignumber.js';
+import { cloneDeep } from 'lodash';
+import { Observable, delay } from 'rxjs';
 
 /** Service contract for the PlayFabInventoryComponent. */
 export interface PlayFabInventoryServiceContract {

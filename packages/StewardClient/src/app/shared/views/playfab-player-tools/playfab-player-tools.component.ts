@@ -74,7 +74,6 @@ export class PlayFabPlayerToolsComponent extends BaseComponent implements OnChan
     this.playfabProfile = cloneDeep(this.playfabProfile);
   }
 
-
   private getPlayFabProfile(): void {
     this.getPlayFabProfileMonitor = this.getPlayFabProfileMonitor.repeat();
     this.service
