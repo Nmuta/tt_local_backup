@@ -8,8 +8,8 @@ import {
   PlayFabTransactionHistoryComponent,
   PlayFabTransactionHistoryServiceContract,
 } from './playfab-transaction-history.component';
-import { PlayFabTransaction } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
 import { toDateTime } from '@helpers/luxon';
+import { PlayFabTransaction } from '@models/playfab';
 
 describe('PlayFabTransactionHistoryComponent', () => {
   let component: PlayFabTransactionHistoryComponent;

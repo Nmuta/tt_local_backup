@@ -8,7 +8,7 @@ import {
   PlayFabInventoryComponent,
   PlayFabInventoryServiceContract,
 } from './playfab-inventory.component';
-import { PlayFabInventoryItem } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service';
+import { PlayFabInventoryItem } from '@models/playfab';
 
 describe('PlayFabInventoryComponent', () => {
   let component: PlayFabInventoryComponent;
