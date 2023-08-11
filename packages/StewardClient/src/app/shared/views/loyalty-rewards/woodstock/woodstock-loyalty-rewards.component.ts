@@ -43,7 +43,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
   public getMonitor = new ActionMonitor('GET Has played Records');
   public postMonitor = new ActionMonitor('POST Send Loyalty Rewards');
   public disableSendActions: boolean = true;
-  public actionLabel: string = 'Update Has Played';
+  public actionLabel: string = 'Resend Loyalty Reward';
   public displayLabel: string = 'Has Played';
   public featureDisabledText = `Feature is not supported for your user role.`;
 
@@ -55,7 +55,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
   public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
 
   public errorMessage: string;
-  private errorAntecedent: string = 'Failed to add the following titles to loyalty history: ';
+  private errorAntecedent: string = 'Failed to resend loyalty history rewards for the following titles: ';
 
   constructor(
     protected readonly store: Store,
@@ -110,11 +110,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
         this.gameTitleColumns = (record as HasPlayedRecord[]).map(x => x.gameTitle);
         this.displayedColumns = ['label', ...this.gameTitleColumns];
 
-        (record as HasPlayedRecord[]).forEach(i => {
-          if (i.hasPlayed === true && i.sentProfileNotification === false) {
-            this.titlesToSend = this.titlesToSend.concat(i.gameTitle);
-          }
-        });
+        console.log(this.titlesToSend)
       });
 
     this.getHasPlayedRecord$.next();
@@ -138,7 +134,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
       .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(userLoyaltyUpdateResults => {
         const fullSuccess = this.titlesToSend.every(title => userLoyaltyUpdateResults[title]);
-
+console.log(fullSuccess)
         if (!fullSuccess) {
           const failures = this.titlesToSend.filter(title => !userLoyaltyUpdateResults[title]);
           this.errorMessage = this.errorAntecedent + failures.join(', ');
@@ -165,5 +161,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
       this.titlesToSend = this.titlesToSend.filter(title => title != gameTitle);
       this.allowSend = this.titlesToSend.length > 0;
     }
+
+    console.log(this.titlesToSend)
   }
 }

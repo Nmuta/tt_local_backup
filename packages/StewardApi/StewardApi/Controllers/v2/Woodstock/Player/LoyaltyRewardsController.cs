@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -70,6 +72,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
 
             var hasPlayedRecord = this.mapper.SafeMap<IList<HasPlayedRecord>>(response.records);
 
+            hasPlayedRecord = hasPlayedRecord.Where(record => Enum.TryParse<WoodstockLoyaltyRewardsTitle>(record.GameTitle, out _)).ToList();
+
             return this.Ok(hasPlayedRecord);
         }
 
@@ -128,7 +132,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
                         throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
                     }
 
-                    int[] currentGameTitleId = new[] { (int)titleEnum };
+                    int[] currentGameTitleId = new[] { (int)convertedEnum };
                     await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, currentGameTitleId).ConfigureAwait(true);
                     successResponse.Add(titleEnum, true);
                 }

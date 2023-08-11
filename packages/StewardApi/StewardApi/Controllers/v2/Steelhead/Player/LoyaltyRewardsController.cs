@@ -123,6 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                     }
 
                     await this.Services.LiveOpsService.AddToTitlesUserPlayed(xuid, convertedEnum).ConfigureAwait(true);
+                    //await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, )
                     successResponse.Add(titleEnum, true);
                 }
                 catch (Exception ex)
