@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'dd0629a3-9e75-4dba-bbd8-371f075da694',
+      shortText: 'Fix bug preventing sending',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '645aa649-6b61-4fd4-98c1-75edccad1e59',
       shortText: 'Moved ban submit button to top right of card',
