@@ -89,9 +89,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "mapper"));
         }
 
-
-
-
         private sealed class Dependencies
         {
             public Dependencies()

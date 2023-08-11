@@ -133,7 +133,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead.ServiceTests
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "azureDevOpsFactory"));
         }
 
-
         private sealed class Dependencies
         {
             public Dependencies(bool validConfiguration = true)
