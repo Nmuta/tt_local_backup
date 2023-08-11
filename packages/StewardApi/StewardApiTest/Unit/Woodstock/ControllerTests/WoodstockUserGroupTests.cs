@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
     public sealed class WoodstockUserGroupTests
     {
         private static readonly Fixture Fixture = new Fixture();
-        private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
+        private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
         [TestCategory("Unit")]

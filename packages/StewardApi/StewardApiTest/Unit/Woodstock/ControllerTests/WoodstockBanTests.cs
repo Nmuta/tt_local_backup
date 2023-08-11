@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
     public sealed class WoodstockBanTests
     {
         private static readonly Fixture Fixture = new Fixture();
-        private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
+        private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -33,7 +33,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             // Act.
             async Task<IActionResult> Action() => await controller.BanPlayers(banParameters, false).ConfigureAwait(false);
@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, true).ConfigureAwait(false);
@@ -149,14 +149,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             }
 
             public BanController Build() => new BanController(
-                PegasusService,
-                Mapper,
-                BanParametersRequestValidator,
-                BanHistoryProvider,
-                ActionLogger,
-                JobTracker,
-                LoggingService,
-                Scheduler)
+                this.PegasusService,
+                this.Mapper,
+                this.BanParametersRequestValidator,
+                this.BanHistoryProvider,
+                this.ActionLogger,
+                this.JobTracker,
+                this.LoggingService,
+                this.Scheduler)
             { ControllerContext = this.ControllerContext };
         }
     }

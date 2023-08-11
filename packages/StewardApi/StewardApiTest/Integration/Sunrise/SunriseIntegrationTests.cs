@@ -392,7 +392,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
             var result = await stewardClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
@@ -402,7 +402,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidXuid()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
 
             try
             {
@@ -419,7 +419,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_Unauthorized()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
 
             try
             {
@@ -436,7 +436,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidFlags()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
             userFlags.IsEarlyAccess = null;
 
             try
@@ -632,7 +632,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_InvalidGamertag()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = null;
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
 
@@ -651,7 +651,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_Unauthorized()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             try
             {
@@ -668,7 +668,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_InvalidFeatureArea()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].FeatureArea = "invalidFeatureArea";
 
             try
@@ -687,7 +687,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [Ignore]
         public async Task BanPlayers_UndefinedStartTimeUtc()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].StartTimeUtc = default;
 
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
@@ -702,7 +702,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_NoXuidsOrGamertagsProvided()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = null;
 
@@ -721,7 +721,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationNull()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration = default;
 
             try
@@ -739,7 +739,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationZero()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration = TimeSpan.Zero;
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
 
@@ -758,7 +758,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationNegative()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration = TimeSpan.FromMinutes(-10);
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
 
@@ -795,7 +795,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_SendNotificationWithoutReason()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].SendReasonNotification = true;
             banParameters[0].Reason = string.Empty;
 
@@ -815,7 +815,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
@@ -828,7 +828,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidXuid()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
@@ -841,7 +841,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidGamertag()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
             banParameters[0].Xuid = null;
 
@@ -1293,7 +1293,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. VanityItem: 700, "));
+                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. VanityItem: 700, ", StringComparison.InvariantCulture));
             }
         }
 
@@ -1376,7 +1376,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var groupGift = this.CreateGroupGift();
 
-            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await this.UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result[0].Errors?.Count == 0);

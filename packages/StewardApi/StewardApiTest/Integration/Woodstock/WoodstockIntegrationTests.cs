@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Castle.Core.Internal;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -390,7 +391,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task SetUserFlags()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
             var result = await stewardClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
@@ -400,7 +401,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidXuid()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
 
             try
             {
@@ -417,7 +418,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task SetUserFlags_Unauthorized()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
 
             try
             {
@@ -434,7 +435,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidFlags()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
             userFlags.IsEarlyAccess = null;
 
             try
@@ -591,7 +592,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task BanPlayers_Unauthorized()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             try
             {
@@ -608,7 +609,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [TestCategory("Integration")]
         public async Task BanPlayers_NoXuidsProvided()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = default;
 
             try
@@ -627,7 +628,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
@@ -640,7 +641,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidXuid()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.CompletedWithErrors).ConfigureAwait(false);
@@ -678,7 +679,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
             Assert.IsTrue(result[0].BannedAreas.Any());
-            Assert.IsTrue(result[0].BannedAreas[0] == "");
+            Assert.IsTrue(result[0].BannedAreas[0].IsNullOrEmpty());
         }
 
         [TestMethod]
@@ -991,7 +992,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         {
             var groupGift = this.CreateGroupGift();
 
-            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await this.UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result[0].Errors?.Count == 0);

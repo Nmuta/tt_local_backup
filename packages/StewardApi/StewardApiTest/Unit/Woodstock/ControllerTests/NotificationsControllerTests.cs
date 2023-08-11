@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
     public sealed class NotificationsControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
-        private static readonly ulong InvalidXuid = 1234;
+        private const ulong InvalidXuid = 1234;
 
         [TestMethod]
         [TestCategory("Unit")]

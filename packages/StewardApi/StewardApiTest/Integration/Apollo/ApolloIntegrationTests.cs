@@ -1069,7 +1069,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. Car: 10000, "));
+                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. Car: 10000, ", StringComparison.InvariantCulture));
             }
         }
 

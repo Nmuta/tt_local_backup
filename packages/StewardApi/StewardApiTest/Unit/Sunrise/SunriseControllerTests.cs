@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
     public sealed class SunriseControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
-        private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
+        private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -731,7 +731,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             // Act.
             async Task<IActionResult> Action() => await controller.BanPlayers(banParameters).ConfigureAwait(false);
@@ -765,7 +765,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.BanPlayersUseBackgroundProcessing(banParameters).ConfigureAwait(false);
