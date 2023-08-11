@@ -11,10 +11,11 @@ steps:
   fetchDepth: 1
   submodules: true
 
-- task: Assembly-Info-NetCore@2
-  displayName: Set Assembly Version
-  inputs:
-    InformationalVersion: $(Build.BuildNumber)
+# seems to fail?
+# - task: Assembly-Info-NetCore@2
+#   displayName: Set Assembly Version
+#   inputs:
+#     InformationalVersion: $(Build.BuildNumber)
 
 - task: Cache@2
   displayName: Cache
