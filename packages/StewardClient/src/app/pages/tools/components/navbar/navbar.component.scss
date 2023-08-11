@@ -85,7 +85,17 @@
   max-width: fit-content;
 }
 
-.navbar-anchor.touranchor--is-active {
-  padding: 10px;
-  margin: -15px -15px;
+// introduce a stacking context
+.stack-context-relative {
+  position: relative;
+}
+
+// cover our element, with a bit to go around it.
+.no-size-wrapper {
+  $wrap-margin: .25em;
+  position: absolute;
+  top: -$wrap-margin;
+  left: -$wrap-margin;
+  right: -$wrap-margin;
+  bottom: -$wrap-margin;
 }
