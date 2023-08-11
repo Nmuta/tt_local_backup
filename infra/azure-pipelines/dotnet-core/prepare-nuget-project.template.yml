@@ -35,9 +35,7 @@ steps:
   inputs:
     command: restore
     projects: >-
-      ${{parameters.workingDirectory}}/StewardApi/*.csproj
-
-      ${{parameters.workingDirectory}}/StewardApiTest/*.csproj
+      ${{parameters.workingDirectory}}/**/*.csproj
     selectOrConfig: config
     feedRestore: /2cea4146-e4d1-416d-9823-c02540cc01a9
     nugetConfigPath: ${{parameters.workingDirectory}}/nuget.config

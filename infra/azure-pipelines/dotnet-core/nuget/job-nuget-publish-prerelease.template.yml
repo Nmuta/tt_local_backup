@@ -1,0 +1,29 @@
+# This file runs a test build as a single parallel job.
+# Designed for use with Steward.
+# It is intended to be run only after a `dotnet` cache is made.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where dotnet can be run. Like 'packages/StewardApi'."
+  type: string
+
+jobs:
+- job: Nuget_Publish
+  displayName: Publish Nuget (Pre-release)
+  steps:
+  - template: prepare-nuget-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+
+  - task: DotNetCoreCLI@2
+    inputs:
+        command: pack
+        packagesToPack: '${{parameters.workingDirectory}}/**/*.Package.csproj'
+        versioningScheme: byBuildNumber
+        packDestination: '$(Build.ArtifactStagingDirectory)/nuget'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: nuget'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/nuget'
+      ArtifactName: nuget
