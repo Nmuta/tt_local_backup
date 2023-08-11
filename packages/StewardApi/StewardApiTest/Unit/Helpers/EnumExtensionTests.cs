@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 
@@ -13,7 +14,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
         public void Convert_ToGeoflags_VariousSamples()
         {
             (null as int[]).AsEnumList<WoodstockUgcGeoFlagOption>().Should().BeEmpty();
-            (new int[] { }).AsEnumList<WoodstockUgcGeoFlagOption>().Should().BeEmpty();
+            (Array.Empty<int>()).AsEnumList<WoodstockUgcGeoFlagOption>().Should().BeEmpty();
             (new int[] { 0 }).AsEnumList<WoodstockUgcGeoFlagOption>().Should().BeEquivalentTo(new[] { WoodstockUgcGeoFlagOption.None });
             (new int[] { 1 }).AsEnumList<WoodstockUgcGeoFlagOption>().Should().BeEquivalentTo(new[] { WoodstockUgcGeoFlagOption.China });
             (new int[] { 2 }).AsEnumList<WoodstockUgcGeoFlagOption>().Should().BeEquivalentTo(new[] { WoodstockUgcGeoFlagOption.Australia });

@@ -53,6 +53,15 @@ export class SteelheadMasterInventoryFakeApi extends FakeApiBase {
           error: null,
         },
       ],
+      driverSuits: [
+        {
+          id: new BigNumber(faker.datatype.number()),
+          description: faker.datatype.string(),
+          quantity: faker.datatype.number(),
+          itemType: faker.datatype.string(),
+          error: null,
+        },
+      ],
     };
   }
 }

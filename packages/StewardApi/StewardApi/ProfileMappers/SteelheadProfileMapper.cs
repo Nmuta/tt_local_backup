@@ -470,13 +470,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.From))
                 .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.To))
                 .ForMember(dest => dest.AllowedCars, opt => opt.MapFrom(src =>
-                    src.SelectableCars.GetType() == typeof(AcceptlistCarRestrictionsProvider) ?
-                        (src.SelectableCars as AcceptlistCarRestrictionsProvider).Acceptlist :
-                        new List<DataCar>()))
+                    src.SelectableCars.GetType() == typeof(AcceptlistCarRestrictionsProvider)
+                        ? (src.SelectableCars as AcceptlistCarRestrictionsProvider).Acceptlist
+                        : new List<DataCar>()))
                 .ForMember(dest => dest.AllowedCarClass, opt => opt.MapFrom(src =>
-                    src.SelectableCars.GetType() == typeof(RefCarRestrictionsProvider) ?
-                        (src.SelectableCars as RefCarRestrictionsProvider).CarRestrictions :
-                        null));
+                    src.SelectableCars.GetType() == typeof(RefCarRestrictionsProvider)
+                        ? (src.SelectableCars as RefCarRestrictionsProvider).CarRestrictions
+                        : null));
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
                 .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
                 .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.From))

@@ -3,19 +3,21 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { Observable } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
-import { PlayFabTransaction } from '@services/api-v2/woodstock/playfab/player/transactions/woodstock-playfab-player-transactions.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
-import { PlayFabVoucher } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { renderGuard } from '@helpers/rxjs';
+import { PlayFabCollectionId, PlayFabTransaction, PlayFabVoucher } from '@models/playfab';
 
 /** Service contract for the PlayFabTransactionHistoryComponent. */
 export interface PlayFabTransactionHistoryServiceContract {
   /** Game title the service contract is associated with. */
   gameTitle: GameTitle;
   /** Gets player transaction history. */
-  getPlayFabTransactionHistory$(playfabPlayerTitleId: string): Observable<PlayFabTransaction[]>;
+  getPlayFabTransactionHistory$(
+    playfabPlayerTitleId: string,
+    collectionId: PlayFabCollectionId,
+  ): Observable<PlayFabTransaction[]>;
 }
 
 /** Component to get and set a player's cms override. */
@@ -38,6 +40,9 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
   /** PlayFab player title entity id. */
   @Input() playfabPlayerTitleId: string;
 
+  /** PlayFab collection id. */
+  @Input() playfabCollectionId: PlayFabCollectionId;
+
   public getVoucherMonitor = new ActionMonitor('Get PlayFab vouchers');
   public getTransactionsMonitor = new ActionMonitor('Get PlayFab transaction history');
 
@@ -58,9 +63,14 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
       throw new Error('No service is defined for PlayFab transaction history component.');
     }
 
-    if (!!changes.playfabPlayerTitleId && !!this.playfabPlayerTitleId) {
+    if (
+      (!!changes.playfabPlayerTitleId || !!changes.playfabCollectionId) &&
+      !!this.playfabPlayerTitleId &&
+      !!this.playfabCollectionId
+    ) {
+      this.getTransactionsMonitor = this.getTransactionsMonitor.repeat();
       this.service
-        .getPlayFabTransactionHistory$(this.playfabPlayerTitleId)
+        .getPlayFabTransactionHistory$(this.playfabPlayerTitleId, this.playfabCollectionId)
         .pipe(this.getTransactionsMonitor.monitorSingleFire())
         .subscribe(transactionHistory => {
           this.transactionHistory.data = transactionHistory;

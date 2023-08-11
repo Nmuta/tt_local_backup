@@ -11,17 +11,27 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { MatCardModule } from '@angular/material/card';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
-import { PlayFabTransactionHistoryComponent } from './playfab-transaction-history.component';
-import { WoodstockPlayFabTransactionHistoryComponent } from './woodstock/woodstock-playfab-transaction-history.component';
+import { PlayFabPlayerToolsComponent } from './playfab-player-tools.component';
+import { WoodstockPlayFabPlayerToolsComponent } from './woodstock/woodstock-playfab-player-tools.component';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { MatTableModule } from '@angular/material/table';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { PlayFabInventoryComponent } from './components/playfab-inventory/playfab-inventory.component';
+import { PlayFabTransactionHistoryComponent } from './components/playfab-transaction-history/playfab-transaction-history.component';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 /** Module for getting and setting a player's cms override. */
 @NgModule({
-  declarations: [PlayFabTransactionHistoryComponent, WoodstockPlayFabTransactionHistoryComponent],
+  declarations: [
+    PlayFabPlayerToolsComponent,
+    WoodstockPlayFabPlayerToolsComponent,
+    PlayFabInventoryComponent,
+    PlayFabTransactionHistoryComponent,
+  ],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -31,7 +41,6 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     MatIconModule,
     MatButtonModule,
     DirectivesModule,
-    PipesModule,
     MonitorActionModule,
     MatCardModule,
     MatTableModule,
@@ -41,7 +50,10 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
     StandardCopyModule,
     MatPaginatorModule,
     StandardDateModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
-  exports: [WoodstockPlayFabTransactionHistoryComponent],
+  exports: [WoodstockPlayFabPlayerToolsComponent],
 })
-export class PlayFabTransactionHistoryModule {}
+export class PlayFabPlayerToolsModule {}

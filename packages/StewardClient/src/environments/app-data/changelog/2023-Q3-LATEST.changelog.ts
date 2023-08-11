@@ -13,6 +13,16 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Fix bug preventing sending',
     },
     {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: '2078cd4d-475e-48a0-a250-12c56fc83a5e',
+      shortText: 'Add tools to view PlayFab inventory and transaction history',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting, NavbarTool.UserDetails] },
+      uuid: '55fb491b-4b57-4f86-8971-b0a8760d66a7',
+      shortText: 'Add Driver Suit item type to inventory management and gifting',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '645aa649-6b61-4fd4-98c1-75edccad1e59',
       shortText: 'Moved ban submit button to top right of card',

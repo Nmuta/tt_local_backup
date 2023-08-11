@@ -26,5 +26,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         ///     Gets or sets the vanity items.
         /// </summary>
         public IList<TItem> VanityItems { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the driver suits.
+        /// </summary>
+        public IList<TItem> DriverSuits { get; set; }
     }
 }

@@ -14,7 +14,6 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.LiveOps.FM8.Generated;
 using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.UserInventoryManagementService;
 
-
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
     [TestClass]

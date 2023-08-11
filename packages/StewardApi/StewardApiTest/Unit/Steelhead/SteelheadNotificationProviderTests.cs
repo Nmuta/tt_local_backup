@@ -14,7 +14,6 @@ using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.LiveOps.FM8.Generated;
 using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;
 
-
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
     [TestClass]

@@ -452,6 +452,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             {
                 { InventoryItemType.Car, this.EmptyIfNull(giftInventory.Cars) },
                 { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) },
+                { InventoryItemType.DriverSuit, this.EmptyIfNull(giftInventory.DriverSuits) },
             };
         }
 
