@@ -1,5 +1,5 @@
-﻿using Azure.Security.KeyVault.Secrets;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Azure.Security.KeyVault.Secrets;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {

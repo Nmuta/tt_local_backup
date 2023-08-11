@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.Scoreboard.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -385,7 +383,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         leaderboard.CarClass = carClass.DisplayName;
                     }
                 }
-
             }
 
             return leaderboards;

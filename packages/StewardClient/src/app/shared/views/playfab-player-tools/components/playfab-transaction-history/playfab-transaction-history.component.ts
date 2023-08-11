@@ -44,6 +44,9 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
   /** PlayFab collection id. */
   @Input() playfabCollectionId: PlayFabCollectionId;
 
+  /** PlayFab collection id. */
+  @Input() playfabCollectionId: PlayFabCollectionId;
+
   public getVoucherMonitor = new ActionMonitor('Get PlayFab vouchers');
   public getTransactionsMonitor = new ActionMonitor('Get PlayFab transaction history');
 

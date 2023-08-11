@@ -43,7 +43,6 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatButtonModule,
     DirectivesModule,
-    PipesModule,
     MonitorActionModule,
     MatCardModule,
     MatTableModule,

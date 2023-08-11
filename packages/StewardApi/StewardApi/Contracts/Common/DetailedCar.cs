@@ -5,8 +5,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// <summary>
     ///     Represents detailed car info.
     /// </summary>
-    #pragma warning disable CS1591
-    #pragma warning disable SA1600
+#pragma warning disable CS1591
+#pragma warning disable SA1600
     public class DetailedCar : SimpleCar
     {
         public int AspirationTypeId { get; set; }

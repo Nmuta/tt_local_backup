@@ -4,10 +4,7 @@
 #pragma warning disable SA1306 // Field names should begin with lower-case letter
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Graph;
-using PlayFab.MultiplayerModels;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
@@ -43,7 +40,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         ///     Gets PlayFab player's currency inventory.
         /// </summary>
         Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, WoodstockPlayFabEnvironment environment);
-
 
         /// <summary>
         ///     Adds currency to player's account.

@@ -2,8 +2,6 @@ import BigNumber from 'bignumber.js';
 import { Injectable } from '@angular/core';
 import {
   SteelheadBanHistoryEntry,
-  SteelheadBanRequest,
-  SteelheadBanResult,
   SteelheadBanSummary,
   SteelheadConsoleDetailsEntry,
   SteelheadGiftHistory,
@@ -11,7 +9,6 @@ import {
   SteelheadPlayerInventory,
   SteelheadSharedConsoleUser,
 } from '@models/steelhead';
-import { BackgroundJob } from '@models/background-job';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -112,21 +109,6 @@ export class SteelheadService {
   public getConsoleDetailsByXuid$(xuid: BigNumber): Observable<SteelheadConsoleDetailsEntry[]> {
     return this.apiService.getRequest$<SteelheadConsoleDetailsEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
-    );
-  }
-
-  /** Bans players by a list of XUIDs. */
-  public postBanPlayers$(bans: SteelheadBanRequest[]): Observable<SteelheadBanResult[]> {
-    return this.apiService.postRequest$<SteelheadBanResult[]>(`${this.basePath}/players/ban`, bans);
-  }
-
-  /** Bans players by a list of XUIDs using background processing. */
-  public postBanPlayersWithBackgroundProcessing$(
-    bans: SteelheadBanRequest[],
-  ): Observable<BackgroundJob<void>> {
-    return this.apiService.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/players/ban/useBackgroundProcessing`,
-      bans,
     );
   }
 

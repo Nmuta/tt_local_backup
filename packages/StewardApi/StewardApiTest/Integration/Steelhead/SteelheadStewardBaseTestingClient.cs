@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
@@ -13,7 +11,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
     {
         protected const string Version = "1";
         protected const string TitlePath = "api/v2/title/steelhead";
-        
+
         protected readonly Uri baseUri;
         protected readonly string authKey;
         protected readonly Dictionary<string, string> headers;

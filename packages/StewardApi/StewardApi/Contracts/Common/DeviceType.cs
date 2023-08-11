@@ -73,6 +73,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Steam device type.
         /// </summary>
-        Steam = 11
+        Steam = 11,
     }
 }

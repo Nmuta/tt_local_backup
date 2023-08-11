@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
-using Turn10.Services.LiveOps.FH5_main.Generated;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 using Turn10.LiveOps.StewardApi.Logging;
+using Turn10.LiveOps.StewardApi.ProfileMappers;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {

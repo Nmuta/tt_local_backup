@@ -47,6 +47,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Secret codename.
         /// </summary>
-        Holland
+        Holland,
     }
 }

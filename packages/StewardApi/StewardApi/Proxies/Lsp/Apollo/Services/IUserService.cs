@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Forza.WebServices.FM7.Generated;
 using static Forza.WebServices.FM7.Generated.UserService;
 

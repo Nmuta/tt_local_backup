@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
     /// <summary>
     ///     Represents the Pegasus constants used by Steward.
     /// </summary>
-    #pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1600 // Elements should be documented
     public static class PegasusConstants
     {
         public const string MessageOfTheDayPath = "/Source/UserMessages/MessageOfTheDay.xml";

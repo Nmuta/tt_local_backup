@@ -36,7 +36,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             {
                 throw new BadRequestStewardException($"Provided XUID does not meet requirements: {source}");
             }
-
         }
 
         /// <summary>

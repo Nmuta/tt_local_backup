@@ -37,6 +37,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         ///     Still remove slices on the occasion that dataActivities are deleted out from under the slice.
         /// </remarks>
         [EnumMember(Value = "none")]
-        None
+        None,
     }
 }

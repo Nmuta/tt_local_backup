@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Forza.WebServices.FM8.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
@@ -23,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.StewardEnvironment
+            ConfigurationKeyConstants.StewardEnvironment,
         };
 
         private readonly bool allowGiftingToAllUsers;

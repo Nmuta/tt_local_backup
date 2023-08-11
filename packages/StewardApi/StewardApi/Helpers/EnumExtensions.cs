@@ -137,11 +137,11 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
                 if (attrs != null && attrs.Length > 0)
                 {
-                    //Pull out the description value
+                    // Pull out the description value
                     return ((DescriptionAttribute)attrs[0]).Description;
                 }
             }
-            
+
             return enumerationValue.ToString();
         }
     }

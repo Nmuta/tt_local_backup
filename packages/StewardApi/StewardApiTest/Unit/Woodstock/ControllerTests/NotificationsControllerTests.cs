@@ -2,17 +2,10 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NSubstitute;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player;
-using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using AutoMapper;
-using Turn10.Services.LiveOps.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player;
 using Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
@@ -51,5 +44,5 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             public NotificationsController Build() => new NotificationsController()
             { ControllerContext = this.ControllerContext };
         }
-    } 
+    }
 }

@@ -22,6 +22,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     A very severe error that will likely lead to application abort and/or 500 error.
         /// </summary>
-        Fatal
+        Fatal,
     }
 }

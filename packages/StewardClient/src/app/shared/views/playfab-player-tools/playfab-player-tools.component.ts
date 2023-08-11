@@ -23,7 +23,7 @@ export interface PlayFabPlayerToolsServiceContract {
   transactionHistoryService: PlayFabTransactionHistoryServiceContract;
 }
 
-/** Component to get and set a player's cms override. */
+/** Component that wraps PlayFab tools for a specific player. */
 @Component({
   selector: 'playfab-player-tools',
   templateUrl: './playfab-player-tools.component.html',
@@ -60,7 +60,7 @@ export class PlayFabPlayerToolsComponent extends BaseComponent implements OnChan
   /** Lifecycle hook. */
   public ngOnChanges(changes: BetterSimpleChanges<PlayFabPlayerToolsComponent>): void {
     if (!this.service) {
-      throw new Error('No service is defined for PlayFab transaction history component.');
+      throw new Error('No service is defined for PlayFab player tools component.');
     }
 
     if (!!changes.xuid && !!this.xuid) {
@@ -73,6 +73,7 @@ export class PlayFabPlayerToolsComponent extends BaseComponent implements OnChan
     // Fake an ngOnChange event for each underlying tool by cloning playfabProfile
     this.playfabProfile = cloneDeep(this.playfabProfile);
   }
+
 
   private getPlayFabProfile(): void {
     this.getPlayFabProfileMonitor = this.getPlayFabProfileMonitor.repeat();

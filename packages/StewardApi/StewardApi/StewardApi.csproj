@@ -90,6 +90,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PlayFabAllSDK" Version="1.144.230123" />
     <PackageReference Include="SteelheadLiveOpsContent" Version="1.7.26" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
     <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
@@ -110,7 +114,7 @@
     <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.13.5">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.21.3">
+    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.22.4">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4">

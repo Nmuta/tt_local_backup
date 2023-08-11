@@ -20,3 +20,6 @@ jobs:
 - template: job-ui-test-unit.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}
+- template: job-ui-test-changelog.template.yml
+  parameters:
+    workingDirectory: ${{parameters.workingDirectory}}

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.Notifications.FH5_main.Generated;
@@ -160,7 +159,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 PlayerOrLspGroup = xuid,
                 TargetXuid = xuid,
-                IdentityAntecedent = GiftIdentityAntecedent.Xuid
+                IdentityAntecedent = GiftIdentityAntecedent.Xuid,
             };
 
             try
@@ -246,7 +245,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 PlayerOrLspGroup = groupId,
                 TargetLspGroupId = groupId,
-                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
             };
 
             try
@@ -388,7 +387,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     Endpoint = proxyService.Endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
                     ExpireDateUtc = createdDate.AddYears(10),
-                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}"
+                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}",
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -489,7 +488,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 { InventoryItemType.CarHorns, this.EmptyIfNull(giftInventory.CarHorns) },
                 { InventoryItemType.Emote, this.EmptyIfNull(giftInventory.Emotes) },
                 { InventoryItemType.QuickChatLines, this.EmptyIfNull(giftInventory.QuickChatLines) },
-                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) }
+                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) },
             };
         }
 

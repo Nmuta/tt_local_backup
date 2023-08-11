@@ -68,7 +68,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies
             }
         }
 
-
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         /// <inheritdoc/>
         public async void InterceptAsynchronous(IInvocation invocation)

@@ -1,17 +1,18 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base.component';
-import { GameTitle } from '@models/enums';
-import { Observable, delay } from 'rxjs';
-import { BetterSimpleChanges } from '@helpers/simple-changes';
-import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
-import { PlayFabCollectionId, PlayFabInventoryItem, PlayFabVoucher } from '@models/playfab';
-import { FormGroup, AbstractControl, FormControl, Validators } from '@angular/forms';
-import { cloneDeep } from 'lodash';
-import { PlayFabProfile } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
-import BigNumber from 'bignumber.js';
-import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { HCI } from '@environments/environment';
+import { Component, OnChanges, Input, Output, EventEmitter } from "@angular/core";
+import { FormGroup, AbstractControl, FormControl, Validators } from "@angular/forms";
+import { BaseComponent } from "@components/base-component/base.component";
+import { HCI } from "@environments/environment";
+import { BetterMatTableDataSource } from "@helpers/better-mat-table-data-source";
+import { BetterSimpleChanges } from "@helpers/simple-changes";
+import { GameTitle } from "@models/enums";
+import { PlayFabCollectionId, PlayFabInventoryItem, PlayFabVoucher } from "@models/playfab";
+import { PlayFabProfile } from "@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service";
+import { PermAttributeName } from "@services/perm-attributes/perm-attributes";
+import { ActionMonitor } from "@shared/modules/monitor-action/action-monitor";
+import BigNumber from "bignumber.js";
+import { cloneDeep } from "lodash";
+import { Observable, delay } from "rxjs";
+
 
 /** Service contract for the PlayFabInventoryComponent. */
 export interface PlayFabInventoryServiceContract {
@@ -43,7 +44,7 @@ type PlayFabInventoryItemListEntry = PlayFabInventoryItem & {
   editMonitor?: ActionMonitor;
 };
 
-/** Component to get and set a player's cms override. */
+/** Component to view and manage playfab player inventory. */
 @Component({
   selector: 'playfab-inventory',
   templateUrl: './playfab-inventory.component.html',

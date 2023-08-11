@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using Microsoft.ApplicationInsights;
-using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Logging
 {

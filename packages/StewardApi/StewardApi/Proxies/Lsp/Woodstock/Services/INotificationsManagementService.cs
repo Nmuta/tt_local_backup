@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Turn10.Services.LiveOps.FH5_main.Generated;
 using NotificationsManagementService = Turn10.Services.LiveOps.FH5_main.Generated.NotificationsManagementService;
 
 #pragma warning disable VSTHRD200 // Use  Suffix

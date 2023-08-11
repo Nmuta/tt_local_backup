@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services;
+﻿using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo
 {

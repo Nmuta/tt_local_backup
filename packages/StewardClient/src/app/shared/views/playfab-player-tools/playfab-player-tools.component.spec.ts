@@ -91,9 +91,7 @@ describe('PlayFabPlayerToolsComponent', () => {
           expect(false).toBeTruthy();
         } catch (e) {
           expect(true).toBeTruthy();
-          expect(e.message).toEqual(
-            'No service is defined for PlayFab transaction history component.',
-          );
+          expect(e.message).toEqual('No service is defined for PlayFab player tools component.');
         }
       });
     });

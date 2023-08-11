@@ -18,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.KustoLoggerDatabase
+            ConfigurationKeyConstants.KustoLoggerDatabase,
         };
 
         private readonly ActionData actionData;
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 Endpoint = this.actionData.Endpoint ?? string.Empty,
                 CreatedDateUtc = DateTime.UtcNow,
                 BatchReferenceId = this.actionData.RequestBatchId.ToString(),
-                Metadata = this.actionData.Metadata ?? string.Empty
+                Metadata = this.actionData.Metadata ?? string.Empty,
             };
             var kustoColumnMappings = action.ToJsonColumnMappings();
 

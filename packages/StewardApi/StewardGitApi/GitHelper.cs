@@ -1,12 +1,10 @@
-﻿using System.Globalization;
-using System.Runtime.Serialization;
-using System.Text;
-using Microsoft.TeamFoundation.Build.WebApi;
+﻿using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.Organization.Client;
 using Microsoft.VisualStudio.Services.WebApi;
+using System.Runtime.Serialization;
 
 namespace StewardGitApi
 {
@@ -281,7 +279,7 @@ namespace StewardGitApi
             GitRef defaultBranch = (await gitClient.GetRefsAsync(repo.Id, filter: defaultBranchName).ConfigureAwait(false)).First();
 
             // Craft the new branch that we'll push. Based on name of author.
-            GitRefUpdate newBranch = new ()
+            GitRefUpdate newBranch = new()
             {
                 Name = $"refs/heads/{BuildBranchName(context, proxyChanges.First().AuthorName ?? AutogenBranchName)}",
                 OldObjectId = defaultBranch.ObjectId,
@@ -378,7 +376,7 @@ namespace StewardGitApi
 
             var repoId = context.Settings.Ids.repoId;
 
-            GitPullRequest updatedPr = new ()
+            GitPullRequest updatedPr = new()
             {
                 Status = PullRequestStatus.Abandoned,
             };
@@ -483,7 +481,7 @@ namespace StewardGitApi
 
         private static IEnumerable<GitCommitRef> ToGitCommitRef(IEnumerable<CommitRefProxy> proxyCommits)
         {
-            List<GitCommitRef> commitRefs = new ();
+            List<GitCommitRef> commitRefs = new();
 
             foreach (var c in proxyCommits)
             {

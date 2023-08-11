@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
+﻿using Turn10.LiveOps.StewardApi.Contracts.Errors;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {

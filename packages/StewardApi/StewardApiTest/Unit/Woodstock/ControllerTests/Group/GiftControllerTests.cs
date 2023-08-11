@@ -1,22 +1,20 @@
 ﻿using AutoFixture;
+using AutoMapper;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using AutoMapper;
-using Turn10.Services.LiveOps.FH5_main.Generated;
-using Turn10.LiveOps.StewardApi.Helpers;
-using Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
-using Turn10.LiveOps.StewardApi.Validation;
-using System.Collections.Generic;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
-using System.Threading.Tasks;
 using System;
-using FluentAssertions;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Group;
 using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
+using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Group
 {
@@ -106,5 +104,5 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Group
                 this.MasterInventoryRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
-    } 
+    }
 }
