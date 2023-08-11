@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
                 var vouchers = getVouchers.GetAwaiter().GetResult();
                 var inventoryItems = getInventoryItems.GetAwaiter().GetResult().ToList();
 
-                inventoryItems.ForEach(item =>
+                vouchers.ForEach(voucher =>
                 {
                     var inventoryItem = inventoryItems.FirstOrDefault(item => voucher.Id == item.Id);
                     // Item exists, add voucher name to item
