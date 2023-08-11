@@ -55,7 +55,8 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
   public readonly permAttribute = PermAttributeName.SendLoyaltyRewards;
 
   public errorMessage: string;
-  private errorAntecedent: string = 'Failed to resend loyalty history rewards for the following titles: ';
+  private errorAntecedent: string =
+    'Failed to resend loyalty history rewards for the following titles: ';
 
   constructor(
     protected readonly store: Store,
@@ -109,8 +110,6 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
         this.hasPlayedRecordTable.data = convertedData;
         this.gameTitleColumns = (record as HasPlayedRecord[]).map(x => x.gameTitle);
         this.displayedColumns = ['label', ...this.gameTitleColumns];
-
-        console.log(this.titlesToSend)
       });
 
     this.getHasPlayedRecord$.next();
@@ -134,7 +133,7 @@ export class WoodstockLoyaltyRewardsComponent extends BaseComponent implements O
       .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(userLoyaltyUpdateResults => {
         const fullSuccess = this.titlesToSend.every(title => userLoyaltyUpdateResults[title]);
-console.log(fullSuccess)
+
         if (!fullSuccess) {
           const failures = this.titlesToSend.filter(title => !userLoyaltyUpdateResults[title]);
           this.errorMessage = this.errorAntecedent + failures.join(', ');
@@ -161,7 +160,5 @@ console.log(fullSuccess)
       this.titlesToSend = this.titlesToSend.filter(title => title != gameTitle);
       this.allowSend = this.titlesToSend.length > 0;
     }
-
-    console.log(this.titlesToSend)
   }
 }
