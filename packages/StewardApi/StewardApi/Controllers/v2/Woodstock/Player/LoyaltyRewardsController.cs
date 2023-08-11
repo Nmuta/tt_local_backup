@@ -68,7 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
                 throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: (externalProfileId: {externalProfileId})");
             }
 
-            UserManagementService.GetHasPlayedRecordOutput response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
+            var response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
 
             var hasPlayedRecord = this.mapper.SafeMap<IList<HasPlayedRecord>>(response.records);
 
@@ -125,14 +125,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
             {
                 try
                 {
-                    Turn10.UGC.Contracts.GameTitle convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(titleEnum);
+                    var convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(titleEnum);
 
                     if (!Enum.IsDefined(typeof(Turn10.UGC.Contracts.GameTitle), convertedEnum))
                     {
                         throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
                     }
 
-                    int[] currentGameTitleId = new[] { (int)convertedEnum };
+                    var currentGameTitleId = new[] { (int)convertedEnum };
                     await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, currentGameTitleId).ConfigureAwait(true);
                     successResponse.Add(titleEnum, true);
                 }
