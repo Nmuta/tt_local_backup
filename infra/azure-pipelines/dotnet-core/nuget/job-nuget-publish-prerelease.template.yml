@@ -18,6 +18,15 @@ jobs:
       workingDirectory: ${{parameters.workingDirectory}}
 
   - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: build
+      projects: >-
+        ${{parameters.workingDirectory}}/StewardApi/*.csproj
+      selectOrConfig: config
+      feedRestore: /2cea4146-e4d1-416d-9823-c02540cc01a9
+
+  - task: DotNetCoreCLI@2
     displayName: Pack Nugets
     inputs:
       command: pack
