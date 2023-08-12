@@ -47,5 +47,5 @@ jobs:
     inputs:
       command: 'push'
       nuGetFeedType: 'internal'
-      packagesToPush: '$(build.artifactStagingDirectory)/${{params.nugetName}}*.nupkg'
+      packagesToPush: '$(build.artifactStagingDirectory)/${{parameters.nugetName}}*.nupkg'
       publishVstsFeed: 'Turn10-LiveOps'
