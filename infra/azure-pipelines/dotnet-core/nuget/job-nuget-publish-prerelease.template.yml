@@ -22,7 +22,7 @@ jobs:
     inputs:
       command: build
       projects: >-
-        ${{parameters.workingDirectory}}/StewardApi/*.csproj
+        ${{parameters.workingDirectory}}/**/*.csproj
       selectOrConfig: config
       feedRestore: 'Turn10-LiveOps'
 
