@@ -23,7 +23,7 @@ jobs:
       command: pack
       configuration: $(BuildConfiguration)
       packagesToPack: '${{parameters.workingDirectory}}/**/*.Package.csproj'
-      versioningScheme: byBuildNumber
+      versioningScheme: byPrereleaseNumber
       packDestination: '$(Build.ArtifactStagingDirectory)/nuget'
 
   - task: PublishBuildArtifacts@1
