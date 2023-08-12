@@ -1,10 +1,12 @@
-# This file runs a test build as a single parallel job.
-# Designed for use with Steward.
-# It is intended to be run only after a `dotnet` cache is made.
+# This file builds and packages a nuget package, as a preview.
+# Designed for use with Analyzer-Documentation.
 
 parameters:
 - name: 'workingDirectory'
-  displayName: "Path to a working directory where dotnet can be run. Like 'packages/StewardApi'."
+  displayName: "Path to a working directory where dotnet can be run. Like 'packages/Analyzer-Documentation'."
+  type: string
+- name: 'nugetName'
+  displayName: "Name of the resulting nuget. Like 'Analyzer_Documentation'"
   type: string
 
 jobs:
@@ -16,14 +18,25 @@ jobs:
       workingDirectory: ${{parameters.workingDirectory}}
 
   - task: DotNetCoreCLI@2
+    displayName: Pack Nugets
     inputs:
-        command: pack
-        packagesToPack: '${{parameters.workingDirectory}}/**/*.Package.csproj'
-        versioningScheme: byBuildNumber
-        packDestination: '$(Build.ArtifactStagingDirectory)/nuget'
+      command: pack
+      configuration: $(BuildConfiguration)
+      packagesToPack: '${{parameters.workingDirectory}}/**/*.Package.csproj'
+      versioningScheme: byBuildNumber
+      packDestination: '$(Build.ArtifactStagingDirectory)/nuget'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: nuget'
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/nuget'
-      ArtifactName: nuget
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/nuget/${{parameters.nugetName}}*.nupkg'
+      ArtifactName: nuget-${{parameters.nugetName}}
+
+  # Publish
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish'
+    inputs:
+      command: 'push'
+      nuGetFeedType: 'internal'
+      packagesToPush: '$(build.artifactStagingDirectory)/$(ProjectName)*.nupkg'
+      publishVstsFeed: 'Turn10-LiveOps'
