@@ -724,7 +724,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
-
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
@@ -825,7 +824,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
-
 
         [TestMethod]
         [TestCategory("Unit")]

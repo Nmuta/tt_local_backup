@@ -145,7 +145,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "queries"));
         }
 
-
         [TestMethod]
         [TestCategory("Unit")]
         public async Task RetrieveQueries_ReturnsCorrectType()

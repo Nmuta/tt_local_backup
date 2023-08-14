@@ -63,7 +63,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Group
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
-
         private sealed class Dependencies
         {
             private readonly ControllerContext ControllerContext;
