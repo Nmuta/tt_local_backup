@@ -148,122 +148,142 @@ export class GeneralTileComponent extends BaseComponent {
     this.formControls.timerInstance.valueChanges
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-        if (data == TimerInstance.Chapter) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.Chapter;
-          // TODO: Get data from projection https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1543941
-          this.timerReferenceOptions = new Map([
-            ['3a9b1321-792c-47d1-ad40-b2dc39bf62b3', 'Chapter 1: GA Pre-Season - Chapter 1'],
-            ['bbb41fc3-1e92-40f8-9b0a-cead82d4f2c5', 'Chapter 2: GA Pre-Season - Chapter 2'],
-          ]);
-        } else if (data == TimerInstance.Ladder) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.Ladder;
+        switch (data) {
+          case TimerInstance.Chapter:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.Chapter;
 
-          if (this.ladderReferences) {
-            this.timerReferenceOptions = this.ladderReferences;
-          } else {
-            this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
-            steelheadBuildersCupService
-              .getBuildersCupLadders$()
-              .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-              .subscribe(ladderReferences => {
-                this.ladderReferences = ladderReferences;
-                this.timerReferenceOptions = this.ladderReferences;
-              });
-          }
-        } else if (data == TimerInstance.Season) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.Season;
-          // TODO: Get data from projection https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1543941
-          this.timerReferenceOptions = new Map([
-            ['b0344978-c1cc-4cb0-bff8-422bb9cd21c2', 'Season 1:GA Pre-Season'],
-          ]);
-        } else if (data == TimerInstance.Series) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.Series;
+            // TODO: Get data from projection https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1543941
+            this.timerReferenceOptions = new Map([
+              ['3a9b1321-792c-47d1-ad40-b2dc39bf62b3', 'Chapter 1: GA Pre-Season - Chapter 1'],
+              ['bbb41fc3-1e92-40f8-9b0a-cead82d4f2c5', 'Chapter 2: GA Pre-Season - Chapter 2'],
+            ]);
+            break;
+          case TimerInstance.Ladder:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.Ladder;
 
-          if (this.seriesReferences) {
-            this.timerReferenceOptions = this.seriesReferences;
-          } else {
-            this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
-            const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$();
-            const getRacersCupSeries$ = steelheadRacersCupService.getRacersCupSeries$();
+            if (this.ladderReferences) {
+              this.timerReferenceOptions = this.ladderReferences;
+            } else {
+              this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+              steelheadBuildersCupService
+                .getBuildersCupLadders$()
+                .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+                .subscribe(ladderReferences => {
+                  this.ladderReferences = ladderReferences;
+                  this.timerReferenceOptions = this.ladderReferences;
+                });
+            }
+            break;
+          case TimerInstance.Season:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.Season;
 
-            combineLatest([getBuildersCupSeries$, getRacersCupSeries$])
-              .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-              .subscribe(([builderCupSeries, racersCupSeries]) => {
-                const mergeMap = new Map<string, string>();
-                [...Object.entries(builderCupSeries), ...Object.entries(racersCupSeries)].forEach(
-                  ([key, value]) => {
-                    mergeMap.set(key, value);
-                  },
-                );
-                this.seriesReferences = mergeMap;
-                this.timerReferenceOptions = this.seriesReferences;
-              });
-          }
-        } else if (data == TimerInstance.DateTimeRange) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.DateTimeRange;
-          this.timerReferenceOptions = new Map([
-            [
-              '39565392-c6d2-48ed-8dc3-f64ffc6ddd5d',
-              '[R.1] Ending Week 2 (10/11/2023 11:59:59 PM)',
-            ],
-            ['b67daceb-08fc-4870-b57d-11e82affcb94', 'Car Pass 2'],
-          ]);
-        } else if (data == TimerInstance.ChallengeData) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.ChallengeData;
-          this.timerReferenceOptions = new Map([
-            ['89c2750f-5d95-41d6-ab42-e20612878996', 'Beat 5 Rivals'],
-          ]);
-        } else if (data == TimerInstance.FeaturedShowcase) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.FeaturedShowcase;
-          this.timerReferenceOptions = new Map([
-            ['cffd5821-02db-4e03-9a49-0347e85286c3', 'Test Manufacturer Showcase'],
-          ]);
-        } else if (data == TimerInstance.RivalsEvent) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.RivalsEvent;
+            // TODO: Get data from projection https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1543941
+            this.timerReferenceOptions = new Map([
+              ['b0344978-c1cc-4cb0-bff8-422bb9cd21c2', 'Season 1:GA Pre-Season'],
+            ]);
+            break;
+          case TimerInstance.Series:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.Series;
 
-          if (this.rivalsEventReferences) {
-            this.timerReferenceOptions = this.rivalsEventReferences;
-          } else {
-            this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
-            steelheadRivalsService
-              .getRivalsEventReference$()
-              .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-              .subscribe(rivalsReference => {
-                this.rivalsEventReferences = rivalsReference;
-                this.timerReferenceOptions = this.rivalsEventReferences;
-              });
-          }
-        } else if (data == TimerInstance.ShowroomListing) {
-          this.selectedTimerReferenceInstance = TimerReferenceInstance.ShowroomListing;
+            if (this.seriesReferences) {
+              this.timerReferenceOptions = this.seriesReferences;
+            } else {
+              this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+              const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$();
+              const getRacersCupSeries$ = steelheadRacersCupService.getRacersCupSeries$();
 
-          if (this.showroomListingReferences) {
-            this.timerReferenceOptions = this.showroomListingReferences;
-          } else {
-            this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
-            steelheadShowroomService
-              .getCarSales$()
-              .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-              .subscribe(showroomListings => {
-                // Process the list of car sales object into a dictionnary with date added to the listing name to differentiate car sales with the same name
-                const processedShowroomListings = showroomListings.reduce(
-                  (result, showroomListing) => {
-                    result.set(
-                      showroomListing.carSaleId,
-                      `${showroomListing.name} (${showroomListing.startTimeUtc.toLocaleString(
-                        DateTime.DATETIME_SHORT,
-                      )} - ${showroomListing.endTimeUtc.toLocaleString(DateTime.DATETIME_SHORT)})`,
-                    );
-                    return result;
-                  },
-                  new Map<string, string>(),
-                );
-                this.showroomListingReferences = processedShowroomListings;
-                this.timerReferenceOptions = this.showroomListingReferences;
-              });
-          }
-        } else if (data == TimerInstance.Custom) {
-          this.selectedTimerReferenceInstance = undefined;
-          this.timerReferenceOptions = undefined;
+              combineLatest([getBuildersCupSeries$, getRacersCupSeries$])
+                .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+                .subscribe(([builderCupSeries, racersCupSeries]) => {
+                  const mergeMap = new Map<string, string>();
+                  [...Object.entries(builderCupSeries), ...Object.entries(racersCupSeries)].forEach(
+                    ([key, value]) => {
+                      mergeMap.set(key, value);
+                    },
+                  );
+                  this.seriesReferences = mergeMap;
+                  this.timerReferenceOptions = this.seriesReferences;
+                });
+            }
+            break;
+          case TimerInstance.DateTimeRange:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.DateTimeRange;
+
+            // TODO: Change the following references to use actual projected data
+            // https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1576997
+            this.timerReferenceOptions = new Map([
+              [
+                '39565392-c6d2-48ed-8dc3-f64ffc6ddd5d',
+                '[R.1] Ending Week 2 (10/11/2023 11:59:59 PM)',
+              ],
+              ['b67daceb-08fc-4870-b57d-11e82affcb94', 'Car Pass 2'],
+            ]);
+            break;
+          case TimerInstance.ChallengeData:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.ChallengeData;
+
+            this.timerReferenceOptions = new Map([
+              ['89c2750f-5d95-41d6-ab42-e20612878996', 'Beat 5 Rivals'],
+            ]);
+            break;
+          case TimerInstance.FeaturedShowcase:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.FeaturedShowcase;
+
+            this.timerReferenceOptions = new Map([
+              ['cffd5821-02db-4e03-9a49-0347e85286c3', 'Test Manufacturer Showcase'],
+            ]);
+            break;
+          case TimerInstance.RivalsEvent:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.RivalsEvent;
+
+            if (this.rivalsEventReferences) {
+              this.timerReferenceOptions = this.rivalsEventReferences;
+            } else {
+              this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+              steelheadRivalsService
+                .getRivalsEventReference$()
+                .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+                .subscribe(rivalsReference => {
+                  this.rivalsEventReferences = rivalsReference;
+                  this.timerReferenceOptions = this.rivalsEventReferences;
+                });
+            }
+            break;
+          case TimerInstance.ShowroomListing:
+            this.selectedTimerReferenceInstance = TimerReferenceInstance.ShowroomListing;
+
+            if (this.showroomListingReferences) {
+              this.timerReferenceOptions = this.showroomListingReferences;
+            } else {
+              this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+              steelheadShowroomService
+                .getCarSales$()
+                .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+                .subscribe(showroomListings => {
+                  // Process the list of car sales object into a dictionnary with date added to the listing name to differentiate car sales with the same name
+                  const processedShowroomListings = showroomListings.reduce(
+                    (result, showroomListing) => {
+                      result.set(
+                        showroomListing.carSaleId,
+                        `${showroomListing.name} (${showroomListing.startTimeUtc.toLocaleString(
+                          DateTime.DATETIME_SHORT,
+                        )} - ${showroomListing.endTimeUtc.toLocaleString(
+                          DateTime.DATETIME_SHORT,
+                        )})`,
+                      );
+                      return result;
+                    },
+                    new Map<string, string>(),
+                  );
+                  this.showroomListingReferences = processedShowroomListings;
+                  this.timerReferenceOptions = this.showroomListingReferences;
+                });
+            }
+            break;
+          case TimerInstance.Custom:
+            this.selectedTimerReferenceInstance = undefined;
+            this.timerReferenceOptions = undefined;
+            break;
         }
       });
   }
