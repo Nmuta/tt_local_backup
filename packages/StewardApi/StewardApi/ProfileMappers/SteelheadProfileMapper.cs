@@ -50,14 +50,18 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(des => des.Error, opt => opt.MapFrom(src => default(StewardError)))
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
+                .ForMember(des => des.Errors, opt => opt.MapFrom(src => default(StewardError[])))
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
                     new PlayerInventoryItem { Id = 0, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
-            this.CreateMap<ForzaUserBanSummary, BanSummary>();
+            this.CreateMap<ForzaUserBanSummary, BanSummary>()
+                .ForMember(des => des.AdjustedBanCount, opt => opt.MapFrom(src => src.BanCount))
+                .ForMember(des => des.BannedAreas, opt => opt.MapFrom(src => new List<string>()));
             this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
@@ -71,6 +75,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
+                .ForMember(dest => dest.LastExtendedReason, opt => opt.MapFrom(src => src.LastExtendReason))
                 .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
             this.CreateMap<ForzaUserBanResult, BanResult>()
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
@@ -78,12 +83,18 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaConsole, ConsoleDetails>().ReverseMap();
             this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, LspGroup>();
-            this.CreateMap<SteelheadPlayerDetails, IdentityResultAlpha>().ReverseMap();
+            this.CreateMap<SteelheadPlayerDetails, IdentityResultAlpha>()
+                .ForMember(dest => dest.Query, opt => opt.MapFrom(src => default(IdentityQueryAlpha)))
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => default(StewardError)))
+                .ReverseMap();
             this.CreateMap<SteelheadUserFlagsInput, SteelheadUserFlags>().ReverseMap();
             this.CreateMap<SteelheadGroupGift, SteelheadGift>().ReverseMap();
             this.CreateMap<UserData, SteelheadPlayerDetails>()
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
+                .ForMember(dest => dest.CurrentPlayerBadgeId, opt => opt.MapFrom(src => src.currentBadgeId))
+                .ForMember(dest => dest.EquippedVanityItemId, opt => opt.MapFrom(src => 0))
+                .ForMember(dest => dest.CurrentCareerLevel, opt => opt.MapFrom(src => 0))
                 .ReverseMap();
             this.CreateMap<ForzaLiveOpsNotification, Notification>()
                 .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.Id))
