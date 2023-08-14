@@ -135,7 +135,7 @@ export class PlayFabInventoryComponent extends BaseComponent implements OnChange
     )
       .pipe(
         // Give PlayFab time to propagate this action so on reload we get up-to-date data
-        delay(HCI.PlayFabPropagation),
+        delay(HCI.PlayFabPropagationMillis),
         item.editMonitor.monitorSingleFire(),
       )
       .subscribe(() => {
