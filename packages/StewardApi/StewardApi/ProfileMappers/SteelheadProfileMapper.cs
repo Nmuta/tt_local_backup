@@ -25,6 +25,7 @@ using Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters;
 using Turn10.Services.LiveOps.FM8.Generated;
 using Xls.Security.FM8.Generated;
 using Xls.WebServices.FM8.Generated;
+using static Forza.WebServices.FM8.Generated.LiveOpsService;
 using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using ServicesLiveOps = Turn10.Services.LiveOps.FM8.Generated;
@@ -585,6 +586,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LspTask, ForzaTaskUpdateParameters>()
                 .ForMember(dest => dest.NextExecution, opt => opt.MapFrom(source => source.NextExecutionUtc));
+
+            this.CreateMap<ForzaUGCProfileDecompressionData, UgcProfileDecompressionData>();
+
+            this.CreateMap<DownloadUGCProfileOutput, UgcProfileInfo>()
+                .ForMember(dest => dest.DecompressionData, opt => opt.MapFrom(source => source.decompressionResult));
         }
 
         private DeeplinkDestination PrepareBridgeDestination(WofBaseDestination destination)

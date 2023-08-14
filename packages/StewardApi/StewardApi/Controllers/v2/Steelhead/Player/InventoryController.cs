@@ -296,7 +296,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.ManagePlayerInventory)]
         public async Task<IActionResult> RemovePlayerProfileItems(ulong xuid, string externalProfileId, [FromBody] SteelheadPlayerInventory inventoryUpdates)
         {
-            var externalProfileIdGuid = externalProfileId.TryParseGuidElseThrow("External Profile ID could no be parsed as GUID.");
+            var externalProfileIdGuid = externalProfileId.TryParseGuidElseThrow($"External Profile ID could no be parsed as GUID. External Profile ID: {externalProfileId}");
 
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
