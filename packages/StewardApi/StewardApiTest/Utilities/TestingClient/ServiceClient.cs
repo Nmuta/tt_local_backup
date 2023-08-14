@@ -208,6 +208,7 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
         }
 
         [SuppressMessage("Security", "CA5364:Do Not Use Deprecated Security Protocols", Justification = "Fine for tests.")]
+        [SuppressMessage("Security", "CA5386:Avoid hardcoding SecurityProtocolType value", Justification = "Fine for tests.")]
         private static void EnsureSecurityProtocolSet()
         {
             ServicePointManager.SecurityProtocol =

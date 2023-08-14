@@ -326,7 +326,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-
             public SunriseNotificationProvider Build() => new SunriseNotificationProvider(
                 this.SunriseService,
                 this.NotificationHistoryProvider,

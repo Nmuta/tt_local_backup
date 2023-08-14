@@ -1,7 +1,10 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Inventory</mat-card-title>
-    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+    <mat-card-subtitle
+      >{{ gameTitle | humanize }} | PlayFab Player Id: {{ playfabPlayerTitleId ?? 'N/A' }} |
+      Collection Id: {{ playfabCollectionId ?? 'N/A' }}</mat-card-subtitle
+    >
   </mat-card-header>
   <mat-card-content>
     <ng-container *waitForMonitor="getInventoryMonitor">

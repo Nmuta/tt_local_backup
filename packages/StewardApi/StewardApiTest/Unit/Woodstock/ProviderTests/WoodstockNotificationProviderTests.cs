@@ -48,7 +48,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockService"));
         }
 
-
         [TestMethod]
         [TestCategory("Unit")]
         public void Ctor_WhenNotificationHistoryProviderNull_Throws()
