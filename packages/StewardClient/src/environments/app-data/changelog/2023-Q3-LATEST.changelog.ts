@@ -18,6 +18,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add tools to view PlayFab inventory and transaction history',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '52c8dc76-b903-4a51-be37-d8a37556a60f',
+      shortText: 'Add missing timer types and popup fields.',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting, NavbarTool.UserDetails] },
       uuid: '55fb491b-4b57-4f86-8971-b0a8760d66a7',
       shortText: 'Add Driver Suit item type to inventory management and gifting',

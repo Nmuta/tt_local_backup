@@ -320,7 +320,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     XName path = value == null
                         ? xnamespace + property.Name
                         : property.GetCustomAttribute<WriteToPegasusAttribute>()?.IsMultiElement ?? false
-                            ? xnamespace + value.GetType().Name
+                            ? xnamespace + property.GetCustomAttributes<XmlElementAttribute>().First(x => x.Type == value.GetType()).ElementName
                             : xnamespace + property.Name;
 
                     if (value == null)
