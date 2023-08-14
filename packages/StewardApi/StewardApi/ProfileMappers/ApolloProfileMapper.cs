@@ -100,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => new DateTime()))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => default(DateTime)))
                 .ForMember(
                     dest => dest.ThumbnailOneImageBase64,
                     opt => opt.MapFrom(source =>
@@ -172,7 +172,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => new DateTime()))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => default(DateTime)))
                 .ReverseMap();
 
             this.CreateMap<ForzaLiveryGiftResult, GiftResponse<ulong>>()
