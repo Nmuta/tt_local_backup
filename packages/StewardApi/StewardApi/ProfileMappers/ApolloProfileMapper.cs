@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUGCData, ApolloUgcItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty"))
+                .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => false))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => new DateTime()))
