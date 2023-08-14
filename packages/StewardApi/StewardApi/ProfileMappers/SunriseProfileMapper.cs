@@ -211,7 +211,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => new DateTime()))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => default(DateTime)))
                 .ReverseMap();
 
             this.CreateMap<LiveOpsContracts.ForzaLiveryData, UgcLiveryItem>()
@@ -244,7 +244,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => new DateTime()))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => default(DateTime)))
                 .ReverseMap();
 
             this.CreateMap<LiveOpsContracts.ForzaPhotoData, UgcItem>()
@@ -276,7 +276,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => new DateTime()))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => default(DateTime)))
                 .ReverseMap();
 
             this.CreateMap<LiveOpsContracts.ForzaTuneData, UgcItem>()
@@ -308,7 +308,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => new DateTime()))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => default(DateTime)))
                 .ReverseMap();
 
             this.CreateMap<LiveOpsContracts.ForzaLiveryGiftResult, GiftResponse<ulong>>()
