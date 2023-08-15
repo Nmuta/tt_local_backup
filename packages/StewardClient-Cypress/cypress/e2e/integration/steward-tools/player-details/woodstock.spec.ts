@@ -30,7 +30,9 @@ const platformName = 'woodstock';
 context('Steward / Tools / Player Details / Woodstock', () => {
   before(() => {
     resetToDefaultState();
+
     cy.visit(stewardUrls.tools.playerDetails.default);
+
     selectWoodstock();
   });
 
