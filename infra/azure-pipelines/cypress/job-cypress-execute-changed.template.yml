@@ -1,0 +1,48 @@
+# This file executes recently-changed Cypress e2e tests with a time limit.
+# TODO: Update to use shared `node/` templates
+# TODO: Update to run tests in parallel
+
+parameters:
+- name: 'timeoutInMinutes'
+  displayName: 'How many minutes to allow tests to run for. Default 10. Total pipeline duration limit is 60m'
+  default: 10
+  type: number
+- name: 'label'
+  displayName: 'Text label for these tests. Used for identification'
+  type: string
+- name: 'command'
+  displayName: 'The target package.json command for running tests. Probably run:dev or run:dev:isolated'
+  default: 'run:dev'
+  type: string
+
+jobs:
+- job: Job_Cypress_Changed_${{parameters.label}}
+  displayName: Cypress (Execute Changed Tests) (${{parameters.label}})
+  pool:
+    vmImage: ubuntu-20.04
+
+  steps:
+  - template: ./tasks-cypress-prepare.template.yml
+
+  - task: CmdLine@2
+    displayName: Execute Changed Specs
+    condition: succeededOrFailed()
+    timeoutInMinutes: ${{parameters.timeoutInMinutes}}
+    env:
+      CYPRESS_DEV_CLIENT_SECRET: $(aad-auth-client-secret)
+      CYPRESS_DEV_CLIENT_ID: 'cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4'
+    inputs:
+      script: chmod +x ./scripts/execute-changed-specs.sh && ./scripts/execute-changed-specs.sh ${{parameters.command}}
+      workingDirectory: packages/StewardClient-Cypress/
+
+  - task: CmdLine@2
+    displayName: Combine Reports
+    condition: succeededOrFailed()
+    inputs:
+      script: yarn run report:combine:dev
+      workingDirectory: packages/StewardClient-Cypress/
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit' # 'JUnit' | 'NUnit' | 'VSTest' | 'XUnit' | 'CTest'. Alias: testRunner. Required. Test result format. Default: JUnit.
+      testResultsFiles: 'packages/StewardClient-Cypress/reports/mocha-junit/dev.xml' # string. Required. Test results files. Default: **/TEST-*.xml.
