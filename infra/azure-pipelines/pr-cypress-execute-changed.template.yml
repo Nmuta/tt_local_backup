@@ -11,12 +11,12 @@ trigger: none
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
 
 jobs:
-- template: infra/azure-pipelines/cypress/job-cypress-execute-changed.template.yml
+- template: cypress/job-cypress-execute-changed.template.yml
   parameters:
     timeoutInMinutes: 10
     command: 'run:dev'
     label: 'Dev'
-- template: infra/azure-pipelines/cypress/job-cypress-execute-changed.template.yml
+- template: cypress/job-cypress-execute-changed.template.yml
   parameters:
     timeoutInMinutes: 20
     command: 'run:dev'
