@@ -1,0 +1,59 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>UGC Profile</mat-card-title>
+    <mat-card-subtitle>Steelhead | {{ profileOverviewString }}</mat-card-subtitle>
+    <div class="sf-spacer"></div>
+    <div class="sf-vertical">
+      <div>
+        <verify-button
+          #verifyApplyBtn
+          [disabled]="!formGroup.dirty || !formGroup.valid"
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="setSkillRatingOverride()"
+          clickStop
+          stateManager
+          monitorDisable
+          [monitor]="postMonitor"
+          [disabled]="!formGroup.dirty || !formGroup.valid"
+          [verifyWithV2]="verifyApplyBtn"
+        >
+          Apply Override
+          <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+        </button>
+      </div>
+    </div>
+    <help-popover-icon cardTitle="UGC Profile">
+    </help-popover-icon>
+  </mat-card-header>
+  <mat-card-content>
+    <div *waitForMonitor="getMonitor">
+      <form [formGroup]="formGroup" class="sf-wrapper">
+        <div class="sf-vertical">
+          <!-- <mat-form-field appearance="fill">
+            <mat-label>Raw Skill Rating</mat-label>
+            <input type="number" matInput [formControl]="formControls.rawSkillRating" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Normalized Skill Rating</mat-label>
+            <input type="number" matInput [formControl]="formControls.normalizedSkillRating" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Skill Rating Override</mat-label>
+            <input type="number" matInput [formControl]="formControls.skillRatingOverride" />
+            <mat-error *ngIf="formControls.skillRatingOverride.hasError('min')"
+              >The minimum is {{ normalizedSkillRatingMin }}</mat-error
+            >
+            <mat-error *ngIf="formControls.skillRatingOverride.hasError('max')"
+              >The maximum is {{ normalizedSkillRatingMax }}</mat-error
+            >
+          </mat-form-field> -->
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>
