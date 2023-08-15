@@ -16,7 +16,7 @@ parameters:
   type: string
 
 jobs:
-- job: Job_Cypress_Changed_$[replace(parameters.label, ' ', '_')]
+- job: Job_Cypress_Changed_${{replace(parameters.label, ' ', '_')}}
   displayName: Cypress (Execute Changed Tests) (${{parameters.label}})
   pool:
     vmImage: ubuntu-20.04
