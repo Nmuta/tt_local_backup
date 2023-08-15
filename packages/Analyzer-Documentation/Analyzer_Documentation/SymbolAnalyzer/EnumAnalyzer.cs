@@ -12,7 +12,7 @@ namespace Analyzer_Documentation.SymbolAnalyzer
         // See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Localizing%20Analyzers.md for more on localization
         protected override string Title { get; } = "Enum lacks documentation";
         protected override string MessageFormat { get; } = "Enum '{0}' lacks documentation";
-        protected override string Description { get; } = "Enumes should have documentation";
+        protected override string Description { get; } = "Enums should have documentation";
 
         protected override TypeKind TargetTypeKind => TypeKind.Enum;
     }
