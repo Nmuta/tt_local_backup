@@ -55,7 +55,7 @@
 
   <ItemGroup>
     <PackageReference Include="AdaptiveCards.Templating" Version="1.4.0" />
-    <PackageReference Include="Analyzer_Documentation" Version="1.1.3">
+    <PackageReference Include="Analyzer_Documentation" Version="1.0.0-CI-20230815-234109">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

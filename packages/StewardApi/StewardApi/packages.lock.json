@@ -15,9 +15,9 @@
       },
       "Analyzer_Documentation": {
         "type": "Direct",
-        "requested": "[1.1.3, )",
-        "resolved": "1.1.3",
-        "contentHash": "QJF89DXlfeEa/THi1s7vWiLoB3uImoLZWDNUwub/SUs1K5osb6LG2idDdxTyUoXC4Ja1As9RQomwkZZxjFfXcg=="
+        "requested": "[1.0.0-CI-20230815-234109, )",
+        "resolved": "1.0.0-CI-20230815-234109",
+        "contentHash": "50N1V7Grg901ylaBXIp+j2DRQpKaJT+7XZe2X777ciYQ/tyK9cItL+ouMcGCSF5hFA7Fd/DrIodFCcSm1ZMlNw=="
       },
       "Autofac": {
         "type": "Direct",
