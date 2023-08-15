@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -19,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static List<LiveOpsBanHistory> ConsolidateBanHistory(IList<LiveOpsBanHistory> liveOpsBanHistory, IList<LiveOpsBanHistory> servicesBanHistory, ILoggingService loggingService, string gameTitle)
         {
             IEqualityComparer<LiveOpsBanHistory> titleAppropriateBanHistoryComparer =
-                gameTitle == TitleCodeName.Woodstock.ToString()
+                gameTitle == TitleCodeName.Woodstock.ToString() || gameTitle == TitleCodeName.Steelhead.ToString()
                     ? new LiveOpsBanHistoryIdComparer()
                     : new LiveOpsBanHistoryComparer();
 

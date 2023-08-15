@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 ServicesRequesterObjectId,
                 banDescription.StartTime,
                 banDescription.ExpireTime,
-                Enum.GetName(typeof(FM8Security.FeatureAreas), banDescription.FeatureAreas),
+                PrepareSteelheadBanFeatureArea(banDescription.FeatureAreas),
                 banDescription.Reason,
                 "{}",
                 endpoint);
@@ -140,6 +140,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             }
 
             var mappedFeatureAreas = new List<string>();
+
             // Use bitwise AND operator to reverse what the featureAreas were
             foreach (uint value in Enum.GetValues(typeof(FH5Security.FeatureAreas)))
             {
@@ -151,6 +152,35 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 if ((value & featureAreas) != 0)
                 {
                     mappedFeatureAreas.Add(Enum.GetName(typeof(FH5Security.FeatureAreas), value));
+                }
+            }
+
+            return string.Join(", ", mappedFeatureAreas);
+        }
+
+        /// <summary>
+        ///     Maps FM8 feature areas as a single int to a list of string.
+        /// </summary>
+        public static string PrepareSteelheadBanFeatureArea(uint featureAreas)
+        {
+            if (featureAreas == uint.MaxValue)
+            {
+                return FM8Security.FeatureAreas.AllRequests.ToString();
+            }
+
+            var mappedFeatureAreas = new List<string>();
+
+            // Use bitwise AND operator to reverse what the featureAreas were
+            foreach (uint value in Enum.GetValues(typeof(FM8Security.FeatureAreas)))
+            {
+                if (value == uint.MaxValue)
+                {
+                    continue;
+                }
+
+                if ((value & featureAreas) != 0)
+                {
+                    mappedFeatureAreas.Add(Enum.GetName(typeof(FM8Security.FeatureAreas), value));
                 }
             }
 

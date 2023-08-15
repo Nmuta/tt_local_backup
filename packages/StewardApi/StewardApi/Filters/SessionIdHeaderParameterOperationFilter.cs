@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Filters
                 In = ParameterLocation.Header,
                 Description = "Session Id",
                 Required = false,
-                Schema = new OpenApiSchema { Type = "string", Format = "uuid" }
+                Schema = new OpenApiSchema { Type = "string", Format = "uuid" },
             };
 
             if (operation.Parameters != null)

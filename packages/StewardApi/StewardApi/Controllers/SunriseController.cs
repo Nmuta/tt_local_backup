@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.KeyVaultUrl,
-            ConfigurationKeyConstants.GroupGiftPasswordSecretName
+            ConfigurationKeyConstants.GroupGiftPasswordSecretName,
         };
 
         private readonly IMemoryCache memoryCache;
@@ -726,7 +726,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             fileType.ShouldNotBeNull(nameof(fileType));
             xuid.EnsureValidXuid();
 
-            var endpoint = GetSunriseEndpoint(this.Request.Headers);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             if (!Guid.TryParse(ugcId, out var itemIdGuid))
             {
                 throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {ugcId}");
@@ -864,7 +864,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var jobId = await this.jobTracker.CreateNewJobAsync(
                 banParameters.ToJson(),
                 requesterObjectId,
-                $"Sunrise Banning: {banParameters.Count} recipients.", this.Response).ConfigureAwait(true);
+                $"Sunrise Banning: {banParameters.Count} recipients.",
+                this.Response).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -1265,10 +1266,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.jobTracker.CreateNewJobAsync(
-                groupGift.ToJson(),
-                requesterObjectId,
-                $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.", this.Response).ConfigureAwait(true);
+            var jobId =
+                await this.jobTracker.CreateNewJobAsync(
+                    groupGift.ToJson(),
+                    requesterObjectId,
+                    $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.",
+                    this.Response)
+                .ConfigureAwait(true);
 
             var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
@@ -1655,7 +1659,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
             communityMessage.ExpireTimeUtc.IsAfterOrThrows(communityMessage.StartTimeUtc, nameof(communityMessage.ExpireTimeUtc), nameof(communityMessage.StartTimeUtc));
 
-
             var stringBuilder = new StringBuilder();
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -1917,13 +1920,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
                         new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
                         new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" },
-                        new MasterInventoryItem { Id = -1, Description = "BackstagePasses" }
+                        new MasterInventoryItem { Id = -1, Description = "BackstagePasses" },
                 },
                 Cars = await cars.ConfigureAwait(true),
                 CarHorns = await carHorns.ConfigureAwait(true),
                 VanityItems = await vanityItems.ConfigureAwait(true),
                 Emotes = await emotes.ConfigureAwait(true),
-                QuickChatLines = await quickChatLines.ConfigureAwait(true)
+                QuickChatLines = await quickChatLines.ConfigureAwait(true),
             };
 
             return masterInventory;

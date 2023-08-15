@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
+using AutoMapper;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -8,13 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup;
-using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using AutoMapper;
-using Turn10.Services.LiveOps.FH5_main.Generated;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardTest.Unit.Woodstock.Helpers;
+using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 {
@@ -22,7 +21,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
     public sealed class WoodstockUserGroupTests
     {
         private static readonly Fixture Fixture = new Fixture();
-        private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
+        private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -117,7 +116,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-
             public Dependencies()
             {
                 this.ControllerContext = new ControllerContext { HttpContext = ProxyControllerHelper.Create(Fixture) };
@@ -133,5 +131,5 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 this.Mapper)
             { ControllerContext = this.ControllerContext };
         }
-    } 
+    }
 }

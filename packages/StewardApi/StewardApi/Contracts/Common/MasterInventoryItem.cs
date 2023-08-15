@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -39,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
             return new MasterInventoryItem
             {
                 Id = (int)reader.GetInt64(0),
-                Description = reader.GetString(1)
+                Description = reader.GetString(1),
             };
         }
     }

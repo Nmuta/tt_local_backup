@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Forza.WebServices.FM7.Generated;
-using Kusto.Cloud.Platform.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -165,7 +163,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             }
 
             public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();
-            
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public ApolloStorefrontProvider Build() => new ApolloStorefrontProvider(this.ApolloService, this.Mapper);

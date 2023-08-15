@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardTest.Utilities;
@@ -137,7 +137,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         [TestCategory("Integration")]
         public async Task SaveAndDeleteQueries()
         {
-            await stewardClient.SaveQueryAsync(new List<KustoQuery>{validKustoQuery}).ConfigureAwait(false);
+            await stewardClient.SaveQueryAsync(new List<KustoQuery> { validKustoQuery }).ConfigureAwait(false);
             var createResults = await stewardClient.RetrieveQueriesAsync().ConfigureAwait(false);
             var result = createResults.Where(query => query.Name == validKustoQuery.Name).First();
             Assert.IsNotNull(result);

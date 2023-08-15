@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -88,13 +83,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 var serializedContent = JsonConvert.SerializeObject(updatedToolsAvailability, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 var dataBytes = Encoding.UTF8.GetBytes(serializedContent);
                 await this.toolsBlobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
                 {
-                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
+                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId },
                 }).ConfigureAwait(false);
 
                 await blobLease.ReleaseAsync().ConfigureAwait(false);
@@ -143,13 +138,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 var serializedContent = JsonConvert.SerializeObject(updatedPlayFabSettings, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 var dataBytes = Encoding.UTF8.GetBytes(serializedContent);
                 await this.playFabBlobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
                 {
-                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
+                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId },
                 }).ConfigureAwait(false);
 
                 await blobLease.ReleaseAsync().ConfigureAwait(false);

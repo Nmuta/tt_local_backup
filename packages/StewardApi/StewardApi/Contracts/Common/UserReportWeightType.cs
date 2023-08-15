@@ -14,6 +14,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     {
         Default,
         LockedToAutoFlagReview,
-        LockedToZero
+        LockedToZero,
     }
 }

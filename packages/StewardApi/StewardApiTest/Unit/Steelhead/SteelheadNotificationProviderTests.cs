@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.Services.LiveOps.FM8.Generated;
 using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.NotificationsManagementService;
-
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {
@@ -304,25 +302,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             {
                 action.Should().NotThrow();
             }
-        }
-
-        private List<SteelheadBanParameters> GenerateBanParameters()
-        {
-            var newParams = new SteelheadBanParameters
-            {
-                Xuid = 111,
-                Gamertag = "gamerT1",
-                FeatureArea = "Matchmaking",
-                Reason = "Disgusting license plate.",
-                StartTimeUtc = DateTime.UtcNow,
-                ExpireTimeUtc = DateTime.UtcNow.AddSeconds(1),
-                BanAllConsoles = false,
-                BanAllPcs = false,
-                DeleteLeaderboardEntries = false,
-                SendReasonNotification = false
-            };
-
-            return new List<SteelheadBanParameters> { newParams };
         }
 
         private sealed class Dependencies

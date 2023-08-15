@@ -1,5 +1,4 @@
-﻿using System;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
+﻿using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 #pragma warning disable SA1516 // Blank Lines
 #pragma warning disable SA1600 // Elements must be documented

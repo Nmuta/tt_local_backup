@@ -124,10 +124,15 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
       'Vanity Items',
       inventory.vanityItems,
     ) as PlayerInventoryItemListWithService;
+    const driverSuits = makeItemList(
+      'Driver Suits',
+      inventory.driverSuits,
+    ) as PlayerInventoryItemListWithService;
 
     credits.service = cloneDeep(this.emptyInventoryItemListService);
     cars.service = cloneDeep(this.emptyInventoryItemListService);
     vanityItems.service = cloneDeep(this.emptyInventoryItemListService);
+    driverSuits.service = cloneDeep(this.emptyInventoryItemListService);
 
     // Setup services for each inventory type
     if (this.allowEditing) {
@@ -173,9 +178,28 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
 
         return this.editInventory(inventoryUpdates, false);
       };
+
+      driverSuits.service.editItemQuantity$ = (item, quantityChange) => {
+        const inventoryUpdates = cloneDeep(EMPTY_STEELHEAD_PLAYER_INVENTORY);
+        inventoryUpdates.driverSuits.push({
+          id: item.id,
+          quantity: Math.abs(quantityChange),
+        } as PlayerInventoryItem);
+
+        return this.editInventory(inventoryUpdates, quantityChange > 0);
+      };
+      driverSuits.service.deleteItem$ = item => {
+        const inventoryUpdates = cloneDeep(EMPTY_STEELHEAD_PLAYER_INVENTORY);
+        inventoryUpdates.driverSuits.push({
+          id: item.id,
+          quantity: item.quantity,
+        } as PlayerInventoryItem);
+
+        return this.editInventory(inventoryUpdates, false);
+      };
     }
 
-    return [credits, cars, vanityItems];
+    return [credits, cars, vanityItems, driverSuits];
   }
 
   private editInventory(

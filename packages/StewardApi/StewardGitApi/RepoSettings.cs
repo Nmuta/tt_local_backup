@@ -1,6 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using Microsoft.VisualStudio.Services.Common;
+﻿using Microsoft.VisualStudio.Services.Common;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StewardGitApi
 {
@@ -9,7 +8,7 @@ namespace StewardGitApi
     /// </summary>
     public class RepoSettings
     {
-        private readonly Dictionary<string, object> cache = new ();
+        private readonly Dictionary<string, object> cache = new();
         private readonly Guid projectId;
         private readonly Guid repoId;
 
@@ -37,7 +36,7 @@ namespace StewardGitApi
         /// <summary>
         ///     Gets an empty settings object.
         /// </summary>
-        internal static RepoSettings Default => new (Guid.Empty, Guid.Empty);
+        internal static RepoSettings Default => new(Guid.Empty, Guid.Empty);
 
         public static bool operator ==(RepoSettings lhs, RepoSettings rhs)
         {

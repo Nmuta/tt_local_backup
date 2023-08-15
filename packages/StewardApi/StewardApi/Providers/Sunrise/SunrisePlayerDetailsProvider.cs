@@ -271,7 +271,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
                     IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
                     NeedsStatisticsRepaired = userGroupResults.userGroups.Any(r => r.Id == RepairStatsId),
-                    IsUnderReview = suspiciousResults.isUnderReview
+                    IsUnderReview = suspiciousResults.isUnderReview,
                 };
             }
             catch (Exception ex)

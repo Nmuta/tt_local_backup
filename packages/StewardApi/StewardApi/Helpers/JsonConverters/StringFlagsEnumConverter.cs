@@ -13,7 +13,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
         where T : Enum
     {
         /// <inheritdoc/>
-        public override object ReadJson(JsonReader reader, Type objectType, Object existingValue, JsonSerializer serializer)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0007:Use implicit type", Justification = "Necessary for clarity.")]
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             int outVal = 0;
             if (reader.TokenType == JsonToken.StartArray)
@@ -30,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
         }
 
         /// <inheritdoc/>
-        public override void WriteJson(JsonWriter writer, Object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (default(T).Equals(value))
             {

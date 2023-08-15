@@ -11,4 +11,5 @@ export const EMPTY_STEELHEAD_PLAYER_INVENTORY: SteelheadPlayerInventory = {
   creditRewards: [],
   cars: [],
   vanityItems: [],
+  driverSuits: [],
 };

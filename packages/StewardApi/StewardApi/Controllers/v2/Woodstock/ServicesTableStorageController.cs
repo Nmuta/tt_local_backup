@@ -4,34 +4,17 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
-using Forza.WebServices.FM8.Generated;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
-using SteelheadLiveOpsContent;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup;
 using Turn10.LiveOps.StewardApi.Filters;
-using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
-using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using Turn10.Services.Diagnostics;
-using Turn10.Services.Orm;
-using Turn10.Services.Storage.Table;
-using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
@@ -106,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
             // Some results have the external profile ID as part of the row key instead of the partition key.
             // If that guid doesn't match the external profile ID we're using, we need to filter them out.
-            string guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
+            var guidPattern = @"([a-f0-9]{8}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{4}[-][a-f0-9]{12})";
 
             var filteredResponse = filterResults ? finalResponse.Where(entry =>
             {
@@ -129,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
 
         private string GetTableName(string instanceName)
         {
-            Regex invalidTableNameCharacters = new Regex("[^a-zA-Z0-9]");
+            var invalidTableNameCharacters = new Regex("[^a-zA-Z0-9]");
             if (!string.IsNullOrEmpty(instanceName))
             {
                 return invalidTableNameCharacters.Replace(instanceName, string.Empty).ToLowerInvariant();
@@ -140,7 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             }
         }
 
-        private JToken EntityPropertyDeserializer( EntityProperty property)
+        private JToken EntityPropertyDeserializer(EntityProperty property)
         {
             switch (property.PropertyType)
             {
