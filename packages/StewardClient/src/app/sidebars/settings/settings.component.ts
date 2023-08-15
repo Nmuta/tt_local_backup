@@ -6,6 +6,7 @@ import { GameTitle, UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
+import { Router } from '@angular/router';
 import { WindowService } from '@services/window';
 import { InvalidPermActionType } from '@shared/modules/permissions/directives/permission-attribute.base.directive';
 import {
@@ -31,6 +32,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { keys } from 'lodash';
 import { Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
 import { SetHomeTour, SetUserTours } from '@shared/state/tours/tours.actions';
 import { TourState, TourStateModel } from '@shared/state/tours/tours.state';
 
@@ -72,7 +74,12 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public enableHomeTour: boolean;
   public enableUserTours: boolean;
 
-  constructor(private readonly store: Store, private readonly windowService: WindowService) {
+  constructor(
+    private readonly store: Store, 
+    private readonly windowService: WindowService, 
+    private readonly router: Router,
+    private readonly userTourService: UserTourService,    // loaded here so tours will run
+  ) {
     super();
   }
 
@@ -175,6 +182,9 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   /** Fired when any setting changes. */
   public syncHomeTour(): void {
     this.store.dispatch(new SetHomeTour(this.enableHomeTour));
+    this.router
+      .navigate(['app', 'tools', 'home'])
+      .then(() => { this.userTourService.homeTourStart(); });
   }
   
   /** Fired when any setting changes. */

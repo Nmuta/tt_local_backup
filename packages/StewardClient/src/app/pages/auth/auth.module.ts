@@ -15,7 +15,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 /** Defines the auth module. */
 @NgModule({
-  imports: [CommonModule, AuthRouterModule, MatCardModule, StuckModule, CenterContentsModule, TourMatMenuModule],
+  imports: [CommonModule, AuthRouterModule, MatCardModule, StuckModule, CenterContentsModule, TourMatMenuModule],   // tour module is loaded to prevent tour errors
   declarations: [
     LoginComponent,
     LogoutComponent,

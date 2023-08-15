@@ -41,7 +41,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatIconModule,
     JsonDumpModule,
     GiftHistoryResultsModule,
-    TourMatMenuModule,
+    TourMatMenuModule,    // loaded to ensure tours run properly
   ],
   providers: [],
   declarations: [

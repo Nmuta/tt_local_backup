@@ -25,7 +25,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { chain } from 'lodash';
 import { HomeTileInfoForNav, setExternalLinkTarget } from '@helpers/external-links';
 import { ThemeService } from '@shared/modules/theme/theme.service';
-import { UserTourService } from '@tools-app/pages/home/tour/tour.component';
+import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
 
 /** The shared top-level navbar. */
 @Component({
@@ -69,7 +69,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     private readonly zendeskService: ZendeskService,
     private readonly notificationsService: NotificationsService,
     private readonly theme: ThemeService,
-    private readonly userTourService: UserTourService,
+    private readonly userTourService: UserTourService,    // loaded so that tours will run
   ) {
     super();
   }

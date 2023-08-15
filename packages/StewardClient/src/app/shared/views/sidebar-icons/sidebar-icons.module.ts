@@ -22,7 +22,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatBadgeModule,
     MatIconModule,
     MatMenuModule,
-    TourMatMenuModule,
+    TourMatMenuModule,    // loaded to ensure tours run properly
   ],
   exports: [SidebarIconsComponent],
 })

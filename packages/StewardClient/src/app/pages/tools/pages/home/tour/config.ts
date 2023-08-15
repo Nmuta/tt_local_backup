@@ -1,7 +1,8 @@
 import { IStepOption } from 'ngx-ui-tour-md-menu';
 
-export const tourSteps: IStepOption[] = [{
-  anchorId: 'shared-tour.nav',
+// Contains the step settings and information to run the Home tour
+export const homeTourSteps: IStepOption[] = [{
+  anchorId: 'shared-tour.centered',
   content: 'Welcome to <b>Steward</b>!<br /><br />This brief tour will help familiarize you with some of the basic functions of the app.',
 }, {
   anchorId: 'home-tour.step.two',
