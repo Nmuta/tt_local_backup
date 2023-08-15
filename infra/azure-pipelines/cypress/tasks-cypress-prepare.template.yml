@@ -1,4 +1,4 @@
-tasks:
+steps:
 - checkout: self
   submodules: true
   persistCredentials: True
