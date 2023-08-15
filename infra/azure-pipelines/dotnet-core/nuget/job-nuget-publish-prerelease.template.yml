@@ -41,11 +41,12 @@ jobs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: ${{parameters.nugetName}}
 
-  # Publish
+  
+  - task: NuGetAuthenticate@1
+
   - task: DotNetCoreCLI@2
     displayName: 'Push nuget to feed'
     inputs:
       command: 'push'
-      nuGetFeedType: 'internal'
       packagesToPush: '$(build.artifactStagingDirectory)/${{parameters.nugetName}}*.nupkg'
-      publishVstsFeed: 'Turn10-LiveOps'
+      publishVstsFeed: 'Services/Turn10-LiveOps'
