@@ -54,7 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("pipeline/{pipelineName}")]
         [SwaggerResponse(200, type: typeof(string), description: "work_item_id")]
-        [Authorize(Policy = UserAttribute.UpdateObligationPipeline)]
+        [Authorize(Policy = UserAttributeValues.UpdateObligationPipeline)]
         public async Task<IActionResult> DeletePipeline([FromRoute] string pipelineName)
         {
             pipelineName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pipelineName));
@@ -88,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPut("pipeline")]
         [SwaggerResponse(200, type: typeof(string), description: "work_item_id")]
-        [Authorize(Policy = UserAttribute.UpdateObligationPipeline)]
+        [Authorize(Policy = UserAttributeValues.UpdateObligationPipeline)]
         public async Task<IActionResult> UpdatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
             var response = await this.obligationProvider.SafeUpdatePipelineAsync(obligationPipeline).ConfigureAwait(true);
@@ -101,7 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("pipeline")]
         [SwaggerResponse(201, type: typeof(string), description: "work_item_id")]
-        [Authorize(Policy = UserAttribute.UpdateObligationPipeline)]
+        [Authorize(Policy = UserAttributeValues.UpdateObligationPipeline)]
         public async Task<IActionResult> UpsertPipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
             var response = await this.obligationProvider.UpsertPipelineAsync(obligationPipeline, requireNew: false).ConfigureAwait(true);
@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("pipeline/new")]
         [SwaggerResponse(201, type: typeof(string), description: "work_item_id")]
-        [Authorize(Policy = UserAttribute.UpdateObligationPipeline)]
+        [Authorize(Policy = UserAttributeValues.UpdateObligationPipeline)]
         public async Task<IActionResult> CreatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
             var response = await this.obligationProvider.UpsertPipelineAsync(obligationPipeline, requireNew: true).ConfigureAwait(true);
@@ -127,7 +127,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPatch("pipeline")]
         [SwaggerResponse(200, type: typeof(string), description: "work_item_id")]
-        [Authorize(Policy = UserAttribute.UpdateObligationPipeline)]
+        [Authorize(Policy = UserAttributeValues.UpdateObligationPipeline)]
         public async Task<IActionResult> RenamePipeline([FromBody] PatchOperation patchOperation)
         {
             var response = await this.obligationProvider.RenamePipelineAsync(patchOperation).ConfigureAwait(true);

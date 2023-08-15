@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             ConfigurationKeyConstants.SunriseClientVersion,
             ConfigurationKeyConstants.SunriseAdminXuid,
             ConfigurationKeyConstants.SunriseSandbox,
-            ConfigurationKeyConstants.SunriseTitleId
+            ConfigurationKeyConstants.SunriseTitleId,
         };
 
         /// <summary>

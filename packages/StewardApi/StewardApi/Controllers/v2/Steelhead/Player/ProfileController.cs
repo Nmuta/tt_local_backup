@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
@@ -35,7 +29,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.Profile)]
     public class ProfileController : V2ControllerBase
     {
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="ProfileController"/> class.
         /// </summary>
@@ -51,11 +44,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Profile)]
-        [Authorize(Policy = UserAttribute.UpdateProfile)]
+        [Authorize(Policy = UserAttributeValues.UpdateProfile)]
         public async Task<IActionResult> SavePlayerProfile(ulong xuid, string profileId, [FromBody] string templateName, [FromQuery] bool overwriteIfExists)
         {
             var services = this.SteelheadServices.Value;
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
 
             var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
@@ -71,15 +64,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Profile)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
-        [Authorize(Policy = UserAttribute.UpdateProfile)]
+        [Authorize(Policy = UserAttributeValues.UpdateProfile)]
         public async Task<IActionResult> LoadPlayerProfile(
-            ulong xuid, string profileId,
+            ulong xuid,
+            string profileId,
             [FromBody] string templateName,
             [FromQuery] bool continueOnBreakingChanges,
             [FromQuery] string forzaSandbox)
         {
             var services = this.SteelheadServices.Value;
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
 
             var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 
@@ -97,13 +91,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Profile)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.Player)]
-        [Authorize(Policy = UserAttribute.UpdateProfile)]
+        [Authorize(Policy = UserAttributeValues.UpdateProfile)]
         public async Task<IActionResult> ResetPlayerProfile(
             ulong xuid,
             string profileId)
         {
             var services = this.SteelheadServices.Value;
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
 
             var profileIdAsGuid = profileId.TryParseGuidElseThrow("Profile ID could not be parsed as GUID.");
 

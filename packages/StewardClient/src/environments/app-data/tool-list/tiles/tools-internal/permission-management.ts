@@ -9,7 +9,7 @@ export const permissionManagementInternalTile = <HomeTileInfoInternal>{
   title: 'Permission Management',
   subtitle: 'Manage Steward permissions',
   supportedTitles: [],
-  allPermissions: [],
+  allPermissions: [PermAttributeName.ManageStewardTeam],
   imageUrl: undefined,
   imageAlt: undefined,
   tooltipDescription: 'Micro-manage permissions within Steward for all users',

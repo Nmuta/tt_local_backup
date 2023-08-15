@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             profileId = 5167411;
             consoleId = 18230637609444823812;
             lspGroupId = 614;
-            
+
             stewardClient = new ApolloStewardTestingClient(new Uri(endpoint), authKey);
             unauthorizedClient = new ApolloStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
         }
@@ -388,7 +388,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task BanPlayers_DurationNegative()
         {
             var banParameters = GenerateBanParameters();
-            banParameters[0].Duration= TimeSpan.FromMinutes(-10);
+            banParameters[0].Duration = TimeSpan.FromMinutes(-10);
 
             try
             {
@@ -1008,7 +1008,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var groupGift = CreateGroupGift();
 
-            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await this.UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result[0].Errors?.Count == 0);
@@ -1069,7 +1069,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. Car: 10000, "));
+                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. Car: 10000, ", StringComparison.InvariantCulture));
             }
         }
 
@@ -1158,7 +1158,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
-
 
         [TestMethod]
         [TestCategory("Integration")]
@@ -1270,7 +1269,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed || status == BackgroundJobStatus.CompletedWithErrors;
+                jobCompleted = status is BackgroundJobStatus.Completed or BackgroundJobStatus.Failed or BackgroundJobStatus.CompletedWithErrors;
 
                 jobResults = JsonConvert.DeserializeObject<IList<BanResult>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
@@ -1307,7 +1306,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed || status == BackgroundJobStatus.CompletedWithErrors;
+                jobCompleted = status is BackgroundJobStatus.Completed or BackgroundJobStatus.Failed or BackgroundJobStatus.CompletedWithErrors;
 
                 jobResult = JsonConvert.DeserializeObject<IList<GiftResponse<ulong>>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
@@ -1352,7 +1351,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
                     {
                         new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
                     },
-                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2616, Quantity = 1}},
+                Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 2616, Quantity = 1 } },
                 VanityItems = new List<MasterInventoryItem>
                 {
                     new MasterInventoryItem {Id = 455548411, Quantity = 1}

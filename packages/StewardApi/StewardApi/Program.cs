@@ -1,7 +1,7 @@
+using System.IO;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -21,8 +21,8 @@ namespace Turn10.LiveOps.StewardApi
         /// <summary>
         ///     Creates an instance of <see cref="IHostBuilder"/>.
         /// </summary>
-        public static IHostBuilder CreateHostBuilder<T>(string[] arguments) where T : class =>
-            Host.CreateDefaultBuilder(arguments)
+        public static IHostBuilder CreateHostBuilder<T>(string[] arguments) where T : class
+            => Host.CreateDefaultBuilder(arguments)
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureWebHostDefaults(webHostBuilder =>
             {

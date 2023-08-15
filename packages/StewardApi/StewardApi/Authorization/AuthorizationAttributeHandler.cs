@@ -2,18 +2,14 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Castle.Core.Internal;
-using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Identity.Web;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Authorization
 {
-
     /// <summary>
     ///     Verify user authorization attributes.
     /// </summary>
@@ -40,13 +36,13 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
             if (requirement == null)
             {
-                context?.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null {nameof(requirement)} in policy handler."));
+                context.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null {nameof(requirement)} in policy handler."));
                 return Task.CompletedTask;
             }
 
             if (string.IsNullOrEmpty(requirement.Attribute))
             {
-                context?.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null or empty {nameof(requirement.Attribute)} in policy handler."));
+                context.Fail(new AttributeFailureReason((int)HttpStatusCode.BadRequest, this, $"Null or empty {nameof(requirement.Attribute)} in policy handler."));
                 return Task.CompletedTask;
             }
 

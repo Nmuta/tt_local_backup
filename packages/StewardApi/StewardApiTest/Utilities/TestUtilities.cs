@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using Microsoft.Identity.Client;
+using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Identity.Client;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardTest.Utilities
@@ -13,6 +13,7 @@ namespace Turn10.LiveOps.StewardTest.Utilities
         /// <summary>
         ///     Disables SSL validation.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5359:Do Not Disable Certificate Validation", Justification = "Fine for tests.")]
         public static void DisableSSLValidation()
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;

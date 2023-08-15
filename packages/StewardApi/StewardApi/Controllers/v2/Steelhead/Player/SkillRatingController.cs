@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -31,7 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.SkillRating)]
     public class SkillRatingController : V2SteelheadControllerBase
     {
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -72,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SkillRatingSummary))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.OverrideSkillRating)]
+        [Authorize(Policy = UserAttributeValues.OverrideSkillRating)]
         public async Task<IActionResult> OverrideSkillRatingAsync(
             ulong xuid, string profileId, [FromBody] double skillRating)
         {
@@ -81,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var profileIdGuid = profileId.TryParseGuidElseThrow("Profile ID");
 
             var validate = await this.Services.LiveOpsService.GetUserSkillRating(xuid, profileIdGuid).ConfigureAwait(true);
-            if(skillRating < validate.rating.NormalizationMin || skillRating > validate.rating.NormalizationMax)
+            if (skillRating < validate.rating.NormalizationMin || skillRating > validate.rating.NormalizationMax)
             {
                 throw new InvalidArgumentsStewardException(
                     $"Skill rating override must be greater than {validate.rating.NormalizationMin} and less than {validate.rating.NormalizationMax}. (SkillRatingOverride: {skillRating})");
@@ -103,7 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SkillRatingSummary))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.OverrideSkillRating)]
+        [Authorize(Policy = UserAttributeValues.OverrideSkillRating)]
         public async Task<IActionResult> ClearSkillRatingOverrideAsync(ulong xuid, string profileId)
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);

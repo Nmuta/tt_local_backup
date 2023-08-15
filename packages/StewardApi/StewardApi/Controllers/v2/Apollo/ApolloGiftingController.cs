@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
@@ -46,7 +45,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
     [StandardTags(Title.Multiple)]
     public sealed class ApolloGiftingController : V2ControllerBase
     {
-
         private const TitleCodeName CodeName = TitleCodeName.Apollo;
 
         private static readonly IList<string> RequiredSettings = new List<string>
@@ -102,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [HttpPost("livery/{liveryId}/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayer)]
+        [Authorize(Policy = UserAttributeValues.GiftPlayer)]
         public async Task<IActionResult> GiftLiveryToPlayersUseBackgroundProcessing(string liveryId, [FromBody] GroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
@@ -173,7 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Apollo
         [HttpPost("livery/{liveryId}/groupId/{groupId}")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> GiftLiveryToUserGroup(string liveryId, int groupId, [FromBody] Gift gift)
         {
             var userClaims = this.User.UserClaims();

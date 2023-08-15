@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.UserInventory.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -19,9 +16,7 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using static Turn10.Services.LiveOps.FM8.Generated.UserManagementService;
@@ -141,7 +136,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var playerLookupParameters = users.xuids
                                             .Select(xuid => new ServicesLiveOps.ForzaPlayerLookupParameters
                                             {
-                                                UserID = xuid.ToString(),
+                                                UserID = xuid.ToInvariantString(),
                                             }).ToArray();
             var getUserIdsOutput = await this.Services.UserManagementService.GetUserIds(playerLookupParameters.Length, playerLookupParameters).ConfigureAwait(false);
 
@@ -156,11 +151,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         Xuid = playerLookupResult.Xuid,
                     });
                 }
+
                 // End of temporary code //
                 var response = new GetUserGroupUsersResponse()
                 {
                     PlayerList = userList,
-                    PlayerCount = users.available
+                    PlayerCount = users.available,
                 };
 
                 return this.Ok(response);
@@ -182,7 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Add, StewardSubject.UserGroup)]
-        [Authorize(Policy = UserAttribute.CreateUserGroup)]
+        [Authorize(Policy = UserAttributeValues.CreateUserGroup)]
         public async Task<IActionResult> CreateUserGroup(string userGroupName)
         {
             userGroupName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userGroupName));
@@ -191,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var newGroup = new LspGroup()
             {
                 Id = result.groupId,
-                Name = userGroupName
+                Name = userGroupName,
             };
             return this.Ok(newGroup);
         }
@@ -207,7 +203,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.UserGroup)]
-        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
+        [Authorize(Policy = UserAttributeValues.UpdateUserGroup)]
         public async Task<IActionResult> AddUsersToGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks adding users to the "All" group
@@ -238,7 +234,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Delete, StewardSubject.UserGroup)]
-        [Authorize(Policy = UserAttribute.UpdateUserGroup)]
+        [Authorize(Policy = UserAttributeValues.UpdateUserGroup)]
         public async Task<IActionResult> RemoveUsersFromGroup(int userGroupId, [FromQuery] bool useBulkProcessing, [FromBody] UpdateUserGroupInput userList)
         {
             // Greater than 0 blocks removing users from the "All" group
@@ -267,7 +263,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.DeleteAll, StewardSubject.UserGroup)]
-        [Authorize(Policy = UserAttribute.RemoveAllUsersFromGroup)]
+        [Authorize(Policy = UserAttributeValues.RemoveAllUsersFromGroup)]
         public async Task<IActionResult> RemoveAllUsersFromGroup(int userGroupId)
         {
             // Block removing all users from All Users and VIP groups.
@@ -293,7 +289,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             return new UserGroupBulkOperationStatusOutput()
             {
-                BlobId = bulkOperationOutput.statusId
+                BlobId = bulkOperationOutput.statusId,
             };
         }
 

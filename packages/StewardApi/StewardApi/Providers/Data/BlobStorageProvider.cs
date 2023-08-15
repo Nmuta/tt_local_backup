@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -24,8 +22,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         private const string ToolsAvailabilityBlobName = "tool-availability.json";
         private const string PlayFabSettingsBlobName = "playfab.json";
 
+        private const string LeaderboardContainerName = "leaderboards";
+
         private readonly BlobClient toolsBlobClient;
         private readonly BlobClient playFabBlobClient;
+        private readonly BlobContainerClient leaderboardsContainerClient;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BlobStorageProvider"/> class.
@@ -38,9 +39,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             var blobConnectionString = keyVaultConfig.BlobConnectionString;
 
             var serviceClient = new BlobServiceClient(blobConnectionString);
-            var containerClient = serviceClient.GetBlobContainerClient(SettingsContainerName);
-            this.toolsBlobClient = containerClient.GetBlobClient(ToolsAvailabilityBlobName);
-            this.playFabBlobClient = containerClient.GetBlobClient(PlayFabSettingsBlobName);
+
+            var settingsContainerClient = serviceClient.GetBlobContainerClient(SettingsContainerName);
+            this.toolsBlobClient = settingsContainerClient.GetBlobClient(ToolsAvailabilityBlobName);
+            this.playFabBlobClient = settingsContainerClient.GetBlobClient(PlayFabSettingsBlobName);
+
+            this.leaderboardsContainerClient = serviceClient.GetBlobContainerClient(LeaderboardContainerName);
         }
 
         /// <inheritdoc />
@@ -79,13 +83,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 var serializedContent = JsonConvert.SerializeObject(updatedToolsAvailability, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 var dataBytes = Encoding.UTF8.GetBytes(serializedContent);
                 await this.toolsBlobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
                 {
-                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
+                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId },
                 }).ConfigureAwait(false);
 
                 await blobLease.ReleaseAsync().ConfigureAwait(false);
@@ -134,13 +138,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                 var serializedContent = JsonConvert.SerializeObject(updatedPlayFabSettings, new JsonSerializerSettings
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 });
 
                 var dataBytes = Encoding.UTF8.GetBytes(serializedContent);
                 await this.playFabBlobClient.UploadAsync(new BinaryData(dataBytes), new BlobUploadOptions()
                 {
-                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId }
+                    Conditions = new BlobRequestConditions() { LeaseId = lease.Value.LeaseId },
                 }).ConfigureAwait(false);
 
                 await blobLease.ReleaseAsync().ConfigureAwait(false);
@@ -151,6 +155,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
 
             return await this.GetStewardPlayFabSettingsAsync().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task SetLeaderboardDataAsync(string leaderboardIdentifier, string csv)
+        {
+            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(leaderboardIdentifier);
+
+            try
+            {
+                var dataBytes = Encoding.UTF8.GetBytes(csv);
+                await leaderboardClient.UploadAsync(new BinaryData(dataBytes)).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"Could not upload leaderboard scores to blob storage. Container name: {LeaderboardContainerName}. Blob name: {leaderboardIdentifier}.", ex);
+            }
+
+            return;
         }
 
         private async Task<bool> EnsureBlobClientExistsAsync(BlobClient blobClient)

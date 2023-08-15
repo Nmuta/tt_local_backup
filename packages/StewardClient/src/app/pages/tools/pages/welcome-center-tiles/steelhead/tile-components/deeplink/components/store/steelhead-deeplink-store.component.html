@@ -1,0 +1,25 @@
+<div class="sf-vertical">
+  <ng-container *waitForMonitor="referenceDataMonitor">
+    <mat-form-field class="sf-default-hint" appearance="fill">
+      <mat-label>Select Setting Type</mat-label>
+      <mat-select [formControl]="formControls.storeSettingType">
+        <mat-option *ngFor="let setting of storeSetting" [value]="setting">
+          {{ setting }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <ng-container *ngIf="formControls.storeSettingType.value === storeSettingTypes.Product">
+      <mat-form-field class="sf-default-hint" appearance="fill">
+        <mat-label>Select Product</mat-label>
+        <mat-select [formControl]="formControls.storeProduct">
+          <mat-option
+            *ngFor="let storeProduct of storeProducts | keyvalue"
+            [value]="storeProduct.key"
+          >
+            {{ storeProduct.value | humanize }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+</div>

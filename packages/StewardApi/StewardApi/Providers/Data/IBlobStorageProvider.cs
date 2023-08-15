@@ -27,5 +27,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         ///     Sets PlayFab settings.
         /// </summary>
         Task<StewardPlayFabSettings> SetStewardPlayFabSettingsAsync(StewardPlayFabSettings updatedPlayFabSettings);
+
+        /// <summary>
+        ///     Sets leaderboard data.
+        /// </summary>
+        /// <remarks>The csv string contains all scores for a given leaderboard</remarks>
+        Task SetLeaderboardDataAsync(string leaderboardIdentifier, string csv);
     }
 }

@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Filters
             var scheme = new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearer" } };
             operation.Security.Add(new OpenApiSecurityRequirement
             {
-                [scheme] = new List<string>()
+                [scheme] = new List<string>(),
             });
         }
     }

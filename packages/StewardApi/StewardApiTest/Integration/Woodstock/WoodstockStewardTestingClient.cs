@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -106,7 +105,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return await ServiceClient.SendRequestAsync<List<CreditUpdate>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<IList<BanResult>> BanPlayersAsync(IList<WoodstockBanParametersInput> banParameters)
+        public async Task<IList<BanResult>> BanPlayersAsync(IList<V2BanParametersInput> banParameters)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
@@ -115,7 +114,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             return await ServiceClient.SendRequestAsync<IList<BanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<BackgroundJob>> BanPlayersWithHeaderResponseAsync(IList<WoodstockBanParametersInput> banParameters, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<BackgroundJob>> BanPlayersWithHeaderResponseAsync(IList<V2BanParametersInput> banParameters, IList<string> headersToValidate)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
@@ -250,7 +249,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 
             return await ServiceClient.SendRequestAsync<IList<ProfileNote>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
-
 
         public async Task<IList<ProfileNote>> SendProfileNotesAsync(ulong xuid, ProfileNote message)
         {

@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Routing.Constraints;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents game-wide UGC search filters.

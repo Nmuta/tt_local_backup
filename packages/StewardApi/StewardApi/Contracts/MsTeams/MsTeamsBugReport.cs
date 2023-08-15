@@ -4,12 +4,9 @@
 #pragma warning disable SA1204 // Static elements should appear before instance elements
 #pragma warning disable SA1402 // File may only contain a single type
 
-using AdaptiveCards.Templating;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.CompilerServices;
+using AdaptiveCards.Templating;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
@@ -32,7 +29,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
         public string ExternalImpact { get; set; }
 
         public bool HasWorkaround { get; set; }
-
     }
 
     /// <summary>

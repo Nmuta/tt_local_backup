@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta | ActionAreaLogTags.Ugc)]
         [AutoActionLogging(TitleCodeName.Steelhead, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.FeatureUgc)]
+        [Authorize(Policy = UserAttributeValues.FeatureUgc)]
         public async Task<IActionResult> SetUgcFeaturedStatus(
             string ugcId,
             [FromBody] UgcFeaturedStatus status)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
 
 #pragma warning disable VSTHRD200 // Use  Suffix

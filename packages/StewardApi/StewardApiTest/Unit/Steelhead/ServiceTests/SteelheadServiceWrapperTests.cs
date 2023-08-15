@@ -1,9 +1,9 @@
-﻿using System;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead

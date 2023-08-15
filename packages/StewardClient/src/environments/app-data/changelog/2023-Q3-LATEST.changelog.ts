@@ -2,11 +2,54 @@ import { GameTitle } from '@models/enums';
 import { NavbarTool } from '../tool-list';
 import { ChangelogGroup, ChangelogTag } from './types';
 
-/** User-facing changes to the code. */
+/** A changelog targeted at end-users. */
 export const CHANGELOG_2023_Q3: ChangelogGroup = {
   title: '2023 Q3',
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
+      uuid: '460ce787-24b6-4537-9fb9-43e61d625f68',
+      shortText: 'Allow modifying PlayFab voucher amounts on each available inventory collection',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'dd0629a3-9e75-4dba-bbd8-371f075da694',
+      shortText: 'Fix bug preventing sending',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: '2078cd4d-475e-48a0-a250-12c56fc83a5e',
+      shortText: 'Add tools to view PlayFab inventory and transaction history',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '52c8dc76-b903-4a51-be37-d8a37556a60f',
+      shortText: 'Add missing timer types and popup fields.',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting, NavbarTool.UserDetails] },
+      uuid: '55fb491b-4b57-4f86-8971-b0a8760d66a7',
+      shortText: 'Add Driver Suit item type to inventory management and gifting',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UserBanning },
+      uuid: '645aa649-6b61-4fd4-98c1-75edccad1e59',
+      shortText: 'Moved ban submit button to top right of card',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserBanning },
+      uuid: '7778ac73-29d8-4820-b582-2a8e57a3cf07',
+      shortText: 'Updated so duration and feature area of ban are decided by ban reason',
+      longText: [
+        'If you need to ban for other areas or durations, you can use the override options',
+      ],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.PermissionManagement },
+      uuid: '54f931b4-a4b9-452f-b7a6-340799459e45',
+      shortText: 'Add support for team leads',
+    },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserBanning },
       uuid: '6c597f0d-b61f-4a33-80dc-e1caecf03a92',
@@ -41,6 +84,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
         'Events show as multliple days on the week view for Rivals and Showroom',
         'Display showroom dates as Utc',
       ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '8f63c75e-619b-4608-a9fe-8d4b91ebe394',
+      shortText: 'Refactor deeplink destination component',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UgcDetails },

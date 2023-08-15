@@ -7,10 +7,8 @@ using Forza.WebServices.FM8.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
@@ -23,10 +21,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 500;
-        private const int VipUserGroupId = 1;
-        private const int UltimateVipUserGroupId = 2;
-        private const int T10EmployeeUserGroupId = 4;
-        private const int WhitelistUserGroupId = 6;
 
         private readonly ISteelheadService steelheadService;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
@@ -223,94 +217,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanResult>> BanUsersAsync(
-            IList<SteelheadBanParameters> banParameters,
-            string requesterObjectId,
-            string endpoint)
-        {
-            banParameters.ShouldNotBeNull(nameof(banParameters));
-            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
-            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            const int maxXuidsPerRequest = 10;
-
-            foreach (var param in banParameters)
-            {
-                param.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(param.FeatureArea));
-
-                if (param.Xuid == default)
-                {
-                    if (string.IsNullOrWhiteSpace(param.Gamertag))
-                    {
-                        throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
-                    }
-
-                    try
-                    {
-                        var userResult = await this.steelheadService.GetUserDataByGamertagAsync(
-                                param.Gamertag,
-                                endpoint).ConfigureAwait(false);
-
-                        param.Xuid = userResult.userData.qwXuid;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new NotFoundStewardException($"No profile found for Gamertag: {param.Gamertag}.", ex);
-                    }
-                }
-            }
-
-            try
-            {
-                var banResults = new List<BanResult>();
-
-                for (var i = 0; i < banParameters.Count; i += maxXuidsPerRequest)
-                {
-                    var paramBatch = banParameters.ToList()
-                        .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
-                    var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                    var result = await this.steelheadService
-                        .BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count, endpoint)
-                        .ConfigureAwait(false);
-
-                    banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
-                }
-
-                foreach (var result in banResults)
-                {
-                    var parameters = banParameters.Where(banAttempt => banAttempt.Xuid == result.Xuid)
-                        .FirstOrDefault();
-
-                    if (result.Error == null)
-                    {
-                        try
-                        {
-                            await
-                                this.banHistoryProvider.UpdateBanHistoryAsync(
-                                        parameters.Xuid,
-                                        TitleConstants.SteelheadCodeName,
-                                        requesterObjectId,
-                                        parameters,
-                                        endpoint).ConfigureAwait(false);
-                        }
-                        catch (Exception ex)
-                        {
-                            result.Error = new FailedToSendStewardError(
-                                $"Ban Successful. Ban history upload failed for XUID: {result.Xuid}.",
-                                ex);
-                        }
-                    }
-                }
-
-                return banResults;
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException("User banning has failed.", ex);
-            }
-        }
-
-        /// <inheritdoc />
         public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
@@ -388,7 +294,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
             catch (Exception ex)
             {
-               throw new UnknownFailureStewardException("Search player auctions failed.", ex);
+                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
             }
 
             return this.mapper.SafeMap<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);

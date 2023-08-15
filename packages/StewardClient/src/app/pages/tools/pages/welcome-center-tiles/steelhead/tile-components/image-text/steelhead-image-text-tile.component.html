@@ -2,6 +2,31 @@
   <div class="sf-vertical">
     <steelhead-general-tile [formControl]="formControls.baseTile"></steelhead-general-tile>
 
+    <select-localized-string
+      [service]="localizationSelectServiceContract"
+      [formControl]="formControls.localizedPopupTitle"
+      label="Popup Title"
+      formControlName="localizedPopupTitle"
+    ></select-localized-string>
+    <select-localized-string
+      [service]="localizationSelectServiceContract"
+      [formControl]="formControls.localizedPopupHeader"
+      label="Popup Header"
+      formControlName="localizedPopupHeader"
+    ></select-localized-string>
+    <select-localized-string
+      [service]="localizationSelectServiceContract"
+      [formControl]="formControls.localizedPopupSubHeader"
+      label="Popup Subheader"
+      formControlName="localizedPopupSubHeader"
+    ></select-localized-string>
+    <select-localized-string
+      [service]="localizationSelectServiceContract"
+      [formControl]="formControls.localizedPopupDescription"
+      label="Popup Description"
+      formControlName="localizedPopupDescription"
+    ></select-localized-string>
+
     <mat-form-field appearance="fill" class="sf-default-hint">
       <mat-label>Content Image Path</mat-label>
       <input type="text" matInput [formControl]="formControls.contentImagePath" />

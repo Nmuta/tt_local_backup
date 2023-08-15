@@ -1,6 +1,5 @@
 ﻿#pragma warning disable SA1600 // ElementsMustBeDocumented
 
-using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using SteelheadLiveOpsContent;

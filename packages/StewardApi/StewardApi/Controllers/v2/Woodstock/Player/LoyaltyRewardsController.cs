@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Graph;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
@@ -74,9 +68,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
                 throw new InvalidArgumentsStewardException($"External Profile ID provided is not a valid Guid: (externalProfileId: {externalProfileId})");
             }
 
-            UserManagementService.GetHasPlayedRecordOutput response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
+            var response = await this.Services.UserManagementService.GetHasPlayedRecord(xuid, externalProfileIdGuid).ConfigureAwait(true);
 
             var hasPlayedRecord = this.mapper.SafeMap<IList<HasPlayedRecord>>(response.records);
+
+            hasPlayedRecord = hasPlayedRecord.Where(record => Enum.TryParse<WoodstockLoyaltyRewardsTitle>(record.GameTitle, out _)).ToList();
 
             return this.Ok(hasPlayedRecord);
         }
@@ -92,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Update, StewardSubject.Player)]
-        [Authorize(Policy = UserAttribute.SendLoyaltyRewards)]
+        [Authorize(Policy = UserAttributeValues.SendLoyaltyRewards)]
         public async Task<IActionResult> ResendLoyaltyRewards(ulong xuid, string externalProfileId, [FromBody] string[] gameTitles)
         {
             xuid.IsValidXuid();
@@ -129,14 +125,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
             {
                 try
                 {
-                    Turn10.UGC.Contracts.GameTitle convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(titleEnum);
+                    var convertedEnum = this.mapper.SafeMap<Turn10.UGC.Contracts.GameTitle>(titleEnum);
 
                     if (!Enum.IsDefined(typeof(Turn10.UGC.Contracts.GameTitle), convertedEnum))
                     {
                         throw new InvalidArgumentsStewardException($"Game title: {titleEnum} is not a valid game title.");
                     }
 
-                    int[] currentGameTitleId = new[] { (int)titleEnum };
+                    var currentGameTitleId = new[] { (int)convertedEnum };
                     await this.Services.UserManagementService.ResendProfileHasPlayedNotification(xuid, externalProfileIdGuid, currentGameTitleId).ConfigureAwait(true);
                     successResponse.Add(titleEnum, true);
                 }

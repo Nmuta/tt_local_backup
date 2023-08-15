@@ -6,9 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
@@ -327,7 +325,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
-            
 
             public SunriseNotificationProvider Build() => new SunriseNotificationProvider(
                 this.SunriseService,

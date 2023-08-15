@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
+﻿using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 {
@@ -52,7 +51,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
         ///     Prepares a <see cref="IAuctionManagementService" />.
         /// </summary>
         IAuctionManagementService PrepareAuctionManagementService(string endpoint);
-
 
         /// <summary>
         ///     Prepares a <see cref="IConfigurationManagementService" />.

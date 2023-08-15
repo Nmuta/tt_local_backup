@@ -1,10 +1,9 @@
-﻿using Forza.LiveOps.FH4.Generated;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Forza.LiveOps.FH4.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise.Services;
 
@@ -118,7 +117,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise
         private async Task EnsurePlayerExistsInternalAsync(IEnumerable<ForzaPlayerLookupParameters> players)
         {
             var stringBuilder = new StringBuilder();
-            var playerLookupResults = await this.UserManagementService.GetUserIds(players.Count(), players.ToArray()).ConfigureAwait(false);
+            var playersArray = players.ToArray();
+            var playerLookupResults = await this.UserManagementService.GetUserIds(playersArray.Length, playersArray).ConfigureAwait(false);
 
             foreach (var player in playerLookupResults.playerLookupResult)
             {

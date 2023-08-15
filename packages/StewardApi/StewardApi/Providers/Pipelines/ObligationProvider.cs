@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
         {
             Cluster = Clusters.Turn10GDE,
             Tenant = "turn10",
-            Attitude = "developer"
+            Attitude = "developer",
         };
 
         private readonly IList<ObligationPrincipal> standardPrincipals = new List<ObligationPrincipal>
@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
             new ObligationPrincipal("emersonf@microsoft.com", PrincipalTypes.User, Roles.Admin),
             new ObligationPrincipal("mharri@microsoft.com", PrincipalTypes.User, Roles.Reader),
             new ObligationPrincipal("miahern@microsoft.com", PrincipalTypes.User, Roles.Reader),
-            new ObligationPrincipal("47aa81e5-aed4-4d42-b4d6-9f0eca08cc68", PrincipalTypes.Group, Roles.Admin)
+            new ObligationPrincipal("47aa81e5-aed4-4d42-b4d6-9f0eca08cc68", PrincipalTypes.Group, Roles.Admin),
         };
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                 KustoDataActivities = kustoDataActivities,
                 KustoRestateOMaticDataActivities = kustoRestatOMaticDataActivities,
                 Principals = result.Principals
-                    .Where(resultPrincipal => !this.standardPrincipals.Select(s => s.Value).Contains(resultPrincipal.Value)).ToList()
+                    .Where(resultPrincipal => !this.standardPrincipals.Select(s => s.Value).Contains(resultPrincipal.Value)).ToList(),
             };
 
             return obligationRequest;
@@ -261,7 +261,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                 Name = obligationRequest.PipelineName,
                 Description = obligationRequest.PipelineDescription,
                 Principals = principals,
-                DataActivities = new List<DataActivityBase>()
+                DataActivities = new List<DataActivityBase>(),
             };
 
             foreach (var obligationDataActivity in obligationRequest.KustoDataActivities)

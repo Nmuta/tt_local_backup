@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
@@ -245,7 +243,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// </summary>
         Task<IEnumerable<LiveOpsContracts.CarSale>> GetCarSalesAsync();
 
-
         /// <summary>
         ///     Gets Tracks.
         /// </summary>
@@ -254,7 +251,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets Rivals Events.
         /// </summary>
-        Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync();
+        Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync();
 
         /// <summary>
         ///     Gets Rivals Events Reference.
@@ -295,5 +292,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets Builders Cup Series.
         /// </summary>
         Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync();
+
+        /// <summary>
+        ///     Gets ban configurations.
+        /// </summary>
+        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
     }
 }

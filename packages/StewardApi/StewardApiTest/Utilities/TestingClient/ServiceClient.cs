@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -9,7 +10,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using Newtonsoft.Json;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
@@ -24,7 +24,6 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
         private const string ContentType = "application/json";
         private const int DefaultHttpClientLifetimeSeconds = 60;
         private const int DefaultRequestTimeoutSeconds = 30;
-
 
         private readonly int httpClientLifetimeSeconds;
         private readonly int requestTimeoutSeconds;
@@ -55,10 +54,8 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
             uri.ShouldNotBeNull(nameof(uri));
 
             EnsureSecurityProtocolSet();
-            using (var request = this.CreateRequestMessage(method, uri, authToken, contractVersion, requestBody, headers))
-            {
-                await this.SendRequestAsync(request).ConfigureAwait(false);
-            }
+            using var request = this.CreateRequestMessage(method, uri, authToken, contractVersion, requestBody, headers);
+            await this.SendRequestAsync(request).ConfigureAwait(false);
         }
 
         public async Task<T> SendRequestAsync<T>(
@@ -72,10 +69,8 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
             uri.ShouldNotBeNull(nameof(uri));
 
             EnsureSecurityProtocolSet();
-            using (var request = this.CreateRequestMessage(method, uri, authToken, contractVersion, requestBody, headers))
-            {
-                return await this.SendRequestAsync<T>(request).ConfigureAwait(false);
-            }
+            using var request = this.CreateRequestMessage(method, uri, authToken, contractVersion, requestBody, headers);
+            return await this.SendRequestAsync<T>(request).ConfigureAwait(false);
         }
 
         public async Task<ResponseWithHeaders<T>> SendRequestWithHeaderResponseAsync<T>(
@@ -90,10 +85,8 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
             uri.ShouldNotBeNull(nameof(uri));
 
             EnsureSecurityProtocolSet();
-            using (var request = this.CreateRequestMessage(method, uri, authToken, contractVersion, requestBody, headers))
-            {
-                return await this.SendWithHeaderResponseAsync<T>(request, headersToValidate).ConfigureAwait(false);
-            }
+            using var request = this.CreateRequestMessage(method, uri, authToken, contractVersion, requestBody, headers);
+            return await this.SendWithHeaderResponseAsync<T>(request, headersToValidate).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -108,44 +101,38 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
 
         private async Task SendRequestAsync(HttpRequestMessage request)
         {
-            using (var response = await this.GetClient().SendAsync(request).ConfigureAwait(false))
+            using var response = await this.GetClient().SendAsync(request).ConfigureAwait(false);
+            if (!response.IsSuccessStatusCode)
             {
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new ServiceException(response.StatusCode, await this.GetResponseBodyAsync(response).ConfigureAwait(false));
-                }
+                throw new ServiceException(response.StatusCode, await this.GetResponseBodyAsync(response).ConfigureAwait(false));
             }
         }
 
         private async Task<ResponseWithHeaders<T>> SendWithHeaderResponseAsync<T>(HttpRequestMessage request, IList<string> headersToValidate)
         {
-            using (var response = await this.GetClient().SendAsync(request).ConfigureAwait(false))
+            using var response = await this.GetClient().SendAsync(request).ConfigureAwait(false);
+            var responseHeaders = new Dictionary<string, string>();
+
+            foreach (var header in headersToValidate)
             {
-                var responseHeaders = new Dictionary<string, string>();
+                response.Headers.TryGetValues(header, out var values);
 
-                foreach (var header in headersToValidate)
-                {
-                    response.Headers.TryGetValues(header, out var values);
-
-                    responseHeaders[header] = values.First();
-                }
-
-                var responseBody = await this.ReadResponseBodyAsync<T>(response).ConfigureAwait(false);
-
-                return new ResponseWithHeaders<T>
-                {
-                    ResponseBody = responseBody,
-                    Headers = responseHeaders
-                };
+                responseHeaders[header] = values.First();
             }
+
+            var responseBody = await this.ReadResponseBodyAsync<T>(response).ConfigureAwait(false);
+
+            return new ResponseWithHeaders<T>
+            {
+                ResponseBody = responseBody,
+                Headers = responseHeaders
+            };
         }
 
         private async Task<T> SendRequestAsync<T>(HttpRequestMessage request)
         {
-            using (var response = await this.GetClient().SendAsync(request).ConfigureAwait(false))
-            {
-                return await this.ReadResponseBodyAsync<T>(response).ConfigureAwait(false);
-            }
+            using var response = await this.GetClient().SendAsync(request).ConfigureAwait(false);
+            return await this.ReadResponseBodyAsync<T>(response).ConfigureAwait(false);
         }
 
         private async Task<T> ReadResponseBodyAsync<T>(HttpResponseMessage response)
@@ -157,22 +144,15 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
                     await this.GetResponseBodyAsync(response).ConfigureAwait(false));
             }
 
-            using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-            {
-                return this.Deserialize<T>(stream);
-            }
-
+            using var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            return this.Deserialize<T>(stream);
         }
 
         private async Task<string> GetResponseBodyAsync(HttpResponseMessage response)
         {
-            using (var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-            {
-                using (var streamReader = new StreamReader(stream))
-                {
-                    return await streamReader.ReadToEndAsync().ConfigureAwait(false);
-                }
-            }
+            using var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            using var streamReader = new StreamReader(stream);
+            return await streamReader.ReadToEndAsync().ConfigureAwait(false);
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test code")]
@@ -216,12 +196,10 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
 
         private T Deserialize<T>(Stream stream)
         {
-            using (var textReader = new StreamReader(stream))
-            {
-                var jsonPayload = textReader.ReadToEnd();
+            using var textReader = new StreamReader(stream);
+            var jsonPayload = textReader.ReadToEnd();
 
-                return JsonConvert.DeserializeObject<T>(jsonPayload);
-            }
+            return JsonConvert.DeserializeObject<T>(jsonPayload);
         }
 
         private string Serialize(object o)
@@ -229,6 +207,8 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
             return JsonConvert.SerializeObject(o);
         }
 
+        [SuppressMessage("Security", "CA5364:Do Not Use Deprecated Security Protocols", Justification = "Fine for tests.")]
+        [SuppressMessage("Security", "CA5386:Avoid hardcoding SecurityProtocolType value", Justification = "Fine for tests.")]
         private static void EnsureSecurityProtocolSet()
         {
             ServicePointManager.SecurityProtocol =

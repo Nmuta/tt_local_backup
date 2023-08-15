@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.KeyVaultUrl,
-            ConfigurationKeyConstants.GroupGiftPasswordSecretName
+            ConfigurationKeyConstants.GroupGiftPasswordSecretName,
         };
 
         private readonly IMemoryCache memoryCache;
@@ -249,7 +249,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
+        [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
             [FromBody] IList<ApolloBanParametersInput> banInput)
         {
@@ -329,7 +329,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.BanPlayer)]
+        [Authorize(Policy = UserAttributeValues.BanPlayer)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<ApolloBanParametersInput> banInput)
         {
@@ -379,7 +379,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.DeleteBan)]
+        [Authorize(Policy = UserAttributeValues.DeleteBan)]
         public async Task<IActionResult> ExpireBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -408,7 +408,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.DeleteBan)]
+        [Authorize(Policy = UserAttributeValues.DeleteBan)]
         public async Task<IActionResult> DeleteBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -503,7 +503,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
-        [Authorize(Policy = UserAttribute.BanConsole)]
+        [Authorize(Policy = UserAttributeValues.BanConsole)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -583,7 +583,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
-        [Authorize(Policy = UserAttribute.UpdateUserFlags)]
+        [Authorize(Policy = UserAttributeValues.UpdateUserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] ApolloUserFlagsInput userFlags)
@@ -706,7 +706,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayer)]
+        [Authorize(Policy = UserAttributeValues.GiftPlayer)]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
             [FromBody] ApolloGroupGift groupGift)
         {
@@ -757,7 +757,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 $"Apollo Gifting: {groupGift.Xuids.Count} recipients.",
                 this.Response).ConfigureAwait(true);
 
-            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -800,7 +800,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         [ManualActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerInventories)]
-        [Authorize(Policy = UserAttribute.GiftPlayer)]
+        [Authorize(Policy = UserAttributeValues.GiftPlayer)]
         public async Task<IActionResult> UpdateGroupInventories(
             [FromBody] ApolloGroupGift groupGift)
         {
@@ -845,7 +845,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
             var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
                 groupGift,
@@ -871,7 +871,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupInventories)]
-        [Authorize(Policy = UserAttribute.GiftGroup)]
+        [Authorize(Policy = UserAttributeValues.GiftGroup)]
         public async Task<IActionResult> UpdateGroupInventories(
             int groupId,
             [FromBody] ApolloGift gift)
@@ -899,7 +899,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttribute.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
+            var hasPermissionsToExceedCreditLimit = await this.userProvider.HasPermissionsForAsync(this.HttpContext, requesterObjectId, UserAttributeValues.AllowedToExceedGiftingCreditLimit).ConfigureAwait(false);
 
             var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(
                 groupId,
@@ -908,7 +908,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 hasPermissionsToExceedCreditLimit,
                 endpoint).ConfigureAwait(true);
             return this.Ok(response);
-            }
+        }
 
         /// <summary>
         ///     Gets the gift histories.
@@ -1058,7 +1058,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return new IdentityResultAlpha
                     {
                         Error = new InvalidArgumentsStewardError(ex.Message, ex),
-                        Query = query
+                        Query = query,
                     };
                 }
 
@@ -1067,7 +1067,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return new IdentityResultAlpha
                     {
                         Error = new NotFoundStewardError(ex.Message, ex),
-                        Query = query
+                        Query = query,
                     };
                 }
 
@@ -1089,7 +1089,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             {
                 CreditRewards = new List<MasterInventoryItem>
                 {
-                        new MasterInventoryItem { Id = -1, Description = "Credits" }
+                        new MasterInventoryItem { Id = -1, Description = "Credits" },
                 },
                 Cars = await cars.ConfigureAwait(true),
                 VanityItems = await vanityItems.ConfigureAwait(true),

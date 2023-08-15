@@ -1,31 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 using AutoMapper;
-using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
@@ -99,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
             this.formatPipelineBuildDefinition = configuration[ConfigurationKeyConstants.SteelheadFormatPipelineBuildDefinition];
 
-            string steelheadContentPAT = keyVaultConfig.SteelheadContentAccessToken;
+            var steelheadContentPAT = keyVaultConfig.SteelheadContentAccessToken;
             try
             {
                 this.azureDevOpsManager = azureDevOpsFactory.Create(
@@ -133,7 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -150,12 +139,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTimeUtc =pegasusShowcase.StartEndDate.From,
-                        EndTimeUtc =  pegasusShowcase.StartEndDate.To,
+                        StartTimeUtc = pegasusShowcase.StartEndDate.From,
+                        EndTimeUtc = pegasusShowcase.StartEndDate.To,
                         BaseCost = carListing.FullCarInfo.Car.BaseCost.Value,
                         CarId = carListing.FullCarInfo.Car.CarId,
                         MediaName = carListing.FullCarInfo.Car.MediaName,
-                        ModelShort = carListing.FullCarInfo.Car.ModelShort
+                        ModelShort = carListing.FullCarInfo.Car.ModelShort,
                     };
                     carFeaturedShowcases = carFeaturedShowcases.Append(liveOpsShowcase);
 
@@ -182,7 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -202,7 +191,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         StartTimeUtc = pegasusShowcase.StartEndDate.From,
                         EndTimeUtc = pegasusShowcase.StartEndDate.To,
                         DivisionId = carListing.FullCarInfo.CarDivision.CarDivisionId,
-                        DivisionName = carListing.FullCarInfo.CarDivision.Name
+                        DivisionName = carListing.FullCarInfo.CarDivision.Name,
                     };
                     divisionFeaturedShowcases = divisionFeaturedShowcases.Append(liveOpsShowcase);
                 }
@@ -222,7 +211,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -239,10 +228,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     {
                         Title = pegasusShowcase.Title,
                         Description = pegasusShowcase.Description,
-                        StartTimeUtc =pegasusShowcase.StartEndDate.From,
+                        StartTimeUtc = pegasusShowcase.StartEndDate.From,
                         EndTimeUtc = pegasusShowcase.StartEndDate.To,
                         ManufacturerId = carListing.FullCarInfo.Car.MakeID.Value,
-                        ManufacturerName = carListing.FullCarInfo.Car.MakeDisplayName
+                        ManufacturerName = carListing.FullCarInfo.Car.MakeDisplayName,
                     };
                     manufacturerFeaturedShowcases = manufacturerFeaturedShowcases.Append(liveOpsShowcase);
                 }
@@ -263,7 +252,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
-                    CMSFileNames.CarListings.Replace("{:loc}", "en-US"),
+                    CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
@@ -280,7 +269,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                             Name = pegasusCarSale.ShowcaseListingName,
                             StartTimeUtc = pegasusCarSale.StartEndDate.From,
                             EndTimeUtc = pegasusCarSale.StartEndDate.To,
-                            Cars = new List<CarSaleInformation>()
+                            Cars = new List<CarSaleInformation>(),
                         };
                         carSales = carSales.Append(liveOpsCarSale);
                     }
@@ -294,7 +283,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         SalePercentOff = pegasusCarSale.SalePercentOff,
                         SalePrice = pegasusCarSale.SalePrice,
                         VipSalePercentOff = pegasusCarSale.VipSalePercentOff,
-                        VipSalePrice = pegasusCarSale.VipSalePrice
+                        VipSalePrice = pegasusCarSale.VipSalePrice,
                     };
                     liveOpsCarSale.Cars = liveOpsCarSale.Cars.Append(carSaleInfo);
                 }
@@ -316,16 +305,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync()
+        public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync()
         {
-            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
                     filename,
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
-            var rivalsEvents = this.mapper.SafeMap<IEnumerable<RivalsEvent>>(pegasusRivalEvents);
+            var rivalsEvents = this.mapper.SafeMap<IEnumerable<LiveOpsContracts.RivalsEvent>>(pegasusRivalEvents);
 
             return rivalsEvents;
         }
@@ -334,7 +323,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetRivalsEventsReferenceAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
                     filename,
@@ -350,7 +339,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetRivalsEventCategoriesAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.RivalCategories.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.RivalCategories.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalsCategories =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalCategory>>(
                     filename,
@@ -382,7 +371,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.RacersCupSeries.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.RacersCupSeries.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRacersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipSeriesDataV3>>(
                     filename,
@@ -398,7 +387,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetBuildersCupChampionshipsAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.BuildersCupChampionships.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.BuildersCupChampionships.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupDataV3>>(
                     filename,
@@ -414,7 +403,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetBuildersCupLaddersAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.BuildersCupLadders.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.BuildersCupLadders.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupLadder =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupLadderDataV3>>(
                     filename,
@@ -430,7 +419,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.BuildersCupSeries.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.BuildersCupSeries.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupSeriesDataV3>>(
                     filename,
@@ -564,7 +553,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<IEnumerable<Leaderboard>> GetLeaderboards()
             {
-                var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US");
+                var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
                 var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<RivalEvent>>(filename, pegasusEnvironment, slot: slotId).ConfigureAwait(false);
                 var leaderboards = this.mapper.SafeMap<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
@@ -607,7 +596,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<Dictionary<Guid, string>> GetCarsReferenceAsync()
         {
             // No caching due to small data size
-            var filename = CMSFileNames.DataCars.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.DataCars.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusCars =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(
                     filename,
@@ -694,7 +683,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
         {
             var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
-            var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US");
+            var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US", StringComparison.Ordinal);
 
             var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
                 fileName,
@@ -702,6 +691,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 slot: pegasusSlot).ConfigureAwait(false);
 
             return featuredCupData.Single();
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        {
+            var banConfigurationKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_BanConfiguration";
+
+            async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
+            {
+                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(banConfigurationKey, TimeSpan.FromDays(1), banConfigurations);
+
+                return banConfigurations;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, BanConfiguration>>(banConfigurationKey)
+                   ?? await GetBanConfigurations().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -716,7 +723,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync()
         {
-            var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US");
+            var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var wofTileCollection = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
 
             return wofTileCollection;
@@ -725,9 +732,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<XElement> GetMessageOfTheDayElementAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.MessageOfTheDayPath, GitObjectType.Blob).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.MessageOfTheDayPath, GitObjectType.Blob).ConfigureAwait(false);
 
-            XDocument doc = XDocument.Parse(item.Content);
+            var doc = XDocument.Parse(item.Content);
             var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + "UserMessages.MessageOfTheDay")
                 .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
@@ -740,10 +747,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<MotdBridge> GetMessageOfTheDayCurrentValuesAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.MessageOfTheDayPath, GitObjectType.Blob).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.MessageOfTheDayPath, GitObjectType.Blob).ConfigureAwait(false);
 
-            MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
-            MotdEntry entry = root.Entries.Where(motd => motd.idAttribute == id).First();
+            var root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
+            var entry = root.Entries.Where(motd => motd.idAttribute == id).First();
 
             var subset = this.mapper.SafeMap<MotdBridge>(entry);
 
@@ -753,8 +760,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetMessageOfTheDaySelectionsAsync()
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.MessageOfTheDayPath, GitObjectType.Blob).ConfigureAwait(false);
-            MotdRoot root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.MessageOfTheDayPath, GitObjectType.Blob).ConfigureAwait(false);
+            var root = await item.Content.DeserializeAsync<MotdRoot>().ConfigureAwait(false);
 
             var choices = new Dictionary<Guid, string>();
             foreach (var entry in root.Entries)
@@ -770,13 +777,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var entry = this.mapper.SafeMap<MotdEntry>(messageOfTheDayBridge);
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, null);
+            var tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, null);
 
-            XElement element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
+            var element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            string newXml = element.Document.ToXmlString();
+            var newXml = element.Document.ToXmlString();
 
             var change = new CommitRefProxy()
             {
@@ -792,10 +799,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<WofImageTextBridge> GetWorldOfForzaImageTextTileAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.ImageTextTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.ImageTextTilePath, GitObjectType.Blob).ConfigureAwait(false);
 
-            WofImageTextRoot root = await item.Content.DeserializeAsync<WofImageTextRoot>().ConfigureAwait(false);
-            WofImageTextEntry entry = root.Entries.Where(wof => wof.id == id).First();
+            var root = await item.Content.DeserializeAsync<WofImageTextRoot>().ConfigureAwait(false);
+            var entry = root.Entries.Where(wof => wof.id == id).First();
 
             var subset = this.mapper.SafeMap<WofImageTextBridge>(entry);
 
@@ -805,10 +812,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<WofGenericPopupBridge> GetWorldOfForzaGenericPopupTileAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.GenericPopupTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.GenericPopupTilePath, GitObjectType.Blob).ConfigureAwait(false);
 
-            WofGenericPopupRoot root = await item.Content.DeserializeAsync<WofGenericPopupRoot>().ConfigureAwait(false);
-            WofGenericPopupEntry entry = root.Entries.Where(wof => wof.id == id).First();
+            var root = await item.Content.DeserializeAsync<WofGenericPopupRoot>().ConfigureAwait(false);
+            var entry = root.Entries.Where(wof => wof.id == id).First();
 
             var subset = this.mapper.SafeMap<WofGenericPopupBridge>(entry);
 
@@ -818,10 +825,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<WofDeeplinkBridge> GetWorldOfForzaDeeplinkTileAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.DeeplinkTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.DeeplinkTilePath, GitObjectType.Blob).ConfigureAwait(false);
 
-            WofDeeplinkRoot root = await item.Content.DeserializeAsync<WofDeeplinkRoot>().ConfigureAwait(false);
-            WofDeeplinkEntry entry = root.Entries.Where(wof => wof.id == id).First();
+            var root = await item.Content.DeserializeAsync<WofDeeplinkRoot>().ConfigureAwait(false);
+            var entry = root.Entries.Where(wof => wof.id == id).First();
 
             var subset = this.mapper.SafeMap<WofDeeplinkBridge>(entry);
 
@@ -831,8 +838,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetWorldOfForzaImageTextTileSelectionsAsync()
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.ImageTextTilePath, GitObjectType.Blob).ConfigureAwait(false);
-            WofImageTextRoot root = await item.Content.DeserializeAsync<WofImageTextRoot>().ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.ImageTextTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var root = await item.Content.DeserializeAsync<WofImageTextRoot>().ConfigureAwait(false);
 
             return GetWelcomeCenterTileDictionary(root.Entries);
         }
@@ -840,8 +847,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetWorldOfForzaGenericPopupSelectionsAsync()
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.GenericPopupTilePath, GitObjectType.Blob).ConfigureAwait(false);
-            WofGenericPopupRoot root = await item.Content.DeserializeAsync<WofGenericPopupRoot>().ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.GenericPopupTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var root = await item.Content.DeserializeAsync<WofGenericPopupRoot>().ConfigureAwait(false);
 
             return GetWelcomeCenterTileDictionary(root.Entries);
         }
@@ -849,8 +856,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<Dictionary<Guid, string>> GetWorldOfForzaDeeplinkSelectionsAsync()
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.DeeplinkTilePath, GitObjectType.Blob).ConfigureAwait(false);
-            WofDeeplinkRoot root = await item.Content.DeserializeAsync<WofDeeplinkRoot>().ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.DeeplinkTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var root = await item.Content.DeserializeAsync<WofDeeplinkRoot>().ConfigureAwait(false);
 
             return GetWelcomeCenterTileDictionary(root.Entries);
         }
@@ -858,7 +865,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<XElement> GetWorldOfForzaImageTextTileElementAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.ImageTextTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.ImageTextTilePath, GitObjectType.Blob).ConfigureAwait(false);
 
             return GetXmlElement(id, item, "WorldOfForza.WoFTileImageText");
         }
@@ -866,7 +873,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<XElement> GetWorldOfForzaGenericPopupTileElementAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.GenericPopupTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.GenericPopupTilePath, GitObjectType.Blob).ConfigureAwait(false);
 
             return GetXmlElement(id, item, "WorldOfForza.WoFTileGenericPopup");
         }
@@ -874,7 +881,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<XElement> GetWorldOfForzaDeeplinkTileElementAsync(Guid id)
         {
-            GitItem item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.DeeplinkTilePath, GitObjectType.Blob).ConfigureAwait(false);
+            var item = await this.azureDevOpsManager.GetItemAsync(PegasusConstants.DeeplinkTilePath, GitObjectType.Blob).ConfigureAwait(false);
 
             return GetXmlElement(id, item, "WorldOfForza.WoFTileDeeplink");
         }
@@ -883,7 +890,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditWorldOfForzaImageTextTileAsync(WofImageTextBridge wofTileBridge, Guid id)
         {
             var entry = this.mapper.SafeMap<WofImageTextEntry>(wofTileBridge);
-            XElement element = await this.GetWorldOfForzaImageTextTileElementAsync(id).ConfigureAwait(false);
+            var element = await this.GetWorldOfForzaImageTextTileElementAsync(id).ConfigureAwait(false);
             var commitMessage = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, PegasusConstants.WoFTileImageText);
 
             return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusConstants.ImageTextTilePath, commitMessage).ConfigureAwait(false);
@@ -893,7 +900,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditWorldOfForzaGenericPopupTileAsync(WofGenericPopupBridge wofTileBridge, Guid id)
         {
             var entry = this.mapper.SafeMap<WofGenericPopupEntry>(wofTileBridge);
-            XElement element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
+            var element = await this.GetWorldOfForzaGenericPopupTileElementAsync(id).ConfigureAwait(false);
             var commitMessage = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, PegasusConstants.WoFTileGenericPopup);
 
             return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusConstants.GenericPopupTilePath, commitMessage).ConfigureAwait(false);
@@ -903,7 +910,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         public async Task<CommitRefProxy> EditWorldOfForzaDeeplinkTileAsync(WofDeeplinkBridge wofTileBridge, Guid id)
         {
             var entry = this.mapper.SafeMap<WofDeeplinkEntry>(wofTileBridge);
-            XElement element = await this.GetWorldOfForzaDeeplinkTileElementAsync(id).ConfigureAwait(false);
+            var element = await this.GetWorldOfForzaDeeplinkTileElementAsync(id).ConfigureAwait(false);
             var commitMessage = string.Format(CultureInfo.InvariantCulture, WelcomeCenterHelpers.StandardCommitMessage, PegasusConstants.WoFTileDeeplink);
 
             return await this.CommitWelcomeCenterTileAsync(entry, element, PegasusConstants.DeeplinkTilePath, commitMessage).ConfigureAwait(false);
@@ -996,7 +1003,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 CommitMessage = $"Add localized string to {path}",
                 NewFileContent = finalXmlString,
                 PathToFile = path,
-                VersionControlChangeType = VersionControlChangeType.Edit
+                VersionControlChangeType = VersionControlChangeType.Edit,
             };
 
             return change;
@@ -1004,7 +1011,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private static XElement GetXmlElement(Guid id, GitItem item, string typeNamespace)
         {
-            XDocument doc = XDocument.Parse(item.Content);
+            var doc = XDocument.Parse(item.Content);
             var selectedElement = doc.Root.Elements(WelcomeCenterHelpers.NamespaceRoot + typeNamespace)
                 .Where(e => e.Attribute(WelcomeCenterHelpers.NamespaceElement + "id")?.Value == id.ToString())
                 .FirstOrDefault();
@@ -1027,7 +1034,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var locstrings = await this.GetLocalizedStringsAsync().ConfigureAwait(false);
             var displayConditions = await this.GetDisplayConditionsAsync().ConfigureAwait(false);
-            Node tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, displayConditions);
+            var tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, displayConditions);
 
             // deleted elements will be rewritten.
             foreach (var target in new List<string>() { "Timer", "DisplayConditions", "Destination" })
@@ -1037,14 +1044,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             WelcomeCenterHelpers.FillXml(element, tree);
 
-            string newXml = element.Document.ToXmlString();
+            var newXml = element.Document.ToXmlString();
 
             var change = new CommitRefProxy()
             {
                 CommitMessage = commitMessage,
                 NewFileContent = newXml,
                 PathToFile = sourceFilePath,
-                VersionControlChangeType = VersionControlChangeType.Edit
+                VersionControlChangeType = VersionControlChangeType.Edit,
             };
 
             return change;

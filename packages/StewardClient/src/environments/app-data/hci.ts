@@ -7,6 +7,11 @@ export const HCI = {
   TypingToAutoSearchDebounceMillis: 200,
   DirectiveInputDebounceMillis: 50,
   AutoRetryMillis: 3_000,
+  /**
+   * Used when we need to give PlayFab time to propogate actions taken on their platform.
+   * Example: Adding currency needs to propogate in a player's inventory & transaction history
+   */
+  PlayFabPropagationMillis: 1_000,
   Toast: {
     Duration: {
       Short: 2_000,

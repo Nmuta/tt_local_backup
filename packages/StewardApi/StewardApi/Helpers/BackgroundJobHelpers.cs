@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static IList<GiftResponse<T>> MergeResponses<T>(
             IList<IList<GiftResponse<T>>> results)
         {
-            var flatResults = results.SelectMany(v => v);
+            var flatResults = results.SelectMany(v => v).ToList();
             var userFlatResults = flatResults.Where(r => r.TargetXuid.HasValue && !r.TargetLspGroupId.HasValue);
             var lspFlatResults = flatResults.Where(r => r.TargetLspGroupId.HasValue && !r.TargetXuid.HasValue);
             var badFlatResults = flatResults.Where(r =>
@@ -29,7 +29,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 return neitherValue || bothValues;
             });
 
-            GiftResponse<T> DoAggregate<T2>(IGrouping<T2, GiftResponse<T>> g) {
+            GiftResponse<T> DoAggregate<T2>(IGrouping<T2, GiftResponse<T>> g)
+            {
                 var list = g.ToList();
                 var first = list.First();
                 return new GiftResponse<T>

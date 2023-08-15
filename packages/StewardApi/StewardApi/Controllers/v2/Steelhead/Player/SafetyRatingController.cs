@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -7,10 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -31,7 +27,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [StandardTags(Title.Steelhead, Target.Player, Topic.SafetyRating)]
     public class SafetyRatingController : V2SteelheadControllerBase
     {
-        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -70,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SafetyRating))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.UpdateSafetyRating)]
+        [Authorize(Policy = UserAttributeValues.UpdateSafetyRating)]
         public async Task<IActionResult> ClearSafetyRatingAsync(
             ulong xuid)
         {
@@ -85,7 +80,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             return this.Ok(result);
         }
 
-
         /// <summary>
         ///     Sets the user's safety rating history.
         /// </summary>
@@ -93,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(SafetyRating))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta)]
-        [Authorize(Policy = UserAttribute.UpdateSafetyRating)]
+        [Authorize(Policy = UserAttributeValues.UpdateSafetyRating)]
         public async Task<IActionResult> SetSafetyRatingAsync(
             ulong xuid, [FromBody] SafetyRatingInput safetyRating)
         {

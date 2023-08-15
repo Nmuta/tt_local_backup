@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using PlayFab.EconomyModels;
 using PlayFab.MultiplayerModels;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -40,6 +41,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.BuildId))
                 .ForMember(des => des.Name, opt => opt.MapFrom(src => src.BuildName))
                 .ReverseMap();
+            this.CreateMap<CatalogItem, PlayFabVoucher>().ReverseMap();
+            this.CreateMap<Transaction, PlayFabTransaction>()
+                .ForMember(des => des.TimestampUtc, opt => opt.MapFrom(src => src.Timestamp))
+                .ReverseMap();
+            this.CreateMap<TransactionOperation, PlayFabTransactionOperation>().ReverseMap();
+            this.CreateMap<InventoryItem, PlayFabInventoryItem>().ReverseMap();
             this.CreateMap<StewardUserInternal, StewardUser>()
                 .ForMember(des => des.Attributes, opt =>
                     opt.MapFrom(src => src.AuthorizationAttributes()))

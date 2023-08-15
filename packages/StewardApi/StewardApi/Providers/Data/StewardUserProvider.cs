@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Http;
@@ -11,12 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
@@ -55,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         public Task InitializeAsync()
         {
             var tableStorageProperties = new TableStorageProperties();
-            var tableStorageConnectionString = keyVaultConfig.TableStorageConnectionString;
+            var tableStorageConnectionString = this.keyVaultConfig.TableStorageConnectionString;
 
             this.configuration.Bind("StewardUserStorageProperties", tableStorageProperties);
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
@@ -198,7 +194,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task EnsureStewardUserAsync(StewardClaimsUser user)
         {
-          // We shouldnt pass in the attributes from claim. it doesnt exist
+            // We shouldnt pass in the attributes from claim. it doesnt exist
             await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role).ConfigureAwait(false);
         }
 
@@ -267,7 +263,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             // v1 apis use endpointKey, value is Title|environment
             // v2 apis use Endpoint-Title, value is environment
-            var environmentKey = "v1".Equals(api) ? "endpointKey" : $"Endpoint-{title}";
+            var environmentKey = "v1".Equals(api, StringComparison.OrdinalIgnoreCase) ? "endpointKey" : $"Endpoint-{title}";
 
             if (!httpContext.Request.Headers.TryGetValue(environmentKey, out var env))
             {
@@ -279,12 +275,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 throw new BadRequestStewardException($"Null or empty {environmentKey} header.");
             }
 
-            environment = env.ToString().Contains('|') ? env.ToString().Split("|")[1] : env;
+            environment = env.ToString().Contains('|', StringComparison.OrdinalIgnoreCase) ? env.ToString().Split("|")[1] : env;
 
             return;
         }
 
-        string RequestPathSegment(PathString path, string key, bool capitalize = false)
+        private string RequestPathSegment(PathString path, string key, bool capitalize = false)
         {
             if (path == null)
             {
@@ -301,7 +297,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             var segment = segments[index];
 
-            return capitalize ? char.ToUpper(segment[0]) + segment[1..] : segment;
+            return capitalize ? char.ToUpperInvariant(segment[0]) + segment[1..] : segment;
         }
     }
 }

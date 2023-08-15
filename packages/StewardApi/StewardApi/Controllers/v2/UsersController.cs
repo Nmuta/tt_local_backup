@@ -1,40 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Castle.Core.Internal;
 using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Azure.KeyVault.Models;
-using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Annotations;
-using Turn10;
 using Turn10.Data.Common;
-using Turn10.LiveOps;
-using Turn10.LiveOps.StewardApi;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Controllers;
-using Turn10.LiveOps.StewardApi.Controllers.v2;
 using Turn10.LiveOps.StewardApi.Controllers.V2;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
-using Turn10.LiveOps.StewardApi.Hubs;
-using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.MsGraph;
-using static System.Collections.Specialized.BitVector32;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.v2
@@ -80,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.Users)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> SyncUsers()
         {
             var getAadUsers = this.msGraphService.GetAadAppUsersAsync();
@@ -88,11 +71,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
 
             await Task.WhenAll(getAadUsers, getDbUsers).ConfigureAwait(true);
 
-            var aadUsers = getAadUsers.Result;
-            var dbUsers = getDbUsers.Result;
+            var aadUsers = getAadUsers.GetAwaiter().GetResult();
+            var dbUsers = getDbUsers.GetAwaiter().GetResult();
 
             var usersToAdd = new List<StewardUser>();
             var usersToUpdate = new List<StewardUserInternal>();
+
             // Figure out which users are new and which need updated in Cosmos DB.
             foreach (var aadUser in aadUsers)
             {
@@ -163,7 +147,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Update, StewardSubject.UserTeam)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> SetTeamAsync(string userId, [FromBody] Team team)
         {
             var internalUser = await this.stewardUserProvider.GetStewardUserAsync(userId).ConfigureAwait(true);
@@ -190,7 +174,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.StewardUser, ActionAreaLogTags.Update)]
         [AutoActionLogging(TitleCodeName.None, StewardAction.Delete, StewardSubject.UserTeam)]
-        [Authorize(Policy = UserAttribute.AdminFeature)]
+        [Authorize(Policy = UserAttributeValues.AdminFeature)]
         public async Task<IActionResult> DeleteTeamAsync(string userId)
         {
             var user = await this.stewardUserProvider.GetStewardUserAsync(userId).ConfigureAwait(true);

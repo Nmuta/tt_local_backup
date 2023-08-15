@@ -19,6 +19,11 @@
           <woodstock-consoles [identity]="identity"></woodstock-consoles>
         </div>
       </mat-tab>
+      <mat-tab *ngIf="!isSpecialXuid" label="PlayFab">
+        <div class="sf-wrapper sf-tab-container">
+          <woodstock-playfab-player-tools [xuid]="identity.xuid"></woodstock-playfab-player-tools>
+        </div>
+      </mat-tab>
       <mat-tab *ngIf="!isSpecialXuid" label="Deep Dive">
         <div class="sf-wrapper sf-tab-container">
           <woodstock-overview [identity]="identity"></woodstock-overview>

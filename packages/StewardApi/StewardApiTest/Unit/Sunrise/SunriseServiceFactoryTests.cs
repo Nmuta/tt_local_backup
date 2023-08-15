@@ -105,7 +105,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             }
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
-            
+
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
             public IRefreshableCacheStore RefreshableCacheStore { get; set; } = Substitute.For<IRefreshableCacheStore>();

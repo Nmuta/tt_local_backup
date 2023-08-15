@@ -1,0 +1,29 @@
+# This file runs a test build as a single parallel job.
+# It is intended to be run only after a `yarn` cache is made.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."
+  type: string
+
+jobs:
+- job: UI_Test_Changelog
+  displayName: Changelog Must Be Modified
+  steps:
+  - template: load-yarn-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+
+  - task: Bash@3
+    displayName: Fetch main
+    inputs:
+      targetType: inline
+      script: git fetch origin main
+      workingDirectory: packages/StewardClient/
+
+  - task: Bash@3
+    displayName: Changelog Must Be Modified
+    inputs:
+      targetType: inline
+      script: yarn run check:ado:changelog-is-modified
+      workingDirectory: packages/StewardClient/

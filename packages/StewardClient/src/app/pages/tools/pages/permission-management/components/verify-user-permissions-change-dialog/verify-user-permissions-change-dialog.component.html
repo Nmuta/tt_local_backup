@@ -5,7 +5,7 @@
     <div class="sf-horizontal do-not-align-items align-top">
       <div>
         <h2 class="added-color">Permissions Added</h2>
-        <div class="change-entry" *ngFor="let perm of addedPermissions">
+        <div class="change-entry" *ngFor="let perm of addedPermissionsChangeEntry">
           <span class="attribute-name">{{ perm.attribute | humanize }}</span>
           <div *ngFor="let title of perm.titles">
             {{ title.title | humanize }} -
@@ -18,7 +18,7 @@
 
       <div>
         <h2 class="removed-color">Permissions Removed</h2>
-        <div class="change-entry" *ngFor="let perm of removedPermissions">
+        <div class="change-entry" *ngFor="let perm of removedPermissionsChangeEntry">
           <span class="attribute-name">{{ perm.attribute | humanize }}</span>
           <div *ngFor="let title of perm.titles">
             {{ title.title | humanize }} -

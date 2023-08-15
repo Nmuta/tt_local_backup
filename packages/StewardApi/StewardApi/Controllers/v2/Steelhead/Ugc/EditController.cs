@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Ugc)]
-        [Authorize(Policy = UserAttribute.EditUgc)]
+        [Authorize(Policy = UserAttributeValues.EditUgc)]
         public async Task<IActionResult> Get(string ugcId, [FromBody] UgcEditInput ugcEditInput)
         {
             if (!Guid.TryParse(ugcId, out var parsedUgcId))

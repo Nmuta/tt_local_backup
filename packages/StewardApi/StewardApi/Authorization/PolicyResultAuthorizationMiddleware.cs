@@ -23,22 +23,22 @@ namespace Turn10.LiveOps.StewardApi.Authorization
 
         /// <inheritdoc/>
         public async Task HandleAsync(
-            RequestDelegate requestDelegate,
-            HttpContext httpContext,
-            AuthorizationPolicy authorizationPolicy,
-            PolicyAuthorizationResult policyAuthorizationResult)
+            RequestDelegate next,
+            HttpContext context,
+            AuthorizationPolicy policy,
+            PolicyAuthorizationResult authorizeResult)
         {
-            if (policyAuthorizationResult?.Forbidden == true && httpContext != null)
+            if (authorizeResult?.Forbidden == true && context != null)
             {
-                if (policyAuthorizationResult.AuthorizationFailure?.FailureReasons.Where(failureReason => failureReason is AttributeFailureReason).FirstOrDefault() is AttributeFailureReason failureReason)
+                if (authorizeResult.AuthorizationFailure?.FailureReasons.Where(failureReason => failureReason is AttributeFailureReason).FirstOrDefault() is AttributeFailureReason failureReason)
                 {
-                    httpContext.Response.StatusCode = failureReason.StatusCode;
-                    await httpContext.Response.WriteAsync(failureReason.Message).ConfigureAwait(true);
+                    context.Response.StatusCode = failureReason.StatusCode;
+                    await context.Response.WriteAsync(failureReason.Message).ConfigureAwait(true);
                     return;
                 }
             }
 
-            await this.handler.HandleAsync(requestDelegate, httpContext, authorizationPolicy, policyAuthorizationResult).ConfigureAwait(true);
+            await this.handler.HandleAsync(next, context, policy, authorizeResult).ConfigureAwait(true);
         }
     }
 }

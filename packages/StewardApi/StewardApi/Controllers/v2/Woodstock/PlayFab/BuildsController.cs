@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -9,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
@@ -18,9 +20,6 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using Microsoft.AspNetCore.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
-using WoodstockContracts = Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
@@ -62,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [LogTagDependency(DependencyLogTags.PlayFab)]
         public async Task<IActionResult> GetPlayFabBuilds()
         {
-            var playFabEnvironment = this.GetPlayFabEnvironmentFromServices(this.Services.Endpoint);
+            var playFabEnvironment = this.PlayFabEnvironment;
 
             try
             {
@@ -84,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [LogTagDependency(DependencyLogTags.PlayFab)]
         public async Task<IActionResult> GetPlayFabBuild(string buildId)
         {
-            var playFabEnvironment = this.GetPlayFabEnvironmentFromServices(this.Services.Endpoint);
+            var playFabEnvironment = this.PlayFabEnvironment;
             var parsedBuildId = buildId.TryParseGuidElseThrow(nameof(buildId));
 
             try
@@ -107,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [LogTagDependency(DependencyLogTags.Cosmos)]
         public async Task<IActionResult> GetActivePlayFabBuildLocks()
         {
-            var playFabEnvironment = this.GetPlayFabEnvironmentFromServices(this.Services.Endpoint);
+            var playFabEnvironment = this.PlayFabEnvironment;
 
             try
             {
@@ -129,12 +128,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.PlayFabBuildLock)]
-        [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> AddNewPlayFabBuildLock(string buildId, [FromBody] string reason)
         {
             var userClaims = this.User.UserClaims();
 
-            var playFabEnvironment = this.GetPlayFabEnvironmentFromServices(this.Services.Endpoint);
+            var playFabEnvironment = this.PlayFabEnvironment;
             var parsedBuildId = buildId.TryParseGuidElseThrow(nameof(buildId));
 
             var playFabBuild = await this.VerifyBuildIdInPlayFabAsync(parsedBuildId, playFabEnvironment).ConfigureAwait(true);
@@ -188,10 +187,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete)]
         [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.PlayFabBuildLock)]
-        [Authorize(Policy = UserAttribute.ManagePlayFabBuildLocks)]
+        [Authorize(Policy = UserAttributeValues.ManagePlayFabBuildLocks)]
         public async Task<IActionResult> DeletePlayFabBuildLock(string buildId)
         {
-            var playFabEnvironment = this.GetPlayFabEnvironmentFromServices(this.Services.Endpoint);
+            var playFabEnvironment = this.PlayFabEnvironment;
             var parsedBuildId = buildId.TryParseGuidElseThrow();
 
             try
@@ -218,22 +217,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab
             }
 
             return build;
-        }
-
-        private WoodstockPlayFabEnvironment GetPlayFabEnvironmentFromServices(string servicesEnvironment)
-        {
-            if (servicesEnvironment == WoodstockContracts.WoodstockEndpoint.Retail)
-            {
-                return WoodstockPlayFabEnvironment.Retail;
-            }
-            else if (servicesEnvironment == WoodstockContracts.WoodstockEndpoint.Studio)
-            {
-                return WoodstockPlayFabEnvironment.Dev;
-            }
-            else 
-            {
-                throw new InvalidArgumentsStewardException($"Provided invalid environment to PlayFab. (env: {servicesEnvironment})");
-            }
         }
     }
 }

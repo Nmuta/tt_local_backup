@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.Scoreboard.FH5_main.Generated;
-using Forza.UserGeneratedContent.FH5_main.Generated;
 using Kusto.Cloud.Platform.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
@@ -55,13 +50,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     public sealed class WoodstockController : ControllerBase
     {
         private const int DefaultMaxResults = 100;
-        private const string DefaultEndpointKey = "Woodstock|Retail";
         private const TitleCodeName CodeName = TitleCodeName.Woodstock;
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.KeyVaultUrl,
-            ConfigurationKeyConstants.GroupGiftPasswordSecretName
+            ConfigurationKeyConstants.GroupGiftPasswordSecretName,
         };
 
         private readonly IMemoryCache memoryCache;
@@ -81,9 +75,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
         private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
-        private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
-        private readonly IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator;
-        private readonly IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator;
         private readonly IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
@@ -109,9 +100,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IJobTracker jobTracker,
             IMapper mapper,
             IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator,
-            IRequestValidator<WoodstockGift> giftRequestValidator,
-            IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator,
-            IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator,
             IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
@@ -133,9 +121,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             mapper.ShouldNotBeNull(nameof(mapper));
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
-            giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
-            groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
-            banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
@@ -156,9 +141,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.jobTracker = jobTracker;
             this.mapper = mapper;
             this.masterInventoryRequestValidator = masterInventoryRequestValidator;
-            this.giftRequestValidator = giftRequestValidator;
-            this.groupGiftRequestValidator = groupGiftRequestValidator;
-            this.banParametersRequestValidator = banParametersRequestValidator;
             this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 
@@ -282,7 +264,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Console)]
-        [Authorize(Policy = UserAttribute.BanConsole)]
+        [Authorize(Policy = UserAttributeValues.BanConsole)]
         public async Task<IActionResult> SetConsoleBanStatus(
             ulong consoleId,
             bool isBanned)
@@ -354,7 +336,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Group)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserFlags)]
-        [Authorize(Policy = UserAttribute.UpdateUserFlags)]
+        [Authorize(Policy = UserAttributeValues.UpdateUserFlags)]
         public async Task<IActionResult> SetUserFlags(
             ulong xuid,
             [FromBody] WoodstockUserFlagsInput userFlags)
@@ -513,7 +495,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.AuctionHouse)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Action | ActionAreaLogTags.Auctions)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.Auction)]
-        [Authorize(Policy = UserAttribute.DeleteAuction)]
+        [Authorize(Policy = UserAttributeValues.DeleteAuction)]
         public async Task<IActionResult> DeleteAuction(string auctionId)
         {
             if (!Guid.TryParse(auctionId, out var parsedAuctionId))
@@ -576,7 +558,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.AuctionBlocklistEntry)]
-        [Authorize(Policy = UserAttribute.UpdateAuctionBlocklist)]
+        [Authorize(Policy = UserAttributeValues.UpdateAuctionBlocklist)]
         public async Task<IActionResult> AddEntriesToAuctionBlockList(
             [FromBody] IList<AuctionBlockListEntry> entries)
         {
@@ -597,7 +579,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete | ActionAreaLogTags.Meta | ActionAreaLogTags.Auctions)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.AuctionBlocklistEntry)]
-        [Authorize(Policy = UserAttribute.UpdateAuctionBlocklist)]
+        [Authorize(Policy = UserAttributeValues.UpdateAuctionBlocklist)]
         public async Task<IActionResult> RemoveEntryFromAuctionBlockList(
             int carId)
         {
@@ -827,7 +809,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Meta | ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
-        [Authorize(Policy = UserAttribute.FeatureUgc)]
+        [Authorize(Policy = UserAttributeValues.FeatureUgc)]
         public async Task<IActionResult> SetUgcFeaturedStatus(
             string ugcId,
             [FromBody] UgcFeaturedStatus status)
@@ -890,7 +872,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.DeleteBan)]
+        [Authorize(Policy = UserAttributeValues.DeleteBan)]
         public async Task<IActionResult> ExpireBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -919,7 +901,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Banning)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.Players)]
-        [Authorize(Policy = UserAttribute.DeleteBan)]
+        [Authorize(Policy = UserAttributeValues.DeleteBan)]
         public async Task<IActionResult> DeleteBan(int banEntryId)
         {
             banEntryId.ShouldBeGreaterThanValue(-1);
@@ -1270,7 +1252,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
         [ManualActionLogging(CodeName, StewardAction.Add, StewardSubject.PlayerMessages)]
-        [Authorize(Policy = UserAttribute.MessagePlayer)]
+        [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> SendPlayerNotifications(
             [FromBody] BulkCommunityMessage communityMessage)
         {
@@ -1328,7 +1310,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Create | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.GroupMessages)]
-        [Authorize(Policy = UserAttribute.MessageGroup)]
+        [Authorize(Policy = UserAttributeValues.MessageGroup)]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
             [FromBody] LspGroupCommunityMessage communityMessage)
@@ -1372,7 +1354,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.PlayerMessages)]
-        [Authorize(Policy = UserAttribute.MessagePlayer)]
+        [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> EditPlayerNotification(
             Guid notificationId,
             ulong xuid,
@@ -1419,7 +1401,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Update | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.GroupMessages)]
-        [Authorize(Policy = UserAttribute.MessageGroup)]
+        [Authorize(Policy = UserAttributeValues.MessageGroup)]
         public async Task<IActionResult> EditGroupNotification(
             Guid notificationId,
             [FromBody] LspGroupCommunityMessage editParameters)
@@ -1464,7 +1446,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.PlayerMessages)]
-        [Authorize(Policy = UserAttribute.MessagePlayer)]
+        [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> DeletePlayerNotification(Guid notificationId, ulong xuid)
         {
             xuid.EnsureValidXuid();
@@ -1499,7 +1481,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Group, ActionAreaLogTags.Delete | ActionAreaLogTags.Notification)]
         [AutoActionLogging(CodeName, StewardAction.Delete, StewardSubject.GroupMessages)]
-        [Authorize(Policy = UserAttribute.MessageGroup)]
+        [Authorize(Policy = UserAttributeValues.MessageGroup)]
         public async Task<IActionResult> DeleteGroupNotification(Guid notificationId)
         {
             var endpoint = WoodstockEndpoint.GetEndpoint(this.Request.Headers);

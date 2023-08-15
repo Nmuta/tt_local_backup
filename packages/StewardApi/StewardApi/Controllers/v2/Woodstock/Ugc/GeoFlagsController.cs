@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
 {
@@ -38,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.UgcItem, ActionAreaLogTags.Action | ActionAreaLogTags.Ugc)]
-        [Authorize(Policy = UserAttribute.SetUgcGeoFlag)]
+        [Authorize(Policy = UserAttributeValues.SetUgcGeoFlag)]
         public async Task<IActionResult> Post(string id, [FromBody] List<WoodstockUgcGeoFlagOption> geoFlags)
         {
             if (!Guid.TryParse(id, out var ugcId))

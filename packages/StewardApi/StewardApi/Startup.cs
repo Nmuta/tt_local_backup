@@ -4,14 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
-using Autofac.Core;
-using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Azure.Identity;
-using Kusto.Cloud.Platform.Utils;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -22,14 +18,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Graph;
 using Microsoft.Identity.Web;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Converters;
 using StewardGitApi;
 using Turn10.Data.Azure;
@@ -72,18 +66,13 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.LiveOps.StewardApi.Validation.Apollo;
 using Turn10.LiveOps.StewardApi.Validation.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation.Woodstock;
-using Turn10.Services.CMSRetrieval;
-using Turn10.Services.Diagnostics;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
-using Turn10.Services.Storage.Blob;
-using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 using static Turn10.LiveOps.StewardApi.Helpers.AutofacHelpers;
 using AppRole = Turn10.LiveOps.StewardApi.Common.ApplicationSettings.AppRole;
 using SteelheadV2Providers = Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
@@ -183,7 +172,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddHttpClient("STS")
                 .ConfigurePrimaryHttpMessageHandler((Func<IServiceProvider, HttpMessageHandler>)delegate
                 {
-                    HttpClientHandler httpClientHandler = new HttpClientHandler
+                    var httpClientHandler = new HttpClientHandler
                     {
                         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
                     };
@@ -206,7 +195,7 @@ namespace Turn10.LiveOps.StewardApi
                 options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
 
                 // All policies get registered here
-                UserAttribute.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
+                UserAttributeValues.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
             });
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -214,7 +203,7 @@ namespace Turn10.LiveOps.StewardApi
                 options.SerializerSettings.Converters = new List<JsonConverter>
                 {
                     new TimeSpanConverter(),
-                    new StringEnumConverter()
+                    new StringEnumConverter(),
                 };
             });
 
@@ -359,6 +348,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<AuthorizationAttributeHandler>().As<IAuthorizationHandler>().SingleInstance();
             builder.RegisterType<PolicyResultAuthorizationMiddleware>().As<IAuthorizationMiddlewareResultHandler>().SingleInstance();
             builder.RegisterType<ForumBanHistoryProvider>().As<IForumBanHistoryProvider>().SingleInstance();
+            builder.RegisterType<V2BanParametersRequestValidator>().As<IRequestValidator<V2BanParametersInput>>().SingleInstance();
 
             var pegasusProvider = PegasusCmsProvider.SetupPegasusCmsProvider(this.configuration, keyVaultProvider);
             builder.Register(c => pegasusProvider).As<PegasusCmsProvider>().SingleInstance();
@@ -462,7 +452,6 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<SteelheadV2Providers.SteelheadPlayerInventoryProvider>().As<SteelheadV2Providers.ISteelheadPlayerInventoryProvider>().SingleInstance();
             builder.RegisterType<SteelheadV2Providers.SteelheadServiceManagementProvider>().As<SteelheadV2Providers.ISteelheadServiceManagementProvider>().SingleInstance();
 
-            builder.RegisterType<SteelheadBanParametersRequestValidator>().As<IRequestValidator<SteelheadBanParametersInput>>().SingleInstance();
             builder.RegisterType<SteelheadGroupGiftRequestValidator>().As<IRequestValidator<SteelheadGroupGift>>().SingleInstance();
             builder.RegisterType<SteelheadGiftRequestValidator>().As<IRequestValidator<SteelheadGift>>().SingleInstance();
             builder.RegisterType<SteelheadMasterInventoryRequestValidator>().As<IRequestValidator<SteelheadMasterInventory>>().SingleInstance();
@@ -503,7 +492,6 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<WoodstockLeaderboardProvider>().As<IWoodstockLeaderboardProvider>().SingleInstance();
             builder.RegisterType<WoodstockItemsProvider>().As<IWoodstockItemsProvider>().SingleInstance();
 
-            builder.RegisterType<WoodstockBanParametersRequestValidator>().As<IRequestValidator<WoodstockBanParametersInput>>().SingleInstance();
             builder.RegisterType<WoodstockGroupGiftRequestValidator>().As<IRequestValidator<WoodstockGroupGift>>().SingleInstance();
             builder.RegisterType<WoodstockGiftRequestValidator>().As<IRequestValidator<WoodstockGift>>().SingleInstance();
             builder.RegisterType<WoodstockMasterInventoryRequestValidator>().As<IRequestValidator<WoodstockMasterInventory>>().SingleInstance();
@@ -540,6 +528,7 @@ namespace Turn10.LiveOps.StewardApi
     /// <summary>
     /// Startup used for testing.
     /// </summary>
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "Must be here for registration? TODO: Move to test project or another file?")]
     public sealed class ControllerTestStartup
     {
         /// <summary>

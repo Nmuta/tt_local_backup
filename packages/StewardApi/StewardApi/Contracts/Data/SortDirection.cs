@@ -6,6 +6,6 @@
     public enum SortDirection
     {
         Asc,
-        Desc
+        Desc,
     }
 }

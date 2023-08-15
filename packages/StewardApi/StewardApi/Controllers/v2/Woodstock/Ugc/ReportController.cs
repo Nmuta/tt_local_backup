@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +19,6 @@ using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
-using Turn10.UGC.Contracts;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
@@ -80,7 +78,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 englishReasons.Add(new UgcReportReason()
                 {
                     Id = reason.Key,
-                    Description = reason.Value.Description.LocalizedStrings[englishId]
+                    Description = reason.Value.Description.LocalizedStrings[englishId],
                 });
             }
 
@@ -95,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
         [AutoActionLogging(CodeName, StewardAction.Add, StewardSubject.UgcReport)]
-        [Authorize(Policy = UserAttribute.ReportUgc)]
+        [Authorize(Policy = UserAttributeValues.ReportUgc)]
         public async Task<IActionResult> ReportUgc([FromQuery] bool useBackgroundProcessing, [FromQuery] string reasonId, [FromBody] Guid[] ugcIds)
         {
             var storefrontManagementService = this.Services.StorefrontManagementService;
@@ -113,11 +111,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         }
 
         // Report list of UgcIds with reason
-        private async Task<List<BulkReportUgcResponse>> ReportUgcItems (IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
+        private async Task<List<BulkReportUgcResponse>> ReportUgcItems(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, string reasonId)
         {
             var parsedReasonId = reasonId.TryParseGuidElseThrow(nameof(reasonId));
 
-            List<BulkReportUgcResponse> response = new List<BulkReportUgcResponse>();
+            var response = new List<BulkReportUgcResponse>();
 
             foreach (var ugcId in ugcIds)
             {
@@ -153,7 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
                 {
                     var results = await this.ReportUgcItems(storefrontManagementService, ugcIds, reasonId).ConfigureAwait(true);
 
-                    bool foundErrors = results.Any(results => results.Error != null);
+                    var foundErrors = results.Any(results => results.Error != null);
                     var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results).ConfigureAwait(true);
                 }

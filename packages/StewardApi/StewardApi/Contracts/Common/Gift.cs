@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents a gift.

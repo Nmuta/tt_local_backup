@@ -1,32 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using Azure.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Graph;
 using Turn10.Data.Common;
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
-using Turn10.LiveOps.StewardApi.Providers.MsGraph;
-using static Kusto.Data.Common.CslCommandGenerator;
-using static Microsoft.VisualStudio.Services.Graph.GraphResourceIds;
-using static System.Net.WebRequestMethods;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.MsTeams;
-using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using Kusto.Data.Data;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using PlayFab.EconomyModels;
-using AdaptiveCards;
-using AdaptiveCards.Templating;
+using Turn10.LiveOps.StewardApi.Providers.MsGraph;
 
 namespace Turn10.LiveOps.StewardApi.Providers.MsTeams
 {
