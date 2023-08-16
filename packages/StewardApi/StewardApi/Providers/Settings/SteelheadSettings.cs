@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             ConfigurationKeyConstants.SteelheadClientVersion,
             ConfigurationKeyConstants.SteelheadAdminXuid,
             ConfigurationKeyConstants.SteelheadSandbox,
-            ConfigurationKeyConstants.SteelheadTitleId
+            ConfigurationKeyConstants.SteelheadTitleId,
         };
 
         /// <summary>

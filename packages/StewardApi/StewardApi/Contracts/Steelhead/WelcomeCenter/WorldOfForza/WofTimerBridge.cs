@@ -4,10 +4,7 @@
 #pragma warning disable SA1306 // Field names should begin with lower-case letter
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
@@ -56,6 +53,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public RangePointBridge From { get; set; }
 
         public RangePointBridge To { get; set; }
+
+        public string Name { get; set; }
     }
 
     public class RangePointBridge

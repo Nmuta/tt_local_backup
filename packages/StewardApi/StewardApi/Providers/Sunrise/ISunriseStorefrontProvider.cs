@@ -1,7 +1,7 @@
-﻿using Forza.UserGeneratedContent.FH4.Generated;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Forza.UserGeneratedContent.FH4.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common.AuctionDataEndpoint;
 

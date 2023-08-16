@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 
@@ -88,7 +87,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var banEntryId = Fixture.Create<int>();
             var title = Fixture.Create<string>();
             var requesterObjectId = Fixture.Create<string>();
-            var banParameters = Fixture.Create<WoodstockBanParametersInput>();
+            var banParameters = Fixture.Create<V2BanParametersInput>();
             var banResult = Fixture.Create<BanResult>();
             var endpoint = Fixture.Create<string>();
             var featureAreas = Fixture.Create<string>();
@@ -109,7 +108,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var xuid = Fixture.Create<ulong>();
             var banEntryId = Fixture.Create<int>();
             var requesterObjectId = Fixture.Create<string>();
-            var banParameters = Fixture.Create<WoodstockBanParametersInput>();
+            var banParameters = Fixture.Create<V2BanParametersInput>();
             var banResult = Fixture.Create<BanResult>();
             var endpoint = Fixture.Create<string>();
             var featureAreas = Fixture.Create<string>();
@@ -138,7 +137,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             var xuid = Fixture.Create<ulong>();
             var banEntryId = Fixture.Create<int>();
             var title = Fixture.Create<string>();
-            var banParameters = Fixture.Create<WoodstockBanParametersInput>();
+            var banParameters = Fixture.Create<V2BanParametersInput>();
             var banResult = Fixture.Create<BanResult>();
             var endpoint = Fixture.Create<string>();
             var featureAreas = Fixture.Create<string>();

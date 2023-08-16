@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
@@ -19,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             int banEntryId,
             string title,
             string requesterObjectId,
-            WoodstockBanParametersInput banParameters,
+            V2BanParametersInput banParameters,
             BanResult banResult,
             string endpoint,
             string featureAreas);

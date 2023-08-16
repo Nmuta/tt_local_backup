@@ -1,0 +1,54 @@
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>PlayFab Player Profile</mat-card-title>
+          <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <ng-container *waitForMonitor="getPlayFabProfileMonitor">
+            <table class="info-table">
+              <tr>
+                <th>Master Id</th>
+                <td>
+                  <standard-copy>{{ playfabProfile?.master }}</standard-copy>
+                </td>
+              </tr>
+              <tr>
+                <th>Title Id</th>
+                <td>
+                  <standard-copy>{{ playfabProfile?.title }}</standard-copy>
+                </td>
+              </tr>
+            </table>
+            <mat-form-field>
+              <mat-label>Collection Id</mat-label>
+              <mat-select [(value)]="collectionId">
+                <mat-option [value]="PlayFabCollectionId.Default">Default</mat-option>
+                <mat-option [value]="PlayFabCollectionId.GDK">GDK</mat-option>
+                <mat-option [value]="PlayFabCollectionId.Steam">Steam</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <div class="steward-layout-pane steward-layout-main-group">
+    <ng-container *ngIf="getPlayFabProfileMonitor.isDone">
+      <playfab-inventory
+        [service]="inventoryService"
+        [playfabProfile]="playfabProfile"
+        [playfabCollectionId]="collectionId"
+        (inventoryChangeEvent)="inventoryChangeEvent()"
+      ></playfab-inventory>
+
+      <playfab-transaction-history
+        [service]="transactionHistoryService"
+        [playfabProfile]="playfabProfile"
+        [playfabCollectionId]="collectionId"
+      ></playfab-transaction-history>
+    </ng-container>
+  </div>
+</div>

@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM8.Generated;
-using Forza.WebServices.FH5_main.Generated;
 using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Graph.TermStore;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -24,13 +19,11 @@ using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Forza.WebServices.FM8.Generated.LiveOpsService;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using ForzaCarUserInventoryItem = Forza.WebServices.FM8.Generated.ForzaCarUserInventoryItem;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 {
@@ -191,9 +184,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             try
             {
-                 response = await service.GetPlayerProfiles(
-                    xuid,
-                    MaxProfileResults).ConfigureAwait(false);
+                response = await service.GetPlayerProfiles(
+                   xuid,
+                   MaxProfileResults).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -218,7 +211,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.UserInventory)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Update | ActionAreaLogTags.Inventory)]
         [Authorize(Policy = UserAttributeValues.ManagePlayerInventory)]
-        public async Task<IActionResult> EditPlayerProfileItems(ulong xuid, string externalProfileId, [FromBody]SteelheadPlayerInventory inventoryUpdates)
+        public async Task<IActionResult> EditPlayerProfileItems(ulong xuid, string externalProfileId, [FromBody] SteelheadPlayerInventory inventoryUpdates)
         {
             if (!Guid.TryParse(externalProfileId, out var externalProfileIdGuid))
             {
@@ -241,7 +234,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var updateCredits = inventoryUpdates.CreditRewards.Select(credit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((credit, InventoryItemType.Credits)));
             var updateVanityItems = inventoryUpdates.VanityItems.Select(vanityItem => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((vanityItem, InventoryItemType.VanityItem)));
-            var updateItems = updateCredits.Concat(updateVanityItems).ToArray();
+            var updateDriverSuits = inventoryUpdates.DriverSuits.Select(driverSuit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((driverSuit, InventoryItemType.DriverSuit)));
+            var updateItems = updateCredits.Concat(updateVanityItems).Concat(updateDriverSuits).ToArray();
 
             // Verify UGC ids for each car to make sure they match the car id and type it is being applied to
             foreach (var car in inventoryUpdates.Cars)
@@ -284,6 +278,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             {
                 CreditRewards = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.Credits)) : new List<PlayerInventoryItem>(),
                 VanityItems = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.VanityItem)) : new List<PlayerInventoryItem>(),
+                DriverSuits = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.DriverSuit)) : new List<PlayerInventoryItem>(),
                 Cars = carRawResults != null ? this.mapper.SafeMap<PlayerInventoryCarItem[]>(carRawResults.carOutput) : new List<PlayerInventoryCarItem>(),
                 Errors = exceptions,
             };
@@ -315,9 +310,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var removeCredits = inventoryUpdates.CreditRewards.Select(credit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((credit, InventoryItemType.Credits)));
             var removeVanityItems = inventoryUpdates.VanityItems.Select(vanityItem => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((vanityItem, InventoryItemType.VanityItem)));
-            var removeItems = removeCredits.Concat(removeVanityItems);
+            var removeDriverSuits = inventoryUpdates.DriverSuits.Select(driverSuit => this.mapper.SafeMap<ForzaUserInventoryItemWrapper>((driverSuit, InventoryItemType.DriverSuit)));
+            var removeItems = removeCredits.Concat(removeVanityItems).Concat(removeDriverSuits).ToArray();
 
-            await this.Services.LiveOpsService.LiveOpsRemoveInventoryItems(xuid, externalProfileIdGuid, removeItems.ToArray()).ConfigureAwait(true);
+            await this.Services.LiveOpsService.LiveOpsRemoveInventoryItems(xuid, externalProfileIdGuid, removeItems).ConfigureAwait(true);
 
             return this.Ok();
         }

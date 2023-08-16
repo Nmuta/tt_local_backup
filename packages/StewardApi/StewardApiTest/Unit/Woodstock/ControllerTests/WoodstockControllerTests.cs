@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -34,7 +34,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
     public sealed class WoodstockControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
-        private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
+        private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -272,48 +272,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "masterInventoryRequestValidator"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenGiftRequestValidatorNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { GiftRequestValidator = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftRequestValidator"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenGroupGiftRequestValidatorNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { GroupGiftRequestValidator = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGiftRequestValidator"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenBanParametersRequestValidatorNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { BanParametersRequestValidator = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParametersRequestValidator"));
         }
 
         [TestMethod]
@@ -1404,12 +1362,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
 
             public IRequestValidator<WoodstockMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockMasterInventory>>();
 
-            public IRequestValidator<WoodstockGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockGift>>();
-
-            public IRequestValidator<WoodstockGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockGroupGift>>();
-
-            public IRequestValidator<WoodstockBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockBanParametersInput>>();
-
             public IRequestValidator<WoodstockUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockUserFlagsInput>>();
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Test")]
@@ -1433,9 +1385,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
                 this.JobTracker,
                 this.Mapper,
                 this.MasterInventoryRequestValidator,
-                this.GiftRequestValidator,
-                this.GroupGiftRequestValidator,
-                this.BanParametersRequestValidator,
                 this.UserFlagsRequestValidator)
             { ControllerContext = this.ControllerContext };
         }

@@ -6,8 +6,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// <summary>
     ///     Represents a user group bulk operation status.
     /// </summary>
-    #pragma warning disable CS1591
-    #pragma warning disable SA1600
+#pragma warning disable CS1591
+#pragma warning disable SA1600
     public class UserGroupBulkOperationStatusOutput
     {
         public int? UserGroupId { get; set; }

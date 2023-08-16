@@ -8,6 +8,7 @@ import { SpecialXuid1 } from '@models/special-identity';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
 import { PlayerInventoryProfile } from '@models/player-inventory-profile';
+import { WoodstockPlayersPlayFabService } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
 
 /** Component for displaying routed Woodstock user details. */
 @Component({
@@ -16,6 +17,7 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 })
 export class WoodstockUserDetailsComponent extends BaseComponent {
   public profile: PlayerInventoryProfile;
+
   /** Used to hide unwanted tab when dealing with a special xuid. */
   public isSpecialXuid: boolean;
 
@@ -37,6 +39,7 @@ export class WoodstockUserDetailsComponent extends BaseComponent {
   }
 
   constructor(
+    private readonly playersPlayFabService: WoodstockPlayersPlayFabService,
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
   ) {
     super();

@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             ConfigurationKeyConstants.ApolloClientVersion,
             ConfigurationKeyConstants.ApolloAdminXuid,
             ConfigurationKeyConstants.ApolloCertificateKeyVaultName,
-            ConfigurationKeyConstants.ApolloCertificateSecretName
+            ConfigurationKeyConstants.ApolloCertificateSecretName,
         };
 
         /// <summary>

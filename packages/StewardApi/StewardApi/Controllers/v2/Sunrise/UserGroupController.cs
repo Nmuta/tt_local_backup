@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FH4.Generated;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -19,9 +17,6 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Logging;
-using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Providers.Data;
-using static System.FormattableString;
 using static Forza.WebServices.FH4.Generated.UserService;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 using ServicesLiveOps = Forza.LiveOps.FH4.Generated;
@@ -117,11 +112,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
                     Xuid = playerLookupResult.Xuid,
                 });
             }
+
             // End of temporary code //
             var response = new GetUserGroupUsersResponse()
             {
                 PlayerList = userList,
-                PlayerCount = users.available
+                PlayerCount = users.available,
             };
 
             return this.Ok(response);
@@ -144,7 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
             var newGroup = new LspGroup()
             {
                 Id = result.groupId,
-                Name = userGroupName
+                Name = userGroupName,
             };
             return this.Ok(newGroup);
         }
@@ -239,7 +235,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise.UserGroup
 
             return new UserGroupBulkOperationStatusOutput()
             {
-                BlobId = bulkOperationOutput.statusId
+                BlobId = bulkOperationOutput.statusId,
             };
         }
 

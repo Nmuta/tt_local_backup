@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise;
-using SunriseContracts = Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+﻿using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Sunrise
 {

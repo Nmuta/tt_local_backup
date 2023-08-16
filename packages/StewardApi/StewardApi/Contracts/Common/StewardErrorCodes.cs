@@ -67,6 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Access is forbidden.
         /// </summary>
-        Forbidden
+        Forbidden,
     }
 }

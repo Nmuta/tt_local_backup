@@ -79,8 +79,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             try
             {
-               response = await this.apolloService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
-                    .ConfigureAwait(false);
+                response = await this.apolloService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
+                     .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     Endpoint = endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
                     ExpireDateUtc = createdDate.AddYears(10),
-                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}"
+                    Metadata = $"{livery.Id}|{livery.CarId}|{livery.Title}",
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -425,7 +425,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             return new Dictionary<InventoryItemType, IList<MasterInventoryItem>>
             {
                 { InventoryItemType.Car, this.EmptyIfNull(giftInventory.Cars) },
-                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) }
+                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) },
             };
         }
 

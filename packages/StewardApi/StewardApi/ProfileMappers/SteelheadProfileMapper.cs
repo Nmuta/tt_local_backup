@@ -59,14 +59,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserBanSummary, BanSummary>()
                 .ForMember(des => des.AdjustedBanCount, opt => opt.MapFrom(src => src.BanCount))
                 .ForMember(des => des.BannedAreas, opt => opt.MapFrom(src => new List<string>()));
-            this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
-                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
-                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
-            this.CreateMap<SteelheadBanParameters, ForzaUserBanParameters>()
-                .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.Xuid }))
-                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
-                .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
-                .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));
             this.CreateMap<ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
@@ -474,6 +466,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
 
             this.CreateMap<ForzaUserIds, BasicPlayer>()
+
                 // Map empty string to null
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => string.IsNullOrEmpty(src.gamertag) ? null : src.gamertag))
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.xuid))
@@ -494,7 +487,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.LastRulesChange, opt => opt.MapFrom(src => default(DateTime)))
                 .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.Buckets.Select(x => x.CarRestrictions.CarClassId).First()));
 
-            this.CreateMap<SteelheadLiveOpsContent.RivalEvent, RivalsEvent>()
+            this.CreateMap<SteelheadLiveOpsContent.RivalEvent, Contracts.Common.RivalsEvent>()
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Track))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.EventCategory))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartEndDate.From))
@@ -538,13 +531,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.From))
                 .ForMember(dest => dest.CloseTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.To))
                 .ForMember(dest => dest.AllowedCars, opt => opt.MapFrom(src =>
-                    src.SelectableCars.GetType() == typeof(AcceptlistCarRestrictionsProvider) ?
-                        (src.SelectableCars as AcceptlistCarRestrictionsProvider).Acceptlist :
-                        new List<DataCar>()))
+                    src.SelectableCars.GetType() == typeof(AcceptlistCarRestrictionsProvider)
+                        ? (src.SelectableCars as AcceptlistCarRestrictionsProvider).Acceptlist
+                        : new List<DataCar>()))
                 .ForMember(dest => dest.AllowedCarClass, opt => opt.MapFrom(src =>
-                    src.SelectableCars.GetType() == typeof(RefCarRestrictionsProvider) ?
-                        (src.SelectableCars as RefCarRestrictionsProvider).CarRestrictions :
-                        null));
+                    src.SelectableCars.GetType() == typeof(RefCarRestrictionsProvider)
+                        ? (src.SelectableCars as RefCarRestrictionsProvider).CarRestrictions
+                        : null));
             this.CreateMap<SteelheadLiveOpsContent.BuildersCupLadderDataV3, BuildersCupFeaturedTour>()
                 .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src => src.LadderDisabled))
                 .ForMember(dest => dest.OpenTimeUtc, opt => opt.MapFrom(src => src.StartEndDate.From))
@@ -615,7 +608,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         : new List<StewardError>
                         {
                             new ServicesFailureStewardError(
-                                $"LSP failed to gift livery to player with XUID: {source.xuid}")
+                                $"LSP failed to gift livery to player with XUID: {source.xuid}"),
                         }));
 
             this.CreateMap<ForzaSafetyRatingLetterGrade, SafetyRatingGrade>();
@@ -681,7 +674,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     Championship = destination.Setting.Championship?.@ref,
                     Ladder = destination.Setting.Ladder?.@ref,
                     Series = destination.Setting.Series?.@ref,
-                    DestinationType = DestinationType.BuildersCup
+                    DestinationType = DestinationType.BuildersCup,
                 };
             }
 
@@ -690,7 +683,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 return new RacersCupDestination()
                 {
                     Series = destination.Series.@ref,
-                    DestinationType = DestinationType.RacersCup
+                    DestinationType = DestinationType.RacersCup,
                 };
             }
 
@@ -701,7 +694,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     SettingType = this.PrepareShowroomSettingType(destination.Setting),
                     Car = destination.Setting.Car?.@ref,
                     Manufacturer = destination.Setting.Manufacturer?.@ref,
-                    DestinationType = DestinationType.Showroom
+                    DestinationType = DestinationType.Showroom,
                 };
             }
 
@@ -712,7 +705,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     SettingType = this.PrepareRivalsSettingType(destination.Setting),
                     Category = destination.Setting.Category?.@ref,
                     Event = destination.Setting.Event?.@ref,
-                    DestinationType = DestinationType.Rivals
+                    DestinationType = DestinationType.Rivals,
                 };
             }
 
@@ -720,7 +713,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             {
                 return new PatchNotesDestination()
                 {
-                    DestinationType = DestinationType.PatchNotes
+                    DestinationType = DestinationType.PatchNotes,
                 };
             }
 
@@ -730,7 +723,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     SettingType = this.PrepareStoreSettingType(destination.Setting),
                     Product = destination.Setting.Product?.@ref,
-                    DestinationType = DestinationType.Store
+                    DestinationType = DestinationType.Store,
                 };
             }
 
@@ -831,7 +824,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new DeeplinkDestinationSetting()
                     {
-                        type = "WorldOfForza.ShowroomDeeplinkHomepageConfigSetting"
+                        type = "WorldOfForza.ShowroomDeeplinkHomepageConfigSetting",
                     };
                 }
 
@@ -858,7 +851,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     type = "WorldOfForza.WoFToShowroomConfig",
                     Setting = settings,
                     CarId = new DeeplinkDestinationCarId(),
-                    CategoryId = new DeeplinkDestinationCategoryId()
+                    CategoryId = new DeeplinkDestinationCategoryId(),
                 };
             }
 
@@ -869,7 +862,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new DeeplinkDestinationSetting()
                     {
-                        type = "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting"
+                        type = "WorldOfForza.BuildersCupDeeplinkHomepageConfigSetting",
                     };
                 }
 
@@ -889,7 +882,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     {
                         Championship = new DeeplinkDestinationBuildersCupChampionship() { @ref = buildersCupDestination.Championship.Value },
                         Series = new DeeplinkDestinationBuildersCupSeries() { @ref = buildersCupDestination.Series.Value },
-                        type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting"
+                        type = "WorldOfForza.BuildersCupDeeplinkSeriesConfigSetting",
                     };
                 }
 
@@ -918,7 +911,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new DeeplinkDestinationSetting()
                     {
-                        type = "WorldOfForza.RivalsDeeplinkHomepageConfigSetting"
+                        type = "WorldOfForza.RivalsDeeplinkHomepageConfigSetting",
                     };
                 }
 
@@ -937,7 +930,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     settings = new DeeplinkDestinationSetting()
                     {
                         Category = new DeeplinkDestinationRivalsCategory() { @ref = rivalsDestination.Category.Value },
-                        type = "WorldOfForza.RivalsDeeplinkCategoryConfigSetting"
+                        type = "WorldOfForza.RivalsDeeplinkCategoryConfigSetting",
                     };
                 }
 
@@ -957,7 +950,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     settings = new DeeplinkDestinationSetting()
                     {
-                        type = "WorldOfForza.StoreDeeplinkHomepageConfigSetting"
+                        type = "WorldOfForza.StoreDeeplinkHomepageConfigSetting",
                     };
                 }
 
@@ -974,7 +967,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 {
                     Setting = settings,
                     type = "WorldOfForza.WoFToStoreConfig",
-                    Product = new DeeplinkDestinationProduct()
+                    Product = new DeeplinkDestinationProduct(),
                 };
             }
 

@@ -1,6 +1,4 @@
-﻿using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.BuildersCup
 {
     /// <summary>
     ///     Represents car restrictions in Builders Cup Championship Series.

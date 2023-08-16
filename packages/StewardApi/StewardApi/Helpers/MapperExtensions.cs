@@ -70,6 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 {
                     expr.ForSourceMember(propName, opt => opt.DoNotValidate());
                 }
+
                 if (map.DestinationType.GetProperty(propName) != null)
                 {
                     expr.ForMember(propName, opt => opt.Ignore());

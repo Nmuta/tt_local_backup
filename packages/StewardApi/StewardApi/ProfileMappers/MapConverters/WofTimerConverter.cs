@@ -1,9 +1,9 @@
-﻿#pragma warning disable SA1649 // File name should match first type name
-#pragma warning disable SA1402 // File may only contain a single type
-
-using System;
+﻿using System;
 using AutoMapper;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
+
+#pragma warning disable SA1649 // File name should match first type name
+#pragma warning disable SA1402 // File may only contain a single type
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
 {
@@ -29,6 +29,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
                 TimerInstance.Ladder => new Ladder() { RefId = source.RefId },
                 TimerInstance.Series => new Series() { RefId = source.RefId },
                 TimerInstance.Season => new Season() { RefId = source.RefId },
+                TimerInstance.ChallengeData => new ChallengeData() { RefId = source.RefId },
+                TimerInstance.DateTimeRange => new DateRange() { RefId = source.RefId },
+                TimerInstance.FeaturedShowcase => new FeaturedShowcase() { RefId = source.RefId },
+                TimerInstance.RivalsEvent => new RivalsEvent() { RefId = source.RefId },
+                TimerInstance.ShowroomListing => new ShowroomListingCategory() { RefId = source.RefId },
                 _ => throw new ArgumentException($"Unsupported {nameof(TimerInstance)}: {source.TimerInstance}"),
             };
         }
@@ -56,10 +61,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers.MapConverters
             {
                 RefId = source.RefId,
                 TimerInstance = source.TimerInstance,
-                ChapterBridge = new ChapterBridge(),
-                LadderBridge = new LadderBridge(),
-                SeriesBridge = new SeriesBridge(),
-                SeasonBridge = new SeasonBridge()
             };
         }
     }

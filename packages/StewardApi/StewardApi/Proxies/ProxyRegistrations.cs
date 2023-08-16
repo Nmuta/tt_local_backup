@@ -1,8 +1,4 @@
-﻿using System;
-using System.Reflection;
-using Autofac;
-using Autofac.Core;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Autofac;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise;

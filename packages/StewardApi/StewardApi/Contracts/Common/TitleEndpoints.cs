@@ -33,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public IEnumerable<LspEndpoint> Forte { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Forum endpoints. This is a stub to treat Forum as a game title. 
+        ///     Gets or sets the Forum endpoints. This is a stub to treat Forum as a game title.
         /// </summary>
         /// <remarks>This is a stub to treat Forum as a game title. Will only ever have 'Retail' endpoint.</remarks>
         public IEnumerable<LspEndpoint> Forum { get; set; }

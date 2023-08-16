@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
@@ -14,7 +14,6 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.UGC.Contracts;
-using FileType = Forza.UserGeneratedContent.FH5_main.Generated.FileType;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
@@ -213,7 +212,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
                 this.Mapper.SafeMap<WoodstockUgcLiveryItem>(Arg.Any<ServicesLiveOps.ForzaLiveryData>()).Returns(ugcLiveryItem);
                 this.Mapper.SafeMap<WoodstockUgcItem>(Arg.Any<ServicesLiveOps.ForzaTuneData>()).Returns(ugcItem);
             }
-            
+
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();

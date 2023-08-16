@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Forza.WebServices.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -430,7 +430,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
             public WoodstockProxyBundle MockProxyBundle { get; set; }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
-            
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public IRefreshableCacheStore RefreshableCacheStore { get; set; } =

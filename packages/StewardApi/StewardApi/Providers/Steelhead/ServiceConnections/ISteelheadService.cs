@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Forza.WebServices.FM8.Generated;
 using Turn10.Services.LiveOps.FM8.Generated;
 using AuctionManagementService = Turn10.Services.LiveOps.FM8.Generated.AuctionManagementService;
 using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingManagementService;

@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             ConfigurationKeyConstants.SteelheadClientVersion,
             ConfigurationKeyConstants.SteelheadAdminXuid,
             ConfigurationKeyConstants.SteelheadSandbox,
-            ConfigurationKeyConstants.SteelheadTitleId
+            ConfigurationKeyConstants.SteelheadTitleId,
         };
 
         private readonly string clientVersion;
@@ -148,7 +148,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 Gamertag = "UNKNOWN",
                 Sandbox = this.sandbox,
                 TokenLifetimeMinutes = 60,
-                Xuid = this.adminXuid
+                Xuid = this.adminXuid,
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);

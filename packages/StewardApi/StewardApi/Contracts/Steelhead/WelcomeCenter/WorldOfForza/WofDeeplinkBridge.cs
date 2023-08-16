@@ -1,10 +1,9 @@
-﻿#pragma warning disable SA1402 // File may only contain a single type
-
-using System;
+﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
+
+#pragma warning disable SA1402 // File may only contain a single type
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
@@ -16,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Showroom,
         PatchNotes,
         Rivals,
-        Store
+        Store,
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -24,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         Homepage,
         Series,
-        Ladder
+        Ladder,
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -32,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         Homepage,
         Event,
-        Category
+        Category,
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
@@ -40,14 +39,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     {
         Homepage,
         Manufacturer,
-        Car
+        Car,
     }
 
     [JsonConverter(typeof(StringEnumConverter))]
     public enum StoreSettingType
     {
         Homepage,
-        Product
+        Product,
     }
 
     /// <summary>
@@ -103,7 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         /// <summary>
         ///     Gets or sets the destination.
         /// </summary>
-        [JsonConverter(typeof(DestinationConverter))]
+        [JsonConverter(typeof(DeeplinkDestinationConverter))]
         public DeeplinkDestination Destination { get; set; }
     }
 
