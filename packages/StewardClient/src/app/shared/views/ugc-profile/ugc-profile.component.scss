@@ -9,3 +9,22 @@ form {
     width: $single-input-max-width;
   }
 }
+
+div.download {
+  display: grid;
+}
+
+.file-upload-wrapper {
+  position: relative;
+  padding-right: 15px; //Required to prevent popover from interfering with drag/drop file upload
+}
+
+.file-upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  opacity: 0;
+}

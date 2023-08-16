@@ -19,10 +19,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { UgcProfileComponent } from './ugc-profile.component';
+import { SteelheadUgcProfileComponent } from './steelhead/steelhead-ugc-profile.component';
 
 /** Module for getting and setting a player's UGC profile. */
 @NgModule({
-  declarations: [],
+  declarations: [UgcProfileComponent, SteelheadUgcProfileComponent],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -46,6 +48,6 @@ import { HelpModule } from '@shared/modules/help/help.module';
     ErrorSpinnerModule,
     HelpModule,
   ],
-  exports: [],
+  exports: [SteelheadUgcProfileComponent],
 })
 export class UgcProfileModule {}

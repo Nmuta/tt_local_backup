@@ -18,7 +18,8 @@
     margin: $gap-small;
 
     > * {
-      margin: $gap-small;
+      display: block;
+      margin: $gap-medium $gap-small;
     }
   }
 

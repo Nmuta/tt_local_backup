@@ -10,6 +10,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { GuidLikeString } from '@models/extended-types';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { UgcProfileInfo } from '@services/api-v2/steelhead/player/ugc-profile/steelhead-player-ugc-profile.service';
+import { arrayBufferToBase64 } from '@helpers/convert-array-buffer';
 
 /** UGC Profile service contract. */
 export interface UgcProfileServiceContract {
@@ -38,10 +39,16 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
   @Input() public profile: FullPlayerInventoryProfile;
 
   public formControls = {
-    profileData: new FormControl({ value: null, disabled: false }),
+    profileDataFile: new FormControl({ value: null, disabled: false }),
   };
 
   public formGroup = new FormGroup(this.formControls);
+
+  public currentProfile : UgcProfileInfo;
+  public profileFound : boolean = false;
+
+  public fileName: string;
+  public fileContent: string;
 
   public getMonitor = new ActionMonitor('Get UGC profile');
   public postMonitor = new ActionMonitor('Set UGC profile');
@@ -71,11 +78,12 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
     }
 
     if (!!this.xuid && !!this.profile?.externalProfileId) {
+      this.profileFound = false;
       this.getUgcProfile();
     }
   }
 
-  /** Gets skill rating summary. */
+  /** Gets UGC profile. */
   public getUgcProfile(): void {
     this.getMonitor = this.getMonitor.repeat();
 
@@ -83,8 +91,48 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
       .getUgcProfile$(this.xuid, this.profile?.externalProfileId)
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(ugcProfile => {
-        console.log(ugcProfile)
+        this.profileFound = true;
+        this.currentProfile = ugcProfile;
       });
+  }
+
+  /** Download UGC profile data to file. */
+  public downloadUgcProfileData(): void {
+    const fileName = `${this.xuid}_${this.profile.externalProfileId}_${new Date().toISOString()}.json`;
+    // const downloadLink = document.createElement('a');
+    // downloadLink.href = this.currentProfile?.profileData;
+    // downloadLink.download = fileName;
+    // downloadLink.click();
+    // downloadLink.remove();
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(this.currentProfile?.profileData);
+
+    //const encodedUri = encodeURI(this.currentProfile?.profileData);
+    const link = document.createElement('a');
+    link.href = dataStr;
+    link.download = fileName;
+    debugger;
+    //link.setAttribute('href', encodedUri);
+    //link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
+  /** Fires when the selected file changes. */
+  public onFileSelected(event): void {
+    const file: File = event.target.files[0];
+
+    if (file) {
+      this.fileName = file.name;
+      const fileReader = new FileReader();
+
+      fileReader.onload = e => {
+        this.fileContent = e.target.result as string;
+      };
+
+      //fileReader.readAsArrayBuffer(file);
+      fileReader.readAsText(file);
+    }
   }
 
   /** Sets skill rating override. */
@@ -95,7 +143,7 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
       .updateUgcProfile$(
         this.xuid,
         this.profile?.externalProfileId,
-        this.formControls.profileData.value,
+        this.fileContent,
       )
       .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_ => {

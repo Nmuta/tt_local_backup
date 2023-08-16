@@ -57,6 +57,7 @@ import { SkillRatingModule } from '@views/skill-rating/skill-rating.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PlayFabPlayerToolsModule } from '@views/playfab-player-tools/playfab-player-tools.module';
+import { UgcProfileModule } from '@views/ugc-profile/ugc-profile.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -123,6 +124,7 @@ import { PlayFabPlayerToolsModule } from '@views/playfab-player-tools/playfab-pl
     DirectivesModule,
     StandardCopyModule,
     PlayFabPlayerToolsModule,
+    UgcProfileModule,
   ],
 })
 export class UserDetailsModule {}

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export interface UgcProfileInfo {
   updateCount: BigNumber;
   profileData: string;
-  DecompressionData: UgcProfileDecompressionData;
+  decompressionData: UgcProfileDecompressionData;
 }
 
 export interface UgcProfileDecompressionData {
@@ -40,6 +40,7 @@ export class SteelheadPlayerUgcProfileService {
     profileId: GuidLikeString,
     profileData: string,
   ): Observable<void> {
+    console.log(profileData)
     return this.api.postRequest$<void>(
       `${this.basePath}/${xuid}/profile/${profileId}/ugcProfile`,
       profileData,

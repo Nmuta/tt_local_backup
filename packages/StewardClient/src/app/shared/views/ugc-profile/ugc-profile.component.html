@@ -4,7 +4,19 @@
     <mat-card-subtitle>Steelhead | {{ profileOverviewString }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
     <div class="sf-vertical">
-      <div>
+      <div class="download">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="downloadUgcProfileData()"
+          clickStop
+          [disabled]="!profileFound"
+        >
+          Download UGC Profile
+          <button-spinner [monitor]="postMonitor" defaultIcon="download"></button-spinner>
+        </button>
+      </div>
+      <div class="sf-horizontal">
         <verify-button
           #verifyApplyBtn
           [disabled]="!formGroup.dirty || !formGroup.valid"
@@ -14,7 +26,7 @@
         <button
           mat-raised-button
           color="primary"
-          (click)="setSkillRatingOverride()"
+          (click)="setUgcProfile()"
           clickStop
           stateManager
           monitorDisable
@@ -22,36 +34,67 @@
           [disabled]="!formGroup.dirty || !formGroup.valid"
           [verifyWithV2]="verifyApplyBtn"
         >
-          Apply Override
-          <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+          Upload UGC Profile
+          <button-spinner [monitor]="postMonitor" defaultIcon="upload"></button-spinner>
         </button>
       </div>
+      <form [formGroup]="formGroup" class="sf-wrapper file-upload-wrapper">
+        <div class="sf-vertical align-right">
+          <input
+            #fileUpload
+            type="file"
+            class="file-upload-overlay"
+            [formControl]="formControls.profileDataFile"
+            (change)="onFileSelected($event)"
+          />
+          <div>
+            {{ fileName || 'Upload UGC Profile' }}
+            <button mat-mini-fab color="accent" class="upload-btn" (click)="fileUpload.click()">
+              <mat-icon>attach_file</mat-icon>
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
-    <help-popover-icon cardTitle="UGC Profile">
-    </help-popover-icon>
   </mat-card-header>
   <mat-card-content>
     <div *waitForMonitor="getMonitor">
       <form [formGroup]="formGroup" class="sf-wrapper">
         <div class="sf-vertical">
-          <!-- <mat-form-field appearance="fill">
-            <mat-label>Raw Skill Rating</mat-label>
-            <input type="number" matInput [formControl]="formControls.rawSkillRating" />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Normalized Skill Rating</mat-label>
-            <input type="number" matInput [formControl]="formControls.normalizedSkillRating" />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Skill Rating Override</mat-label>
-            <input type="number" matInput [formControl]="formControls.skillRatingOverride" />
-            <mat-error *ngIf="formControls.skillRatingOverride.hasError('min')"
-              >The minimum is {{ normalizedSkillRatingMin }}</mat-error
-            >
-            <mat-error *ngIf="formControls.skillRatingOverride.hasError('max')"
-              >The maximum is {{ normalizedSkillRatingMax }}</mat-error
-            >
-          </mat-form-field> -->
+          <table class="info-table">
+            <tr>
+              <th>Update Count</th>
+              <td>
+                {{ currentProfile?.updateCount }}
+              </td>
+            </tr>
+            <tr>
+              <th>Compressed Data Length Is Valid</th>
+              <td>
+                {{ currentProfile?.decompressionData?.compressedDataLengthIsValid }}
+              </td>
+            </tr>
+            <tr>
+              <th>Uncompressed Data Length Is Valid</th>
+              <td>{{ currentProfile?.decompressionData?.uncompressedDataLengthIsValid }}</td>
+            </tr>
+            <tr>
+              <th>Expected Compressed Data Length</th>
+              <td>{{ currentProfile?.decompressionData?.expectedCompressedDataLength }}</td>
+            </tr>
+            <tr>
+              <th>Expected Uncompressed Data Length</th>
+              <td>{{ currentProfile?.decompressionData?.expectedUncompressedDataLength }}</td>
+            </tr>
+            <tr>
+              <th>Actual Compressed Data Length</th>
+              <td>{{ currentProfile?.decompressionData?.actualCompressedDataLength }}</td>
+            </tr>
+            <tr>
+              <th>Actual Uncompressed Data Length</th>
+              <td>{{ currentProfile?.decompressionData?.actualUncompressedDataLength }}</td>
+            </tr>
+          </table>
         </div>
       </form>
     </div>

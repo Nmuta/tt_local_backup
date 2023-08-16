@@ -61,11 +61,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
         /// </summary>
         [HttpPost("UgcProfile")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> UpdateUgcProfile(ulong xuid, string externalProfileId, string profileData)
+        public async Task<IActionResult> UpdateUgcProfile(ulong xuid, string externalProfileId, [FromBody] string profileData)
         {
             var externalProfileGuid = externalProfileId.TryParseGuidElseThrow($"External Profile ID could no be parsed as GUID. External Profile ID: {externalProfileId}");
 
-            await this.Services.LiveOpsService.UploadUGCProfile(xuid, externalProfileGuid, profileData).ConfigureAwait(true);
+            //await this.Services.LiveOpsService.UploadUGCProfile(xuid, externalProfileGuid, profileData).ConfigureAwait(true);
 
             return this.Ok();
         }
