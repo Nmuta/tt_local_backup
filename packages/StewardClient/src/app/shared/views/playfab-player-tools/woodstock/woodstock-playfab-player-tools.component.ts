@@ -4,7 +4,6 @@ import { PlayFabPlayerToolsServiceContract } from '../playfab-player-tools.compo
 import { WoodstockPlayersPlayFabService } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
 import BigNumber from 'bignumber.js';
 import { WoodstockPlayFabPlayerInventoryService } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service';
-import { WoodstockPlayFabVouchersService } from '@services/api-v2/woodstock/playfab/vouchers/woodstock-playfab-vouchers.service';
 import { PlayFabInventoryServiceContract } from '../components/playfab-inventory/playfab-inventory.component';
 import { PlayFabTransactionHistoryServiceContract } from '../components/playfab-transaction-history/playfab-transaction-history.component';
 import { PlayFabCollectionId } from '@models/playfab';
@@ -27,7 +26,6 @@ export class WoodstockPlayFabPlayerToolsComponent implements OnChanges {
   constructor(
     private readonly playersPlayFabService: WoodstockPlayersPlayFabService,
     private readonly playFabPlayerInventoryService: WoodstockPlayFabPlayerInventoryService,
-    private readonly playFabVouchersService: WoodstockPlayFabVouchersService,
   ) {}
 
   /** Lifecycle hook. */
@@ -45,7 +43,30 @@ export class WoodstockPlayFabPlayerToolsComponent implements OnChanges {
             playfabPlayerTitleId,
             collectionId,
           ),
-        getPlayFabVouchers$: () => this.playFabVouchersService.getVouchers$(),
+        addPlayFabItem$: (
+          playfabPlayerTitleId: string,
+          collectionId: PlayFabCollectionId,
+          itemId: string,
+          amount: BigNumber,
+        ) =>
+          this.playFabPlayerInventoryService.addItem$(
+            playfabPlayerTitleId,
+            collectionId,
+            itemId,
+            amount,
+          ),
+        removePlayFabItem$: (
+          playfabPlayerTitleId: string,
+          collectionId: PlayFabCollectionId,
+          itemId: string,
+          amount: BigNumber,
+        ) =>
+          this.playFabPlayerInventoryService.removeItem$(
+            playfabPlayerTitleId,
+            collectionId,
+            itemId,
+            amount,
+          ),
       },
       transactionHistoryService: {
         gameTitle: GameTitle.FH5,

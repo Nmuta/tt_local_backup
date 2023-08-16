@@ -64,12 +64,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock.PlayFab.Player
                 await Task.WhenAll(getVouchers, getInventoryItems).ConfigureAwait(true);
 
                 var vouchers = getVouchers.GetAwaiter().GetResult();
-                var inventoryItems = getInventoryItems.GetAwaiter().GetResult();
+                var inventoryItems = getInventoryItems.GetAwaiter().GetResult().ToList();
 
-                inventoryItems.ForEach(item =>
+                vouchers.ForEach(voucher =>
                 {
-                    var voucher = vouchers.FirstOrDefault(voucher => voucher.Id == item.Id);
-                    item.Name = voucher.Title["NEUTRAL"] ?? "N/A";
+                    var inventoryItem = inventoryItems.FirstOrDefault(item => voucher.Id == item.Id);
+
+                    // Item exists, add voucher name to item
+                    // Item does not exist, add item to inventory with amount = 0
+                    if (inventoryItem != null)
+                    {
+                        inventoryItem.Name = voucher.Title["NEUTRAL"] ?? "N/A";
+                    }
+                    else
+                    {
+                        inventoryItems.Add(new PlayFabInventoryItem()
+                        {
+                            Amount = 0,
+                            Id = voucher.Id,
+                            DisplayProperties = null,
+                            StackId = null,
+                            Type = voucher.Type,
+                            Name = voucher.Title["NEUTRAL"] ?? "N/A",
+                        });
+                    }
                 });
 
                 return this.Ok(inventoryItems);

@@ -305,7 +305,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync()
+        public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync()
         {
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
@@ -314,7 +314,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     this.cmsEnvironment,
                     slot: "daily").ConfigureAwait(false);
 
-            var rivalsEvents = this.mapper.SafeMap<IEnumerable<RivalsEvent>>(pegasusRivalEvents);
+            var rivalsEvents = this.mapper.SafeMap<IEnumerable<LiveOpsContracts.RivalsEvent>>(pegasusRivalEvents);
 
             return rivalsEvents;
         }

@@ -46,6 +46,7 @@ export enum PermAttributeName {
   OverrideSkillRating = 'OverrideSkillRating',
   EditUgc = 'EditUgc',
   UpdateLspTask = 'UpdateLspTask',
+  ManagePlayFabInventory = 'ManagePlayFabInventory',
   UpdateUgcProfile = 'UpdateUgcProfile',
 }
 

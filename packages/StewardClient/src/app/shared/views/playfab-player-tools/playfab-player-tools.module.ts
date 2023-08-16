@@ -23,6 +23,8 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 /** Module for getting and setting a player's cms override. */
 @NgModule({
@@ -53,6 +55,9 @@ import { MatOptionModule } from '@angular/material/core';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
   ],
   exports: [WoodstockPlayFabPlayerToolsComponent],
 })

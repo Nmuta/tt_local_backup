@@ -51,7 +51,8 @@ describe('PlayFabPlayerToolsComponent', () => {
     inventoryService: {
       gameTitle: GameTitle.FH5,
       getPlayFabCurrencyInventory$: () => of(mockInventory),
-      getPlayFabVouchers$: () => of([]),
+      addPlayFabItem$: () => of(null),
+      removePlayFabItem$: () => of(null),
     },
     transactionHistoryService: {
       gameTitle: GameTitle.FH5,

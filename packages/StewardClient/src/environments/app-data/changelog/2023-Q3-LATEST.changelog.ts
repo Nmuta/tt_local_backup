@@ -13,9 +13,24 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add tool to download and upload UGC profiles',
     },
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
+      uuid: '460ce787-24b6-4537-9fb9-43e61d625f68',
+      shortText: 'Allow modifying PlayFab voucher amounts on each available inventory collection',
+    },
+    {
+      tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
+      uuid: 'dd0629a3-9e75-4dba-bbd8-371f075da694',
+      shortText: 'Fix bug preventing sending',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: '2078cd4d-475e-48a0-a250-12c56fc83a5e',
       shortText: 'Add tools to view PlayFab inventory and transaction history',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '52c8dc76-b903-4a51-be37-d8a37556a60f',
+      shortText: 'Add missing timer types and popup fields.',
     },
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting, NavbarTool.UserDetails] },
