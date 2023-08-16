@@ -1,0 +1,23 @@
+# The purpose of this pipeline is to publish a preview 
+# 
+# What it does:
+# - Check that StewardApi projects will build
+# - Check that StewardApi project complies with linters. Warnings are treated as errors.
+# - Runs StewardApi unit tests and produces a summary
+
+trigger: none
+
+name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
+
+variables:
+- template: 'infra/azure-pipelines/dotnet-core/dotnet-variables.yml'
+
+pool:
+  vmImage: $(VM_IMAGE)
+
+jobs:
+- template: 'infra/azure-pipelines/dotnet-core/nuget/job-nuget-publish.template.yml'
+  parameters:
+    workingDirectory: packages/Analyzer-Documentation
+    nugetName: Turn10.Analyzer.Documentation
+    prerelease: false
