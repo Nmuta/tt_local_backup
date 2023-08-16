@@ -1,12 +1,12 @@
 ﻿using System;
 
 #pragma warning disable SA1600 // Elements should be documented
-namespace Turn10.LiveOps.StewardApi.Contracts.Data
+namespace Turn10.LiveOps.StewardApi.Contracts.External.PlayFab
 {
     /// <summary>
-    ///     Represents a PlayFab Build Lock.
+    ///     Represents an external PlayFab Build Lock. PII has been removed.
     /// </summary>
-    public sealed class PlayFabBuildLock
+    public sealed class ExternalPlayFabBuildLock
     {
         public Guid Id { get; set; }
 
@@ -14,16 +14,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
 
         public string Reason { get; set; }
 
-        public string UserId { get; set; }
-
-        public string ApiKeyName { get; set; }
-
         public string PlayFabEnvironment { get; set; }
 
         public string GameTitle { get; set; }
 
         public DateTimeOffset DateCreatedUtc { get; set; }
-
-        public string MetaData { get; set; }
     }
 }

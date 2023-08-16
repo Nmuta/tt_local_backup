@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.External.PlayFab;
+using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
-using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using Microsoft.AspNetCore.Authorization;
-using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using static Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth.AcceptableApiKeysFromAppSpecificKeyVaultConfig;
-using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
@@ -40,26 +40,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
         private readonly IWoodstockPlayFabService playFabService;
         private readonly IPlayFabBuildLocksProvider playFabBuildLocksProvider;
         private readonly IBlobStorageProvider blobStorageProvider;
+        private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BuildsController"/> class for Woodstock.
         /// </summary>
-        public BuildsController(IWoodstockPlayFabService playFabService, IPlayFabBuildLocksProvider playFabBuildLocksProvider, IBlobStorageProvider blobStorageProvider)
+        public BuildsController(IWoodstockPlayFabService playFabService, IPlayFabBuildLocksProvider playFabBuildLocksProvider, IBlobStorageProvider blobStorageProvider, IMapper mapper)
         {
             playFabService.ShouldNotBeNull(nameof(playFabService));
             playFabBuildLocksProvider.ShouldNotBeNull(nameof(playFabBuildLocksProvider));
             blobStorageProvider.ShouldNotBeNull(nameof(blobStorageProvider));
+            mapper.ShouldNotBeNull(nameof(mapper));
 
             this.playFabService = playFabService;
             this.playFabBuildLocksProvider = playFabBuildLocksProvider;
             this.blobStorageProvider = blobStorageProvider;
+            this.mapper = mapper;
         }
 
         /// <summary>
         ///     Retrieves list of active PlayFab build lock.
         /// </summary>
         [HttpGet("locks")]
-        [SwaggerResponse(200, type: typeof(IList<PlayFabBuildLock>))]
+        [SwaggerResponse(200, type: typeof(IList<ExternalPlayFabBuildLock>))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         public async Task<IActionResult> GetActivePlayFabBuildLocks()
         {
@@ -69,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
             {
                 var buildLocks = await this.playFabBuildLocksProvider.GetMultipleAsync(playFabEnvironment).ConfigureAwait(true);
 
-                return this.Ok(buildLocks);
+                return this.Ok(this.mapper.SafeMap<IList<ExternalPlayFabBuildLock>>(buildLocks));
             }
             catch (Exception ex)
             {
@@ -81,11 +84,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
         ///     Adds new PlayFab build lock to the database.
         /// </summary>
         [HttpPost("{buildId}/lock")]
-        [SwaggerResponse(200, type: typeof(PlayFabBuildLock))]
+        [SwaggerResponse(200, type: typeof(ExternalPlayFabBuildLock))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create)]
-        // TODO: Update auto action logging to support external APIs w/ no user claims
-        //// AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.PlayFabBuildLock)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.PlayFabBuildLock)]
         public async Task<IActionResult> AddNewPlayFabBuildLock(string buildId, [FromBody] string reason)
         {
             var playFabEnvironment = this.PlayFabEnvironment;
@@ -112,13 +114,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
 
             try
             {
-                var externalReason = $"[Externally locked] {reason}";
                 var buildLock = new PlayFabBuildLock()
                 {
                     Id = parsedBuildId,
                     Name = playFabBuild.Name,
-                    Reason = externalReason,
-                    UserId = default(Guid).ToString(),
+                    Reason = reason,
+                    UserId = string.Empty,
+                    ApiKeyName = ApiKey.PlayFab.GetDescription(),
                     PlayFabEnvironment = playFabEnvironment.ToString(),
                     GameTitle = TitleConstants.WoodstockCodeName.ToLowerInvariant(),
                     DateCreatedUtc = DateTimeOffset.UtcNow,
@@ -127,7 +129,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
 
                 var createdLock = await this.playFabBuildLocksProvider.CreateAsync(buildLock).ConfigureAwait(true);
 
-                return this.Ok(createdLock);
+                return this.Ok(this.mapper.SafeMap<ExternalPlayFabBuildLock>(createdLock));
             }
             catch (Exception ex)
             {
@@ -142,8 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
         [SwaggerResponse(200, type: typeof(PlayFabBuildLock))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete)]
-        // TODO: Update auto action logging to support external APIs w/ no user claims
-        //// [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.PlayFabBuildLock)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.PlayFabBuildLock)]
         public async Task<IActionResult> DeletePlayFabBuildLock(string buildId)
         {
             var playFabEnvironment = this.PlayFabEnvironment;

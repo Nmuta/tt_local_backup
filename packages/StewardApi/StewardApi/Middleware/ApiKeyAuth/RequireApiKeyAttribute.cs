@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth;
+using Turn10.LiveOps.StewardApi.Helpers;
 using static Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth.AcceptableApiKeysFromAppSpecificKeyVaultConfig;
 
 namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
@@ -16,6 +17,8 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
 
         /// <inheritdoc/>
         public bool IsReusable => true;
+
+        public string ApiKeyName() => this.apiKey.GetDescription();
 
         public RequireApiKeyAttribute(ApiKey apiKey)
         {

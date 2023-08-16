@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
-using static System.Net.Mime.MediaTypeNames;
+
+#pragma warning disable SA1402 // File may only contain a single type
 
 namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
 {
@@ -32,12 +31,13 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
             // Only use this middleware on our external api path
             // Ignore is running on localhost
             var hostEnvironment = context.RequestServices.GetService<IHostEnvironment>();
-            var isExternalApiPath = context.Request?.Path.Value?.ToLowerInvariant().Contains("api/external") ?? false;
+            var isExternalApiPath = context.Request?.Path.Value?.ToLowerInvariant().Contains("api/v2/external", StringComparison.InvariantCultureIgnoreCase) ?? false;
 
             var bypassDueTLocalEnvironment = hostEnvironment?.IsStewardApiLocal() ?? false;
-            var bypassDueToSwagger = context.Request?.Path.Value?.ToLowerInvariant().Contains("swagger") ?? false;
-            var bypassDueToHealthCheck = context.Request?.Path.Value?.ToLowerInvariant().Contains("api/health") ?? false;
+            var bypassDueToSwagger = context.Request?.Path.Value?.ToLowerInvariant().Contains("swagger", StringComparison.InvariantCultureIgnoreCase) ?? false;
+            var bypassDueToHealthCheck = context.Request?.Path.Value?.ToLowerInvariant().Contains("api/health", StringComparison.InvariantCultureIgnoreCase) ?? false;
             var bypassMiddleware = !isExternalApiPath || bypassDueTLocalEnvironment || bypassDueToSwagger || bypassDueToHealthCheck;
+
             if (bypassMiddleware)
             {
                 await this.next(context);
@@ -54,7 +54,6 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
                     throw new ApiKeyStewardException("This API expects an auth key, but none was provided.");
-
                 }
 
                 var acceptableKeys = context.RequestServices.GetService<AcceptableApiKeysFromAppSpecificKeyVaultConfig>();
@@ -66,18 +65,18 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
             }
             catch (StewardBaseException ex)
             {
-                context.Response.StatusCode = (int) ex.StatusCode;
+                context.Response.StatusCode = (int)ex.StatusCode;
                 var data = Encoding.UTF8.GetBytes(ex.Message);
                 context.Response.ContentType = "text/plain";
-                await context.Response.Body.WriteAsync(data, 0, data.Length);
+                await context.Response.Body.WriteAsync(data);
                 return;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 context.Response.StatusCode = 500;
                 var data = Encoding.ASCII.GetBytes("Unexpected auth exception occured");
                 context.Response.ContentType = "text/plain";
-                await context.Response.Body.WriteAsync(data, 0, data.Length);
+                await context.Response.Body.WriteAsync(data);
                 return;
             }
 
@@ -100,4 +99,3 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
         }
     }
 }
-

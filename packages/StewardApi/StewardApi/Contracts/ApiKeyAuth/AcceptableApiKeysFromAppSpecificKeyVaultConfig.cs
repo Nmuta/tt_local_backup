@@ -1,11 +1,14 @@
-﻿using Azure.Security.KeyVault.Secrets;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Configuration;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Helpers;
+
+#pragma warning disable CA1034 // Nested types should not be visible
 
 namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
 {
@@ -19,20 +22,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
         /// </summary>
         public bool IsInitialized { get; set; } = false;
 
-        private AllSecretVersions StewardApiKeyShared { get; set; }
-
         private AllSecretVersions StewardApiKeyPlayFab { get; set; }
+
         public AllSecretVersions StewardApiKeyTesting { get; set; }
-
-        /// <summary>
-        ///     A set of composite keys structured like "specific-guid|shared-guid" which are valid for PlayFab endpoints.
-        /// </summary>
-        public AllSecretVersions ApiKeyPlayFabComposite { get; set; }
-
-        /// <summary>
-        ///     A set of composite keys structured like "specific-guid|shared-guid" which are valid for Testing endpoints.
-        /// </summary>
-        public AllSecretVersions ApiKeyTestingComposite { get; set; }
 
         /// <summary>
         ///     A set of all composite keys structured like "specific-guid|shared-guid" which are valid.
@@ -76,7 +68,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
             // then the errors are collected an a new exeception is thrown.
             var operations = new Func<Task>[]
             {
-                async () => keyVault.StewardApiKeyShared = await GetSecretsInternalAsync(nameof(keyVault.StewardApiKeyShared)).ConfigureAwait(false),
                 async () => keyVault.StewardApiKeyPlayFab = await GetSecretsInternalAsync(nameof(keyVault.StewardApiKeyPlayFab)).ConfigureAwait(false),
                 async () => keyVault.StewardApiKeyTesting = await GetSecretsInternalAsync(nameof(keyVault.StewardApiKeyTesting)).ConfigureAwait(false),
             };
@@ -84,11 +75,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
             var tasks = operations.Select(o => o());
             await Task.WhenAll(tasks).ConfigureAwait(false);
 
-            keyVault.ApiKeyPlayFabComposite = AllSecretVersions.Merge(keyVault.StewardApiKeyPlayFab, keyVault.StewardApiKeyShared);
-            keyVault.ApiKeyTestingComposite = AllSecretVersions.Merge(keyVault.StewardApiKeyTesting, keyVault.StewardApiKeyShared);
             keyVault.All = AllSecretVersions.Collect(
-                keyVault.ApiKeyPlayFabComposite,
-                keyVault.ApiKeyTestingComposite);
+                keyVault.StewardApiKeyPlayFab,
+                keyVault.StewardApiKeyTesting);
 
             if (initializationFailures.Any())
             {
@@ -107,9 +96,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
             switch (apiKey)
             {
                 case ApiKey.PlayFab:
-                    return this.ApiKeyPlayFabComposite;
+                    return this.StewardApiKeyPlayFab;
                 case ApiKey.Testing:
-                    return this.ApiKeyTestingComposite;
+                    return this.StewardApiKeyTesting;
                 default:
                     throw new ArgumentException($"Unacceptable {nameof(apiKey)}");
             }
@@ -118,21 +107,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
         public class AllSecretVersions
         {
             public HashSet<string> Active { get; set; }
-
-            public static AllSecretVersions Merge(AllSecretVersions left, AllSecretVersions right)
-            {
-                var merged = new AllSecretVersions { Active = new HashSet<string>() };
-
-                foreach (var leftEntry in left.Active)
-                {
-                    foreach (var rightEntry in right.Active)
-                    {
-                        merged.Active.Add($"{leftEntry}|{rightEntry}");
-                    }
-                }
-
-                return merged;
-            }
 
             public static AllSecretVersions Collect(params AllSecretVersions[] allRegistered)
             {
@@ -151,8 +125,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
 
         public enum ApiKey
         {
+            [Description("Unset")]
             Unset = 0,
+            [Description("PlayFab")]
             PlayFab,
+            [Description("Testing")]
             Testing,
         }
     }

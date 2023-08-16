@@ -36,7 +36,8 @@
               <tr>
                 <th>Locked By</th>
                 <td>
-                  <steward-user [objectId]="lock.userId"></steward-user>
+                  <steward-user *ngIf="lock?.userId" [objectId]="lock.userId"></steward-user>
+                  <span *ngIf="lock?.apiKeyName">{{ lock.apiKeyName }} API Key</span>
                 </td>
               </tr>
               <tr>
@@ -188,7 +189,11 @@
               <tr>
                 <th>Locked By</th>
                 <td>
-                  <steward-user [objectId]="item.lock.userId"></steward-user>
+                  <steward-user
+                    *ngIf="item.lock?.userId"
+                    [objectId]="item.lock.userId"
+                  ></steward-user>
+                  <span *ngIf="item.lock?.apiKeyName">{{ item.lock.apiKeyName }} API Key</span>
                 </td>
               </tr>
               <tr>

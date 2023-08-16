@@ -308,6 +308,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new SteelheadProfileMapper());
                 mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
+                mc.AddProfile(new ExternalProfileMapper());
                 mc.AllowNullCollections = true;
                 mc.IgnoreUnmapped(); // TODO: Should we remove this and correct all the mappings: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1347837
             });

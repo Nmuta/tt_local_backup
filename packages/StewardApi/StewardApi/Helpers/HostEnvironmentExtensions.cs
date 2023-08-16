@@ -23,7 +23,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             return environment.IsDevelopment() || environment.IsEnvironment("dev") || environment.IsEnvironment("local");
         }
 
-
         /// <summary>
         ///     True if the given environment is a prod environment.
         /// </summary>
