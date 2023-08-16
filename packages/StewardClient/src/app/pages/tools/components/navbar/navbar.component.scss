@@ -86,12 +86,12 @@
 }
 
 // introduce a stacking context
-.tours-stack-context-relative {
+.stack-context-relative {
   position: relative;
 }
 
 // cover our element, with a bit to go around it.
-.tours-no-size-wrapper {
+.no-size-wrapper {
   $wrap-margin: .25em;
   position: absolute;
   top: -$wrap-margin;

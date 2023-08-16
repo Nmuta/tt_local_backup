@@ -63,7 +63,7 @@
       *ngIf="availableTiles.filtered?.length > 0; else noAvailableResultsTemplate"
       [tiles]="availableTiles.filtered"
       tourAnchor="home-tour.step.four"
-      class="tours-no-size-wrapper"
+      class="no-size-wrapper"
     ></home-tile-grid>
     <div *ngIf="availableTiles.rejected?.length > 0" class="horizontal-divider">
       <span>Tools below do not match filters</span>

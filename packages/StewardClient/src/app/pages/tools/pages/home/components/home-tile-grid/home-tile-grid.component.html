@@ -46,13 +46,12 @@
           ></div>
         </mat-card-content>
         <mat-card-actions align="end">
-
           <mat-checkbox
             [matTooltip]="item.hasAccess ? 'Check to include in nav' : undefined"
             [disabled]="!isEnabled[item.tool] && !item.hasAccess"
             [ngModel]="isEnabled[item.tool]"
             (ngModelChange)="onCheckboxChecked(item.tool, $event)"
-            class="tours-no-size-wrapper"
+            class="no-size-wrapper"
             [tourAnchor]="isFirst ? 'home-tour.step.five' : ''"
           >
             In Nav
