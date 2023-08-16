@@ -115,7 +115,7 @@ export const stewardUrls = {
       default: 'app/tools/permission-management',
     },
     calendar: {
-      default: 'https://steward-ui-prod.azurewebsites.net/app/tools/unified-calendar',
+      default: 'app/tools/unified-calendar',
     },
   },
 };
