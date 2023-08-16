@@ -3,17 +3,17 @@
     <mat-card-title>UGC Profile</mat-card-title>
     <mat-card-subtitle>Steelhead | {{ profileOverviewString }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
-    <div class="sf-vertical">
+    <div class="sf-vertical actions">
       <div class="download">
         <button
-          mat-raised-button
+          mat-stroked-button
           color="primary"
           (click)="downloadUgcProfileData()"
           clickStop
           [disabled]="!profileFound"
         >
-          Download UGC Profile
-          <button-spinner [monitor]="postMonitor" defaultIcon="download"></button-spinner>
+          Download Profile
+          <button-spinner [monitor]="getMonitor" defaultIcon="download"></button-spinner>
         </button>
       </div>
       <div class="sf-horizontal">
@@ -34,7 +34,7 @@
           [disabled]="!formGroup.dirty || !formGroup.valid"
           [verifyWithV2]="verifyApplyBtn"
         >
-          Upload UGC Profile
+          Upload Profile
           <button-spinner [monitor]="postMonitor" defaultIcon="upload"></button-spinner>
         </button>
       </div>
@@ -48,7 +48,7 @@
             (change)="onFileSelected($event)"
           />
           <div>
-            {{ fileName || 'Upload UGC Profile' }}
+            {{ fileName || 'Drop or Select UGC Profile' }}
             <button mat-mini-fab color="accent" class="upload-btn" (click)="fileUpload.click()">
               <mat-icon>attach_file</mat-icon>
             </button>

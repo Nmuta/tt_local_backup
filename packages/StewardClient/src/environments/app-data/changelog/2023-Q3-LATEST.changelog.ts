@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'aa341f06-663e-4e39-b54e-1fab661a54c9',
+      shortText: 'Add tool to download and upload UGC profiles',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: '2078cd4d-475e-48a0-a250-12c56fc83a5e',
       shortText: 'Add tools to view PlayFab inventory and transaction history',

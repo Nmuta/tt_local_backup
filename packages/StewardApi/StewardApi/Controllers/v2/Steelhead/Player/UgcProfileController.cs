@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
         {
             var externalProfileGuid = externalProfileId.TryParseGuidElseThrow($"External Profile ID could no be parsed as GUID. External Profile ID: {externalProfileId}");
 
-            //await this.Services.LiveOpsService.UploadUGCProfile(xuid, externalProfileGuid, profileData).ConfigureAwait(true);
+            await this.Services.LiveOpsService.UploadUGCProfile(xuid, externalProfileGuid, profileData).ConfigureAwait(true);
 
             return this.Ok();
         }

@@ -10,7 +10,6 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { GuidLikeString } from '@models/extended-types';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { UgcProfileInfo } from '@services/api-v2/steelhead/player/ugc-profile/steelhead-player-ugc-profile.service';
-import { arrayBufferToBase64 } from '@helpers/convert-array-buffer';
 
 /** UGC Profile service contract. */
 export interface UgcProfileServiceContract {
@@ -44,8 +43,8 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
 
   public formGroup = new FormGroup(this.formControls);
 
-  public currentProfile : UgcProfileInfo;
-  public profileFound : boolean = false;
+  public currentProfile: UgcProfileInfo;
+  public profileFound: boolean = false;
 
   public fileName: string;
   public fileContent: string;
@@ -98,21 +97,14 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
 
   /** Download UGC profile data to file. */
   public downloadUgcProfileData(): void {
-    const fileName = `${this.xuid}_${this.profile.externalProfileId}_${new Date().toISOString()}.json`;
-    // const downloadLink = document.createElement('a');
-    // downloadLink.href = this.currentProfile?.profileData;
-    // downloadLink.download = fileName;
-    // downloadLink.click();
-    // downloadLink.remove();
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(this.currentProfile?.profileData);
-
-    //const encodedUri = encodeURI(this.currentProfile?.profileData);
+    const fileName = `${this.xuid}_${
+      this.profile.externalProfileId
+    }_${new Date().toISOString()}.json`;
+    const dataStr =
+      'data:text/json;charset=utf-8,' + encodeURIComponent(this.currentProfile?.profileData);
     const link = document.createElement('a');
     link.href = dataStr;
     link.download = fileName;
-    debugger;
-    //link.setAttribute('href', encodedUri);
-    //link.setAttribute('download', fileName);
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -140,14 +132,8 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
     this.postMonitor = this.postMonitor.repeat();
 
     this.service
-      .updateUgcProfile$(
-        this.xuid,
-        this.profile?.externalProfileId,
-        this.fileContent,
-      )
+      .updateUgcProfile$(this.xuid, this.profile?.externalProfileId, this.fileContent)
       .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(_ => {
-        console.log('No response')
-      });
+      .subscribe(_ => this.getUgcProfile());
   }
 }

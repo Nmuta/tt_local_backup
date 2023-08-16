@@ -1,5 +1,7 @@
 @import '/src/styles/mixins';
 
+$ugc-profile-button-min-size: 180px;
+
 form {
   width: 100%;
   display: flex;
@@ -12,11 +14,12 @@ form {
 
 div.download {
   display: grid;
+  max-width: fit-content;
 }
 
 .file-upload-wrapper {
   position: relative;
-  padding-right: 15px; //Required to prevent popover from interfering with drag/drop file upload
+  justify-content: end;
 }
 
 .file-upload-overlay {
@@ -27,4 +30,12 @@ div.download {
   bottom: 0;
   z-index: 5;
   opacity: 0;
+}
+
+button:not(.mat-mini-fab) {
+  min-width: $ugc-profile-button-min-size;
+}
+
+div.actions {
+  align-items: end;
 }
