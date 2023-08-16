@@ -31,6 +31,8 @@ jobs:
       echo "##vso[task.setvariable variable=minorVersion]$MINOR"
       echo "##vso[task.setvariable variable=patchVersion]$PATCH"
     displayName: Retrieve Version from .csproj
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
 
   - task: DotNetCoreCLI@2
     displayName: Build
