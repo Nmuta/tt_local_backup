@@ -13,7 +13,7 @@
     <PackageId>Turn10.Analyzer.Documentation</PackageId>
 
     <!-- https://andrewlock.net/version-vs-versionsuffix-vs-packageversion-what-do-they-all-mean/ -->
-    <Version>1.1.0</Version>
+    <Version>1.2.3</Version>
     <!-- <PackageVersion>1.1.4.0</PackageVersion> -->
     <Authors>sharerdavid</Authors>
 
