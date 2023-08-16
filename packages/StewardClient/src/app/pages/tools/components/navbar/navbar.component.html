@@ -25,8 +25,8 @@
     <mat-icon *ngSwitchDefault>home</mat-icon>
   </a>
 
-  <div *ngIf="!inEditMode" class="link-list-wrapper stack-context-relative">
-    <span class="no-size-wrapper" tourAnchor="home-tour.step.six"></span>
+  <div *ngIf="!inEditMode" class="link-list-wrapper tours-stack-context-relative">
+    <span class="tours-no-size-wrapper" tourAnchor="home-tour.step.seven"></span>
     <ng-container *ngFor="let item of listedTools">
       <a
         *ngIf="!item.navComponent"
@@ -122,7 +122,7 @@
     *ngIf="!inEditMode"
     (click)="setEditMode(true)"
     matTooltip="Click to allow re-ordering the navbar (disables links)"
-    tourAnchor="home-tour.step.seven"
+    tourAnchor="home-tour.step.six"
   >
     <mat-icon>edit</mat-icon>
   </button>

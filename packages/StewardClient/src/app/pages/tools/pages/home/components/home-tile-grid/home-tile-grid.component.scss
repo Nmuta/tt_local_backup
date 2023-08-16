@@ -274,15 +274,3 @@ mat-icon[mat-card-avatar] {
 ::ng-deep .multiline-tooltip.multiline-tooltip.multiline-tooltip {
   white-space: pre-line;
 }
-
-.nav-anchor.touranchor--is-active {
-  padding: 10px;
-  margin: -10px -15px;
-}
-
-.center-anchor {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-140px, -78px);
-}

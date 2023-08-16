@@ -11,11 +11,10 @@ import { MatCardModule } from '@angular/material/card';
 import { LogoutIframeComponent } from './logout-iframe/logout-iframe.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 import { SyncStateComponent } from './sync-state/sync-state.component';
-import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 /** Defines the auth module. */
 @NgModule({
-  imports: [CommonModule, AuthRouterModule, MatCardModule, StuckModule, CenterContentsModule, TourMatMenuModule],   // tour module is loaded to prevent tour errors
+  imports: [CommonModule, AuthRouterModule, MatCardModule, StuckModule, CenterContentsModule],
   declarations: [
     LoginComponent,
     LogoutComponent,

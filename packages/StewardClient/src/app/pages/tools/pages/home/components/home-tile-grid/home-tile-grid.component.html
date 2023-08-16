@@ -1,7 +1,7 @@
 <main class="app-tiles-wrapper">
   <div
     class="tile-container"
-    *ngFor="let item of tiles; let i = index"
+    *ngFor="let item of tiles; first as isFirst"
     [class.activated]="isEnabled[item.tool]"
     [class.no-access]="!item.hasAccess"
   >
@@ -38,7 +38,7 @@
           [alt]="item.imageAlt"
         />
         <mat-card-content>
-          <p *ngFor="let paragraph of item.shortDescription, let i = index">{{ paragraph }}</p>
+          <p *ngFor="let paragraph of item.shortDescription">{{ paragraph }}</p>
           <div
             *ngIf="item.tileContentComponent"
             [navAnchor]="item.tileContentComponent"
@@ -46,19 +46,17 @@
           ></div>
         </mat-card-content>
         <mat-card-actions align="end">
-          <div
-            class="nav-anchor"
-            [tourAnchor]="i === 0 ? 'home-tour.step.five' : ''"
-            >
-            <mat-checkbox
-              [matTooltip]="item.hasAccess ? 'Check to include in nav' : undefined"
-              [disabled]="!isEnabled[item.tool] && !item.hasAccess"
-              [ngModel]="isEnabled[item.tool]"
-              (ngModelChange)="onCheckboxChecked(item.tool, $event)"
-            >
-              In Nav
-            </mat-checkbox>
-          </div>
+
+          <mat-checkbox
+            [matTooltip]="item.hasAccess ? 'Check to include in nav' : undefined"
+            [disabled]="!isEnabled[item.tool] && !item.hasAccess"
+            [ngModel]="isEnabled[item.tool]"
+            (ngModelChange)="onCheckboxChecked(item.tool, $event)"
+            class="tours-no-size-wrapper"
+            [tourAnchor]="isFirst ? 'home-tour.step.five' : ''"
+          >
+            In Nav
+          </mat-checkbox>
           <div class="spacer"></div>
           <a
             *ngIf="!item.tileActionComponent && item.hasAccess && !item.hideLink"
