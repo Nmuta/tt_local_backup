@@ -1,6 +1,6 @@
 @import '/src/styles/mixins';
 
-$ugc-profile-button-min-size: 180px;
+$ugc-profile-button-min-size: 180px; //Used to fit button text that doesn't fit inside global $button-min-size
 
 form {
   width: 100%;
