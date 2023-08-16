@@ -8,12 +8,9 @@ parameters:
 - name: 'nugetName'
   displayName: "Name of the resulting nuget. Like 'Analyzer_Documentation'"
   type: string
-# - name: 'majorVersion'
-#   displayName: "Major version number. Probably 1, 2, 3"
-#   type: number
-# - name: 'minorVersion'
-#   displayName: "Major version number. Probably 1, 2, 3"
-#   type: number
+- name: 'prerelease'
+  displayName: "When true, publishes a pre-release version"
+  type: boolean
 
 jobs:
 - job: Nuget_Publish
@@ -51,6 +48,7 @@ jobs:
 
   - task: DotNetCoreCLI@2
     displayName: Pack Nugets
+    condition: ne(parameters.prerelease, true)
     inputs:
       command: pack
       configuration: $(BuildConfiguration)
@@ -59,6 +57,16 @@ jobs:
       majorVersion: $(majorVersion)
       minorVersion: $(minorVersion)
       patchVersion: $(patchVersion)
+      packDestination: '$(Build.ArtifactStagingDirectory)/'
+
+  - task: DotNetCoreCLI@2
+    displayName: Pack Nugets
+    condition: ne(parameters.prerelease, false)
+    inputs:
+      command: pack
+      configuration: $(BuildConfiguration)
+      packagesToPack: '${{parameters.workingDirectory}}/**/*.Package.csproj'
+      versioningScheme: off
       packDestination: '$(Build.ArtifactStagingDirectory)/'
 
   - task: PublishBuildArtifacts@1
