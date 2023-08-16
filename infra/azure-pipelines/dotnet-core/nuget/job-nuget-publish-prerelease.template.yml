@@ -8,12 +8,12 @@ parameters:
 - name: 'nugetName'
   displayName: "Name of the resulting nuget. Like 'Analyzer_Documentation'"
   type: string
-- name: 'majorVersion'
-  displayName: "Major version number. Probably 1, 2, 3"
-  type: number
-- name: 'minorVersion'
-  displayName: "Major version number. Probably 1, 2, 3"
-  type: number
+# - name: 'majorVersion'
+#   displayName: "Major version number. Probably 1, 2, 3"
+#   type: number
+# - name: 'minorVersion'
+#   displayName: "Major version number. Probably 1, 2, 3"
+#   type: number
 
 jobs:
 - job: Nuget_Publish
@@ -56,6 +56,6 @@ jobs:
       command: 'push'
       packagesToPush: '$(build.artifactStagingDirectory)/${{parameters.nugetName}}*.nupkg'
       publishVstsFeed: 'Turn10-LiveOps'
-      major: 1
-      minor: 1
-      patch: $[counter(format('{0}.{1}', variables['Major'], variables['Minor']), 0)]
+      # major: 1
+      # minor: 1
+      # patch: $[counter(format('{0}.{1}', variables['Major'], variables['Minor']), 0)]
