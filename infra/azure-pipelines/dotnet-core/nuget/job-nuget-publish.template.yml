@@ -48,7 +48,7 @@ jobs:
 
   - task: DotNetCoreCLI@2
     displayName: Pack Nugets
-    condition: ne(parameters.prerelease, true)
+    condition: ne(${{parameters.prerelease}}, true)
     inputs:
       command: pack
       configuration: $(BuildConfiguration)
@@ -61,7 +61,7 @@ jobs:
 
   - task: DotNetCoreCLI@2
     displayName: Pack Nugets
-    condition: ne(parameters.prerelease, false)
+    condition: ne(${{parameters.prerelease}}, false)
     inputs:
       command: pack
       configuration: $(BuildConfiguration)
