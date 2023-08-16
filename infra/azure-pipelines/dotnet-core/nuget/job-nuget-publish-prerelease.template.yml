@@ -56,9 +56,9 @@ jobs:
       configuration: $(BuildConfiguration)
       packagesToPack: '${{parameters.workingDirectory}}/**/*.Package.csproj'
       versioningScheme: byPrereleaseNumber
-      major: $(majorVersion)
-      minor: $(minorVersion)
-      patch: $(patchVersion)
+      majorVersion: $(majorVersion)
+      minorVersion: $(minorVersion)
+      minorVersion: $(patchVersion)
       packDestination: '$(Build.ArtifactStagingDirectory)/'
       includeSymbols: true
 
