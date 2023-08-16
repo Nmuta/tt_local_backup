@@ -58,7 +58,7 @@ jobs:
       versioningScheme: byPrereleaseNumber
       majorVersion: $(majorVersion)
       minorVersion: $(minorVersion)
-      minorVersion: $(patchVersion)
+      patchVersion: $(patchVersion)
       packDestination: '$(Build.ArtifactStagingDirectory)/'
       includeSymbols: true
 
