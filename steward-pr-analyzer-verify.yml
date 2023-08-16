@@ -19,4 +19,4 @@ jobs:
 - template: 'infra/azure-pipelines/dotnet-core/nuget/job-nuget-publish-prerelease.template.yml'
   parameters:
     workingDirectory: packages/Analyzer-Documentation
-    nugetName: Analyzer_Documentation
+    nugetName: Turn10.Analyzer.Documentation
