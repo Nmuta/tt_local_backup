@@ -23,16 +23,19 @@ jobs:
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
       
-  - bash: |
-      MAJOR=$(grep -iPo "(?<=<version>).*?(?=\.)" **/*.Package.csproj)
-      MINOR=$(grep -iPo "<version>.*?\.\K.*?(?=\.)" **/*.Package.csproj)
-      PATCH=$(grep -iPo "<version>.*?\..*?\.\K.*?(?=<)" **/*.Package.csproj)
-      echo "##vso[task.setvariable variable=majorVersion]$MAJOR"
-      echo "##vso[task.setvariable variable=minorVersion]$MINOR"
-      echo "##vso[task.setvariable variable=patchVersion]$PATCH"
+  - task: Bash@3
     displayName: Retrieve Version from .csproj
     inputs:
       workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      failOnStderr: true
+      script: |
+        MAJOR=$(grep -iPo "(?<=<version>).*?(?=\.)" **/*.Package.csproj)
+        MINOR=$(grep -iPo "<version>.*?\.\K.*?(?=\.)" **/*.Package.csproj)
+        PATCH=$(grep -iPo "<version>.*?\..*?\.\K.*?(?=<)" **/*.Package.csproj)
+        echo "##vso[task.setvariable variable=majorVersion]$MAJOR"
+        echo "##vso[task.setvariable variable=minorVersion]$MINOR"
+        echo "##vso[task.setvariable variable=patchVersion]$PATCH"
 
   - task: DotNetCoreCLI@2
     displayName: Build
