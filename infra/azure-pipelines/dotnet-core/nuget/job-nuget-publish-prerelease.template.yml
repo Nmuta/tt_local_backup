@@ -60,7 +60,6 @@ jobs:
       minorVersion: $(minorVersion)
       patchVersion: $(patchVersion)
       packDestination: '$(Build.ArtifactStagingDirectory)/'
-      includeSymbols: true
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish artifact folder'
