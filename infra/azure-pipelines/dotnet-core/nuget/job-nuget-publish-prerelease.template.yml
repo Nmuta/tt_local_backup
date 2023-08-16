@@ -33,6 +33,9 @@ jobs:
         MAJOR=$(grep -iPo "(?<=<version>).*?(?=\.)" **/*.Package.csproj)
         MINOR=$(grep -iPo "<version>.*?\.\K.*?(?=\.)" **/*.Package.csproj)
         PATCH=$(grep -iPo "<version>.*?\..*?\.\K.*?(?=<)" **/*.Package.csproj)
+        echo "Major: "$MAJOR
+        echo "Minor: "$MINOR
+        echo "Patch: "$PATCH
         echo "##vso[task.setvariable variable=majorVersion]$MAJOR"
         echo "##vso[task.setvariable variable=minorVersion]$MINOR"
         echo "##vso[task.setvariable variable=patchVersion]$PATCH"
