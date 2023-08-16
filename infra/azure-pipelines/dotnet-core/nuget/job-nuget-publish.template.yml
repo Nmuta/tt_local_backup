@@ -14,7 +14,7 @@ parameters:
 
 jobs:
 - job: Nuget_Publish
-  displayName: Publish Nuget (Pre-release)
+  displayName: Publish Nuget
   steps:
   - template: ../prepare-nuget-project.template.yml
     parameters:
@@ -47,7 +47,7 @@ jobs:
       feedRestore: 'Turn10-LiveOps'
 
   - task: DotNetCoreCLI@2
-    displayName: Pack Nugets
+    displayName: Pack Nugets (Pre-Release)
     condition: eq(${{parameters.prerelease}}, true)
     inputs:
       command: pack
@@ -60,7 +60,7 @@ jobs:
       packDestination: '$(Build.ArtifactStagingDirectory)/'
 
   - task: DotNetCoreCLI@2
-    displayName: Pack Nugets
+    displayName: Pack Nugets (Release)
     condition: eq(${{parameters.prerelease}}, false)
     inputs:
       command: pack
