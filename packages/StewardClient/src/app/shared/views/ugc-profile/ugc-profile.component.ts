@@ -30,7 +30,7 @@ export interface UgcProfileServiceContract {
   styleUrls: ['./ugc-profile.component.scss'],
 })
 export class UgcProfileComponent extends BaseComponent implements OnChanges {
-  /** skill rating service contrtact. */
+  /** UGC profile service contrtact. */
   @Input() service: UgcProfileServiceContract;
   /** Player xuid. */
   @Input() xuid: BigNumber;
@@ -122,12 +122,11 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
         this.fileContent = e.target.result as string;
       };
 
-      //fileReader.readAsArrayBuffer(file);
       fileReader.readAsText(file);
     }
   }
 
-  /** Sets skill rating override. */
+  /** Sets UGC profile. */
   public setUgcProfile(): void {
     this.postMonitor = this.postMonitor.repeat();
 
