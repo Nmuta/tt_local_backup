@@ -8,6 +8,9 @@ using static Turn10.Services.LiveOps.FM8.Generated.ConfigurationManagementServic
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages configurations. Proxy for Client object.
+    /// </summary>
     public interface IConfigurationManagementService
     {
         /// <summary>

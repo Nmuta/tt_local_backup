@@ -55,10 +55,6 @@
 
   <ItemGroup>
     <PackageReference Include="AdaptiveCards.Templating" Version="1.4.0" />
-    <PackageReference Include="Analyzer_Documentation" Version="1.0.0-CI-20230815-234109">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Autofac" Version="6.4.0" />
     <PackageReference Include="Autofac.Configuration" Version="6.0.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.2" />
@@ -101,6 +97,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
     <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
+    <PackageReference Include="Turn10.Analyzer.Documentation" Version="1.2.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Turn10.Data.SecretProvider" Version="3.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
     <PackageReference Include="Turn10.Data.Azure" Version="3.0.0" />

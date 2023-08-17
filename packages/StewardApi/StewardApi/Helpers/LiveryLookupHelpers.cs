@@ -15,6 +15,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     /// </summary>
     public static class LiveryLookupHelpers
     {
+        /// <summary>
+        ///     Look up specified liveries.
+        /// </summary>
         public static async Task<IEnumerable<UgcItem>> LookupSteelheadLiveriesAsync(IEnumerable<string> liveryIds, IMapper mapper, IStorefrontManagementService service)
         {
             var lookups = liveryIds.Select(id => LookupSteelheadLiveryAsync(id, mapper, service)).ToList();
@@ -23,6 +26,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             return results;
         }
 
+        /// <summary>
+        ///     Look up specified livery.
+        /// </summary>
         public static async Task<UgcItem> LookupSteelheadLiveryAsync(string liveryId, IMapper mapper, IStorefrontManagementService service)
         {
             var liveryGuid = liveryId.TryParseGuidElseThrow("Invalid livery id: {liveryId}");

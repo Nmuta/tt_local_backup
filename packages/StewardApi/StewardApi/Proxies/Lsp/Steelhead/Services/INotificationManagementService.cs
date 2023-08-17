@@ -10,6 +10,9 @@ using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.Noti
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages notifications. Proxy for Client object.
+    /// </summary>
     public interface INotificationManagementService
     {
         /// <summary>

@@ -8,6 +8,9 @@ using UserInventoryManagementService = Turn10.Services.LiveOps.FM8.Generated.Use
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages user inventory. Proxy for Client object.
+    /// </summary>
     public interface IUserInventoryManagementService
     {
         /// <summary>

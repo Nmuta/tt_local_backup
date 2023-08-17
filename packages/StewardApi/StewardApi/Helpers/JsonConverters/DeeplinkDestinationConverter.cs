@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
         /// </summary>
         public override DeeplinkDestination ReadJson(JsonReader reader, Type objectType, DeeplinkDestination existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            JObject jsonObject = JObject.Load(reader);
+            var jsonObject = JObject.Load(reader);
             var destinationType = Enum.Parse<DestinationType>(jsonObject.GetValue("destinationType", StringComparison.OrdinalIgnoreCase)?.ToString());
 
             DeeplinkDestination destination;
@@ -49,6 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
             return destination;
         }
 
+        /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, DeeplinkDestination value, JsonSerializer serializer)
         {
             throw new NotImplementedException();

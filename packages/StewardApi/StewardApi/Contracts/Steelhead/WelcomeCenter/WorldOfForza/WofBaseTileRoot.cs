@@ -186,10 +186,20 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     ///     Chapter for World of Forza
     /// </summary>
     public class Chapter : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Chapter; }
+
+    /// <summary>Challenge Data for World of Forza</summary>
     public class ChallengeData : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ChallengeData; }
+
+    /// <summary>Date Range for World of Forza</summary>
     public class DateRange : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.DateTimeRange; }
+
+    /// <summary>Featured Showcase for World of Forza</summary>
     public class FeaturedShowcase : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.FeaturedShowcase; }
+
+    /// <summary>Rivals Event for World of Forza</summary>
     public class RivalsEvent : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.RivalsEvent; }
+
+    /// <summary>Showroom Listing for World of Forza</summary>
     public class ShowroomListingCategory : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ShowroomListing; }
 
     /// <summary>
