@@ -84,18 +84,3 @@
   flex: 0.25 0 2em;
   max-width: fit-content;
 }
-
-// introduce a stacking context
-.stack-context-relative {
-  position: relative;
-}
-
-// cover our element, with a bit to go around it.
-.no-size-wrapper {
-  $wrap-margin: .25em;
-  position: absolute;
-  top: -$wrap-margin;
-  left: -$wrap-margin;
-  right: -$wrap-margin;
-  bottom: -$wrap-margin;
-}

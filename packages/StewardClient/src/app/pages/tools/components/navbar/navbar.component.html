@@ -25,8 +25,8 @@
     <mat-icon *ngSwitchDefault>home</mat-icon>
   </a>
 
-  <div *ngIf="!inEditMode" class="link-list-wrapper stack-context-relative">
-    <span class="no-size-wrapper" tourAnchor="home-tour.step.seven"></span>
+  <div *ngIf="!inEditMode" class="link-list-wrapper tour-element-highlighted">
+    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.seven"></span>
     <ng-container *ngFor="let item of listedTools">
       <a
         *ngIf="!item.navComponent"
