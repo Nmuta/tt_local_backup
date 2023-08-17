@@ -30,6 +30,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             this.configuration = configuration;
         }
 
+        /// <summary>
+        ///     Configures swagger
+        /// </summary>
         public void Configure(SwaggerGenOptions options)
         {
             // add swagger document for every API version discovered
@@ -47,6 +50,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         }
 
+        /// <summary>
+        ///     Configures swagger
+        /// </summary>
         public void Configure(string name, SwaggerGenOptions options)
         {
             this.Configure(options);

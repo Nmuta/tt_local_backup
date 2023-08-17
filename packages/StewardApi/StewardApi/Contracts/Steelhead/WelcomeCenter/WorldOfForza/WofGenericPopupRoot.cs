@@ -11,6 +11,9 @@ using System.Xml.Serialization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
+    /// <summary>
+    ///     Collection of generic popups for World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
@@ -21,6 +24,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public override List<WofGenericPopupEntry> Entries { get; set; }
     }
 
+    /// <summary>
+    ///     Generic popup entry for World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
