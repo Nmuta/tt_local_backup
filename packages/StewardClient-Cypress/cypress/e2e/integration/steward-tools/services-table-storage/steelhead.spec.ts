@@ -30,7 +30,6 @@ context('Steward / Tools / Services Table Storage / Steelhead', () => {
     testPlayerProfilesPopulated();
     testLookup(steelheadResults.noFilter);
     testLookupWithFilter(steelheadResults.CMSOverrideFilter);
-    //Times out when Previous tests are run, completes when previous tests are commented out
     testShowAllRows(steelheadResults.showAllRows);
     testLookupWithInvalidFilter();
   });

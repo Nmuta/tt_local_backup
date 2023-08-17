@@ -111,27 +111,31 @@ export function testLookupWithFilter(results: LookupResults): void {
 }
 
 /** Tests the Show All Rows Toggle */
-// This test times out in Steelhead when the previous tests are run but completes when the previous tests are commented out
 export function testShowAllRows(results: LookupResults): void {
   it('should toggle the Show All Rows Button', () => {
-     // cy.contains('mat-cell', results.result).should('not.exist');
-     cy.get('mat-slide-toggle').click();
-     cy.contains('button span', 'Lookup').closest('button').click();
-     waitForProgressSpinners()
- 
-     // remember our initial cell
-     cy.contains('mat-cell', results.result).as('cell');
-     
-     // chain into the row and remember it
-     cy.get('@cell').parent('mat-row').as('row').within(() => {
-       // expand the row
-       cy.contains('mat-icon', 'expand_more').closest('button').click();
-     });
- 
-     // examine the expanded row
-      cy.get('@row').next().within(_el => {
-       cy.contains('div', results.version).should('exist');
-     });
+    // cy.contains('mat-cell', results.result).should('not.exist');
+    cy.get('mat-slide-toggle').click();
+    cy.contains('button span', 'Lookup').closest('button').click();
+    waitForProgressSpinners();
+
+    // remember our initial cell
+    cy.contains('mat-cell', results.result).as('cell');
+
+    // chain into the row and remember it
+    cy.get('@cell')
+      .parent('mat-row')
+      .as('row')
+      .within(() => {
+        // expand the row
+        cy.contains('mat-icon', 'expand_more').closest('button').click();
+      });
+
+    // examine the expanded row
+    cy.get('@row')
+      .next()
+      .within(_el => {
+        cy.contains('div', results.version).should('exist');
+      });
   });
 }
 
