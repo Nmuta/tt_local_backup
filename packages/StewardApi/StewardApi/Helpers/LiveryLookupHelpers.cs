@@ -10,6 +10,9 @@ using static Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
+    /// <summary>
+    ///     Helper methods for looking up liveries
+    /// </summary>
     public static class LiveryLookupHelpers
     {
         public static async Task<IEnumerable<UgcItem>> LookupSteelheadLiveriesAsync(IEnumerable<string> liveryIds, IMapper mapper, IStorefrontManagementService service)

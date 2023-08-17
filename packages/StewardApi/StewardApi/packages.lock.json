@@ -13,6 +13,12 @@
           "Newtonsoft.Json": "11.0.2"
         }
       },
+      "Analyzer_Documentation": {
+        "type": "Direct",
+        "requested": "[1.0.0-CI-20230815-234109, )",
+        "resolved": "1.0.0-CI-20230815-234109",
+        "contentHash": "50N1V7Grg901ylaBXIp+j2DRQpKaJT+7XZe2X777ciYQ/tyK9cItL+ouMcGCSF5hFA7Fd/DrIodFCcSm1ZMlNw=="
+      },
       "Autofac": {
         "type": "Direct",
         "requested": "[6.4.0, )",
@@ -405,12 +411,6 @@
         "requested": "[5.0.1, )",
         "resolved": "5.0.1",
         "contentHash": "KmJ+CJXizDofbq6mpqDoRRLcxgOd2z9X3XoFNULSbvbqVRZkFX3istvr+MUjL6Zw1RT+RNdoI4GYidIINtgvqQ=="
-      },
-      "Turn10.Analyzer.Documentation": {
-        "type": "Direct",
-        "requested": "[1.2.3, )",
-        "resolved": "1.2.3",
-        "contentHash": "nX+3o8TfSt46SdDSUA5Qsmp9XCmQqEyZG4geGdXXrygLexc9Gl/qttHwOYMDRMadaMdDmAjxhmPPvvh0dZHWAA=="
       },
       "Turn10.Data.Azure": {
         "type": "Direct",

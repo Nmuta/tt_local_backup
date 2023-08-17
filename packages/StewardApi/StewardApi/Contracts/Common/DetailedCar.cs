@@ -49,6 +49,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public string RegionName { get; set; }
 
+        /// <summary>
+        ///     The series
+        /// </summary>
         /// <remarks> Projected as 'ReleaseIndex'. </remarks>
         public int Series { get; set; }
 

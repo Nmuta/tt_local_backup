@@ -12,6 +12,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
     {
         public override bool CanWrite => false;
 
+        /// <summary>
+        ///     Reads JSON for Deeplink Destination Converter
+        /// </summary>
         public override DeeplinkDestination ReadJson(JsonReader reader, Type objectType, DeeplinkDestination existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             JObject jsonObject = JObject.Load(reader);

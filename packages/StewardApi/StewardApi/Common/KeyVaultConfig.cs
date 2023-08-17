@@ -46,6 +46,9 @@ namespace Turn10.LiveOps.StewardApi.Common
 
         public string OpusCertificateSecret { get; set; }
 
+        /// <summary>
+        ///     Prepares keyvault from configuration
+        /// </summary>
         public static async Task<KeyVaultConfig> FromKeyVaultUrlAsync(IConfiguration configuration)
         {
             var initializationFailures = new List<Tuple<string, Exception>>();

@@ -10,6 +10,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
     public interface IConfigurationManagementService
     {
+        /// <summary>
+        ///     Retrieves table configuration
+        /// </summary>
         Task<GetTableConfigurationOutput> GetTableConfiguration();
     }
 }
