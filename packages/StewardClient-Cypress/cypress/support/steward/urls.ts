@@ -121,5 +121,8 @@ export const stewardUrls = {
       default: '/app/tools/ac-log-reader',
       steelhead: '/app/tools/ac-log-reader/steelhead',
     },
+    calendar: {
+      default: 'app/tools/unified-calendar',
+    },
   },
 };

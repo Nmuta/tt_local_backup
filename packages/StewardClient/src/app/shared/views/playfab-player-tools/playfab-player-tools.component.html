@@ -39,13 +39,14 @@
     <ng-container *ngIf="getPlayFabProfileMonitor.isDone">
       <playfab-inventory
         [service]="inventoryService"
-        [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+        [playfabProfile]="playfabProfile"
         [playfabCollectionId]="collectionId"
+        (inventoryChangeEvent)="inventoryChangeEvent()"
       ></playfab-inventory>
 
       <playfab-transaction-history
         [service]="transactionHistoryService"
-        [playfabPlayerTitleId]="playfabProfile?.title ?? null"
+        [playfabProfile]="playfabProfile"
         [playfabCollectionId]="collectionId"
       ></playfab-transaction-history>
     </ng-container>
