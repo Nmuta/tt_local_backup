@@ -11,6 +11,8 @@ import { GameTitleCodeName } from '@models/enums';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { SunrisePlayerService } from '@services/api-v2/sunrise/sunrise-player.service';
 import { SunrisePlayerCreditUpdatesService } from '@services/api-v2/sunrise/player/credit-updates/sunrise-credit-updates.service';
+import { Store } from '@ngxs/store';
+import { UserSettingsStateModel, UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 
 /** Retreives and displays Sunrise credit history by XUID. */
 @Component({
@@ -23,6 +25,7 @@ export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<Su
   public isSaveRollbackSupported = true;
 
   constructor(
+    private readonly store: Store,
     private readonly sunrise: SunrisePlayerCreditUpdatesService,
     private readonly sunrisePlayerService: SunrisePlayerService,
   ) {
@@ -43,5 +46,9 @@ export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<Su
   /** Gets save rollbacks history list */
   public getSaveRollbackHistoryByXuid$(xuid: BigNumber): Observable<ProfileRollbackHistory[]> {
     return this.sunrisePlayerService.getProfileRollbackHistoryXuid$(xuid);
+  }
+
+  public getEndpoint(): string {
+    return this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState).sunriseEndpointKey;
   }
 }

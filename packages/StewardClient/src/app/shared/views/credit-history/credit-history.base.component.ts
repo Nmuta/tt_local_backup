@@ -176,6 +176,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public loadingMore = false;
   public showLoadMoreAndLoadAll: boolean;
   public displayTrendAnalysisDisabled: boolean;
+  public isRetail: boolean;
 
   public xpAnalysisDates: (CreditDetailsEntryUnion & CreditDetailsEntryMixin)[] = null;
 
@@ -191,9 +192,11 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public abstract getSaveRollbackHistoryByXuid$(
     xuid: BigNumber,
   ): Observable<ProfileRollbackHistory[]>;
+  public abstract getEndpoint(): string;
 
   /** Lifecycle hook */
   public ngOnInit(): void {
+    this.isRetail = this.getEndpoint() == "Retail";
     this.getCreditUpdates$
       .pipe(
         switchMap(() => {

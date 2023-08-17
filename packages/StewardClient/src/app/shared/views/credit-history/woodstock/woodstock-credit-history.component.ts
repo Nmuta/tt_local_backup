@@ -10,6 +10,8 @@ import {
 import { GameTitleCodeName } from '@models/enums';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { WoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.service';
+import { Store } from '@ngxs/store';
+import { UserSettingsStateModel, UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 
 /** Retreives and displays Woodstock credit history by XUID. */
 @Component({
@@ -21,7 +23,7 @@ export class WoodstockCreditHistoryComponent extends CreditHistoryBaseComponent<
   public gameTitle = GameTitleCodeName.FH5;
   public isSaveRollbackSupported = false;
 
-  constructor(private readonly woodstock: WoodstockPlayerCreditUpdatesService) {
+  constructor(private readonly store: Store, private readonly woodstock: WoodstockPlayerCreditUpdatesService) {
     super();
   }
 
@@ -39,5 +41,9 @@ export class WoodstockCreditHistoryComponent extends CreditHistoryBaseComponent<
   /** Gets save rollbacks history list */
   public getSaveRollbackHistoryByXuid$(_xuid: BigNumber): Observable<ProfileRollbackHistory[]> {
     return throwError(new Error('Woodstock does not support save rollback.'));
+  }
+
+  public getEndpoint(): string {
+    return this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState).woodstockEndpointKey;
   }
 }
