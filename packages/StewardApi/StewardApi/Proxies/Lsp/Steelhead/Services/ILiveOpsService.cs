@@ -164,5 +164,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Clears override of player skill rating by xuid and profileId.
         /// </summary>
         Task ClearUserSkillRatingOverride(ulong xuid, Guid externalProfileId);
+
+        /// <summary>
+        ///     Get active bounties.
+        /// </summary>
+        Task<GetActiveBountiesOutput> GetActiveBounties(int startAt, int maxEntries);
     }
 }
