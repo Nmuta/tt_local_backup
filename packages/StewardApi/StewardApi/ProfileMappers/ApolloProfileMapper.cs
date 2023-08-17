@@ -185,7 +185,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         : new List<StewardError>
                         {
                             new ServicesFailureStewardError(
-                                $"LSP failed to gift livery to player with XUID: {source.xuid}")
+                                $"LSP failed to gift livery to player with XUID: {source.xuid}"),
                         }))
                 .ForMember(dest => dest.TargetLspGroupId, opt => opt.Ignore());
 
