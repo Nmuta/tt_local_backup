@@ -9,6 +9,9 @@ using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingMa
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="GiftingManagementService"/>.
+    /// </summary>
     public interface IGiftingManagementService
     {
         /// <summary>
