@@ -77,6 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             });
 
             options.OperationFilter<AddRequiredHeaderParameter>();
+            options.OperationFilter<SwaggerApiKeyHeaderParameter>();
             options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
             options.OperationFilter<SessionIdHeaderParameterOperationFilter>();
             options.OperationFilter<SwaggerTagOperationFilter>();

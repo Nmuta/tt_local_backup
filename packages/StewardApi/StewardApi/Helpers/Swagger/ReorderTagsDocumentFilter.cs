@@ -21,6 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
         {
             Meta.All,
             Meta.DangerousAll,
+            Meta.External,
             Dev.InDev,
 
             Title.Multiple,

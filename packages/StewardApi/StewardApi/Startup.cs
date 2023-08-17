@@ -46,6 +46,7 @@ using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Hubs;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Middleware;
+using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Obligation;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -261,6 +262,10 @@ namespace Turn10.LiveOps.StewardApi
             var keyVaultConfig = KeyVaultConfig.FromKeyVaultUrlAsync(this.configuration).GetAwaiter().GetResult();
             builder.Register(c => keyVaultConfig).As<KeyVaultConfig>().SingleInstance();
 
+            // Steward API Middleware
+            var acceptableApiKeys = AcceptableApiKeysFromKeyVaultConfig.FromConfigurationAsync(this.configuration).GetAwaiter().GetResult();
+            builder.Register(c => acceptableApiKeys).As<AcceptableApiKeysFromKeyVaultConfig>().SingleInstance();
+
             // Kusto
             var kustoClientSecret = keyVaultConfig.KustoClientSecret;
 
@@ -307,6 +312,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new SteelheadProfileMapper());
                 mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
+                mc.AddProfile(new ExternalProfileMapper());
                 mc.AllowNullCollections = true;
                 mc.IgnoreUnmapped(); // TODO: Should we remove this and correct all the mappings: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1347837
             });
@@ -383,6 +389,7 @@ namespace Turn10.LiveOps.StewardApi
 
             applicationBuilder.UseCors("CorsPolicy");
             applicationBuilder.UseMiddleware<EasyAuthSwaggerMiddleware>();
+            applicationBuilder.UseApiKeyMiddleware();
             applicationBuilder.UseSwagger();
             applicationBuilder.UseSwaggerUI(c =>
             {

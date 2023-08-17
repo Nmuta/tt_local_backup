@@ -33,8 +33,16 @@ namespace Turn10.LiveOps.StewardTest.Unit
                     method.Equals("DELETE", StringComparison.OrdinalIgnoreCase) ||
                     method.Equals("PATCH", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Skip posts that start with Get
+                    // Skip POST endpoints that start with Get
                     if (method.Equals(Http.Post, StringComparison.OrdinalIgnoreCase) && cad.ActionName.StartsWith("Get"))
+                    {
+                        continue;
+                    }
+
+                    // Skip POST endpoints in our external API
+                    var path = descriptor.AttributeRouteInfo.Template;
+                    var isExternalApiPath = path?.ToLowerInvariant().Contains("api/v{version:apiVersion}/external", StringComparison.InvariantCultureIgnoreCase) ?? false;
+                    if (isExternalApiPath)
                     {
                         continue;
                     }
