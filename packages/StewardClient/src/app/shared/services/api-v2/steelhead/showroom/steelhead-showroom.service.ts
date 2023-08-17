@@ -57,6 +57,7 @@ export interface CarSale {
   startTimeUtc: DateTime;
   endTimeUtc: DateTime;
   cars: CarPriceInformation[];
+  carSaleId: string;
 }
 
 /** The /v2/title/steelhead/showroom endpoints. */

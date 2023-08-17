@@ -157,7 +157,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             result.Should().BeOfType<SunriseAccountInventory>();
         }
 
-
         [TestMethod]
         [TestCategory("Unit")]
         public void UpdatePlayerInventoriesAsync_WithValidParameters_DoesNotThrow()

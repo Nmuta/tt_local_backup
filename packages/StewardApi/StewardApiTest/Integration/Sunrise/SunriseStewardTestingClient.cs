@@ -264,7 +264,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<ProfileNote>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-
         public async Task<IList<ProfileNote>> SendProfileNotesAsync(ulong xuid, ProfileNote message)
         {
             message.ShouldNotBeNull(nameof(message));

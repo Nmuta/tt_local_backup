@@ -47,6 +47,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Series,
         Season,
         Chapter,
+        ChallengeData,
+        DateTimeRange,
+        FeaturedShowcase,
+        RivalsEvent,
+        ShowroomListing,
     }
 
     /// <summary>
@@ -128,6 +133,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [XmlElement("Series", Type = typeof(Series))]
         [XmlElement("Season", Type = typeof(Season))]
         [XmlElement("Chapter", Type = typeof(Chapter))]
+        [XmlElement("ChallengeData", Type = typeof(ChallengeData))]
+        [XmlElement("DateRange", Type = typeof(DateRange))]
+        [XmlElement("FeaturedShowcase", Type = typeof(FeaturedShowcase))]
+        [XmlElement("Event", Type = typeof(RivalsEvent))]
+        [XmlElement("ShowroomListingCategory", Type = typeof(ShowroomListingCategory))]
         public WofBaseTimerReference TimerReference { get; set; }
     }
 
@@ -176,6 +186,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     ///     Chapter for World of Forza
     /// </summary>
     public class Chapter : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Chapter; }
+    public class ChallengeData : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ChallengeData; }
+    public class DateRange : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.DateTimeRange; }
+    public class FeaturedShowcase : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.FeaturedShowcase; }
+    public class RivalsEvent : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.RivalsEvent; }
+    public class ShowroomListingCategory : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ShowroomListing; }
 
     /// <summary>
     ///     Time to begin display of World of Forza tile
@@ -216,6 +231,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [WriteToPegasus]
         [XmlElement("To")]
         public WofBaseRangePoint To { get; set; }
+
+        [WriteToPegasus]
+        [XmlElement("Name")]
+        public string Name { get; set; }
     }
 
     /// <summary>

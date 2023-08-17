@@ -1,9 +1,8 @@
-# The purpose of this pipeline is to publish a preview 
+# The purpose of this pipeline is to publish a non-preview Nuget package.
 # 
 # What it does:
-# - Check that StewardApi projects will build
-# - Check that StewardApi project complies with linters. Warnings are treated as errors.
-# - Runs StewardApi unit tests and produces a summary
+# - Check that Documentation-Analyzer projects will build
+# - Packs and publishes the Turn10.Analyzer.Documentation nuget with the configured <Version>
 
 trigger:
 - main

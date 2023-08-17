@@ -22,8 +22,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
     [TestClass]
     public sealed class WoodstockPegasusServiceTests
     {
-        private static readonly Fixture Fixture = new Fixture();
-
         [TestMethod]
         [TestCategory("Unit")]
         public void Ctor_DoesNotThrow()

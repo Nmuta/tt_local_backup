@@ -401,7 +401,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
@@ -419,7 +419,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             var endpoint = Fixture.Create<string>();
 
             // Act.
@@ -520,7 +520,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "filters"));
         }
-
 
         private List<SunriseBanParameters> GenerateBanParameters()
         {
