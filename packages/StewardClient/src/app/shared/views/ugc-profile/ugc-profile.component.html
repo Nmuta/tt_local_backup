@@ -46,11 +46,12 @@
             #fileUpload
             type="file"
             class="file-upload-overlay"
+            [matTooltip]="fileName || 'Drop or Select UGC Profile'"
             [formControl]="formControls.profileDataFile"
             (change)="onFileSelected($event)"
           />
-          <div>
-            {{ fileName || 'Drop or Select UGC Profile' }}
+          <div class="sf-horizontal">
+            <div class="file-name">{{ fileName || 'Drop or Select UGC Profile' }}</div>
             <button mat-mini-fab color="accent" class="upload-btn" (click)="fileUpload.click()">
               <mat-icon>attach_file</mat-icon>
             </button>

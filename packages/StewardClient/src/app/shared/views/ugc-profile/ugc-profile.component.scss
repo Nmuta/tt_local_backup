@@ -39,3 +39,10 @@ button:not(.mat-mini-fab) {
 div.actions {
   align-items: end;
 }
+
+div.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  text-wrap: nowrap;
+}

@@ -213,7 +213,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.ManagePlayerInventory)]
         public async Task<IActionResult> EditPlayerProfileItems(ulong xuid, string externalProfileId, [FromBody] SteelheadPlayerInventory inventoryUpdates)
         {
-            var externalProfileGuid = externalProfileId.TryParseGuidElseThrow(nameof(externalProfileId));
+            var externalProfileIdGuid = externalProfileId.TryParseGuidElseThrow(nameof(externalProfileId));
 
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
