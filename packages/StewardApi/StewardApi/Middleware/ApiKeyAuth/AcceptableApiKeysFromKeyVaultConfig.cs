@@ -22,8 +22,14 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
         /// </summary>
         public bool IsInitialized { get; set; } = false;
 
+        /// <summary>
+        ///     All secret version for the PlayFab API key.
+        /// </summary>
         private AllSecretVersions StewardApiKeyPlayFab { get; set; }
 
+        /// <summary>
+        ///     All secret version for the Testing API key.
+        /// </summary>
         public AllSecretVersions StewardApiKeyTesting { get; set; }
 
         /// <summary>
@@ -31,7 +37,10 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
         /// </summary>
         public AllSecretVersions All { get; set; }
 
-        public static async Task<AcceptableApiKeysFromKeyVaultConfig> FromKeyVaultUrlAsync(IConfiguration configuration)
+        /// <summary>
+        ///     Initialiizes AcceptableApiKeysFromKeyVaultConfig from KeyVault
+        /// </summary>
+        public static async Task<AcceptableApiKeysFromKeyVaultConfig> InitializaeFromConfigurationAsync(IConfiguration configuration)
         {
             var initializationFailures = new List<Tuple<string, Exception>>();
             var keyVault = new AcceptableApiKeysFromKeyVaultConfig();
@@ -91,6 +100,9 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
             return keyVault;
         }
 
+        /// <summary>
+        ///     Gets all available secret version for provided API key.
+        /// </summary>
         public AllSecretVersions GetAcceptableApiKeys(StewardApiKey apiKey)
         {
             switch (apiKey)
@@ -104,10 +116,19 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
             }
         }
 
+        /// <summary>
+        ///     Container to track all active secret versions for an API key.
+        /// </summary>
         public class AllSecretVersions
         {
+            /// <summary>
+            ///     Tracks active secret versions for an API key.
+            /// </summary>
             public HashSet<string> Active { get; set; }
 
+            /// <summary>
+            ///     Collects all secret versions for an API key.
+            /// </summary>
             public static AllSecretVersions Collect(params AllSecretVersions[] allRegistered)
             {
                 var collected = new AllSecretVersions { Active = new HashSet<string>() };
