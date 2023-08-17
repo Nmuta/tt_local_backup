@@ -321,20 +321,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                 for (var i = 0; i < banInput.Count; i += maxXuidsPerRequest)
                 {
                     var paramBatch = banInput.ToList().GetRange(i, Math.Min(maxXuidsPerRequest, banInput.Count - i));
-
-                    var mappedBanParameters = paramBatch.Select(x => this.mapper.SafeMap<ForzaUserBanParametersV2>((x, banReasonGroup)));
-
                     var result = new UserManagementService.BanUsersV2Output();
                     try
                     {
+                        var mappedBanParameters = paramBatch.Select(x => this.mapper.SafeMap<ForzaUserBanParametersV2>((x, banReasonGroup)));
                         result = await userManagementService.BanUsersV2(mappedBanParameters.ToArray()).ConfigureAwait(false);
                         banResults.AddRange(this.mapper.SafeMap<IList<BanResult>>(result.banResults));
                     }
                     catch (Exception ex)
                     {
-                        var failureResult = mappedBanParameters.Select(ban => new BanResult()
+                        var failureResult = paramBatch.Select(ban => new BanResult()
                         {
-                            Xuid = ban.xuids.First(),
+                            Xuid = ban.Xuid,
                             BanDescription = null,
                             Error = new ServicesFailureStewardError("Ban Request Failed", ex),
                         });
