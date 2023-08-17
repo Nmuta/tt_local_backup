@@ -38,9 +38,9 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
         public AllSecretVersions All { get; set; }
 
         /// <summary>
-        ///     Initialiizes AcceptableApiKeysFromKeyVaultConfig from KeyVault
+        ///     Initialize AcceptableApiKeysFromKeyVaultConfig from KeyVault
         /// </summary>
-        public static async Task<AcceptableApiKeysFromKeyVaultConfig> InitializaeFromConfigurationAsync(IConfiguration configuration)
+        public static async Task<AcceptableApiKeysFromKeyVaultConfig> FromConfigurationAsync(IConfiguration configuration)
         {
             var initializationFailures = new List<Tuple<string, Exception>>();
             var keyVault = new AcceptableApiKeysFromKeyVaultConfig();

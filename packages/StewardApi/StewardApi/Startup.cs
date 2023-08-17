@@ -263,7 +263,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.Register(c => keyVaultConfig).As<KeyVaultConfig>().SingleInstance();
 
             // Steward API Middleware
-            var acceptableApiKeys = AcceptableApiKeysFromKeyVaultConfig.InitializaeFromConfigurationAsync(this.configuration).GetAwaiter().GetResult();
+            var acceptableApiKeys = AcceptableApiKeysFromKeyVaultConfig.FromConfigurationAsync(this.configuration).GetAwaiter().GetResult();
             builder.Register(c => acceptableApiKeys).As<AcceptableApiKeysFromKeyVaultConfig>().SingleInstance();
 
             // Kusto
