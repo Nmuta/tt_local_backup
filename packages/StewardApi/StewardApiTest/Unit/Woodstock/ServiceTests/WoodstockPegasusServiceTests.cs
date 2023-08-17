@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
     public sealed class WoodstockPegasusServiceTests
     {
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenPegasusCmsProviderNull_Throws()
         {
             // Arrange.
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenRefreshableCacheStoreNull_Throws()
         {
             // Arrange.
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -107,7 +107,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ServiceTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceNull_Throws()
         {
             // Arrange.
