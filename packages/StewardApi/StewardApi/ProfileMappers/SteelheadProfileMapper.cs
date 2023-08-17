@@ -47,18 +47,18 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
-                .ForMember(des => des.Error, opt => opt.MapFrom(src => default(StewardError)))
+                .ForMember(des => des.Error, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
-                .ForMember(des => des.Errors, opt => opt.MapFrom(src => default(Exception[])))
+                .ForMember(des => des.Errors, opt => opt.Ignore())
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
                     new PlayerInventoryItem { Id = 0, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>()
-                .ForMember(des => des.AdjustedBanCount, opt => opt.MapFrom(src => src.BanCount))
-                .ForMember(des => des.BannedAreas, opt => opt.MapFrom(src => new List<string>()));
+                .ForMember(des => des.AdjustedBanCount, opt => opt.Ignore())
+                .ForMember(des => des.BannedAreas, opt => opt.Ignore());
             this.CreateMap<ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
@@ -73,17 +73,17 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, LspGroup>();
             this.CreateMap<SteelheadPlayerDetails, IdentityResultAlpha>()
-                .ForMember(dest => dest.Query, opt => opt.MapFrom(src => default(IdentityQueryAlpha)))
-                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => default(StewardError)))
+                .ForMember(dest => dest.Query, opt => opt.Ignore())
+                .ForMember(dest => dest.Error, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<SteelheadUserFlagsInput, SteelheadUserFlags>().ReverseMap();
             this.CreateMap<SteelheadGroupGift, SteelheadGift>().ReverseMap();
             this.CreateMap<UserData, SteelheadPlayerDetails>()
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
-                .ForMember(dest => dest.CurrentPlayerBadgeId, opt => opt.MapFrom(src => src.currentBadgeId))
-                .ForMember(dest => dest.EquippedVanityItemId, opt => opt.MapFrom(src => 0))
-                .ForMember(dest => dest.CurrentCareerLevel, opt => opt.MapFrom(src => 0))
+                .ForMember(dest => dest.CurrentPlayerBadgeId, opt => opt.Ignore())
+                .ForMember(dest => dest.EquippedVanityItemId, opt => opt.Ignore())
+                .ForMember(dest => dest.CurrentCareerLevel, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<ForzaLiveOpsNotification, Notification>()
                 .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.Id))
@@ -92,8 +92,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
-                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => default(StewardError)))
-                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
+                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
+                .ForMember(dest => dest.Error, opt => opt.Ignore());
 
             this.CreateMap<AuctionFilters, ForzaAuctionFilters>()
                 .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))
@@ -101,8 +101,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.CarId))
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.MakeId))
                 .ForMember(dest => dest.AuctionStatus, opt => opt.MapFrom(source => source.Status))
-                .ForMember(dest => dest.Seller, opt => opt.MapFrom(source => 0))
-                .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? ForzaSearchOrderBy.ClosingDateAsc : ForzaSearchOrderBy.ClosingDateDesc));
+                .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? ForzaSearchOrderBy.ClosingDateAsc : ForzaSearchOrderBy.ClosingDateDesc))
+                .ForMember(dest => dest.Seller, opt => opt.Ignore());
 
             this.CreateMap<ForzaAuctionWithFileData, PlayerAuction>()
                 .ForMember(dest => dest.TextureMapImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
@@ -117,9 +117,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ModelId, opt => opt.MapFrom(source => source.Auction.Car.carId))
                 .ForMember(dest => dest.Bids, opt => opt.MapFrom(source => source.Auction.BidCount))
                 .ForMember(dest => dest.TotalReports, opt => opt.MapFrom(source => source.Auction.UserReportTotal))
-                .ForMember(dest => dest.ItemName, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.ReviewState, opt => opt.MapFrom(source => source.Auction.ReportingState))
-                .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default(DateTime) ? source.Auction.TimeFlagged : (DateTime?)null));
+                .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default(DateTime) ? source.Auction.TimeFlagged : (DateTime?)null))
+                .ForMember(dest => dest.ItemName, opt => opt.Ignore())
+                .ForMember(dest => dest.ReviewState, opt => opt.Ignore());
             this.CreateMap<IdentityQueryAlpha, ForzaPlayerLookupParameters>()
                 .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(src => src.Xuid.HasValue ? ForzaUserIdType.Xuid : ForzaUserIdType.Gamertag))
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.Xuid.HasValue ? src.Xuid.ToString() : src.Gamertag));
@@ -144,8 +144,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
             this.CreateMap<LocalizedStringData, ForzaLocalizedStringData>()
-                .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 512))
-                .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => string.Empty))
+                .ForMember(dest => dest.MaxLength, opt => opt.Ignore())
+                .ForMember(dest => dest.SubCategory, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<LocalizationStringResult, SteelheadLiveOpsContent.LocalizedString>()
                 .ForMember(dest => dest.LocString, opt => opt.MapFrom(src => src.LocalizedString))
@@ -210,8 +210,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
-                .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
+                .ForMember(dest => dest.OwnerGamertag, opt => opt.Ignore())
+                .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
                 .ReverseMap();
 
             this.CreateMap<ServicesLiveOps.ForzaUGCMetadata, SteelheadUgcItem>()
@@ -244,11 +244,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.TimesUsed))
-                .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => default(DateTime)))
+                .ForMember(dest => dest.OwnerGamertag, opt => opt.Ignore())
+                .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.Ignore())
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.Ignore())
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.Ignore())
                 .ReverseMap();
 
             this.CreateMap<ForzaLiveryData, SteelheadUgcLiveryItem>()
@@ -281,14 +281,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
-                .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
+                .ForMember(dest => dest.OwnerGamertag, opt => opt.Ignore())
+                .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<ForzaPhotoData, SteelheadUgcItem>()
                 .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.PhotoData.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.PhotoData) : null))
-                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => string.Empty))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
                 .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
@@ -313,8 +312,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
-                .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
+                .ForMember(dest => dest.OwnerGamertag, opt => opt.Ignore())
+                .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<ForzaTuneBlob, SteelheadUgcTuneBlobItem>()
                 .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
@@ -344,21 +344,21 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
-                .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.MapFrom(source => string.Empty))
+                .ForMember(dest => dest.OwnerGamertag, opt => opt.Ignore())
+                .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.Ignore())
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<UgcFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
                 .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => UgcSearchConstants.NoCarId))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ForMember(dest => dest.ShowBothUnfeaturedAndFeatured, opt => opt.MapFrom(source => true))
-                .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => default(ForzaOrderBy)))
-                .ForMember(dest => dest.Featured, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.ForceFeatured, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.UnderReview, opt => opt.MapFrom(source => false))
+                .ForMember(dest => dest.ManualKeywords, opt => opt.Ignore())
+                .ForMember(dest => dest.OrderBy, opt => opt.Ignore())
+                .ForMember(dest => dest.Featured, opt => opt.Ignore())
+                .ForMember(dest => dest.ForceFeatured, opt => opt.Ignore())
+                .ForMember(dest => dest.UnderReview, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<UgcSearchFilters, ServicesLiveOps.ForzaUGCSearchRequest>()
                 .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.Keywords))
@@ -366,15 +366,15 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ShowBothUnfeaturedAndFeatured, opt => opt.MapFrom(source => !source.IsFeatured))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => UgcSearchConstants.NoKeywordId))
-                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.ForceFeatured, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.UnderReview, opt => opt.MapFrom(source => false))
+                .ForMember(dest => dest.ShareCode, opt => opt.Ignore())
+                .ForMember(dest => dest.ForceFeatured, opt => opt.Ignore())
+                .ForMember(dest => dest.UnderReview, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<SteelheadLiveOpsContent.DataCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
-                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => 0))
-                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => default(StewardError)))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} ({src.Year})"));
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.MakeDisplayName} {src.DisplayName} ({src.Year})"))
+                .ForMember(dest => dest.Quantity, opt => opt.Ignore())
+                .ForMember(dest => dest.Error, opt => opt.Ignore());
             this.CreateMap<SteelheadLiveOpsContent.DataCar, SimpleCar>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarId))
                 .ForMember(dest => dest.Model, opt => opt.MapFrom(src => src.DisplayName))
@@ -382,9 +382,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Make, opt => opt.MapFrom(src => src.MakeDisplayName));
             this.CreateMap<SteelheadLiveOpsContent.VanityItem, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.VanityItemId))
-                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => 0))
-                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => default(StewardError)))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name));
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Quantity, opt => opt.Ignore())
+                .ForMember(dest => dest.Error, opt => opt.Ignore());
             this.CreateMap<ForzaUserReportWeightType, UserReportWeightType>();
             this.CreateMap<GetUserReportWeightOutput, UserReportWeight>()
                 .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.reportWeight))
@@ -393,11 +393,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.LastLoginDateUtc, opt => opt.MapFrom(src => src.LastLogin))
                 .ForMember(dest => dest.FirstLoginDateUtc, opt => opt.MapFrom(src => src.FirstLogin));
             this.CreateMap<string, ForzaUserIds>()
-               .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => 0))
+               .ForMember(dest => dest.xuid, opt => opt.Ignore())
                .ForMember(dest => dest.gamertag, opt => opt.MapFrom(src => src));
             this.CreateMap<ulong, ForzaUserIds>()
                 .ForMember(dest => dest.xuid, opt => opt.MapFrom(src => src))
-                .ForMember(dest => dest.gamertag, opt => opt.MapFrom(src => string.Empty));
+                .ForMember(dest => dest.gamertag, opt => opt.Ignore());
             this.CreateMap<ForzaBulkOperationType, UserGroupBulkOperationType>().ReverseMap();
             this.CreateMap<ForzaBulkOperationStatus, UserGroupBulkOperationStatus>().ReverseMap();
             this.CreateMap<SteelheadLiveOpsContent.DateTimeRange, WelcomeCenterDateTimeRange>()
@@ -431,14 +431,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<WofGenericPopupEntry, WofGenericPopupBridge>()
                 .ReverseMap();
             this.CreateMap<WofDeeplinkEntry, WofDeeplinkBridge>()
-                .ForMember(dest => dest.Manufacturer, opt => opt.MapFrom(src => default(Guid)))
-                .ForMember(dest => dest.Destination, opt => opt.MapFrom(src => this.PrepareBridgeDestination(src.Destination)));
+                .ForMember(dest => dest.Destination, opt => opt.MapFrom(src => this.PrepareBridgeDestination(src.Destination)))
+                .ForMember(dest => dest.Manufacturer, opt => opt.Ignore());
             this.CreateMap<WofDeeplinkBridge, WofDeeplinkEntry>()
                 .ForMember(dest => dest.Destination, opt => opt.MapFrom(src => this.PrepareRootDestination(src)))
-                .ForMember(dest => dest.Cooldowns, opt => opt.MapFrom(src => default(object)))
-                .ForMember(dest => dest.CMSTileID, opt => opt.MapFrom(src => default(object)))
-                .ForMember(dest => dest.TelemetryTag, opt => opt.MapFrom(src => string.Empty))
-                .ForMember(dest => dest.id, opt => opt.MapFrom(src => default(Guid)));
+                .ForMember(dest => dest.Cooldowns, opt => opt.Ignore())
+                .ForMember(dest => dest.CMSTileID, opt => opt.Ignore())
+                .ForMember(dest => dest.TelemetryTag, opt => opt.Ignore())
+                .ForMember(dest => dest.id, opt => opt.Ignore());
 
             this.CreateMap<LocTextBaseWof, LocTextBridge>()
                 .ForMember(dest => dest.Locdef, opt => opt.MapFrom(src => (src.locdef == Guid.Empty) ? (Guid?)null : src.locdef))
@@ -447,9 +447,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<WofImageTextEntry, WofImageTextBridge>()
                 .ReverseMap();
             this.CreateMap<WofTimerBridge, WofBaseTimer>()
-                .ForMember(dest => dest.TimeDisplayFrom, opt => opt.MapFrom(src => default(WofBaseTimeDisplayFrom)))
-                .ForMember(dest => dest.TimeDisplayTo, opt => opt.MapFrom(src => default(WofBaseTimeDisplayTo)))
-                .ForMember(dest => dest.@null, opt => opt.MapFrom(src => default(object)))
+                .ForMember(dest => dest.TimeDisplayFrom, opt => opt.Ignore())
+                .ForMember(dest => dest.TimeDisplayTo, opt => opt.Ignore())
+                .ForMember(dest => dest.@null, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<TextOverrideBridge, TextOverride>()
                 .ReverseMap();
@@ -470,7 +470,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 // Map empty string to null
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => string.IsNullOrEmpty(src.gamertag) ? null : src.gamertag))
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.xuid))
-                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => default(StewardError)));
+                .ForMember(dest => dest.Error, opt => opt.Ignore());
             this.CreateMap<ForzaUserGroupBulkOperationStatus, UserGroupBulkOperationStatusOutput>()
                 .ForMember(dest => dest.FailedUsers, opt => opt.MapFrom(src => src.failedUsers.SelectMany(x => x.userIds).ToList()));
 
@@ -481,19 +481,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ScoreboardTypeId, opt => opt.MapFrom(src => (int)ScoreboardType.Rivals))
                 .ForMember(dest => dest.ScoreType, opt => opt.MapFrom(src => src.ScoreType))
                 .ForMember(dest => dest.ScoreTypeId, opt => opt.MapFrom(src => src.ScoreType))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => default(Guid)))
-                .ForMember(dest => dest.CarClass, opt => opt.MapFrom(src => string.Empty))
-                .ForMember(dest => dest.ValidationData, opt => opt.MapFrom(src => default(WoodstockLiveOpsContent.BaseValidationData[])))
-                .ForMember(dest => dest.LastRulesChange, opt => opt.MapFrom(src => default(DateTime)))
-                .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.Buckets.Select(x => x.CarRestrictions.CarClassId).First()));
+                .ForMember(dest => dest.CarClassId, opt => opt.MapFrom(src => (int)src.Buckets.Select(x => x.CarRestrictions.CarClassId).First()))
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.CarClass, opt => opt.Ignore())
+                .ForMember(dest => dest.ValidationData, opt => opt.Ignore())
+                .ForMember(dest => dest.LastRulesChange, opt => opt.Ignore());
 
             this.CreateMap<SteelheadLiveOpsContent.RivalEvent, Contracts.Common.RivalsEvent>()
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Track))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.EventCategory))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartEndDate.From))
                 .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.StartEndDate.To))
-                .ForMember(dest => dest.TrackName, opt => opt.MapFrom(src => string.Empty))
-                .ForMember(dest => dest.CarRestrictions, opt => opt.MapFrom(src => src.Buckets.Select(x => x.CarRestrictions.Name).ToList()));
+                .ForMember(dest => dest.CarRestrictions, opt => opt.MapFrom(src => src.Buckets.Select(x => x.CarRestrictions.Name).ToList()))
+                .ForMember(dest => dest.TrackName, opt => opt.Ignore());
 
             this.CreateMap<SteelheadLiveOpsContent.CarClass, CarClass>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CarClassId));
@@ -565,9 +565,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserInventoryItemWrapper, PlayerInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Item.itemId))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(source => source.Item.quantity))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.Error, opt => opt.MapFrom(source => default(StewardError)))
-                .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(source => source.Item.acquisitionTime));
+                .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(source => source.Item.acquisitionTime))
+                .ForMember(dest => dest.Description, opt => opt.Ignore())
+                .ForMember(dest => dest.Error, opt => opt.Ignore());
 
             this.CreateMap<PlayerInventoryCarItem, AdminForzaCarUserInventoryItem>()
                 .ForMember(dest => dest.inventoryItemSource, opt => opt.MapFrom(source => ForzaInventoryItemSource.Steward))
@@ -576,22 +576,22 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.carId, opt => opt.MapFrom(source => source.Id))
                 .ForMember(dest => dest.clientCarInfo, opt => opt.MapFrom(source => Array.Empty<byte>()))
                 .ForMember(dest => dest.versionedLiveryId, opt => opt.MapFrom(source => source.VersionedLiveryId.HasValue ? source.VersionedLiveryId.Value : Guid.Empty))
+                .ForMember(dest => dest.versionedTuneId, opt => opt.MapFrom(source => source.VersionedTuneId.HasValue ? source.VersionedTuneId.Value : Guid.Empty))
                 .ForMember(dest => dest.acquisitionTime, opt => opt.MapFrom(source => source.AcquiredUtc))
-                .ForMember(dest => dest.lastUsedTime, opt => opt.MapFrom(source => default(DateTime)))
-                .ForMember(dest => dest.collectorScore, opt => opt.MapFrom(source => 0))
-                .ForMember(dest => dest.productionNumber, opt => opt.MapFrom(source => 0))
-                .ForMember(dest => dest.isOnlineOnly, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.carPointsTotal, opt => opt.MapFrom(source => 0))
-                .ForMember(dest => dest.unredeemed, opt => opt.MapFrom(source => false))
-                .ForMember(dest => dest.baseCost, opt => opt.MapFrom(source => 0))
-                .ForMember(dest => dest.carId, opt => opt.MapFrom(source => source.Id))
-                .ForMember(dest => dest.purchaseTimestamp, opt => opt.MapFrom(source => default(DateTime)))
-                .ForMember(dest => dest.versionedTuneId, opt => opt.MapFrom(source => source.VersionedTuneId.HasValue ? source.VersionedTuneId.Value : Guid.Empty));
+                .ForMember(dest => dest.lastUsedTime, opt => opt.Ignore())
+                .ForMember(dest => dest.collectorScore, opt => opt.Ignore())
+                .ForMember(dest => dest.productionNumber, opt => opt.Ignore())
+                .ForMember(dest => dest.isOnlineOnly, opt => opt.Ignore())
+                .ForMember(dest => dest.carPointsTotal, opt => opt.Ignore())
+                .ForMember(dest => dest.unredeemed, opt => opt.Ignore())
+                .ForMember(dest => dest.baseCost, opt => opt.Ignore())
+                .ForMember(dest => dest.carId, opt => opt.Ignore())
+                .ForMember(dest => dest.purchaseTimestamp, opt => opt.Ignore());
 
             this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryCarItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
-                .ForMember(des => des.Error, opt => opt.MapFrom(src => default(StewardError)))
-                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime));
+                .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(des => des.Error, opt => opt.Ignore());
 
             this.CreateMap<ForzaProfile, SteelheadInventoryProfile>()
                 .ForMember(dest => dest.IsCurrent, opt => opt.MapFrom(source => source.isLastLoggedInProfile))
@@ -601,7 +601,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.xuid))
                 .ForMember(dest => dest.TargetXuid, opt => opt.MapFrom(source => source.xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid))
-                .ForMember(dest => dest.TargetLspGroupId, opt => opt.MapFrom(source => 0))
                 .ForMember(dest => dest.Errors, opt => opt.MapFrom(source =>
                     source.Success
                         ? new List<StewardError>()
@@ -609,7 +608,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                         {
                             new ServicesFailureStewardError(
                                 $"LSP failed to gift livery to player with XUID: {source.xuid}"),
-                        }));
+                        }))
+                .ForMember(dest => dest.TargetLspGroupId, opt => opt.Ignore());
 
             this.CreateMap<ForzaSafetyRatingLetterGrade, SafetyRatingGrade>();
             this.CreateMap<ForzaSafetyRating, SafetyRating>()
@@ -651,8 +651,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
                 .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
                 .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
-                .ForMember(dest => dest.OwnerGamertag, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.CarDescription, opt => opt.MapFrom(source => string.Empty))
+                .ForMember(dest => dest.OwnerGamertag, opt => opt.Ignore())
+                .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
                 .ReverseMap();
 
             this.CreateMap<ForzaTask, LspTask>()
