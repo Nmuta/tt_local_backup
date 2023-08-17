@@ -9,6 +9,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
     /// </summary>
     public class IgnoreDefaultApiVersionParameter : IOperationFilter
     {
+        /// <inheritdoc/>
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             var versionParameter = operation.Parameters

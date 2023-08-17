@@ -10,6 +10,9 @@ using AuctionManagementService = Turn10.Services.LiveOps.FM8.Generated.AuctionMa
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages auctions. Proxy for Client object.
+    /// </summary>
     public interface IAuctionManagementService
     {
         /// <summary>

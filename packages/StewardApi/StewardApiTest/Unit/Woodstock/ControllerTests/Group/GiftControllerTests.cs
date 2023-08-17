@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Group
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GiftItemsToUserGroup_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Group
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GiftItemsToUserGroups_WithNullGift_Throws()
         {
             // Arrange.

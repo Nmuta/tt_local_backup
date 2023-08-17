@@ -59,6 +59,9 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string GenerateLeaderboardScoresFile = nameof(GenerateLeaderboardScoresFile);
         public const string UpdateUgcProfile = nameof(UpdateUgcProfile);
 
+        /// <summary>
+        ///     Compiles a list of all User Attributes
+        /// </summary>
         public static IEnumerable<string> AllAttributes()
         {
             return typeof(UserAttributeValues).GetFields().Select(field => field.Name);

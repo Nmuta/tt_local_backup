@@ -68,6 +68,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             return masterInventory;
         }
 
+        /// <summary>
+        ///     Get vanity items from Pegasus.
+        /// </summary>
+        /// <remarks>Currently unused, no Interface definition</remarks>
         public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily)
         {
             IEnumerable<VanityItem> vanityItems;

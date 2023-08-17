@@ -3,6 +3,9 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
+    /// <summary>
+    ///     Subjects that can have actions taken upon them in Steward
+    /// </summary>
     public enum StewardSubject
     {
         None,

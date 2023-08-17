@@ -47,6 +47,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             /// <summary>A meta-tag to enable ctrl+f on APIs.</summary>
             public const string All = "All";
 
+            /// <summary>A meta-tag to enable ctrl+f on external APIs.</summary>
+            public const string External = "External";
+
             /// <summary>A meta-tag to enable ctrl+f on Dangerous APIs.</summary>
             public static readonly string DangerousAll = MakeDangerous(All);
         }
