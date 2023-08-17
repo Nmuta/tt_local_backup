@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using Xls.Security.FH5_main.Generated;
 using static Turn10.Services.LiveOps.FH5_main.Generated.UserManagementService;
 using ServicesLiveOps = Turn10.Services.LiveOps.FH5_main.Generated;
 using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
@@ -639,6 +640,27 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LspTask, ForzaTaskUpdateParameters>()
                 .ForMember(dest => dest.NextExecution, opt => opt.MapFrom(source => source.NextExecutionUtc));
+
+            this.CreateMap<(V2BanParametersInput banParams, BanReasonGroup<FeatureAreas> banReasonGroup), ForzaUserBanParametersV2>()
+                .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.banParams.Xuid }))
+                .ForMember(dest => dest.DeleteLeaderboardEntries, opt => opt.MapFrom(source => source.banParams.DeleteLeaderboardEntries.Value))
+                .ForMember(dest => dest.BanEntryReason, opt => opt.MapFrom(source => source.banParams.Reason))
+                .ForMember(dest => dest.PegasusBanConfigurationId, opt => opt.MapFrom(source => source.banReasonGroup.BanConfigurationId))
+                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => source.banReasonGroup.FeatureAreas.Select(x => (uint)x).Aggregate((a, b) => a | b)))
+                .ForMember(dest => dest.BanEntryReason, opt => opt.MapFrom(source => source.banParams.Override))
+                .ForMember(dest => dest.BanDurationOverride, opt => opt.MapFrom(source => new ForzaBanDuration()
+                {
+                    IsDeviceBan = source.banParams.OverrideBanConsoles.Value,
+                    IsPermaBan = source.banParams.OverrideDurationPermanent.Value,
+                    BanDuration = source.banParams.OverrideDuration.HasValue ? new ForzaTimeSpan()
+                    {
+                        Days = (uint)source.banParams.OverrideDuration.Value.Days,
+                        Hours = (uint)source.banParams.OverrideDuration.Value.Hours,
+                        Minutes = (uint)source.banParams.OverrideDuration.Value.Minutes,
+                        Seconds = (uint)source.banParams.OverrideDuration.Value.Seconds,
+                    }
+                    : new ForzaTimeSpan(),
+                }));
         }
 
         private string PrepareDeviceType(string deviceType)

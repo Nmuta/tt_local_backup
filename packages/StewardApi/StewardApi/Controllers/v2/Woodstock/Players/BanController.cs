@@ -318,36 +318,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
             {
                 // This assume that the parameters are the same for every ban input which is how Steward currently works
                 var banReasonGroup = this.banReasonGroups.First(x => x.Name == banInput[0].ReasonGroupName);
-                var formattedBanAreas = string.Join(", ", banReasonGroup.FeatureAreas);
-                var calculatedBanAreas = banReasonGroup.FeatureAreas.Select(x => (uint)x).Aggregate((a, b) => a | b);
                 for (var i = 0; i < banInput.Count; i += maxXuidsPerRequest)
                 {
                     var paramBatch = banInput.ToList().GetRange(i, Math.Min(maxXuidsPerRequest, banInput.Count - i));
 
-                    var mappedBanParameters = paramBatch.Select(x => new ForzaUserBanParametersV2()
-                    {
-                        xuids = new ulong[] { x.Xuid },
-                        DeleteLeaderboardEntries = x.DeleteLeaderboardEntries.Value,
-                        BanEntryReason = x.Reason,
-                        PegasusBanConfigurationId = banReasonGroup.BanConfigurationId,
-                        FeatureArea = calculatedBanAreas,
-                        OverrideBanDuration = x.Override,
-
-                        // ForzaBanDuration is completely ignored by services if OverrideBanDuration is not set to true
-                        BanDurationOverride = new ForzaBanDuration()
-                        {
-                            IsDeviceBan = x.OverrideBanConsoles.Value,
-                            IsPermaBan = x.OverrideDurationPermanent.Value,
-                            BanDuration = x.OverrideDuration.HasValue ? new ForzaTimeSpan()
-                            {
-                                Days = (uint)x.OverrideDuration.Value.Days,
-                                Hours = (uint)x.OverrideDuration.Value.Hours,
-                                Minutes = (uint)x.OverrideDuration.Value.Minutes,
-                                Seconds = (uint)x.OverrideDuration.Value.Seconds,
-                            }
-                            : emptyDuration,
-                        },
-                    });
+                    var mappedBanParameters = paramBatch.Select(x => this.mapper.SafeMap<ForzaUserBanParametersV2>((x, banReasonGroup)));
 
                     var result = new UserManagementService.BanUsersV2Output();
                     try
@@ -384,7 +359,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock
                                         parameters,
                                         result,
                                         this.WoodstockEndpoint.Value,
-                                        formattedBanAreas).ConfigureAwait(false);
+                                        string.Join(", ", banReasonGroup.FeatureAreas)).ConfigureAwait(false);
                         }
                         catch (Exception ex)
                         {
