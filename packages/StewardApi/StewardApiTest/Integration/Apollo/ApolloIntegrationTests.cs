@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByXuid()
         {
             var query = new IdentityQueryAlpha { Xuid = xuid };
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByXuid_InvalidXuid()
         {
             var query = new IdentityQueryAlpha { Xuid = TestConstants.InvalidXuid };
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByXuid_XuidBelow100()
         {
             var query = new IdentityQueryAlpha { Xuid = TestConstants.InvalidXuidBelow100 };
@@ -108,7 +108,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByGamertag()
         {
             var query = new IdentityQueryAlpha { Gamertag = gamertag };
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByGamertag_InvalidGamertag()
         {
             var query = new IdentityQueryAlpha { Gamertag = TestConstants.InvalidGamertag };
@@ -135,7 +135,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByGamertag()
         {
             var result = await stewardClient.GetPlayerDetailsAsync(gamertag).ConfigureAwait(false);
@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByGamertag_InvalidGamertag()
         {
             try
@@ -160,7 +160,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByGamertag_Unauthorized()
         {
             try
@@ -175,7 +175,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByXuid()
         {
             var result = await stewardClient.GetPlayerDetailsAsync(xuid).ConfigureAwait(false);
@@ -185,7 +185,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByXuid_InvalidXuid()
         {
             try
@@ -200,7 +200,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByXuid_Unauthorized()
         {
             try
@@ -215,7 +215,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task BanPlayers()
         {
@@ -229,7 +229,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task BanPlayers_GamertagOnly()
         {
@@ -244,7 +244,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task BanPlayers_InvalidXuid()
         {
@@ -259,7 +259,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_InvalidGamertag()
         {
             var banParameters = GenerateBanParameters();
@@ -278,7 +278,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_Unauthorized()
         {
             var banParameters = GenerateBanParameters();
@@ -295,7 +295,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_InvalidFeatureArea()
         {
             var banParameters = GenerateBanParameters();
@@ -313,7 +313,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task BanPlayers_UndefinedStartTimeUtc()
         {
@@ -329,7 +329,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_NoXuidsOrGamertagsProvided()
         {
             var banParameters = GenerateBanParameters();
@@ -348,7 +348,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_BanAllConsolesUndefined()
         {
             var banParameters = GenerateBanParameters();
@@ -366,7 +366,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_DurationTimeNotProvided()
         {
             var banParameters = GenerateBanParameters();
@@ -384,7 +384,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_DurationNegative()
         {
             var banParameters = GenerateBanParameters();
@@ -402,7 +402,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_DurationZero()
         {
             var banParameters = GenerateBanParameters();
@@ -420,7 +420,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_SendNotificationWithoutReason()
         {
             var banParameters = GenerateBanParameters();
@@ -439,7 +439,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing()
         {
@@ -452,7 +452,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidXuid()
         {
@@ -466,7 +466,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidGamertag()
         {
             var banParameters = GenerateBanParameters();
@@ -479,7 +479,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanSummaries()
         {
             var result = await stewardClient.GetBanSummariesAsync(new List<ulong> { xuid }).ConfigureAwait(false);
@@ -489,7 +489,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanSummaries_NoXuids()
         {
             var result = await stewardClient.GetBanSummariesAsync(new List<ulong>()).ConfigureAwait(false);
@@ -499,7 +499,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanSummaries_InvalidXuid()
         {
             var result = await stewardClient.GetBanSummariesAsync(new List<ulong> { TestConstants.InvalidXuid }).ConfigureAwait(false);
@@ -510,7 +510,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanSummaries_Unauthorized()
         {
             try
@@ -525,7 +525,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanHistoryByXuid()
         {
             var result = await stewardClient.GetBanHistoryAsync(xuid).ConfigureAwait(false);
@@ -535,7 +535,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanHistoryByXuid_InvalidXuid()
         {
             var result = await stewardClient.GetBanHistoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
@@ -545,7 +545,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanHistoryByXuid_Unauthorized()
         {
             try
@@ -560,7 +560,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanHistoryByGamertag()
         {
             var result = await stewardClient.GetBanHistoryAsync(gamertag).ConfigureAwait(false);
@@ -570,7 +570,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanHistoryByGamertag_InvalidGamertag()
         {
             try
@@ -585,7 +585,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetBanHistoryByGamertag_Unauthorized()
         {
             try
@@ -600,7 +600,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetConsoles()
         {
             var result = await stewardClient.GetConsolesAsync(xuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
@@ -610,7 +610,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetConsoles_InvalidXuid()
         {
             try
@@ -625,7 +625,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetConsoles_NegativeMaxResults()
         {
             try
@@ -640,7 +640,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetConsoles_Unauthorized()
         {
             try
@@ -655,14 +655,14 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SetConsoleBanStatus()
         {
             await stewardClient.SetConsoleBanStatusAsync(consoleId, false).ConfigureAwait(false);
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SetConsoleBanStatus_InvalidConsoleId()
         {
             try
@@ -677,7 +677,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SetConsoleBanStatus_Unauthorized()
         {
             try
@@ -692,7 +692,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetSharedConsoleUsers()
         {
             var result = await stewardClient.GetSharedConsoleUsersAsync(xuid, TestConstants.DefaultStartIndex, TestConstants.DefaultMaxResults).ConfigureAwait(false);
@@ -702,7 +702,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetSharedConsoleUsers_InvalidXuid()
         {
             try
@@ -717,7 +717,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetSharedConsoleUsers_NegativeStartIndex()
         {
             try
@@ -732,7 +732,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetSharedConsoleUsers_NegativeMaxResults()
         {
             try
@@ -747,7 +747,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetSharedConsoleUsers_Unauthorized()
         {
             try
@@ -762,7 +762,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetUserFlags()
         {
             var result = await stewardClient.GetUserFlagsAsync(xuid).ConfigureAwait(false);
@@ -771,7 +771,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetUserFlags_InvalidXuid()
         {
             try
@@ -786,7 +786,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetUserFlags_Unauthorized()
         {
             try
@@ -801,7 +801,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SetUserFlags()
         {
             var userFlags = CreateUserFlags();
@@ -811,7 +811,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SetUserFlags_InvalidXuid()
         {
             var userFlags = CreateUserFlags();
@@ -828,7 +828,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SetUserFlags_InvalidFlags()
         {
             var userFlags = CreateUserFlags();
@@ -846,7 +846,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SetUserFlags_Unauthorized()
         {
             var userFlags = CreateUserFlags();
@@ -863,7 +863,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByXuid()
         {
             var result = await stewardClient.GetPlayerInventoryAsync(xuid).ConfigureAwait(false);
@@ -873,7 +873,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByXuid_InvalidXuid()
         {
             try
@@ -888,7 +888,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByXuid_Unauthorized()
         {
             try
@@ -903,7 +903,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByProfileId()
         {
             var result = await stewardClient.GetPlayerInventoryAsync(profileId).ConfigureAwait(false);
@@ -913,7 +913,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByProfileId_InvalidProfileId()
         {
             try
@@ -928,7 +928,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByProfileId_Unauthorized()
         {
             try
@@ -943,7 +943,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetInventoryProfilesByXuid()
         {
             var result = await stewardClient.GetInventoryProfilesAsync(xuid).ConfigureAwait(false);
@@ -953,7 +953,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetInventoryProfilesByXuid_InvalidXuid()
         {
             var result = await stewardClient.GetInventoryProfilesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
@@ -962,7 +962,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetInventoryProfilesByXuid_Unauthorized()
         {
             try
@@ -977,7 +977,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetGroups()
         {
             var result = await stewardClient.GetGroupsAsync().ConfigureAwait(false);
@@ -987,7 +987,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetGroups_Unauthorized()
         {
             try
@@ -1002,7 +1002,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task UpdatePlayerInventory_UseBackgroundProcessing()
         {
@@ -1015,7 +1015,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task UpdatePlayerInventories()
         {
@@ -1028,7 +1028,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task UpdatePlayerInventories_InvalidGiftInventory()
         {
             var groupGift = CreateGroupGift();
@@ -1046,7 +1046,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task UpdatePlayerInventories_InvalidItemId()
         {
             var playerGift = CreateGroupGift();
@@ -1074,7 +1074,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task UpdatePlayerInventories_NoRecipient()
         {
             var groupGift = CreateGroupGift();
@@ -1092,7 +1092,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task UpdatePlayerInventories_InvalidRecipient()
         {
@@ -1111,7 +1111,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task UpdatePlayerInventories_Unauthorized()
         {
             var groupGift = CreateGroupGift();
@@ -1129,7 +1129,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId()
         {
@@ -1142,7 +1142,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task UpdateGroupInventoriesByLspGroupId_InvalidGiftInventory()
         {
             var gift = CreateGift();
@@ -1160,7 +1160,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task UpdateGroupInventoriesByLspGroupId_Unauthorized()
         {
             var gift = CreateGift();
@@ -1177,7 +1177,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId_InvalidGroupId()
         {
@@ -1188,7 +1188,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task GetGiftHistory()
         {
@@ -1200,7 +1200,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task GetGiftHistoryForGroupGift()
         {
@@ -1213,7 +1213,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task GetGiftHistoryForLspGroupGift()
         {
@@ -1226,7 +1226,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetGiftHistory_Unauthorized()
         {
             try
@@ -1241,7 +1241,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         [Ignore]
         public async Task GetGiftHistory_InvalidGiftRecipientId()
         {

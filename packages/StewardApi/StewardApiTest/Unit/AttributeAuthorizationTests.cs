@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
     public sealed class AttributeAuthorizationTests
     {
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void AllActionsHaveAttributes()
         {
             var builder = Program.CreateHostBuilder<ControllerTestStartup>(Array.Empty<string>());

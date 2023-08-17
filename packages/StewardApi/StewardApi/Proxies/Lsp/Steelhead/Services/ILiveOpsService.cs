@@ -12,6 +12,9 @@ using LiveOpsService = Forza.WebServices.FM8.Generated.LiveOpsService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages live-ops specific data. Proxy for Client object.
+    /// </summary>
     public interface ILiveOpsService
     {
         /// <summary>

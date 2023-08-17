@@ -3,6 +3,9 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 {
+    /// <summary>
+    ///     Racer's Cup weather condition
+    /// </summary>
     public sealed class RacersCupWeatherCondition
     {
         public string Name { get; set; }

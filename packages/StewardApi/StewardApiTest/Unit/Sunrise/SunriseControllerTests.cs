@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceNull_Throws()
         {
             // Arrange.
@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKustoProviderNull_Throws()
         {
             // Arrange.
@@ -77,7 +77,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunrisePlayerDetailsProviderNull_Throws()
         {
             // Arrange.
@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunrisePlayerInventoryProviderNull_Throws()
         {
             // Arrange.
@@ -105,7 +105,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunriseServiceManagementProviderNull_Throws()
         {
             // Arrange.
@@ -119,7 +119,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunriseNotificationProviderNull_Throws()
         {
             // Arrange.
@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKeyVaultProviderNull_Throws()
         {
             // Arrange.
@@ -147,7 +147,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -161,7 +161,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenBanHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -175,7 +175,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenNotificationHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -189,7 +189,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenStorefrontProviderNull_Throws()
         {
             // Arrange.
@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSchedulerNull_Throws()
         {
             // Arrange.
@@ -231,7 +231,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenJobTrackerNull_Throws()
         {
             // Arrange.
@@ -245,7 +245,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMasterInventoryRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -259,7 +259,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -273,7 +273,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGroupGiftRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -287,7 +287,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenBanParametersRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -301,7 +301,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenUserFlagsRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -315,7 +315,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -329,7 +329,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -349,7 +349,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerIdentities_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
@@ -364,7 +364,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -394,7 +394,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
         {
             // Arrange.
@@ -415,7 +415,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithValidEndpointKeyHeader_DoesNotThrows()
         {
             // Arrange.
@@ -431,7 +431,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_EmptyStringEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -452,7 +452,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_InvalidTitleEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -473,7 +473,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_InvalidKeyEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -494,7 +494,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_NoEndpointKeyEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -515,7 +515,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_NoTitleEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -536,7 +536,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetConsoles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -557,7 +557,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetConsoles_WithNegativeMaxResults_Throws()
         {
             // Arrange.
@@ -573,7 +573,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetSharedConsoleUsers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -595,7 +595,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetSharedConsoleUsers_WithNegativeStartIndex_Throws()
         {
             // Arrange.
@@ -612,7 +612,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetSharedConsoleUsers_WithNegativeMaxResults_Throws()
         {
             // Arrange.
@@ -630,7 +630,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserFlags_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -650,7 +650,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetUserFlags_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -671,7 +671,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUserFlags_WithNullUserFlags_Throws()
         {
             // Arrange.
@@ -686,7 +686,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetProfileSummary_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -706,7 +706,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBackstagePassUpdates_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -726,7 +726,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task BanPlayers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -746,7 +746,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayers_WithNullBanParameters_Throws()
         {
             // Arrange.
@@ -760,7 +760,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayers_WithValidParameters_UseBackgroundProcessing_DoesNotThrow()
         {
             // Arrange.
@@ -775,7 +775,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayers_WithNullBanParameters_UseBackgroundProcessing_Throws()
         {
             // Arrange.
@@ -789,7 +789,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBanSummaries_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -809,7 +809,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBanHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -837,7 +837,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetBanHistory_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -859,7 +859,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetConsoleBanStatus_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -878,7 +878,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -906,7 +906,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetgiftInventoryProfiles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -926,7 +926,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroups_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -945,7 +945,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdatePlayerInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -970,7 +970,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventories_WithNullGroupGift_Throws()
         {
             // Arrange.
@@ -984,7 +984,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
         {
             // Arrange.
@@ -1006,7 +1006,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventories_WithNullGroupGift_UseBackgroundProcessing_Throws()
         {
             // Arrange.
@@ -1020,7 +1020,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdateGroupInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1045,7 +1045,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGroupInventories_WithNullGift_Throws()
         {
             // Arrange.
@@ -1060,7 +1060,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGiftHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1082,7 +1082,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroupGiftHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1104,7 +1104,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1124,7 +1124,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroupNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1144,7 +1144,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SendPlayerNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1167,7 +1167,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithNullCommunityMessage_Throws()
         {
             // Arrange.
@@ -1189,7 +1189,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithNullEmptyWhitespaceMessage_Throws()
         {
             // Arrange.
@@ -1219,7 +1219,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithTooLongMessage_Throws()
         {
             // Arrange.
@@ -1245,7 +1245,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithExpireTimeBeforeNow_Throws()
         {
             // Arrange.
@@ -1271,7 +1271,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SendGroupNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1295,7 +1295,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task EditNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1317,7 +1317,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task EditGroupNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1339,7 +1339,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditNotification_WithNullEditParameters_Throws()
         {
             // Arrange.
@@ -1362,7 +1362,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditNotification_WithNullEmptyWhitespaceMessage_Throws()
         {
             // Arrange.
@@ -1392,7 +1392,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditPlayerNotifications_WithTooLongMessage_Throws()
         {
             // Arrange.
@@ -1419,7 +1419,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DeleteNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1438,7 +1438,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DeleteGroupNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1456,7 +1456,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetAuctions_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1476,7 +1476,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetAuctions_WithNullEmptyWhitespaceStatus_Throws()
         {
             // Arrange.
@@ -1499,7 +1499,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetAuctions_WithNullEmptyWhitespaceSort_Throws()
         {
             // Arrange.
@@ -1522,7 +1522,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetAuctions_WithInvalidStatus_Throws()
         {
             // Arrange.
@@ -1538,7 +1538,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetAuctions_WithInvalidSort_Throws()
         {
             // Arrange.
@@ -1554,7 +1554,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCItems_WithValidParams_ReturnsCorrectType()
         {
             // Arrange.
@@ -1574,7 +1574,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetUGCItems_WithEmptyUGCType_Throws()
         {
             // Arrange.
@@ -1595,7 +1595,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetUGCItems_WithBadUGCType_Throws()
         {
             // Arrange.
@@ -1617,7 +1617,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCLivery_WithValidParams_ReturnsCorrectType()
         {
             // Arrange.
@@ -1637,7 +1637,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCPhoto_WithValidParams_ReturnsCorrectType()
         {
             // Arrange.
@@ -1657,7 +1657,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCTune_WithValidParams_ReturnsCorrectType()
         {
             // Arrange.
@@ -1677,7 +1677,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetUGCFeaturedStatus_WithValidParams_ReturnsCorrectType()
         {
             // Arrange.
@@ -1700,7 +1700,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetUGCFeaturedStatus_WithFeaturedTrueAndMissingExpiryTime_Throws()
         {
             // Arrange.
@@ -1722,7 +1722,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUGCFeaturedStatus_WithFeaturedTrueAndExpiryTimeUnderMinimumDuration_Throws()
         {
             // Arrange.
@@ -1748,7 +1748,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UnhideUgc_WithValidInputs_DoesNotThrow()
         {
             // Arrange.

@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenWoodstockServiceNull_Throws()
         {
             // Arrange.
@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenRefreshableCacheStoreNull_Throws()
         {
             // Arrange.
@@ -84,7 +84,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -101,7 +101,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerIdentitiesAsync_WithNullQuery_Throws()
         {
             // Arrange.
@@ -116,7 +116,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetailsAsync_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DoesPlayerExistAsync_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetConsolesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetConsoleBanStatusAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -222,7 +222,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserReportWeightAsync_WithValidParameters_ReturnsValidValue()
         {
             // Arrange.
@@ -239,7 +239,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUserReportWeightAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -256,7 +256,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetHasPlayedRecordAsync_WithValidParameters_ReturnsValidValue()
         {
             // Arrange.
@@ -274,7 +274,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void ResendProfileHasPlayedNotificationAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -292,7 +292,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -311,7 +311,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -329,7 +329,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUserFlagsAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -346,7 +346,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUserFlagsAsync_WithNullUserFlags_Throws()
         {
             // Arrange.
@@ -362,7 +362,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetProfileSummaryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -379,7 +379,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetCreditUpdatesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -398,7 +398,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBackstagePassTransactionsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -415,7 +415,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -432,7 +432,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserBanHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

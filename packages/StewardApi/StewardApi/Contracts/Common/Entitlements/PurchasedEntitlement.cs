@@ -46,6 +46,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
             return $"get_entitlements_purchaseorder_v2({xuid}) | project-rename PurchaseDateTimeUtc=PurchaseDateTime";
         }
 
+        /// <summary>
+        ///     Builds PurchasedEntitlement DTO from Kusto Query results
+        /// </summary>
         public static PurchasedEntitlement FromQueryResult(IDataReader reader)
         {
             return new PurchasedEntitlement

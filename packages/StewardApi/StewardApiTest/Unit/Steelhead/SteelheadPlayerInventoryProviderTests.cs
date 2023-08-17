@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunriseServiceNull_Throws()
         {
             // Arrange.
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftHistoryProviderStoreNull_Throws()
         {
             // Arrange.
@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoryAsync_WithNullPlayerInventory_Throws()
         {
             // Arrange.
@@ -148,7 +148,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullSunriseGift_Throws()
         {
             // Arrange.
@@ -171,7 +171,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGroupInventoriesAsync_WithNullPlayerInventory_Throws()
         {
             // Arrange.
@@ -195,7 +195,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
         {
             // Arrange.
@@ -229,7 +229,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullXuids_Throws()
         {
             // Arrange.

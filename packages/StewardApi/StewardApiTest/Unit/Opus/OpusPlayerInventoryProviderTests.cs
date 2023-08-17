@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenOpusServiceNull_Throws()
         {
             // Arrange.
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

@@ -11,6 +11,9 @@ using System.Xml.Serialization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
+    /// <summary>
+    ///     Destination for World Of Forza Tiles
+    /// </summary>
     [SerializableAttribute]
     [DesignerCategoryAttribute("code")]
     [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -51,6 +54,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string type { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Racer's Cup Series
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -61,6 +67,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Category ID
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -71,6 +80,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Car ID
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -81,6 +93,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    /// <summary>
+    ///     Settings for Deeplink Destination
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -115,6 +130,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string type { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Builders Cup Championship
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -125,6 +143,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Builders Cup Series
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -135,6 +156,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Builders Cup Ladder
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -145,6 +169,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Rivals Category
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -155,6 +182,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Store Product
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -165,6 +195,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Showroom Manufacturer
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -175,6 +208,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Showroom Car
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -185,6 +221,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Rivals Event
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -195,6 +234,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Cup ID
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -205,6 +247,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Ladder ID
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -215,6 +260,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Series ID
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -225,6 +273,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Event ID
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -235,6 +286,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink destination for Product
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
+    /// <summary>
+    ///     PlayFab voucher
+    /// </summary>
     public class PlayFabVoucher
     {
         public string ContentType { get; set; }

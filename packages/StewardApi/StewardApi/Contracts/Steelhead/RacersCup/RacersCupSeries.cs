@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 {
+    /// <summary>
+    ///     Racer's Cup series
+    /// </summary>
     public sealed class RacersCupSeries
     {
         public string Name { get; set; }
