@@ -10,6 +10,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { GuidLikeString } from '@models/extended-types';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { UgcProfileInfo } from '@services/api-v2/steelhead/player/ugc-profile/steelhead-player-ugc-profile.service';
+import { downloadJsonFile } from '@helpers/file-download/file-download';
 
 /** UGC Profile service contract. */
 export interface UgcProfileServiceContract {
@@ -100,14 +101,8 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
     const fileName = `${this.xuid}_${
       this.profile.externalProfileId
     }_${new Date().toISOString()}.json`;
-    const dataStr =
-      'data:text/json;charset=utf-8,' + encodeURIComponent(this.currentProfile?.profileData);
-    const link = document.createElement('a');
-    link.href = dataStr;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+
+    downloadJsonFile(fileName, this.currentProfile?.profileData);
   }
 
   /** Fires when the selected file changes. */

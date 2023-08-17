@@ -28,7 +28,7 @@ div.download {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 5;
+  z-index: 5; //Should be enough to ensure this object is on top so files can be dropped on it
   opacity: 0;
 }
 
