@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task CreateUserGroup_ShouldReturnValidValue()
         {
             // Arrange.
@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task AddUsersToGroup_ShouldNotThrow()
         {
             // Arrange.
@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task RemoveUsersFromGroup_ShouldNotThrow()
         {
             // Arrange.
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task AddUsersToGroup_UseBulkProcessing_ShouldNotThrow()
         {
             // Arrange.
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task RemoveUsersFromGroup_UseBulkProcessing_ShouldNotThrow()
         {
             // Arrange.
