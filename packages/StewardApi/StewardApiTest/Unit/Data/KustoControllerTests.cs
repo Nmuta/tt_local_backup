@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             var query = Fixture.Create<KustoQuery>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.SaveQueries(new List<KustoQuery>{query}).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.SaveQueries(new List<KustoQuery> { query }).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -144,7 +144,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "queries"));
         }
-
 
         [TestMethod]
         [TestCategory("Unit")]

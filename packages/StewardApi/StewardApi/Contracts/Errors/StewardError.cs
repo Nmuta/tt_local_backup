@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Errors
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardError"/> class.
         /// </summary>
-        public StewardError(StewardErrorCode code,  string message, object innerException)
+        public StewardError(StewardErrorCode code, string message, object innerException)
         {
             this.Code = code;
             this.Message = message;

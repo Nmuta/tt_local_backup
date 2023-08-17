@@ -1,15 +1,13 @@
-﻿#pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped directly from LSP)
+﻿using System;
+using System.Globalization;
+using AdaptiveCards.Templating;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+
+#pragma warning disable SA1600 // ElementsMustBeDocumented (POCO mapped directly from LSP)
 #pragma warning disable CS1591 // XML Comments (POCO mapped directly from LSP)
 #pragma warning disable SA1516 // Blank Lines (POCO mapped directly from LSP)
 #pragma warning disable SA1204 // Static elements should appear before instance elements
 #pragma warning disable SA1402 // File may only contain a single type
-using AdaptiveCards.Templating;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
 {

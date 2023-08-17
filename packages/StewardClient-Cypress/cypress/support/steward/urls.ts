@@ -114,5 +114,15 @@ export const stewardUrls = {
     permissionManagement: {
       default: 'app/tools/permission-management',
     },
+    productPricing: {
+      default: '/app/tools/product-pricing',
+    },
+    acLogReader: {
+      default: '/app/tools/ac-log-reader',
+      steelhead: '/app/tools/ac-log-reader/steelhead',
+    },
+    calendar: {
+      default: 'app/tools/unified-calendar',
+    },
   },
 };

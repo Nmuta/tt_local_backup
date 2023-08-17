@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         private const string PegasusBaseCacheKey = "WoodstockPegasus_";
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.PegasusCmsDefaultWoodstock
+            ConfigurationKeyConstants.PegasusCmsDefaultWoodstock,
         };
 
         private readonly string cmsEnvironment;

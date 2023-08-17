@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Forza.LiveOps.FH4.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -401,7 +401,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             var requesterObjectId = Fixture.Create<string>();
             var endpoint = Fixture.Create<string>();
 
@@ -419,7 +419,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             var endpoint = Fixture.Create<string>();
 
             // Act.
@@ -520,7 +520,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "filters"));
         }
-
 
         private List<SunriseBanParameters> GenerateBanParameters()
         {

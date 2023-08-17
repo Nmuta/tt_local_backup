@@ -1,31 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Documents.SystemFunctions;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
-using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
-using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead;
-using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.LiveOps.FM8.Generated;
-using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
@@ -70,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             var notifications = new List<Notification>();
@@ -98,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> DeleteAllPlayerMessages(ulong xuid)
         {
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             await this.Services.NotificationManagementService.DeleteNotificationsForUser(xuid).ConfigureAwait(true);
@@ -120,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new BadRequestStewardException($"Message ID could not be parsed as GUID. (messageId: {messageId})");
             }
 
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             Notification message = null;
@@ -164,7 +152,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var localizedTitleIdAsGuid = editParameters.LocalizedTitleID.TryParseGuidElseThrow("Title could not be parsed as GUID.");
             var localizedMessageIdAsGuid = editParameters.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
 
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             /* TODO: Verify notification exists and is a CommunityMessageNotification before allowing edit.
@@ -177,7 +165,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 MessageStringId = localizedMessageIdAsGuid,
                 ExpirationDate = editParameters.ExpireTimeUtc,
                 HasDeviceType = false,
-                DeviceType = ForzaLiveDeviceType.Invalid
+                DeviceType = ForzaLiveDeviceType.Invalid,
             };
 
             await this.Services.NotificationManagementService.EditNotification(
@@ -202,7 +190,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.MessagePlayer)]
         public async Task<IActionResult> DeletePlayerMessage(Guid messageId, ulong xuid)
         {
-            //xuid.EnsureValidXuid();
+            ////xuid.EnsureValidXuid();
             await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
 
             var userClaims = this.User.UserClaims();
@@ -214,7 +202,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 Message = string.Empty,
                 ExpirationDate = DateTime.UtcNow,
                 HasDeviceType = false,
-                DeviceType = ForzaLiveDeviceType.Invalid
+                DeviceType = ForzaLiveDeviceType.Invalid,
             };
 
             await this.Services.NotificationManagementService.EditNotification(

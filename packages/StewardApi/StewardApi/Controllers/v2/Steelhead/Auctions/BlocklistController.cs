@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -16,7 +15,6 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.V2;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
@@ -47,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Auctions
         /// <summary>
         ///     Initializes a new instance of the <see cref="BlocklistController"/> class.
         /// </summary>
-        public BlocklistController(ISteelheadItemsProvider itemsProvider, IActionLogger actionLogger,  IMapper mapper)
+        public BlocklistController(ISteelheadItemsProvider itemsProvider, IActionLogger actionLogger, IMapper mapper)
         {
             itemsProvider.ShouldNotBeNull(nameof(itemsProvider));
             actionLogger.ShouldNotBeNull(nameof(actionLogger));

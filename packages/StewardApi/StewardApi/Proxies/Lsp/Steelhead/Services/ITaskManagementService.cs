@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.Services.LiveOps.FM8.Generated.TaskManagementService;
-using TaskManagementService = Turn10.Services.LiveOps.FM8.Generated.TaskManagementService;
 
 #pragma warning disable VSTHRD200 // Use  Suffix
 #pragma warning disable SA1516 // Blank lines

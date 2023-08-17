@@ -173,7 +173,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                         Action = NotificationAction.Send.ToString(),
                         Endpoint = endpoint,
                         CreatedDateUtc = DateTime.UtcNow,
-                        ExpireDateUtc = expireTimeUtc
+                        ExpireDateUtc = expireTimeUtc,
                     };
 
                     await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(notificationHistory)
@@ -207,7 +207,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             var messageResponse = new MessageSendResult<int>
             {
                 PlayerOrLspGroup = groupId,
-                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId
+                IdentityAntecedent = GiftIdentityAntecedent.LspGroupId,
             };
             var forzaDeviceType = this.mapper.SafeMap<ServicesLiveOps.ForzaLiveDeviceType>(deviceType);
 
@@ -251,7 +251,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     Action = NotificationAction.Send.ToString(),
                     Endpoint = endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
-                    ExpireDateUtc = expireTimeUtc
+                    ExpireDateUtc = expireTimeUtc,
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(notificationHistory)
@@ -283,7 +283,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 Message = message,
                 ExpirationDate = expireTimeUtc,
                 HasDeviceType = false,
-                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid
+                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid,
             };
 
             try
@@ -319,7 +319,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     Action = NotificationAction.Edit.ToString(),
                     Endpoint = endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
-                    ExpireDateUtc = expireTimeUtc
+                    ExpireDateUtc = expireTimeUtc,
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -350,7 +350,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 Message = message,
                 ExpirationDate = expireTimeUtc,
                 HasDeviceType = forzaDeviceType != ServicesLiveOps.ForzaLiveDeviceType.Invalid,
-                DeviceType = forzaDeviceType
+                DeviceType = forzaDeviceType,
             };
 
             try
@@ -385,7 +385,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     Action = NotificationAction.Edit.ToString(),
                     Endpoint = endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
-                    ExpireDateUtc = expireTimeUtc
+                    ExpireDateUtc = expireTimeUtc,
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -413,7 +413,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 Message = string.Empty,
                 ExpirationDate = DateTime.UtcNow,
                 HasDeviceType = false,
-                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid
+                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid,
             };
 
             try
@@ -451,7 +451,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     Action = NotificationAction.Delete.ToString(),
                     Endpoint = endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
-                    ExpireDateUtc = DateTime.UtcNow
+                    ExpireDateUtc = DateTime.UtcNow,
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(
@@ -476,7 +476,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 Message = string.Empty,
                 ExpirationDate = DateTime.UtcNow,
                 HasDeviceType = false,
-                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid
+                DeviceType = ServicesLiveOps.ForzaLiveDeviceType.Invalid,
             };
 
             try
@@ -515,7 +515,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     Action = NotificationAction.Delete.ToString(),
                     Endpoint = endpoint,
                     CreatedDateUtc = DateTime.UtcNow,
-                    ExpireDateUtc = DateTime.UtcNow
+                    ExpireDateUtc = DateTime.UtcNow,
                 };
 
                 await this.notificationHistoryProvider.UpdateNotificationHistoryAsync(

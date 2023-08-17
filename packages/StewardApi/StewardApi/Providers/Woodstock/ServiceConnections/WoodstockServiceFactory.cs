@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             ConfigurationKeyConstants.WoodstockClientVersion,
             ConfigurationKeyConstants.WoodstockAdminXuid,
             ConfigurationKeyConstants.WoodstockSandbox,
-            ConfigurationKeyConstants.WoodstockTitleId
+            ConfigurationKeyConstants.WoodstockTitleId,
         };
 
         internal string clientVersion;
@@ -163,7 +163,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                 Gamertag = "UNKNOWN",
                 Sandbox = this.sandbox,
                 TokenLifetimeMinutes = 60,
-                Xuid = this.adminXuid
+                Xuid = this.adminXuid,
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);

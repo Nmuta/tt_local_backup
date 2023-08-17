@@ -12,6 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         /// <summary>
         ///     Specifies a rename operation.
         /// </summary>
-        Rename
+        Rename,
     }
 }

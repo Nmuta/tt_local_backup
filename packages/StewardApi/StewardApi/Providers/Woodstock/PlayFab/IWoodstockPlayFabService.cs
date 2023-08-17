@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Graph;
-using PlayFab.MultiplayerModels;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
@@ -37,16 +34,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <summary>
         ///     Gets PlayFab player's transaction history.
         /// </summary>
-        Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, WoodstockPlayFabEnvironment environment);
+        Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, WoodstockPlayFabEnvironment environment);
+
+        /// <summary>
+        ///     Gets PlayFab player's currency inventory.
+        /// </summary>
+        Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Adds currency to player's account.
         /// </summary>
-        Task AddInventoryItemToPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment);
+        Task AddInventoryItemToPlayerAsync(string playfabEntityId, PlayFabCollectionId collectionId, string itemId, int amount, WoodstockPlayFabEnvironment environment);
 
         /// <summary>
         ///     Removes currency from player's account.
         /// </summary>
-        Task RemoveInventoryItemFromPlayerAsync(string playfabEntityId, string itemId, int amount, WoodstockPlayFabEnvironment environment);
+        Task RemoveInventoryItemFromPlayerAsync(string playfabEntityId, PlayFabCollectionId collectionId, string itemId, int amount, WoodstockPlayFabEnvironment environment);
     }
 }

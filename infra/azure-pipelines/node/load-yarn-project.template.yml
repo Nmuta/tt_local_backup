@@ -9,8 +9,9 @@ parameters:
 
 steps:
 - checkout: self
-  fetchDepth: 1
+  fetchDepth: 0
   submodules: false
+  persistCredentials: true
 
 # TODO: I couldn't get this package handoff to work, but if it did work it seems to be faster
 # - download: current

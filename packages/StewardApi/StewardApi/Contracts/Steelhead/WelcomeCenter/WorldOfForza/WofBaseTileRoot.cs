@@ -1,19 +1,17 @@
-﻿#pragma warning disable SA1402 // File may only contain a single type
-#pragma warning disable SA1300 // Element should begin with upper-case letter
-#pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable SA1601 // Partial elements should be documented
-#pragma warning disable IDE1006 // Naming Styles
-#pragma warning disable SA1516 // Elements should be separated by blank line
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Newtonsoft.Json.Converters;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
+
+#pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable SA1300 // Element should begin with upper-case letter
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1601 // Partial elements should be documented
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable SA1516 // Elements should be separated by blank line
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
@@ -24,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public enum TileSize
     {
         Medium,
-        Large
+        Large,
     }
 
     /// <summary>
@@ -49,6 +47,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Series,
         Season,
         Chapter,
+        ChallengeData,
+        DateTimeRange,
+        FeaturedShowcase,
+        RivalsEvent,
+        ShowroomListing,
     }
 
     [Serializable]
@@ -124,6 +127,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [XmlElement("Series", Type = typeof(Series))]
         [XmlElement("Season", Type = typeof(Season))]
         [XmlElement("Chapter", Type = typeof(Chapter))]
+        [XmlElement("ChallengeData", Type = typeof(ChallengeData))]
+        [XmlElement("DateRange", Type = typeof(DateRange))]
+        [XmlElement("FeaturedShowcase", Type = typeof(FeaturedShowcase))]
+        [XmlElement("Event", Type = typeof(RivalsEvent))]
+        [XmlElement("ShowroomListingCategory", Type = typeof(ShowroomListingCategory))]
         public WofBaseTimerReference TimerReference { get; set; }
     }
 
@@ -151,6 +159,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     public class Series : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Series; }
     public class Season : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Season; }
     public class Chapter : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Chapter; }
+    public class ChallengeData : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ChallengeData; }
+    public class DateRange : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.DateTimeRange; }
+    public class FeaturedShowcase : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.FeaturedShowcase; }
+    public class RivalsEvent : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.RivalsEvent; }
+    public class ShowroomListingCategory : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ShowroomListing; }
 
     [Serializable]
     [DesignerCategory("code")]
@@ -182,6 +195,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         [WriteToPegasus]
         [XmlElement("To")]
         public WofBaseRangePoint To { get; set; }
+
+        [WriteToPegasus]
+        [XmlElement("Name")]
+        public string Name { get; set; }
     }
 
     [Serializable]
@@ -207,7 +224,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
     public partial class WofBaseDisplayConditions
     {
-        [WriteToPegasus(CreateIfNull=true)]
+        [WriteToPegasus(CreateIfNull = true)]
         [Required]
         [XmlElement(Namespace = "scribble:x")]
         public BaseItem[] item { get; set; }

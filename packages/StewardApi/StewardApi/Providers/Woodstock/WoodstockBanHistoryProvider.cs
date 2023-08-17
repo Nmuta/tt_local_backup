@@ -9,7 +9,6 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
@@ -19,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.KustoLoggerDatabase
+            ConfigurationKeyConstants.KustoLoggerDatabase,
         };
 
         private readonly IKustoStreamingLogger kustoStreamingLogger;
@@ -50,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             int banEntryId,
             string title,
             string requesterObjectId,
-            WoodstockBanParametersInput banParameters,
+            V2BanParametersInput banParameters,
             BanResult banResult,
             string endpoint,
             string featureAreas)
@@ -59,9 +58,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             banParameters.ShouldNotBeNull(nameof(banParameters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-
-            // Gamertags must be set to null for NGP. v-joyate 20201123
-            banParameters.Gamertag = null;
 
             var banHistory = new LiveOpsBanHistory(
                 (long)xuid,

@@ -7,9 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Xml.Schema;
 using System.Xml.Serialization;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
@@ -29,12 +27,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [XmlRoot("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content", IsNullable = false)]
     public partial class WofImageTextEntry : WofBaseTileEntry
     {
+        [WriteToPegasus]
         public LocTextBaseWof PopupTitle { get; set; }
 
+        [WriteToPegasus]
         public LocTextBaseWof PopupHeader { get; set; }
 
+        [WriteToPegasus]
         public LocTextBaseWof PopupSubHeader { get; set; }
 
+        [WriteToPegasus]
         public LocTextBaseWof PopupDescription { get; set; }
 
         [WriteToPegasus]

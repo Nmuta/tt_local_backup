@@ -2,7 +2,6 @@
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
-using Turn10.UGC.Contracts;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {

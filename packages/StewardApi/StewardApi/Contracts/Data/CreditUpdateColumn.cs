@@ -10,6 +10,6 @@
         CreditAmount,
         SceneName,
         DeviceType,
-        TotalXp
+        TotalXp,
     }
 }

@@ -8,10 +8,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
     {
         public ServicesTableStorageEntity(string rowKey, string partitionKey, DateTimeOffset timestampUtc, JObject properties)
         {
-            RowKey = rowKey;
-            PartitionKey = partitionKey;
-            TimestampUtc = timestampUtc;
-            Properties = properties;
+            this.RowKey = rowKey;
+            this.PartitionKey = partitionKey;
+            this.TimestampUtc = timestampUtc;
+            this.Properties = properties;
         }
 
         public string RowKey { get; set; }

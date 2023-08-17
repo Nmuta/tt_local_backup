@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityNullXuidAndGamertag()
         {
-            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null};
+            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null };
 
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 
@@ -392,7 +392,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
             var result = await stewardClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
@@ -402,7 +402,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidXuid()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
 
             try
             {
@@ -419,7 +419,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_Unauthorized()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
 
             try
             {
@@ -436,7 +436,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidFlags()
         {
-            var userFlags = CreateUserFlags();
+            var userFlags = this.CreateUserFlags();
             userFlags.IsEarlyAccess = null;
 
             try
@@ -488,7 +488,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                 Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
             }
         }
-
 
         [TestMethod]
         [TestCategory("Integration")]
@@ -633,7 +632,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_InvalidGamertag()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = null;
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
 
@@ -652,7 +651,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_Unauthorized()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             try
             {
@@ -669,7 +668,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_InvalidFeatureArea()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].FeatureArea = "invalidFeatureArea";
 
             try
@@ -688,7 +687,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [Ignore]
         public async Task BanPlayers_UndefinedStartTimeUtc()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].StartTimeUtc = default;
 
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
@@ -703,7 +702,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_NoXuidsOrGamertagsProvided()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = null;
 
@@ -722,7 +721,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationNull()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration = default;
 
             try
@@ -740,7 +739,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationZero()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration = TimeSpan.Zero;
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
 
@@ -759,7 +758,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationNegative()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration = TimeSpan.FromMinutes(-10);
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
 
@@ -796,7 +795,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_SendNotificationWithoutReason()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].SendReasonNotification = true;
             banParameters[0].Reason = string.Empty;
 
@@ -816,7 +815,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
@@ -829,7 +828,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidXuid()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
@@ -842,7 +841,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidGamertag()
         {
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
             banParameters[0].Xuid = null;
 
@@ -1294,7 +1293,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. VanityItem: 700, "));
+                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. VanityItem: 700, ", StringComparison.InvariantCulture));
             }
         }
 
@@ -1377,7 +1376,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var groupGift = this.CreateGroupGift();
 
-            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await this.UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result[0].Errors?.Count == 0);
@@ -1548,7 +1547,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var message = new BulkCommunityMessage
             {
-                Xuids = new List<ulong> {notificationXuid},
+                Xuids = new List<ulong> { notificationXuid },
                 Message = "Integration Test Message",
             };
             var result = await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
@@ -1773,7 +1772,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendProfileNotes_InvalidXuid()
         {
-            var message = new ProfileNote {Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow};
+            var message = new ProfileNote { Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow };
 
             try
             {
@@ -1973,11 +1972,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                         new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
                         new MasterInventoryItem {Id = -1, Description = "BackstagePasses", Quantity = 1}
                     },
-                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2616, Quantity = 1}},
-                CarHorns = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 22, Quantity = 1}},
-                VanityItems = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 3, Quantity = 1}},
-                Emotes = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 6, Quantity = 1}},
-                QuickChatLines = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 190, Quantity = 1}}
+                Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 2616, Quantity = 1 } },
+                CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 22, Quantity = 1 } },
+                VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 3, Quantity = 1 } },
+                Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 6, Quantity = 1 } },
+                QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 190, Quantity = 1 } }
             };
 
             return giftInventory;

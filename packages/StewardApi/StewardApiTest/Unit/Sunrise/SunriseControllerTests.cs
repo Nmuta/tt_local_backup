@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
     public sealed class SunriseControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
-        private static readonly ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
+        private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -731,7 +731,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             // Act.
             async Task<IActionResult> Action() => await controller.BanPlayers(banParameters).ConfigureAwait(false);
@@ -765,7 +765,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
+            var banParameters = this.GenerateBanParameters();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.BanPlayersUseBackgroundProcessing(banParameters).ConfigureAwait(false);
@@ -1059,7 +1059,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
-
         [TestMethod]
         [TestCategory("Unit")]
         public async Task GetGiftHistory_WithValidParameters_ReturnsCorrectType()
@@ -1154,7 +1153,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             communityMessage.StartTimeUtc = DateTime.UtcNow.AddMinutes(1);
             communityMessage.ExpireTimeUtc = DateTime.UtcNow.AddMinutes(5);
             communityMessage.Xuids = new List<ulong>() { ValidXuid };
-
 
             // Act.
             async Task<IActionResult> Action() => await controller.SendPlayerNotifications(communityMessage).ConfigureAwait(false);

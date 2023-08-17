@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.VisualStudio.Services.Common;
-using Microsoft.Identity.Web;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -23,7 +22,6 @@ using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
-using Microsoft.VisualStudio.Services.Users;
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 namespace Turn10.LiveOps.StewardApi.Controllers.v2
@@ -119,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
                 permissions.Remove(UserAttributeValues.ManageStewardTeam);
 
                 // Sort each action's titles
-                foreach (KeyValuePair<string, IList<string>> entry in permissions)
+                foreach (var entry in permissions)
                 {
                     permissions[entry.Key] = entry.Value.OrderByDescending(x => x).Reverse().ToList();
                 }
