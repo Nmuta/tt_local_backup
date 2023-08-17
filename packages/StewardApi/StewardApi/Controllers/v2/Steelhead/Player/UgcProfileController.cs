@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -14,7 +15,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
 {
     /// <summary>
-    ///     Test controller for testing Steelhead LSP APIs.
+    ///     Controller for interacting with Steelhead UGC profiles.
     /// </summary>
     [Route("api/v{version:apiVersion}/title/steelhead/player/{xuid}/profile/{externalProfileId}")]
     [LogTagTitle(TitleLogTags.Steelhead)]
@@ -61,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
         /// </summary>
         [HttpPost("UgcProfile")]
         [SwaggerResponse(200)]
+        [Authorize(Policy = UserAttributeValues.UpdateUgcProfile)]
         public async Task<IActionResult> UpdateUgcProfile(ulong xuid, string externalProfileId, [FromBody] string profileData)
         {
             var externalProfileGuid = externalProfileId.TryParseGuidElseThrow($"External Profile ID could no be parsed as GUID. External Profile ID: {externalProfileId}");
