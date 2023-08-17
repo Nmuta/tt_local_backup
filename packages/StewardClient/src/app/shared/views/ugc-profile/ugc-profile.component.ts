@@ -67,10 +67,6 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
     return this.service.gameTitle;
   }
 
-  constructor() {
-    super();
-  }
-
   /** Lifecycle hook. */
   public ngOnChanges(_changes: BetterSimpleChanges<UgcProfileComponent>): void {
     if (!this.service) {
@@ -98,9 +94,7 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
 
   /** Download UGC profile data to file. */
   public downloadUgcProfileData(): void {
-    const fileName = `${this.xuid}_${
-      this.profile.externalProfileId
-    }_${new Date().toISOString()}.json`;
+    const fileName = `${this.xuid}_${this.profile.externalProfileId}.json`;
 
     downloadJsonFile(fileName, this.currentProfile?.profileData);
   }

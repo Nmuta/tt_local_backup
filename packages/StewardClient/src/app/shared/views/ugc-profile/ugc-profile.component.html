@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>UGC Profile</mat-card-title>
-    <mat-card-subtitle>Steelhead | {{ profileOverviewString }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ service.gameTitle }} | {{ profileOverviewString }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
     <div class="sf-vertical actions">
       <div class="download">
@@ -30,6 +30,8 @@
           clickStop
           stateManager
           monitorDisable
+          monitorCompleteSnackbar
+          monitorWarnSnackbar
           [monitor]="postMonitor"
           [disabled]="!formGroup.dirty || !formGroup.valid"
           [verifyWithV2]="verifyApplyBtn"

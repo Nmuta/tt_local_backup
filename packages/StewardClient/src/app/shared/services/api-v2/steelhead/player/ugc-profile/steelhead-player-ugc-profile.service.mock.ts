@@ -18,7 +18,7 @@ export class MockSteelheadPlayerUgcProfileService {
   constructor(private readonly generator$: () => unknown) {}
 }
 
-/** Creates an injectable mock for Steelhead Skill Rating Service. */
+/** Creates an injectable mock for Steelhead Player UGC Profile service. */
 export function createMockSteelheadPlayerUgcProfileService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
