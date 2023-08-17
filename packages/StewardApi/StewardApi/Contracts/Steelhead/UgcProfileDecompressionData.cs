@@ -1,5 +1,8 @@
 ﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
 {
+    /// <summary>
+    ///     Compression metadata for UGC profile.
+    /// </summary>
     public class UgcProfileDecompressionData
     {
         public bool CompressedDataLengthIsValid { get; set; }
