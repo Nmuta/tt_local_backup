@@ -71,7 +71,7 @@ context('Steward / Tools / Messaging / Steelhead', () => {
     context('Valid Inputs Checks', () => {
       verifyCreateLocalizedMessage();
       removeLocalizedMessagePR();
-      verifyMessageSent();
+      verifyLSPMessageSent();
     });
 
     context('Invalid Inputs Checks', () => {
@@ -153,6 +153,30 @@ function verifyMessageSent(): void {
     cy.contains('mat-option', 'Community Message').click();
     cy.contains('button', 'Review', { matchCase: false }).click();
     cy.contains('button', 'Send message to players', { matchCase: false }).click();
+    waitForProgressSpinners();
+    cy.contains('button', 'Send Another Message', { matchCase: false }).should('exist');
+  });
+}
+
+function verifyLSPMessageSent(): void {
+  const expiryString = DateTime.local().plus({ days: 1 }).toLocaleString();
+
+  it('should send with proper inputs', () => {
+    cy.get('[role="tab"]').contains('Send').click();
+
+    cy.contains('mat-form-field', 'Select localized title').click();
+    cy.contains('mat-option', 'Test string').click();
+    cy.contains('mat-form-field', 'Select localized message').click();
+    cy.contains('mat-option', 'Test string').click();
+    cy.contains('mat-form-field', 'Date Range')
+      .click()
+      .type('{selectall}' + expiryString);
+    cy.contains('mat-form-field', 'Start Time').click().type('{selectall}{backspace}23:59');
+    cy.contains('mat-form-field', 'End Time').click().type('{selectall}{backspace}00:01');
+    cy.contains('mat-form-field', 'Notification Type').click();
+    cy.contains('mat-option', 'Community Message').click();
+    cy.contains('button', 'Review', { matchCase: false }).click();
+    cy.contains('button', 'Send message to LSP Group', { matchCase: false }).click();
     waitForProgressSpinners();
     cy.contains('button', 'Send Another Message', { matchCase: false }).should('exist');
   });
