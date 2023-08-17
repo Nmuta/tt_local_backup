@@ -3,7 +3,6 @@ using System.Linq;
 using AutoMapper;
 using Forza.WebServices.FH3.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
@@ -23,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Description, opt => opt.MapFrom(src => src.displayName))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
                 .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.dateCreated))
-                .ForMember(des => des.Error, opt => opt.MapFrom(src => default(StewardError)))
+                .ForMember(des => des.Error, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, OpusPlayerInventory>()
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
@@ -40,8 +39,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.IsUnderReview, opt => opt.MapFrom(src => src.IsUserUnderReview));
             this.CreateMap<AdminForzaProfile, OpusInventoryProfile>().ReverseMap();
             this.CreateMap<OpusPlayerDetails, IdentityResultAlpha>()
-                .ForMember(des => des.Query, opt => opt.MapFrom(src => default(IdentityQueryAlpha)))
-                .ForMember(des => des.Error, opt => opt.MapFrom(src => default(StewardError)))
+                .ForMember(des => des.Query, opt => opt.Ignore())
+                .ForMember(des => des.Error, opt => opt.Ignore())
                 .ReverseMap();
         }
     }
