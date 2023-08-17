@@ -32,7 +32,6 @@ using Turn10.Data.Kusto;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -259,8 +258,8 @@ namespace Turn10.LiveOps.StewardApi
             builder.Register(c => keyVaultConfig).As<KeyVaultConfig>().SingleInstance();
 
             // Steward API Middleware
-            var acceptableApiKeys = AcceptableApiKeysFromAppSpecificKeyVaultConfig.FromKeyVaultUrlAsync(this.configuration).GetAwaiter().GetResult();
-            builder.Register(c => acceptableApiKeys).As<AcceptableApiKeysFromAppSpecificKeyVaultConfig>().SingleInstance();
+            var acceptableApiKeys = AcceptableApiKeysFromKeyVaultConfig.FromKeyVaultUrlAsync(this.configuration).GetAwaiter().GetResult();
+            builder.Register(c => acceptableApiKeys).As<AcceptableApiKeysFromKeyVaultConfig>().SingleInstance();
 
             // Kusto
             var kustoClientSecret = keyVaultConfig.KustoClientSecret;

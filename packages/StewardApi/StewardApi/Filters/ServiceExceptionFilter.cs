@@ -20,8 +20,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         /// </summary>
         public Task OnExceptionAsync(ExceptionContext context)
         {
-            // TODO: IF external API, strip out stack trace
-
             if (!(context.Exception is StewardBaseException))
             {
                 HttpStatusCode status;

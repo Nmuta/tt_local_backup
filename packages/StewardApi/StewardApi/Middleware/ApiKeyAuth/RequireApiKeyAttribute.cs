@@ -1,26 +1,25 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Helpers;
-using static Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth.AcceptableApiKeysFromAppSpecificKeyVaultConfig;
 
 namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
 {
     /// <summary>
-    ///     Requires a specific class of API Key to be present to proceed.
+    ///     Requires a specific API Key to be present to proceed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public sealed class RequireApiKeyAttribute : Attribute, IFilterFactory
     {
-        private readonly ApiKey apiKey;
+        private readonly StewardApiKey apiKey;
 
         /// <inheritdoc/>
         public bool IsReusable => true;
 
         public string ApiKeyName() => this.apiKey.GetDescription();
 
-        public RequireApiKeyAttribute(ApiKey apiKey)
+        public RequireApiKeyAttribute(StewardApiKey apiKey)
         {
             this.apiKey = apiKey;
         }
@@ -29,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
         public IFilterMetadata CreateInstance(IServiceProvider serviceProvider)
         {
             return new RequireApiKeyFilter(
-                serviceProvider.GetRequiredService<AcceptableApiKeysFromAppSpecificKeyVaultConfig>(),
+                serviceProvider.GetRequiredService<AcceptableApiKeysFromKeyVaultConfig>(),
                 this.apiKey);
         }
     }

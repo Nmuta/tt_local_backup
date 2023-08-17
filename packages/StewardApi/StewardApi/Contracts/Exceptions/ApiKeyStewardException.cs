@@ -5,7 +5,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
-    ///     Represents a 'friendly' invalid argument exception.
+    ///     Represents a 'friendly' API key exception.
     /// </summary>
     public sealed class ApiKeyStewardException : StewardBaseException
     {

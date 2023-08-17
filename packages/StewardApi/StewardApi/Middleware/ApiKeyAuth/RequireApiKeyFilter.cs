@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 
@@ -15,12 +14,12 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
     /// </summary>
     public sealed class RequireApiKeyFilter : IAsyncActionFilter
     {
-        private readonly AcceptableApiKeysFromAppSpecificKeyVaultConfig acceptableApiKeys;
-        private readonly AcceptableApiKeysFromAppSpecificKeyVaultConfig.ApiKey apiKey;
+        private readonly AcceptableApiKeysFromKeyVaultConfig acceptableApiKeys;
+        private readonly StewardApiKey apiKey;
 
         public RequireApiKeyFilter(
-            AcceptableApiKeysFromAppSpecificKeyVaultConfig acceptableApiKeys,
-            AcceptableApiKeysFromAppSpecificKeyVaultConfig.ApiKey apiKey)
+            AcceptableApiKeysFromKeyVaultConfig acceptableApiKeys,
+            StewardApiKey apiKey)
         {
             this.acceptableApiKeys = acceptableApiKeys;
             this.apiKey = apiKey;

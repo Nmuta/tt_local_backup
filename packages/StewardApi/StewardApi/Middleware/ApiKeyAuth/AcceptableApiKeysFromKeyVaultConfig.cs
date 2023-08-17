@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Helpers;
 
 #pragma warning disable CA1034 // Nested types should not be visible
 
-namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
+namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
 {
     /// <summary>
     ///     Container for a set of acceptable API Keys from KeyVault.
     /// </summary>
-    public class AcceptableApiKeysFromAppSpecificKeyVaultConfig
+    public class AcceptableApiKeysFromKeyVaultConfig
     {
         /// <summary>
         ///     True when all secrets have been successfully loaded.
@@ -31,10 +31,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
         /// </summary>
         public AllSecretVersions All { get; set; }
 
-        public static async Task<AcceptableApiKeysFromAppSpecificKeyVaultConfig> FromKeyVaultUrlAsync(IConfiguration configuration)
+        public static async Task<AcceptableApiKeysFromKeyVaultConfig> FromKeyVaultUrlAsync(IConfiguration configuration)
         {
             var initializationFailures = new List<Tuple<string, Exception>>();
-            var keyVault = new AcceptableApiKeysFromAppSpecificKeyVaultConfig();
+            var keyVault = new AcceptableApiKeysFromKeyVaultConfig();
 
             var keyVaultUrl = $"https://{configuration[ConfigurationKeyConstants.KeyVaultUrl]}.vault.azure.net/";
             var client = new SecretClient(
@@ -91,13 +91,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
             return keyVault;
         }
 
-        public AllSecretVersions GetAcceptableApiKeys(ApiKey apiKey)
+        public AllSecretVersions GetAcceptableApiKeys(StewardApiKey apiKey)
         {
             switch (apiKey)
             {
-                case ApiKey.PlayFab:
+                case StewardApiKey.PlayFab:
                     return this.StewardApiKeyPlayFab;
-                case ApiKey.Testing:
+                case StewardApiKey.Testing:
                     return this.StewardApiKeyTesting;
                 default:
                     throw new ArgumentException($"Unacceptable {nameof(apiKey)}");
@@ -121,16 +121,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth
 
                 return collected;
             }
-        }
-
-        public enum ApiKey
-        {
-            [Description("Unset")]
-            Unset = 0,
-            [Description("PlayFab")]
-            PlayFab,
-            [Description("Testing")]
-            Testing,
         }
     }
 }

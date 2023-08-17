@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -20,7 +21,6 @@ using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
-using static Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth.AcceptableApiKeysFromAppSpecificKeyVaultConfig;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 #pragma warning disable CA1308 // Use .ToUpperInvariant
@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
     ///     Handles requests for Woodstock PlayFab build integrations.
     /// </summary>
     [Route("api/v{version:apiVersion}/external/title/woodstock/playfab/builds")]
-    [RequireApiKey(ApiKey.PlayFab)]
+    [RequireApiKey(StewardApiKey.PlayFab)]
     [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
@@ -120,7 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
                     Name = playFabBuild.Name,
                     Reason = reason,
                     UserId = string.Empty,
-                    ApiKeyName = ApiKey.PlayFab.GetDescription(),
+                    ApiKeyName = StewardApiKey.PlayFab.GetDescription(),
                     PlayFabEnvironment = playFabEnvironment.ToString(),
                     GameTitle = TitleConstants.WoodstockCodeName.ToLowerInvariant(),
                     DateCreatedUtc = DateTimeOffset.UtcNow,

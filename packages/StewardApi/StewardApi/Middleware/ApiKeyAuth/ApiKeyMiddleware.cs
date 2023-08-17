@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 
@@ -29,14 +28,12 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
         public async Task InvokeAsync(HttpContext context)
         {
             // Only use this middleware on our external api path
-            // Ignore is running on localhost
+            // Ignore if running on localhost
             var hostEnvironment = context.RequestServices.GetService<IHostEnvironment>();
             var isExternalApiPath = context.Request?.Path.Value?.ToLowerInvariant().Contains("api/v2/external", StringComparison.InvariantCultureIgnoreCase) ?? false;
 
             var bypassDueTLocalEnvironment = hostEnvironment?.IsStewardApiLocal() ?? false;
-            var bypassDueToSwagger = context.Request?.Path.Value?.ToLowerInvariant().Contains("swagger", StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var bypassDueToHealthCheck = context.Request?.Path.Value?.ToLowerInvariant().Contains("api/health", StringComparison.InvariantCultureIgnoreCase) ?? false;
-            var bypassMiddleware = !isExternalApiPath || bypassDueTLocalEnvironment || bypassDueToSwagger || bypassDueToHealthCheck;
+            var bypassMiddleware = !isExternalApiPath || bypassDueTLocalEnvironment;
 
             if (bypassMiddleware)
             {
@@ -56,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
                     throw new ApiKeyStewardException("This API expects an auth key, but none was provided.");
                 }
 
-                var acceptableKeys = context.RequestServices.GetService<AcceptableApiKeysFromAppSpecificKeyVaultConfig>();
+                var acceptableKeys = context.RequestServices.GetService<AcceptableApiKeysFromKeyVaultConfig>();
                 var hasAnyAcceptableKey = acceptableKeys?.All.Active.Contains(apiKey) ?? false;
                 if (!hasAnyAcceptableKey)
                 {
