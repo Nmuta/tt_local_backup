@@ -1,0 +1,22 @@
+# The purpose of this pipeline is to publish a preview Nuget package.
+# 
+# What it does:
+# - Check that Documentation-Analyzer projects will build
+# - Packs and publishes the Turn10.Analyzer.Documentation nuget with the configured <Version>-ci-<Date>
+
+trigger: none
+
+name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
+
+variables:
+- template: 'infra/azure-pipelines/dotnet-core/dotnet-variables.yml'
+
+pool:
+  vmImage: $(VM_IMAGE)
+
+jobs:
+- template: 'infra/azure-pipelines/dotnet-core/nuget/job-nuget-publish.template.yml'
+  parameters:
+    workingDirectory: packages/Analyzer-Documentation
+    nugetName: Turn10.Analyzer.Documentation
+    prerelease: true
