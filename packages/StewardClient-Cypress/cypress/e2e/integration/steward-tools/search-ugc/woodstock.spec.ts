@@ -1,12 +1,11 @@
-import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag } from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { tableHasEntry } from '@support/mat-form/table-has-entry';
 import { clickSearch, selectCar, selectCuratedUgcType, selectUgcType, orderUgcBy } from './page';
 import { clickIfExists } from '@support/cypress/click-if-exists';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const defaultWoodstockUser = RetailUsers['ben'];
 const ugcTypes = [
@@ -28,9 +27,7 @@ const woodstockSamples: Record<string, string> = {
 
 context('Steward / Tools / UGC Details / Woodstock', () => {
   before(() => {
-    login();
-
-    disableFakeApi();
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.searchUgc.woodstock);
   });
 
