@@ -159,7 +159,7 @@ function enableEdit(): void {
     .contains('mat-label', 'Select Welcome Center Tile')
     .parents('mat-form-field')
     .click();
-  //wait to allow page to load after selecting an option, may need a progress spinner to eliminate the wait()
+  //TODO: need progress spinners to eliminate the wait()s
   cy.get('mat-option').contains('span', '[TEST] Pop-up Test').click().wait(2_000);
   cy.get('button').contains('span', 'Edit').click().wait(2_000);
 }
