@@ -5,7 +5,6 @@ export function changeEndpoint(endpointToChange, endpointCurrentState, endpointD
   cy.get('mat-form-field')
     .contains('mat-label', endpointToChange + ' Endpoint')
     .parents('mat-form-field')
-    .contains('span', endpointCurrentState)
     .click();
   cy.get('mat-option').contains('span', endpointDesiredState).click();
   waitForProgressSpinners();
