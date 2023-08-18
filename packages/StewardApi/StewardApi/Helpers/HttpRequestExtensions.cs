@@ -24,18 +24,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         {
             var v1HeaderValue = GetV1EndpointHeaderValue(request, title);
             var v2HeaderValue = GetV2EndpointHeaderValue(request, title);
+            var headerValueExists = !v1HeaderValue.IsNullOrEmpty() || !v2HeaderValue.IsNullOrEmpty();
 
-            string headerValue;
-            if (v1HeaderValue.IsNullOrEmpty() && v2HeaderValue.IsNullOrEmpty())
-            {
-                headerValue = GetDefaultEndpoint(title);
-            }
-            else
-            {
-                headerValue = !v2HeaderValue.IsNullOrEmpty() ? v2HeaderValue : v1HeaderValue;
-            }
-
-            return GetEndpointFromKey(headerValue, title);
+            return headerValueExists ? GetEndpointFromKey(v2HeaderValue ?? v1HeaderValue, title) : GetDefaultEndpoint(title);
         }
 
         /// <summary>
@@ -47,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
             if (!request.Headers.TryGetValue("endpointKey", out var headerValue))
             {
-                return string.Empty;
+                return null;
             }
 
             // Strip out title from "Title|Endpoint"
@@ -66,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
 
             if (!request.Headers.TryGetValue($"Endpoint-{titleString}", out var headerValue))
             {
-                return string.Empty;
+                return null;
             }
 
             return headerValue;
