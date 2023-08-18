@@ -10,6 +10,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 import { ToolsAppHomeComponent } from './home.component';
 import { UserTourService } from './tour/tour.service';
+import { createMockUserTourService } from './tour/tour.service.mock';
 
 describe('ToolsAppHomeComponent', () => {
   let component: ToolsAppHomeComponent;
@@ -24,7 +25,7 @@ describe('ToolsAppHomeComponent', () => {
       createStandardTestModuleMetadata({
         imports: [MatAutocompleteModule, TourMatMenuModule],
         declarations: [ToolsAppHomeComponent],
-        providers: [createMockPermAttributesService(), UserTourService],
+        providers: [createMockPermAttributesService(), createMockUserTourService()],
       }),
     ).compileComponents();
 

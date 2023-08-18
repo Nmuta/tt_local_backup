@@ -12,6 +12,7 @@ import { NavbarComponent } from './navbar.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
+import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 
 describe('ToolsNavbarComponent', () => {
   let component: NavbarComponent;
@@ -26,7 +27,7 @@ describe('ToolsNavbarComponent', () => {
       createStandardTestModuleMetadata({ 
         declarations: [NavbarComponent],
         imports: [TourMatMenuModule],
-        providers: [UserTourService] 
+        providers: [createMockUserTourService()] 
       }),
     ).compileComponents();
 

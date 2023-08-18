@@ -16,6 +16,7 @@ import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-me
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 import { TourState } from '@shared/state/tours/tours.state';
 import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
+import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -32,7 +33,7 @@ describe('SettingsComponent', () => {
         declarations: [SettingsComponent],
         ngxsModules: [EndpointKeyMemoryState, TourState],
         imports: [TourMatMenuModule],
-        providers: [UserTourService]
+        providers: [createMockUserTourService()]
       }),
     ).compileComponents();
 
