@@ -11,7 +11,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.JsonConverters
     public sealed class StringFlagsEnumConverterTests
     {
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Serialization_RoundTrip_WithDefaultValue()
         {
             // Arrange.
@@ -33,7 +33,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.JsonConverters
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Serialization_RoundTrip_WithSingleValue()
         {
             // Arrange.
@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.JsonConverters
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Serialization_RoundTrip_WithMultipleValues()
         {
             // Arrange.

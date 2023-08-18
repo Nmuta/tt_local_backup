@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenApolloServiceNull_Throws()
         {
             // Arrange.
@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceNull_Throws()
         {
             // Arrange.
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

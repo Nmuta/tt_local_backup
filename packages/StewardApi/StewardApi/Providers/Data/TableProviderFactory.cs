@@ -12,6 +12,9 @@ using Turn10.Services.Storage.Table;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
+    /// <summary>
+    ///     Factory for creating Azure Table Providers
+    /// </summary>
     public class TableProviderFactory
     {
         public TableProviderFactory(string[] connectionStrings, string instanceName, LogManager logManager)
@@ -33,6 +36,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
         public int TimeoutMilliseconds { get; private set; }
 
+        /// <summary>
+        ///     Retireves AzureTableProvider
+        /// </summary>
         public IAzureTableProvider GetAzureTableProvider()
         {
             IAzureTableProvider[] tableProviders = new AzureTableProvider[this.ConnectionStrings.Length];

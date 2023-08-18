@@ -250,6 +250,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             return result;
         }
 
+        /// <summary>
+        ///     Determines environment and title of request
+        /// </summary>
         public void EnvironmentAndTitle(HttpContext httpContext, out string title, out string environment)
         {
             title = this.RequestPathSegment(httpContext.Request.Path, "title", true);

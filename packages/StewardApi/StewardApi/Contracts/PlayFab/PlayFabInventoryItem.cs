@@ -2,6 +2,9 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
+    /// <summary>
+    ///     PlayFab inventory item
+    /// </summary>
     public class PlayFabInventoryItem
     {
         public int Amount { get; set; }

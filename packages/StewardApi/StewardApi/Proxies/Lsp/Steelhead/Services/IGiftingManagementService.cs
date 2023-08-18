@@ -9,8 +9,14 @@ using GiftingManagementService = Turn10.Services.LiveOps.FM8.Generated.GiftingMa
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Interface proxy for <see cref="GiftingManagementService"/>.
+    /// </summary>
     public interface IGiftingManagementService
     {
+        /// <summary>
+        ///     Sends car to a player.
+        /// </summary>
         Task<GiftingManagementService.AdminSendCarGiftV2Output> AdminSendCarGiftV2(ulong recipientXuid, int carId, Guid bodyLocStringId, Guid titleLocStringId);
 
         /// <summary>

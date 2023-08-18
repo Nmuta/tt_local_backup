@@ -80,6 +80,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
             return this.Ok(result);
         }
 
+        /// <summary>
+        ///     DTO for cloning configuration modle
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Fine for now. We can fix it later if we wish. TODO")]
         public class CloneConfigurationModel
         {
