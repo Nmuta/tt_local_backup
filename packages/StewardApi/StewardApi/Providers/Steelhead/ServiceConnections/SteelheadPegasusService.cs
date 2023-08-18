@@ -205,6 +205,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return uniqueDivisionFeaturedShowcases;
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase>> GetManufacturerFeaturedShowcasesAsync()
         {
             IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase> manufacturerFeaturedShowcases = new List<LiveOpsContracts.ManufacturerFeaturedShowcase>();

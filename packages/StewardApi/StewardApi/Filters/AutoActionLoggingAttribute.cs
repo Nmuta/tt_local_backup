@@ -1,16 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Filters
@@ -73,13 +79,38 @@ namespace Turn10.LiveOps.StewardApi.Filters
             actionData.Subject = this.subject;
             actionData.HttpMethod = context.HttpContext.Request.Method;
             actionData.RequestPath = context.HttpContext.Request.Path;
-            var userClaims = context.HttpContext.User.UserClaims();
-            actionData.RequesterObjectId = userClaims.ObjectId;
-            actionData.RequesterRole = userClaims.Role;
             actionData.Title = this.title.ToString();
             actionData.Endpoint = context.HttpContext.Request.GetEndpoint(this.title);
 
-            string body = await this.ReadBodyAsStringAsync(context.HttpContext.Request).ConfigureAwait(false);
+            // Requestor info: Check for user claims and API key
+            // If neither are available, throw exception
+            var userClaims = context.HttpContext.User.UserClaims();
+            var hasUserClaims = userClaims.ObjectId != null;
+
+            var methodInfo = (context.ActionDescriptor as ControllerActionDescriptor).MethodInfo;
+            var controllerInfo = methodInfo.DeclaringType;
+            var methodApiKeyAttribute = methodInfo.GetCustomAttributes<RequireApiKeyAttribute>().FirstOrDefault();
+            var controllerApiKeyAttribute = controllerInfo.GetCustomAttributes<RequireApiKeyAttribute>().FirstOrDefault();
+            var hasApiKey = methodApiKeyAttribute != null || controllerApiKeyAttribute != null;
+
+            if (!hasUserClaims && !hasApiKey)
+            {
+                throw new ForbiddenStewardException("No user claim or API key found in request.");
+            }
+
+            if (hasUserClaims)
+            {
+                actionData.RequesterObjectId = userClaims.ObjectId;
+                actionData.RequesterRole = userClaims.Role;
+            }
+
+            if (hasApiKey)
+            {
+                var apiKeyAttribute = methodApiKeyAttribute ?? controllerApiKeyAttribute;
+                actionData.RequesterApiKeyName = apiKeyAttribute.ApiKeyName();
+            }
+
+            var body = await this.ReadBodyAsStringAsync(context.HttpContext.Request).ConfigureAwait(false);
             if (body.Length > 0)
             {
                 actionData.Metadata = body.ToJson();

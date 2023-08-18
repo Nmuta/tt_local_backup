@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceNull_Throws()
         {
             // Arrange.
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKustoProviderNull_Throws()
         {
             // Arrange.
@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenWoodstockPlayerDetailsProviderNull_Throws()
         {
             // Arrange.
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenWoodstockPlayerInventoryProviderNull_Throws()
         {
             // Arrange.
@@ -107,7 +107,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenWoodstockServiceManagementProviderNull_Throws()
         {
             // Arrange.
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenWoodstockNotificationProviderNull_Throws()
         {
             // Arrange.
@@ -135,7 +135,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKeyVaultProviderNull_Throws()
         {
             // Arrange.
@@ -149,7 +149,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -163,7 +163,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenBanHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -177,7 +177,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenNotificationHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -191,7 +191,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenStorefrontProviderNull_Throws()
         {
             // Arrange.
@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenItemsProviderNull_Throws()
         {
             // Arrange.
@@ -219,7 +219,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -233,7 +233,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSchedulerNull_Throws()
         {
             // Arrange.
@@ -247,7 +247,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenJobTrackerNull_Throws()
         {
             // Arrange.
@@ -261,7 +261,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMasterInventoryRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -275,7 +275,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenUserFlagsRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -289,7 +289,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -303,7 +303,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -323,7 +323,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerIdentities_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
@@ -338,7 +338,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -368,7 +368,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
         {
             // Arrange.
@@ -389,7 +389,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithValidEndpointKeyHeader_DoesNotThrows()
         {
             // Arrange.
@@ -405,7 +405,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_EmptyStringEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -426,7 +426,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_InvalidTitleEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -447,7 +447,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_InvalidKeyEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -468,7 +468,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_NoEndpointKeyEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -489,7 +489,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_NoTitleEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -510,7 +510,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetConsoles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -531,7 +531,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetConsoles_WithNegativeMaxResults_Throws()
         {
             // Arrange.
@@ -547,7 +547,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetSharedConsoleUsers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -569,7 +569,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetSharedConsoleUsers_WithNegativeStartIndex_Throws()
         {
             // Arrange.
@@ -586,7 +586,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetSharedConsoleUsers_WithNegativeMaxResults_Throws()
         {
             // Arrange.
@@ -604,7 +604,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserFlags_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -624,7 +624,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetUserFlags_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -645,7 +645,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUserFlags_WithNullUserFlags_Throws()
         {
             // Arrange.
@@ -660,7 +660,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetProfileSummary_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -680,7 +680,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBackstagePassUpdates_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -700,7 +700,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBanSummaries_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -720,7 +720,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBanHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -748,7 +748,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetBanHistory_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -770,7 +770,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetConsoleBanStatus_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -789,7 +789,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -817,7 +817,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetgiftInventoryProfiles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -837,7 +837,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroups_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -856,7 +856,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGiftHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -878,7 +878,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroupGiftHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -900,7 +900,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -920,7 +920,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroupNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -940,7 +940,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SendPlayerNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -963,7 +963,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithNullCommunityMessage_Throws()
         {
             // Arrange.
@@ -985,7 +985,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithNullEmptyWhitespaceMessage_Throws()
         {
             // Arrange.
@@ -1014,7 +1014,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithTooLongMessage_Throws()
         {
             // Arrange.
@@ -1040,7 +1040,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithExpireBeforeNow_Throws()
         {
             // Arrange.
@@ -1066,7 +1066,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SendGroupNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1090,7 +1090,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task EditNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1112,7 +1112,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task EditGroupNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1134,7 +1134,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditNotification_WithNullEditParameters_Throws()
         {
             // Arrange.
@@ -1157,7 +1157,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditNotification_WithNullEmptyWhitespaceMessage_Throws()
         {
             // Arrange.
@@ -1187,7 +1187,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditPlayerNotifications_WithTooLongMessage_Throws()
         {
             // Arrange.
@@ -1214,7 +1214,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DeleteNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1233,7 +1233,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DeleteGroupNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

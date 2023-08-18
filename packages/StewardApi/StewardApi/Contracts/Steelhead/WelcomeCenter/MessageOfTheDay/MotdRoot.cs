@@ -12,6 +12,9 @@ using System.Xml.Serialization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay
 {
+    /// <summary>
+    ///     Collection of Message of the Day entries
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
@@ -22,6 +25,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         public override List<MotdEntry> Entries { get; set; }
     }
 
+    /// <summary>
+    ///     Entry for Message of the Day
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -71,6 +77,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         public Guid idAttribute { get; set; }
     }
 
+    /// <summary>
+    ///     User Groups for Message of the Day
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -80,6 +89,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         public item item { get; set; }
     }
 
+    /// <summary>
+    ///     Item for Message of the Day
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
@@ -90,6 +102,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         public string @ref { get; set; }
     }
 
+    /// <summary>
+    ///     Localized text for Message of the Day
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]

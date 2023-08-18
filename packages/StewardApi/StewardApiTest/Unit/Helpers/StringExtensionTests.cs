@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
     public sealed class StringExtensionTests
     {
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Convert_ToDashedSnakeCase_VariousSamples()
         {
             "OneTwoThreeA".ToDashedSnakeCase().Should().Be("one-two-three-a");

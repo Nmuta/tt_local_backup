@@ -10,6 +10,9 @@ using static Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages storefront objects like UGC. Proxy for Client object.
+    /// </summary>
     public interface IStorefrontManagementService
     {
         /// <summary>

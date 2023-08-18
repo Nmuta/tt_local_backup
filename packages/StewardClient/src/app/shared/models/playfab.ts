@@ -22,6 +22,7 @@ export interface PlayFabBuildLock {
   id: GuidLikeString;
   reason: string;
   userId: string;
+  apiKeyName: string;
   playFabEnvironment: string;
   gameTitle: string;
   dateCreatedUtc: DateTime;
