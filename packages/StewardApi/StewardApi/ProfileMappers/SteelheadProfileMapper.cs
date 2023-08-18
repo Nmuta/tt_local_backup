@@ -664,6 +664,27 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LspTask, ForzaTaskUpdateParameters>()
                 .ForMember(dest => dest.NextExecution, opt => opt.MapFrom(source => source.NextExecutionUtc));
 
+            this.CreateMap<(V2BanParametersInput banParams, BanReasonGroup<FeatureAreas> banReasonGroup), ForzaUserBanParametersV2>()
+                .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.banParams.Xuid }))
+                .ForMember(dest => dest.DeleteLeaderboardEntries, opt => opt.MapFrom(source => source.banParams.DeleteLeaderboardEntries.Value))
+                .ForMember(dest => dest.BanEntryReason, opt => opt.MapFrom(source => source.banParams.Reason))
+                .ForMember(dest => dest.PegasusBanConfigurationId, opt => opt.MapFrom(source => source.banReasonGroup.BanConfigurationId))
+                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => source.banReasonGroup.FeatureAreas.Select(x => (uint)x).Aggregate((a, b) => a | b)))
+                .ForMember(dest => dest.BanEntryReason, opt => opt.MapFrom(source => source.banParams.Override))
+                .ForMember(dest => dest.BanDurationOverride, opt => opt.MapFrom(source => new ForzaBanDuration()
+                {
+                    IsDeviceBan = source.banParams.OverrideBanConsoles.Value,
+                    IsPermaBan = source.banParams.OverrideDurationPermanent.Value,
+                    BanDuration = source.banParams.OverrideDuration.HasValue ? new ForzaTimeSpan()
+                    {
+                        Days = (uint)source.banParams.OverrideDuration.Value.Days,
+                        Hours = (uint)source.banParams.OverrideDuration.Value.Hours,
+                        Minutes = (uint)source.banParams.OverrideDuration.Value.Minutes,
+                        Seconds = (uint)source.banParams.OverrideDuration.Value.Seconds,
+                    }
+                    : new ForzaTimeSpan(),
+                }));
+
             this.CreateMap<ForzaUGCProfileDecompressionData, UgcProfileDecompressionData>();
 
             this.CreateMap<DownloadUGCProfileOutput, UgcProfileInfo>()
