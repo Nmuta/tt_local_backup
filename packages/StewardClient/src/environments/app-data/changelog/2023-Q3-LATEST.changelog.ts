@@ -273,5 +273,10 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
       shortText: 'Implemented new deeplink destination type',
     },
+    {
+      tag:  ChangelogTag.General,
+      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
+      shortText: 'Implemented new user tour guides',
+    },
   ],
 };

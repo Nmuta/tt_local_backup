@@ -13,6 +13,7 @@ import {
   EndpointKeyMemoryState,
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -26,6 +27,7 @@ describe('SettingsComponent', () => {
       createStandardTestModuleMetadata({
         declarations: [SettingsComponent],
         ngxsModules: [EndpointKeyMemoryState],
+        import: [TourMatMenuModule],
       }),
     ).compileComponents();
 

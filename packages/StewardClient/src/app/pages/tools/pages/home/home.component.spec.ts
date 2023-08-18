@@ -6,6 +6,7 @@ import { UserModel } from '@models/user.model';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 import { of } from 'rxjs';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 import { ToolsAppHomeComponent } from './home.component';
 
@@ -18,7 +19,7 @@ describe('ToolsAppHomeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadata({
-        imports: [MatAutocompleteModule],
+        imports: [MatAutocompleteModule, TourMatMenuModule],
         declarations: [ToolsAppHomeComponent],
         providers: [createMockPermAttributesService()],
       }),
