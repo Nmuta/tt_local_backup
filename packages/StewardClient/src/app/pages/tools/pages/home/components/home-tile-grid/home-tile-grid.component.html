@@ -46,15 +46,14 @@
           ></div>
         </mat-card-content>
         <mat-card-actions align="end">
-          <span class="tour-highlight-buffer"></span>
+          <span class="tour-element-highlighted"></span>
           <mat-checkbox
             [matTooltip]="item.hasAccess ? 'Check to include in nav' : undefined"
             [disabled]="!isEnabled[item.tool] && !item.hasAccess"
             [ngModel]="isEnabled[item.tool]"
             (ngModelChange)="onCheckboxChecked(item.tool, $event)"
-            class="tour-element-highlighted"
-            [tourAnchor]="isFirst ? 'home-tour.step.five' : ''"
           >
+          <span class="tour-highlight-buffer" [tourAnchor]="isFirst ? 'home-tour.step.five' : ''"></span>
             In Nav
           </mat-checkbox>
           <div class="spacer"></div>

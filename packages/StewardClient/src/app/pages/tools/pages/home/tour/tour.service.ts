@@ -27,10 +27,12 @@ export class UserTourService {
 
   /** Checks if the Home tour should run */
   public shouldShowHomeTour(): boolean {
-    const showAnyTour = this.store.selectSnapshot<boolean>(TourState.enableUserTours);
+    const showUserTours = this.store.selectSnapshot<boolean>(TourState.enableUserTours);
     let showHomeTour = this.store.selectSnapshot<boolean>(TourState.enableHomeTour);
     
-    if (showAnyTour === false) {
+    // If showUserTours is false, the user has disabled User Tours
+    // this function will automatically toggle off the individual tours
+    if (showUserTours === false) {
       showHomeTour = false;
       this.store.dispatch(new SetHomeTour(false));
     }

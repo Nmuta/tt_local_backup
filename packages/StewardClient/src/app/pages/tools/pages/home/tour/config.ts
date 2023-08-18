@@ -1,5 +1,7 @@
 import { IStepOption } from 'ngx-ui-tour-md-menu';
 
+// TODO: implement markdown rendering when marked is fixed
+
 /** Contains the step settings and information to run the Home tour */
 export const homeTourSteps: IStepOption[] = [{
   anchorId: 'shared-tour.centered',
