@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
+using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
@@ -28,16 +29,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     public class SafetyRatingController : V2SteelheadControllerBase
     {
         private readonly IMapper mapper;
+        private readonly ISteelheadPegasusService pegasusService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SafetyRatingController"/> class.
         /// </summary>
-        public SafetyRatingController(IMapper mapper)
+        public SafetyRatingController(IMapper mapper, ISteelheadPegasusService pegasusService)
         {
             mapper.ShouldNotBeNull(nameof(mapper));
+            pegasusService.ShouldNotBeNull(nameof(pegasusService));
 
             this.mapper = mapper;
-        }
+            this.pegasusService = pegasusService;
+         }
 
         /// <summary>
         ///     Gets the user's safety rating.
@@ -50,6 +54,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             ulong xuid)
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+
+            var safetyRatingConfig = await this.pegasusService.GetSafetyRatingConfig(gameDetails.forzaUser.CMSEnvironmentOverride, gameDetails.forzaUser.CMSSlotIdOverride, gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(true);
 
             var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid).ConfigureAwait(true);
 

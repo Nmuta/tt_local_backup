@@ -651,6 +651,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<> GetSafetyRatingConfig(string slotId = SteelheadPegasusSlot.Daily)
+        {
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+            }
+
+
+            var safetyRatingConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SafetyRatingCo>>("LiveOps_SafetyRatingConfiguration", this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
+
+
+            return safetyRatingConfig;
+
+        }
+
+
+        /// <inheritdoc />
         public async Task<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(string pegasusEnvironment = null, string pegasusSlot = null, string pegasusSnapshot = null)
         {
             pegasusEnvironment ??= this.cmsEnvironment;
