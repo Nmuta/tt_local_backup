@@ -19,37 +19,31 @@ const noGiftsDateStart = '1/1/2023';
 const noGiftsDateEnd = '1/2/2023';
 
 // Ideally, there should be the exact same number of gifts between the two dates in both dev and prod
-const userWithRecentGifts = RetailUsers['jordan'];
+const userWithRecentGifts = RetailUsers['testing1'];
 const recentGiftToUserInProd = '12/22/2022';
-const recentGiftToUserInDev = '5/30/2023';
+const recentGiftToUserInDev = '8/19/2023';
 const numberOfExpectedUserGifts = 1;
 
 const lspGroupWithRecentGifts = 'Live Ops Developers';
 const recentGiftToLSPInProd = '3/16/2022';
-const recentGiftToLSPInDev = '6/1/2023';
+const recentGiftToLSPInDev = '8/19/2023';
 const numberOfExpectedLSPGifts = 1;
 
 context('Steward / Tools / Gift History / Sunrise', () => {
-  beforeEach(() => {
+  before(() => {
     login();
 
     disableFakeApi();
+    goToTool();
+    selectSunrise();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
-      goToTool();
-      selectSunrise();
-    });
     verifySearchInvalidGtagEmptyHistoryTest();
     verifySearchValidGtagGiftsExistsTest(userWithRecentGifts.gtag);
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
-      goToTool();
-      selectSunrise();
-    });
     verifySearchInvalidXuidEmptyHistoryTest();
     verifySearchValidXuidGiftsExistsTest(userWithRecentGifts.xuid);
     verifyGiftHistoryCalendarWhereGiftsExist(
@@ -66,10 +60,6 @@ context('Steward / Tools / Gift History / Sunrise', () => {
   });
 
   context('LSP Group Lookup', () => {
-    beforeEach(() => {
-      goToTool();
-      selectSunrise();
-    });
     verifySearchValidLspGroupHistoryGiftsExistsTest(lspGroupWithRecentGifts);
     verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
       lspGroupWithRecentGifts,

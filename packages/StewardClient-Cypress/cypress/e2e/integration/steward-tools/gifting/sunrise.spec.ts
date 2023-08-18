@@ -1,6 +1,6 @@
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { goToTool } from './page';
+import { clearInputs, goToTool } from './page';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
 import {
   searchByGtag,
@@ -12,22 +12,23 @@ import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
 
-context('Steward / Tools / Gifting / Sunrise', () => {
-  beforeEach(() => {
-    login();
+const defaultUser = RetailUsers['testing1'];
 
+context('Steward / Tools / Gifting / Sunrise', () => {
+  before(() => {
+    login();
     disableFakeApi();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectSunrise();
-      searchByGtag(RetailUsers['jordan'].gtag);
+      searchByGtag(defaultUser.gtag);
       waitForProgressSpinners();
     });
 
-    verifyChip(RetailUsers['jordan'].gtag);
+    verifyChip(defaultUser.gtag);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -37,14 +38,14 @@ context('Steward / Tools / Gifting / Sunrise', () => {
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectSunrise();
-      searchByXuid(RetailUsers['jordan'].xuid);
+      searchByXuid(defaultUser.xuid);
       waitForProgressSpinners();
     });
 
-    verifyChip(RetailUsers['jordan'].xuid);
+    verifyChip(defaultUser.xuid);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -54,7 +55,7 @@ context('Steward / Tools / Gifting / Sunrise', () => {
   });
 
   context('GroupId Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectSunrise();
       selectLspGroup('Live Ops Developers');
@@ -71,10 +72,11 @@ context('Steward / Tools / Gifting / Sunrise', () => {
 
 function verifyTooManyCreditsTest(): void {
   it('should not be able to gift with too many credits in gift basket', () => {
+    clearInputs();
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
     cy.contains('mat-option', 'Credits').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('600000000'); // 600,000,000
+    cy.contains('mat-form-field', 'Quantity').click().type('600000000'); // 600,000,000
     cy.contains('button', 'Add Item').click();
     // Select gift reason
     cy.contains('mat-form-field', 'Gift Reason').click();
@@ -93,10 +95,11 @@ function verifyTooManyCreditsTest(): void {
 
 function verifyTooManyWheelSpinsTest(): void {
   it('should not be able to gift with too many wheel spins in gift basket', () => {
+    clearInputs();
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('WheelSpins');
     cy.contains('mat-option', 'WheelSpins').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
+    cy.contains('mat-form-field', 'Quantity').click().type('201');
     cy.contains('button', 'Add Item').click();
     // Select gift reason
     cy.contains('mat-form-field', 'Gift Reason').click();
@@ -115,10 +118,11 @@ function verifyTooManyWheelSpinsTest(): void {
 
 function verifyTooManySuperWheelSpinsTest(): void {
   it('should not be able to gift with too many super wheel spins in gift basket', () => {
+    clearInputs();
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('SuperWheelSpins');
     cy.contains('mat-option', 'SuperWheelSpins').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
+    cy.contains('mat-form-field', 'Quantity').click().type('201');
     cy.contains('button', 'Add Item').click();
     // Select gift reason
     cy.contains('mat-form-field', 'Gift Reason').click();

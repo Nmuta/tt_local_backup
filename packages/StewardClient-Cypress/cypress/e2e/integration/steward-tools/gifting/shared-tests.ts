@@ -1,5 +1,8 @@
+import { clearInputs } from './page';
+
 export function verifyNoInputsTest(): void {
   it('should not be able to send gift without any inputs', () => {
+    clearInputs();
     cy.contains('button', 'Send Gift', { matchCase: false }).should(
       'have.class',
       'mat-button-disabled',
@@ -9,11 +12,12 @@ export function verifyNoInputsTest(): void {
 
 export function verifyNoGiftReasonTest(currencyName: string = 'Credits'): void {
   it('should not be able to send a gift without a gift reason', () => {
+    clearInputs();
     // Setup valid gift
-    cy.contains('mat-form-field', 'Search for an item').click().type(currencyName);
+    cy.contains('mat-form-field', 'Search for an item').find('input').click().type(currencyName);
     cy.contains('mat-option', currencyName).click();
+    cy.contains('mat-form-field', 'Quantity').click().type('1');
     cy.contains('button', 'Add Item').click();
-
     // Expect
     cy.contains('button', 'Send Gift', { matchCase: false }).should(
       'have.class',
@@ -24,9 +28,11 @@ export function verifyNoGiftReasonTest(currencyName: string = 'Credits'): void {
 
 export function verifyValidGiftTest(currencyName: string = 'Credits'): void {
   it('should be able to send a gift with proper inputs', () => {
+    clearInputs();
     // Setup valid gift
-    cy.contains('mat-form-field', 'Search for an item').click().type(currencyName);
+    cy.contains('mat-form-field', 'Search for an item').find('input').click().type(currencyName);
     cy.contains('mat-option', currencyName).click();
+    cy.contains('mat-form-field', 'Quantity').click().type('1');
     cy.contains('button', 'Add Item').click();
     // Select gift reason
     cy.contains('mat-form-field', 'Gift Reason').click();

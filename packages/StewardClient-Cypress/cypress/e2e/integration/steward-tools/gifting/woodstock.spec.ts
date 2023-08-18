@@ -1,6 +1,6 @@
 import { login } from '@support/steward/auth/login';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { goToTool } from './page';
+import { clearInputs, goToTool } from './page';
 import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
 import {
   searchByGtag,
@@ -13,9 +13,12 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
 import { cleanUpTestAccounts } from '@support/steward/common/clear-up-test-accounts';
 
+const defaultUser = RetailUsers['testing1'];
+
 context('Steward / Tools / Gifting / Woodstock', () => {
   before(() => {
     login();
+    disableFakeApi();
     cleanUpTestAccounts();
   });
 
@@ -23,21 +26,15 @@ context('Steward / Tools / Gifting / Woodstock', () => {
     cleanUpTestAccounts();
   });
 
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
-  });
-
   context('GTAG Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectWoodstock();
-      searchByGtag(RetailUsers['luke'].gtag);
+      searchByGtag(defaultUser.gtag);
       waitForProgressSpinners();
     });
 
-    verifyChip(RetailUsers['luke'].gtag);
+    verifyChip(defaultUser.gtag);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -47,14 +44,14 @@ context('Steward / Tools / Gifting / Woodstock', () => {
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectWoodstock();
-      searchByXuid(RetailUsers['luke'].xuid);
+      searchByXuid(defaultUser.xuid);
       waitForProgressSpinners();
     });
 
-    verifyChip(RetailUsers['luke'].xuid);
+    verifyChip(defaultUser.xuid);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -64,7 +61,7 @@ context('Steward / Tools / Gifting / Woodstock', () => {
   });
 
   context('GroupId Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectWoodstock();
       selectLspGroup('Live Ops Developers');
@@ -81,10 +78,11 @@ context('Steward / Tools / Gifting / Woodstock', () => {
 
 function verifyTooManyCreditsTest(): void {
   it('should not be able to gift with too many credits in gift basket', () => {
+    clearInputs();
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
     cy.contains('mat-option', 'Credits').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('600000000'); // 600,000,000
+    cy.contains('mat-form-field', 'Quantity').click().type('600000000'); // 600,000,000
     cy.contains('button', 'Add Item').click();
     // Select gift reason
     cy.contains('mat-form-field', 'Gift Reason').click();
@@ -103,10 +101,11 @@ function verifyTooManyCreditsTest(): void {
 
 function verifyTooManyWheelSpinsTest(): void {
   it('should not be able to gift with too many wheel spins in gift basket', () => {
+    clearInputs();
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('WheelSpins');
     cy.contains('mat-option', 'WheelSpins').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
+    cy.contains('mat-form-field', 'Quantity').click().type('201');
     cy.contains('button', 'Add Item').click();
     // Select gift reason
     cy.contains('mat-form-field', 'Gift Reason').click();
@@ -125,10 +124,11 @@ function verifyTooManyWheelSpinsTest(): void {
 
 function verifyTooManySuperWheelSpinsTest(): void {
   it('should not be able to gift with too many super wheel spins in gift basket', () => {
+    clearInputs();
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('SuperWheelSpins');
     cy.contains('mat-option', 'SuperWheelSpins').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
+    cy.contains('mat-form-field', 'Quantity').click().type('201');
     cy.contains('button', 'Add Item').click();
     // Select gift reason
     cy.contains('mat-form-field', 'Gift Reason').click();
