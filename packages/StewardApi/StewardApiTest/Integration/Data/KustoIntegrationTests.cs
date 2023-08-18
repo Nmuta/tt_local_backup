@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task RunQuery()
         {
             var result = await stewardClient.RunQueryAsync(validQuery).ConfigureAwait(false);
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task RunQuery_Unauthorized()
         {
             try
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task RunQuery_AmbiguousQuery()
         {
             try
@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task RunQuery_InvalidQuery()
         {
             try
@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task RetrieveQueries()
         {
             var result = await stewardClient.RetrieveQueriesAsync().ConfigureAwait(false);
@@ -119,7 +119,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task RetrieveQueries_Unauthorized()
         {
             try
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SaveAndDeleteQueries()
         {
             await stewardClient.SaveQueryAsync(new List<KustoQuery> { validKustoQuery }).ConfigureAwait(false);
@@ -148,7 +148,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task SaveQuery_Unauthorized()
         {
             try
@@ -163,7 +163,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task DeleteQueries_Unauthorized()
         {
             try

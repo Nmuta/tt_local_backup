@@ -24,6 +24,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
 
         public string UserId { get; set; }
 
+        public string ApiKeyName { get; set; }
+
         public string PlayFabEnvironment { get; set; }
 
         public string GameTitle { get; set; }

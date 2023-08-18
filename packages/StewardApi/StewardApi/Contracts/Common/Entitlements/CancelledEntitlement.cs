@@ -29,6 +29,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
             return $"get_entitlements_purchasecancellation_v2({xuid})";
         }
 
+        /// <summary>
+        ///     Builds CancelledEntitlement DTO from Kusto Query results
+        /// </summary>
         public static CancelledEntitlement FromQueryResult(IDataReader reader)
         {
             return new CancelledEntitlement

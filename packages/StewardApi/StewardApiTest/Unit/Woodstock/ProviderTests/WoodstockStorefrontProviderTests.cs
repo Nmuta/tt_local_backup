@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -38,7 +38,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenWoodstockServiceIsNull_Throws()
         {
             // Arrange.
@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperIsNull_Throws()
         {
             // Arrange.
@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithUnknownUgcType_Throws()
         {
             // Arrange.
@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithNullUgcFilters_Throws()
         {
             // Arrange.
@@ -129,7 +129,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCLiveryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetUGCPhotoAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -162,7 +162,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCTuneAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -179,7 +179,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUGCFeaturedStatusAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

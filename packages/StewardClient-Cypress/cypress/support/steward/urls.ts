@@ -46,6 +46,7 @@ export const stewardUrls = {
     messaging: {
       default: '/app/tools/messaging',
       sunrise: '/app/tools/messaging/sunrise',
+      steelhead: '/app/tools/messaging/steelhead',
     },
     obligation: '/app/tools/obligation',
     jobHistory: '/app/tools/steward-user-history',

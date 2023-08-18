@@ -406,6 +406,12 @@
         "resolved": "5.0.1",
         "contentHash": "KmJ+CJXizDofbq6mpqDoRRLcxgOd2z9X3XoFNULSbvbqVRZkFX3istvr+MUjL6Zw1RT+RNdoI4GYidIINtgvqQ=="
       },
+      "Turn10.Analyzer.Documentation": {
+        "type": "Direct",
+        "requested": "[1.2.3, )",
+        "resolved": "1.2.3",
+        "contentHash": "nX+3o8TfSt46SdDSUA5Qsmp9XCmQqEyZG4geGdXXrygLexc9Gl/qttHwOYMDRMadaMdDmAjxhmPPvvh0dZHWAA=="
+      },
       "Turn10.Data.Azure": {
         "type": "Direct",
         "requested": "[3.0.0, )",

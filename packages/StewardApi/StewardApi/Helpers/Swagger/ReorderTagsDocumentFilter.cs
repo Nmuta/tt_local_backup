@@ -21,6 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
         {
             Meta.All,
             Meta.DangerousAll,
+            Meta.External,
             Dev.InDev,
 
             Title.Multiple,
@@ -44,6 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             Dev.Incomplete,
         };
 
+        /// <inheritdoc/>
         public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
             swaggerDoc.Tags = this.OrderTags(swaggerDoc).ToList();

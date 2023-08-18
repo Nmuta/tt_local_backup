@@ -8,6 +8,16 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'aa341f06-663e-4e39-b54e-1fab661a54c9',
+      shortText: 'Add tool to download and upload UGC profiles',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.PlayFab },
+      uuid: 'ff41cada-62b2-4183-88ac-66f4a0c3a52a',
+      shortText: 'Display API key name when used to lock PlayFab build',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
       uuid: '460ce787-24b6-4537-9fb9-43e61d625f68',
       shortText: 'Allow modifying PlayFab voucher amounts on each available inventory collection',

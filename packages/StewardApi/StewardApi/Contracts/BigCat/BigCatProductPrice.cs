@@ -2,6 +2,9 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.BigCat
 {
+    /// <summary>
+    ///     Product pricing info, as sourced from Big Catalog API
+    /// </summary>
     public class BigCatProductPrice
     {
         public string CurrencyCode { get; set; }
