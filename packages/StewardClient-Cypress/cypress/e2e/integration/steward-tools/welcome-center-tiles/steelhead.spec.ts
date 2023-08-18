@@ -161,5 +161,5 @@ function enableEdit(): void {
     .click();
   //wait to allow page to load after selecting an option, may need a progress spinner to eliminate the wait()
   cy.get('mat-option').contains('span', '[TEST] Pop-up Test').click().wait(2_000);
-  cy.get('button').contains('span', 'Edit').click().wait(1_000);
+  cy.get('button').contains('span', 'Edit').click().wait(2_000);
 }
