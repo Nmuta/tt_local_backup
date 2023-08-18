@@ -1,13 +1,11 @@
-import { login } from '@support/steward/auth/login';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 
 context('Steward / Tools / Welcome Center Tiles / Steelhead', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.welcomeCenterTiles.steelhead);
   });
 
@@ -91,14 +89,16 @@ context('Steward / Tools / Welcome Center Tiles / Steelhead', () => {
     it('should show and hide Help Card', () => {
       cy.contains('mat-icon', 'help').click();
       cy.contains('mat-card-title', 'Verify Button').should('exist');
-      cy.contains('span', 'Hide Verify Help Icon').click();
+      clickTopLeftOfBody();
       cy.contains('mat-card-title', 'Verify Button').should('not.exist');
     });
 
     it('should not allow a MotD modification with incomplete fields', () => {
-      enableEdit();
       cy.get('button').contains('mat-icon', 'lock_open').click();
-      cy.get('button').contains('span', 'Submit Modification').parent().get('[disabled="true"]');
+      cy.contains('button', 'Submit Modification', { matchCase: false }).should(
+        'have.class',
+        'mat-button-disabled',
+      );
     });
   });
 
