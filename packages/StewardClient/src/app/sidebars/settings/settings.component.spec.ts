@@ -27,7 +27,7 @@ describe('SettingsComponent', () => {
       createStandardTestModuleMetadata({
         declarations: [SettingsComponent],
         ngxsModules: [EndpointKeyMemoryState],
-        import: [TourMatMenuModule],
+        imports: [TourMatMenuModule],
       }),
     ).compileComponents();
 
