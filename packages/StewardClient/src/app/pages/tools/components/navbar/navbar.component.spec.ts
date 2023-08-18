@@ -11,6 +11,7 @@ import { BackgroundJob } from '@models/background-job';
 import { NavbarComponent } from './navbar.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
 
 describe('ToolsNavbarComponent', () => {
   let component: NavbarComponent;
@@ -18,6 +19,7 @@ describe('ToolsNavbarComponent', () => {
 
   let mockNotificationsService: NotificationsService;
   let mockZendeskService: ZendeskService;
+  let mockUserTourService: UserTourService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
@@ -35,6 +37,8 @@ describe('ToolsNavbarComponent', () => {
 
     mockNotificationsService = TestBed.inject(NotificationsService);
     mockNotificationsService.initialize = jasmine.createSpy('initialize');
+
+    mockUserTourService = TestBed.inject(UserTourService);
 
     Object.defineProperty(component, 'profile$', { writable: true });
     component.profile$ = of();

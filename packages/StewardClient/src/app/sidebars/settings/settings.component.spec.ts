@@ -14,6 +14,8 @@ import {
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { TourState } from '@shared/state/tours/tours.state';
+import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -22,11 +24,13 @@ describe('SettingsComponent', () => {
   let mockStore: Store;
   let mockWindowService: WindowService;
 
+  let mockUserTourService: UserTourService;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadata({
         declarations: [SettingsComponent],
-        ngxsModules: [EndpointKeyMemoryState],
+        ngxsModules: [EndpointKeyMemoryState, TourState],
         imports: [TourMatMenuModule],
       }),
     ).compileComponents();
@@ -52,6 +56,8 @@ describe('SettingsComponent', () => {
 
     mockStore = TestBed.inject(Store);
     mockWindowService = TestBed.inject(WindowService);
+
+    mockUserTourService = TestBed.inject(UserTourService);
 
     mockStore.dispatch = jasmine.createSpy('dispatch');
     mockWindowService.location = jasmine

@@ -9,12 +9,15 @@ import { of } from 'rxjs';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 import { ToolsAppHomeComponent } from './home.component';
+import { UserTourService } from './tour/tour.service';
 
 describe('ToolsAppHomeComponent', () => {
   let component: ToolsAppHomeComponent;
   let fixture: ComponentFixture<ToolsAppHomeComponent>;
 
   let mockPermAttributeService: PermAttributesService;
+
+  let mockUserTourService: UserTourService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
@@ -27,6 +30,7 @@ describe('ToolsAppHomeComponent', () => {
 
     fixture = TestBed.createComponent(ToolsAppHomeComponent);
     mockPermAttributeService = TestBed.inject(PermAttributesService);
+    mockUserTourService = TestBed.inject(UserTourService);
     component = fixture.componentInstance;
 
     Object.defineProperty(component, 'profile$', {
