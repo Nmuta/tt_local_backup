@@ -158,7 +158,22 @@ const testing1: KnownUser = {
   relatedConsoles: {},
 };
 
-export const AllKnownUsers: KnownUser[] = [jordan, luke, chad, madden, ben, testing1];
+const testing2: KnownUser = {
+  gtag: 'T10LiveOpsTest2',
+  xuid: '2535419372821126',
+  t10Id: undefined,
+  accountInfo: [
+    { title: 'FH5', hasAccount: false },
+    { title: 'FM', hasAccount: false },
+    { title: 'FH4', hasAccount: false },
+    { title: 'FM7', hasAccount: false },
+    { title: 'FH3', hasAccount: false },
+  ],
+  relatedXuids: {},
+  relatedConsoles: {},
+};
+
+export const AllKnownUsers: KnownUser[] = [jordan, luke, chad, madden, ben, testing1, testing2];
 
 export const RetailUsers = {
   jordan,
