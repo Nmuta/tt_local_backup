@@ -32,6 +32,7 @@ describe('SettingsComponent', () => {
         declarations: [SettingsComponent],
         ngxsModules: [EndpointKeyMemoryState, TourState],
         imports: [TourMatMenuModule],
+        providers: [UserTourService]
       }),
     ).compileComponents();
 

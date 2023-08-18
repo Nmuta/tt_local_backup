@@ -25,7 +25,8 @@ describe('ToolsNavbarComponent', () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadata({ 
         declarations: [NavbarComponent],
-        imports: [TourMatMenuModule] 
+        imports: [TourMatMenuModule],
+        providers: [UserTourService] 
       }),
     ).compileComponents();
 

@@ -24,7 +24,7 @@ describe('ToolsAppHomeComponent', () => {
       createStandardTestModuleMetadata({
         imports: [MatAutocompleteModule, TourMatMenuModule],
         declarations: [ToolsAppHomeComponent],
-        providers: [createMockPermAttributesService()],
+        providers: [createMockPermAttributesService(), UserTourService],
       }),
     ).compileComponents();
 
