@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionBlocklist },
+      uuid: 'a6e7f4a7-7345-4f27-9446-83680ae4e516',
+      shortText: 'Update auction blocklist to display new accurate data',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
       uuid: '460ce787-24b6-4537-9fb9-43e61d625f68',
       shortText: 'Allow modifying PlayFab voucher amounts on each available inventory collection',
