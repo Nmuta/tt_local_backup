@@ -57,11 +57,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
 
-            var safetyRatingConfig = await this.pegasusService.GetSafetyRatingConfig(gameDetails.forzaUser.CMSEnvironmentOverride, gameDetails.forzaUser.CMSSlotIdOverride, gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(true);
+            var getSafetyRatingConfig = this.pegasusService.GetSafetyRatingConfig(
+                gameDetails.forzaUser.CMSEnvironmentOverride,
+                gameDetails.forzaUser.CMSSlotIdOverride,
+                gameDetails.forzaUser.CMSSnapshotId);
 
-            var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid).ConfigureAwait(true);
+            var getPlayerSafetyRating = this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid);
 
-            var result = this.mapper.SafeMap<SafetyRating>(response.safetyRating);
+            await Task.WhenAll(getSafetyRatingConfig, getPlayerSafetyRating).ConfigureAwait(true);
+
+            var safetyRatingConfig = getSafetyRatingConfig.GetAwaiter().GetResult();
+            var playerSafetyRating = getPlayerSafetyRating.GetAwaiter().GetResult();
+
+            var result = this.mapper.SafeMap<SafetyRating>(playerSafetyRating.safetyRating);
 
             return this.Ok(result);
         }

@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
+using BanConfiguration = SteelheadLiveOpsContent.BanConfiguration;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 using PullRequest = Turn10.LiveOps.StewardApi.Contracts.Git.PullRequest;
@@ -651,19 +652,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<> GetSafetyRatingConfig(string slotId = SteelheadPegasusSlot.Daily)
+        public async Task<SafetyRatingConfiguration> GetSafetyRatingConfig(string pegasusEnvironment = null, string pegasusSlot = null, string pegasusSnapshot = null)
         {
-            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+            pegasusEnvironment ??= this.cmsEnvironment;
+            pegasusSlot ??= SteelheadPegasusSlot.Daily;
+
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, pegasusSlot).ConfigureAwait(false);
 
             if (slotStatus == null)
             {
                 throw new PegasusStewardException(
-                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
+                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {pegasusSlot}");
             }
 
-
-            var safetyRatingConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SafetyRatingCo>>("LiveOps_SafetyRatingConfiguration", this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
-
+            var safetyRatingConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<SafetyRatingConfiguration>(
+                CMSFileNames.SafetyRatingConfiguration,
+                environment: pegasusEnvironment,
+                slot: pegasusSlot,
+                snapshot: pegasusSnapshot).ConfigureAwait(false);
 
             return safetyRatingConfig;
 

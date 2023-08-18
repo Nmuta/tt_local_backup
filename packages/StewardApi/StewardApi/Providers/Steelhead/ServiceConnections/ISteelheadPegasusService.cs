@@ -55,6 +55,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<SteelheadLiveOpsContent.VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
+        ///     Gets safety rating configuration.
+        /// </summary>
+        Task<SafetyRatingConfiguration> GetSafetyRatingConfig(
+            string pegasusEnvironment = null,
+            string pegasusSlot = null,
+            string pegasusSnapshot = null);
+
+        /// <summary>
         ///     Gets playlist data for Racer's Cup.
         /// </summary>
         Task<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(
