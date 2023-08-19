@@ -304,6 +304,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets ban configurations.
         /// </summary>
-        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
+        Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
     }
 }
