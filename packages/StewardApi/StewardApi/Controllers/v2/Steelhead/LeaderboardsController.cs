@@ -378,7 +378,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 var carClassesDict = carClasses.ToDictionary(carClass => carClass.Id);
                 foreach (var leaderboard in leaderboards)
                 {
-                    if (carClassesDict.TryGetValue(leaderboard.CarClassId, out CarClass carClass))
+                    if (carClassesDict.TryGetValue(leaderboard.CarClassId, out var carClass))
                     {
                         leaderboard.CarClass = carClass.DisplayName;
                     }

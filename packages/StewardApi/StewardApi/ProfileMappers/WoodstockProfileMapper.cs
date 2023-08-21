@@ -713,7 +713,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.BanEntryReason, opt => opt.MapFrom(source => source.banParams.Reason))
                 .ForMember(dest => dest.PegasusBanConfigurationId, opt => opt.MapFrom(source => source.banReasonGroup.BanConfigurationId))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => source.banReasonGroup.FeatureAreas.Select(x => (uint)x).Aggregate((a, b) => a | b)))
-                .ForMember(dest => dest.BanEntryReason, opt => opt.MapFrom(source => source.banParams.Override))
+                .ForMember(dest => dest.OverrideBanDuration, opt => opt.MapFrom(source => source.banParams.Override))
                 .ForMember(dest => dest.BanDurationOverride, opt => opt.MapFrom(source => new ForzaBanDuration()
                 {
                     IsDeviceBan = source.banParams.OverrideBanConsoles.Value,
