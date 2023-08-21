@@ -33,5 +33,10 @@ export default defineConfig({
     baseUrl: 'https://steward-ui-dev.azurewebsites.net',
     specPattern: 'cypress/e2e/**/*.spec.*',
     supportFile: 'cypress/support/commands.ts',
+    setupNodeEvents(on, config) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('@cypress/grep/src/plugin')(config);
+      return config;
+    }
   },
 });

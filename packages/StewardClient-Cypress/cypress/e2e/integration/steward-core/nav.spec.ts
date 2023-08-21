@@ -4,6 +4,7 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { stewardUrls } from '@support/steward/urls';
+import { withTags } from '@support/tags';
 
 //These values may change as tools and games are added or removed from Steward
 const filterValues = {
@@ -14,14 +15,14 @@ const filterValues = {
   playerFM7Filter: '5',
 };
 
-context('Steward Index', () => {
+context('Steward Index', withTags(), () => {
   beforeEach(() => {
     login();
 
     cy.visit('/');
   });
 
-  it('should lead to Tools homepage', () => {
+  it('should lead to Tools homepage', withTags(), () => {
     // Verfiy cards
     cy.get('.mat-card-title').contains('Player Details');
     cy.get('.mat-card-title').contains('UGC Search');

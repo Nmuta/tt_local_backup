@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es5", "dom"],
-    "types": ["cypress", "node", "cypress-wait-until"],
+    "target": "ES2022",
+    "lib": ["ES2022", "dom"],
+    "types": ["cypress", "@cypress/grep", "node", "cypress-wait-until"],
     "baseUrl": ".",
     "outDir": "./dist/",
+    "esModuleInterop": true,
     "paths": {
       "@fixtures/*": ["cypress/fixtures/*"],
       "@plugins/*": ["cypress/plugins/*"],
-      "@support/*": ["cypress/support/*"],
-      "@cypress/*": ["cypress/*"]
+      "@support/*": ["cypress/support/*"]
     },
   },
   "include": ["cypress/**/*.ts"]
