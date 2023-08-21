@@ -8,7 +8,7 @@ export function goToTool(): void {
 
 /** Clears user inputs and the current cart */
 export function clearInputs(): void {
-  cy.contains('mat-form-field', 'Search for an item').find('input').click().clear();
-  cy.contains('mat-form-field', 'Quantity').find('input').click().clear();
+  cy.contains('mat-form-field', 'Search for an item').find('input').clear();
+  cy.contains('mat-form-field', 'Quantity').find('input').clear();
   clickIfExists('[mattooltip="Remove item"]');
 }

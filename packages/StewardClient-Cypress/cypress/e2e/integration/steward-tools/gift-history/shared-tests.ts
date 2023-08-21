@@ -66,8 +66,10 @@ export function verifyGiftHistoryCalendarWhereGiftsExist(
     searchByXuid(xuid);
     waitForProgressSpinners();
     cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
-    cy.get('.mat-date-range-input-start-wrapper').clear().type(date1);
-    cy.get('.mat-date-range-input-end-wrapper').clear().type(date2);
+    cy.get('.mat-date-range-input-start-wrapper').clear();
+    cy.get('.mat-date-range-input-start-wrapper').type(date1);
+    cy.get('.mat-date-range-input-end-wrapper').clear();
+    cy.get('.mat-date-range-input-end-wrapper').type(date2);
     cy.get('gift-history-results')
       .find('mat-accordion')
       .children()
@@ -87,8 +89,10 @@ export function verifyGiftHistoryCalendarWhereGiftsDoNotExist(
     searchByXuid(xuid);
     waitForProgressSpinners();
     cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
-    cy.get('.mat-date-range-input-start-wrapper').clear().type(date1);
-    cy.get('.mat-date-range-input-end-wrapper').clear().type(date2);
+    cy.get('.mat-date-range-input-start-wrapper').clear();
+    cy.get('.mat-date-range-input-start-wrapper').type(date1);
+    cy.get('.mat-date-range-input-end-wrapper').clear();
+    cy.get('.mat-date-range-input-end-wrapper').type(date2);
     cy.get('gift-history-results').find('mat-expansion-panel').should('not.exist');
     cy.get('gift-history-results').should('contain', 'No gift history found');
     cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
@@ -99,7 +103,7 @@ export function verifyGiftHistoryCalendarWhereGiftsDoNotExist(
 export function verifySearchValidLspGroupHistoryGiftsExistsTest(lspGroup: string): void {
   it('should have history for a valid LspGroup with gift history', () => {
     cy.contains('div', 'LSP Group Selection').click();
-    cy.contains('mat-form-field', 'Select LSP Group').find('input').click().clear();
+    cy.contains('mat-form-field', 'Select LSP Group').find('input').clear();
     selectLspGroup(lspGroup);
     waitForProgressSpinners();
     cy.get('gift-history-results').find('mat-expansion-panel').should('exist');
@@ -115,12 +119,14 @@ export function verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
 ): void {
   it('should have gift history during a specific period when there were gifts', () => {
     cy.contains('div', 'LSP Group Selection').click();
-    cy.contains('mat-form-field', 'Select LSP Group').find('input').click().clear();
+    cy.contains('mat-form-field', 'Select LSP Group').find('input').clear();
     selectLspGroup(lspGroup);
     waitForProgressSpinners();
     cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
-    cy.get('.mat-date-range-input-start-wrapper').clear().type(date1);
-    cy.get('.mat-date-range-input-end-wrapper').clear().type(date2);
+    cy.get('.mat-date-range-input-start-wrapper').clear();
+    cy.get('.mat-date-range-input-start-wrapper').type(date1);
+    cy.get('.mat-date-range-input-end-wrapper').clear();
+    cy.get('.mat-date-range-input-end-wrapper').type(date2);
     cy.get('gift-history-results')
       .find('mat-accordion')
       .children()
