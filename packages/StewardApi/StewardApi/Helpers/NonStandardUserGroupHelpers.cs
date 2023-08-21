@@ -19,12 +19,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
                 }
             },
             {
-                SteelheadEndpoint.Flight, new NonStandardUserGroups()
-                {
-                    ContentCreatorId = 24,
-                }
-            },
-            {
                 SteelheadEndpoint.Studio, new NonStandardUserGroups()
                 {
                     ContentCreatorId = 24,

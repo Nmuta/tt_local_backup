@@ -210,7 +210,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
         public async Task<IActionResult> GetBanConfigurations()
         {
             var pegasusEnvironment = this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Studio
-                                  || this.SteelheadEndpoint.Value == SteelheadContracts.SteelheadEndpoint.Flight
                                    ? SteelheadPegasusEnvironment.Dev : SteelheadPegasusEnvironment.Prod;
 
             var banConfiguration = await this.pegasusService.GetBanConfigurationsAsync(pegasusEnvironment).ConfigureAwait(true);
