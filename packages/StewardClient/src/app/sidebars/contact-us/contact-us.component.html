@@ -203,28 +203,30 @@
       </div>
     </form>
 
-    <ng-container *waitForMonitor="getTeamLeadMonitor">
-      <ng-container *ngIf="!!teamLead">
-        <tr>
-          <th>Team Name</th>
-          <td>
-            <standard-copy>{{ !!teamLead ? teamLead?.team?.name : 'N/A' }}</standard-copy>
-          </td>
-        </tr>
-        <tr>
-          <th>Team Lead</th>
-          <td>
-            <standard-copy>{{ !!teamLead ? teamLead.name : adminTeamLead }}</standard-copy>
-          </td>
-        </tr>
-        <tr>
-          <th>Team Lead Email</th>
-          <td>
-            <standard-copy>{{
-              !!teamLead ? teamLead.emailAddress : adminTeamLeadEmail
-            }}</standard-copy>
-          </td>
-        </tr>
+    <ng-container *ngIf="selectedRequestType === RequestType.Permission">
+      <ng-container *waitForMonitor="getTeamLeadMonitor">
+        <ng-container *ngIf="!!teamLead">
+          <tr>
+            <th>Team Name</th>
+            <td>
+              <standard-copy>{{ !!teamLead ? teamLead?.team?.name : 'N/A' }}</standard-copy>
+            </td>
+          </tr>
+          <tr>
+            <th>Team Lead</th>
+            <td>
+              <standard-copy>{{ !!teamLead ? teamLead.name : adminTeamLead }}</standard-copy>
+            </td>
+          </tr>
+          <tr>
+            <th>Team Lead Email</th>
+            <td>
+              <standard-copy>{{
+                !!teamLead ? teamLead.emailAddress : adminTeamLeadEmail
+              }}</standard-copy>
+            </td>
+          </tr>
+        </ng-container>
       </ng-container>
     </ng-container>
 

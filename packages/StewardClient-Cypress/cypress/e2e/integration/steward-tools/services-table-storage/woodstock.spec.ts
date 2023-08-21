@@ -1,6 +1,4 @@
-import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { RetailUsers } from '@support/steward/common/account-info';
 import {
@@ -12,19 +10,18 @@ import {
   testShowAllRows,
   woodstockResults,
 } from './shared-functions';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 context('Steward / Tools / Services Table Storage / Woodstock', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.servicesTableStorage.woodstock);
   });
 
   testInvalidSearches();
 
   context('Gtag Tests', () => {
-    beforeEach(() => {
+    before(() => {
       searchByGtag(RetailUsers['jordan'].gtag);
     });
 
@@ -36,7 +33,7 @@ context('Steward / Tools / Services Table Storage / Woodstock', () => {
   });
 
   context('Xuid Tests', () => {
-    beforeEach(() => {
+    before(() => {
       searchByXuid(RetailUsers['jordan'].xuid);
     });
 
