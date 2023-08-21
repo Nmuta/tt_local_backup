@@ -182,6 +182,7 @@ export const RetailUsers = {
   madden,
   ben,
   testing1,
+  testing2,
 };
 
 export const StudioUsers = {
