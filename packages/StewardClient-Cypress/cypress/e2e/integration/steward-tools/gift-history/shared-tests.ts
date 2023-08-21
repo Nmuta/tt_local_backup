@@ -65,10 +65,10 @@ export function verifyGiftHistoryCalendarWhereGiftsExist(
     clickIfExists('player-selection-single mat-chip mat-icon[matchipremove]');
     searchByXuid(xuid);
     waitForProgressSpinners();
-    cy.get('.date-range').then(body =>{
+    cy.get('.date-range').then(body => {
       if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
-          cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
-        }
+        cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
+      }
     });
     cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
@@ -92,10 +92,10 @@ export function verifyGiftHistoryCalendarWhereGiftsDoNotExist(
     clickIfExists('player-selection-single mat-chip mat-icon[matchipremove]');
     searchByXuid(xuid);
     waitForProgressSpinners();
-    cy.get('.date-range').then(body =>{
+    cy.get('.date-range').then(body => {
       if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
-          cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
-        }
+        cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
+      }
     });
     cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
@@ -130,10 +130,10 @@ export function verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
     cy.contains('mat-form-field', 'Select LSP Group').find('input').clear();
     selectLspGroup(lspGroup);
     waitForProgressSpinners();
-    cy.get('.date-range').then(body =>{
+    cy.get('.date-range').then(body => {
       if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
-          cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
-        }
+        cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
+      }
     });
     cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
