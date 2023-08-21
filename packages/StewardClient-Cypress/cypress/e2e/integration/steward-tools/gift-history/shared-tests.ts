@@ -65,16 +65,20 @@ export function verifyGiftHistoryCalendarWhereGiftsExist(
     clickIfExists('player-selection-single mat-chip mat-icon[matchipremove]');
     searchByXuid(xuid);
     waitForProgressSpinners();
-    cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
-    cy.get('.mat-date-range-input-start-wrapper').clear();
+    cy.get('.date-range').then(body =>{
+      if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
+          cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
+        }
+    })
+    cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
-    cy.get('.mat-date-range-input-end-wrapper').clear();
+    cy.get('.mat-date-range-input-end-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-end-wrapper').type(date2);
     cy.get('gift-history-results')
       .find('mat-accordion')
       .children()
       .should('have.length', numExpectedGifts);
-    cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
+    //cy.get('.date-range').find('input[type="checkbox"], input[aria-checked="false"]').click({ force: true });
   });
 }
 
@@ -88,10 +92,14 @@ export function verifyGiftHistoryCalendarWhereGiftsDoNotExist(
     clickIfExists('player-selection-single mat-chip mat-icon[matchipremove]');
     searchByXuid(xuid);
     waitForProgressSpinners();
-    cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
-    cy.get('.mat-date-range-input-start-wrapper').clear();
+    cy.get('.date-range').then(body =>{
+      if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
+          cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
+        }
+    })
+    cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
-    cy.get('.mat-date-range-input-end-wrapper').clear();
+    cy.get('.mat-date-range-input-end-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-end-wrapper').type(date2);
     cy.get('gift-history-results').find('mat-expansion-panel').should('not.exist');
     cy.get('gift-history-results').should('contain', 'No gift history found');
@@ -122,10 +130,14 @@ export function verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
     cy.contains('mat-form-field', 'Select LSP Group').find('input').clear();
     selectLspGroup(lspGroup);
     waitForProgressSpinners();
-    cy.get('.date-range').find('input[type="checkbox"]').click({ force: true });
-    cy.get('.mat-date-range-input-start-wrapper').clear();
+    cy.get('.date-range').then(body =>{
+      if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
+          cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
+        }
+    })
+    cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
-    cy.get('.mat-date-range-input-end-wrapper').clear();
+    cy.get('.mat-date-range-input-end-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-end-wrapper').type(date2);
     cy.get('gift-history-results')
       .find('mat-accordion')

@@ -20,13 +20,13 @@ const noGiftsDateEnd = '1/2/2023';
 
 // Ideally, there should be the exact same # of gifts between the two dates in both dev and prod
 const userWithRecentGifts = RetailUsers['testing1'];
-const recentGiftToUserInProd = '12/22/2022';
-const recentGiftToUserInDev = '8/19/2023';
+const recentGiftToUserInProd = '8/22/2023';
+const recentGiftToUserInDev = '8/18/2023';
 const numberOfExpectedUserGifts = 1;
 
 const lspGroupWithRecentGifts = 'Live Ops Developers';
-const recentGiftToLSPInProd = '3/16/2022'; // this value is for Live Ops Testing, details under LSP Group Lookup section
-const recentGiftToLSPInDev = '8/19/2023'; // this value is for Live Ops Developers, details under LSP Group Lookup section
+const recentGiftToLSPInProd = '8/22/2023'; // this value is for Live Ops Testing, details under LSP Group Lookup section
+const recentGiftToLSPInDev = '8/18/2023'; // this value is for Live Ops Developers, details under LSP Group Lookup section
 const numberOfExpectedLSPGifts = 1;
 
 context('Steward / Tools / Gift History / Apollo', () => {
@@ -48,8 +48,8 @@ context('Steward / Tools / Gift History / Apollo', () => {
     verifySearchValidXuidGiftsExistsTest(userWithRecentGifts.xuid);
     verifyGiftHistoryCalendarWhereGiftsExist(
       userWithRecentGifts.xuid,
-      recentGiftToUserInProd,
       recentGiftToUserInDev,
+      recentGiftToUserInProd,
       numberOfExpectedUserGifts,
     );
     verifyGiftHistoryCalendarWhereGiftsDoNotExist(
@@ -65,8 +65,8 @@ context('Steward / Tools / Gift History / Apollo', () => {
     verifySearchValidLspGroupHistoryGiftsExistsTest(lspGroupWithRecentGifts);
     verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
       lspGroupWithRecentGifts,
-      recentGiftToLSPInProd,
       recentGiftToLSPInDev,
+      recentGiftToLSPInProd,
       numberOfExpectedLSPGifts,
     );
   });
