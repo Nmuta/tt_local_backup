@@ -190,6 +190,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ServicesLiveOps.ForzaAuctionBlocklistEntry, AuctionBlockListEntry>()
                 .ForMember(dest => dest.ExpireDateUtc, opt => opt.MapFrom(src => src.ExpireDate))
                 .ForMember(dest => dest.Description, opt => opt.Ignore())
+                .ForMember(dest => dest.Series, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<DeviceType, ServicesLiveOps.ForzaLiveDeviceType>().ReverseMap();
 

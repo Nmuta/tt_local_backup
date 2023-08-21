@@ -72,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = WoodstockPegasusSlot.LiveSteward);
 
         /// <summary>
-        ///     Gets auction banned cars.
+        ///     Gets cars that are banned from being auctioned.
         /// </summary>
         Task<IEnumerable<int>> GetAuctionBannedCarsAsync(string slotId = WoodstockPegasusSlot.LiveSteward);
     }

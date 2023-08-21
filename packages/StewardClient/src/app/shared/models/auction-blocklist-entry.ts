@@ -7,5 +7,5 @@ export interface AuctionBlocklistEntry {
   doesExpire: boolean;
   carId: BigNumber;
   description: string;
-  series?: number;
+  series?: BigNumber;
 }
