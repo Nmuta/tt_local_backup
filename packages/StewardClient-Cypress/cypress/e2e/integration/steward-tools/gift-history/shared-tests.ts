@@ -69,7 +69,7 @@ export function verifyGiftHistoryCalendarWhereGiftsExist(
       if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
           cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
         }
-    })
+    });
     cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
     cy.get('.mat-date-range-input-end-wrapper').find('input').clear();
@@ -96,7 +96,7 @@ export function verifyGiftHistoryCalendarWhereGiftsDoNotExist(
       if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
           cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
         }
-    })
+    });
     cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
     cy.get('.mat-date-range-input-end-wrapper').find('input').clear();
@@ -134,7 +134,7 @@ export function verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
       if (body.find('input[type="checkbox"][aria-checked="false"]').length > 0) {
           cy.get('input[type="checkbox"][aria-checked="false"]').click({ force: true });
         }
-    })
+    });
     cy.get('.mat-date-range-input-start-wrapper').find('input').clear();
     cy.get('.mat-date-range-input-start-wrapper').type(date1);
     cy.get('.mat-date-range-input-end-wrapper').find('input').clear();
