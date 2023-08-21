@@ -176,7 +176,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 throw new ForbiddenStewardException("Invalid user claim.", ex);
             }
 
-            this.EnvironmentAndTitle(httpContext, out string title, out string environment);
+            this.EnvironmentAndTitle(httpContext, out var title, out var environment);
 
             var authorized = user.AuthorizationAttributes().Where(authAttr =>
                     Equals(authAttr.Environment, environment) &&

@@ -672,9 +672,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 snapshot: pegasusSnapshot).ConfigureAwait(false);
 
             return safetyRatingConfig;
-
         }
-
 
         /// <inheritdoc />
         public async Task<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(string pegasusEnvironment = null, string pegasusSlot = null, string pegasusSnapshot = null)

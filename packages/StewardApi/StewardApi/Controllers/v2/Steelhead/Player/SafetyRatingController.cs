@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SteelheadLiveOpsContent;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -55,21 +57,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
-
-            var getSafetyRatingConfig = this.pegasusService.GetSafetyRatingConfig(
-                gameDetails.forzaUser.CMSEnvironmentOverride,
-                gameDetails.forzaUser.CMSSlotIdOverride,
-                gameDetails.forzaUser.CMSSnapshotId);
-
-            var getPlayerSafetyRating = this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid);
-
-            await Task.WhenAll(getSafetyRatingConfig, getPlayerSafetyRating).ConfigureAwait(true);
-
-            var safetyRatingConfig = getSafetyRatingConfig.GetAwaiter().GetResult();
-            var playerSafetyRating = getPlayerSafetyRating.GetAwaiter().GetResult();
-
-            var result = this.mapper.SafeMap<SafetyRating>(playerSafetyRating.safetyRating);
+            var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid).ConfigureAwait(true);
+            var playerSafetyRating = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid).ConfigureAwait(true);
+            var result = this.mapper.SafeMap<SafetyRating>((playerSafetyRating.safetyRating, safetyRatingConfig));
 
             return this.Ok(result);
         }
@@ -87,11 +77,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
+            var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid).ConfigureAwait(true);
             await this.Services.LiveOpsService.DeleteLiveOpsOverallSafetyRatingByXuid(xuid).ConfigureAwait(true);
-
             var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid).ConfigureAwait(true);
 
-            var result = this.mapper.SafeMap<SafetyRating>(response.safetyRating);
+            var result = this.mapper.SafeMap<SafetyRating>((response.safetyRating, safetyRatingConfig));
 
             return this.Ok(result);
         }
@@ -108,16 +98,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             ulong xuid, [FromBody] SafetyRatingInput safetyRating)
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
-            safetyRating.Score.ShouldBeGreaterThanOrEqual(0, nameof(safetyRating.Score));
-            safetyRating.Score.ShouldBeLessThanOrEqual(100, nameof(safetyRating.Score));
+            var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid).ConfigureAwait(true);
 
-            // TODO: This is actually configurable in CMS. Task to integrate these config properties:
-            // https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1545818
-            // Probation is determined by length of safety rating history. Fewer than 5 entries means in probation.
-            // We want to abstract that away from the user. So we ask them if they want to be in probation.
-            // If they want to be in probation, their safety rating must have fewer than 5 entries, so we set it to 1.
-            // If they don't want to be in probation, we must make their safety rating more than 5 entries, so we use 10.
-            var arrayLength = safetyRating.IsInProbationaryPeriod ? 1 : 10;
+            safetyRating.Score.ShouldBeGreaterThanOrEqual(safetyRatingConfig.MinScore, nameof(safetyRating.Score));
+            safetyRating.Score.ShouldBeLessThanOrEqual(safetyRatingConfig.MaxScore, nameof(safetyRating.Score));
+
+            // If they want to be in probation, their safety rating must have fewer than 'ProbationRaceCount' entries.
+            // If they don't want to be in probation, we must make their safety rating more than 5 'ProbationRaceCount'.
+            if (safetyRatingConfig.ProbationRaceCount <= 1 && safetyRating.IsInProbationaryPeriod == true)
+            {
+                throw new BadRequestStewardException($"Cannot set probationary period for player. Probation Race Count is too low. {safetyRatingConfig.ProbationRaceCount}");
+            }
+
+            var arrayLength = safetyRating.IsInProbationaryPeriod ? safetyRatingConfig.ProbationRaceCount - 1 : safetyRatingConfig.ProbationRaceCount + 1;
             var scoreArray = new double[arrayLength];
             Array.Fill<double>(scoreArray, safetyRating.Score);
 
@@ -125,9 +118,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid).ConfigureAwait(true);
 
-            var result = this.mapper.SafeMap<SafetyRating>(response.safetyRating);
+            var result = this.mapper.SafeMap<SafetyRating>((response.safetyRating, safetyRatingConfig));
 
             return this.Ok(result);
+        }
+
+        private async Task<SafetyRatingConfiguration> GetPlayerSafetyRatingConfigAsync(ulong xuid)
+        {
+            // Need CMS details to pull correct safety rating config
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+
+            var safetyRatingConfig = await this.pegasusService.GetSafetyRatingConfig(
+                gameDetails.forzaUser.CMSEnvironmentOverride,
+                gameDetails.forzaUser.CMSSlotIdOverride,
+                gameDetails.forzaUser.CMSSnapshotId);
+
+            return safetyRatingConfig;
         }
     }
 }
