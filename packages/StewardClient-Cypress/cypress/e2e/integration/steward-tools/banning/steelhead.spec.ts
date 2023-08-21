@@ -7,7 +7,6 @@ import {
   testFillOutBanCustomReason,
   testHelpCard,
   testInvalidBanConditions,
-  testVerifySearchForUser,
 } from './shared-functions';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 
@@ -25,6 +24,7 @@ context('Steward / Tools / Banning / Steelhead', () => {
       searchByGtag(steelheadUser.gtag);
     });
     context('With default user', () => {
+      // No users currently have ban history in Steelhead
       //testVerifySearchForUser('All Requests');
       testFillOutBan('Testing', 'Steelhead');
       testFillOutBanCustomReason();
@@ -38,6 +38,7 @@ context('Steward / Tools / Banning / Steelhead', () => {
       searchByXuid(steelheadUser.xuid);
     });
     context('With default user', () => {
+      // No users currently have ban history in Steelhead
       //testVerifySearchForUser('All Requests');
       testFillOutBan('Testing', 'Steelhead');
       testFillOutBanCustomReason();
