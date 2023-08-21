@@ -43,7 +43,16 @@
       <mat-icon>expand_less</mat-icon>
     </button>
   </h2>
-  <changelog-group *ngFor="let group of changelog.active" [group]="group"></changelog-group>
+  <div>
+    <mat-checkbox clickStop [(ngModel)]="showInternalChangelogEntries"
+      >Show Internal Entries</mat-checkbox
+    >
+  </div>
+  <changelog-group
+    *ngFor="let group of changelog.active"
+    [group]="group"
+    [showInternal]="showInternalChangelogEntries"
+  ></changelog-group>
 </section>
 
 <!-- TODO: Inactive Changelog Group + queuing up new changelog entries -->
