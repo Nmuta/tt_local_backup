@@ -37,7 +37,7 @@ export function testFillOutBan(reason: string, page: string): void {
         .contains('span', 'Delete all leaderboard entries (Permanent)')
         .parents('mat-checkbox')
         .click('left');
-    };
+    }
     cy.get('button').contains('mat-icon', 'lock_open').click();
     cy.get('button').contains('[disabled="true"]').should('not.exist');
     cy.get('button').contains('mat-icon', 'lock').click();
