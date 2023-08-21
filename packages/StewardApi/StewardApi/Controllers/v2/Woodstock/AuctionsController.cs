@@ -142,7 +142,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
             await Task.WhenAll(getPegasusBlocklist, getCars).ConfigureAwait(true);
 
             var pegasusBlockedCars = getPegasusBlocklist.GetAwaiter().GetResult();
-            var cars = getCars.GetAwaiter().GetResult();
+            var cars = (List<DetailedCar>)getCars.GetAwaiter().GetResult();
             var carsDict = cars.ToDictionary(car => car.Id);
 
             var blockList = pegasusBlockedCars.Select(carId => new AuctionBlockListEntry()
@@ -166,7 +166,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Woodstock
                     Description = carsDict.TryGetValue(detailedCar.Id, out var car) ? $"{car.DisplayName}" : "No car name in Pegasus.",
                     DoesExpire = true,
                     Series = car.Series,
-                    ExpireDateUtc = car.ReleaseDateUtc == DateTime.MinValue ? null : detailedCar.ReleaseDateUtc
+                    ExpireDateUtc = car.ReleaseDateUtc == DateTime.MinValue ? null : detailedCar.ReleaseDateUtc,
                 });
             }
 
