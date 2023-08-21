@@ -48,6 +48,9 @@ namespace Turn10.LiveOps.StewardApi.Filters
         }
     }
 
+    /// <summary>
+    ///     Target tags for action logging
+    /// </summary>
     [Flags]
     public enum ActionTargetLogTags
     {
@@ -60,6 +63,9 @@ namespace Turn10.LiveOps.StewardApi.Filters
         StewardUser = 64,
     }
 
+    /// <summary>
+    ///     Area tags for action logging
+    /// </summary>
     [Flags]
     public enum ActionAreaLogTags
     {

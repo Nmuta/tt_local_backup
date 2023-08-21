@@ -25,6 +25,9 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
             this.next = next;
         }
 
+        /// <summary>
+        ///     Invokes ApiKeyMiddleware.
+        /// </summary>
         public async Task InvokeAsync(HttpContext context)
         {
             // Only use this middleware on our external api path

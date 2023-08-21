@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenWoodstockServiceFactoryNull_Throws()
         {
             // Arrange.

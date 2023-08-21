@@ -3,6 +3,8 @@ echo \# Context
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 echo Working dir: $(pwd)
 echo Script dir: $SCRIPT_DIR
+TARGET_CMD=${1:-run:dev}
+echo Target cmd: $TARGET_CMD
 
 echo
 echo Finding changed specs:
@@ -18,4 +20,4 @@ echo "$CHANGED_SPECS_CSV"
 
 echo
 echo "Running changed specs on dev:"
-yarn run:dev --spec="$CHANGED_SPECS_CSV"
+yarn $TARGET_CMD --spec="$CHANGED_SPECS_CSV"

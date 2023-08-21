@@ -6,6 +6,9 @@ using SteelheadLiveOpsContent;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
+    /// <summary>
+    ///     Localized String Bridge
+    /// </summary>
     public class LocalizedStringBridge
     {
         public string TextToLocalize { get; set; }

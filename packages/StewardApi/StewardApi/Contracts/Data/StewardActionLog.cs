@@ -6,6 +6,9 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
+    /// <summary>
+    ///     Log of an action taken in Steward
+    /// </summary>
     public sealed class StewardActionLog
     {
         public string Id { get; set; }

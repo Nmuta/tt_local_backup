@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKeyVaultConfigNull_Throws()
         {
             // Arrange.
@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.

@@ -8,6 +8,20 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '0c6114ad-6e1b-46c7-a3ee-ebca53244f65',
+      shortText: 'Small fixes to Steward sidebars',
+      longText: [
+        'Add ability to filter internal changelog entries.',
+        'Only show team lead spinner when permission contact us is selected.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'aa341f06-663e-4e39-b54e-1fab661a54c9',
+      shortText: 'Add tool to download and upload UGC profiles',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.PlayFab },
       uuid: 'ff41cada-62b2-4183-88ac-66f4a0c3a52a',
       shortText: 'Display API key name when used to lock PlayFab build',

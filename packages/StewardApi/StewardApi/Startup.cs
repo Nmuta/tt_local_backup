@@ -196,7 +196,12 @@ namespace Turn10.LiveOps.StewardApi
                 options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
 
                 // All policies get registered here
-                UserAttributeValues.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
+                UserAttributeValues.AllAttributes()
+                    .ToList()
+                    .ForEach(
+                        attr => options.AddPolicy(
+                            attr,
+                            policy => policy.Requirements.Add(new AttributeRequirement(attr))));
             });
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -258,7 +263,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.Register(c => keyVaultConfig).As<KeyVaultConfig>().SingleInstance();
 
             // Steward API Middleware
-            var acceptableApiKeys = AcceptableApiKeysFromKeyVaultConfig.FromKeyVaultUrlAsync(this.configuration).GetAwaiter().GetResult();
+            var acceptableApiKeys = AcceptableApiKeysFromKeyVaultConfig.FromConfigurationAsync(this.configuration).GetAwaiter().GetResult();
             builder.Register(c => acceptableApiKeys).As<AcceptableApiKeysFromKeyVaultConfig>().SingleInstance();
 
             // Kusto
@@ -309,7 +314,6 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new DataProfileMapper());
                 mc.AddProfile(new ExternalProfileMapper());
                 mc.AllowNullCollections = true;
-                mc.IgnoreUnmapped(); // TODO: Should we remove this and correct all the mappings: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1347837
             });
             mappingConfiguration.AssertConfigurationIsValid();
             var mapper = mappingConfiguration.CreateMapper();

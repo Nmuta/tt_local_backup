@@ -17,6 +17,9 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
         /// <inheritdoc/>
         public bool IsReusable => true;
 
+        /// <summary>
+        ///     Gets the API key name
+        /// </summary>
         public string ApiKeyName() => this.apiKey.GetDescription();
 
         public RequireApiKeyAttribute(StewardApiKey apiKey)

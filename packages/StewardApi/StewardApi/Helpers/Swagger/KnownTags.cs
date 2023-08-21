@@ -165,6 +165,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string SkillRating = "Topic: SkillRating";
             public const string LspTask = "Topic: LSP Task";
             public const string Automation = "Topic: Automation";
+            public const string UgcProfile = "Topic: UGC Profile";
         }
 
         /// <summary>

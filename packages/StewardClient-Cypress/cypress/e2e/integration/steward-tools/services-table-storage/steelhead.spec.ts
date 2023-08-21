@@ -1,6 +1,4 @@
-import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { StudioUsers } from '@support/steward/common/account-info';
 import {
@@ -13,12 +11,11 @@ import {
   testShowAllRows,
 } from './shared-functions';
 import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 context('Steward / Tools / Services Table Storage / Steelhead', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.servicesTableStorage.steelhead);
     changeEndpoint('Steelhead', 'Flight', 'Studio');
   });
@@ -26,7 +23,7 @@ context('Steward / Tools / Services Table Storage / Steelhead', () => {
   testInvalidSearches();
 
   context('Gtag Tests', () => {
-    beforeEach(() => {
+    before(() => {
       searchByGtag(StudioUsers['caleb'].gtag);
     });
 
@@ -38,7 +35,7 @@ context('Steward / Tools / Services Table Storage / Steelhead', () => {
   });
 
   context('Xuid Tests', () => {
-    beforeEach(() => {
+    before(() => {
       searchByXuid(StudioUsers['caleb'].xuid);
     });
 

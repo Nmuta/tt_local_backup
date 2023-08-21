@@ -11,6 +11,9 @@ using System.Xml.Serialization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
+    /// <summary>
+    ///     Collection of localized strings
+    /// </summary>
     [SerializableAttribute]
     [DesignerCategoryAttribute("code")]
     [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:x")]
@@ -21,6 +24,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public List<LocEntry> LocalizationEntries { get; set; }
     }
 
+    /// <summary>
+    ///    A localized string with metadata
+    /// </summary>
     [SerializableAttribute]
     [DesignerCategoryAttribute("code")]
     [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -39,6 +45,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public Guid id { get; set; }
     }
 
+    /// <summary>
+    ///    A Localized string
+    /// </summary>
     [SerializableAttribute]
     [DesignerCategoryAttribute("code")]
     [XmlTypeAttribute(AnonymousType = true, Namespace = "scribble:title-content")]

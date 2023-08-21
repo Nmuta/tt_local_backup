@@ -37,6 +37,9 @@ namespace Turn10.LiveOps.StewardApi.Filters
         }
     }
 
+    /// <summary>
+    ///     Title tags for action logging
+    /// </summary>
     [Flags]
     public enum TitleLogTags
     {
