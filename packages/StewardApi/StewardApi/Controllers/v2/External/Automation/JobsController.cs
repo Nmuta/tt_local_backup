@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
             var jobs = await this.jobTracker.GetInProgressJobsAsync();
             if (jobs.Any())
             {
-                return this.BadRequest(jobs);
+                return this.BadRequest();
             }
 
             return this.Ok(new
