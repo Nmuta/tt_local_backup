@@ -137,6 +137,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                     var tunes = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.TuneBlob, this.ugcMaxResults).ConfigureAwait(false);
                     results.AddRange(tunes.result);
                     break;
+                case ForzaUGCContentType.Layergroup:
+                    var layerGroups = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Layergroup, this.ugcMaxResults).ConfigureAwait(false);
+                    results.AddRange(layerGroups.result);
+                    break;
+                case ForzaUGCContentType.GameOptions:
+                    var gameOptions = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.GameOptions, this.ugcMaxResults).ConfigureAwait(false);
+                    results.AddRange(gameOptions.result);
+                    break;
 
                 default:
                     throw new UnknownFailureStewardException($"Unsupported UGC type: {parseUgcType}");

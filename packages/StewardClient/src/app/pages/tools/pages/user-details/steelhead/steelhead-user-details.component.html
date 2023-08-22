@@ -87,6 +87,12 @@
           <inline-spinner [monitor]="ugcTunes.getMonitor | renderGuard"
             >({{ ugcTunes?.ugcContent?.length }})</inline-spinner
           >
+          <inline-spinner [monitor]="layerGroups.getMonitor | renderGuard"
+            >({{ layerGroups?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="gameOptions.getMonitor | renderGuard"
+            >({{ gameOptions?.ugcContent?.length }})</inline-spinner
+          >
           <!-- <inline-spinner [monitor]="ugcHidden.getMonitor | renderGuard"></inline-spinner> -->
         </ng-template>
         <mat-tab-group>
@@ -157,6 +163,50 @@
               </mat-card-content>
             </mat-card>
           </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Layer Groups
+              <inline-spinner [monitor]="layerGroups.getMonitor | renderGuard"
+                >({{ layerGroups?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Layer Groups</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-ugc
+                  #layerGroups
+                  [identity]="identity"
+                  [contentType]="UgcType.LayerGroup"
+                  [usingIdentities]="true"
+                ></steelhead-player-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Game Options
+              <inline-spinner [monitor]="gameOptions.getMonitor | renderGuard"
+                >({{ gameOptions?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Game Options</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-ugc
+                  #gameOptions
+                  [identity]="identity"
+                  [contentType]="UgcType.GameOptions"
+                  [usingIdentities]="true"
+                ></steelhead-player-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
         </mat-tab-group>
       </mat-tab>
       <mat-tab>
@@ -170,6 +220,12 @@
           >
           <inline-spinner [monitor]="hiddenUgcTuneBlobs.getMonitor | renderGuard"
             >({{ hiddenUgcTuneBlobs?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcLayerGroups.getMonitor | renderGuard"
+            >({{ hiddenUgcLayerGroups?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcGameOptions.getMonitor | renderGuard"
+            >({{ hiddenUgcGameOptions?.ugcContent?.length }})</inline-spinner
           >
         </ng-template>
         <mat-tab-group>
@@ -234,6 +290,50 @@
                   #hiddenUgcTuneBlobs
                   [identity]="identity"
                   [contentType]="UgcType.TuneBlob"
+                  [usingIdentities]="true"
+                ></steelhead-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Layer Groups
+              <inline-spinner [monitor]="hiddenUgcLayerGroups.getMonitor | renderGuard"
+                >({{ hiddenUgcLayerGroups?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Layer Groups</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-hidden-ugc
+                  #hiddenUgcLayerGroups
+                  [identity]="identity"
+                  [contentType]="UgcType.LayerGroup"
+                  [usingIdentities]="true"
+                ></steelhead-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Game Options
+              <inline-spinner [monitor]="hiddenUgcGameOptions.getMonitor | renderGuard"
+                >({{ hiddenUgcGameOptions?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Game Options</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-hidden-ugc
+                  #hiddenUgcGameOptions
+                  [identity]="identity"
+                  [contentType]="UgcType.GameOptions"
                   [usingIdentities]="true"
                 ></steelhead-player-hidden-ugc>
               </mat-card-content>

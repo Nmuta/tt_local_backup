@@ -49,5 +49,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Event Community Challenge UGC item type.
         /// </summary>
         CommunityChallenge = 8,
+
+        /// <summary>
+        ///     Game Options UGC item type.
+        /// </summary>
+        GameOptions = 10,
     }
 }
