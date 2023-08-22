@@ -2,8 +2,9 @@ import { login } from '@support/steward/auth/login';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Message of the Day / Steelhead', () => {
+context('Steward / Tools / Message of the Day / Steelhead', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -66,7 +67,7 @@ context('Steward / Tools / Message of the Day / Steelhead', () => {
       cy.contains('mat-card-title', 'Verify Button').should('not.exist');
     });
 
-    it('should not allow a MotD modification with incomplete fields', () => {
+    it('should not allow a MotD modification with incomplete fields', withTags(Tag.Broken), () => {
       enableEdit();
       cy.get('mat-form-field')
         .contains('mat-label', 'Content Image Path')

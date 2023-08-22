@@ -4,8 +4,9 @@ import { AccountInfo, RetailUsers } from '@support/steward/common/account-info';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { stewardUrls } from '@support/steward/urls';
+import { Tag, withTags } from '@support/tags';
 
-context('Steward / Tools / Player Details', () => {
+context('Steward / Tools / Player Details', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 

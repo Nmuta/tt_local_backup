@@ -52,6 +52,7 @@ export enum UgcType {
   EventBlueprint = 'EventBlueprint',
   TuneBlob = 'TuneBlob',
   CommunityChallenge = 'CommunityChallenge',
+  GameOptions = 'GameOptions',
 }
 
 /** Order to display UGC results. */

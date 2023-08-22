@@ -2,9 +2,10 @@ import { login } from '@support/steward/auth/login';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { Tag, withTags } from '@support/tags';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
-context('Steward / Support / Auction Blocklist / Sunrise', () => {
+context('Steward / Support / Auction Blocklist / Sunrise', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 

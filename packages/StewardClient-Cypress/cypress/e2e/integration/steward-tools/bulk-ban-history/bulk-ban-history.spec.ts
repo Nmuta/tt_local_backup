@@ -3,16 +3,17 @@ import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
+import { withTags, Tag } from '@support/tags';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
-context('Steward / Tools / Ban Review', () => {
+context('Steward / Tools / Ban Review', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
     disableFakeApi();
 
     cy.visit(stewardUrls.tools.bulkBanHistory);
-    waitForProgressSpinners(10000);
+    waitForProgressSpinners(10_000);
   });
 
   context('Initialization', () => {
