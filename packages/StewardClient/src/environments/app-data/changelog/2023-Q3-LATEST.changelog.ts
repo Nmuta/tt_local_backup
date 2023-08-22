@@ -8,6 +8,14 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'b1f43ed5-5d78-4499-bba4-4711af3c04a4',
+      shortText: 'Add Replay UGC type',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '3594283a-d0e7-4d79-bfd0-ebc0de4eafd8',
       shortText: 'Add Layer Group & Game Options UGC types',
