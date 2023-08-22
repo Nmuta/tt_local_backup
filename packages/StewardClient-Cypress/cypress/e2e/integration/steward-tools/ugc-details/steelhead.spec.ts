@@ -2,8 +2,9 @@ import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { testInputUgcID, steelheadSamples } from './shared-functions';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / UGC Details / Woodstock', () => {
+context('Steward / Tools / UGC Details / Woodstock', withTags(Tag.UnitTestStyle, Tag.Broken), () => {
   beforeEach(() => {
     login();
 

@@ -18,8 +18,9 @@ import {
   removeOneUserByGTag,
   removeOneUserByXUID,
 } from './shared-functions';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / User Group Management / Woodstock', () => {
+context('Steward / Tools / User Group Management / Woodstock', withTags(Tag.UnitTestStyle, Tag.Slow), () => {
   beforeEach(() => {
     login();
 

@@ -6,13 +6,6 @@ export enum Tag {
   Missing = "@missing",
 
   /**
-   * Indicates that this test runs quickly.
-   *
-   * Fast tests are <20s (excluding login/setup) on your dev machine.
-   */
-  Under20s = "@under20s",
-
-  /**
    * Indicates that this test was built in a unit-test style and should be refactored
    * to reload the page less often and make more assertions in a single visit.
    */
@@ -40,6 +33,14 @@ export enum Tag {
 
   /** Indicates that this test should be run regularly to verify builds. */
   Verify = "@verify",
+
+  /**
+   * Indicates this test runs much slower than other tests.
+   * 
+   * "Much slower" here is >20s
+   * Typical test time is <10s
+   */
+  Slow = "@slow"
 }
 
 /**

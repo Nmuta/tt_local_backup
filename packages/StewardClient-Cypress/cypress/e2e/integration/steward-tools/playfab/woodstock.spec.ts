@@ -1,6 +1,7 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { Tag, withTags } from '@support/tags';
 
 interface playfabBuild {
   name: string;
@@ -19,7 +20,7 @@ const builds: Record<string, playfabBuild> = {
   },
 };
 
-context('Steward / Tools / PlayFab / Woodstock', () => {
+context('Steward / Tools / PlayFab / Woodstock', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -27,7 +28,7 @@ context('Steward / Tools / PlayFab / Woodstock', () => {
     cy.visit(stewardUrls.tools.playfab.woodstock);
   });
 
-  it('should enter and display a build', () => {
+  it('should enter and display a build', withTags(Tag.Broken), () => {
     cy.contains('mat-form-field', 'Search builds').click().type(builds.build1.id);
 
     cy.get('tr').contains('td', builds.build1.name).should('exist');
@@ -36,7 +37,7 @@ context('Steward / Tools / PlayFab / Woodstock', () => {
     cy.get('tr').contains('td', builds.build2.id).should('not.exist');
   });
 
-  it('should enter a build id, clear the filter, and populate', () => {
+  it('should enter a build id, clear the filter, and populate', withTags(Tag.Broken), () => {
     cy.contains('mat-form-field', 'Search builds').click().type(builds.build1.id);
 
     cy.get('button').contains('mat-icon', 'close').parents('button').click();
@@ -53,7 +54,7 @@ context('Steward / Tools / PlayFab / Woodstock', () => {
     cy.contains('tr').should('not.exist');
   });
 
-  it('should click the Unlocked button and populate', () => {
+  it('should click the Unlocked button and populate', withTags(Tag.Broken), () => {
     cy.get('button').contains('span', 'Unlocked').parents('button').click();
 
     cy.get('tr').contains('td', builds.build1.name).should('exist');
