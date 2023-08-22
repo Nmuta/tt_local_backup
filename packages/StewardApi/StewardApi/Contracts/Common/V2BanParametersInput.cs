@@ -47,6 +47,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// </summary>
         public bool? OverrideBanConsoles { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the created time of the ban.
+        /// </summary>
         public DateTime? CreatedTimeUtc { get; set; }
     }
 }
