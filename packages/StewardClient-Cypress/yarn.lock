@@ -195,6 +195,11 @@
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
+"@types/luxon@^3.3.1":
+  version "3.3.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/luxon/-/luxon-3.3.1.tgz#08727da7d81ee6a6c702b9dc6c8f86be010eb4dc"
+  integrity sha1-CHJ9p9ge5qbHArncbI+GvgEOtNw=
+
 "@types/node@*":
   version "17.0.23"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/node/-/node-17.0.23.tgz#3b41a6e643589ac6442bdbd7a4a3ded62f33f7da"
