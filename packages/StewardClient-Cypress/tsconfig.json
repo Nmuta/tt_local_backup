@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "dom"],
+    "target": "es5",
+    "lib": ["es5", "dom"],
     "types": ["cypress", "@cypress/grep", "node", "cypress-wait-until"],
     "baseUrl": ".",
     "outDir": "./dist/",
@@ -12,5 +12,6 @@
       "@support/*": ["cypress/support/*"]
     },
   },
-  "include": ["cypress/**/*.ts"]
+  "include": ["cypress/**/*.ts"],
+  "exclude": ["node_modules"]
 }
