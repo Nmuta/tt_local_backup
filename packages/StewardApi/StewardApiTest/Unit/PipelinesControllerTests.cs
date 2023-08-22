@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenProviderFactoryNull_Throws()
         {
             // Arrange.
@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeletePipeline_WhenPipelineNameNullEmptyWhitespace_Return400()
         {
             // Arrange.
@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DeletePipeline_WhenParamsValid_ReturnsGuid()
         {
             // Arrange.

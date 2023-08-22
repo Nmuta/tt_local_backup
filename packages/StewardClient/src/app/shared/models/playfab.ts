@@ -1,4 +1,5 @@
 import { GuidLikeString } from '@models/extended-types';
+import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 
 /** PlayFab inventory collection ids. */
@@ -21,6 +22,7 @@ export interface PlayFabBuildLock {
   id: GuidLikeString;
   reason: string;
   userId: string;
+  apiKeyName: string;
   playFabEnvironment: string;
   gameTitle: string;
   dateCreatedUtc: DateTime;
@@ -30,7 +32,7 @@ export interface PlayFabBuildLock {
 /** Represents a PlayFab inventory change request. */
 export interface PlayFabInventoryChangeRequest {
   itemId: string;
-  amount: number;
+  amount: BigNumber;
 }
 
 /** Represents a PlayFab inventory item. */
@@ -39,7 +41,7 @@ export interface PlayFabInventoryItem {
   id: string;
   stackId: string;
   type: string;
-  displayProperties?: unknown; // Leaving as unknown until property is needed in UI
+  displayProperties?: unknown; // Leaving as until property is needed in UI
   name: string;
 }
 

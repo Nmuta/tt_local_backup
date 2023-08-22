@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKustoStreamingLoggerNull_Throws()
         {
             // Arrange.
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKustoProviderNull_Throws()
         {
             // Arrange.
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGiftHistoryAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -98,7 +98,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGiftHistoryAsync_WithNullEmptyWhitespaceId_Throws()
         {
             // Arrange.
@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGiftHistoryAsync_WithNullEmptyWhitespaceTitle_Throws()
         {
             // Arrange.
@@ -152,7 +152,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGiftHistoryAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
         {
             // Arrange.
@@ -179,7 +179,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGiftHistoryAsync_WithNullPlayerInventory_Throws()
         {
             // Arrange.
@@ -198,7 +198,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGiftHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -219,7 +219,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetGiftHistoryAsync_WithNullEmptyWhitespaceId_Throws()
         {
             // Arrange.
@@ -246,7 +246,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetGiftHistoryAsync_WithNullEmptyWhitespaceTitle_Throws()
         {
             // Arrange.

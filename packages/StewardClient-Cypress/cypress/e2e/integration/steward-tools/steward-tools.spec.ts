@@ -1,8 +1,9 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools', () => {
+context('Steward / Tools', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -112,7 +113,7 @@ context('Steward / Tools', () => {
         .should('have.attr', 'href', stewardUrls.tools.bulkBanHistory);
     });
 
-    it('should have links to sidebar elements', () => {
+    it('should have links to sidebar elements', withTags(Tag.Broken), () => {
       cy.get('a[mattooltip="Notifications"]').should('exist');
       cy.get('a[mattooltip="Settings"]').should('exist');
       cy.get('a[mattooltip="Profile"]').should('exist');

@@ -59,6 +59,9 @@ namespace Turn10.LiveOps.StewardApi.Providers
             }
         }
 
+        /// <summary>
+        ///     Builds an X509 certificate from string
+        /// </summary>
         public static X509Certificate2 ConvertToCertificate(string certificateSecret)
         {
             certificateSecret.ShouldNotBeNullEmptyOrWhiteSpace(nameof(certificateSecret));

@@ -34,7 +34,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceNull_Throws()
         {
             // Arrange.
@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKustoProviderNull_Throws()
         {
             // Arrange.
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenApolloPlayerDetailsProviderNull_Throws()
         {
             // Arrange.
@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenApolloPlayerInventoryProviderNull_Throws()
         {
             // Arrange.
@@ -104,7 +104,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKeyVaultProviderNull_Throws()
         {
             // Arrange.
@@ -118,7 +118,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenBanHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -160,7 +160,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSchedulerNull_Throws()
         {
             // Arrange.
@@ -174,7 +174,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenJobTrackerNull_Throws()
         {
             // Arrange.
@@ -188,7 +188,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenBanParametersRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -202,7 +202,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenPlayerInventoryRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -216,7 +216,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGroupGiftRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -230,7 +230,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenUserFlagsRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -244,7 +244,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -258,7 +258,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -278,7 +278,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerIdentities_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
@@ -293,7 +293,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -321,7 +321,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
         {
             // Arrange.
@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithValidEndpointKeyHeader_DoesNotThrows()
         {
             // Arrange.
@@ -358,7 +358,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_EmptyStringEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -379,7 +379,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_InvalidTitleEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -400,7 +400,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_InvalidKeyEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -421,7 +421,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_NoEndpointKeyEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -442,7 +442,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_NoTitleEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -463,7 +463,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayers_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -478,7 +478,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayers_WithNullBanParameters_Throws()
         {
             // Arrange.
@@ -492,7 +492,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayersUseBackgroundProcessing_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -507,7 +507,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayersUseBackgroundProcessing_WithNullBanParameters_Throws()
         {
             // Arrange.
@@ -521,7 +521,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBanSummaries_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -541,7 +541,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBanHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -569,7 +569,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetBanHistory_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -591,7 +591,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetConsoles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -612,7 +612,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetConsoles_WithNegativeMaxResults_Throws()
         {
             // Arrange.
@@ -628,7 +628,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetConsoleBanStatus_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -647,7 +647,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetSharedConsoleUsers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -669,7 +669,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetSharedConsoleUsers_WithNegativeStartIndex_Throws()
         {
             // Arrange.
@@ -686,7 +686,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetSharedConsoleUsers_WithNegativeMaxResults_Throws()
         {
             // Arrange.
@@ -703,7 +703,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserFlags_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -723,7 +723,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetUserFlags_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -744,7 +744,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUserFlags_WithNullUserFlags_Throws()
         {
             // Arrange.
@@ -759,7 +759,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -787,7 +787,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventoryProfiles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -807,7 +807,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroups_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -826,7 +826,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdatePlayerInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -853,7 +853,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdatePlayerInventoriesUseBackgroundProcessing_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -879,7 +879,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventories_WithNullGroupGift_Throws()
         {
             // Arrange.
@@ -900,7 +900,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdateGroupInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -922,7 +922,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGroupInventories_WithNullGift_Throws()
         {
             // Arrange.
@@ -937,7 +937,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGiftHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -959,7 +959,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroupGiftHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

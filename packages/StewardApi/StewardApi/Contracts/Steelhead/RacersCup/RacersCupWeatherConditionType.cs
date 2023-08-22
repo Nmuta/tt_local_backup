@@ -6,6 +6,9 @@ using Newtonsoft.Json.Converters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 {
+    /// <summary>
+    ///     Weather condition type for Racer's Cup
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RacersCupWeatherConditionType
     {

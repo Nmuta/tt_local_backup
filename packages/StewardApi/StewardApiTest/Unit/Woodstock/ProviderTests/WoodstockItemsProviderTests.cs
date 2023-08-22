@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenWoodstockPegasusServiceIsNull_Throws()
         {
             // Arrange.
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceIsNull_Throws()
         {
             // Arrange.
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperIsNull_Throws()
         {
             // Arrange.
@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetMasterInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetCarsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

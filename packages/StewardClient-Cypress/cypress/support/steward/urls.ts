@@ -46,6 +46,7 @@ export const stewardUrls = {
     messaging: {
       default: '/app/tools/messaging',
       sunrise: '/app/tools/messaging/sunrise',
+      steelhead: '/app/tools/messaging/steelhead',
     },
     obligation: '/app/tools/obligation',
     jobHistory: '/app/tools/steward-user-history',
@@ -120,6 +121,9 @@ export const stewardUrls = {
     acLogReader: {
       default: '/app/tools/ac-log-reader',
       steelhead: '/app/tools/ac-log-reader/steelhead',
+    },
+    calendar: {
+      default: 'app/tools/unified-calendar',
     },
   },
 };

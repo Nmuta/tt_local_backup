@@ -26,7 +26,8 @@ describe('PlayFabInventoryComponent', () => {
   const mockService: PlayFabInventoryServiceContract = {
     gameTitle: GameTitle.FH5,
     getPlayFabCurrencyInventory$: () => of(mockInventory),
-    getPlayFabVouchers$: () => of([]),
+    addPlayFabItem$: () => of(null),
+    removePlayFabItem$: () => of(null),
   };
 
   beforeEach(waitForAsync(() => {

@@ -31,6 +31,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
             return $"get_entitlements_purchaserefund_v2({xuid})";
         }
 
+        /// <summary>
+        ///     Builds RefundedEntitlement from kusto query result
+        /// </summary>
         public static RefundedEntitlement FromQueryResult(IDataReader reader)
         {
             return new RefundedEntitlement

@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSteelheadServiceNull_Throws()
         {
             // Arrange.
@@ -53,7 +53,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -84,7 +84,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerIdentitiesAsync_WithNullQuery_Throws()
         {
             // Arrange.
@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetailsAsync_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -122,7 +122,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -147,7 +147,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DoesPlayerExistAsync_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -170,7 +170,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetConsolesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -188,7 +188,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetConsoleBanStatusAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetSharedConsoleUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -224,7 +224,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserBanSummariesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -241,7 +241,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUserBanHistoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

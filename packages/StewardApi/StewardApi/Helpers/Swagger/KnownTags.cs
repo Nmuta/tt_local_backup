@@ -47,6 +47,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             /// <summary>A meta-tag to enable ctrl+f on APIs.</summary>
             public const string All = "All";
 
+            /// <summary>A meta-tag to enable ctrl+f on external APIs.</summary>
+            public const string External = "External";
+
             /// <summary>A meta-tag to enable ctrl+f on Dangerous APIs.</summary>
             public static readonly string DangerousAll = MakeDangerous(All);
         }
@@ -161,6 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string SafetyRating = "Topic: SafetyRating";
             public const string SkillRating = "Topic: SkillRating";
             public const string LspTask = "Topic: LSP Task";
+            public const string UgcProfile = "Topic: UGC Profile";
         }
 
         /// <summary>

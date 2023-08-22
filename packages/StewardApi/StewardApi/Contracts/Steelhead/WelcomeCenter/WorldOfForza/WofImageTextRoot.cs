@@ -11,6 +11,9 @@ using System.Xml.Serialization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
+    /// <summary>
+    ///     Collection of image text entries for World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
@@ -21,18 +24,25 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public override List<WofImageTextEntry> Entries { get; set; }
     }
 
+    /// <summary>
+    ///    Image text entry for World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
     [XmlRoot("WorldOfForza.WoFTileImageText", Namespace = "scribble:title-content", IsNullable = false)]
     public partial class WofImageTextEntry : WofBaseTileEntry
     {
+        [WriteToPegasus]
         public LocTextBaseWof PopupTitle { get; set; }
 
+        [WriteToPegasus]
         public LocTextBaseWof PopupHeader { get; set; }
 
+        [WriteToPegasus]
         public LocTextBaseWof PopupSubHeader { get; set; }
 
+        [WriteToPegasus]
         public LocTextBaseWof PopupDescription { get; set; }
 
         [WriteToPegasus]

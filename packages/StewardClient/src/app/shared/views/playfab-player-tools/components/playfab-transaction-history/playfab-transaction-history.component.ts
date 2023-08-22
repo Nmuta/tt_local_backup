@@ -8,6 +8,7 @@ import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source'
 import { MatPaginator } from '@angular/material/paginator';
 import { renderGuard } from '@helpers/rxjs';
 import { PlayFabCollectionId, PlayFabTransaction, PlayFabVoucher } from '@models/playfab';
+import { PlayFabProfile } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';
 
 /** Service contract for the PlayFabTransactionHistoryComponent. */
 export interface PlayFabTransactionHistoryServiceContract {
@@ -37,8 +38,8 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
   /** The component service contract */
   @Input() service: PlayFabTransactionHistoryServiceContract;
 
-  /** PlayFab player title entity id. */
-  @Input() playfabPlayerTitleId: string;
+  /** PlayFab player profile. */
+  @Input() playfabProfile: PlayFabProfile;
 
   /** PlayFab collection id. */
   @Input() playfabCollectionId: PlayFabCollectionId;
@@ -64,13 +65,13 @@ export class PlayFabTransactionHistoryComponent extends BaseComponent implements
     }
 
     if (
-      (!!changes.playfabPlayerTitleId || !!changes.playfabCollectionId) &&
-      !!this.playfabPlayerTitleId &&
+      (!!changes.playfabProfile || !!changes.playfabCollectionId) &&
+      !!this.playfabProfile?.title &&
       !!this.playfabCollectionId
     ) {
       this.getTransactionsMonitor = this.getTransactionsMonitor.repeat();
       this.service
-        .getPlayFabTransactionHistory$(this.playfabPlayerTitleId, this.playfabCollectionId)
+        .getPlayFabTransactionHistory$(this.playfabProfile?.title, this.playfabCollectionId)
         .pipe(this.getTransactionsMonitor.monitorSingleFire())
         .subscribe(transactionHistory => {
           this.transactionHistory.data = transactionHistory;

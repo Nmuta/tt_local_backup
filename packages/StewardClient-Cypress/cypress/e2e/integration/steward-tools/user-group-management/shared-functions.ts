@@ -114,7 +114,7 @@ export function addManyUsersByGTag(group, user1, user2): void {
 
 /** Checks that users can remove multiple users from a group by Gamertag */
 export function removeManyUsersByGTag(group, user1, user2): void {
-  it('should add multiple users by Gamertag', () => {
+  it('should remove multiple users by Gamertag', () => {
     selectLspGroupUGM(group);
     cy.contains('button', 'GTAG').click();
     cy.contains('mat-form-field', 'Player Gamertags')

@@ -64,6 +64,11 @@ export enum TimerInstance {
   Chapter = 'WorldOfForza.TileTimerChapter',
   Series = 'WorldOfForza.TileTimerSeries',
   Custom = 'WorldOfForza.TileTimerCustom',
+  ChallengeData = 'WorldOfForza.TileTimerChallengeData',
+  DateTimeRange = 'WorldOfForza.TileTimerDateTimeRange',
+  FeaturedShowcase = 'WorldOfForza.TileTimerFeaturedShowcase',
+  RivalsEvent = 'WorldOfForza.TileTimerRivalsEvent',
+  ShowroomListing = 'WorldOfForza.TileTimerShowroomListingCategoryV2',
 }
 
 /** Timer reference type for the reference object */
@@ -72,6 +77,11 @@ export enum TimerReferenceInstance {
   Series = 'Series',
   Season = 'Season',
   Chapter = 'Chapter',
+  ChallengeData = 'ChallengeData',
+  DateTimeRange = 'DateTimeRange',
+  FeaturedShowcase = 'FeaturedShowcase',
+  RivalsEvent = 'RivalsEvent',
+  ShowroomListing = 'ShowroomListing',
 }
 
 /** Interface for a localized text object integrated in a welcome center tile. */
@@ -98,6 +108,7 @@ export interface CustomRangePoint {
 export interface CustomRange {
   from: CustomRangePoint;
   to: CustomRangePoint;
+  name: string;
 }
 
 /** Interface for a timer reference. RefId can be a Season, Chapter, etc Guid */
@@ -181,6 +192,10 @@ export interface WelcomeCenterTile {
 /** Interface for a image text tile. */
 export interface ImageTextTile extends WelcomeCenterTile {
   contentImagePath: string;
+  popupTitle: LocalizedText;
+  popupHeader: LocalizedText;
+  popupSubHeader: LocalizedText;
+  popupDescription: LocalizedText;
 }
 
 /** Interface for a generic popup tile. */

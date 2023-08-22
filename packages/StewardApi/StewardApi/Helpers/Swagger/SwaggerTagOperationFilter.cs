@@ -21,6 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
     /// </remarks>
     public class SwaggerTagOperationFilter : IOperationFilter
     {
+        /// <inheritdoc/>
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (context.ApiDescription.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)

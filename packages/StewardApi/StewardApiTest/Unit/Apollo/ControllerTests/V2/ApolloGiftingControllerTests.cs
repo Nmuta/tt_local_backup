@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenApolloPlayerDetailsProviderNull_Throws()
         {
             // Arrange.
@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenApolloPlayerInventoryProviderNull_Throws()
         {
             // Arrange.
@@ -71,7 +71,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSchedulerNull_Throws()
         {
             // Arrange.
@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenJobTrackerNull_Throws()
         {
             // Arrange.
@@ -113,7 +113,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests.V2
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.

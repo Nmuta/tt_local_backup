@@ -9,6 +9,9 @@ using static Turn10.Services.LiveOps.FM8.Generated.TaskManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages tasks. Proxy for Client object.
+    /// </summary>
     public interface ITaskManagementService
     {
         /// <summary>
