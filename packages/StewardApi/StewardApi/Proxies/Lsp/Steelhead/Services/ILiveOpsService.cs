@@ -169,6 +169,11 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task ClearUserSkillRatingOverride(ulong xuid, Guid externalProfileId);
 
         /// <summary>
+        ///     Gets UGC game options.
+        /// </summary>
+        Task<LiveOpsGetUGCGameOptionsOutput> LiveOpsGetUGCGameOptions(Guid[] ids);
+
+        /// <summary>
         ///     Downloads UGC profile and metadata by xuid and profileId
         /// </summary>
         Task<DownloadUGCProfileOutput> DownloadUGCProfile(ulong xuid, Guid externalProfileId);

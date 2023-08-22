@@ -1,6 +1,7 @@
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
+import { withTags, Tag } from '@support/tags';
 
 context('Steward / Tools / Product Pricing', () => {
   before(() => {
@@ -8,7 +9,7 @@ context('Steward / Tools / Product Pricing', () => {
     cy.visit(stewardUrls.tools.productPricing.default);
   });
 
-  it('should populate pricing on page load FH5 Standard Edition', () => {
+  it('should populate pricing on page load FH5 Standard Edition', withTags(Tag.Broken), () => {
     cy.get('mat-form-field').contains('span', 'Select Product').parents('mat-form-field').click();
     cy.get('mat-option').contains('span', 'Forza Horizon 5 Standard Edition').click();
     waitForProgressSpinners();

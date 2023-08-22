@@ -9,7 +9,13 @@ import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.s
   styleUrls: ['./steelhead-ugc-details.component.scss'],
 })
 export class SteelheadUgcDetailsComponent extends BaseComponent implements OnInit {
-  public supportedTypes = [UgcType.Livery, UgcType.Photo, UgcType.TuneBlob];
+  public supportedTypes = [
+    UgcType.Livery,
+    UgcType.Photo,
+    UgcType.TuneBlob,
+    UgcType.LayerGroup,
+    UgcType.GameOptions,
+  ];
   public hasTypeLookup = {};
 
   constructor(public readonly sharedLookupService: ScopedSharedLookupService) {

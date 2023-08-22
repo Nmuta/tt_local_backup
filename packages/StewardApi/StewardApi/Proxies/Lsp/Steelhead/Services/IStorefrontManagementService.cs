@@ -43,6 +43,12 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             Guid id);
 
         /// <summary>
+        ///     Gets layer group.
+        /// </summary>
+        Task<GetUGCLayerGroupOutput> GetUGCLayerGroup(
+            Guid id);
+
+        /// <summary>
         ///     Sets featured status of UGC item.
         /// </summary>
         Task SetFeatured(

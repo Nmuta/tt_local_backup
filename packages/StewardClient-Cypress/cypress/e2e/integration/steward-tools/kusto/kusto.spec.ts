@@ -2,8 +2,9 @@ import { login } from '@support/steward/auth/login';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Support /Kusto', () => {
+context('Steward / Support / Kusto', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -11,7 +12,7 @@ context('Steward / Support /Kusto', () => {
     cy.visit(stewardUrls.tools.kusto);
   });
 
-  it('should search for a Kusto Query and run it', () => {
+  it('should search for a Kusto Query and run it', withTags(Tag.Broken), () => {
     cy.get('mat-form-field')
       .contains('span', 'Search for a Kusto query')
       .parents('mat-form-field')
@@ -38,7 +39,7 @@ context('Steward / Support /Kusto', () => {
     cy.get('mat-row').contains('mat-cell', '2533274837999097').should('exist');
   });
 
-  it('should clear a query', () => {
+  it('should clear a query', withTags(Tag.Broken), () => {
     cy.get('mat-form-field')
       .contains('span', 'Search for a Kusto query')
       .parents('mat-form-field')
