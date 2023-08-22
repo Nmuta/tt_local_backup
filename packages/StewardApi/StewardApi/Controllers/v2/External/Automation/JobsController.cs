@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Controllers.V2;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
@@ -15,7 +13,7 @@ using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
 {
     /// <summary>
-    ///     Handles requests for Woodstock PlayFab build integrations.
+    ///     Handles automation requests for checking pending Steward Jobs.
     /// </summary>
     [Route("api/v{version:apiVersion}/external/automation/jobs")]
     [RequireApiKey(StewardApiKey.StewardAutomation)]

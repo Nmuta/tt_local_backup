@@ -1,32 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.External.PlayFab;
-using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers.V2;
 using Turn10.LiveOps.StewardApi.Filters;
-using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
-using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
 {
     /// <summary>
-    ///     Handles requests for Woodstock PlayFab build integrations.
+    ///     Handles automation requests for Steward Tool availability.
     /// </summary>
     [Route("api/v{version:apiVersion}/external/automation/tools")]
     [RequireApiKey(StewardApiKey.StewardAutomation)]
@@ -44,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
         }
 
         /// <summary>
-        ///     Retrieves list of active PlayFab build lock.
+        ///     Gets the state of tool availability.
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, type: typeof(ToolsAvailability))]
@@ -79,7 +68,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
         }
 
         /// <summary>
-        ///     Retrieves list of active PlayFab build lock.
+        ///     Sets the tool state to Locked, from Unlocked.
+        ///     Fails if the tools are already Locked.
         /// </summary>
         [HttpPost("lock")]
         [SwaggerResponse(200, type: typeof(ToolsAvailability))]
@@ -98,7 +88,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
         }
 
         /// <summary>
-        ///     Retrieves list of active PlayFab build lock.
+        ///     Sets the tool state to Unlocked, from Locked.
+        ///     Fails if the tools are already Unlocked.
         /// </summary>
         [HttpPost("unlock")]
         [SwaggerResponse(200, type: typeof(ToolsAvailability))]
