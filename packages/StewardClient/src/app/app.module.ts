@@ -184,7 +184,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule,
-    TourMatMenuModule.forRoot(),    // loaded to ensure tours run properly
+    TourMatMenuModule.forRoot(), // loaded to ensure tours run properly
   ],
   providers: [
     TourService,

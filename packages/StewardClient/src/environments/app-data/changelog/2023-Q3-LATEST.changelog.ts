@@ -288,7 +288,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Implemented new deeplink destination type',
     },
     {
-      tag:  ChangelogTag.General,
+      tag: ChangelogTag.General,
       uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
       shortText: 'Implemented new user tour guides',
     },

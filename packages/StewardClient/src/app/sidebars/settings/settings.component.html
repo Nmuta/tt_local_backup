@@ -149,25 +149,28 @@
 
   <mat-card>
     <mat-card-title>Tours</mat-card-title>
-    <mat-card-subtitle>Toggle user tours on/off. Make sure all tours are enabled before adjusting individual settings.</mat-card-subtitle>
+    <mat-card-subtitle
+      >Toggle user tours on/off. Make sure all tours are enabled before adjusting individual
+      settings.</mat-card-subtitle
+    >
     <mat-card-content>
       <mat-slide-toggle
-      [(ngModel)]="enableUserTours"
-      (ngModelChange)="syncUserTours()"
-      matTooltip="Toggles all User tours on and off. Turning this off will disable ALL tours. Must be enabled to display individual tours."
-      matTooltipPosition="after"
-    >
-      Enable User Tours</mat-slide-toggle
-    >
-    <br />
+        [(ngModel)]="enableUserTours"
+        (ngModelChange)="syncUserTours()"
+        matTooltip="Toggles tours on and off. Turning this off will disable ALL tours. Must be enabled to display individual tours."
+        matTooltipPosition="after"
+      >
+        Enable User Tours</mat-slide-toggle
+      >
+      <br />
       <mat-slide-toggle
-      [(ngModel)]="enableHomeTour"
-      (ngModelChange)="syncHomeTour()"
-      matTooltip="Toggles Home page tour on and off."
-      matTooltipPosition="after"
-    >
-      Show Home Tour</mat-slide-toggle
-    >
+        [(ngModel)]="enableHomeTour"
+        (ngModelChange)="syncHomeTour()"
+        matTooltip="Toggles Home page tour on and off."
+        matTooltipPosition="after"
+      >
+        Show Home Tour</mat-slide-toggle
+      >
     </mat-card-content>
   </mat-card>
 </section>

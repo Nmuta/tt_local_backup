@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
-import {
-  SetHomeTour,
-  SetUserTours,
-} from './tours.actions';
+import { SetHomeTour, SetUserTours } from './tours.actions';
 
 /** Defines the tours state model. */
 export class TourStateModel {
@@ -30,7 +27,7 @@ export class TourState {
     ctx: StateContext<TourStateModel>,
     action: SetHomeTour,
   ): Observable<TourStateModel> {
-    return of(ctx.patchState({ enableHomeTour: action.enabled }))
+    return of(ctx.patchState({ enableHomeTour: action.enabled }));
   }
 
   /** Sets the state of all the user tours. */
@@ -39,7 +36,7 @@ export class TourState {
     ctx: StateContext<TourStateModel>,
     action: SetUserTours,
   ): Observable<TourStateModel> {
-    return of(ctx.patchState({ enableUserTours: action.enabled }))
+    return of(ctx.patchState({ enableUserTours: action.enabled }));
   }
 
   /** Selector for whether the state has the home tour enabled. */

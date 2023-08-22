@@ -53,7 +53,10 @@
             [ngModel]="isEnabled[item.tool]"
             (ngModelChange)="onCheckboxChecked(item.tool, $event)"
           >
-          <span class="tour-highlight-buffer" [tourAnchor]="isFirst ? 'home-tour.step.five' : ''"></span>
+            <span
+              class="tour-highlight-buffer"
+              [tourAnchor]="isFirst ? 'home-tour.step.five' : ''"
+            ></span>
             In Nav
           </mat-checkbox>
           <div class="spacer"></div>

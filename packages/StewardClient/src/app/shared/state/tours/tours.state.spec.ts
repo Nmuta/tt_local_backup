@@ -14,12 +14,9 @@ describe('UserTourService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NgxsModule.forRoot([TourState]),
-        TourMatMenuModule,
-      ],
-      providers: [createMockUserTourService()]
-  });
+      imports: [NgxsModule.forRoot([TourState]), TourMatMenuModule],
+      providers: [createMockUserTourService()],
+    });
     service = TestBed.inject(TourState);
     store = TestBed.inject(Store);
   });

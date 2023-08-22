@@ -75,10 +75,10 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public enableUserTours: boolean;
 
   constructor(
-    private readonly store: Store, 
-    private readonly windowService: WindowService, 
+    private readonly store: Store,
+    private readonly windowService: WindowService,
     private readonly router: Router,
-    private readonly userTourService: UserTourService,    // loaded here so tours will run
+    private readonly userTourService: UserTourService, // loaded here so tours will run
   ) {
     super();
   }
@@ -182,11 +182,11 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   /** Fired when any setting changes. */
   public syncHomeTour(): void {
     this.store.dispatch(new SetHomeTour(this.enableHomeTour));
-    this.router
-      .navigate(['app', 'tools', 'home'])
-      .then(() => { this.userTourService.startHomeTour(); });
+    this.router.navigate(['app', 'tools', 'home']).then(() => {
+      this.userTourService.startHomeTour();
+    });
   }
-  
+
   /** Fired when any setting changes. */
   public syncUserTours(): void {
     this.store.dispatch(new SetUserTours(this.enableUserTours));
@@ -214,7 +214,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   }
 
   /** Sets the home tour boolean in settings. */
-  public setHomeTour(): void {  
+  public setHomeTour(): void {
     this.store.dispatch(new SetHomeTour(true));
   }
 

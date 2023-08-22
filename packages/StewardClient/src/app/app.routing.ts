@@ -90,7 +90,7 @@ const routes: Routes = [
 /** Defines the app router. */
 @NgModule({
   imports: [
-    TourMatMenuModule,    // loaded to ensure tours run properly
+    TourMatMenuModule, // loaded to ensure tours run properly
     RouterModule.forRoot(routes, {
       useHash: false,
       onSameUrlNavigation: 'reload',

@@ -16,20 +16,16 @@ export class UserTourService {
   private readonly tourState$: Observable<TourStateModel>;
   private state: TourStateModel;
 
-  constructor(
-    private readonly store: Store,
-    private tourService: TourService,
-  ) {
-    
-   const snapshot = this.store.selectSnapshot<TourStateModel>(TourState);
-   this.tourState$.pipe(startWith(snapshot)).subscribe(state => (this.state = state));
+  constructor(private readonly store: Store, private tourService: TourService) {
+    const snapshot = this.store.selectSnapshot<TourStateModel>(TourState);
+    this.tourState$.pipe(startWith(snapshot)).subscribe(state => (this.state = state));
   }
 
   /** Checks if the Home tour should run */
   public shouldShowHomeTour(): boolean {
     const showUserTours = this.store.selectSnapshot<boolean>(TourState.enableUserTours);
     let showHomeTour = this.store.selectSnapshot<boolean>(TourState.enableHomeTour);
-    
+
     // If showUserTours is false, the user has disabled User Tours
     // this function will automatically toggle off the individual tours
     if (showUserTours === false) {
@@ -40,21 +36,18 @@ export class UserTourService {
     return showHomeTour;
   }
 
+  /** Starts the Home tour */
+  public startHomeTour(): void {
+    if (this.shouldShowHomeTour()) {
+      this.tourService.initialize(homeTourSteps);
 
-    /** Starts the Home tour */
-    public startHomeTour(): void {
-      if (this.shouldShowHomeTour()) {
-        this.tourService.initialize(homeTourSteps);
+      this.tourService.end$.subscribe(() => {
+        this.store.dispatch(new SetHomeTour(false));
+      });
 
-        this.tourService
-        .end$
-        .subscribe(() => {
-          this.store.dispatch(new SetHomeTour(false));
-        });
-
-        renderGuard(() => {
-          this.tourService.start();
-        });
-      }
+      renderGuard(() => {
+        this.tourService.start();
+      });
     }
+  }
 }

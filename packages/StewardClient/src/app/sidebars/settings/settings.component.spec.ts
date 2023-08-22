@@ -30,7 +30,7 @@ describe('SettingsComponent', () => {
         declarations: [SettingsComponent],
         ngxsModules: [EndpointKeyMemoryState, TourState],
         imports: [TourMatMenuModule.forRoot()],
-        providers: [createMockUserTourService()]
+        providers: [createMockUserTourService()],
       }),
     ).compileComponents();
 

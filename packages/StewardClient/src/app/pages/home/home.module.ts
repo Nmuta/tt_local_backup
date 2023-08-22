@@ -28,7 +28,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatTooltipModule,
     FontAwesomeModule,
     AvailableAppsModule,
-    TourMatMenuModule,    // loaded to ensure tours run properly
+    TourMatMenuModule, // loaded to ensure tours run properly
   ],
   declarations: [HomeComponent],
 })

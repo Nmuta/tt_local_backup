@@ -16,7 +16,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatProgressSpinnerModule,
     MonitorActionModule,
     MatIconModule,
-    TourMatMenuModule,    // loaded to ensure tours run properly
+    TourMatMenuModule, // loaded to ensure tours run properly
   ],
   exports: [ExternalRedirectComponent],
 })

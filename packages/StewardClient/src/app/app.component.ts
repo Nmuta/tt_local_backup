@@ -28,7 +28,7 @@ export class AppComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: PermissionsService,
     private readonly permAttributesService: PermAttributesService,
     private readonly themeService: ThemeService, // just loading this as a dependency is enough to force synchronization
-    private readonly userTourService: UserTourService,  // loading this so tours can run throughout the app
+    private readonly userTourService: UserTourService, // loading this so tours can run throughout the app
   ) {
     super();
     this.registryService.initialize();

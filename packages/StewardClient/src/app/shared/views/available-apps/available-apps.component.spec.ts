@@ -18,9 +18,9 @@ describe('AvailableAppsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
-      createStandardTestModuleMetadata({ 
+      createStandardTestModuleMetadata({
         declarations: [AvailableAppsComponent],
-        imports: [TourMatMenuModule]
+        imports: [TourMatMenuModule],
       }),
     ).compileComponents();
 
