@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
+      uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
+      shortText: 'Add new component to search rivals bounties',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '3594283a-d0e7-4d79-bfd0-ebc0de4eafd8',
       shortText: 'Add Layer Group & Game Options UGC types',
@@ -35,11 +40,6 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
       uuid: '460ce787-24b6-4537-9fb9-43e61d625f68',
       shortText: 'Allow modifying PlayFab voucher amounts on each available inventory collection',
-    },
-    {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
-      uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
-      shortText: 'Add new component to search rivals bounties',
     },
     {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
