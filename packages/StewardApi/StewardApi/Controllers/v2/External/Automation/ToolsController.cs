@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
             var newState = await this.blobStorageProvider.SetToolsAvailabilityAsync(state);
             if (newState.AllTools)
             {
-                return this.BadRequest(state);
+                return this.BadRequest();
             }
 
             return this.Ok(new
@@ -72,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
             var state = await this.blobStorageProvider.GetToolsAvailabilityAsync();
             if (state.AllTools)
             {
-                return this.BadRequest(state);
+                return this.BadRequest();
             }
 
             return this.Ok(new
@@ -100,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
             var newState = await this.blobStorageProvider.SetToolsAvailabilityAsync(state);
             if (!newState.AllTools)
             {
-                return this.BadRequest(state);
+                return this.BadRequest();
             }
 
             return this.Ok(new
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
             var state = await this.blobStorageProvider.GetToolsAvailabilityAsync();
             if (!state.AllTools)
             {
-                return this.BadRequest(state);
+                return this.BadRequest();
             }
 
             return this.Ok(new
