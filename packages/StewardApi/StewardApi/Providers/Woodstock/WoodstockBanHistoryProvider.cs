@@ -59,6 +59,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             banParameters.ShouldNotBeNull(nameof(banParameters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
+            banParameters.CreatedTimeUtc = DateTime.UtcNow;
+
             var banHistory = new LiveOpsBanHistory(
                 (long)xuid,
                 banEntryId,
