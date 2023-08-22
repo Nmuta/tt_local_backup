@@ -34,7 +34,7 @@ context('Steward / Tools / Banning / Steelhead', () => {
 
   context('XUID Lookup', () => {
     before(() => {
-      cy.visit(stewardUrls.tools.banning.woodstock);
+      cy.visit(stewardUrls.tools.banning.steelhead);
       searchByXuid(steelheadUser.xuid);
     });
     context('With default user', () => {
