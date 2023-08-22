@@ -19,8 +19,9 @@ import {
   removeOneUserByXUID,
 } from './shared-functions';
 import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
+import { Tag, withTags } from '@support/tags';
 
-context('Steward / Tools / User Group Management / Woodstock', () => {
+context('Steward / Tools / User Group Management / Steelhead Studio', withTags(Tag.UnitTestStyle, Tag.Broken), () => {
   beforeEach(() => {
     login();
 

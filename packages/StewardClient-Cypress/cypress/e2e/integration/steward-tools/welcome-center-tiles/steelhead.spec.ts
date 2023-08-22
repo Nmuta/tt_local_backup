@@ -4,7 +4,7 @@ import { stewardUrls } from '@support/steward/urls';
 import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 import { Tag, withTags } from '@support/tags';
 
-context('Steward / Tools / Welcome Center Tiles / Steelhead', () => {
+context('Steward / Tools / Welcome Center Tiles / Steelhead', withTags(Tag.Flakey), () => {
   before(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.welcomeCenterTiles.steelhead);

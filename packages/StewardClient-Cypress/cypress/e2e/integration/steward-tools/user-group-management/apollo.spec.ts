@@ -20,7 +20,7 @@ import {
 } from './shared-functions';
 import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / User Group Management / Woodstock', withTags(Tag.UnitTestStyle, Tag.Slow), () => {
+context('Steward / Tools / User Group Management / Apollo', withTags(Tag.UnitTestStyle, Tag.Slow), () => {
   beforeEach(() => {
     login();
 
