@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+#pragma warning disable CA1027 // Mark enums with FlagsAttribute
+
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
