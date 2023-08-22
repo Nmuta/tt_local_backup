@@ -585,6 +585,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<LspTask, ForzaTaskUpdateParameters>()
                 .ForMember(dest => dest.NextExecution, opt => opt.MapFrom(source => source.NextExecutionUtc));
+
+            this.CreateMap<ForzaBountyEntry, SteelheadBountySummary>()
+                .ForMember(dest => dest.MessageTitle, opt => opt.MapFrom(source => source.messageTitleEnglish))
+                .ForMember(dest => dest.MessageDescription, opt => opt.MapFrom(source => source.messageBodyEnglish))
+                .ForMember(dest => dest.RivalsEventId, opt => opt.MapFrom(source => source.rivalEventId))
+                .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage));
         }
 
         private DeeplinkDestination PrepareBridgeDestination(WofBaseDestination destination)

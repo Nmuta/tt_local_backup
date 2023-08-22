@@ -3,9 +3,9 @@
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
 {
     /// <summary>
-    ///     Represents a Steelhead bounty.
+    ///     Represents a Steelhead bounty summary.
     /// </summary>
-    public sealed class SteelheadBounty
+    public sealed class SteelheadBountySummary
     {
         /// <summary>
         ///     asdf

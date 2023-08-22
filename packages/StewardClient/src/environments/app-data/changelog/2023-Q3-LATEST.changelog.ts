@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
+      uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
+      shortText: 'Add new component to search rivals bounties',
+    },
+    {
       tag: { title: [GameTitle.FH5], tool: NavbarTool.UserDetails },
       uuid: 'dd0629a3-9e75-4dba-bbd8-371f075da694',
       shortText: 'Fix bug preventing sending',

@@ -1,0 +1,66 @@
+<mat-card>
+  <mat-card-header class="sf-header">
+    <mat-card-title>Search Bounties</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <mat-form-field appearance="fill">
+        <mat-label>Keyword</mat-label>
+        <input type="text" matInput [formControl]="formControls.keyword" (keyup)="search()" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Rivals Event Id</mat-label>
+        <input
+          type="number"
+          matInput
+          [formControl]="formControls.rivalsEventId"
+          (keyup)="filterByRivalsId()"
+        />
+      </mat-form-field>
+    </form>
+    <ng-container *waitForMonitor="getMonitor">
+      <table mat-table [dataSource]="bountySummaries">
+        <ng-container matColumnDef="rivalsInfo">
+          <th mat-header-cell *matHeaderCellDef>Rivals Info</th>
+          <td mat-cell *matCellDef="let entry">
+            <ul>
+              <li><b>Id:</b> {{ entry.rivalsEventId }}</li>
+              <li>
+                <b>Name:</b>
+                {{ entry.rivalsEventTitle ? entry.rivalsEventTitle : 'Rivals Event Not Found' }}
+              </li>
+              <li>
+                <b>Description:</b>
+                {{
+                  entry.rivalsEventDescription
+                    ? entry.rivalsEventDescription
+                    : 'Rivals Event Not Found'
+                }}
+              </li>
+            </ul>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bountyInfo">
+          <th mat-header-cell *matHeaderCellDef>Bounty Info</th>
+          <td mat-cell *matCellDef="let entry">
+            <ul>
+              <li><b>Target:</b> {{ entry.target > 100 ? entry.target : entry.target + '%' }}</li>
+              <li><b>Message Title:</b> {{ entry.messageTitle }}</li>
+              <li><b>Message Description:</b> {{ entry.messageDescription }}</li>
+            </ul>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let entry"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
