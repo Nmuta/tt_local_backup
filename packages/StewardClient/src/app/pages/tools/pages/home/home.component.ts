@@ -177,7 +177,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       this.isEnabled = cloneDeep(this.isEnabled); // have to clone it to make it editable
     });
     
-    this.userTourService.homeTourStart();
+    this.userTourService.startHomeTour();
   }
 
   /** Remove all filters for tiles. */

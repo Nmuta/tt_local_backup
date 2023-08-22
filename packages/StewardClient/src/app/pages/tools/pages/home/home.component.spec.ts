@@ -11,6 +11,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 import { ToolsAppHomeComponent } from './home.component';
 import { UserTourService } from './tour/tour.service';
 import { createMockUserTourService } from './tour/tour.service.mock';
+import { TourState } from '@shared/state/tours/tours.state';
 
 describe('ToolsAppHomeComponent', () => {
   let component: ToolsAppHomeComponent;
@@ -24,6 +25,7 @@ describe('ToolsAppHomeComponent', () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadata({
         imports: [MatAutocompleteModule, TourMatMenuModule],
+        ngxsModules: [TourState],
         declarations: [ToolsAppHomeComponent],
         providers: [createMockPermAttributesService(), createMockUserTourService()],
       }),
@@ -32,6 +34,9 @@ describe('ToolsAppHomeComponent', () => {
     fixture = TestBed.createComponent(ToolsAppHomeComponent);
     mockPermAttributeService = TestBed.inject(PermAttributesService);
     mockUserTourService = TestBed.inject(UserTourService);
+
+    mockUserTourService.startHomeTour = jasmine.createSpy('start');
+
     component = fixture.componentInstance;
 
     Object.defineProperty(component, 'profile$', {

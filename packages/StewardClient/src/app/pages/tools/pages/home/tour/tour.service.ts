@@ -42,7 +42,7 @@ export class UserTourService {
 
 
     /** Starts the Home tour */
-    public homeTourStart(): void {
+    public startHomeTour(): void {
       if (this.shouldShowHomeTour()) {
         this.tourService.initialize(homeTourSteps);
 

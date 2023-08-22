@@ -184,7 +184,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
     this.store.dispatch(new SetHomeTour(this.enableHomeTour));
     this.router
       .navigate(['app', 'tools', 'home'])
-      .then(() => { this.userTourService.homeTourStart(); });
+      .then(() => { this.userTourService.startHomeTour(); });
   }
   
   /** Fired when any setting changes. */
