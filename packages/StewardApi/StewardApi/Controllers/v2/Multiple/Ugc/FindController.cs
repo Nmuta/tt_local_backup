@@ -41,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Multiple.Ugc
 
         private readonly IList<FH4UGCContentType> fh4SupportedTypes = new List<FH4UGCContentType> { FH4UGCContentType.Livery, FH4UGCContentType.Layergroup, FH4UGCContentType.Tune, FH4UGCContentType.Photo, FH4UGCContentType.EventBlueprint };
         private readonly IList<FH5UGCContentType> fh5SupportedTypes = new List<FH5UGCContentType> { FH5UGCContentType.Livery, FH5UGCContentType.Layergroup, FH5UGCContentType.Tune, FH5UGCContentType.Photo, FH5UGCContentType.EventBlueprint, FH5UGCContentType.CommunityChallenge };
-        private readonly IList<FM8UGCContentType> fm8SupportedTypes = new List<FM8UGCContentType> { FM8UGCContentType.Livery, FM8UGCContentType.TuneBlob, FM8UGCContentType.Photo };
+        private readonly IList<FM8UGCContentType> fm8SupportedTypes = new List<FM8UGCContentType> { FM8UGCContentType.Livery, FM8UGCContentType.TuneBlob, FM8UGCContentType.Photo, FM8UGCContentType.Layergroup, FM8UGCContentType.GameOptions };
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="FindController"/> class.
