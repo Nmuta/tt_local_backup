@@ -43,7 +43,7 @@ context('Steward / Tools / Gift History / Sunrise', withTags(Tag.UnitTestStyle),
       selectSunrise();
     });
     verifySearchInvalidGtagEmptyHistoryTest();
-    
+
     context('Broken', withTags(Tag.Broken), () => {
       verifySearchValidGtagGiftsExistsTest(userWithRecentGifts.gtag);
     });
@@ -55,7 +55,7 @@ context('Steward / Tools / Gift History / Sunrise', withTags(Tag.UnitTestStyle),
       selectSunrise();
     });
     verifySearchInvalidXuidEmptyHistoryTest();
-    
+
     context('Broken', withTags(Tag.Broken), () => {
       verifySearchValidXuidGiftsExistsTest(userWithRecentGifts.xuid);
       verifyGiftHistoryCalendarWhereGiftsExist(

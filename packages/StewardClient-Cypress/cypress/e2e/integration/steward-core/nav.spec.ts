@@ -287,19 +287,23 @@ context('Steward Index', withTags(Tag.UnitTestStyle), () => {
       });
     });
 
-    it('should reset nav bar when pressing the reset selection button', withTags(Tag.Broken), () => {
-      waitForProgressSpinners();
-      cy.get('mat-toolbar').within(() => {
-        cy.get('button').contains('span', 'Click to set standard tools').click();
-        cy.get('button').contains('span', 'Click to set standard tools').should('not.exist');
-      });
+    it(
+      'should reset nav bar when pressing the reset selection button',
+      withTags(Tag.Broken),
+      () => {
+        waitForProgressSpinners();
+        cy.get('mat-toolbar').within(() => {
+          cy.get('button').contains('span', 'Click to set standard tools').click();
+          cy.get('button').contains('span', 'Click to set standard tools').should('not.exist');
+        });
 
-      cy.get('button').contains('span', 'Reset Selection').click();
+        cy.get('button').contains('span', 'Reset Selection').click();
 
-      cy.get('mat-toolbar').within(() => {
-        cy.get('button').contains('span', 'Click to set standard tools').should('exist');
-      });
-    });
+        cy.get('mat-toolbar').within(() => {
+          cy.get('button').contains('span', 'Click to set standard tools').should('exist');
+        });
+      },
+    );
 
     // Known failure currently, bug made to address later (drag and drop issues)
     it('should reorder nav bar', withTags(Tag.Broken), () => {
@@ -332,15 +336,19 @@ context('Steward Index', withTags(Tag.UnitTestStyle), () => {
   });
 
   context('Endpoints', () => {
-    it('should change Woodstock endpoint from Retail to Studio and confirm the change in Player Details by checking a Retail and Studio account', withTags(Tag.Broken), () => {
-      changeEndpoint('Woodstock', 'Retail', 'Studio');
-      cy.visit(stewardUrls.tools.playerDetails.woodstock);
-      cy.get('a').contains('span', 'FH5').contains('span', 'Studio').should('exist');
-      searchByGtag(RetailUsers['chad'].gtag);
-      cy.contains('h2', 'Request failed').should('exist');
-      cy.get('mat-chip').contains('mat-icon', 'cancel').click();
-      searchByXuid('2814649032001718');
-      cy.get('player-identity-results').contains('span', '2814649032001718').should('exist');
-    });
+    it(
+      'should change Woodstock endpoint from Retail to Studio and confirm the change in Player Details by checking a Retail and Studio account',
+      withTags(Tag.Broken),
+      () => {
+        changeEndpoint('Woodstock', 'Retail', 'Studio');
+        cy.visit(stewardUrls.tools.playerDetails.woodstock);
+        cy.get('a').contains('span', 'FH5').contains('span', 'Studio').should('exist');
+        searchByGtag(RetailUsers['chad'].gtag);
+        cy.contains('h2', 'Request failed').should('exist');
+        cy.get('mat-chip').contains('mat-icon', 'cancel').click();
+        searchByXuid('2814649032001718');
+        cy.get('player-identity-results').contains('span', '2814649032001718').should('exist');
+      },
+    );
   });
 });

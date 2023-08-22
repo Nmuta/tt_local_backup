@@ -43,7 +43,7 @@ context('Steward / Tools / Gift History / Apollo', withTags(Tag.UnitTestStyle), 
       selectApollo();
     });
     verifySearchInvalidGtagEmptyHistoryTest();
-    
+
     context('Broken', withTags(Tag.Broken), () => {
       verifySearchValidGtagGiftsExistsTest(userWithRecentGifts.gtag);
     });

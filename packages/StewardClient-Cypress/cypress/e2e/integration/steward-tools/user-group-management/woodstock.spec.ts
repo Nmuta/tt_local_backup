@@ -20,40 +20,44 @@ import {
 } from './shared-functions';
 import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / User Group Management / Woodstock', withTags(Tag.UnitTestStyle, Tag.Slow), () => {
-  beforeEach(() => {
-    login();
+context(
+  'Steward / Tools / User Group Management / Woodstock',
+  withTags(Tag.UnitTestStyle, Tag.Slow),
+  () => {
+    beforeEach(() => {
+      login();
 
-    disableFakeApi();
-    cy.visit(stewardUrls.tools.userGroupManagement.woodstock);
-  });
+      disableFakeApi();
+      cy.visit(stewardUrls.tools.userGroupManagement.woodstock);
+    });
 
-  context('Basic Tests', () => {
-    findLiveOpsDevGroupTest('Live Ops Developers', RetailUsers['jordan']);
-    addOneUserByXUID('Live Ops Developers', RetailUsers['luke']);
-    removeOneUserByXUID('Live Ops Developers', RetailUsers['luke']);
-    addManyUsersByXUID('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
-    removeManyUsersByXUID('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
-    addOneUserByGTag('Live Ops Developers', RetailUsers['luke']);
-    removeOneUserByGTag('Live Ops Developers', RetailUsers['luke']);
-    addManyUsersByGTag('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
-    removeManyUsersByGTag('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
-    removeAllUsersThenReplace('Live Ops Developers', [
-      RetailUsers['ben'],
-      RetailUsers['madden'],
-      RetailUsers['jordan'],
-    ]);
-  });
+    context('Basic Tests', () => {
+      findLiveOpsDevGroupTest('Live Ops Developers', RetailUsers['jordan']);
+      addOneUserByXUID('Live Ops Developers', RetailUsers['luke']);
+      removeOneUserByXUID('Live Ops Developers', RetailUsers['luke']);
+      addManyUsersByXUID('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
+      removeManyUsersByXUID('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
+      addOneUserByGTag('Live Ops Developers', RetailUsers['luke']);
+      removeOneUserByGTag('Live Ops Developers', RetailUsers['luke']);
+      addManyUsersByGTag('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
+      removeManyUsersByGTag('Live Ops Developers', RetailUsers['luke'], RetailUsers['chad']);
+      removeAllUsersThenReplace('Live Ops Developers', [
+        RetailUsers['ben'],
+        RetailUsers['madden'],
+        RetailUsers['jordan'],
+      ]);
+    });
 
-  context('Invalid Input Checks', () => {
-    invalidXUIDTest('Live Ops Developers');
+    context('Invalid Input Checks', () => {
+      invalidXUIDTest('Live Ops Developers');
 
-    invalidGamerTagTest('Live Ops Developers');
-  });
+      invalidGamerTagTest('Live Ops Developers');
+    });
 
-  context('Edge cases', () => {
-    allUsersDisabledTest();
+    context('Edge cases', () => {
+      allUsersDisabledTest();
 
-    noVIPLoadTest();
-  });
-});
+      noVIPLoadTest();
+    });
+  },
+);

@@ -4,25 +4,29 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { testInputUgcID, steelheadSamples } from './shared-functions';
 import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / UGC Details / Woodstock', withTags(Tag.UnitTestStyle, Tag.Broken), () => {
-  beforeEach(() => {
-    login();
+context(
+  'Steward / Tools / UGC Details / Woodstock',
+  withTags(Tag.UnitTestStyle, Tag.Broken),
+  () => {
+    beforeEach(() => {
+      login();
 
-    disableFakeApi();
-    cy.visit(stewardUrls.tools.ugcDetails.steelhead);
-  });
-
-  context('Basic Tests', () => {
-    it('should find Livery data', () => {
-      testInputUgcID(steelheadSamples.livery);
+      disableFakeApi();
+      cy.visit(stewardUrls.tools.ugcDetails.steelhead);
     });
 
-    it('should find Photo data', () => {
-      testInputUgcID(steelheadSamples.photo);
-    });
+    context('Basic Tests', () => {
+      it('should find Livery data', () => {
+        testInputUgcID(steelheadSamples.livery);
+      });
 
-    it('should find Tune Blob data', () => {
-      testInputUgcID(steelheadSamples.tuneBlob);
+      it('should find Photo data', () => {
+        testInputUgcID(steelheadSamples.photo);
+      });
+
+      it('should find Tune Blob data', () => {
+        testInputUgcID(steelheadSamples.tuneBlob);
+      });
     });
-  });
-});
+  },
+);

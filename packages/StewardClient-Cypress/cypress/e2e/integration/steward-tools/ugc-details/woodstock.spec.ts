@@ -4,41 +4,45 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { woodstockSamples, testInputUgcID } from './shared-functions';
 import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / UGC Details / Woodstock', withTags(Tag.UnitTestStyle, Tag.Broken), () => {
-  beforeEach(() => {
-    login();
+context(
+  'Steward / Tools / UGC Details / Woodstock',
+  withTags(Tag.UnitTestStyle, Tag.Broken),
+  () => {
+    beforeEach(() => {
+      login();
 
-    disableFakeApi();
-    cy.visit(stewardUrls.tools.ugcDetails.woodstock);
-  });
-
-  context('Basic Tests', () => {
-    it('should find Livery data', () => {
-      testInputUgcID(woodstockSamples.livery);
+      disableFakeApi();
+      cy.visit(stewardUrls.tools.ugcDetails.woodstock);
     });
 
-    it('should find Layer Group data', () => {
-      testInputUgcID(woodstockSamples.layerGroup);
+    context('Basic Tests', () => {
+      it('should find Livery data', () => {
+        testInputUgcID(woodstockSamples.livery);
+      });
+
+      it('should find Layer Group data', () => {
+        testInputUgcID(woodstockSamples.layerGroup);
+      });
+
+      it('should find Photo data', () => {
+        testInputUgcID(woodstockSamples.photo);
+      });
+
+      it('should find Tune data', () => {
+        testInputUgcID(woodstockSamples.tune);
+      });
+
+      //No Known Events to Test
+      // it('should find Events data', () => {
+      //   testInputUgcID('*insert ugcid here*');
+      //verifyUgcCreatedDate('*insert created date here*');
+      // });
+
+      //No Known Community Challenges to Test
+      // it('should find Events data', () => {
+      //   testInputUgcID('*insert ugcid here*');
+      //verifyUgcCreatedDate('*insert created date here*');
+      // });
     });
-
-    it('should find Photo data', () => {
-      testInputUgcID(woodstockSamples.photo);
-    });
-
-    it('should find Tune data', () => {
-      testInputUgcID(woodstockSamples.tune);
-    });
-
-    //No Known Events to Test
-    // it('should find Events data', () => {
-    //   testInputUgcID('*insert ugcid here*');
-    //verifyUgcCreatedDate('*insert created date here*');
-    // });
-
-    //No Known Community Challenges to Test
-    // it('should find Events data', () => {
-    //   testInputUgcID('*insert ugcid here*');
-    //verifyUgcCreatedDate('*insert created date here*');
-    // });
-  });
-});
+  },
+);

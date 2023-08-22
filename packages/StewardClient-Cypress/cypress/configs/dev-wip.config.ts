@@ -1,5 +1,5 @@
 import { default as basicConfig } from './dev.config';
 
-basicConfig.env.grepTags = "@wip";
+basicConfig.env.grepTags = '@wip';
 
 export default basicConfig;

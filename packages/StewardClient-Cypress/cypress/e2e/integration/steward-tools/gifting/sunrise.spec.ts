@@ -71,67 +71,79 @@ context('Steward / Tools / Gifting / Sunrise', withTags(Tag.UnitTestStyle), () =
 });
 
 function verifyTooManyCreditsTest(): void {
-  it('should not be able to gift with too many credits in gift basket', withTags(Tag.Broken), () => {
-    // Setup gift with too many credits
-    cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
-    cy.contains('mat-option', 'Credits').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('600000000'); // 600,000,000
-    cy.contains('button', 'Add Item').click();
-    // Select gift reason
-    cy.contains('mat-form-field', 'Gift Reason').click();
-    cy.contains('mat-option', 'Community Gift').click();
+  it(
+    'should not be able to gift with too many credits in gift basket',
+    withTags(Tag.Broken),
+    () => {
+      // Setup gift with too many credits
+      cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
+      cy.contains('mat-option', 'Credits').click();
+      cy.contains('mat-form-field', 'Quantity').click().clear().type('600000000'); // 600,000,000
+      cy.contains('button', 'Add Item').click();
+      // Select gift reason
+      cy.contains('mat-form-field', 'Gift Reason').click();
+      cy.contains('mat-option', 'Community Gift').click();
 
-    // Expect
-    cy.contains('button', 'Send Gift', { matchCase: false }).should(
-      'have.class',
-      'mat-button-disabled',
-    );
-    cy.contains('mat-error', 'Credit limit for a gift is 500,000,000.', {
-      matchCase: false,
-    }).should('exist');
-  });
+      // Expect
+      cy.contains('button', 'Send Gift', { matchCase: false }).should(
+        'have.class',
+        'mat-button-disabled',
+      );
+      cy.contains('mat-error', 'Credit limit for a gift is 500,000,000.', {
+        matchCase: false,
+      }).should('exist');
+    },
+  );
 }
 
 function verifyTooManyWheelSpinsTest(): void {
-  it('should not be able to gift with too many wheel spins in gift basket', withTags(Tag.Broken), () => {
-    // Setup gift with too many credits
-    cy.contains('mat-form-field', 'Search for an item').click().type('WheelSpins');
-    cy.contains('mat-option', 'WheelSpins').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
-    cy.contains('button', 'Add Item').click();
-    // Select gift reason
-    cy.contains('mat-form-field', 'Gift Reason').click();
-    cy.contains('mat-option', 'Community Gift').click();
+  it(
+    'should not be able to gift with too many wheel spins in gift basket',
+    withTags(Tag.Broken),
+    () => {
+      // Setup gift with too many credits
+      cy.contains('mat-form-field', 'Search for an item').click().type('WheelSpins');
+      cy.contains('mat-option', 'WheelSpins').click();
+      cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
+      cy.contains('button', 'Add Item').click();
+      // Select gift reason
+      cy.contains('mat-form-field', 'Gift Reason').click();
+      cy.contains('mat-option', 'Community Gift').click();
 
-    // Expect
-    cy.contains('button', 'Send Gift', { matchCase: false }).should(
-      'have.class',
-      'mat-button-disabled',
-    );
-    cy.contains('mat-error', 'Wheel Spin limit for a gift is 200.', { matchCase: false }).should(
-      'exist',
-    );
-  });
+      // Expect
+      cy.contains('button', 'Send Gift', { matchCase: false }).should(
+        'have.class',
+        'mat-button-disabled',
+      );
+      cy.contains('mat-error', 'Wheel Spin limit for a gift is 200.', { matchCase: false }).should(
+        'exist',
+      );
+    },
+  );
 }
 
 function verifyTooManySuperWheelSpinsTest(): void {
-  it('should not be able to gift with too many super wheel spins in gift basket', withTags(Tag.Broken), () => {
-    // Setup gift with too many credits
-    cy.contains('mat-form-field', 'Search for an item').click().type('SuperWheelSpins');
-    cy.contains('mat-option', 'SuperWheelSpins').click();
-    cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
-    cy.contains('button', 'Add Item').click();
-    // Select gift reason
-    cy.contains('mat-form-field', 'Gift Reason').click();
-    cy.contains('mat-option', 'Community Gift').click();
+  it(
+    'should not be able to gift with too many super wheel spins in gift basket',
+    withTags(Tag.Broken),
+    () => {
+      // Setup gift with too many credits
+      cy.contains('mat-form-field', 'Search for an item').click().type('SuperWheelSpins');
+      cy.contains('mat-option', 'SuperWheelSpins').click();
+      cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
+      cy.contains('button', 'Add Item').click();
+      // Select gift reason
+      cy.contains('mat-form-field', 'Gift Reason').click();
+      cy.contains('mat-option', 'Community Gift').click();
 
-    // Expect
-    cy.contains('button', 'Send Gift', { matchCase: false }).should(
-      'have.class',
-      'mat-button-disabled',
-    );
-    cy.contains('mat-error', 'Wheel Spin limit for a gift is 200.', { matchCase: false }).should(
-      'exist',
-    );
-  });
+      // Expect
+      cy.contains('button', 'Send Gift', { matchCase: false }).should(
+        'have.class',
+        'mat-button-disabled',
+      );
+      cy.contains('mat-error', 'Wheel Spin limit for a gift is 200.', { matchCase: false }).should(
+        'exist',
+      );
+    },
+  );
 }
