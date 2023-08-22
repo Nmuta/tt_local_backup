@@ -57,8 +57,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
-            var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid).ConfigureAwait(true);
-            var playerSafetyRating = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid).ConfigureAwait(true);
+            var getSafetyRatingConfig = this.GetPlayerSafetyRatingConfigAsync(xuid);
+            var getPlayerSafetyRating = this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid);
+
+            await Task.WhenAll(getSafetyRatingConfig, getPlayerSafetyRating).ConfigureAwait(true);
+
+            var safetyRatingConfig = getSafetyRatingConfig.GetAwaiter().GetResult();
+            var playerSafetyRating = getPlayerSafetyRating.GetAwaiter().GetResult();
+
             var result = this.mapper.SafeMap<SafetyRating>((playerSafetyRating.safetyRating, safetyRatingConfig));
 
             return this.Ok(result);

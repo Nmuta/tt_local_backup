@@ -51,6 +51,10 @@
       (change)="onInProbationChange($event)"
       >In Probation?
     </mat-checkbox>
+    <mat-error *ngIf="formControls.isInProbation.disabled"
+      >Probation Race Count is {{ safetyRating?.configuration.probationRaceCount }}. Too low to set
+      probationary status.</mat-error
+    >
     <form [formGroup]="formGroup" class="sf-wrapper">
       <div class="sf-vertical">
         <mat-form-field appearance="fill" class="sf-default-hint">
