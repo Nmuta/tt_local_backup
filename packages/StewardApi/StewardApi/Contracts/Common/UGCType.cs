@@ -31,6 +31,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         Tune = 3,
 
         /// <summary>
+        ///     Replay UGC item type.
+        /// </summary>
+        Replay = 4,
+
+        /// <summary>
         ///     Photo UGC item type.
         /// </summary>
         Photo = 5,

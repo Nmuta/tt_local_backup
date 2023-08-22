@@ -47,6 +47,7 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
       UgcType.TuneBlob,
       UgcType.LayerGroup,
       UgcType.GameOptions,
+      UgcType.Replay,
     ],
     specialIdentitiesAllowed: [],
     foundFn: this.foundFn,
