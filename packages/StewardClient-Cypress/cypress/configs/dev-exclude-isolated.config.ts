@@ -1,4 +1,4 @@
-import { default as basicConfig } from './dev.config';
+import { default as basicConfig } from './dev-exclude.config';
 
 basicConfig.e2e.testIsolation = true;
 
