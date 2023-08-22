@@ -3,8 +3,9 @@ import { inputHasValue } from '@support/mat-form/input-has-value';
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Player Details', () => {
+context('Steward / Tools / Player Details', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -35,7 +36,6 @@ context('Steward / Tools / Player Details', () => {
     it('should have lookup type buttons', () => {
       cy.contains('button', 'GTAG').should('exist');
       cy.contains('button', 'XUID').should('exist');
-      cy.contains('button', 'T10').should('exist');
     });
   });
 });

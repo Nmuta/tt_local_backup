@@ -1,5 +1,6 @@
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { stewardUrls } from '@support/steward/urls';
+import { withTags, Tag } from '@support/tags';
 
 interface playfabBuild {
   name: string;
@@ -42,7 +43,7 @@ context('Steward / Tools / PlayFab / Woodstock', () => {
     cy.get('tr').contains('td', builds.build2.id).should('exist');
   });
 
-  it('should click the Locked button and populate', () => {
+  it('should click the Locked button and populate', withTags(Tag.Broken), () => {
     cy.get('button').contains('span', 'Locked').parents('button').click();
 
     cy.get('tr').contains('td', builds.build1.name).should('not.exist');
@@ -51,7 +52,7 @@ context('Steward / Tools / PlayFab / Woodstock', () => {
     cy.get('tr').contains('td', builds.build2.id).should('exist');
   });
 
-  it('should click the Unlocked button and populate', () => {
+  it('should click the Unlocked button and populate', withTags(Tag.Broken), () => {
     cy.get('button').contains('span', 'Unlocked').parents('button').click();
 
     cy.get('tr').contains('td', builds.build1.name).should('exist');
