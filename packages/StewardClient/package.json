@@ -4,34 +4,41 @@
   "scripts": {
     "auth": "vsts-npm-auth -config .npmrc",
     "auth:force": "vsts-npm-auth -config .npmrc -F",
+
     "start": "yarn run start:dev",
     "start:local": "ng serve",
     "start:dev": "ng serve --configuration=dev-api",
     "start:dev:optimized": "ng serve --configuration=dev-api-optimized",
     "start:prod": "ng serve --configuration=prod-api",
     "start:prod:optimized": "ng serve --configuration=prod-api-optimized",
+
     "ng": "ng",
     "lint": "ng lint",
     "lint:fix": "yarn prettier:fix && yarn lint --fix",
     "prettier:fix": "prettier --write .",
+    
     "build:check:lint": "yarn run ng lint",
     "build:check:prettier": "yarn run prettier --check .",
     "build:check:changelog-is-modified": "C:\\Windows\\system32\\bash.exe ./scripts/changelog-is-modified-or-fail.sh",
     "build:check:ado:changelog-is-modified": "bash ./scripts/changelog-is-modified-or-fail.sh",
+    
     "build": "yarn run build:dev",
     "build:dev": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=dev --crossOrigin=anonymous && yarn run build:configMoveToBuild",
     "build:dev-api": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=dev-api --crossOrigin=anonymous && yarn run build:configMoveToBuild",
     "build:configMoveToBuild": "cp web.config dist/",
     "build:prod": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production --crossOrigin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",
     "build:prod-api": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=prod-api --crossOrigin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",
+
     "test:prepare": "find src -name '*.scss' -print0 | xargs -0 -I {} bash -c 'cp -f empty.not-scss {}'",
     "test:prepare:add": "git add * && git reset *.scss",
     "test:prepare:reset": "git restore *.scss",
+
     "test:cc": "ng test --karma-config=src/karma-coverage.conf.js --source-map=true --code-coverage",
     "test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",
     "test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
     "test:ado": "ng test --karma-config=src/karma-ado.conf.js --code-coverage --watch false",
     "test:ado:ncc": "ng test --karma-config=src/karma-ado.conf.js",
+
     "_old-commands-below": "echo Try another command.",
     "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
     "find:missing_no_errors_schema": "grep -rn -C 0 --include \\*.component.spec.ts -L \"\\[NO_ERRORS_SCHEMA\\]\" ./src/*",
@@ -39,12 +46,14 @@
     "zat": "C:\\Windows\\system32\\bash.exe -c \"cd app-local && zat serve\"",
     "debug-open:ff": "\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" -start-debugger-server",
     "start:open": "start https://forzasupport1570048282.zendesk.com/agent/apps/scrutineer-inventory-management-angular?zat=true && ng serve --configuration=dev-api",
+
     "open:navbar": "start https://forzasupport1570048282.zendesk.com/agent/apps/scrutineer-inventory-management-angular?zat=true",
     "open:ticket:fm7": "start https://forzasupport1570048282.zendesk.com/agent/tickets/60?zat=true",
     "open:ticket:fh3": "start https://forzasupport1570048282.zendesk.com/agent/tickets/61?zat=true",
     "open:ticket:fh4": "start https://forzasupport1570048282.zendesk.com/agent/tickets/58?zat=true",
     "open:ticket:fh4:bad": "start https://forzasupport1570048282.zendesk.com/agent/tickets/62?zat=true",
     "open:ticket:fh5": "start https://forzasupport1570048282.zendesk.com/agent/tickets/68?zat=true",
+
     "_old-aliases-below": "echo Try another command.",
     "refreshVSToken": "yarn run auth:force",
     "fix": "yarn run lint:fix",
@@ -83,7 +92,6 @@
     "@swimlane/ngx-charts": "^20.0.1",
     "@types/file-saver": "^2.0.5",
     "@types/json-bigint": "^1.0.1",
-    "@types/luxon": "^3.3.1",
     "@types/signalr": "^2.2.37",
     "angular-calendar": "^0.29.0",
     "angular-shepherd": "^15.0.0",
@@ -96,7 +104,7 @@
     "humanize-duration": "^3.27.1",
     "json-bigint": "^1.0.0",
     "jszip": "^3.10.0",
-    "luxon": "^3.3.0",
+    "luxon": "^2.5.2",
     "luxon-angular": "^5.0.0",
     "msal": "^1.4.15",
     "ng-table-virtual-scroll": "^1.3.8",
