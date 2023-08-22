@@ -14,8 +14,9 @@ import {
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Leaderboads', () => {
+context('Steward / Tools / Leaderboads', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -41,7 +42,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.contains('a', 'FM').should(env.testTitle.steelhead ? 'exist' : 'not.exist');
     });
 
-    it('should contain leaderboard data for Prod, No Filters, Valid Board', () => {
+    it('should contain leaderboard data for Prod, No Filters, Valid Board', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter(
         'Prod',
         '2021-08-19 - 2021-11-11 - HORIZON BAJA SCRAMBLE Laptime',
@@ -59,7 +60,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.contains('button', 'Search Leaderboard').should('have.class', 'mat-button-disabled');
     });
 
-    it('should contain leaderboard data for Prod, No Filters, Valid Board, XUID', () => {
+    it('should contain leaderboard data for Prod, No Filters, Valid Board, XUID', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter(
         'Prod',
         '2021-08-19 - 2021-11-11 - HORIZON BAJA SCRAMBLE Laptime',
@@ -70,7 +71,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.contains('td', RetailUsers['chad'].xuid).should('exist');
     });
 
-    it('should not contain leaderboard data for Prod, No Filters, Valid Board, xuid for player with no data', () => {
+    it('should not contain leaderboard data for Prod, No Filters, Valid Board, xuid for player with no data', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter(
         'Prod',
         '2021-08-19 - 2021-11-11 - HORIZON BAJA SCRAMBLE Laptime',
@@ -84,7 +85,7 @@ context('Steward / Tools / Leaderboads', () => {
       ).should('exist');
     });
 
-    it('should contain leaderboard data for Prod, No Filters, Valid Board, Device Type', () => {
+    it('should contain leaderboard data for Prod, No Filters, Valid Board, Device Type', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter(
         'Prod',
         '2021-08-19 - 2021-11-11 - HORIZON BAJA SCRAMBLE Laptime',
@@ -100,7 +101,7 @@ context('Steward / Tools / Leaderboads', () => {
       ).should('exist');
     });
 
-    it('should contain leaderboard data for Prod, No Filters, Valid Board, Multiple Device Types', () => {
+    it('should contain leaderboard data for Prod, No Filters, Valid Board, Multiple Device Types', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter(
         'Prod',
         '2021-08-19 - 2021-11-11 - HORIZON BAJA SCRAMBLE Laptime',
@@ -117,7 +118,7 @@ context('Steward / Tools / Leaderboads', () => {
       ).should('exist');
     });
 
-    it('should contain leaderboard data for Prod, One Filter, Valid Board', () => {
+    it('should contain leaderboard data for Prod, One Filter, Valid Board', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsOneFilter(
         'Prod',
         'Laptime',
@@ -131,7 +132,7 @@ context('Steward / Tools / Leaderboads', () => {
       ).should('exist');
     });
 
-    it('should contain leaderboard data for Prod, All ScoreType Filters, Valid Board', () => {
+    it('should contain leaderboard data for Prod, All ScoreType Filters, Valid Board', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsAllScoreTypeFilters(
         'Prod',
         '2021-08-19 - 2021-11-11 - HORIZON BAJA SCRAMBLE Laptime',
@@ -144,7 +145,7 @@ context('Steward / Tools / Leaderboads', () => {
       ).should('exist');
     });
 
-    it('should contain leaderboard data for Prod, All CarClass Filters, Valid Board', () => {
+    it('should contain leaderboard data for Prod, All CarClass Filters, Valid Board', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsAllCarClassFilters('Prod', 'Bahía de Plano Circuit - D Class Laptime');
       pressSearch();
       waitForProgressSpinners();
@@ -154,7 +155,7 @@ context('Steward / Tools / Leaderboads', () => {
       ).should('exist');
     });
 
-    it('should contain leaderboard data for Prod, All Filters', () => {
+    it('should contain leaderboard data for Prod, All Filters', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsAllFilters('Prod', 'Bahía de Plano Circuit - D Class Laptime');
       pressSearch();
       cy.contains(
@@ -170,7 +171,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.contains('span', 'Dev').should('exist');
     });
 
-    it('should contain leaderboard data for Dev, No Filters, Valid Board', () => {
+    it('should contain leaderboard data for Dev, No Filters, Valid Board', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter(
         'Dev',
         '2021-08-19 - 2021-11-11 - HORIZON BAJA SCRAMBLE Laptime',

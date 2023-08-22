@@ -1980,10 +1980,10 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-luxon@^2.5.2:
-  version "2.5.2"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/luxon/-/luxon-2.5.2.tgz#17ed497f0277e72d58a4756d6a9abee4681457b6"
-  integrity sha1-F+1JfwJ35y1YpHVtapq+5GgUV7Y=
+luxon@^3.4.0:
+  version "3.4.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/luxon/-/luxon-3.4.0.tgz#17cb754efecbf76994f05b2a3f1f91fad7ddfde7"
+  integrity sha1-F8t1Tv7L92mU8FsqPx+R+tfd/ec=
 
 md5@^2.3.0:
   version "2.3.0"

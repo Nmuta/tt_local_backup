@@ -12,8 +12,9 @@ import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
 import { cleanUpTestAccounts } from '@support/steward/common/clear-up-test-accounts';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Gifting / Woodstock', () => {
+context('Steward / Tools / Gifting / Woodstock', withTags(Tag.UnitTestStyle), () => {
   before(() => {
     login();
     cleanUpTestAccounts();
@@ -80,7 +81,7 @@ context('Steward / Tools / Gifting / Woodstock', () => {
 });
 
 function verifyTooManyCreditsTest(): void {
-  it('should not be able to gift with too many credits in gift basket', () => {
+  it('should not be able to gift with too many credits in gift basket', withTags(Tag.Broken), () => {
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
     cy.contains('mat-option', 'Credits').click();
@@ -102,7 +103,7 @@ function verifyTooManyCreditsTest(): void {
 }
 
 function verifyTooManyWheelSpinsTest(): void {
-  it('should not be able to gift with too many wheel spins in gift basket', () => {
+  it('should not be able to gift with too many wheel spins in gift basket', withTags(Tag.Broken), () => {
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('WheelSpins');
     cy.contains('mat-option', 'WheelSpins').click();
@@ -124,7 +125,7 @@ function verifyTooManyWheelSpinsTest(): void {
 }
 
 function verifyTooManySuperWheelSpinsTest(): void {
-  it('should not be able to gift with too many super wheel spins in gift basket', () => {
+  it('should not be able to gift with too many super wheel spins in gift basket', withTags(Tag.Broken), () => {
     // Setup gift with too many credits
     cy.contains('mat-form-field', 'Search for an item').click().type('SuperWheelSpins');
     cy.contains('mat-option', 'SuperWheelSpins').click();

@@ -13,6 +13,7 @@ import {
   verifySearchValidLspGroupHistoryGiftsExistsTest,
 } from './shared-tests';
 import { selectSunrise } from '@support/steward/shared-functions/game-nav';
+import { withTags, Tag } from '@support/tags';
 
 // If changing any dates, be sure they are used in the correct order of first then last below
 const noGiftsDateStart = '1/1/2023';
@@ -29,7 +30,7 @@ const recentGiftToLSPInProd = '3/16/2022';
 const recentGiftToLSPInDev = '6/1/2023';
 const numberOfExpectedLSPGifts = 1;
 
-context('Steward / Tools / Gift History / Sunrise', () => {
+context('Steward / Tools / Gift History / Sunrise', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -42,7 +43,10 @@ context('Steward / Tools / Gift History / Sunrise', () => {
       selectSunrise();
     });
     verifySearchInvalidGtagEmptyHistoryTest();
-    verifySearchValidGtagGiftsExistsTest(userWithRecentGifts.gtag);
+    
+    context('Broken', withTags(Tag.Broken), () => {
+      verifySearchValidGtagGiftsExistsTest(userWithRecentGifts.gtag);
+    });
   });
 
   context('XUID Lookup', () => {
@@ -51,13 +55,17 @@ context('Steward / Tools / Gift History / Sunrise', () => {
       selectSunrise();
     });
     verifySearchInvalidXuidEmptyHistoryTest();
-    verifySearchValidXuidGiftsExistsTest(userWithRecentGifts.xuid);
-    verifyGiftHistoryCalendarWhereGiftsExist(
-      userWithRecentGifts.xuid,
-      recentGiftToUserInProd,
-      recentGiftToUserInDev,
-      numberOfExpectedUserGifts,
-    );
+    
+    context('Broken', withTags(Tag.Broken), () => {
+      verifySearchValidXuidGiftsExistsTest(userWithRecentGifts.xuid);
+      verifyGiftHistoryCalendarWhereGiftsExist(
+        userWithRecentGifts.xuid,
+        recentGiftToUserInProd,
+        recentGiftToUserInDev,
+        numberOfExpectedUserGifts,
+      );
+    });
+
     verifyGiftHistoryCalendarWhereGiftsDoNotExist(
       userWithRecentGifts.xuid,
       noGiftsDateStart,

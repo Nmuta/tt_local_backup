@@ -3,44 +3,43 @@
  */
 export enum Tag {
   /** Default tag when no other tags are specified. Avoid use. */
-  Untagged = "untagged",
+  Missing = "@missing",
 
   /**
    * Indicates that this test runs quickly.
-   * 
+   *
    * Fast tests are <20s (excluding login/setup) on your dev machine.
    */
-  Fast = "fast",
+  Under20s = "@under20s",
 
   /**
-   * Indicates that this test runs slowly.
-   * 
-   * Slow tests are >1m on your dev machine.
+   * Indicates that this test was built in a unit-test style and should be refactored
+   * to reload the page less often and make more assertions in a single visit.
    */
-  Slow = "slow",
+  UnitTestStyle = "@unit-style",
 
   /** Indicates that this test should not be run regularly due to cleanup issues. */
-  Restricted = "restricted",
+  Restricted = "@restricted",
 
   /** Indicates that this test is currently broken and should be skipped in typical test runs. */
-  Broken = "broken",
+  Broken = "@broken",
 
   /**
-   * Indicates that this test is currently flakey and should be skipped in typical test runs.  
+   * Indicates that this test is currently flakey and should be skipped in typical test runs.
    * Please leave a comment on the test as to why it seems to be flakey.
-   * 
+   *
    * Common reasons include
    * - missing spinners
    * - indeterminate loading times
    * - animation not detected
    */
-  Flakey = "flakey",
+  Flakey = "@flakey",
 
   /** Indicates that this test is currently a work-in-progress and should be skipped in typical test runs. */
-  WIP = "wip",
+  WIP = "@wip",
 
   /** Indicates that this test should be run regularly to verify builds. */
-  Verify = "verify",
+  Verify = "@verify",
 }
 
 /**
@@ -66,7 +65,7 @@ export function withTags(...tags: Tag[]) {
  */
 export function makeTagsArray(...tags: Tag[]): string[] {
   if (!tags || tags.length == 0) {
-    tags = [Tag.Untagged]
+    tags = [Tag.Missing]
   }
 
   return tags.map(t => t.toString());

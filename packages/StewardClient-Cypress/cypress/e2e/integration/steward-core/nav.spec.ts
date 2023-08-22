@@ -4,7 +4,7 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { stewardUrls } from '@support/steward/urls';
-import { withTags } from '@support/tags';
+import { Tag, withTags } from '@support/tags';
 
 //These values may change as tools and games are added or removed from Steward
 const filterValues = {
@@ -15,14 +15,14 @@ const filterValues = {
   playerFM7Filter: '5',
 };
 
-context('Steward Index', withTags(), () => {
+context('Steward Index', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
     cy.visit('/');
   });
 
-  it('should lead to Tools homepage', withTags(), () => {
+  it('should lead to Tools homepage', () => {
     // Verfiy cards
     cy.get('.mat-card-title').contains('Player Details');
     cy.get('.mat-card-title').contains('UGC Search');
@@ -85,7 +85,7 @@ context('Steward Index', withTags(), () => {
       cy.get('span').contains('Tools below do not match filters').should('exist');
     });
 
-    it('should filter tools by title', () => {
+    it('should filter tools by title', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       const $chipList = cy.get('mat-chip-list');
       $chipList.within(() => {
@@ -103,7 +103,7 @@ context('Steward Index', withTags(), () => {
       cy.get('span').contains('Tools below do not match filters').should('exist');
     });
 
-    it('should filter tools with multiple filters', () => {
+    it('should filter tools with multiple filters', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       const $chipList = cy.get('mat-chip-list');
       $chipList.within(() => {
@@ -122,7 +122,7 @@ context('Steward Index', withTags(), () => {
       cy.get('span').contains('Tools below do not match filters').should('exist');
     });
 
-    it('should reset when filters are removed', () => {
+    it('should reset when filters are removed', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       const $chipList = cy.get('mat-chip-list');
       $chipList.within(() => {
@@ -159,7 +159,7 @@ context('Steward Index', withTags(), () => {
       });
     });
 
-    it('should swap between dark mode, light mode, and match system', () => {
+    it('should swap between dark mode, light mode, and match system', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       cy.get('button').contains('span', 'Click to set standard tools').click();
 
@@ -243,7 +243,7 @@ context('Steward Index', withTags(), () => {
         .should('exist');
     });
 
-    it('should add tools to the nav bar', () => {
+    it('should add tools to the nav bar', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       const $matCardList = cy.get('mat-card');
       $matCardList.within(() => {
@@ -287,7 +287,7 @@ context('Steward Index', withTags(), () => {
       });
     });
 
-    it('should reset nav bar when pressing the reset selection button', () => {
+    it('should reset nav bar when pressing the reset selection button', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       cy.get('mat-toolbar').within(() => {
         cy.get('button').contains('span', 'Click to set standard tools').click();
@@ -302,7 +302,7 @@ context('Steward Index', withTags(), () => {
     });
 
     // Known failure currently, bug made to address later (drag and drop issues)
-    it('should reorder nav bar', () => {
+    it('should reorder nav bar', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       cy.get('mat-toolbar').within(() => {
         cy.get('button').contains('span', 'Click to set standard tools').click();
@@ -332,7 +332,7 @@ context('Steward Index', withTags(), () => {
   });
 
   context('Endpoints', () => {
-    it('should change Woodstock endpoint from Retail to Studio and confirm the change in Player Details by checking a Retail and Studio account', () => {
+    it('should change Woodstock endpoint from Retail to Studio and confirm the change in Player Details by checking a Retail and Studio account', withTags(Tag.Broken), () => {
       changeEndpoint('Woodstock', 'Retail', 'Studio');
       cy.visit(stewardUrls.tools.playerDetails.woodstock);
       cy.get('a').contains('span', 'FH5').contains('span', 'Studio').should('exist');

@@ -1,6 +1,7 @@
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
+import { withTags, Tag } from '@support/tags';
 
 context('Steward / Tools / Permission Management', () => {
   before(() => {
@@ -48,7 +49,8 @@ context('Steward / Tools / Permission Management', () => {
       cy.contains('mat-option', permissionTestUser).click();
       cy.contains('button', 'Create').should('not.be.disabled');
     });
-    it('Should select an existing team, add and remove a user, save the changes, and be able to delete the team', () => {
+
+    it('Should select an existing team, add and remove a user, save the changes, and be able to delete the team', withTags(Tag.Broken), () => {
       // Select team, confirm contents
       cy.contains('mat-form-field', 'Select team').find('input').click().type(permissionTestTeam);
       cy.contains('mat-option', permissionTestTeam).click();

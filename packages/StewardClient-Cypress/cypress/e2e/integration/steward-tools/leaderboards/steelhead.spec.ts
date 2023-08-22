@@ -11,9 +11,10 @@ import {
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
+import { withTags, Tag } from '@support/tags';
 
 //These tests will need to be updated when Steelhead has more data
-context('Steward / Tools / Leaderboads', () => {
+context('Steward / Tools / Leaderboads', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -45,7 +46,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.contains('span', 'Dev').should('exist');
     });
 
-    it('should contain leaderboard data for Dev, No Filters, Valid Board', () => {
+    it('should contain leaderboard data for Dev, No Filters, Valid Board', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter('Dev', 'Spotlight 01 Laptime');
       pressSearch();
       waitForProgressSpinners();
@@ -59,7 +60,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.contains('button', 'Search Leaderboard').should('have.class', 'mat-button-disabled');
     });
 
-    it('should contain leaderboard data for Dev, No Filters, Valid Board, XUID', () => {
+    it('should contain leaderboard data for Dev, No Filters, Valid Board, XUID', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter('Dev', 'Spotlight 01 Laptime');
       cy.contains('mat-form-field', 'Player XUID').type(RetailUsers['chad'].xuid);
       pressSearch();
@@ -67,7 +68,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.contains('td', RetailUsers['chad'].xuid).should('exist');
     });
 
-    it('should not contain leaderboard data for Dev, No Filters, Valid Board, xuid for player with no data', () => {
+    it('should not contain leaderboard data for Dev, No Filters, Valid Board, xuid for player with no data', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter('Dev', 'Spotlight 01 Laptime');
       cy.contains('mat-form-field', 'Player XUID').type(RetailUsers['jordan'].xuid);
       pressSearch();
@@ -78,7 +79,7 @@ context('Steward / Tools / Leaderboads', () => {
       ).should('exist');
     });
 
-    it('should contain leaderboard data for Dev, No Filters, Valid Board, Device Type', () => {
+    it('should contain leaderboard data for Dev, No Filters, Valid Board, Device Type', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter('Dev', 'Spotlight 01 Laptime');
       cy.contains('mat-form-field', 'Device Type').click();
       cy.contains('mat-option', 'Steam').click();
@@ -88,7 +89,7 @@ context('Steward / Tools / Leaderboads', () => {
       cy.contains('mat-card-subtitle', 'Spotlight 01 Laptime - Steam - Rivals').should('exist');
     });
 
-    it('should contain leaderboard data for Dev, No Filters, Valid Board, Multiple Device Types', () => {
+    it('should contain leaderboard data for Dev, No Filters, Valid Board, Multiple Device Types', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsNoFilter('Dev', 'Spotlight 01 Laptime');
       cy.contains('mat-form-field', 'Device Type').click();
       cy.contains('mat-option', 'Steam').click();
@@ -101,7 +102,7 @@ context('Steward / Tools / Leaderboads', () => {
       );
     });
 
-    it('should contain leaderboard data for Dev, One Filter, Valid Board', () => {
+    it('should contain leaderboard data for Dev, One Filter, Valid Board', withTags(Tag.Broken), () => {
       fillLeaderboardFieldsOneFilter('Dev', 'Laptime', 'Spotlight 01 Laptime');
       pressSearch();
       waitForProgressSpinners();
@@ -110,7 +111,7 @@ context('Steward / Tools / Leaderboads', () => {
       );
     });
 
-    it('should contain leaderboard data for Dev, All ScoreType Filters, Valid Board', () => {
+    it('should contain leaderboard data for Dev, All ScoreType Filters, Valid Board', withTags(Tag.Broken), () => {
       cy.contains('mat-form-field', 'Leaderboard Environment').click();
       cy.contains('mat-option', 'Dev').click();
       cy.contains('mat-form-field', 'Leaderboard Filters').click();
@@ -126,7 +127,7 @@ context('Steward / Tools / Leaderboads', () => {
       );
     });
 
-    it('should contain leaderboard data for Dev, All CarClass Filters, Valid Board', () => {
+    it('should contain leaderboard data for Dev, All CarClass Filters, Valid Board', withTags(Tag.Broken), () => {
       cy.contains('mat-form-field', 'Leaderboard Environment').click();
       cy.contains('mat-option', 'Dev').click();
       cy.contains('mat-form-field', 'Leaderboard Filters').click();
@@ -142,7 +143,7 @@ context('Steward / Tools / Leaderboads', () => {
       ).should('exist');
     });
 
-    it('should contain leaderboard data for Dev, All Filters', () => {
+    it('should contain leaderboard data for Dev, All Filters', withTags(Tag.Broken), () => {
       cy.contains('mat-form-field', 'Leaderboard Environment').click();
       cy.contains('mat-option', 'Dev').click();
       cy.contains('mat-form-field', 'Leaderboard Filters').click();

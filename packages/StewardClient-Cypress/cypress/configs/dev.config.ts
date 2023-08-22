@@ -7,6 +7,9 @@ export default defineConfig({
     TEST_WOODSTOCK: true,
     TEST_STEELHEAD: true,
     AAD_APP_ENV: 'DEV',
+    grepFilterSpecs: true,
+    grepOmitFiltered: true,
+    grepTags: null,
   },
   retries: {
     runMode: 2,
