@@ -1,14 +1,10 @@
-import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { sunriseSamples, testInputUgcID } from './shared-functions';
-import { withTags, Tag } from '@support/tags';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
-context('Steward / Tools / UGC Details / Sunrise', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+context('Steward / Tools / UGC Details / Sunrise', () => {
+  before(() => {
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.ugcDetails.sunrise);
   });
 

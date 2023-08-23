@@ -12,7 +12,7 @@ import { stewardUrls } from '@support/steward/urls';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 context('Steward / Tools / Messaging / Sunrise', () => {
-  before(() => {
+  beforeEach(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.messaging.sunrise);
     selectSunrise();
