@@ -10,12 +10,13 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 import { DateTime } from 'luxon';
 import { stewardUrls } from '@support/steward/urls';
 import { withTags, Tag } from '@support/tags';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 context('Steward / Tools / Messaging / Sunrise', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
-    login();
-
-    disableFakeApi();
+    resetToDefaultState();
+    cy.visit(stewardUrls.tools.messaging.sunrise);
+    selectSunrise();
   });
 
   context('GTAG Lookup', () => {
