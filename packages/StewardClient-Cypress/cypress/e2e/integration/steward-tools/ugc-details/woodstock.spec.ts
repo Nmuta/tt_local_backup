@@ -1,17 +1,17 @@
-import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { woodstockSamples, testInputUgcID } from './shared-functions';
 import { withTags, Tag } from '@support/tags';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
+// get model-dump-simple-table happens right after inputting a UGC id,
+// and it can take more than 4 seconds, causing a timeout. This get is parallel to the progress spinners
+// but not tracked by them, causing failures occasionally
 context(
   'Steward / Tools / UGC Details / Woodstock',
-  withTags(Tag.UnitTestStyle, Tag.Broken),
+  withTags(Tag.UnitTestStyle, Tag.Flakey),
   () => {
-    beforeEach(() => {
-      login();
-
-      disableFakeApi();
+    before(() => {
+      resetToDefaultState();
       cy.visit(stewardUrls.tools.ugcDetails.woodstock);
     });
 

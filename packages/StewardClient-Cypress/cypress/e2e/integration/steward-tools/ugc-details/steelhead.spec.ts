@@ -1,32 +1,30 @@
-import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { testInputUgcID, steelheadSamples } from './shared-functions';
 import { withTags, Tag } from '@support/tags';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
-context(
-  'Steward / Tools / UGC Details / Woodstock',
-  withTags(Tag.UnitTestStyle, Tag.Broken),
-  () => {
-    beforeEach(() => {
-      login();
+context('Steward / Tools / UGC Details / Steelhead', withTags(Tag.UnitTestStyle), () => {
+  before(() => {
+    resetToDefaultState();
+    cy.visit(stewardUrls.tools.ugcDetails.steelhead);
+  });
 
-      disableFakeApi();
-      cy.visit(stewardUrls.tools.ugcDetails.steelhead);
+  context('Basic Tests', () => {
+    it('should find Livery data', () => {
+      testInputUgcID(steelheadSamples.livery);
     });
 
-    context('Basic Tests', () => {
-      it('should find Livery data', () => {
-        testInputUgcID(steelheadSamples.livery);
-      });
+    // No known Photos to Test
+    // it('should find Photo data', () => {
+    //   testInputUgcID(steelheadSamples.photo);
+    // });
 
-      it('should find Photo data', () => {
-        testInputUgcID(steelheadSamples.photo);
-      });
-
-      it('should find Tune Blob data', () => {
-        testInputUgcID(steelheadSamples.tuneBlob);
-      });
+    it('should find Tune Blob data', () => {
+      testInputUgcID(steelheadSamples.tuneBlob);
     });
-  },
-);
+
+    it('should find Layer Group data', () => {
+      testInputUgcID(steelheadSamples.layerGroup);
+    });
+  });
+});
