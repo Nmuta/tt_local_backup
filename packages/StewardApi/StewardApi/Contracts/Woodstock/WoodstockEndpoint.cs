@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         /// <summary>
         ///     Gets the endpoint from request headers, else default.
         /// </summary>
-        public static string GetEndpoint(IHeaderDictionary headers)
+        public static string GetV1EndpointFromHeader(IHeaderDictionary headers)
         {
             if (!headers.TryGetValue("endpointKey", out var headerValue))
             {
