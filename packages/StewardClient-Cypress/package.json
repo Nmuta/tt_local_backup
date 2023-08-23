@@ -4,39 +4,53 @@
   "scripts": {
     "auth": "vsts-npm-auth -config .npmrc",
     "auth:force": "vsts-npm-auth -config .npmrc -F",
+
     "lint": "yarn run build:check:eslint && yarn run build:check:prettier",
     "lint:fix": "yarn lint:fix:prettier && yarn lint:fix:eslint",
     "lint:fix:prettier": "prettier --write .",
     "lint:fix:eslint": "yarn eslint --fix",
+
     "config": "yarn run config:cypress",
     "config:cypress": "bash ./scripts/make-cypress-env.sh",
+
     "open": "cypress open --config-file cypress/configs/localhost.config.ts",
     "open:local": "cypress open --config-file cypress/configs/localhost.config.ts",
     "open:local-dev": "cypress open --config-file cypress/configs/localhost-dev.config.ts",
     "open:dev": "cypress open --config-file cypress/configs/dev.config.ts",
+    "open:dev:wip": "cypress open --config-file cypress/configs/dev-wip.config.ts",
+    "open:dev:exclude": "cypress open --config-file cypress/configs/dev-exclude.config.ts",
     "open:prod": "cypress open --config-file cypress/configs/prod.config.ts",
     "open:prod-staging": "cypress open --config-file cypress/configs/prod-staging.config.ts",
+
     "run": "yarn run:local",
     "run:local": "cypress run --config-file cypress/configs/localhost.config.ts",
     "run:local-dev": "cypress run --config-file cypress/configs/localhost-dev.config.ts",
     "run:dev": "cypress run --config-file cypress/configs/dev.config.ts",
     "run:dev:isolated": "cypress run --config-file cypress/configs/dev-isolated.config.ts",
+    "run:dev:wip": "cypress run --config-file cypress/configs/dev-wip.config.ts",
+    "run:dev:exclude": "cypress run --config-file cypress/configs/dev-exclude.config.ts",
+    "run:dev:exclude:isolated": "cypress run --config-file cypress/configs/dev-exclude-isolated.config.ts",
     "run:prod": "cypress run --config-file cypress/configs/prod.config.ts",
     "run:prod-staging": "cypress run --config-file cypress/configs/prod-staging.config.ts",
     "run:dev:parallel": "cypress-parallel -s run:dev -t 4 -d cypress/e2e",
     "run:changes-only": "bash ./scripts/execute-changed-specs.sh",
+
     "build": "yarn tsc",
     "build:check:eslint": "yarn run eslint",
     "build:check:prettier": "prettier --check .",
+
     "report:delete": "rm -r reports/ || true",
     "report:combine:dev": "jrm reports/mocha-junit/dev.xml \"reports/mocha-junit/dev/junit-*.xml\"",
     "report:combine:prod": "jrm reports/mocha-junit/prod.xml \"reports/mocha-junit/prod/junit-*.xml\"",
+
     "_old-commands-below": "echo Try another command.",
     "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
     "prettier:fix": "yarn run lint:fix:prettier"
   },
   "private": true,
   "dependencies": {
+    "@cypress/grep": "^3.1.5",
+    "@types/luxon": "^3.3.1",
     "@types/node": "^20.4.3"
   },
   "devDependencies": {
@@ -55,7 +69,7 @@
     "eslint-plugin-no-only-tests": "^3.1.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "junit-report-merger": "^6.0.2",
-    "luxon": "^2.5.2",
+    "luxon": "^3.4.0",
     "mocha-junit-reporter": "^2.2.1",
     "prettier": "^3.0.0",
     "typescript": "^4.6.2"

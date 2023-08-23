@@ -9,13 +9,13 @@ import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { DateTime } from 'luxon';
 import { stewardUrls } from '@support/steward/urls';
-import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Messaging / Sunrise', () => {
-  before(() => {
-    resetToDefaultState();
-    cy.visit(stewardUrls.tools.messaging.sunrise);
-    selectSunrise();
+context('Steward / Tools / Messaging / Sunrise', withTags(Tag.UnitTestStyle), () => {
+  beforeEach(() => {
+    login();
+
+    disableFakeApi();
   });
 
   context('GTAG Lookup', () => {
@@ -93,13 +93,9 @@ function verifyNoInputsTest(): void {
 function verifyValidInputsTest(): void {
   const expiryString = DateTime.local().plus({ days: 1 }).toLocaleString();
 
-  it('should be reviewable with proper inputs', () => {
-    cy.contains('mat-form-field', 'Community Message')
-      .click()
-      .type('{selectall}{backspace}This is a test string.');
-    cy.contains('mat-form-field', 'Date Range')
-      .click()
-      .type('{selectall}{backspace}' + expiryString);
+  it('should be reviewable with proper inputs', withTags(Tag.Broken), () => {
+    cy.contains('mat-form-field', 'Community Message').click().type('This is a test string.');
+    cy.contains('mat-form-field', 'Date Range').click().clear().type(expiryString);
     cy.contains('button', 'Review', { matchCase: false }).should(
       'not.have.class',
       'mat-button-disabled',
@@ -108,12 +104,9 @@ function verifyValidInputsTest(): void {
 }
 
 function verifyInvalidDateInputTest(): void {
-  it('should not be reviewable with invalid date input', () => {
-    cy.contains('button', 'Send Another Message', { matchCase: false }).click();
-    cy.contains('mat-form-field', 'Community Message')
-      .click()
-      .type('{selectall}{backspace}This is a test string.');
-    cy.contains('mat-form-field', 'Date Range').click().type('{selectall}{backspace}1/1/2001');
+  it('should not be reviewable with invalid date input', withTags(Tag.Broken), () => {
+    cy.contains('mat-form-field', 'Community Message').click().type('This is a test string.');
+    cy.contains('mat-form-field', 'Date Range').click().clear().type('1/1/2001');
     cy.contains('button', 'Review', { matchCase: false }).should(
       'have.class',
       'mat-button-disabled',
@@ -125,13 +118,9 @@ function verifyInvalidMessageInputTest(): void {
   const longString = new Array(600).join('f');
   const expiryString = DateTime.local().plus({ days: 1 }).toLocaleString();
 
-  it('should not be reviewable with invalid message input', () => {
-    cy.contains('mat-form-field', 'Community Message')
-      .click()
-      .type('{selectall}{backspace}' + longString);
-    cy.contains('mat-form-field', 'Date Range')
-      .click()
-      .type('{selectall}{backspace}' + expiryString);
+  it('should not be reviewable with invalid message input', withTags(Tag.Broken), () => {
+    cy.contains('mat-form-field', 'Community Message').click().type(longString);
+    cy.contains('mat-form-field', 'Date Range').click().clear().type(expiryString);
     cy.contains('button', 'Review', { matchCase: false }).should(
       'have.class',
       'mat-button-disabled',
@@ -142,13 +131,9 @@ function verifyInvalidMessageInputTest(): void {
 function verifyMessageSent(): void {
   const expiryString = DateTime.local().plus({ days: 1 }).toLocaleString();
 
-  it('should send with proper inputs', () => {
-    cy.contains('mat-form-field', 'Community Message')
-      .click()
-      .type('{selectall}{backspace}This is a test string.');
-    cy.contains('mat-form-field', 'Date Range')
-      .click()
-      .type('{selectall}{backspace}' + expiryString);
+  it('should send with proper inputs', withTags(Tag.Broken), () => {
+    cy.contains('mat-form-field', 'Community Message').click().type('This is a test string.');
+    cy.contains('mat-form-field', 'Date Range').click().clear().type(expiryString);
     cy.contains('button', 'Review', { matchCase: false }).click();
     cy.contains('button', 'Send Message', { matchCase: false }).click();
     waitForProgressSpinners();
