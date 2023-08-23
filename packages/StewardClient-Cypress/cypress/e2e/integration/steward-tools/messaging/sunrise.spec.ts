@@ -12,7 +12,7 @@ import { stewardUrls } from '@support/steward/urls';
 import { withTags, Tag } from '@support/tags';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
-context('Steward / Tools / Messaging / Sunrise', withTags(Tag.UnitTestStyle), () => {
+context('Steward / Tools / Messaging / Sunrise', () => {
   beforeEach(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.messaging.sunrise);

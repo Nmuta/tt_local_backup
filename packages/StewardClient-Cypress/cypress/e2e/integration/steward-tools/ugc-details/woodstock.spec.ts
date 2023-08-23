@@ -8,7 +8,7 @@ import { resetToDefaultState } from '@support/page-utility/reset-to-default-stat
 // but not tracked by them, causing failures occasionally
 context(
   'Steward / Tools / UGC Details / Woodstock',
-  withTags(Tag.UnitTestStyle, Tag.Flakey),
+  withTags(Tag.Flakey),
   () => {
     before(() => {
       resetToDefaultState();

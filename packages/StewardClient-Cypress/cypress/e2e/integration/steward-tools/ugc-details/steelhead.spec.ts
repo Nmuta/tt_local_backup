@@ -1,9 +1,8 @@
 import { stewardUrls } from '@support/steward/urls';
 import { testInputUgcID, steelheadSamples } from './shared-functions';
-import { withTags, Tag } from '@support/tags';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
-context('Steward / Tools / UGC Details / Steelhead', withTags(Tag.UnitTestStyle), () => {
+context('Steward / Tools / UGC Details / Steelhead', () => {
   before(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.ugcDetails.steelhead);

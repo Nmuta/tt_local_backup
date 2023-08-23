@@ -44,8 +44,7 @@
   "dependencies": {
     "@cypress/grep": "^3.1.5",
     "@types/luxon": "^3.3.1",
-    "@types/node": "^20.4.3",
-    "cypress-grep": "^3.0.4"
+    "@types/node": "^20.4.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.1.0",
