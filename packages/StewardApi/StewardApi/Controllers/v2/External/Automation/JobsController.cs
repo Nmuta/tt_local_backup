@@ -35,14 +35,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
         ///     When jobs are pending, produces a bad response.
         ///     When no jobs are pending, produces a good response.
         /// </summary>
-        [HttpGet("ado")]
+        [HttpGet("verify/ado")]
         [SwaggerResponse(200)]
         public async Task<IActionResult> GetStateForAdo()
         {
             var jobs = await this.jobTracker.GetInProgressJobsAsync();
             if (jobs.Any())
             {
-                return this.BadRequest(jobs);
+                return this.BadRequest();
             }
 
             return this.Ok(new
