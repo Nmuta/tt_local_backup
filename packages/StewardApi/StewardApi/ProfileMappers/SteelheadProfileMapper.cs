@@ -758,7 +758,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MessageTitle, opt => opt.MapFrom(source => source.messageTitleEnglish))
                 .ForMember(dest => dest.MessageDescription, opt => opt.MapFrom(source => source.messageBodyEnglish))
                 .ForMember(dest => dest.RivalsEventId, opt => opt.MapFrom(source => source.rivalEventId))
-                .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage));
+                .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage))
+                .ForMember(dest => dest.RivalsEventTitle, opt => opt.Ignore())
+                .ForMember(dest => dest.RivalsEventDescription, opt => opt.Ignore());
         }
 
         private DeeplinkDestination PrepareBridgeDestination(WofBaseDestination destination)

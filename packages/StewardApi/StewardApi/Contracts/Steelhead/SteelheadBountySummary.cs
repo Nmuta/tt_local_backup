@@ -1,4 +1,5 @@
-﻿using Turn10.LiveOps.StewardApi.Contracts.Common;
+﻿using System;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
 {
@@ -7,6 +8,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// </summary>
     public sealed class SteelheadBountySummary
     {
+        /// <summary>
+        ///     Unique Id of the bounty
+        /// </summary>
+        public Guid UniqueId { get; set; }
+
         /// <summary>
         ///     Bounty Message Title
         /// </summary>
