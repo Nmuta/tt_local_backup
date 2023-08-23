@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -45,5 +46,13 @@ export class WoodstockAuctionsService {
     params = params.set('durationInMinutes', durationInMinutes);
 
     return this.api.postRequest$<string[]>(`${this.basePath}/createBulk`, undefined, params);
+  }
+
+  /** Gets auction blocklist. */
+  public getAuctionBlocklist$(releaseIndex: number): Observable<AuctionBlocklistEntry[]> {
+    let params = new HttpParams();
+    params = params.set('currentReleaseIndex', releaseIndex);
+
+    return this.api.getRequest$<AuctionBlocklistEntry[]>(`${this.basePath}/blocklist`, params);
   }
 }

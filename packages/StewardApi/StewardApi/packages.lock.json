@@ -605,9 +605,9 @@
       },
       "WoodstockLiveOpsContent": {
         "type": "Direct",
-        "requested": "[2.8.6, )",
-        "resolved": "2.8.6",
-        "contentHash": "Tutk87Zjb8a2q3iBOejyQBXGI5SsYD4xhnVphl5fP+iE5jVaTH6f7lrSB7/En7YRXRJ9/y+aHFbz2u//RIMs7Q==",
+        "requested": "[3.4.1, )",
+        "resolved": "3.4.1",
+        "contentHash": "Rs2i41sF1aHwYixuYzaVcvfeyswgHKpWyzk3IoJMnSXMIAxO6T2SaUL+uBYR23k2iD0k9a6GGaqRdNPTg4uPZA==",
         "dependencies": {
           "Newtonsoft.Json": "12.0.1"
         }
