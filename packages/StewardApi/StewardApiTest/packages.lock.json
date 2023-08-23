@@ -3073,8 +3073,8 @@
       },
       "WoodstockLiveOpsContent": {
         "type": "Transitive",
-        "resolved": "2.8.6",
-        "contentHash": "Tutk87Zjb8a2q3iBOejyQBXGI5SsYD4xhnVphl5fP+iE5jVaTH6f7lrSB7/En7YRXRJ9/y+aHFbz2u//RIMs7Q==",
+        "resolved": "3.4.1",
+        "contentHash": "Rs2i41sF1aHwYixuYzaVcvfeyswgHKpWyzk3IoJMnSXMIAxO6T2SaUL+uBYR23k2iD0k9a6GGaqRdNPTg4uPZA==",
         "dependencies": {
           "Newtonsoft.Json": "12.0.1"
         }
@@ -3144,7 +3144,7 @@
           "Turn10.Services.ServiceClient": "[2.6.0, )",
           "Turn10.Services.Storage.Table": "[1.2.0, )",
           "Turn10.Services.UGC.Contracts": "[2.7.1, )",
-          "WoodstockLiveOpsContent": "[2.8.6, )"
+          "WoodstockLiveOpsContent": "[3.4.1, )"
         }
       }
     }

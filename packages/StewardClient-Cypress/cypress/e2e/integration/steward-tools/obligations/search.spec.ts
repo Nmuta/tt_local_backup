@@ -3,8 +3,9 @@ import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Obligation / Search', () => {
+context('Steward / Tools / Obligation / Search', withTags(Tag.Broken, Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 

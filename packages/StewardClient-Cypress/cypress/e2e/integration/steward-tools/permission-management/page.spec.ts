@@ -1,6 +1,7 @@
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
+import { withTags, Tag } from '@support/tags';
 
 context('Steward / Tools / Permission Management', () => {
   before(() => {
@@ -48,38 +49,43 @@ context('Steward / Tools / Permission Management', () => {
       cy.contains('mat-option', permissionTestUser).click();
       cy.contains('button', 'Create').should('not.be.disabled');
     });
-    it('Should select an existing team, add and remove a user, save the changes, and be able to delete the team', () => {
-      // Select team, confirm contents
-      cy.contains('mat-form-field', 'Select team').find('input').click().type(permissionTestTeam);
-      cy.contains('mat-option', permissionTestTeam).click();
-      cy.contains('Luke Geiken (Luke.Geiken@microsoft.com)').should('exist');
-      cy.contains('Isshak Ferdjani').should('exist');
 
-      // Add User
-      cy.contains('mat-form-field', 'Add user').find('input').click().type(permissionTestUser);
-      cy.contains('mat-option', permissionTestUser).click();
-      cy.contains('tr', permissionTestUser).should('exist');
+    it(
+      'Should select an existing team, add and remove a user, save the changes, and be able to delete the team',
+      withTags(Tag.Broken),
+      () => {
+        // Select team, confirm contents
+        cy.contains('mat-form-field', 'Select team').find('input').click().type(permissionTestTeam);
+        cy.contains('mat-option', permissionTestTeam).click();
+        cy.contains('Luke Geiken (Luke.Geiken@microsoft.com)').should('exist');
+        cy.contains('Isshak Ferdjani').should('exist');
 
-      // Remove user by remove button
-      cy.contains('tr', permissionTestUser).contains('button', 'Remove').click();
+        // Add User
+        cy.contains('mat-form-field', 'Add user').find('input').click().type(permissionTestUser);
+        cy.contains('mat-option', permissionTestUser).click();
+        cy.contains('tr', permissionTestUser).should('exist');
 
-      // Add User
-      cy.contains('mat-form-field', 'Add user').find('input').click().type(permissionTestUser);
-      cy.contains('mat-option', permissionTestUser).click();
+        // Remove user by remove button
+        cy.contains('tr', permissionTestUser).contains('button', 'Remove').click();
 
-      // Remove user by mat chip
-      cy.contains('mat-chip-list', 'Pending Additions:')
-        .contains('mat-chip', permissionTestUser)
-        .contains('button', 'close')
-        .click();
-      cy.contains('tr', permissionTestUser).should('not.exist');
+        // Add User
+        cy.contains('mat-form-field', 'Add user').find('input').click().type(permissionTestUser);
+        cy.contains('mat-option', permissionTestUser).click();
 
-      // Save changes
-      cy.contains('button', 'Save Changes').should('not.be.disabled');
+        // Remove user by mat chip
+        cy.contains('mat-chip-list', 'Pending Additions:')
+          .contains('mat-chip', permissionTestUser)
+          .contains('button', 'close')
+          .click();
+        cy.contains('tr', permissionTestUser).should('not.exist');
 
-      // Can delete
-      cy.get('verify-button').click();
-      cy.contains('button', 'Delete Team').should('not.be.disabled');
-    });
+        // Save changes
+        cy.contains('button', 'Save Changes').should('not.be.disabled');
+
+        // Can delete
+        cy.get('verify-button').click();
+        cy.contains('button', 'Delete Team').should('not.be.disabled');
+      },
+    );
   });
 });

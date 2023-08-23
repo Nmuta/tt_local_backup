@@ -7,27 +7,26 @@ import {
   testFillOutBanCustomReason,
   testHelpCard,
   testInvalidBanConditions,
-  testVerifySearchForUser,
 } from './shared-functions';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 
-const woodstockUser = RetailUsers['luke'];
+const steelheadUser = RetailUsers['madden'];
 
-context('Steward / Tools / Banning / Woodstock', () => {
+context('Steward / Tools / Banning / Steelhead', () => {
   before(() => {
     resetToDefaultState();
-    cy.visit(stewardUrls.tools.banning.woodstock);
+    cy.visit(stewardUrls.tools.banning.steelhead);
   });
 
   context('GTAG Lookup', () => {
     before(() => {
-      cy.visit(stewardUrls.tools.banning.woodstock);
-      searchByGtag(woodstockUser.gtag);
+      cy.visit(stewardUrls.tools.banning.steelhead);
+      searchByGtag(steelheadUser.gtag);
     });
-
     context('With default user', () => {
-      testVerifySearchForUser('All Requests');
-      testFillOutBan('Testing', 'Woodstock');
+      // No users currently have ban history in Steelhead
+      //testVerifySearchForUser('All Requests');
+      testFillOutBan('Testing', 'Steelhead');
       testFillOutBanCustomReason();
       testInvalidBanConditions();
     });
@@ -35,12 +34,13 @@ context('Steward / Tools / Banning / Woodstock', () => {
 
   context('XUID Lookup', () => {
     before(() => {
-      cy.visit(stewardUrls.tools.banning.woodstock);
-      searchByXuid(woodstockUser.xuid);
+      cy.visit(stewardUrls.tools.banning.steelhead);
+      searchByXuid(steelheadUser.xuid);
     });
     context('With default user', () => {
-      testVerifySearchForUser('All Requests');
-      testFillOutBan('Testing', 'Woodstock');
+      // No users currently have ban history in Steelhead
+      //testVerifySearchForUser('All Requests');
+      testFillOutBan('Testing', 'Steelhead');
       testFillOutBanCustomReason();
       testInvalidBanConditions();
     });

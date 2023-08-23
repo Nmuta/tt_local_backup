@@ -2,8 +2,9 @@ import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { sunriseSamples, testInputUgcID } from './shared-functions';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / UGC Details / Sunrise', () => {
+context('Steward / Tools / UGC Details / Sunrise', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
