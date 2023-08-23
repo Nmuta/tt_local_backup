@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.ProductPricing },
+      uuid: 'c069381d-0e34-48f2-9384-04eb317b79cc',
+      shortText:
+        'Add ability to look up any product ID alongside dropdown to select Forza products',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '3594283a-d0e7-4d79-bfd0-ebc0de4eafd8',
       shortText: 'Add Layer Group & Game Options UGC types',
