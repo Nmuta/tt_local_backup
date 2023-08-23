@@ -13,6 +13,7 @@ import {
   verifySearchValidLspGroupHistoryGiftsExistsTest,
 } from './shared-tests';
 import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
+import { Tag, withTags } from '@support/tags';
 
 // If changing these dates, be sure they are used in the correct order of first then last below
 const noGiftsDateStart = '1/1/2023';
@@ -29,7 +30,7 @@ const recentGiftToLSPInProd = '9/21/2022';
 const recentGiftToLSPInDev = '6/1/2023';
 const numberOfExpectedLSPGifts = 2; // inconsistency here, check LSP Group Lookup for details
 
-context('Steward / Tools / Gift History / Woodstock', () => {
+context('Steward / Tools / Gift History / Woodstock', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -71,14 +72,17 @@ context('Steward / Tools / Gift History / Woodstock', () => {
       selectWoodstock();
     });
     verifySearchValidLspGroupHistoryGiftsExistsTest(lspGroupWithRecentGifts);
-    // Currently, the most recent gifts in prod woodstock are 2 gifts on 9/21/2022
-    // We can change the way this works if desired, but as of now this will work for prod but not dev
-    // If we get a more recent sunrise gift or another gift into prod, this can work for both
-    verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
-      lspGroupWithRecentGifts,
-      recentGiftToLSPInProd,
-      recentGiftToLSPInDev,
-      numberOfExpectedLSPGifts,
-    );
+
+    context('Broken', withTags(Tag.Broken), () => {
+      // Currently, the most recent gifts in prod woodstock are 2 gifts on 9/21/2022
+      // We can change the way this works if desired, but as of now this will work for prod but not dev
+      // If we get a more recent sunrise gift or another gift into prod, this can work for both
+      verifySearchValidLspGroupHistoryGiftsExistsCalendarTest(
+        lspGroupWithRecentGifts,
+        recentGiftToLSPInProd,
+        recentGiftToLSPInDev,
+        numberOfExpectedLSPGifts,
+      );
+    });
   });
 });

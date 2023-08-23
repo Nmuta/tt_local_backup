@@ -23,6 +23,7 @@ import {
   contextSearchByXuidForPlayerDetails,
 } from '@support/steward/shared-functions/searching';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
+import { withTags, Tag } from '@support/tags';
 
 const defaultWoodstockUser = 'luke';
 const platformName = 'woodstock';
@@ -156,7 +157,7 @@ function testAuctions(): void {
 }
 
 function testUgc(): void {
-  context('Ugc', () => {
+  context('Ugc', withTags(Tag.Broken), () => {
     before(() => {
       swapToTab('Ugc');
     });

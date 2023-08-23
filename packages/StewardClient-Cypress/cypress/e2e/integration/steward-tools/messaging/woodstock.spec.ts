@@ -94,11 +94,11 @@ function verifyValidInputsTest(): void {
   const expiryString = DateTime.local().plus({ days: 1 }).toLocaleString();
 
   it('should be reviewable with proper inputs', () => {
+    cy.contains('mat-form-field', 'Community Message').click();
     cy.contains('mat-form-field', 'Community Message')
-      .click()
       .type('{selectall}{backspace}This is a test string.');
+    cy.contains('mat-form-field', 'Date Range').click();
     cy.contains('mat-form-field', 'Date Range')
-      .click()
       .type('{selectall}{backspace}' + expiryString);
     cy.contains('button', 'Review', { matchCase: false }).should(
       'not.have.class',
@@ -110,10 +110,12 @@ function verifyValidInputsTest(): void {
 function verifyInvalidDateInputTest(): void {
   it('should not be reviewable with invalid date input', () => {
     cy.contains('button', 'Send Another Message', { matchCase: false }).click();
+    cy.contains('mat-form-field', 'Community Message').click();
     cy.contains('mat-form-field', 'Community Message')
-      .click()
       .type('{selectall}{backspace}This is a test string.');
-    cy.contains('mat-form-field', 'Date Range').click().type('{selectall}{backspace}1/1/2001');
+    cy.contains('mat-form-field', 'Date Range').click();
+    cy.contains('mat-form-field', 'Date Range')
+      .type('{selectall}{backspace}1/1/2001');
     cy.contains('button', 'Review', { matchCase: false }).should(
       'have.class',
       'mat-button-disabled',
@@ -126,11 +128,11 @@ function verifyInvalidMessageInputTest(): void {
   const expiryString = DateTime.local().plus({ days: 1 }).toLocaleString();
 
   it('should not be reviewable with invalid message input', () => {
+    cy.contains('mat-form-field', 'Community Message').click();
     cy.contains('mat-form-field', 'Community Message')
-      .click()
       .type('{selectall}{backspace}' + longString);
+    cy.contains('mat-form-field', 'Date Range').click();
     cy.contains('mat-form-field', 'Date Range')
-      .click()
       .type('{selectall}{backspace}' + expiryString);
     cy.contains('button', 'Review', { matchCase: false }).should(
       'have.class',
@@ -143,11 +145,11 @@ function verifyMessageSent(): void {
   const expiryString = DateTime.local().plus({ days: 1 }).toLocaleString();
 
   it('should send with proper inputs', () => {
+    cy.contains('mat-form-field', 'Community Message').click();
     cy.contains('mat-form-field', 'Community Message')
-      .click()
       .type('{selectall}{backspace}This is a test string.');
+    cy.contains('mat-form-field', 'Date Range').click();
     cy.contains('mat-form-field', 'Date Range')
-      .click()
       .type('{selectall}{backspace}' + expiryString);
     cy.contains('button', 'Review', { matchCase: false }).click();
     cy.contains('button', 'Send Message', { matchCase: false }).click();

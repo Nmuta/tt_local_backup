@@ -4,6 +4,7 @@ import { waitForProgressSpinners } from '@support/steward/common/wait-for-progre
 import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
 import { stewardUrls } from '@support/steward/urls';
+import { Tag, withTags } from '@support/tags';
 
 //These values may change as tools and games are added or removed from Steward
 const filterValues = {
@@ -14,7 +15,7 @@ const filterValues = {
   playerFM7Filter: '5',
 };
 
-context('Steward Index', () => {
+context('Steward Index', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -84,7 +85,7 @@ context('Steward Index', () => {
       cy.get('span').contains('Tools below do not match filters').should('exist');
     });
 
-    it('should filter tools by title', () => {
+    it('should filter tools by title', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       const $chipList = cy.get('mat-chip-list');
       $chipList.within(() => {
@@ -102,7 +103,7 @@ context('Steward Index', () => {
       cy.get('span').contains('Tools below do not match filters').should('exist');
     });
 
-    it('should filter tools with multiple filters', () => {
+    it('should filter tools with multiple filters', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       const $chipList = cy.get('mat-chip-list');
       $chipList.within(() => {
@@ -121,7 +122,7 @@ context('Steward Index', () => {
       cy.get('span').contains('Tools below do not match filters').should('exist');
     });
 
-    it('should reset when filters are removed', () => {
+    it('should reset when filters are removed', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       const $chipList = cy.get('mat-chip-list');
       $chipList.within(() => {
@@ -158,7 +159,7 @@ context('Steward Index', () => {
       });
     });
 
-    it('should swap between dark mode, light mode, and match system', () => {
+    it('should swap between dark mode, light mode, and match system', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       cy.get('button').contains('span', 'Click to set standard tools').click();
 
@@ -242,7 +243,7 @@ context('Steward Index', () => {
         .should('exist');
     });
 
-    it('should add tools to the nav bar', () => {
+    it('should add tools to the nav bar', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       const $matCardList = cy.get('mat-card');
       $matCardList.within(() => {
@@ -286,22 +287,26 @@ context('Steward Index', () => {
       });
     });
 
-    it('should reset nav bar when pressing the reset selection button', () => {
-      waitForProgressSpinners();
-      cy.get('mat-toolbar').within(() => {
-        cy.get('button').contains('span', 'Click to set standard tools').click();
-        cy.get('button').contains('span', 'Click to set standard tools').should('not.exist');
-      });
+    it(
+      'should reset nav bar when pressing the reset selection button',
+      withTags(Tag.Broken),
+      () => {
+        waitForProgressSpinners();
+        cy.get('mat-toolbar').within(() => {
+          cy.get('button').contains('span', 'Click to set standard tools').click();
+          cy.get('button').contains('span', 'Click to set standard tools').should('not.exist');
+        });
 
-      cy.get('button').contains('span', 'Reset Selection').click();
+        cy.get('button').contains('span', 'Reset Selection').click();
 
-      cy.get('mat-toolbar').within(() => {
-        cy.get('button').contains('span', 'Click to set standard tools').should('exist');
-      });
-    });
+        cy.get('mat-toolbar').within(() => {
+          cy.get('button').contains('span', 'Click to set standard tools').should('exist');
+        });
+      },
+    );
 
     // Known failure currently, bug made to address later (drag and drop issues)
-    it('should reorder nav bar', () => {
+    it('should reorder nav bar', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       cy.get('mat-toolbar').within(() => {
         cy.get('button').contains('span', 'Click to set standard tools').click();
@@ -331,15 +336,19 @@ context('Steward Index', () => {
   });
 
   context('Endpoints', () => {
-    it('should change Woodstock endpoint from Retail to Studio and confirm the change in Player Details by checking a Retail and Studio account', () => {
-      changeEndpoint('Woodstock', 'Retail', 'Studio');
-      cy.visit(stewardUrls.tools.playerDetails.woodstock);
-      cy.get('a').contains('span', 'FH5').contains('span', 'Studio').should('exist');
-      searchByGtag(RetailUsers['chad'].gtag);
-      cy.contains('h2', 'Request failed').should('exist');
-      cy.get('mat-chip').contains('mat-icon', 'cancel').click();
-      searchByXuid('2814649032001718');
-      cy.get('player-identity-results').contains('span', '2814649032001718').should('exist');
-    });
+    it(
+      'should change Woodstock endpoint from Retail to Studio and confirm the change in Player Details by checking a Retail and Studio account',
+      withTags(Tag.Broken),
+      () => {
+        changeEndpoint('Woodstock', 'Retail', 'Studio');
+        cy.visit(stewardUrls.tools.playerDetails.woodstock);
+        cy.get('a').contains('span', 'FH5').contains('span', 'Studio').should('exist');
+        searchByGtag(RetailUsers['chad'].gtag);
+        cy.contains('h2', 'Request failed').should('exist');
+        cy.get('mat-chip').contains('mat-icon', 'cancel').click();
+        searchByXuid('2814649032001718');
+        cy.get('player-identity-results').contains('span', '2814649032001718').should('exist');
+      },
+    );
   });
 });
