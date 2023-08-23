@@ -70,10 +70,6 @@ export function testInputUgcID(ugc: SampleUgc): void {
   cy.get('mat-form-field')
     .contains('mat-label', 'UGC ID / Share Code')
     .parents('mat-form-field')
-    .click()
-  cy.get('mat-form-field')
-    .contains('mat-label', 'UGC ID / Share Code')
-    .parents('mat-form-field')
     .type('{selectall}{backspace}' + ugc.id);
   waitForProgressSpinners();
 
