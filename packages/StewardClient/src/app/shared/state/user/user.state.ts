@@ -174,9 +174,7 @@ export class UserState {
     );
 
     const location = this.windowService.location();
-    const useStaging =
-      this.store.selectSnapshot<boolean>(UserSettingsState.enableStagingApi) &&
-      location?.origin === environment.stewardUiStagingUrl;
+    const useStaging = location?.origin === environment.stewardUiStagingUrl;
     return from(
       this.msalService.acquireTokenSilent({
         forceRefresh: action.forceTokenRefresh,

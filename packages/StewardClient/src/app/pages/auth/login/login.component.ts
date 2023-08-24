@@ -44,9 +44,7 @@ export class LoginComponent implements OnInit {
   /** Launches the login popup. */
   public async login$(): Promise<void> {
     const location = this.windowService.location();
-    const useStaging =
-      this.store.selectSnapshot<boolean>(UserSettingsState.enableStagingApi) &&
-      location?.origin === environment.stewardUiStagingUrl;
+    const useStaging = location?.origin === environment.stewardUiStagingUrl;
     try {
       await this.msalService
         .loginPopup({
