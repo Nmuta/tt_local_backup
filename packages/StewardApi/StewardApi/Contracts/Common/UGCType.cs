@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// <summary>
     ///     Represents UGC type options.
     /// </summary>
-    /// <remarks>Copies enum values from Forza.LiveOps.FH4.Generated.ForzaUGCContentType.</remarks>
+    /// <remarks>Copies enum values from <see cref="Turn10.Services.LiveOps.FM8.Generated.ForzaUGCContentType" /></remarks>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum UgcType
     {
