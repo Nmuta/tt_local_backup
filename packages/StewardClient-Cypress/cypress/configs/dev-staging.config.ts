@@ -33,7 +33,7 @@ export default defineConfig({
   e2e: {
     experimentalRunAllSpecs: true,
     testIsolation: false,
-    baseUrl: 'https://steward-ui-dev-staging.azurewebsites.net',
+    baseUrl: 'https://steward-ui-dev.azurewebsites.net',
     specPattern: 'cypress/e2e/**/*.spec.*',
     supportFile: 'cypress/support/commands.ts',
     setupNodeEvents(on, config) {

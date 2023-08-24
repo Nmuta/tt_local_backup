@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Automatically select Staging API when using Staging UI',
     },
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Leaderboards },
+      uuid: '069c7aa4-1424-4f15-ae7b-cf082cd5531f',
+      shortText: 'Add Time Attack leaderboards',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.ProductPricing },
       uuid: 'c069381d-0e34-48f2-9384-04eb317b79cc',
       shortText:

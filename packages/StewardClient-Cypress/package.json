@@ -26,6 +26,8 @@
     "run:dev:wip": "cypress run --config-file cypress/configs/dev-wip.config.ts",
     "run:dev:exclude": "cypress run --config-file cypress/configs/dev-exclude.config.ts",
     "run:dev:exclude:isolated": "cypress run --config-file cypress/configs/dev-exclude-isolated.config.ts",
+    "run:dev-staging": "cypress run --config-file cypress/configs/dev-staging.config.ts",
+    "run:dev-staging:exclude": "cypress run --config-file cypress/configs/dev-staging-exclude.config.ts",
     "run:prod": "cypress run --config-file cypress/configs/prod.config.ts",
     "run:prod-staging": "cypress run --config-file cypress/configs/prod-staging.config.ts",
     "run:dev:parallel": "cypress-parallel -s run:dev -t 4 -d cypress/e2e",
