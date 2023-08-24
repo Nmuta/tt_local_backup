@@ -6,7 +6,6 @@ import {
   SetApolloEndpointKey,
   SetAppVersion,
   SetFakeApi,
-  SetStagingApi,
   SetSteelheadEndpointKey,
   SetSunriseEndpointKey,
   SetWoodstockEndpointKey,
@@ -44,26 +43,6 @@ describe('UserSettingsService', () => {
       store.dispatch(new SetFakeApi(false));
       store
         .selectOnce((state: AppState) => state.userSettings.enableFakeApi)
-        .subscribe(enableFakeApi => {
-          expect(enableFakeApi).toBe(false);
-        });
-    });
-  });
-
-  describe('Action: SetStagingApi', () => {
-    it('should sync setting: SetStagingApi(true)', () => {
-      store.dispatch(new SetStagingApi(true));
-      store
-        .selectOnce((state: AppState) => state.userSettings.enableStagingApi)
-        .subscribe(enableFakeApi => {
-          expect(enableFakeApi).toBe(true);
-        });
-    });
-
-    it('should sync setting: SetStagingApi(false)', () => {
-      store.dispatch(new SetStagingApi(false));
-      store
-        .selectOnce((state: AppState) => state.userSettings.enableStagingApi)
         .subscribe(enableFakeApi => {
           expect(enableFakeApi).toBe(false);
         });

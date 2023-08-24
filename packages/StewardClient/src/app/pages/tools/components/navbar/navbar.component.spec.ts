@@ -79,7 +79,6 @@ describe('ToolsNavbarComponent', () => {
         component.listedTools = [];
         component.settings$ = of({
           enableFakeApi: false,
-          enableStagingApi: false,
           appVersion: undefined,
           navbarTools: { 'user-details': 1, 'search-ugc': 2, gifting: 3, 'ban-review': 4 },
           apolloEndpointKey: undefined,
