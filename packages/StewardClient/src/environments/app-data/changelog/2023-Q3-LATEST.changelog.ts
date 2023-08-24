@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'f5a5ea45-1ea4-4a36-aed7-55140bc0aada',
+      shortText:
+        'Automatically select Staging API when using Staging UI',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.ProductPricing },
       uuid: 'c069381d-0e34-48f2-9384-04eb317b79cc',
       shortText:
