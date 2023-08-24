@@ -10,6 +10,11 @@ import { GameTitle, GameTitleAbbreviation, GameTitleCodeName } from '@models/enu
 export class PlayFabComponent {
   public navbarRouterLinks = [
     {
+      name: GameTitleAbbreviation.Forte,
+      codename: GameTitleCodeName.Forte,
+      route: getPlayFabRoute(GameTitle.Forte),
+    },
+    {
       name: GameTitleAbbreviation.FH5,
       codename: GameTitleCodeName.FH5,
       route: getPlayFabRoute(GameTitle.FH5),

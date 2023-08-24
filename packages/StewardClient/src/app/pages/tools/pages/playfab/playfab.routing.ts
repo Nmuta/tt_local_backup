@@ -6,6 +6,8 @@ import { WoodstockPlayFabBuildsManagementComponent } from './components/playfab-
 import { PlayFabSettingsComponent } from './components/playfab-settings/playfab-settings.component';
 import { PlayFabComponent } from './playfab.component';
 import { WoodstockPlayFabComponent } from './woodstock/woodstock-playfab.component';
+import { FortePlayFabComponent } from './forte/forte-playfab.component';
+import { FortePlayFabBuildsManagementComponent } from './components/playfab-builds-management/forte/forte-playfab-builds-management.component';
 
 const routes: Routes = [
   {
@@ -40,6 +42,30 @@ const routes: Routes = [
             component: PlayFabSettingsComponent,
             pathMatch: 'full',
           },
+        ],
+      },
+      {
+        path: 'forte',
+        canActivate: [RouteMemorySetGuard],
+        component: FortePlayFabComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'manage-builds',
+            pathMatch: 'full',
+          },
+          {
+            path: 'manage-builds',
+            canActivate: [RouteMemorySetGuard],
+            component: FortePlayFabBuildsManagementComponent,
+            pathMatch: 'full',
+          },
+          // {
+          //   path: 'settings',
+          //   canActivate: [RouteMemorySetGuard],
+          //   component: PlayFabSettingsComponent,
+          //   pathMatch: 'full',
+          // },
         ],
       },
     ],
