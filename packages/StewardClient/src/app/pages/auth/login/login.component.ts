@@ -8,7 +8,6 @@ import { Select, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { WindowService } from '@services/window';
 import { EmailAddresses } from '@shared/constants';
-import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';

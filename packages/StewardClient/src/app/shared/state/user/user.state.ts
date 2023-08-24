@@ -26,7 +26,6 @@ import { merge, clone, cloneDeep, first as _first, assign } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, first, map, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { RefreshEndpointKeys } from '../user-settings/user-settings.actions';
-import { UserSettingsState } from '../user-settings/user-settings.state';
 
 import {
   ApplyProfileOverrides,
