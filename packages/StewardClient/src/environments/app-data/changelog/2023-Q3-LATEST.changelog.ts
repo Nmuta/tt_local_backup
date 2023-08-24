@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: 'all', tool: NavbarTool.ProductPricing },
+      uuid: 'c069381d-0e34-48f2-9384-04eb317b79cc',
+      shortText:
+        'Add ability to look up any product ID alongside dropdown to select Forza products',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionBlocklist },
       uuid: 'a6e7f4a7-7345-4f27-9446-83680ae4e516',
       shortText: 'Update auction blocklist to display new accurate data',
