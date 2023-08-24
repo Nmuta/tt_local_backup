@@ -60,12 +60,12 @@ const routes: Routes = [
             component: FortePlayFabBuildsManagementComponent,
             pathMatch: 'full',
           },
-          // {
-          //   path: 'settings',
-          //   canActivate: [RouteMemorySetGuard],
-          //   component: PlayFabSettingsComponent,
-          //   pathMatch: 'full',
-          // },
+          {
+            path: 'settings',
+            canActivate: [RouteMemorySetGuard],
+            component: PlayFabSettingsComponent,
+            pathMatch: 'full',
+          },
         ],
       },
     ],
