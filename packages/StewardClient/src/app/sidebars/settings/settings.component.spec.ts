@@ -7,7 +7,7 @@ import { UserSettingsStateModel } from '@shared/state/user-settings/user-setting
 import { UserModel } from '@models/user.model';
 import { UserRole } from '@models/enums';
 import { WindowService } from '@services/window';
-import { SetFakeApi, SetStagingApi } from '@shared/state/user-settings/user-settings.actions';
+import { SetFakeApi } from '@shared/state/user-settings/user-settings.actions';
 import {
   EndpointKeyMemoryModel,
   EndpointKeyMemoryState,
@@ -92,32 +92,6 @@ describe('SettingsComponent', () => {
         component.syncFakeApiSettings();
 
         expect(mockStore.dispatch).toHaveBeenCalledWith(new SetFakeApi(expectedVal));
-      });
-    });
-  });
-
-  describe('Method: syncStagingApiSettings', () => {
-    describe('When enableStagingApi is true', () => {
-      const expectedVal = true;
-      beforeEach(() => {
-        component.enableStagingApi = expectedVal;
-      });
-      it('should set fake api', () => {
-        component.syncStagingApiSettings();
-
-        expect(mockStore.dispatch).toHaveBeenCalledWith(new SetStagingApi(expectedVal));
-      });
-    });
-
-    describe('When enableStagingApi is false', () => {
-      const expectedVal = false;
-      beforeEach(() => {
-        component.enableStagingApi = expectedVal;
-      });
-      it('should set fake api', () => {
-        component.syncStagingApiSettings();
-
-        expect(mockStore.dispatch).toHaveBeenCalledWith(new SetStagingApi(expectedVal));
       });
     });
   });

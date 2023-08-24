@@ -17,7 +17,6 @@ import {
   SetApolloEndpointKey,
   SetFakeApi,
   SetForteEndpointKey,
-  SetStagingApi,
   SetSteelheadEndpointKey,
   SetSunriseEndpointKey,
   SetWoodstockEndpointKey,
@@ -44,7 +43,6 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   public guestAccountStatus: undefined | boolean = undefined;
   public activeRole: UserRole;
   public enableFakeApi: boolean;
-  public enableStagingApi: boolean;
   public apolloEndpointKey: string;
   public sunriseEndpointKey: string;
   public woodstockEndpointKey: string;
@@ -107,7 +105,6 @@ export class SettingsComponent extends BaseComponent implements OnInit {
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
       this.enableFakeApi = latest.enableFakeApi;
-      this.enableStagingApi = latest.enableStagingApi;
       this.apolloEndpointKey = latest.apolloEndpointKey;
       this.sunriseEndpointKey = latest.sunriseEndpointKey;
       this.woodstockEndpointKey = latest.woodstockEndpointKey;
@@ -119,11 +116,6 @@ export class SettingsComponent extends BaseComponent implements OnInit {
   /** Fired when any setting changes. */
   public syncFakeApiSettings(): void {
     this.store.dispatch(new SetFakeApi(this.enableFakeApi));
-  }
-
-  /** Fired when any setting changes. */
-  public syncStagingApiSettings(): void {
-    this.store.dispatch(new SetStagingApi(this.enableStagingApi));
   }
 
   /** Fired when any setting changes. */

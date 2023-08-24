@@ -9,7 +9,6 @@ import { InitEndpointKeys } from '../endpoint-key-memory/endpoint-key-memory.act
 import { EndpointKeyMemoryState } from '../endpoint-key-memory/endpoint-key-memory.state';
 import {
   SetAppVersion,
-  SetStagingApi,
   SetFakeApi,
   SetNavbarTools,
   SetApolloEndpointKey,
@@ -30,7 +29,6 @@ import {
 /** Defines the user state model. */
 export class UserSettingsStateModel {
   public enableFakeApi: boolean;
-  public enableStagingApi: boolean;
   public appVersion: string;
   public showAppUpdatePopup: boolean;
   public showVerifyCheckboxPopup: boolean;
@@ -50,7 +48,6 @@ export class UserSettingsStateModel {
   name: 'userSettings',
   defaults: {
     enableFakeApi: false,
-    enableStagingApi: false,
     appVersion: undefined,
     navbarTools: {},
     apolloEndpointKey: undefined,
@@ -77,15 +74,6 @@ export class UserSettingsState {
     action: SetFakeApi,
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ enableFakeApi: action.enabled }));
-  }
-
-  /** Sets the state of the current API. */
-  @Action(SetStagingApi, { cancelUncompleted: true })
-  public setStagingApi$(
-    ctx: StateContext<UserSettingsStateModel>,
-    action: SetStagingApi,
-  ): Observable<UserSettingsStateModel> {
-    return of(ctx.patchState({ enableStagingApi: action.enabled }));
   }
 
   /** Sets the state of the current app version. */
@@ -299,12 +287,6 @@ export class UserSettingsState {
   @Selector()
   public static enableFakeApi(state: UserSettingsStateModel): boolean {
     return state.enableFakeApi;
-  }
-
-  /** Selector for whether the state has staging api enabled. */
-  @Selector()
-  public static enableStagingApi(state: UserSettingsStateModel): boolean {
-    return state.enableStagingApi;
   }
 
   /** Selector for state app version. */

@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'f5a5ea45-1ea4-4a36-aed7-55140bc0aada',
+      shortText: 'Automatically select Staging API when using Staging UI',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.Leaderboards },
       uuid: '069c7aa4-1424-4f15-ae7b-cf082cd5531f',
       shortText: 'Add Time Attack leaderboards',
