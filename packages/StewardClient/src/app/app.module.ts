@@ -25,7 +25,6 @@ import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { environment, SecondaryAADScopes, AllAADScopes } from '../environments/environment';
 
@@ -151,7 +150,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     LuxonModule,
     MatNativeDateModule,
     CenterContentsModule,
-    FlexLayoutModule,
     AvailableAppsModule,
     HubsModule,
     NgxsModule.forRoot(
