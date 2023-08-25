@@ -13,7 +13,6 @@ import { ModelDumpPriceTableComponent } from './model-dump-simple/model-dump-pri
 import { ModelDumpHumanizeTableComponent } from './model-dump-simple/model-dump-humanize-table/model-dump-humanize-table.component';
 import { ModelDumpDurationTableComponent } from './model-dump-simple/model-dump-duration-table/model-dump-duration-table.component';
 import { LuxonModule } from 'luxon-angular';
-import { NgxHumanizeDurationModule } from 'ngx-humanize-duration';
 import { ModelDumpDatetimeTableComponent } from './model-dump-simple/model-dump-datetime-table/model-dump-datetime-table.component';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
@@ -47,7 +46,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PipesModule,
     MatIconModule,
     LuxonModule,
-    NgxHumanizeDurationModule,
     MatButtonModule,
     MatTooltipModule,
     RouterModule,

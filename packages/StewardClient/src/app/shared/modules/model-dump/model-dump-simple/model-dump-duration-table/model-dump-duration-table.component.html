@@ -3,7 +3,7 @@
     <th>{{ e.name }}</th>
     <td>
       <standard-copy [text]="e.value | durationToIso">{{
-        e.value | durationToMillis | humanizeDuration
+        e.value | durationToIso
       }}</standard-copy>
     </td>
   </tr>
