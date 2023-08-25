@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, OnInit, ViewChildren } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SteelheadBanRequest, SteelheadBanSummary } from '@models/steelhead';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
@@ -59,21 +59,21 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent implemen
   public banReasons: string[] = [];
 
   public formControls = {
-    banReason: new FormControl('', [Validators.required, requireReasonListMatch.bind(this)]),
-    deleteLeaderboardEntries: new FormControl(false),
-    override: new FormControl(false),
+    banReason: new UntypedFormControl('', [Validators.required, requireReasonListMatch.bind(this)]),
+    deleteLeaderboardEntries: new UntypedFormControl(false),
+    override: new UntypedFormControl(false),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public options: DurationOption[] = BanOverrideDurationOptions;
   public overrideFormControls = {
-    overrideBanDuration: new FormControl({ value: null, disabled: true }, [Validators.required]),
-    permaBan: new FormControl({ value: false, disabled: true }),
-    deviceBan: new FormControl({ value: false, disabled: true }),
+    overrideBanDuration: new UntypedFormControl({ value: null, disabled: true }, [Validators.required]),
+    permaBan: new UntypedFormControl({ value: false, disabled: true }),
+    deviceBan: new UntypedFormControl({ value: false, disabled: true }),
   };
 
-  public overrideFormGroup = new FormGroup(this.overrideFormControls);
+  public overrideFormGroup = new UntypedFormGroup(this.overrideFormControls);
 
   public summaryLookup: Dictionary<SteelheadBanSummary> = {};
   public bannedXuids: BigNumber[] = [];

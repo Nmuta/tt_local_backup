@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';
 import { ForzaSandbox, GameTitle } from '@models/enums';
@@ -80,13 +80,13 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     overwriteIfExists: false,
   };
   public saveFormControls = {
-    template: new FormControl(this.saveFormDefaults.template, Validators.required),
-    overwriteIfExists: new FormControl(
+    template: new UntypedFormControl(this.saveFormDefaults.template, Validators.required),
+    overwriteIfExists: new UntypedFormControl(
       this.saveFormDefaults.overwriteIfExists,
       Validators.required,
     ),
   };
-  public saveFormGroup = new FormGroup(this.saveFormControls);
+  public saveFormGroup = new UntypedFormGroup(this.saveFormControls);
 
   public loadFormDefaults = {
     template: '',
@@ -94,14 +94,14 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     forzaSandbox: ForzaSandbox.Retail,
   };
   public loadFormControls = {
-    template: new FormControl(this.loadFormDefaults.template, Validators.required),
-    continueOnBreakingChanges: new FormControl(
+    template: new UntypedFormControl(this.loadFormDefaults.template, Validators.required),
+    continueOnBreakingChanges: new UntypedFormControl(
       this.loadFormDefaults.continueOnBreakingChanges,
       Validators.required,
     ),
-    forzaSandbox: new FormControl(this.loadFormDefaults.forzaSandbox, Validators.required),
+    forzaSandbox: new UntypedFormControl(this.loadFormDefaults.forzaSandbox, Validators.required),
   };
-  public loadFormGroup = new FormGroup(this.loadFormControls);
+  public loadFormGroup = new UntypedFormGroup(this.loadFormControls);
 
   public resetFormDefaults = {
     resetCarProgressData: false,
@@ -114,37 +114,37 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
     resetUgcProfileData: false,
   };
   public resetFormControls = {
-    resetCarProgressData: new FormControl(
+    resetCarProgressData: new UntypedFormControl(
       this.resetFormDefaults.resetCarProgressData,
       Validators.required,
     ),
-    resetLeaderboardsData: new FormControl(
+    resetLeaderboardsData: new UntypedFormControl(
       this.resetFormDefaults.resetLeaderboardsData,
       Validators.required,
     ),
-    resetRaceRankingData: new FormControl(
+    resetRaceRankingData: new UntypedFormControl(
       this.resetFormDefaults.resetRaceRankingData,
       Validators.required,
     ),
-    resetStatsData: new FormControl(this.resetFormDefaults.resetStatsData, Validators.required),
-    resetTrueSkillData: new FormControl(
+    resetStatsData: new UntypedFormControl(this.resetFormDefaults.resetStatsData, Validators.required),
+    resetTrueSkillData: new UntypedFormControl(
       this.resetFormDefaults.resetTrueSkillData,
       Validators.required,
     ),
-    resetUserInventoryData: new FormControl(
+    resetUserInventoryData: new UntypedFormControl(
       this.resetFormDefaults.resetUserInventoryData,
       Validators.required,
     ),
-    resetUserSafetyRatingData: new FormControl(
+    resetUserSafetyRatingData: new UntypedFormControl(
       this.resetFormDefaults.resetUserSafetyRatingData,
       Validators.required,
     ),
-    resetUgcProfileData: new FormControl(
+    resetUgcProfileData: new UntypedFormControl(
       this.resetFormDefaults.resetUgcProfileData,
       Validators.required,
     ),
   };
-  public resetFormGroup = new FormGroup(this.resetFormControls);
+  public resetFormGroup = new UntypedFormGroup(this.resetFormControls);
 
   /** Boolean if both XUID and Profile Id inputs are valid. */
   public get hasXuidAndProfileId(): boolean {

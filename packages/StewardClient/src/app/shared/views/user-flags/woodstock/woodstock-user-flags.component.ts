@@ -5,7 +5,7 @@ import { WoodstockService } from '@services/woodstock/woodstock.service';
 import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Woodstock User Flags by XUID. */
@@ -21,17 +21,17 @@ export class WoodstockUserFlagsComponent
   public gameTitle = GameTitle.FH5;
 
   public formControls = {
-    isVip: new FormControl(false),
-    isUltimateVip: new FormControl(false),
-    isTurn10Employee: new FormControl(false),
-    isEarlyAccess: new FormControl(false),
-    isRaceMarshall: new FormControl(false),
-    isCommunityManager: new FormControl(false),
-    isContentCreator: new FormControl(false),
-    isUnderReview: new FormControl(false), // Keep as last form control
+    isVip: new UntypedFormControl(false),
+    isUltimateVip: new UntypedFormControl(false),
+    isTurn10Employee: new UntypedFormControl(false),
+    isEarlyAccess: new UntypedFormControl(false),
+    isRaceMarshall: new UntypedFormControl(false),
+    isCommunityManager: new UntypedFormControl(false),
+    isContentCreator: new UntypedFormControl(false),
+    isUnderReview: new UntypedFormControl(false), // Keep as last form control
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   private readonly fh5CommunityManagerAltLabel =
     'Is Community Manager (Unbannable + Community Challenge Moderation)';

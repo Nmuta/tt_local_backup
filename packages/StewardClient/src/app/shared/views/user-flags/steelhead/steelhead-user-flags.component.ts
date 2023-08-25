@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
 import { SteelheadUserFlags } from '@models/steelhead';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { OldPermissionsService } from '@services/old-permissions';
 import { SteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service';
 
@@ -21,19 +21,19 @@ export class SteelheadUserFlagsComponent
   public gameTitle = GameTitle.FM8;
 
   public formControls = {
-    isGamecoreVip: new FormControl(false),
-    isGamecoreUltimateVip: new FormControl(false),
-    isSteamVip: new FormControl(false),
-    isSteamUltimateVip: new FormControl(false),
-    isTurn10Employee: new FormControl(false),
-    isEarlyAccess: new FormControl(false),
-    isRaceMarshall: new FormControl(false),
-    isCommunityManager: new FormControl(false),
-    isContentCreator: new FormControl(false),
-    isUnderReview: new FormControl(false), // Keep as last form control
+    isGamecoreVip: new UntypedFormControl(false),
+    isGamecoreUltimateVip: new UntypedFormControl(false),
+    isSteamVip: new UntypedFormControl(false),
+    isSteamUltimateVip: new UntypedFormControl(false),
+    isTurn10Employee: new UntypedFormControl(false),
+    isEarlyAccess: new UntypedFormControl(false),
+    isRaceMarshall: new UntypedFormControl(false),
+    isCommunityManager: new UntypedFormControl(false),
+    isContentCreator: new UntypedFormControl(false),
+    isUnderReview: new UntypedFormControl(false), // Keep as last form control
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   constructor(
     private readonly steelheadPlayerFlagsService: SteelheadPlayerFlagsService,

@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input, OnInit, OnChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { CommunityMessage } from '@models/community-message';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { DateTime } from 'luxon';
@@ -43,19 +43,19 @@ export class NewCommunityMessageComponent implements OnInit, OnChanges {
   public deviceTypes: string[] = Object.values(DeviceType);
 
   public formControls = {
-    message: new FormControl('', [
+    message: new UntypedFormControl('', [
       Validators.required,
       Validators.maxLength(this.messageMaxLength),
     ]),
-    dateRange: new FormControl(this.dateRange, [Validators.required]),
-    deviceType: new FormControl(DeviceType.All, [Validators.required]),
+    dateRange: new UntypedFormControl(this.dateRange, [Validators.required]),
+    deviceType: new UntypedFormControl(DeviceType.All, [Validators.required]),
   };
 
-  public newCommunityMessageForm: FormGroup = new FormGroup(this.formControls);
+  public newCommunityMessageForm: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public activePermAttribute = PermAttributeName.MessagePlayer;
 
-  constructor(private readonly formBuilder: FormBuilder) {}
+  constructor(private readonly formBuilder: UntypedFormBuilder) {}
 
   /** Lifecycle hook. */
   public ngOnInit(): void {

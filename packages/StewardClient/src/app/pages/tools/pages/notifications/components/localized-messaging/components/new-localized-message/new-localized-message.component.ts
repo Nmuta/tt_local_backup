@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { LocalizedMessage } from '@models/community-message';
 import { DateTime } from 'luxon';
 import { DeviceType, GameTitle, NotificationType } from '@models/enums';
@@ -51,14 +51,14 @@ export class NewLocalizedMessageComponent implements OnChanges {
   public notificationTypes: string[] = values(NotificationType);
 
   public formControls = {
-    localizedTitleInfo: new FormControl({}, [Validators.required]),
-    localizedMessageInfo: new FormControl({}, [Validators.required]),
-    dateRange: new FormControl(this.dateRange, [Validators.required]),
-    deviceType: new FormControl(DeviceType.All, [Validators.required]),
-    notificationType: new FormControl(NotificationType.CommunityMessage, [Validators.required]),
+    localizedTitleInfo: new UntypedFormControl({}, [Validators.required]),
+    localizedMessageInfo: new UntypedFormControl({}, [Validators.required]),
+    dateRange: new UntypedFormControl(this.dateRange, [Validators.required]),
+    deviceType: new UntypedFormControl(DeviceType.All, [Validators.required]),
+    notificationType: new UntypedFormControl(NotificationType.CommunityMessage, [Validators.required]),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public activePermAttribute = PermAttributeName.MessagePlayer;
 

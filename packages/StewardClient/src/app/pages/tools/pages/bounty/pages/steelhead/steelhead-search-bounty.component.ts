@@ -3,7 +3,7 @@ import { GameTitle } from '@models/enums';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import {
   BountySummary,
   SteelheadBountiesService,
@@ -26,11 +26,11 @@ export class SteelheadSearchBountyComponent extends BaseComponent implements OnI
   public columnsToDisplay = ['rivalsInfo', 'bountyInfo', 'actions'];
 
   public formControls = {
-    keyword: new FormControl(''),
-    rivalsEventId: new FormControl(''),
+    keyword: new UntypedFormControl(''),
+    rivalsEventId: new UntypedFormControl(''),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   constructor(private readonly steelheadBountiesService: SteelheadBountiesService) {
     super();

@@ -2,8 +2,8 @@ import { AfterViewInit, Component, forwardRef, Input, OnChanges } from '@angular
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -61,11 +61,11 @@ export class DatetimePickerComponent
   };
 
   public formControls = {
-    date: new FormControl(this.defaults.date),
-    time: new FormControl(this.defaults.time),
+    date: new UntypedFormControl(this.defaults.date),
+    time: new UntypedFormControl(this.defaults.time),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public currentDates = this.mergeDates(this.formGroup.value);
   private readonly onChanges$ = new Subject<DatetimePickerFormValueInternal>();

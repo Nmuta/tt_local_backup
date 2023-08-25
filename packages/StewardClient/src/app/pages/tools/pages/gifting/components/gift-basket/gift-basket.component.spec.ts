@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GiftBasketBaseComponent, GiftBasketModel, GiftReason } from './gift-basket.base.component';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { of, throwError } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
@@ -27,7 +27,7 @@ describe('GiftBasketBaseComponent', () => {
   >;
   let component: GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   let mockBackgroundJobService: BackgroundJobService;
   let mockStore: Store;
@@ -386,7 +386,7 @@ describe('GiftBasketBaseComponent', () => {
       ];
 
       component.sendGiftForm = formBuilder.group({
-        test: new FormControl('', Validators.required),
+        test: new UntypedFormControl('', Validators.required),
       });
 
       component.sendGiftForm.controls['test'].setValue('test value');

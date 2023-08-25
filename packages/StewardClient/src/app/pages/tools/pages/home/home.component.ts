@@ -1,6 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
@@ -83,7 +83,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
   // Bits and bobs used for sorting below
   public readonly separatorKeysCodes = [ENTER, COMMA] as const;
-  public filterControl = new FormControl('');
+  public filterControl = new UntypedFormControl('');
   public titleFilterOptions: Observable<FilterChip[]>;
   public permissionFilterOptions: Observable<FilterChip[]>;
   public preparedTitleFilters: FilterChip[] = [

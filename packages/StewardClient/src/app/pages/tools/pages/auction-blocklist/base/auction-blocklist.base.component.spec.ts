@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GameTitle } from '@models/enums';
@@ -89,13 +89,13 @@ describe('AuctionBlocklistBaseComponent', () => {
       fixture.detectChanges();
 
       expect(component.formArray.length).toEqual(auctionBlocklistEntries.length);
-      expect((component.formArray.controls[0] as FormGroup).controls.carId.value).toEqual(
+      expect((component.formArray.controls[0] as UntypedFormGroup).controls.carId.value).toEqual(
         auctionBlocklistEntries[0].carId,
       );
-      expect((component.formArray.controls[1] as FormGroup).controls.doesExpire.value).toEqual(
+      expect((component.formArray.controls[1] as UntypedFormGroup).controls.doesExpire.value).toEqual(
         auctionBlocklistEntries[1].doesExpire,
       );
-      expect((component.formArray.controls[2] as FormGroup).controls.expireDateUtc.value).toEqual(
+      expect((component.formArray.controls[2] as UntypedFormGroup).controls.expireDateUtc.value).toEqual(
         auctionBlocklistEntries[2].expireDateUtc.toISO(),
       );
     });

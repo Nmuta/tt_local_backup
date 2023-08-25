@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { tryParseBigNumbers } from '@helpers/bignumbers';
 import { Select } from '@ngxs/store';
@@ -36,13 +36,13 @@ export class BulkBanReviewInputComponent extends BaseComponent implements OnInit
   public getEndpoints = new ActionMonitor('Retrieve Endpoint Keys');
 
   public formControls = {
-    woodstockEnvs: new FormControl([]),
-    sunriseEnvs: new FormControl([]),
-    apolloEnvs: new FormControl([]),
-    xuids: new FormControl('', Validators.required),
+    woodstockEnvs: new UntypedFormControl([]),
+    sunriseEnvs: new UntypedFormControl([]),
+    apolloEnvs: new UntypedFormControl([]),
+    xuids: new UntypedFormControl('', Validators.required),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   /** Initialization hook. */
   public ngOnInit(): void {

@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -94,11 +94,11 @@ export class PlayFabBuildsManagementComponent
   public playFabBuildsPermAttribute = PermAttributeName.ManagePlayFabBuildLocks;
 
   public filterFormControls = {
-    nameOrId: new FormControl(null),
-    lockStatus: new FormControl(LockFilterType.All),
+    nameOrId: new UntypedFormControl(null),
+    lockStatus: new UntypedFormControl(LockFilterType.All),
   };
 
-  public filterFormGroup = new FormGroup(this.filterFormControls);
+  public filterFormGroup = new UntypedFormGroup(this.filterFormControls);
 
   public LockFilterType = LockFilterType;
 

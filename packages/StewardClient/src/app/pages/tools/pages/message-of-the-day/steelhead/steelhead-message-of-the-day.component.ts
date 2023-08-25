@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
@@ -42,15 +42,15 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   public locStringActivePrSubject = PullRequestSubject.LocalizationString;
 
   public formControls = {
-    selectedMessageOfTheDay: new FormControl(null, [Validators.required]),
-    localizedTitleHeader: new FormControl({ value: {}, disabled: true }, [Validators.required]),
-    date: new FormControl({}, [Validators.required]),
-    localizedContentHeader: new FormControl({ value: {}, disabled: true }),
-    localizedContentBody: new FormControl({ value: {}, disabled: true }, [Validators.required]),
-    contentImagePath: new FormControl(null, [Validators.required]),
+    selectedMessageOfTheDay: new UntypedFormControl(null, [Validators.required]),
+    localizedTitleHeader: new UntypedFormControl({ value: {}, disabled: true }, [Validators.required]),
+    date: new UntypedFormControl({}, [Validators.required]),
+    localizedContentHeader: new UntypedFormControl({ value: {}, disabled: true }),
+    localizedContentBody: new UntypedFormControl({ value: {}, disabled: true }, [Validators.required]),
+    contentImagePath: new UntypedFormControl(null, [Validators.required]),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public readonly permAttribute = PermAttributeName.UpdateMessageOfTheDay;
   public readonly permAttributeLocString = PermAttributeName.AddLocalizedString;

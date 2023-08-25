@@ -2,8 +2,8 @@ import { AfterViewInit, Component, forwardRef, Input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -77,25 +77,25 @@ export class DatetimeRangePickerComponent
 
   public formControls = {
     dateRange: {
-      start: new FormControl(
+      start: new UntypedFormControl(
         this.defaults.dateRange.start /** Date controls are always required */,
       ),
-      end: new FormControl(this.defaults.dateRange.end /** Date controls are always required */),
+      end: new UntypedFormControl(this.defaults.dateRange.end /** Date controls are always required */),
     },
     timeRange: {
-      start: new FormControl(
+      start: new UntypedFormControl(
         this.defaults.timeRange.start /** Date controls are always required */,
       ),
-      end: new FormControl(this.defaults.timeRange.end /** Date controls are always required */),
+      end: new UntypedFormControl(this.defaults.timeRange.end /** Date controls are always required */),
     },
   };
 
-  public formGroup = new FormGroup({
-    dateRange: new FormGroup({
+  public formGroup = new UntypedFormGroup({
+    dateRange: new UntypedFormGroup({
       start: this.formControls.dateRange.start,
       end: this.formControls.dateRange.end,
     }),
-    timeRange: new FormGroup({
+    timeRange: new UntypedFormGroup({
       start: this.formControls.timeRange.start,
       end: this.formControls.timeRange.end,
     }),

@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, ViewChildren } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseBanArea, SunriseBanRequest, SunriseBanSummary } from '@models/sunrise';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
@@ -29,10 +29,10 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
   public selectedPlayerIdentity: AugmentedCompositeIdentity = null;
 
   public formControls = {
-    banOptions: new FormControl('', [Validators.required]),
+    banOptions: new UntypedFormControl('', [Validators.required]),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     banOptions: this.formControls.banOptions,
   });
 

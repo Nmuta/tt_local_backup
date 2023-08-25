@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { JsonTableResult } from '@models/json-table-result';
 import { KustoQuery } from '@models/kusto/kusto-query';
@@ -15,8 +15,8 @@ import { catchError, takeUntil } from 'rxjs/operators';
 })
 export class KustoComponent extends BaseComponent {
   /** Master Inventory autocomplete varsiables */
-  public kustoQueryForm: FormGroup = this.formBuilder.group({
-    queryInput: new FormControl('', Validators.required),
+  public kustoQueryForm: UntypedFormGroup = this.formBuilder.group({
+    queryInput: new UntypedFormControl('', Validators.required),
   });
 
   public queryResponse: JsonTableResult<unknown>[];
@@ -29,7 +29,7 @@ export class KustoComponent extends BaseComponent {
   public queryResultsCount = 0;
 
   constructor(
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly kustoService: KustoService,
   ) {
     super();

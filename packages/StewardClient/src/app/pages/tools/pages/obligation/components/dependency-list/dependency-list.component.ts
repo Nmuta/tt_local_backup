@@ -5,9 +5,9 @@ import {
   NG_VALIDATORS,
   ControlValueAccessor,
   Validator,
-  FormGroup,
-  FormArray,
-  FormControl,
+  UntypedFormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
@@ -49,17 +49,17 @@ export class DependencyListComponent
 
   @ViewChild('input') private input: ElementRef<HTMLInputElement>;
 
-  public inputFormControl = new FormControl();
+  public inputFormControl = new UntypedFormControl();
   public separatorKeysCodes: number[] = [ENTER, COMMA];
 
   public formControls = [];
 
-  public formArray = new FormArray([]);
+  public formArray = new UntypedFormArray([]);
 
   // NOTE: This is just a container object becuase FormArray must be contained within one.
   // NOTE: Normally, this would be used for the output type output of this would be the output type,
   // NOTE: but in this case, the output type is the FormArray contents.
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     activities: this.formArray,
   });
 
@@ -67,7 +67,7 @@ export class DependencyListComponent
   public dependencyOptions$: Observable<string[]>;
 
   private readonly onChange$ = new Subject<DependencyListOptions>();
-  private readonly formArray$ = new Subject<FormArray>();
+  private readonly formArray$ = new Subject<UntypedFormArray>();
 
   constructor(private readonly activePipeline: ActivePipelineService) {
     super();
@@ -171,14 +171,14 @@ export class DependencyListComponent
   /** Overrides the list when a new list is created. */
   private overrideList(options: DependencyListOptions): void {
     this.formControls = options.map(v => this.valueToFormControl(v));
-    this.formArray = new FormArray(this.formControls);
-    this.formGroup = new FormGroup({ activities: this.formArray });
+    this.formArray = new UntypedFormArray(this.formControls);
+    this.formGroup = new UntypedFormGroup({ activities: this.formArray });
     this.formArray$.next(this.formArray);
   }
 
   /** Hook for adding standardized validators to each form control. */
-  private valueToFormControl(v: string): FormControl {
-    return new FormControl(v, [
+  private valueToFormControl(v: string): UntypedFormControl {
+    return new UntypedFormControl(v, [
       StringValidators.existsInList(() => this.activePipeline.activityNames),
       StringValidators.trim,
     ]);
