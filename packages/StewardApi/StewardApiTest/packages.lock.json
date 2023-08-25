@@ -1493,6 +1493,14 @@
         "resolved": "4.4.0",
         "contentHash": "YhEdSQUsTx+C8m8Bw7ar5/VesXvCFMItyZF7G1AUY+OM0VPZUOeAVpJ4Wl6fydBGUYZxojTDR3I6Bj/+BPkJNA=="
       },
+      "SteelheadContent": {
+        "type": "Transitive",
+        "resolved": "1.7.37",
+        "contentHash": "NbfJO+i3cHiUhcHgLBBzIx9FJcOoIyKYmgwz+/UndMIoN9e0tW5ZQatwu9DATlJ/+X4qfRcOHKEkjDf7UZ3edQ==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1"
+        }
+      },
       "SteelheadLiveOpsContent": {
         "type": "Transitive",
         "resolved": "1.7.26",
@@ -3121,6 +3129,7 @@
           "Microsoft.OpenApi": "[1.2.3, )",
           "Newtonsoft.Json": "[13.0.1, )",
           "PlayFabAllSDK": "[1.144.230123, )",
+          "SteelheadContent": "[1.7.37, )",
           "SteelheadLiveOpsContent": "[1.7.26, )",
           "StewardGitApi": "[1.0.0, )",
           "Swashbuckle.AspNetCore": "[6.4.0, )",

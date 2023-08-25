@@ -3,6 +3,8 @@ import { GuidLikeString } from '@models/extended-types';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
+import { RivalsEvent } from '../rivals/steelhead-rivals.service';
+import { DateTime } from 'luxon';
 
 /** Interface that represents a bounty summary. */
 export interface BountySummary {
@@ -12,7 +14,22 @@ export interface BountySummary {
   rivalsEventId: BigNumber;
   rivalsEventTitle: string;
   rivalsEventDescription: string;
-  target: string;
+  target: BigNumber;
+}
+
+/** Interface that represents a bounty. */
+export interface BountyDetail {
+  rivalsEvent: RivalsEvent;
+  messageTitle: string;
+  messageDescription: string;
+  endTime: DateTime;
+  target: BigNumber;
+  userGroupId: BigNumber;
+  playerRewardedCount: BigNumber;
+  trackId: BigNumber;
+  positionThreshold: BigNumber;
+  timeThreshold: BigNumber;
+  rewards: string[];
 }
 
 /** The /v2/title/steelhead/bounties endpoints. */
@@ -26,5 +43,10 @@ export class SteelheadBountiesService {
   /** Gets the bounty summaries. */
   public getBountySummaries$(): Observable<BountySummary[]> {
     return this.api.getRequest$<BountySummary[]>(`${this.basePath}/summaries`);
+  }
+
+  /** Gets the bounty detail. */
+  public getBountyDetail$(bountyId: string): Observable<BountyDetail> {
+    return this.api.getRequest$<BountyDetail>(`${this.basePath}/detail/${bountyId}`);
   }
 }

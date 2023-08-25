@@ -71,7 +71,11 @@
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let entry"></td>
+          <td mat-cell *matCellDef="let entry">
+            <a mat-stroked-button color="primary" clickStop [routerLink]="entry.bountyDetailsLink">
+              <span>View Details</span>
+            </a>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

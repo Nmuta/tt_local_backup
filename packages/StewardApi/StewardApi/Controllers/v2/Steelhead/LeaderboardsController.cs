@@ -200,7 +200,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             leaderboardTalent = await this.Services.UserManagementService.GetUserGroupUsers(LeaderboardTalentGroupId, 0, LeaderboardTalentMaxResults).ConfigureAwait(true);
 
-            var convertedQueries = this.mapper.SafeMap<ForzaPlayerLookupParameters[]>(leaderboardTalent.xuids);
+            var convertedQueries = leaderboardTalent.xuids.Select(x => new ForzaPlayerLookupParameters()
+            {
+                UserID = x.ToString(),
+                UserIDType = ForzaUserIdType.Xuid,
+            }).ToArray();
 
             result = await this.Services.UserManagementService.GetUserIds(convertedQueries.Length, convertedQueries).ConfigureAwait(true);
 

@@ -294,8 +294,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync()
+        public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync(string pegasusEnvironment = null)
         {
+            pegasusEnvironment ??= this.cmsEnvironment;
+
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
@@ -304,6 +306,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     slot: "daily").ConfigureAwait(false);
 
             var rivalsEvents = this.mapper.SafeMap<IEnumerable<LiveOpsContracts.RivalsEvent>>(pegasusRivalEvents);
+
+            var tracks = await this.GetTracksAsync(pegasusEnvironment).ConfigureAwait(false);
+
+            foreach (var rivalsEvent in rivalsEvents)
+            {
+                var trackData = tracks.FirstOrDefault(track => track.id == rivalsEvent.TrackId);
+                rivalsEvent.TrackName = trackData != null ? $"{trackData.MediaName} - {trackData.DisplayName}" : string.Empty;
+            }
 
             return rivalsEvents;
         }

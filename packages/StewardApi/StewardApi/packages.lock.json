@@ -354,6 +354,15 @@
           "Polly": "7.2.3"
         }
       },
+      "SteelheadContent": {
+        "type": "Direct",
+        "requested": "[1.7.37, )",
+        "resolved": "1.7.37",
+        "contentHash": "NbfJO+i3cHiUhcHgLBBzIx9FJcOoIyKYmgwz+/UndMIoN9e0tW5ZQatwu9DATlJ/+X4qfRcOHKEkjDf7UZ3edQ==",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1"
+        }
+      },
       "SteelheadLiveOpsContent": {
         "type": "Direct",
         "requested": "[1.7.26, )",

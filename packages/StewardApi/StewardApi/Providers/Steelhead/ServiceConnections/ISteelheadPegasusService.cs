@@ -251,7 +251,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets Rivals Events.
         /// </summary>
-        Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync();
+        Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync(string pegasusEnvironment = null);
 
         /// <summary>
         ///     Gets Rivals Events Reference.

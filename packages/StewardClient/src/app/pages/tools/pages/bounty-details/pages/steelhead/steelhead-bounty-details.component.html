@@ -1,0 +1,112 @@
+<mat-card>
+  <mat-card-content *ngIf="bountyId; else noBountySpecified">
+    <ng-container *waitForMonitor="getMonitor">
+      <div class="card-content">
+        <mat-card *ngIf="bountyDetails.rivalsEvent; else noRivalsEvent">
+          <mat-card-header>
+            <mat-card-title>Rivals Event Details</mat-card-title>
+          </mat-card-header>
+          <table class="info-table">
+            <tr>
+              <th>Name</th>
+              <td>{{ bountyDetails.rivalsEvent.name }}</td>
+            </tr>
+            <tr>
+              <th>Description</th>
+              <td>{{ bountyDetails.rivalsEvent.description }}</td>
+            </tr>
+            <tr>
+              <th>Category</th>
+              <td>{{ bountyDetails.rivalsEvent.category }}</td>
+            </tr>
+            <tr>
+              <th>Start Time</th>
+              <td>{{ bountyDetails.rivalsEvent.startTime | utcDate: 'short' }}</td>
+            </tr>
+            <tr>
+              <th>End Time</th>
+              <td>{{ bountyDetails.rivalsEvent.endTime | utcDate: 'short' }}</td>
+            </tr>
+            <tr>
+              <th>Score Type</th>
+              <td>{{ bountyDetails.rivalsEvent.scoreType }}</td>
+            </tr>
+            <tr>
+              <th>Track Name</th>
+              <td>{{ bountyDetails.rivalsEvent.trackName }}</td>
+            </tr>
+            <tr>
+              <th>Car Restrictions</th>
+              <td>
+                <div *ngFor="let carRestriction of bountyDetails.rivalsEvent.carRestrictions">
+                  {{ carRestriction }}
+                </div>
+              </td>
+            </tr>
+          </table>
+        </mat-card>
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Bounty Details</mat-card-title>
+          </mat-card-header>
+          <table class="info-table">
+            <tr>
+              <th>Target</th>
+              <td>
+                {{
+                  bountyDetails.target.isGreaterThan(100)
+                    ? bountyDetails.target
+                    : bountyDetails.target + '%'
+                }}
+              </td>
+            </tr>
+            <tr>
+              <th>Position Threshold</th>
+              <td>{{ bountyDetails.positionThreshold }}</td>
+            </tr>
+            <tr>
+              <th>Score Threshold</th>
+              <td>{{ bountyDetails.timeThreshold.toNumber() | number: '1.2-2' }} seconds</td>
+            </tr>
+            <tr>
+              <th>Message Title</th>
+              <td>{{ bountyDetails.messageTitle }}</td>
+            </tr>
+            <tr>
+              <th>Message Description</th>
+              <td>{{ bountyDetails.messageDescription }}</td>
+            </tr>
+            <tr>
+              <th>End Time</th>
+              <td>{{ bountyDetails.endTime | utcDate: 'short' }}</td>
+            </tr>
+            <tr>
+              <th>Players rewarded</th>
+              <td>{{ bountyDetails.playerRewardedCount }}</td>
+            </tr>
+            <tr>
+              <th>User group</th>
+              <td>
+                {{ bountyDetails.userGroupId }}
+              </td>
+            </tr>
+            <tr>
+              <th>Bounty Rewards</th>
+              <td>
+                <div *ngFor="let reward of bountyDetails.rewards">{{ reward }}</div>
+              </td>
+            </tr>
+          </table>
+        </mat-card>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #noRivalsEvent>
+  <p>No rivals event was found.</p>
+</ng-template>
+
+<ng-template #noBountySpecified>
+  <p>No bounty was specified. A bounty can be selected through the bounty search tool.</p>
+</ng-template>

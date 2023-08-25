@@ -1,0 +1,41 @@
+@import '/src/styles/mixins';
+
+@include flex-navbar-fill;
+
+.card-content {
+  display: flex;
+  flex-flow: row wrap;
+  & > * {
+    flex-grow: 1;
+  }
+}
+
+table {
+  width: 100%;
+
+  td.mat-cell {
+    padding-top: $gap-medium;
+    padding-bottom: $gap-medium;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    li {
+      list-style: none;
+    }
+  }
+}
+
+mat-card {
+  margin: 1em;
+  & > *:not(table):not(mat-card-header) {
+    display: block;
+    &:not(:first-child) {
+      margin-top: 1em;
+    }
+    &:not(:last-child) {
+      margin-bottom: 1em;
+    }
+  }
+}

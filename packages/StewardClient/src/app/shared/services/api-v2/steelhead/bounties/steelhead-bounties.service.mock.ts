@@ -5,6 +5,7 @@ import { SteelheadBountiesService } from './steelhead-bounties.service';
 /** Defines the mock for the API Service. */
 export class MockSteelheadBountiesService {
   public getBountySummaries$ = jasmine.createSpy('getBountySummaries').and.returnValue(of());
+  public getBountyDetail$ = jasmine.createSpy('getBountyDetail').and.returnValue(of());
 
   constructor(private readonly generator$: () => unknown) {}
 }
