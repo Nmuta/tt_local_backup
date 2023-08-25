@@ -8,6 +8,7 @@ import { SidebarIconsComponent } from './sidebar-icons.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 /** Module for a menu drop with links to all Steward apps. */
 @NgModule({
@@ -21,6 +22,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatBadgeModule,
     MatIconModule,
     MatMenuModule,
+    TourMatMenuModule, // loaded to ensure tours run properly
   ],
   exports: [SidebarIconsComponent],
 })

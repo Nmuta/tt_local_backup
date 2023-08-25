@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatOptionSelectionChange } from '@angular/material/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import {
@@ -18,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 export class ProductPricingComponent extends BaseComponent implements OnInit {
   public products: Map<string, string>;
   public productPrices = new BetterMatTableDataSource<BigCatProductPrice>([]);
+  public productName: string;
 
   public getProductsMoniter: ActionMonitor = new ActionMonitor('GET Product IDs');
   public getProductPriceMonitor: ActionMonitor = new ActionMonitor('GET Product Price');
@@ -46,19 +46,16 @@ export class ProductPricingComponent extends BaseComponent implements OnInit {
   }
 
   /** Lookup product price catalog and fill in table */
-  productSelectionChanged(event: MatOptionSelectionChange) {
-    if (!event.isUserInput) {
-      return;
-    }
-
-    const productId = event.source.value;
+  lookupProductId() {
+    const productId = this.formControls.productId.value;
 
     this.getProductPriceMonitor = this.getProductPriceMonitor.repeat();
     this.priceService
       .getPricingByProductId$(productId)
       .pipe(this.getProductPriceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(priceCatalog => {
-        this.productPrices.data = priceCatalog;
+      .subscribe(productInfo => {
+        this.productPrices.data = productInfo.prices;
+        this.productName = productInfo.name;
       });
   }
 }

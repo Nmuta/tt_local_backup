@@ -20,6 +20,7 @@ export enum NavbarTool {
   Pegasus = 'pegasus',
   WelcomeCenterCalendar = 'welcome-center-calendar',
   PlayFab = 'playfab',
+  SearchBounty = 'search-bounty',
 
   AdminPagesSelector = 'admin-selector',
 

@@ -32,6 +32,8 @@ import { UserState } from '@shared/state/user/user.state';
 import { cloneDeep, intersection } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { UserTourService } from './tour/tour.service';
 
 /** Types of filters to use on home page. */
 export enum FilterType {
@@ -56,7 +58,7 @@ type FilteredTiles = {
 @Component({
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [GameTitleAbbreviationPipe],
+  providers: [GameTitleAbbreviationPipe, TourMatMenuModule], // tour module loaded to ensure tours run without errors
 })
 export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
@@ -107,6 +109,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly permAttributesService: PermAttributesService,
+    private readonly userTourService: UserTourService, // loaded here so tours will run without errors
   ) {
     super();
     this.titleFilterOptions = of(this.preparedTitleFilters.slice());
@@ -173,6 +176,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       this.isEnabled = v.navbarTools || {};
       this.isEnabled = cloneDeep(this.isEnabled); // have to clone it to make it editable
     });
+
+    this.userTourService.startHomeTour();
   }
 
   /** Remove all filters for tiles. */

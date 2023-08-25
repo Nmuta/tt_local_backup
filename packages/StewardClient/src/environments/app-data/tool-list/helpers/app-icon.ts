@@ -40,6 +40,7 @@ export enum AppIcon {
   AcLogReader = 'document_scanner',
   ProductPricing = 'sell',
   LspTasks = 'terminal',
+  Bounty = 'attach_money',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
