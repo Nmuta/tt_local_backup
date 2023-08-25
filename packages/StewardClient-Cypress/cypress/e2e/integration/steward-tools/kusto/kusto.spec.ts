@@ -19,7 +19,6 @@ context('Steward / Support / Kusto', withTags(Tag.UnitTestStyle), () => {
     cy.get('button').contains('span', 'Run Query').parents('button').click();
     waitForProgressSpinners();
     cy.get('[aria-label="Download Kusto results"]').should('exist');
-    //cy.get('mat-row').contains('mat-cell', '2533274837999097').should('exist');
   });
 
   it('should type a Kusto Query and run it', () => {
@@ -38,22 +37,10 @@ context('Steward / Support / Kusto', withTags(Tag.UnitTestStyle), () => {
     cy.get('mat-row').contains('mat-cell', '2533274837999097').should('exist');
   });
 
-  // it('should clear a query', withTags(Tag.Broken), () => {
-  //   cy.get('mat-form-field')
-  //     .contains('span', 'Search for a Kusto query')
-  //     .parents('mat-form-field')
-  //     .click();
-  //   cy.get('mat-option').contains('span', 'Get Car Owners (W)').click();
-  //   cy.get('button').contains('span', 'Use Kusto Query').click();
-  //   cy.get('button').contains('span', 'Clear Input').click();
-  //   cy.get('[disabled="true"]').contains('span', 'Run Query').should('exist');
-  // });
-
   it('should fail to search for an invalid query', () => {
     cy.get('mat-form-field')
       .contains('span', 'Query')
       .parents('mat-form-field')
-      .click()
       .type('This is a query');
     cy.get('button').contains('span', 'Run Query').parents('button').click();
     waitForProgressSpinners();
