@@ -1,15 +1,14 @@
-import { login } from '@support/steward/auth/login';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Message of the Day / Steelhead', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+context('Steward / Tools / Message of the Day / Steelhead', () => {
+  before(() => {
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.messageOfTheDay.steelhead);
+    waitForProgressSpinners();
   });
 
   context('MotD', () => {
@@ -57,25 +56,26 @@ context('Steward / Tools / Message of the Day / Steelhead', withTags(Tag.UnitTes
     it('should adjust language', () => {
       enableEdit();
       cy.contains('div', 'pl-PL').click();
-      cy.contains('textarea', 'Pozdrowienia dla centrum powitalnego').should('exist');
+      cy.contains('textarea', 'Testowy string').should('exist');
     });
 
     it('should show and hide Help Card', () => {
       cy.contains('mat-icon', 'help').click();
       cy.contains('mat-card-title', 'Verify Button').should('exist');
-      cy.contains('span', 'Hide Verify Help Icon').click();
+      clickTopLeftOfBody();
       cy.contains('mat-card-title', 'Verify Button').should('not.exist');
     });
 
     it('should not allow a MotD modification with incomplete fields', withTags(Tag.Broken), () => {
-      enableEdit();
       cy.get('mat-form-field')
         .contains('mat-label', 'Content Image Path')
         .parents('mat-form-field')
-        .click()
-        .clear();
+        .type('{selectAll}{backspace}');
       cy.get('button').contains('mat-icon', 'lock_open').click();
-      cy.get('button').contains('span', 'Submit Modification').parent().get('[disabled="true"]');
+      cy.contains('button', 'Submit Modification', { matchCase: false }).should(
+        'have.class',
+        'mat-button-disabled',
+      );
     });
   });
 
@@ -85,12 +85,10 @@ context('Steward / Tools / Message of the Day / Steelhead', withTags(Tag.UnitTes
       cy.get('mat-form-field')
         .contains('mat-label', 'String To Localize')
         .parents('mat-form-field')
-        .click()
         .type('This is a test');
       cy.get('mat-form-field')
         .contains('mat-label', 'Description')
         .parents('mat-form-field')
-        .click()
         .type('This is a description');
       cy.get('mat-form-field').contains('mat-label', 'Category').parents('mat-form-field').click();
       cy.get('mat-option').contains('span', 'MOTD').click();
