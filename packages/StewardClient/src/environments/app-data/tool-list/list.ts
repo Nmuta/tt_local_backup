@@ -35,6 +35,7 @@ import {
   productPricingTile,
   playFabTile,
   lspTasksTile,
+  bountySearchTile,
 } from './tiles';
 
 /** The unprocessed tool list. Use @see environment.tools instead. */
@@ -55,6 +56,8 @@ export const unprocessedToolList: HomeTileInfo[] = [
   auctionCreateTile,
 
   carDetailsTile,
+
+  bountySearchTile,
 
   motdTile,
   messagingTile,

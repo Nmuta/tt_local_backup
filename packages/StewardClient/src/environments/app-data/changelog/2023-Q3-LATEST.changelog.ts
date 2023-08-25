@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
+      uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
+      shortText: 'Add new tool to search rivals bounties',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'f5a5ea45-1ea4-4a36-aed7-55140bc0aada',
       shortText: 'Automatically select Staging API when using Staging UI',
