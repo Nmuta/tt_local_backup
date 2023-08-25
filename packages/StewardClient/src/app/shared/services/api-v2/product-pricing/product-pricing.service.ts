@@ -3,6 +3,7 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
+/** Price information as sourced from Big Catalog. */
 export interface BigCatProductPrice {
   currencyCode: string;
   wholesaleCurrencyCode: string;
@@ -10,6 +11,12 @@ export interface BigCatProductPrice {
   wholesalePrice: BigNumber;
   msrp: BigNumber;
   isPiRequired: boolean;
+}
+
+/** Product information as sourced from Big Catalog. */
+export interface BigCatProductInfo {
+  name: string;
+  prices: BigCatProductPrice[];
 }
 
 /** The /v2/pricing endpoints. */
@@ -27,7 +34,7 @@ export class ProductPricingService {
   }
 
   /** Sends feature request to Steward's MS Teams help channel. */
-  public getPricingByProductId$(productId: string): Observable<BigCatProductPrice[]> {
-    return this.api.getRequest$<BigCatProductPrice[]>(`${this.basePath}/${productId}`);
+  public getPricingByProductId$(productId: string): Observable<BigCatProductInfo> {
+    return this.api.getRequest$<BigCatProductInfo>(`${this.basePath}/${productId}`);
   }
 }

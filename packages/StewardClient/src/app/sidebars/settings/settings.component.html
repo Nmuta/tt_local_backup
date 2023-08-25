@@ -12,16 +12,6 @@
     >
 
     <mat-slide-toggle
-      *ngIf="showStagingApiToggle"
-      [(ngModel)]="enableStagingApi"
-      (ngModelChange)="syncStagingApiSettings()"
-      matTooltip="The Staging API enabled requests to be sent to the API service on the staging slot."
-      matTooltipPosition="after"
-    >
-      Staging API</mat-slide-toggle
-    >
-
-    <mat-slide-toggle
       [(ngModel)]="showVerifyCheckboxPopup"
       (ngModelChange)="setShowVerifyCheckboxPopup()"
     >
