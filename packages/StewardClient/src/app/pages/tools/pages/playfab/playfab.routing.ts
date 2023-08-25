@@ -3,11 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { RouteMemoryRedirectGuard } from 'app/route-guards/route-memory/route-memory-redirect.guard';
 import { RouteMemorySetGuard } from 'app/route-guards/route-memory/route-memory-set.guard';
 import { WoodstockPlayFabBuildsManagementComponent } from './components/playfab-builds-management/woodstock/woodstock-playfab-builds-management.component';
-import { PlayFabSettingsComponent } from './components/playfab-settings/playfab-settings.component';
 import { PlayFabComponent } from './playfab.component';
 import { WoodstockPlayFabComponent } from './woodstock/woodstock-playfab.component';
 import { FortePlayFabComponent } from './forte/forte-playfab.component';
 import { FortePlayFabBuildsManagementComponent } from './components/playfab-builds-management/forte/forte-playfab-builds-management.component';
+import { FortePlayFabSettingsComponent } from './components/playfab-settings/forte/forte-playfab-settings.component';
+import { WoodstockPlayFabSettingsComponent } from './components/playfab-settings/woodstock/woodstock-playfab-settings.component';
 
 const routes: Routes = [
   {
@@ -39,7 +40,7 @@ const routes: Routes = [
           {
             path: 'settings',
             canActivate: [RouteMemorySetGuard],
-            component: PlayFabSettingsComponent,
+            component: WoodstockPlayFabSettingsComponent,
             pathMatch: 'full',
           },
         ],
@@ -63,7 +64,7 @@ const routes: Routes = [
           {
             path: 'settings',
             canActivate: [RouteMemorySetGuard],
-            component: PlayFabSettingsComponent,
+            component: FortePlayFabSettingsComponent,
             pathMatch: 'full',
           },
         ],

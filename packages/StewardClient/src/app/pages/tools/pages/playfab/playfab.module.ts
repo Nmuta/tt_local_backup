@@ -37,6 +37,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { PlayFabSettingsComponent } from './components/playfab-settings/playfab-settings.component';
 import { FortePlayFabBuildsManagementComponent } from './components/playfab-builds-management/forte/forte-playfab-builds-management.component';
 import { FortePlayFabComponent } from './forte/forte-playfab.component';
+import { FortePlayFabSettingsComponent } from './components/playfab-settings/forte/forte-playfab-settings.component';
+import { WoodstockPlayFabSettingsComponent } from './components/playfab-settings/woodstock/woodstock-playfab-settings.component';
 
 /** Module for the PlayFab tool. */
 @NgModule({
@@ -49,6 +51,8 @@ import { FortePlayFabComponent } from './forte/forte-playfab.component';
     FortePlayFabBuildsManagementComponent,
     BuildLockChangeDialogComponent,
     PlayFabSettingsComponent,
+    WoodstockPlayFabSettingsComponent,
+    FortePlayFabSettingsComponent,
   ],
   imports: [
     PlayFabRoutingModule,

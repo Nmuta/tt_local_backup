@@ -5,5 +5,6 @@ export interface ToolsAvailability {
 
 /** Interface for Steward PlayFab settings. */
 export interface PlayFabSettings {
-  maxBuildLocks: number;
+  woodstockMaxBuildLocks: number;
+  forteMaxBuildLocks: number;
 }

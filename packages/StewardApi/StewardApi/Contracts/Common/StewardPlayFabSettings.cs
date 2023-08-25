@@ -6,8 +6,13 @@
     public sealed class StewardPlayFabSettings
     {
         /// <summary>
-        ///     Gets or sets the maximum number of allowed build locks.
+        ///     Gets or sets the maximum number of allowed build locks for Woodstock.
         /// </summary>
-        public int MaxBuildLocks { get; set; }
+        public int WoodstockMaxBuildLocks { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the maximum number of allowed build locks for Forte.
+        /// </summary>
+        public int ForteMaxBuildLocks { get; set; }
     }
 }

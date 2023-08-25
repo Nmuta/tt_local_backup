@@ -17,7 +17,7 @@ export class FortePlayFabBuildsManagementComponent {
 
   constructor(fortePlayFabBuildsService: FortePlayFabBuildsService) {
     this.service = {
-      gameTitle: GameTitle.FH5,
+      gameTitle: GameTitle.Forte,
       getPlayFabBuilds$(): Observable<PlayFabBuildSummary[]> {
         return fortePlayFabBuildsService.getBuilds$();
       },

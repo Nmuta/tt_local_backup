@@ -150,9 +150,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Forte.PlayFab
 
             // Verify that the new build lock will not break configured max # of allowed locks
             var expectedBuildLockCount = activeBuildLocks.Count + 1;
-            if (expectedBuildLockCount > playFabSettings.MaxBuildLocks)
+            if (expectedBuildLockCount > playFabSettings.ForteMaxBuildLocks)
             {
-                throw new BadRequestStewardException($"Maximum number of build locks has already been met. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId}) (activeBuildLockCount: ${activeBuildLocks.Count}) (activeBuildLockCount: ${playFabSettings.MaxBuildLocks})");
+                throw new BadRequestStewardException($"Maximum number of build locks has already been met. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId}) (activeBuildLockCount: ${activeBuildLocks.Count}) (activeBuildLockCount: ${playFabSettings.ForteMaxBuildLocks})");
             }
 
             try
