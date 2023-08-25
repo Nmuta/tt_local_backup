@@ -13,6 +13,9 @@ import {
   EndpointKeyMemoryState,
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { TourState } from '@shared/state/tours/tours.state';
+import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -25,7 +28,9 @@ describe('SettingsComponent', () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadata({
         declarations: [SettingsComponent],
-        ngxsModules: [EndpointKeyMemoryState],
+        ngxsModules: [EndpointKeyMemoryState, TourState],
+        imports: [TourMatMenuModule.forRoot()],
+        providers: [createMockUserTourService()],
       }),
     ).compileComponents();
 

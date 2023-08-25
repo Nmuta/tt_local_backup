@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 
 import { AvailableAppsComponent } from './available-apps.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 describe('AvailableAppsComponent', () => {
   let component: AvailableAppsComponent;
@@ -16,7 +17,10 @@ describe('AvailableAppsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
-      createStandardTestModuleMetadata({ declarations: [AvailableAppsComponent] }),
+      createStandardTestModuleMetadata({
+        declarations: [AvailableAppsComponent],
+        imports: [TourMatMenuModule],
+      }),
     ).compileComponents();
 
     fixture = TestBed.createComponent(AvailableAppsComponent);

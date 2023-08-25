@@ -1,0 +1,15 @@
+// add to the element to be highlighted
+.tour-element-highlighted {
+  position: relative;
+}
+
+// adds extra space around the highlighted element
+// can only be added to an element with NO CONTENT
+.tour-highlight-buffer {
+  $wrap-margin: 0.25em;
+  position: absolute;
+  top: -$wrap-margin;
+  left: -$wrap-margin;
+  right: -$wrap-margin;
+  bottom: -$wrap-margin;
+}

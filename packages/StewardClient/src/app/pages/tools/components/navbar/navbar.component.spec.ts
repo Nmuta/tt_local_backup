@@ -10,6 +10,8 @@ import { BackgroundJob } from '@models/background-job';
 
 import { NavbarComponent } from './navbar.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 
 describe('ToolsNavbarComponent', () => {
   let component: NavbarComponent;
@@ -20,7 +22,11 @@ describe('ToolsNavbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
-      createStandardTestModuleMetadata({ declarations: [NavbarComponent] }),
+      createStandardTestModuleMetadata({
+        declarations: [NavbarComponent],
+        imports: [TourMatMenuModule.forRoot()],
+        providers: [createMockUserTourService()],
+      }),
     ).compileComponents();
 
     fixture = TestBed.createComponent(NavbarComponent);
