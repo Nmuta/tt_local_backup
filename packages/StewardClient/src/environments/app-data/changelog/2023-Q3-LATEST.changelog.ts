@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
       uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
-      shortText: 'Add new component to search rivals bounties',
+      shortText: 'Add new tool to search rivals bounties',
     },
     {
       tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionBlocklist },

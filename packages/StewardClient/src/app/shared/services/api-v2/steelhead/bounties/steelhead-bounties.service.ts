@@ -20,11 +20,11 @@ export interface BountySummary {
   providedIn: 'root',
 })
 export class SteelheadBountiesService {
-  public readonly basePath: string = 'title/steelhead/bounties';
+  public readonly basePath: string = 'title/steelhead/bounty';
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the bounty summaries. */
   public getBountySummaries$(): Observable<BountySummary[]> {
-    return this.api.getRequest$<BountySummary[]>(`${this.basePath}/bountySummaries`);
+    return this.api.getRequest$<BountySummary[]>(`${this.basePath}/summaries`);
   }
 }

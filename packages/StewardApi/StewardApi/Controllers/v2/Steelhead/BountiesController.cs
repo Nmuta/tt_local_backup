@@ -18,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     /// <summary>
     ///     Handles requests for Steelhead bounties.
     /// </summary>
-    [Route("api/v{version:apiVersion}/title/steelhead/bounties")]
+    [Route("api/v{version:apiVersion}/title/steelhead/bounty")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [ApiController]
     [AuthorizeRoles(
@@ -32,9 +32,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         private readonly ISteelheadPegasusService pegasusService;
         private readonly IMapper mapper;
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="BountiesController"/> class.
-        /// </summary>
         public BountiesController(ISteelheadPegasusService pegasusService, IMapper mapper)
         {
             pegasusService.ShouldNotBeNull(nameof(pegasusService));
@@ -47,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets bounty summaries.
         /// </summary>
-        [HttpGet("bountySummaries")]
+        [HttpGet("summaries")]
         [SwaggerResponse(200, type: typeof(IEnumerable<SteelheadBountySummary>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]

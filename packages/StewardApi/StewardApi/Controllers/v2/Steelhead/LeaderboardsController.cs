@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     {
         private const int DefaultMaxResults = 100;
         private const int LeaderboardTalentMaxResults = 500;
-        private const int LeaderboardTalentGroupId = 29; // This is currently pointing at Studio user group Live Ops Devs. We will need to replace this with actual prod usergroup once we have a prod LSP
+        private const int LeaderboardTalentGroupId = 23; // This is currently pointing at Studio user group Live Ops Devs. We will need to replace this with actual prod usergroup once we have a prod LSP
 
         private readonly ISteelheadPegasusService pegasusService;
         private readonly ILoggingService loggingService;

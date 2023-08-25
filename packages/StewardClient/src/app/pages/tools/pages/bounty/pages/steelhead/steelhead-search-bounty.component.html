@@ -24,32 +24,48 @@
         <ng-container matColumnDef="rivalsInfo">
           <th mat-header-cell *matHeaderCellDef>Rivals Info</th>
           <td mat-cell *matCellDef="let entry">
-            <ul>
-              <li><b>Id:</b> {{ entry.rivalsEventId }}</li>
-              <li>
-                <b>Name:</b>
-                {{ entry.rivalsEventTitle ? entry.rivalsEventTitle : 'Rivals Event Not Found' }}
-              </li>
-              <li>
-                <b>Description:</b>
-                {{
-                  entry.rivalsEventDescription
-                    ? entry.rivalsEventDescription
-                    : 'Rivals Event Not Found'
-                }}
-              </li>
-            </ul>
+            <table class="info-table">
+              <tr>
+                <th>Id:</th>
+                <td>{{ entry.rivalsEventId }}</td>
+              </tr>
+              <tr>
+                <th>Name:</th>
+                <td>
+                  {{ entry.rivalsEventTitle ? entry.rivalsEventTitle : 'Rivals Event Not Found' }}
+                </td>
+              </tr>
+              <tr>
+                <th>Description:</th>
+                <td>
+                  {{
+                    entry.rivalsEventDescription
+                      ? entry.rivalsEventDescription
+                      : 'Rivals Event Not Found'
+                  }}
+                </td>
+              </tr>
+            </table>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="bountyInfo">
           <th mat-header-cell *matHeaderCellDef>Bounty Info</th>
           <td mat-cell *matCellDef="let entry">
-            <ul>
-              <li><b>Target:</b> {{ entry.target > 100 ? entry.target : entry.target + '%' }}</li>
-              <li><b>Message Title:</b> {{ entry.messageTitle }}</li>
-              <li><b>Message Description:</b> {{ entry.messageDescription }}</li>
-            </ul>
+            <table class="info-table">
+              <tr>
+                <th>Target:</th>
+                <td>{{ entry.target > 100 ? entry.target : entry.target + '%' }}</td>
+              </tr>
+              <tr>
+                <th>Message Title:</th>
+                <td>{{ entry.messageTitle }}</td>
+              </tr>
+              <tr>
+                <th>Message Description:</th>
+                <td>{{ entry.messageDescription }}</td>
+              </tr>
+            </table>
           </td>
         </ng-container>
 
