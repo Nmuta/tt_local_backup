@@ -1,15 +1,14 @@
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
-import { withTags, Tag } from '@support/tags';
 
-context('Steward / Support / Kusto', withTags(Tag.UnitTestStyle), () => {
+context('Steward / Support / Kusto', () => {
   before(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.kusto);
   });
 
-  it('should search for a Kusto Query and run it', withTags(Tag.Broken), () => {
+  it('should search for a Kusto Query and run it', () => {
     cy.get('mat-form-field')
       .contains('span', 'Search for a Kusto query')
       .parents('mat-form-field')
