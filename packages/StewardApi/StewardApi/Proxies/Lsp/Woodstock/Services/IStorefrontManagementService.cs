@@ -57,5 +57,8 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 
         /// <summary>Updates Title and Description of a UGC item.</summary>
         Task SetTitleAndDescription(Guid id, string newTitle, string newDescription);
+
+        /// <summary>Hide or Unhide UGC by id.</summary>
+        Task HideUGC(Guid fileId, bool shouldHide);
     }
 }

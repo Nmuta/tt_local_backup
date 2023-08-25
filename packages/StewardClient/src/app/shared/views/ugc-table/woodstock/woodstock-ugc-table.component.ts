@@ -10,7 +10,6 @@ import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { WoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service';
 import {
   BulkGenerateSharecodeResponse,
   WoodstockUgcSharecodeService,
@@ -19,6 +18,7 @@ import {
   BulkReportUgcResponse,
   WoodstockUgcReportService,
 } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
+import { WoodstockUgcHideStatusService } from '@services/api-v2/woodstock/ugc/hide-status/woodstock-ugc-hide-status.service';
 
 /** Displays woodstock UGC content in a table. */
 @Component({
@@ -33,7 +33,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
     private readonly woodstockService: WoodstockService,
     private readonly woodstockUgcLookupService: WoodstockUgcLookupService,
     private readonly woodstockUgcReportService: WoodstockUgcReportService,
-    private readonly woodstockUgcVisibilityService: WoodstockUgcVisibilityService,
+    private readonly woodstockUgcHideStatusService: WoodstockUgcHideStatusService,
     private readonly woodstockUgcSharecodeService: WoodstockUgcSharecodeService,
     private readonly backgroundJobService: BackgroundJobService,
     snackbar: MatSnackBar,
@@ -68,7 +68,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Hide multiple Ugcs. */
   public hideUgc(ugcIds: string[]): Observable<string[]> {
-    return this.woodstockUgcVisibilityService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+    return this.woodstockUgcHideStatusService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
       }),
@@ -77,7 +77,7 @@ export class WoodstockUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Unhide multiple Ugcs. */
   public unhideUgc(ugcIds: string[]): Observable<string[]> {
-    return this.woodstockUgcVisibilityService.unhideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+    return this.woodstockUgcHideStatusService.unhideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
       }),

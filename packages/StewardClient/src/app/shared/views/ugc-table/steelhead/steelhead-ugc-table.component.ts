@@ -11,8 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 import { BulkReportUgcResponse } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service';
 import { SteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service';
+import { SteelheadUgcHideStatusService } from '@services/api-v2/steelhead/ugc/hide-status/steelhead-ugc-hide-status.service';
 
 /** Displays steelhead UGC content in a table. */
 @Component({
@@ -25,7 +25,7 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
 
   constructor(
     private readonly steelheadUgcLookupService: SteelheadUgcLookupService,
-    private readonly steelheadUgcVisibilityService: SteelheadUgcVisibilityService,
+    private readonly steelheadUgcHideStatusService: SteelheadUgcHideStatusService,
     private readonly steelheadUgcSharecodeService: SteelheadUgcSharecodeService,
     private readonly backgroundJobService: BackgroundJobService,
     snackbar: MatSnackBar,
@@ -45,7 +45,7 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Hide multiple Ugcs. */
   public hideUgc(ugcIds: string[]): Observable<string[]> {
-    return this.steelheadUgcVisibilityService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+    return this.steelheadUgcHideStatusService.hideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
       }),
@@ -54,7 +54,7 @@ export class SteelheadUgcTableComponent extends UgcTableBaseComponent implements
 
   /** Unhide multiple Ugcs. */
   public unhideUgc(ugcIds: string[]): Observable<string[]> {
-    return this.steelheadUgcVisibilityService.unhideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
+    return this.steelheadUgcHideStatusService.unhideUgcItemsUsingBackgroundJob$(ugcIds).pipe(
       switchMap(response => {
         return this.backgroundJobService.waitForBackgroundJobToComplete<string[]>(response);
       }),

@@ -4,11 +4,11 @@ import { BackgroundJob } from '@models/background-job';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { Observable } from 'rxjs';
 
-/** The /v2/woodstock/ugc/visibility endpoints. */
+/** The /v2/woodstock/ugc/hide|unhide endpoints. */
 @Injectable({
   providedIn: 'root',
 })
-export class WoodstockUgcVisibilityService {
+export class WoodstockUgcHideStatusService {
   private basePath: string = 'title/woodstock/ugc';
   constructor(private readonly api: ApiV2Service) {}
 

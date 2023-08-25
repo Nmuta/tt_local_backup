@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
     [ApiController]
     [ApiVersion("2.0")]
     [Tags(Title.Steelhead, Topic.Ugc, Target.Details)]
-    public class UgcVisibilityController : V2SteelheadControllerBase
+    public class UgcHideStatusController : V2SteelheadControllerBase
     {
         private const TitleCodeName CodeName = TitleCodeName.Steelhead;
 
@@ -37,9 +37,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         private readonly IScheduler scheduler;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UgcVisibilityController"/> class.
+        ///     Initializes a new instance of the <see cref="UgcHideStatusController"/> class.
         /// </summary>
-        public UgcVisibilityController(
+        public UgcHideStatusController(
             IJobTracker jobTracker,
             ILoggingService loggingService,
             IScheduler scheduler)
@@ -69,12 +69,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         {
             if (useBackgroundProcessing)
             {
-                var response = await this.SetUgcItemsVisibilityUseBackgroundProcessing(ugcIds, true).ConfigureAwait(false);
+                var response = await this.SetUgcItemsHiddenStatusUseBackgroundProcessing(ugcIds, true).ConfigureAwait(false);
                 return response;
             }
             else
             {
-                var response = await this.SetUgcItemsVisibilityAsync(this.Services.StorefrontManagementService, ugcIds, true).ConfigureAwait(false);
+                var response = await this.SetUgcItemsHiddenStatusAsync(this.Services.StorefrontManagementService, ugcIds, true).ConfigureAwait(false);
                 return this.Ok(response);
             }
         }
@@ -95,18 +95,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         {
             if (useBackgroundProcessing)
             {
-                var response = await this.SetUgcItemsVisibilityUseBackgroundProcessing(ugcIds, false).ConfigureAwait(false);
+                var response = await this.SetUgcItemsHiddenStatusUseBackgroundProcessing(ugcIds, false).ConfigureAwait(false);
                 return response;
             }
             else
             {
-                var response = await this.SetUgcItemsVisibilityAsync(this.Services.StorefrontManagementService, ugcIds, false).ConfigureAwait(false);
+                var response = await this.SetUgcItemsHiddenStatusAsync(this.Services.StorefrontManagementService, ugcIds, false).ConfigureAwait(false);
                 return this.Ok(response);
             }
         }
 
         // Hide list of UgcIds
-        private async Task<List<Guid>> SetUgcItemsVisibilityAsync(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, bool isVisible)
+        private async Task<List<Guid>> SetUgcItemsHiddenStatusAsync(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, bool isHidden)
         {
             var failedUgc = new List<Guid>();
 
@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
             {
                 try
                 {
-                    await storefrontManagementService.SetUGCVisibility(ugcId, isVisible).ConfigureAwait(true);
+                    await storefrontManagementService.HideUGC(ugcId, isHidden).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -126,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         }
 
         // Hide list of UfcIds using background processing
-        private async Task<CreatedResult> SetUgcItemsVisibilityUseBackgroundProcessing(Guid[] ugcIds, bool isVisible)
+        private async Task<CreatedResult> SetUgcItemsHiddenStatusUseBackgroundProcessing(Guid[] ugcIds, bool isHidden)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -140,7 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
                 // Do not throw.
                 try
                 {
-                    var failedUgc = await this.SetUgcItemsVisibilityAsync(storefrontManagementService, ugcIds, isVisible).ConfigureAwait(false);
+                    var failedUgc = await this.SetUgcItemsHiddenStatusAsync(storefrontManagementService, ugcIds, isHidden).ConfigureAwait(false);
 
                     var foundErrors = failedUgc.Count > 0;
                     var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
