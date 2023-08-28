@@ -11,40 +11,40 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.External.PlayFab;
-using Turn10.LiveOps.StewardApi.Contracts.Forte;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
-using Turn10.LiveOps.StewardApi.Controllers.V2.Forte;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Forte.PlayFab;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Forte.PlayFab
+namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
 {
     /// <summary>
-    ///     Handles requests for Forte PlayFab build integrations.
+    ///     Handles requests for Woodstock PlayFab build integrations.
     /// </summary>
-    [Route("api/v{version:apiVersion}/external/title/forte/playfab/builds")]
+    [Route("api/v{version:apiVersion}/external/title/woodstock/playfab/builds")]
     [RequireApiKey(StewardApiKey.PlayFab)]
-    [LogTagTitle(TitleLogTags.Forte)]
+    [LogTagTitle(TitleLogTags.Woodstock)]
     [ApiController]
     [ApiVersion("2.0")]
-    [StandardTags(Meta.External, Title.Forte)]
-    public class BuildsController : V2ForteControllerBase
+    [StandardTags(Meta.External, Title.Woodstock)]
+    public class BuildsController : V2WoodstockControllerBase
     {
-        private readonly IFortePlayFabService playFabService;
+        private readonly IWoodstockPlayFabService playFabService;
         private readonly IPlayFabBuildLocksProvider playFabBuildLocksProvider;
         private readonly IBlobStorageProvider blobStorageProvider;
         private readonly IMapper mapper;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BuildsController"/> class for Forte.
+        ///     Initializes a new instance of the <see cref="BuildsController"/> class for Woodstock.
         /// </summary>
-        public BuildsController(IFortePlayFabService playFabService, IPlayFabBuildLocksProvider playFabBuildLocksProvider, IBlobStorageProvider blobStorageProvider, IMapper mapper)
+        public BuildsController(IWoodstockPlayFabService playFabService, IPlayFabBuildLocksProvider playFabBuildLocksProvider, IBlobStorageProvider blobStorageProvider, IMapper mapper)
         {
             playFabService.ShouldNotBeNull(nameof(playFabService));
             playFabBuildLocksProvider.ShouldNotBeNull(nameof(playFabBuildLocksProvider));
@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Forte.PlayFab
         [SwaggerResponse(200, type: typeof(ExternalPlayFabBuildLock))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create)]
-        [AutoActionLogging(TitleCodeName.Forte, StewardAction.Add, StewardSubject.PlayFabBuildLock)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Add, StewardSubject.PlayFabBuildLock)]
         public async Task<IActionResult> AddNewPlayFabBuildLock(string buildId, [FromBody] string reason)
         {
             var playFabEnvironment = this.PlayFabEnvironment;
@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Forte.PlayFab
 
             // Verify that the new build lock will not break configured max # of allowed locks
             var expectedBuildLockCount = activeBuildLocks.Count + 1;
-            if (expectedBuildLockCount > playFabSettings.ForteMaxBuildLocks)
+            if (expectedBuildLockCount > playFabSettings.WoodstockMaxBuildLocks)
             {
                 throw new BadRequestStewardException($"Maximum number of build locks has already been met. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId}) (activeBuildLockCount: ${activeBuildLocks.Count}) (activeBuildLockCount: ${playFabSettings.WoodstockMaxBuildLocks})");
             }
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Forte.PlayFab
                     UserId = string.Empty,
                     ApiKeyName = StewardApiKey.PlayFab.GetDescription(),
                     PlayFabEnvironment = playFabEnvironment.ToString(),
-                    GameTitle = TitleConstants.ForteCodeName.ToLowerInvariant(),
+                    GameTitle = TitleConstants.WoodstockCodeName.ToLowerInvariant(),
                     DateCreatedUtc = DateTimeOffset.UtcNow,
                     MetaData = null,
                 };
@@ -143,7 +143,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Forte.PlayFab
         [SwaggerResponse(200, type: typeof(PlayFabBuildLock))]
         [LogTagDependency(DependencyLogTags.Cosmos)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Delete)]
-        [AutoActionLogging(TitleCodeName.Forte, StewardAction.Delete, StewardSubject.PlayFabBuildLock)]
+        [AutoActionLogging(TitleCodeName.Woodstock, StewardAction.Delete, StewardSubject.PlayFabBuildLock)]
         public async Task<IActionResult> DeletePlayFabBuildLock(string buildId)
         {
             var playFabEnvironment = this.PlayFabEnvironment;
@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Forte.PlayFab
         /// <summary>
         ///     Verifies that the build id exists. Throws if it doesn't.
         /// </summary>
-        private async Task<PlayFabBuildSummary> VerifyBuildIdInPlayFabAsync(Guid buildId, FortePlayFabEnvironment environment)
+        private async Task<PlayFabBuildSummary> VerifyBuildIdInPlayFabAsync(Guid buildId, WoodstockPlayFabEnvironment environment)
         {
             var build = await this.playFabService.GetBuildAsync(buildId, environment).ConfigureAwait(true);
             if (build == null)
