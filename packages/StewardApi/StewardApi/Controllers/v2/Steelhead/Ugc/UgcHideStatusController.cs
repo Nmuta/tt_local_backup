@@ -69,12 +69,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         {
             if (useBackgroundProcessing)
             {
-                var response = await this.SetUgcItemsHiddenStatusUseBackgroundProcessing(ugcIds, true).ConfigureAwait(false);
+                var response = await this.SetUgcItemsHiddenStatusUseBackgroundProcessing(ugcIds, false).ConfigureAwait(false);
                 return response;
             }
             else
             {
-                var response = await this.SetUgcItemsHiddenStatusAsync(this.Services.StorefrontManagementService, ugcIds, true).ConfigureAwait(false);
+                var response = await this.SetUgcItemsHiddenStatusAsync(this.Services.StorefrontManagementService, ugcIds, false).ConfigureAwait(false);
                 return this.Ok(response);
             }
         }
@@ -95,12 +95,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         {
             if (useBackgroundProcessing)
             {
-                var response = await this.SetUgcItemsHiddenStatusUseBackgroundProcessing(ugcIds, false).ConfigureAwait(false);
+                var response = await this.SetUgcItemsHiddenStatusUseBackgroundProcessing(ugcIds, true).ConfigureAwait(false);
                 return response;
             }
             else
             {
-                var response = await this.SetUgcItemsHiddenStatusAsync(this.Services.StorefrontManagementService, ugcIds, false).ConfigureAwait(false);
+                var response = await this.SetUgcItemsHiddenStatusAsync(this.Services.StorefrontManagementService, ugcIds, true).ConfigureAwait(false);
                 return this.Ok(response);
             }
         }
