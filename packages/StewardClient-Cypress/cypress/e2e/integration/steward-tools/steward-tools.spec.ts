@@ -16,7 +16,7 @@ context('Steward / Tools', () => {
     });
 
     it('should have cards for each tool', () => {
-      // If we had a more consistent tools url type, we could maybe implement this as a loop?
+      // If we had a more consistent tools url type, we could maybe implement this as a loop
       findMatCardWithLink('Gifting', stewardUrls.tools.gifting.default);
       findMatCardWithLink('UGC', stewardUrls.tools.search_ugc.default);
       findMatCardWithLink('Auction Blocklist', stewardUrls.tools.auctionBlocklist.default);
