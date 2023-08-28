@@ -77,6 +77,7 @@ import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state'
 import { NavModule } from '@shared/modules/nav/nav.module';
 import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
 import { TourState } from '@shared/state/tours/tours.state';
+import { RedirectionLandingComponent } from './pages/redirection-landing/redirection-landing.component';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -133,7 +134,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent],
+  declarations: [AppComponent, ErrorComponent, RedirectionLandingComponent],
   imports: [
     BrowserAnimationsModule,
     ThemeModule,
