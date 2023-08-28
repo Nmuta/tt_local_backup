@@ -1,5 +1,5 @@
 import { default as basicConfig } from './dev.config';
 
-basicConfig.e2e.testIsolation = true;
+basicConfig.env.grepTags = '@wip';
 
 export default basicConfig;

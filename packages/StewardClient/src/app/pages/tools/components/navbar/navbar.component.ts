@@ -148,7 +148,8 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     }
 
     if (environment.production) {
-      if (settings.enableStagingApi) {
+      const useStaging = location?.origin === environment.stewardUiStagingUrl;
+      if (useStaging) {
         return 'stage';
       } else {
         return 'prod';

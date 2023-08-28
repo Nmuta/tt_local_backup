@@ -8,6 +8,32 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
+      uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
+      shortText: 'Add new tool to search rivals bounties',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'f5a5ea45-1ea4-4a36-aed7-55140bc0aada',
+      shortText: 'Automatically select Staging API when using Staging UI',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Leaderboards },
+      uuid: '069c7aa4-1424-4f15-ae7b-cf082cd5531f',
+      shortText: 'Add Time Attack leaderboards',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.ProductPricing },
+      uuid: 'c069381d-0e34-48f2-9384-04eb317b79cc',
+      shortText:
+        'Add ability to look up any product ID alongside dropdown to select Forza products',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionBlocklist },
+      uuid: 'a6e7f4a7-7345-4f27-9446-83680ae4e516',
+      shortText: 'Update auction blocklist to display new accurate data',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '3594283a-d0e7-4d79-bfd0-ebc0de4eafd8',
       shortText: 'Add Layer Group & Game Options UGC types',
@@ -286,6 +312,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
       shortText: 'Implemented new deeplink destination type',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
+      shortText: 'Implemented new user tour guides',
     },
   ],
 };

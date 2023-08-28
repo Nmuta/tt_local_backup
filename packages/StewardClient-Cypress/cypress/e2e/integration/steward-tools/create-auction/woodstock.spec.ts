@@ -3,8 +3,9 @@ import { changeEndpoint } from '@support/steward/shared-functions/change-endpoin
 import { stewardUrls } from '@support/steward/urls';
 import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Support / Auction Blocklist / Woodstock', () => {
+context('Steward / Support / Auction Blocklist / Woodstock', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 
@@ -42,7 +43,7 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
     cy.contains('button', 'Create Auction').should('be.disabled');
   });
 
-  it('should not create an auction with invalid Price inputs', () => {
+  it('should not create an auction with invalid Price inputs', withTags(Tag.Broken), () => {
     cy.contains('mat-form-field', 'Search for model').click().type('Ferrari');
     cy.contains('mat-option', 'Ferrari FXX (2005) [1006]').click();
 

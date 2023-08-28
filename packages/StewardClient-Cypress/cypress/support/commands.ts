@@ -27,3 +27,8 @@
 
 import 'cypress-wait-until';
 import 'cypress-real-events';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import registerCypressGrep from '@cypress/grep';
+registerCypressGrep();
