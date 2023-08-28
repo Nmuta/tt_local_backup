@@ -294,18 +294,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadLiveOpsContent.Track[]> GetTracksAsync()
-        {
-            var tracks =
-                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.Track[]>(
-                    "LiveOps_Tracks",
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
-
-            return tracks;
-        }
-
-        /// <inheritdoc />
         public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync()
         {
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -648,6 +636,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return this.refreshableCacheStore.GetItem<IEnumerable<VanityItem>>(vanityItemsKey)
                    ?? await GetVanityItems().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<Track>> GetTracksAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        {
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {pegasusEnvironment}, Slot: {slotId}");
+            }
+
+            var tracksKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_{slotId}_Tracks";
+
+            async Task<IEnumerable<Track>> GetTracks()
+            {
+                var tracks = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<Track>>("LiveOps_Tracks", pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(tracksKey, TimeSpan.FromDays(1), tracks);
+
+                return tracks;
+            }
+
+            return this.refreshableCacheStore.GetItem<IEnumerable<Track>>(tracksKey)
+                   ?? await GetTracks().ConfigureAwait(false);
         }
 
         /// <inheritdoc />

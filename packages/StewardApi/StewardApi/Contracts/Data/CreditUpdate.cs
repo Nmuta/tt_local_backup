@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// </remarks>
         public static string MakeQuery(ulong xuid, TitleCodeName title, CreditUpdateColumn column, SortDirection sortDirection)
         {
-            string unorderedQuery = string.Empty;
+            var unorderedQuery = string.Empty;
 
             switch (title)
             {

@@ -13,6 +13,7 @@ import {
   verifySearchValidLspGroupHistoryGiftsExistsTest,
 } from './shared-tests';
 import { selectApollo } from '@support/steward/shared-functions/game-nav';
+import { withTags, Tag } from '@support/tags';
 
 // If changing these dates, be sure they are used in the correct order of first then last below
 const noGiftsDateStart = '1/1/2023';
@@ -59,7 +60,7 @@ context('Steward / Tools / Gift History / Apollo', () => {
     );
   });
 
-  context('LSP Group Lookup', () => {
+  context('LSP Group Lookup', withTags(Tag.Broken), () => {
     // Apollo doesn't have any gifts for Live Ops Developers in prod, so Live Ops Testing was used
     // To solve this to work in dev and prod, send gifts to Live Ops Developers in prod or Live Ops testing in dev
     verifySearchValidLspGroupHistoryGiftsExistsTest(lspGroupWithRecentGifts);

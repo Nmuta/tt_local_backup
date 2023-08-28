@@ -510,9 +510,9 @@
       },
       "Turn10.Services.ForzaClient.FH5_main": {
         "type": "Direct",
-        "requested": "[5.3.11, )",
-        "resolved": "5.3.11",
-        "contentHash": "PleoiMDfDm7H4q8oEuHCrSQQV3xdFcCOXI+udHqRqwsFJuXlhcPsms0zjou+gWZvFzDN2tISWHnntF907kwdDw==",
+        "requested": "[5.4.22, )",
+        "resolved": "5.4.22",
+        "contentHash": "N+SmsM3SGRbKTduYunjWkn6p8Cl1x0gUAOflpQdmR1Lu3zEiLzjXkMFv3tQU3VHEZRShqnn1hBxwo4PiIhp9qw==",
         "dependencies": {
           "Turn10.Services.ForzaClient": "3.0.0",
           "Turn10.Services.Serialization": "1.1.0"
@@ -605,9 +605,9 @@
       },
       "WoodstockLiveOpsContent": {
         "type": "Direct",
-        "requested": "[2.8.6, )",
-        "resolved": "2.8.6",
-        "contentHash": "Tutk87Zjb8a2q3iBOejyQBXGI5SsYD4xhnVphl5fP+iE5jVaTH6f7lrSB7/En7YRXRJ9/y+aHFbz2u//RIMs7Q==",
+        "requested": "[3.4.1, )",
+        "resolved": "3.4.1",
+        "contentHash": "Rs2i41sF1aHwYixuYzaVcvfeyswgHKpWyzk3IoJMnSXMIAxO6T2SaUL+uBYR23k2iD0k9a6GGaqRdNPTg4uPZA==",
         "dependencies": {
           "Newtonsoft.Json": "12.0.1"
         }

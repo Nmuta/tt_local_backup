@@ -14,6 +14,8 @@
     "open:local": "cypress open --config-file cypress/configs/localhost.config.ts",
     "open:local-dev": "cypress open --config-file cypress/configs/localhost-dev.config.ts",
     "open:dev": "cypress open --config-file cypress/configs/dev.config.ts",
+    "open:dev:wip": "cypress open --config-file cypress/configs/dev-wip.config.ts",
+    "open:dev:exclude": "cypress open --config-file cypress/configs/dev-exclude.config.ts",
     "open:prod": "cypress open --config-file cypress/configs/prod.config.ts",
     "open:prod-staging": "cypress open --config-file cypress/configs/prod-staging.config.ts",
     "run": "yarn run:local",
@@ -21,6 +23,11 @@
     "run:local-dev": "cypress run --config-file cypress/configs/localhost-dev.config.ts",
     "run:dev": "cypress run --config-file cypress/configs/dev.config.ts",
     "run:dev:isolated": "cypress run --config-file cypress/configs/dev-isolated.config.ts",
+    "run:dev:wip": "cypress run --config-file cypress/configs/dev-wip.config.ts",
+    "run:dev:exclude": "cypress run --config-file cypress/configs/dev-exclude.config.ts",
+    "run:dev:exclude:isolated": "cypress run --config-file cypress/configs/dev-exclude-isolated.config.ts",
+    "run:dev-staging": "cypress run --config-file cypress/configs/dev-staging.config.ts",
+    "run:dev-staging:exclude": "cypress run --config-file cypress/configs/dev-staging-exclude.config.ts",
     "run:prod": "cypress run --config-file cypress/configs/prod.config.ts",
     "run:prod-staging": "cypress run --config-file cypress/configs/prod-staging.config.ts",
     "run:dev:parallel": "cypress-parallel -s run:dev -t 4 -d cypress/e2e",
@@ -37,6 +44,8 @@
   },
   "private": true,
   "dependencies": {
+    "@cypress/grep": "^3.1.5",
+    "@types/luxon": "^3.3.1",
     "@types/node": "^20.4.3"
   },
   "devDependencies": {
@@ -55,7 +64,7 @@
     "eslint-plugin-no-only-tests": "^3.1.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "junit-report-merger": "^6.0.2",
-    "luxon": "^2.5.2",
+    "luxon": "^3.4.0",
     "mocha-junit-reporter": "^2.2.1",
     "prettier": "^3.0.0",
     "typescript": "^4.6.2"

@@ -6,8 +6,12 @@ import { UserModel } from '@models/user.model';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 import { of } from 'rxjs';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 import { ToolsAppHomeComponent } from './home.component';
+import { UserTourService } from './tour/tour.service';
+import { createMockUserTourService } from './tour/tour.service.mock';
+import { TourState } from '@shared/state/tours/tours.state';
 
 describe('ToolsAppHomeComponent', () => {
   let component: ToolsAppHomeComponent;
@@ -15,17 +19,24 @@ describe('ToolsAppHomeComponent', () => {
 
   let mockPermAttributeService: PermAttributesService;
 
+  let mockUserTourService: UserTourService;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadata({
-        imports: [MatAutocompleteModule],
+        imports: [MatAutocompleteModule, TourMatMenuModule],
+        ngxsModules: [TourState],
         declarations: [ToolsAppHomeComponent],
-        providers: [createMockPermAttributesService()],
+        providers: [createMockPermAttributesService(), createMockUserTourService()],
       }),
     ).compileComponents();
 
     fixture = TestBed.createComponent(ToolsAppHomeComponent);
     mockPermAttributeService = TestBed.inject(PermAttributesService);
+    mockUserTourService = TestBed.inject(UserTourService);
+
+    mockUserTourService.startHomeTour = jasmine.createSpy('start');
+
     component = fixture.componentInstance;
 
     Object.defineProperty(component, 'profile$', {

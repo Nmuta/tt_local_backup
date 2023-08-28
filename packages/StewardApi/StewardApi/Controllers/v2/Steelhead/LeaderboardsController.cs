@@ -27,6 +27,8 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static System.FormattableString;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+using ScoreType = Forza.Scoreboard.FM8.Generated.ScoreType;
+using Track = SteelheadLiveOpsContent.Track;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 {
@@ -355,13 +357,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             var exceptions = new List<Exception>();
             var getPegasusLeaderboards = this.pegasusService.GetLeaderboardsAsync(pegasusEnvironment).SuccessOrDefault(Array.Empty<Leaderboard>(), exceptions);
+            var getTracks = this.pegasusService.GetTracksAsync(pegasusEnvironment).SuccessOrDefault(Array.Empty<Track>(), exceptions);
             var getCarClasses = this.pegasusService.GetCarClassesAsync(pegasusEnvironment).SuccessOrDefault(Array.Empty<CarClass>(), new Action<Exception>(ex =>
             {
                 // Leaderboards will work without car class association. Log custom exception for tracking purposes.
                 this.loggingService.LogException(new AppInsightsException("Failed to get car classes from Pegasus when building leaderboards", ex));
             }));
 
-            await Task.WhenAll(getPegasusLeaderboards, getCarClasses).ConfigureAwait(false);
+            await Task.WhenAll(getPegasusLeaderboards, getTracks, getCarClasses).ConfigureAwait(false);
 
             if (getPegasusLeaderboards.IsFaulted)
             {
@@ -370,19 +373,41 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     getPegasusLeaderboards.Exception);
             }
 
-            var leaderboards = getPegasusLeaderboards.GetAwaiter().GetResult();
+            var leaderboards = getPegasusLeaderboards.GetAwaiter().GetResult().ToList();
+            var tracks = getTracks.GetAwaiter().GetResult();
 
             if (getCarClasses.IsCompletedSuccessfully)
             {
-                var carClasses = getCarClasses.GetAwaiter().GetResult();
+                var carClasses = getCarClasses.GetAwaiter().GetResult().ToList();
                 var carClassesDict = carClasses.ToDictionary(carClass => carClass.Id);
                 foreach (var leaderboard in leaderboards)
                 {
-                    if (carClassesDict.TryGetValue(leaderboard.CarClassId, out CarClass carClass))
+                    if (carClassesDict.TryGetValue(leaderboard.CarClassId, out var carClass))
                     {
                         leaderboard.CarClass = carClass.DisplayName;
                     }
                 }
+
+                // Time Attach Leaderboards are auto-generated, we need to create 1 per track per car class
+                foreach (var carClass in carClasses)
+                {
+                    foreach (var track in tracks)
+                    {
+                        leaderboards.Add(new Leaderboard()
+                        {
+                            Name = $"{track.DisplayName} Time Attack - {carClass.DisplayName} Class",
+                            GameScoreboardId = (int)carClass.Id,
+                            TrackId = track.id,
+                            ScoreboardTypeId = (int)ScoreboardType.TimeAttack,
+                            ScoreboardType = ScoreboardType.TimeAttack.ToString(),
+                            ScoreTypeId = (int)ScoreType.Laptime,
+                            ScoreType = ScoreType.Laptime.ToString(),
+                            CarClassId = (int)carClass.Id,
+                            CarClass = carClass.DisplayName,
+                        });
+                    }
+                }
+                #pragma warning restore CA1851 // Possible multiple enumerations of 'IEnumerable' collection
             }
 
             return leaderboards;

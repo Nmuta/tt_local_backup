@@ -13,5 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         PlayFab,
         [Description("Testing")]
         Testing,
+        [Description("Steward Automation")]
+        StewardAutomation,
     }
 }

@@ -76,6 +76,8 @@ import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
 import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state';
 import { NavModule } from '@shared/modules/nav/nav.module';
+import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
+import { TourState } from '@shared/state/tours/tours.state';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -172,16 +174,20 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         SteelheadGiftHistoryState,
         SunriseGiftHistoryState,
         ApolloGiftHistoryState,
+        // NGX tour state
+        TourState,
       ],
       { developmentMode: !environment.production },
     ),
     NgxsStoragePluginModule.forRoot({
-      key: [UserSettingsState, UserState, ChangelogState],
+      key: [UserSettingsState, UserState, ChangelogState, TourState],
     }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule,
+    TourMatMenuModule.forRoot(), // loaded to ensure tours run properly
   ],
   providers: [
+    TourService,
     ZafClientService,
     {
       provide: HTTP_INTERCEPTORS,

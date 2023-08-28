@@ -1,0 +1,65 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Auction Blocklist</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <mat-form-field appearance="fill">
+        <mat-label>Series</mat-label>
+        <input
+          type="number"
+          matInput
+          [formControl]="formControls.currentSeries"
+          (keydown.enter)="updateBlocklist()"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Keyword</mat-label>
+        <input type="text" matInput [formControl]="formControls.keyword" (keyup)="search()" />
+      </mat-form-field>
+    </form>
+    <ng-container *waitForMonitor="getMonitor">
+      <table mat-table [dataSource]="blocklist">
+        <ng-container matColumnDef="carId">
+          <th mat-header-cell *matHeaderCellDef>Car ID</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.carId }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.description }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="expireDate">
+          <th mat-header-cell *matHeaderCellDef>Expire Date</th>
+          <td mat-cell *matCellDef="let entry">
+            <ng-container *ngIf="entry.expireDateUtc">
+              {{ entry.expireDateUtc | date: 'fullDate' }}
+            </ng-container>
+            <ng-container *ngIf="entry.doesExpire && !entry.expireDateUtc">
+              On Series Release
+            </ng-container>
+            <ng-container *ngIf="!entry.doesExpire"> Never </ng-container>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="series">
+          <th mat-header-cell *matHeaderCellDef>Series</th>
+          <td mat-cell *matCellDef="let entry">
+            <ng-container *ngIf="entry.series > 0">
+              {{ entry.series }}
+            </ng-container>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

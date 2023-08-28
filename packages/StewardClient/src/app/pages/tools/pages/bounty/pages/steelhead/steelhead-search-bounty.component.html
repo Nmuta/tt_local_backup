@@ -1,0 +1,82 @@
+<mat-card>
+  <mat-card-header class="sf-header">
+    <mat-card-title>Search Bounties</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <mat-form-field appearance="fill">
+        <mat-label>Keyword</mat-label>
+        <input type="text" matInput [formControl]="formControls.keyword" (keyup)="search()" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Rivals Event Id</mat-label>
+        <input
+          type="number"
+          matInput
+          [formControl]="formControls.rivalsEventId"
+          (keyup)="filterByRivalsId()"
+        />
+      </mat-form-field>
+    </form>
+    <ng-container *waitForMonitor="getMonitor">
+      <table mat-table [dataSource]="bountySummaries">
+        <ng-container matColumnDef="rivalsInfo">
+          <th mat-header-cell *matHeaderCellDef>Rivals Info</th>
+          <td mat-cell *matCellDef="let entry">
+            <table class="info-table">
+              <tr>
+                <th>Id:</th>
+                <td>{{ entry.rivalsEventId }}</td>
+              </tr>
+              <tr>
+                <th>Name:</th>
+                <td>
+                  {{ entry.rivalsEventTitle ? entry.rivalsEventTitle : 'Rivals Event Not Found' }}
+                </td>
+              </tr>
+              <tr>
+                <th>Description:</th>
+                <td>
+                  {{
+                    entry.rivalsEventDescription
+                      ? entry.rivalsEventDescription
+                      : 'Rivals Event Not Found'
+                  }}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bountyInfo">
+          <th mat-header-cell *matHeaderCellDef>Bounty Info</th>
+          <td mat-cell *matCellDef="let entry">
+            <table class="info-table">
+              <tr>
+                <th>Target:</th>
+                <td>{{ entry.target > 100 ? entry.target : entry.target + '%' }}</td>
+              </tr>
+              <tr>
+                <th>Message Title:</th>
+                <td>{{ entry.messageTitle }}</td>
+              </tr>
+              <tr>
+                <th>Message Description:</th>
+                <td>{{ entry.messageDescription }}</td>
+              </tr>
+            </table>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let entry"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

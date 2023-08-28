@@ -45,6 +45,7 @@ context('Steward / Tools / Gift History / Sunrise', () => {
 
   context('XUID Lookup', () => {
     verifySearchInvalidXuidEmptyHistoryTest();
+
     verifySearchValidXuidGiftsExistsTest(userWithRecentGifts.xuid);
     verifyGiftHistoryCalendarWhereGiftsExist(
       userWithRecentGifts.xuid,
@@ -52,6 +53,7 @@ context('Steward / Tools / Gift History / Sunrise', () => {
       recentGiftToUserInProd,
       numberOfExpectedUserGifts,
     );
+
     verifyGiftHistoryCalendarWhereGiftsDoNotExist(
       userWithRecentGifts.xuid,
       noGiftsDateStart,
