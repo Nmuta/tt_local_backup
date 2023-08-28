@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.Scoreboard.FM8.Generated;
-using Forza.WebServices.LiveOpsObjects.FM8.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -121,28 +120,35 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             bountyOutput.PlayerRewardedCount = userGroup.available;
-            var thresholdLeaderboardEntry = await this.GetThresholdEntry(bounty).ConfigureAwait(false);
-
-            bountyOutput.PositionThreshold = thresholdLeaderboardEntry.Position;
-            bountyOutput.TimeThreshold = thresholdLeaderboardEntry.Score;
 
             return this.Ok(bountyOutput);
         }
 
-        private async Task<ForzaRankedLeaderboardRow> GetThresholdEntry(ForzaBountyEntry bounty)
+        /// <summary>
+        ///     Gets a bounty threshold leaderboard entry.
+        /// </summary>
+        [HttpGet("thresholdEntry")]
+        [SwaggerResponse(200, type: typeof(SteelheadBounty))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetBountyThresholdAsync(
+            [FromQuery] ulong target,
+            [FromQuery] ScoreType scoreType,
+            [FromQuery] int trackId,
+            [FromQuery] string pivotId)
         {
             var thresholdLeaderboardEntry = new ForzaRankedLeaderboardRow();
 
-            if (bounty.targetXuid > 0)
+            if (target > 100)
             {
                 var searchParams = new ForzaSearchLeaderboardsParametersV2()
                 {
-                    ScoreboardType = bounty.scoreboardType,
-                    ScoreType = bounty.scoreType,
-                    TrackId = bounty.trackId,
-                    PivotId = bounty.pivotId,
+                    ScoreboardType = "3",
+                    ScoreType = scoreType.ToString(),
+                    TrackId = trackId,
+                    PivotId = pivotId,
                     ScoreView = ScoreView.All.ToString(),
-                    Xuid = bounty.targetXuid,
+                    Xuid = target,
                 };
 
                 var result = await this.Services.ScoreboardManagementService.SearchLeaderboardsV2(searchParams, 0, 1).ConfigureAwait(false);
@@ -152,31 +158,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             {
                 var searchParams = new ForzaSearchLeaderboardsParametersV2()
                 {
-                    ScoreboardType = bounty.scoreboardType,
-                    ScoreType = bounty.scoreType,
-                    TrackId = bounty.trackId,
-                    PivotId = bounty.pivotId,
+                    ScoreboardType = "3",
+                    ScoreType = scoreType.ToString(),
+                    TrackId = trackId,
+                    PivotId = pivotId,
                     ScoreView = ScoreView.All.ToString(),
                     Xuid = 1, // 1 = System ID
                 };
 
                 var result = await this.Services.ScoreboardManagementService.SearchLeaderboardsV2(searchParams, 0, 1).ConfigureAwait(false);
-                var targetRank = result.results.TotalRowCount * bounty.targetPercentage / 100;
+                var targetRank = result.results.TotalRowCount * (int)target / 100;
 
                 if (targetRank != 0)
                 {
                     var getRankResult = await this.Services.ScoreboardManagementService.GetScoresByRankV2(
-                        bounty.scoreboardType,
-                        bounty.scoreType,
-                        bounty.trackId,
-                        int.Parse(bounty.pivotId),
-                        new int[] { (int)targetRank }).ConfigureAwait(false);
+                        "3",
+                        scoreType.ToString(),
+                        trackId,
+                        int.Parse(pivotId),
+                        new int[] { targetRank }).ConfigureAwait(false);
 
                     thresholdLeaderboardEntry = getRankResult.results[0].Entry;
                 }
             }
 
-            return thresholdLeaderboardEntry;
+            return this.Ok(thresholdLeaderboardEntry);
         }
     }
 }

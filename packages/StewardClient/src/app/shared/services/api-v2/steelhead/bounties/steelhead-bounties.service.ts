@@ -5,6 +5,8 @@ import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { RivalsEvent } from '../rivals/steelhead-rivals.service';
 import { DateTime } from 'luxon';
+import { LeaderboardScore, LeaderboardScoreType } from '@models/leaderboards';
+import { HttpParams } from '@angular/common/http';
 
 /** Interface that represents a bounty summary. */
 export interface BountySummary {
@@ -27,8 +29,6 @@ export interface BountyDetail {
   userGroupId: BigNumber;
   playerRewardedCount: BigNumber;
   trackId: BigNumber;
-  positionThreshold: BigNumber;
-  timeThreshold: BigNumber;
   rewards: string[];
   phase: string;
 }
@@ -49,5 +49,21 @@ export class SteelheadBountiesService {
   /** Gets the bounty detail. */
   public getBountyDetail$(bountyId: string): Observable<BountyDetail> {
     return this.api.getRequest$<BountyDetail>(`${this.basePath}/${bountyId}`);
+  }
+
+  /** Gets bounty threshold entry. */
+  public getBountyThresholdEntry$(
+    scoreTypeId: LeaderboardScoreType,
+    trackId: BigNumber,
+    pivotId: BigNumber,
+    target: BigNumber,
+  ): Observable<LeaderboardScore> {
+    const params = new HttpParams()
+      .set('scoreType', scoreTypeId.toString())
+      .set('trackId', trackId.toString())
+      .set('pivotId', pivotId.toString())
+      .set('target', target.toString());
+
+    return this.api.getRequest$<LeaderboardScore>(`${this.basePath}/thresholdEntry`, params);
   }
 }

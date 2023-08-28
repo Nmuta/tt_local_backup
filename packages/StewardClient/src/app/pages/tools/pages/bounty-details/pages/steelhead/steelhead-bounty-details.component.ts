@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
 import { getLeaderboardRoute, getUserGroupManagementRoute } from '@helpers/route-links';
 import { environment } from '@environments/environment';
+import { LeaderboardScore } from '@models/leaderboards';
 
 /** Retreives and displays Steelhead bounty details. */
 @Component({
@@ -21,9 +22,11 @@ import { environment } from '@environments/environment';
 export class SteelheadBountyDetailsComponent extends BaseComponent implements OnInit {
   public gameTitle = GameTitle.FM8;
 
-  public getMonitor = new ActionMonitor('GET Bounty Details');
+  public getBountyMonitor = new ActionMonitor('GET Bounty Details');
+  public getLeadboardEntryMonitor = new ActionMonitor('GET Leadboard Entry');
   public bountyId: string;
   public bountyDetails: BountyDetail;
+  public leaderboardEntryThreshold: LeaderboardScore;
   public userGroupLink = getUserGroupManagementRoute(this.gameTitle);
   public leaderboardLink = getLeaderboardRoute(this.gameTitle);
   public leaderboardLinkQueryParams;
@@ -47,15 +50,29 @@ export class SteelheadBountyDetailsComponent extends BaseComponent implements On
         filter(bountyId => !!bountyId),
         switchMap(bountyId => {
           this.bountyId = bountyId;
-          this.getMonitor = this.getMonitor.repeat();
+          this.getBountyMonitor = this.getBountyMonitor.repeat();
           return this.steelheadBountiesService
             .getBountyDetail$(bountyId)
-            .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$));
+            .pipe(this.getBountyMonitor.monitorSingleFire(), takeUntil(this.onDestroy$));
         }),
         takeUntil(this.onDestroy$),
       )
       .subscribe(bountyDetails => {
         this.bountyDetails = bountyDetails;
+
+        this.getLeadboardEntryMonitor = this.getLeadboardEntryMonitor.repeat();
+        this.steelheadBountiesService
+          .getBountyThresholdEntry$(
+            bountyDetails.rivalsEvent.scoreType,
+            bountyDetails.trackId,
+            bountyDetails.rivalsEvent.id,
+            bountyDetails.target,
+          )
+          .pipe(this.getLeadboardEntryMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+          .subscribe(entry => {
+            this.leaderboardEntryThreshold = entry;
+          });
+
         this.leaderboardLinkQueryParams = {
           scoreboardTypeId: '3',
           scoreTypeId: bountyDetails.rivalsEvent.scoreType,

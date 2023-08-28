@@ -24,16 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         public int TrackId { get; set; }
 
         /// <summary>
-        ///     If a user gets a better position than this they get the reward
-        /// </summary>
-        public int PositionThreshold { get; set; }
-
-        /// <summary>
-        ///     If a user gets a better time than this they get the reward
-        /// </summary>
-        public double TimeThreshold { get; set; }
-
-        /// <summary>
         ///     Target of the bounty. Can be either a percentage between 1-100 or a xuid
         /// </summary>
         public ulong Target { get; set; }

@@ -6,6 +6,9 @@ import { SteelheadBountiesService } from './steelhead-bounties.service';
 export class MockSteelheadBountiesService {
   public getBountySummaries$ = jasmine.createSpy('getBountySummaries').and.returnValue(of());
   public getBountyDetail$ = jasmine.createSpy('getBountyDetail').and.returnValue(of());
+  public getBountyThresholdEntry$ = jasmine
+    .createSpy('getBountyThresholdEntry')
+    .and.returnValue(of());
 
   constructor(private readonly generator$: () => unknown) {}
 }
