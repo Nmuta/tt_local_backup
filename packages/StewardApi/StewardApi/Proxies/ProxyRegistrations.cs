@@ -18,9 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies
         /// </summary>
         public static void Register(ContainerBuilder builder)
         {
-            //builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().SingleInstance();
-            //builder.RegisterType<SteelheadProxyBundle>().SingleInstance();
-
             builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().Named<ISteelheadProxyFactory>("steelheadProdLiveStewardFactory")
                 .WithParameter(Named("client"), With<Client>("woodstockClientProdLiveSteward")).SingleInstance();
             builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().Named<ISteelheadProxyFactory>("steelheadDevLiveStewardFactory")
