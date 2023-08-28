@@ -39,5 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         public ulong Target { get; set; }
 
         public List<string> Rewards { get; set; }
+
+        public string Phase { get; set; }
     }
 }

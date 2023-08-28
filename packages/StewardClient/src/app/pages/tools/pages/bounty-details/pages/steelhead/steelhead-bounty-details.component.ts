@@ -9,6 +9,8 @@ import {
 } from '@services/api-v2/steelhead/bounties/steelhead-bounties.service';
 import { ActivatedRoute } from '@angular/router';
 import { ParsePathParamFunctions, PathParams } from '@models/path-params';
+import { getLeaderboardRoute, getUserGroupManagementRoute } from '@helpers/route-links';
+import { environment } from '@environments/environment';
 
 /** Retreives and displays Steelhead bounty details. */
 @Component({
@@ -22,7 +24,9 @@ export class SteelheadBountyDetailsComponent extends BaseComponent implements On
   public getMonitor = new ActionMonitor('GET Bounty Details');
   public bountyId: string;
   public bountyDetails: BountyDetail;
-  public userGroupLink: string[];
+  public userGroupLink = getUserGroupManagementRoute(this.gameTitle);
+  public leaderboardLink = getLeaderboardRoute(this.gameTitle);
+  public leaderboardLinkQueryParams;
 
   constructor(
     private readonly steelheadBountiesService: SteelheadBountiesService,
@@ -52,6 +56,14 @@ export class SteelheadBountyDetailsComponent extends BaseComponent implements On
       )
       .subscribe(bountyDetails => {
         this.bountyDetails = bountyDetails;
+        this.leaderboardLinkQueryParams = {
+          scoreboardTypeId: '3',
+          scoreTypeId: bountyDetails.rivalsEvent.scoreType,
+          gameScoreboardId: bountyDetails.rivalsEvent.id,
+          trackId: bountyDetails.trackId,
+          leaderboardEnvironment: environment.production ? 'Prod' : 'Dev',
+          ps: '25',
+        };
       });
   }
 }

@@ -2,11 +2,11 @@
   <mat-card-content *ngIf="bountyId; else noBountySpecified">
     <ng-container *waitForMonitor="getMonitor">
       <div class="card-content">
-        <mat-card *ngIf="bountyDetails.rivalsEvent; else noRivalsEvent">
+        <mat-card>
           <mat-card-header>
             <mat-card-title>Rivals Event Details</mat-card-title>
           </mat-card-header>
-          <table class="info-table">
+          <table *ngIf="bountyDetails.rivalsEvent; else noRivalsEvent" class="info-table">
             <tr>
               <th>Name</th>
               <td>{{ bountyDetails.rivalsEvent.name }}</td>
@@ -85,9 +85,18 @@
               <td>{{ bountyDetails.playerRewardedCount }}</td>
             </tr>
             <tr>
+              <th>Phase</th>
+              <td>{{ bountyDetails.phase | deppoh }}</td>
+            </tr>
+            <tr>
               <th>User group</th>
               <td>
-                {{ bountyDetails.userGroupId }}
+                <a
+                  [routerLink]="userGroupLink"
+                  [queryParams]="{ userGroup: bountyDetails.userGroupId }"
+                >
+                  <standard-copy>{{ bountyDetails.userGroupId }}</standard-copy>
+                </a>
               </td>
             </tr>
             <tr>
@@ -97,6 +106,15 @@
               </td>
             </tr>
           </table>
+          <a
+            mat-stroked-button
+            color="primary"
+            clickStop
+            [routerLink]="leaderboardLink"
+            [queryParams]="leaderboardLinkQueryParams"
+          >
+            <span>Go To Leaderboard</span>
+          </a>
         </mat-card>
       </div>
     </ng-container>

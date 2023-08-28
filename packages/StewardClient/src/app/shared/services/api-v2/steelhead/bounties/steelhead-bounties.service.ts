@@ -30,6 +30,7 @@ export interface BountyDetail {
   positionThreshold: BigNumber;
   timeThreshold: BigNumber;
   rewards: string[];
+  phase: string;
 }
 
 /** The /v2/title/steelhead/bounties endpoints. */

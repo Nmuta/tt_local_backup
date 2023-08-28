@@ -774,7 +774,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.PositionThreshold, opt => opt.Ignore())
                 .ForMember(dest => dest.TimeThreshold, opt => opt.Ignore())
                 .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage))
-                .ForMember(dest => dest.Rewards, opt => opt.MapFrom(source => this.PrepareRewardsList(source.rewardGroup)));
+                .ForMember(dest => dest.Rewards, opt => opt.MapFrom(source => this.PrepareRewardsList(source.rewardGroup)))
+                .ForMember(dest => dest.Phase, opt => opt.MapFrom(source => source.phase));
         }
 
         private List<string> PrepareRewardsList(string rewardsInput)
