@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
+      shortText: 'Implemented new user tour guides',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e298bf3d-042c-429f-bc33-49de2bd3cfbb',
       shortText: 'Fix Component Governance issues',
@@ -317,11 +322,6 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
       shortText: 'Implemented new deeplink destination type',
-    },
-    {
-      tag: ChangelogTag.General,
-      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
-      shortText: 'Implemented new user tour guides',
     },
   ],
 };
