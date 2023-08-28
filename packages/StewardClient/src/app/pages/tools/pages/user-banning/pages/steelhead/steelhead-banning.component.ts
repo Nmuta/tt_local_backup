@@ -26,7 +26,6 @@ import { SteelheadPlayersBanService } from '@services/api-v2/steelhead/players/b
 import { BanConfiguration } from '@models/ban-configuration';
 import { requireReasonListMatch } from '@helpers/validations';
 import { BanReasonGroup } from '@models/ban-reason-group';
-import { MatOptionSelectionChange } from '@angular/material/core/option';
 import { HCI } from '@environments/environment';
 import { SteelheadPlayerBanService } from '@services/api-v2/steelhead/player/ban/steelhead-player-ban.service';
 import { BanDuration } from '@models/ban-duration';
@@ -35,6 +34,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Duration } from 'luxon';
 import { DurationOption } from '../../components/duration-picker/duration-picker.component';
+import { MatOptionSelectionChange } from '@angular/material/core';
 
 export const BanOverrideDurationOptions: DurationOption[] = [
   { duration: Duration.fromObject({ days: 1 }), humanized: '1 day' },

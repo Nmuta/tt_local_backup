@@ -94,7 +94,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       useHash: false,
       onSameUrlNavigation: 'reload',
-      initialNavigation: 'enabled',
+      initialNavigation: 'enabledBlocking',
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
       relativeLinkResolution: 'legacy',
