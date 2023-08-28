@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.Scoreboard.FM8.Generated;
+using Forza.WebServices.LiveOpsObjects.FM8.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -82,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets a bounty detail.
         /// </summary>
-        [HttpGet("detail/{bountyId}")]
+        [HttpGet("{bountyId}")]
         [SwaggerResponse(200, type: typeof(SteelheadBounty))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
@@ -120,7 +121,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             }
 
             bountyOutput.PlayerRewardedCount = userGroup.available;
+            var thresholdLeaderboardEntry = await this.GetThresholdEntry(bounty).ConfigureAwait(false);
 
+            bountyOutput.PositionThreshold = thresholdLeaderboardEntry.Position;
+            bountyOutput.TimeThreshold = thresholdLeaderboardEntry.Score;
+
+            return this.Ok(bountyOutput);
+        }
+
+        private async Task<ForzaRankedLeaderboardRow> GetThresholdEntry(ForzaBountyEntry bounty)
+        {
             var thresholdLeaderboardEntry = new ForzaRankedLeaderboardRow();
 
             if (bounty.targetXuid > 0)
@@ -166,10 +176,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 }
             }
 
-            bountyOutput.PositionThreshold = thresholdLeaderboardEntry.Position;
-            bountyOutput.TimeThreshold = thresholdLeaderboardEntry.Score;
-
-            return this.Ok(bountyOutput);
+            return thresholdLeaderboardEntry;
         }
     }
 }

@@ -48,6 +48,6 @@ export class SteelheadBountiesService {
 
   /** Gets the bounty detail. */
   public getBountyDetail$(bountyId: string): Observable<BountyDetail> {
-    return this.api.getRequest$<BountyDetail>(`${this.basePath}/detail/${bountyId}`);
+    return this.api.getRequest$<BountyDetail>(`${this.basePath}/${bountyId}`);
   }
 }

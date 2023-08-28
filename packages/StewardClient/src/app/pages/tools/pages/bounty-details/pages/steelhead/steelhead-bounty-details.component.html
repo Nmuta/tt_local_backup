@@ -1,124 +1,122 @@
 <mat-card>
-  <mat-card-content *ngIf="bountyId; else noBountySpecified">
-    <ng-container *waitForMonitor="getMonitor">
-      <div class="card-content">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Rivals Event Details</mat-card-title>
-          </mat-card-header>
-          <table *ngIf="bountyDetails.rivalsEvent; else noRivalsEvent" class="info-table">
-            <tr>
-              <th>Name</th>
-              <td>{{ bountyDetails.rivalsEvent.name }}</td>
-            </tr>
-            <tr>
-              <th>Description</th>
-              <td>{{ bountyDetails.rivalsEvent.description }}</td>
-            </tr>
-            <tr>
-              <th>Category</th>
-              <td>{{ bountyDetails.rivalsEvent.category }}</td>
-            </tr>
-            <tr>
-              <th>Start Time</th>
-              <td>{{ bountyDetails.rivalsEvent.startTime | utcDate: 'short' }}</td>
-            </tr>
-            <tr>
-              <th>End Time</th>
-              <td>{{ bountyDetails.rivalsEvent.endTime | utcDate: 'short' }}</td>
-            </tr>
-            <tr>
-              <th>Score Type</th>
-              <td>{{ bountyDetails.rivalsEvent.scoreType }}</td>
-            </tr>
-            <tr>
-              <th>Track Name</th>
-              <td>{{ bountyDetails.rivalsEvent.trackName }}</td>
-            </tr>
-            <tr>
-              <th>Car Restrictions</th>
-              <td>
-                <div *ngFor="let carRestriction of bountyDetails.rivalsEvent.carRestrictions">
-                  {{ carRestriction }}
-                </div>
-              </td>
-            </tr>
-          </table>
-        </mat-card>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Bounty Details</mat-card-title>
-          </mat-card-header>
-          <table class="info-table">
-            <tr>
-              <th>Target</th>
-              <td>
-                {{
-                  bountyDetails.target.isGreaterThan(100)
-                    ? bountyDetails.target
-                    : bountyDetails.target + '%'
-                }}
-              </td>
-            </tr>
-            <tr>
-              <th>Position Threshold</th>
-              <td>{{ bountyDetails.positionThreshold }}</td>
-            </tr>
-            <tr>
-              <th>Score Threshold</th>
-              <td>{{ bountyDetails.timeThreshold.toNumber() | number: '1.2-2' }} seconds</td>
-            </tr>
-            <tr>
-              <th>Message Title</th>
-              <td>{{ bountyDetails.messageTitle }}</td>
-            </tr>
-            <tr>
-              <th>Message Description</th>
-              <td>{{ bountyDetails.messageDescription }}</td>
-            </tr>
-            <tr>
-              <th>End Time</th>
-              <td>{{ bountyDetails.endTime | utcDate: 'short' }}</td>
-            </tr>
-            <tr>
-              <th>Players rewarded</th>
-              <td>{{ bountyDetails.playerRewardedCount }}</td>
-            </tr>
-            <tr>
-              <th>Phase</th>
-              <td>{{ bountyDetails.phase | deppoh }}</td>
-            </tr>
-            <tr>
-              <th>User group</th>
-              <td>
-                <a
-                  [routerLink]="userGroupLink"
-                  [queryParams]="{ userGroup: bountyDetails.userGroupId }"
-                >
-                  <standard-copy>{{ bountyDetails.userGroupId }}</standard-copy>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <th>Bounty Rewards</th>
-              <td>
-                <div *ngFor="let reward of bountyDetails.rewards">{{ reward }}</div>
-              </td>
-            </tr>
-          </table>
-          <a
-            mat-stroked-button
-            color="primary"
-            clickStop
-            [routerLink]="leaderboardLink"
-            [queryParams]="leaderboardLinkQueryParams"
-          >
-            <span>Go To Leaderboard</span>
-          </a>
-        </mat-card>
-      </div>
-    </ng-container>
-  </mat-card-content>
+  <ng-container *waitForMonitor="getMonitor">
+    <div *ngIf="bountyId; else noBountySpecified" class="card-content">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Rivals Event Details</mat-card-title>
+        </mat-card-header>
+        <table *ngIf="bountyDetails.rivalsEvent; else noRivalsEvent" class="info-table">
+          <tr>
+            <th>Name</th>
+            <td>{{ bountyDetails.rivalsEvent.name }}</td>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <td>{{ bountyDetails.rivalsEvent.description }}</td>
+          </tr>
+          <tr>
+            <th>Category</th>
+            <td>{{ bountyDetails.rivalsEvent.category }}</td>
+          </tr>
+          <tr>
+            <th>Start Time</th>
+            <td>{{ bountyDetails.rivalsEvent.startTime | utcDate: 'short' }}</td>
+          </tr>
+          <tr>
+            <th>End Time</th>
+            <td>{{ bountyDetails.rivalsEvent.endTime | utcDate: 'short' }}</td>
+          </tr>
+          <tr>
+            <th>Score Type</th>
+            <td>{{ bountyDetails.rivalsEvent.scoreType }}</td>
+          </tr>
+          <tr>
+            <th>Track Name</th>
+            <td>{{ bountyDetails.rivalsEvent.trackName }}</td>
+          </tr>
+          <tr>
+            <th>Car Restrictions</th>
+            <td>
+              <div *ngFor="let carRestriction of bountyDetails.rivalsEvent.carRestrictions">
+                {{ carRestriction }}
+              </div>
+            </td>
+          </tr>
+        </table>
+      </mat-card>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Bounty Details</mat-card-title>
+        </mat-card-header>
+        <table class="info-table">
+          <tr>
+            <th>Target</th>
+            <td>
+              {{
+                bountyDetails.target.isGreaterThan(100)
+                  ? bountyDetails.target
+                  : bountyDetails.target + '%'
+              }}
+            </td>
+          </tr>
+          <tr>
+            <th>Position Threshold</th>
+            <td>{{ bountyDetails.positionThreshold }}</td>
+          </tr>
+          <tr>
+            <th>Score Threshold</th>
+            <td>{{ bountyDetails.timeThreshold.toNumber() | number: '1.2-2' }} seconds</td>
+          </tr>
+          <tr>
+            <th>Message Title</th>
+            <td>{{ bountyDetails.messageTitle }}</td>
+          </tr>
+          <tr>
+            <th>Message Description</th>
+            <td>{{ bountyDetails.messageDescription }}</td>
+          </tr>
+          <tr>
+            <th>End Time</th>
+            <td>{{ bountyDetails.endTime | utcDate: 'short' }}</td>
+          </tr>
+          <tr>
+            <th>Players rewarded</th>
+            <td>{{ bountyDetails.playerRewardedCount }}</td>
+          </tr>
+          <tr>
+            <th>Phase</th>
+            <td>{{ bountyDetails.phase | deppoh }}</td>
+          </tr>
+          <tr>
+            <th>User group</th>
+            <td>
+              <a
+                [routerLink]="userGroupLink"
+                [queryParams]="{ userGroup: bountyDetails.userGroupId }"
+              >
+                <standard-copy>{{ bountyDetails.userGroupId }}</standard-copy>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <th>Bounty Rewards</th>
+            <td>
+              <div *ngFor="let reward of bountyDetails.rewards">{{ reward }}</div>
+            </td>
+          </tr>
+        </table>
+        <a
+          mat-stroked-button
+          color="primary"
+          clickStop
+          [routerLink]="leaderboardLink"
+          [queryParams]="leaderboardLinkQueryParams"
+        >
+          <span>Go To Leaderboard</span>
+        </a>
+      </mat-card>
+    </div>
+  </ng-container>
 </mat-card>
 
 <ng-template #noRivalsEvent>
