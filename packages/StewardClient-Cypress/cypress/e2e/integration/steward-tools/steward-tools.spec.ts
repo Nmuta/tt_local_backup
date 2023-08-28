@@ -3,7 +3,7 @@ import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools', withTags(Tag.UnitTestStyle), () => {
+context('Steward / Tools', () => {
   before(() => {
     login();
 
@@ -61,10 +61,8 @@ context('Steward / Tools', withTags(Tag.UnitTestStyle), () => {
 });
 
 function findMatCardWithLink(title: string, link: string): void {
-  cy.get('mat-card')
-    .contains('mat-card-title', title)
-    .parents('mat-card')
-    .first()
+  cy.contains('mat-card mat-card-title', title)
+    .closest('mat-card')
     .should('exist')
     .contains('a', 'Open')
     .should('have.attr', 'href', link);
