@@ -58,13 +58,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
             this.SunriseEndpoint = new Lazy<string>(() => this.GetSunriseEndpoint());
             this.ApolloEndpoint = new Lazy<string>(() => this.GetApolloEndpoint());
 
-            this.SteelheadServices = new Lazy<SteelheadProxyBundle>(() =>
-            {
-                var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
-                var proxyBundle = componentContext.Resolve<SteelheadProxyBundle>();
-                proxyBundle.Endpoint = this.SteelheadEndpoint.Value;
-                return proxyBundle;
-            });
+            //this.SteelheadServices = new Lazy<SteelheadProxyBundle>(() =>
+            //{
+            //    var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+            //    var proxyBundle = componentContext.Resolve<SteelheadProxyBundle>();
+            //    proxyBundle.Endpoint = this.SteelheadEndpoint.Value;
+            //    return proxyBundle;
+            //});
+
+            this.SteelheadServices = new Lazy<SteelheadProxyBundle>(() => this.ResolveSteelheadBundle("steelheadProdLiveStewardProxyBundle"));
 
             this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockProdLiveStewardProxyBundle"));
 
@@ -83,6 +85,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
                 proxyBundle.Endpoint = this.SunriseEndpoint.Value;
                 return proxyBundle;
             });
+        }
+
+        /// <summary>Resolves a Steelhead bundle with the given DI name.</summary>
+        /// <param name="bundleName">The DI name to reference. Must be registered previously.</param>
+        protected SteelheadProxyBundle ResolveSteelheadBundle(string bundleName)
+        {
+            var componentContext = this.HttpContext.RequestServices.GetService<IComponentContext>();
+            var steelheadProxyBundle = componentContext.ResolveNamed<SteelheadProxyBundle>(bundleName);
+            steelheadProxyBundle.Endpoint = this.SteelheadEndpoint.Value;
+            return steelheadProxyBundle;
         }
 
         /// <summary>Resolves a Woodstock bundle with the given DI name.</summary>

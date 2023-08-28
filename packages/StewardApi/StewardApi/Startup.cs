@@ -427,6 +427,18 @@ namespace Turn10.LiveOps.StewardApi
 
         private void RegisterForzaClients(ContainerBuilder builder)
         {
+            builder.RegisterType<Client>().Named<Client>("steelheadClientProdLiveSteward")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<SteelheadSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(SteelheadPegasusEnvironment.Prod, SteelheadPegasusSlot.LiveSteward));
+
+            builder.RegisterType<Client>().Named<Client>("steelheadClientDevLiveSteward")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<SteelheadSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(SteelheadPegasusEnvironment.Dev, SteelheadPegasusSlot.LiveSteward));
+
             builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())

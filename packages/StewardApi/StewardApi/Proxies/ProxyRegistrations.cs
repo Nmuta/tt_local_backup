@@ -18,8 +18,18 @@ namespace Turn10.LiveOps.StewardApi.Proxies
         /// </summary>
         public static void Register(ContainerBuilder builder)
         {
-            builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().SingleInstance();
-            builder.RegisterType<SteelheadProxyBundle>().SingleInstance();
+            //builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().SingleInstance();
+            //builder.RegisterType<SteelheadProxyBundle>().SingleInstance();
+
+            builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().Named<ISteelheadProxyFactory>("steelheadProdLiveStewardFactory")
+                .WithParameter(Named("client"), With<Client>("woodstockClientProdLiveSteward")).SingleInstance();
+            builder.RegisterType<SteelheadProxyFactory>().As<ISteelheadProxyFactory>().Named<ISteelheadProxyFactory>("steelheadDevLiveStewardFactory")
+                .WithParameter(Named("client"), With<Client>("steelheadClientDevLiveSteward")).SingleInstance();
+
+            builder.RegisterType<SteelheadProxyBundle>().Named<SteelheadProxyBundle>("steelheadProdLiveStewardProxyBundle")
+                    .WithParameter(Named("woodstockFactory"), With<ISteelheadProxyFactory>("steelheadProdLiveStewardFactory")).SingleInstance();
+            builder.RegisterType<SteelheadProxyBundle>().Named<SteelheadProxyBundle>("steelheadDevLiveStewardProxyBundle")
+                    .WithParameter(Named("woodstockFactory"), With<ISteelheadProxyFactory>("steelheadDevLiveStewardFactory")).SingleInstance();
 
             builder.RegisterType<WoodstockProxyFactory>().As<IWoodstockProxyFactory>().Named<IWoodstockProxyFactory>("woodstockProdLiveStewardFactory")
                 .WithParameter(Named("client"), With<Client>("woodstockClientProdLiveSteward")).SingleInstance();
