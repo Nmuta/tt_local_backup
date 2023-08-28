@@ -12,13 +12,13 @@ export class DateTimeToRelativePurePipe implements PipeTransform {
     unit?: ToRelativeUnit,
     style?: 'long' | 'short' | 'narrow',
   ): string {
-    if (value instanceof DateTime) {
-      return (value as DateTime).toRelative({
-        style,
-        unit,
-      });
-    } else {
+    if (!value) {
       return null;
     }
+
+    return (value as DateTime).toRelative({
+      style,
+      unit,
+    });
   }
 }

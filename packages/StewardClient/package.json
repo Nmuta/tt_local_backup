@@ -5,12 +5,14 @@
     "auth": "vsts-npm-auth -config .npmrc",
     "auth:force": "vsts-npm-auth -config .npmrc -F",
     "update:browserslists": "npx browserslist --update-db",
+
     "start": "yarn run start:dev",
     "start:local": "ng serve",
     "start:dev": "ng serve --configuration=dev-api",
     "start:dev:optimized": "ng serve --configuration=dev-api-optimized",
     "start:prod": "ng serve --configuration=prod-api",
     "start:prod:optimized": "ng serve --configuration=prod-api-optimized",
+    
     "ng": "ng",
     "lint": "ng lint",
     "lint:fix": "yarn prettier:fix && yarn lint --fix",
@@ -25,6 +27,9 @@
     "build:configMoveToBuild": "cp web.config dist/",
     "build:prod": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production --cross-origin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",
     "build:prod-api": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=prod-api --cross-origin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",
+    "build:prod": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production --crossOrigin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",
+    "build:prod-api": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=prod-api --crossOrigin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",
+    
     "test:prepare": "find src -name '*.scss' -print0 | xargs -0 -I {} bash -c 'cp -f empty.not-scss {}'",
     "test:prepare:add": "git add * && git reset *.scss",
     "test:prepare:reset": "git restore *.scss",
@@ -33,12 +38,14 @@
     "test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
     "test:ado": "ng test --karma-config=src/karma-ado.conf.js --code-coverage --watch false",
     "test:ado:ncc": "ng test --karma-config=src/karma-ado.conf.js",
+    
     "_old-commands-below": "echo Try another command.",
     "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
     "find:missing_no_errors_schema": "grep -rn -C 0 --include \\*.component.spec.ts -L \"\\[NO_ERRORS_SCHEMA\\]\" ./src/*",
     "changes-with-main": "git diff-tree --no-commit-id --name-status -r HEAD main",
     "zat": "C:\\Windows\\system32\\bash.exe -c \"cd app-local && zat serve\"",
     "debug-open:ff": "\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" -start-debugger-server",
+    
     "start:open": "start https://forzasupport1570048282.zendesk.com/agent/apps/scrutineer-inventory-management-angular?zat=true && ng serve --configuration=dev-api",
     "open:navbar": "start https://forzasupport1570048282.zendesk.com/agent/apps/scrutineer-inventory-management-angular?zat=true",
     "open:ticket:fm7": "start https://forzasupport1570048282.zendesk.com/agent/tickets/60?zat=true",
@@ -46,6 +53,7 @@
     "open:ticket:fh4": "start https://forzasupport1570048282.zendesk.com/agent/tickets/58?zat=true",
     "open:ticket:fh4:bad": "start https://forzasupport1570048282.zendesk.com/agent/tickets/62?zat=true",
     "open:ticket:fh5": "start https://forzasupport1570048282.zendesk.com/agent/tickets/68?zat=true",
+    
     "_old-aliases-below": "echo Try another command.",
     "refreshVSToken": "yarn run auth:force",
     "fix": "yarn run lint:fix",

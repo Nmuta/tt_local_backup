@@ -2472,11 +2472,14 @@
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/lodash/-/lodash-4.14.197.tgz#e95c5ddcc814ec3e84c891910a01e0c8a378c54b"
   integrity sha1-6Vxd3MgU7D6EyJGRCgHgyKN4xUs=
 
+<<<<<<< HEAD
 "@types/mime@*":
   version "3.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/mime/-/mime-3.0.1.tgz#5f8f2bca0a5863cb69bc0b0acd88c96cb1d4ae10"
   integrity sha1-X48rygpYY8tpvAsKzYjJbLHUrhA=
 
+=======
+>>>>>>> origin/main
 "@types/mime@^1":
   version "1.3.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
@@ -7897,6 +7900,16 @@ ngx-material-timepicker@^13.1.1:
   version "13.1.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-material-timepicker/-/ngx-material-timepicker-13.1.1.tgz#1dade06660c6a7b9689840396b4ea5681ac0eb35"
   integrity sha1-Ha3gZmDGp7lomEA5a06laBrA6zU=
+<<<<<<< HEAD
+=======
+  dependencies:
+    tslib "^2.0.0"
+
+ngx-pipes@^2.7.6:
+  version "2.7.8"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-pipes/-/ngx-pipes-2.7.8.tgz#c32270ef960d7f448b7766c2ad610e8bc3336ae6"
+  integrity sha1-wyJw75YNf0SLd2bCrWEOi8MzauY=
+>>>>>>> origin/main
   dependencies:
     tslib "^2.0.0"
 
