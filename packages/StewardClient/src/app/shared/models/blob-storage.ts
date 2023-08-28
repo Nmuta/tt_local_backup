@@ -7,4 +7,7 @@ export interface ToolsAvailability {
 export interface PlayFabSettings {
   woodstockMaxBuildLocks: number;
   forteMaxBuildLocks: number;
+
+  // TODO: remove once title specific properties above are populated in Production
+  maxBuildLocks: number;
 }
