@@ -89,6 +89,7 @@
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="PlayFabAllSDK" Version="1.144.230123" />
+    <PackageReference Include="SteelheadContent" Version="1.7.37" />
     <PackageReference Include="SteelheadLiveOpsContent" Version="1.7.26" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

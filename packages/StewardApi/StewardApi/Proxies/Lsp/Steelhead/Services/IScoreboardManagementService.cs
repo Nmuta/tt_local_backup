@@ -24,5 +24,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Delete scores.
         /// </summary>
         Task<DeleteScoresOutput> DeleteScores(Guid[] scoreIds);
+
+        /// <summary>
+        ///     Get scores by rank.
+        /// </summary>
+        Task<GetScoresByRankV2Output> GetScoresByRankV2(string scoreboardType, string scoreType, int trackId, int pivotId, int[] ranks);
     }
 }

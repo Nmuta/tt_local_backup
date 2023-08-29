@@ -10,8 +10,15 @@ import {
 } from '@services/api-v2/steelhead/bounties/steelhead-bounties.service';
 import { orderBy, filter } from 'lodash';
 import { MatTableDataSource } from '@angular/material/table';
+import { getBountyDetailsRoute } from '@helpers/route-links';
 
-/** Retreives and displays Steelhead bounties. */
+/** Extended type from BountySummary. */
+export type BountySummaryTableEntries = BountySummary & {
+  /** Link to the bounty detail page */
+  bountyDetailsLink?: string[];
+};
+
+/** Retrieves and displays Steelhead bounties. */
 @Component({
   selector: 'steelhead-search-bounty',
   templateUrl: './steelhead-search-bounty.component.html',
@@ -21,8 +28,8 @@ export class SteelheadSearchBountyComponent extends BaseComponent implements OnI
   public gameTitle = GameTitle.FM8;
 
   public getMonitor = new ActionMonitor('GET Bounty Summaries');
-  public bountySummaries = new MatTableDataSource<BountySummary>();
-  public bountySummariesData: BountySummary[];
+  public bountySummaries = new MatTableDataSource<BountySummaryTableEntries>();
+  public bountySummariesData: BountySummaryTableEntries[];
   public columnsToDisplay = ['rivalsInfo', 'bountyInfo', 'actions'];
 
   public formControls = {
@@ -44,6 +51,10 @@ export class SteelheadSearchBountyComponent extends BaseComponent implements OnI
       .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(bountySummaries => {
         this.bountySummariesData = bountySummaries;
+        this.bountySummariesData.forEach(item => {
+          item.bountyDetailsLink = getBountyDetailsRoute(this.gameTitle, item.uniqueId);
+        });
+
         this.bountySummaries.data = orderBy(
           bountySummaries,
           content => content.rivalsEventId,

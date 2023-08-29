@@ -10,25 +10,32 @@ import {
 import { verifyChip } from '@support/steward/shared-functions/verify-chip';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
-import { withTags, Tag } from '@support/tags';
+import {
+  verifyNoInputsTest,
+  verifyNoGiftReasonTest,
+  verifyValidGiftTest,
+  verifyTooManyCreditsTest,
+  verifyTooManyWheelSpinsTest,
+  verifyTooManySuperWheelSpinsTest,
+} from './shared-tests';
 
-context('Steward / Tools / Gifting / Sunrise', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
+const defaultUser = RetailUsers['testing1'];
+
+context('Steward / Tools / Gifting / Sunrise', () => {
+  before(() => {
     login();
-
     disableFakeApi();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectSunrise();
-      searchByGtag(RetailUsers['jordan'].gtag);
+      searchByGtag(defaultUser.gtag);
       waitForProgressSpinners();
     });
 
-    verifyChip(RetailUsers['jordan'].gtag);
+    verifyChip(defaultUser.gtag);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -38,14 +45,14 @@ context('Steward / Tools / Gifting / Sunrise', withTags(Tag.UnitTestStyle), () =
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectSunrise();
-      searchByXuid(RetailUsers['jordan'].xuid);
+      searchByXuid(defaultUser.xuid);
       waitForProgressSpinners();
     });
 
-    verifyChip(RetailUsers['jordan'].xuid);
+    verifyChip(defaultUser.xuid);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -55,7 +62,7 @@ context('Steward / Tools / Gifting / Sunrise', withTags(Tag.UnitTestStyle), () =
   });
 
   context('GroupId Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectSunrise();
       selectLspGroup('Live Ops Developers');
@@ -69,81 +76,3 @@ context('Steward / Tools / Gifting / Sunrise', withTags(Tag.UnitTestStyle), () =
     verifyValidGiftTest();
   });
 });
-
-function verifyTooManyCreditsTest(): void {
-  it(
-    'should not be able to gift with too many credits in gift basket',
-    withTags(Tag.Broken),
-    () => {
-      // Setup gift with too many credits
-      cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
-      cy.contains('mat-option', 'Credits').click();
-      cy.contains('mat-form-field', 'Quantity').click().clear().type('600000000'); // 600,000,000
-      cy.contains('button', 'Add Item').click();
-      // Select gift reason
-      cy.contains('mat-form-field', 'Gift Reason').click();
-      cy.contains('mat-option', 'Community Gift').click();
-
-      // Expect
-      cy.contains('button', 'Send Gift', { matchCase: false }).should(
-        'have.class',
-        'mat-button-disabled',
-      );
-      cy.contains('mat-error', 'Credit limit for a gift is 500,000,000.', {
-        matchCase: false,
-      }).should('exist');
-    },
-  );
-}
-
-function verifyTooManyWheelSpinsTest(): void {
-  it(
-    'should not be able to gift with too many wheel spins in gift basket',
-    withTags(Tag.Broken),
-    () => {
-      // Setup gift with too many credits
-      cy.contains('mat-form-field', 'Search for an item').click().type('WheelSpins');
-      cy.contains('mat-option', 'WheelSpins').click();
-      cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
-      cy.contains('button', 'Add Item').click();
-      // Select gift reason
-      cy.contains('mat-form-field', 'Gift Reason').click();
-      cy.contains('mat-option', 'Community Gift').click();
-
-      // Expect
-      cy.contains('button', 'Send Gift', { matchCase: false }).should(
-        'have.class',
-        'mat-button-disabled',
-      );
-      cy.contains('mat-error', 'Wheel Spin limit for a gift is 200.', { matchCase: false }).should(
-        'exist',
-      );
-    },
-  );
-}
-
-function verifyTooManySuperWheelSpinsTest(): void {
-  it(
-    'should not be able to gift with too many super wheel spins in gift basket',
-    withTags(Tag.Broken),
-    () => {
-      // Setup gift with too many credits
-      cy.contains('mat-form-field', 'Search for an item').click().type('SuperWheelSpins');
-      cy.contains('mat-option', 'SuperWheelSpins').click();
-      cy.contains('mat-form-field', 'Quantity').click().clear().type('201');
-      cy.contains('button', 'Add Item').click();
-      // Select gift reason
-      cy.contains('mat-form-field', 'Gift Reason').click();
-      cy.contains('mat-option', 'Community Gift').click();
-
-      // Expect
-      cy.contains('button', 'Send Gift', { matchCase: false }).should(
-        'have.class',
-        'mat-button-disabled',
-      );
-      cy.contains('mat-error', 'Wheel Spin limit for a gift is 200.', { matchCase: false }).should(
-        'exist',
-      );
-    },
-  );
-}

@@ -7,7 +7,7 @@
   >
     <div class="tile-aspect"></div>
     <div class="tile-content">
-      <mat-card>
+      <mat-card class="tour-element-highlighted">
         <mat-card-header
           *ngIf="!item.tileActionComponent"
           [routerLink]="parentRoute + item.tool"
@@ -77,6 +77,10 @@
             ></span>
           </span>
         </mat-card-actions>
+        <span
+          class="tour-highlight-buffer"
+          [tourAnchor]="isFirst ? 'home-tour.step.four' : ''"
+        ></span>
       </mat-card>
     </div>
   </div>

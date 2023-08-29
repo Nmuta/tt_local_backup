@@ -13,6 +13,16 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Setup PlayFab build locks for Forte Dev environment',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BountyDetails },
+      uuid: '6eca390d-1d90-4b4a-8727-b65fff0503eb',
+      shortText: 'Add new tool to view bounty details',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
+      shortText: 'Implemented new user tour guides',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e298bf3d-042c-429f-bc33-49de2bd3cfbb',
       shortText: 'Fix Component Governance issues',
@@ -322,11 +332,6 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
       shortText: 'Implemented new deeplink destination type',
-    },
-    {
-      tag: ChangelogTag.General,
-      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
-      shortText: 'Implemented new user tour guides',
     },
   ],
 };
