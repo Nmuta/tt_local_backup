@@ -50,7 +50,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 serviceEntry?.FeatureArea ?? liveOpsEntry?.FeatureArea,
                 serviceEntry?.Reason ?? liveOpsEntry?.Reason,
                 liveOpsEntry?.BanParameters ?? serviceEntry?.BanParameters,
-                serviceEntry?.Endpoint ?? liveOpsEntry?.Endpoint);
+                serviceEntry?.Endpoint ?? liveOpsEntry?.Endpoint,
+                null);
 
             resultEntry.IsActive = serviceEntry?.IsActive ?? false;
             resultEntry.CountOfTimesExtended = serviceEntry?.CountOfTimesExtended ?? liveOpsEntry.CountOfTimesExtended;

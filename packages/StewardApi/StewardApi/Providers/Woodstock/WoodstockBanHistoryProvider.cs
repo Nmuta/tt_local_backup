@@ -59,8 +59,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             banParameters.ShouldNotBeNull(nameof(banParameters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            banParameters.CreatedTimeUtc = DateTime.UtcNow;
-
             var banHistory = new LiveOpsBanHistory(
                 (long)xuid,
                 banEntryId,
@@ -71,7 +69,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 featureAreas,
                 banParameters.Reason,
                 banParameters.ToJson(),
-                endpoint);
+                endpoint,
+                DateTime.UtcNow);
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
             var tableName = "BanHistory";

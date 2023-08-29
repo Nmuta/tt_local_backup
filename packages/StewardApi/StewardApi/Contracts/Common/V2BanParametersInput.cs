@@ -46,10 +46,5 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets a value indicating whether to ban all user's devices.
         /// </summary>
         public bool? OverrideBanConsoles { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the created time of the ban.
-        /// </summary>
-        public DateTime? CreatedTimeUtc { get; set; }
     }
 }
