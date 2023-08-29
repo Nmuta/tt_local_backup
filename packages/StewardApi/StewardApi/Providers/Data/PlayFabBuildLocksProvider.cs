@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             return this.mapper.SafeMap<IList<PlayFabBuildLock>>(result);
         }
 
-        public async Task<PlayFabBuildLock> DeleteAsync(string environment, Guid buildId)
+        private async Task<PlayFabBuildLock> DeleteAsync(string environment, Guid buildId)
         {
             var existingBuildLock = await this.GetAsync(buildId).ConfigureAwait(true);
             var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
