@@ -10,28 +10,39 @@ interface FakeBigNumberParams {
 export function fakeBigNumber(
   params: FakeBigNumberParams = { min: Number.MAX_SAFE_INTEGER },
 ): BigNumber {
-  const min = new BigNumber(params.min ?? 0);
-  const max = params.max ? new BigNumber(params.max) : undefined;
-  let result = min;
+  try {
+    const min = new BigNumber(params.min ?? 0);
+    const max = params.max ? new BigNumber(params.max) : undefined;
+    let result = min;
 
-  if (max) {
-    const ACCUMULATOR_STEP_NUMBER = Number.MAX_SAFE_INTEGER;
-    const ACCUMULATOR_STEP_BIGINT = new BigNumber(ACCUMULATOR_STEP_NUMBER);
-    let difference = max.minus(min);
+    if (max) {
+      // setup
+      const ACCUMULATOR_STEP_NUMBER = Number.MAX_SAFE_INTEGER;
+      const ACCUMULATOR_STEP_BIGINT = new BigNumber(ACCUMULATOR_STEP_NUMBER);
+      let difference = max.minus(min);
 
-    if (difference < ZERO) {
-      throw new Error(`Max must be greater than min. ${min} > ${max}`);
+      // validation
+      if (difference < ZERO) {
+        throw new Error(`Max must be greater than min. ${min} > ${max}`);
+      }
+
+      // handle large differences
+      do {
+        result = result.plus(new BigNumber(faker.datatype.number(ACCUMULATOR_STEP_NUMBER)));
+        difference = difference.minus(ACCUMULATOR_STEP_BIGINT);
+      } while (difference > ACCUMULATOR_STEP_BIGINT);
+
+      // handle any remaining difference
+      if (difference > ZERO) {
+        result = result.plus(new BigNumber(faker.datatype.number(Number(difference))));
+      }
+    } else {
+      // no max was specified, so anything is fine as long as it's too big to fit into a regular Number
+      result = result.plus(new BigNumber(faker.datatype.number()));
     }
 
-    do {
-      result = result.plus(new BigNumber(faker.datatype.number(ACCUMULATOR_STEP_NUMBER)));
-      difference = difference.minus(ACCUMULATOR_STEP_BIGINT);
-    } while (difference > ACCUMULATOR_STEP_BIGINT);
-
-    result = result.plus(new BigNumber(faker.datatype.number(Number(difference))));
-  } else {
-    result = result.plus(new BigNumber(faker.datatype.number()));
+    return result;
+  } catch (ex) {
+    throw new Error('Error encountered while generating a fake BigNumber');
   }
-
-  return result;
 }

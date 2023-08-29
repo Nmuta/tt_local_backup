@@ -118,7 +118,7 @@ describe('PlayerSelectionBulkComponent', () => {
       const fakeGamertag = 'FakeGamertag';
 
       beforeEach(waitForAsync(() => {
-        component.add({ input: null, value: fakeGamertag });
+        component.add({ input: null, value: fakeGamertag, chipInput: null });
       }));
 
       it('should have value in lookupList', waitForAsync(() => {
