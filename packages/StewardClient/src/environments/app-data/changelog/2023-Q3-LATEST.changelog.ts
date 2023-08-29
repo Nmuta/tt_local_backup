@@ -8,6 +8,16 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BountyDetails },
+      uuid: '6eca390d-1d90-4b4a-8727-b65fff0503eb',
+      shortText: 'Add new tool to view bounty details',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
+      shortText: 'Implemented new user tour guides',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
       shortText: 'Update to Angular 14',
@@ -322,11 +332,6 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
       uuid: '9d55719a-b460-43e1-8b92-2f9b6f71474e',
       shortText: 'Implemented new deeplink destination type',
-    },
-    {
-      tag: ChangelogTag.General,
-      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
-      shortText: 'Implemented new user tour guides',
     },
   ],
 };
