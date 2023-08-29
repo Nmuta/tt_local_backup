@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Setup PlayFab build locks for Forte Dev environment',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'a5450e39-f141-4fe3-89de-23c9e558e212',
+      shortText: 'Only show home tour when app is in a valid state',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.BountyDetails },
       uuid: '6eca390d-1d90-4b4a-8727-b65fff0503eb',
       shortText: 'Add new tool to view bounty details',
