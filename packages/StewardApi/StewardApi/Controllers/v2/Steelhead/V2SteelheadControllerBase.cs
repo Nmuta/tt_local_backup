@@ -12,8 +12,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>Initializes a new instance of the <see cref="V2SteelheadControllerBase"/> class.</summary>
         protected V2SteelheadControllerBase()
         {
-            this.SteelheadServicesWithProdLiveStewardCms = new Lazy<SteelheadProxyBundle>(() => this.ResolveSteelheadBundle("steelheadProdLiveStewardProxyBundle"));
-            this.SteelheadServicesWithDevLiveStewardCms = new Lazy<SteelheadProxyBundle>(() => this.ResolveSteelheadBundle("steelheadDevLiveStewardProxyBundle"));
+            this.SteelheadServicesWithProdLiveCms = new Lazy<SteelheadProxyBundle>(() => this.ResolveSteelheadBundle("steelheadProdLiveProxyBundle"));
+            this.SteelheadServicesWithDevLiveCms = new Lazy<SteelheadProxyBundle>(() => this.ResolveSteelheadBundle("steelheadDevLiveProxyBundle"));
         }
 
         /// <summary>Gets the Steelhead proxy service.</summary>
@@ -21,22 +21,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             get
             {
-                // Default to prod live-steward cms override unless provided endpoint points to studio
+                // Default to prod live cms override unless provided endpoint points to studio
                 var endpoint = this.SteelheadEndpoint.Value;
                 if (endpoint == SteelheadContracts.SteelheadEndpoint.Studio)
                 {
-                    return this.SteelheadServicesWithDevLiveStewardCms.Value;
+                    return this.SteelheadServicesWithDevLiveCms.Value;
                 }
 
-                return this.SteelheadServicesWithProdLiveStewardCms.Value;
+                return this.SteelheadServicesWithProdLiveCms.Value;
             }
         }
 
-        /// <summary>Gets or sets the (lazily) the Steelhead services with prod live-steward cms override.</summary>
-        protected Lazy<SteelheadProxyBundle> SteelheadServicesWithProdLiveStewardCms { get; set; }
+        /// <summary>Gets or sets the (lazily) the Steelhead services with prod live cms override.</summary>
+        protected Lazy<SteelheadProxyBundle> SteelheadServicesWithProdLiveCms { get; set; }
 
-        /// <summary>Gets or sets the (lazily) the Steelhead services  with dev live-steward cms override.</summary>
-        protected Lazy<SteelheadProxyBundle> SteelheadServicesWithDevLiveStewardCms { get; set; }
+        /// <summary>Gets or sets the (lazily) the Steelhead services  with dev live cms override.</summary>
+        protected Lazy<SteelheadProxyBundle> SteelheadServicesWithDevLiveCms { get; set; }
 
         /// <summary>Ensures all provided xuids are valid, else throws error.</summary>
         [Obsolete("Use services.EnsurePlayersExistAsync(...)")]
