@@ -8,9 +8,8 @@ describe('RedirectionLandingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RedirectionLandingComponent ]
-    })
-    .compileComponents();
+      declarations: [RedirectionLandingComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RedirectionLandingComponent);
     component = fixture.componentInstance;

@@ -80,13 +80,17 @@ export class DatetimeRangePickerComponent
       start: new UntypedFormControl(
         this.defaults.dateRange.start /** Date controls are always required */,
       ),
-      end: new UntypedFormControl(this.defaults.dateRange.end /** Date controls are always required */),
+      end: new UntypedFormControl(
+        this.defaults.dateRange.end /** Date controls are always required */,
+      ),
     },
     timeRange: {
       start: new UntypedFormControl(
         this.defaults.timeRange.start /** Date controls are always required */,
       ),
-      end: new UntypedFormControl(this.defaults.timeRange.end /** Date controls are always required */),
+      end: new UntypedFormControl(
+        this.defaults.timeRange.end /** Date controls are always required */,
+      ),
     },
   };
 

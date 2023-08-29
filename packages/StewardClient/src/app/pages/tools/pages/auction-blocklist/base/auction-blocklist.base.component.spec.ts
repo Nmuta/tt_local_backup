@@ -92,12 +92,12 @@ describe('AuctionBlocklistBaseComponent', () => {
       expect((component.formArray.controls[0] as UntypedFormGroup).controls.carId.value).toEqual(
         auctionBlocklistEntries[0].carId,
       );
-      expect((component.formArray.controls[1] as UntypedFormGroup).controls.doesExpire.value).toEqual(
-        auctionBlocklistEntries[1].doesExpire,
-      );
-      expect((component.formArray.controls[2] as UntypedFormGroup).controls.expireDateUtc.value).toEqual(
-        auctionBlocklistEntries[2].expireDateUtc.toISO(),
-      );
+      expect(
+        (component.formArray.controls[1] as UntypedFormGroup).controls.doesExpire.value,
+      ).toEqual(auctionBlocklistEntries[1].doesExpire);
+      expect(
+        (component.formArray.controls[2] as UntypedFormGroup).controls.expireDateUtc.value,
+      ).toEqual(auctionBlocklistEntries[2].expireDateUtc.toISO());
     });
 
     it('Should populate the table blocklist', () => {

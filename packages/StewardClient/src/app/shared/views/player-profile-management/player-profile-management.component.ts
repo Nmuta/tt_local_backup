@@ -126,7 +126,10 @@ export class PlayerProfileManagementComponent extends BaseComponent implements O
       this.resetFormDefaults.resetRaceRankingData,
       Validators.required,
     ),
-    resetStatsData: new UntypedFormControl(this.resetFormDefaults.resetStatsData, Validators.required),
+    resetStatsData: new UntypedFormControl(
+      this.resetFormDefaults.resetStatsData,
+      Validators.required,
+    ),
     resetTrueSkillData: new UntypedFormControl(
       this.resetFormDefaults.resetTrueSkillData,
       Validators.required,

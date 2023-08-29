@@ -50,7 +50,9 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
 
   public formControls = {
     baseTile: new UntypedFormControl(null),
-    localizedPopupTitle: new UntypedFormControl({ value: {}, disabled: true }, [Validators.required]),
+    localizedPopupTitle: new UntypedFormControl({ value: {}, disabled: true }, [
+      Validators.required,
+    ]),
     localizedPopupDescription: new UntypedFormControl({ value: {}, disabled: true }, [
       Validators.required,
     ]),

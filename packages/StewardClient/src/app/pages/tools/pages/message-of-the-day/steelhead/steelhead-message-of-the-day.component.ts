@@ -43,10 +43,14 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
 
   public formControls = {
     selectedMessageOfTheDay: new UntypedFormControl(null, [Validators.required]),
-    localizedTitleHeader: new UntypedFormControl({ value: {}, disabled: true }, [Validators.required]),
+    localizedTitleHeader: new UntypedFormControl({ value: {}, disabled: true }, [
+      Validators.required,
+    ]),
     date: new UntypedFormControl({}, [Validators.required]),
     localizedContentHeader: new UntypedFormControl({ value: {}, disabled: true }),
-    localizedContentBody: new UntypedFormControl({ value: {}, disabled: true }, [Validators.required]),
+    localizedContentBody: new UntypedFormControl({ value: {}, disabled: true }, [
+      Validators.required,
+    ]),
     contentImagePath: new UntypedFormControl(null, [Validators.required]),
   };
 

@@ -104,9 +104,13 @@ export class GeneralTileComponent extends BaseComponent {
 
   public formControls = {
     size: new UntypedFormControl(null, [Validators.required]),
-    localizedTileTitle: new UntypedFormControl({ value: {}, disabled: true }, [Validators.required]),
+    localizedTileTitle: new UntypedFormControl({ value: {}, disabled: true }, [
+      Validators.required,
+    ]),
     localizedTileType: new UntypedFormControl({ value: {}, disabled: true }),
-    localizedTileDescription: new UntypedFormControl({ value: {}, disabled: true }, [Validators.required]),
+    localizedTileDescription: new UntypedFormControl({ value: {}, disabled: true }, [
+      Validators.required,
+    ]),
     tileImagePath: new UntypedFormControl(null),
     timerInstance: new UntypedFormControl(),
     timerLocalizedStartTextOverride: new UntypedFormControl({ value: {}, disabled: true }),

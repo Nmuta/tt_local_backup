@@ -17,6 +17,7 @@ describe('ReleaseManagementComponent', () => {
   let component: ReleaseManagementComponent;
   let fixture: ComponentFixture<ReleaseManagementComponent>;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockBlobStorageService: BlobStorageService;
 
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
@@ -47,7 +48,6 @@ describe('ReleaseManagementComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mockBlobStorageService = TestBed.inject(BlobStorageService);
   });
 

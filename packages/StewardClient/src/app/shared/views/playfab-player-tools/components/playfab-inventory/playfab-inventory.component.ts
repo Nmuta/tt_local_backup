@@ -63,7 +63,11 @@ export class PlayFabInventoryComponent extends BaseComponent implements OnChange
   @Output() inventoryChangeEvent = new EventEmitter<void>();
 
   public currencyFormControls = {
-    amount: new UntypedFormControl('', [Validators.required, Validators.min(0), Validators.max(10)]),
+    amount: new UntypedFormControl('', [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(10),
+    ]),
   };
 
   public getInventoryMonitor = new ActionMonitor('Get PlayFab inventory');

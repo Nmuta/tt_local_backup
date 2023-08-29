@@ -177,7 +177,9 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
     checkboxes: {
       banAllXboxes: new UntypedFormControl(this.defaults.checkboxes.banAllXboxes),
       banAllPCs: new UntypedFormControl(this.defaults.checkboxes.banAllPCs),
-      deleteLeaderboardEntries: new UntypedFormControl(this.defaults.checkboxes.deleteLeaderboardEntries),
+      deleteLeaderboardEntries: new UntypedFormControl(
+        this.defaults.checkboxes.deleteLeaderboardEntries,
+      ),
     },
   };
 

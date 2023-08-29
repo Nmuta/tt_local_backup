@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { JsonTableResult } from '@models/json-table-result';
 import { KustoQuery } from '@models/kusto/kusto-query';

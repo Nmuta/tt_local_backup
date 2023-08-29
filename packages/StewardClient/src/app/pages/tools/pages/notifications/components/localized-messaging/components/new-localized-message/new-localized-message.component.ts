@@ -55,7 +55,9 @@ export class NewLocalizedMessageComponent implements OnChanges {
     localizedMessageInfo: new UntypedFormControl({}, [Validators.required]),
     dateRange: new UntypedFormControl(this.dateRange, [Validators.required]),
     deviceType: new UntypedFormControl(DeviceType.All, [Validators.required]),
-    notificationType: new UntypedFormControl(NotificationType.CommunityMessage, [Validators.required]),
+    notificationType: new UntypedFormControl(NotificationType.CommunityMessage, [
+      Validators.required,
+    ]),
   };
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);

@@ -30,8 +30,16 @@ export class DriverLevelComponent extends BaseComponent implements OnChanges {
   @Input() xuid: BigNumber;
 
   public formControls = {
-    driverLevel: new UntypedFormControl('', [Validators.required, Validators.min(1), Validators.max(999)]),
-    prestigeRank: new UntypedFormControl('', [Validators.required, Validators.min(0), Validators.max(9)]),
+    driverLevel: new UntypedFormControl('', [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(999),
+    ]),
+    prestigeRank: new UntypedFormControl('', [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(9),
+    ]),
     experiencePoints: new UntypedFormControl({ value: '', disabled: true }, Validators.required),
   };
 

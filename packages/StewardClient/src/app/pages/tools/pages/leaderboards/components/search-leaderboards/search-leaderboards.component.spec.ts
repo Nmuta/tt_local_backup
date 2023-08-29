@@ -24,6 +24,7 @@ describe('SearchLeaderboardsComponent', () => {
   let component: SearchLeaderboardsComponent;
   let fixture: ComponentFixture<SearchLeaderboardsComponent>;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockBlobStorageService: BlobStorageService;
   const mockService: SearchLeaderboardsContract = {
     getLeaderboards$: () => {
@@ -75,7 +76,10 @@ describe('SearchLeaderboardsComponent', () => {
         PipesModule,
       ],
       declarations: [SearchLeaderboardsComponent, HumanizePipe],
-      providers: [createMockBlobStorageService(), { provide: UntypedFormBuilder, useValue: formBuilder }],
+      providers: [
+        createMockBlobStorageService(),
+        { provide: UntypedFormBuilder, useValue: formBuilder },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchLeaderboardsComponent);
@@ -83,7 +87,6 @@ describe('SearchLeaderboardsComponent', () => {
 
     component.service = mockService;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mockBlobStorageService = TestBed.inject(BlobStorageService);
   });
 

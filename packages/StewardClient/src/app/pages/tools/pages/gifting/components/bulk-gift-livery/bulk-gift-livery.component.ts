@@ -111,7 +111,9 @@ export class BulkGiftLiveryComponent<IdentityT extends IdentityResultUnion>
     localizedBodyMessageInfo: new UntypedFormControl({}, [Validators.required]),
     livery: new UntypedFormControl(null, [Validators.required]),
     giftReason: new UntypedFormControl('', [Validators.required]),
-    expireDate: new UntypedFormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
+    expireDate: new UntypedFormControl(null, [
+      DateValidators.isAfter(DateTime.local().startOf('day')),
+    ]),
     hasExpirationDate: new UntypedFormControl(false),
   };
   public formGroup = new UntypedFormGroup(this.formControls);

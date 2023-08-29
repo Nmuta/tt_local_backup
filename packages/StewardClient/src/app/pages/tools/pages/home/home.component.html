@@ -8,7 +8,7 @@
           class="filter-type-{{ filter.type }}"
           (removed)="removeFilter(filter)"
         >
-          {{ filter.type | humanize }}:{{ filter.value | gameTitleAbbreviation: true }}
+          {{ filter.type | humanize }}:{{ filter.value | gameTitleAbbreviation : true }}
           <button matChipRemove>
             <mat-icon>cancel</mat-icon>
           </button>
@@ -31,7 +31,7 @@
         </mat-optgroup>
         <mat-optgroup label="Title">
           <mat-option *ngFor="let chip of titleFilterOptions | async" [value]="chip">
-            {{ chip.value | gameTitleAbbreviation: true }}
+            {{ chip.value | gameTitleAbbreviation : true }}
           </mat-option>
         </mat-optgroup>
       </mat-autocomplete>

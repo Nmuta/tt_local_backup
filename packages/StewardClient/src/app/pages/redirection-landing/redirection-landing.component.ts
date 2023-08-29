@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component } from '@angular/core';
 
 /**
  * Angular 14 requires all routes have an attached component.
@@ -8,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-redirection-landing',
   templateUrl: './redirection-landing.component.html',
-  styleUrls: ['./redirection-landing.component.scss']
+  styleUrls: ['./redirection-landing.component.scss'],
 })
 export class RedirectionLandingComponent {
   // TODO: Make this responsible for redirecting rather than `externalUrlRedirectResolver`

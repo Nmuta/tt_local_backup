@@ -25,7 +25,9 @@ export class RacersCupInputsComponent {
     daysForward: new UntypedFormControl(30, [Validators.required, Validators.min(1)]),
     identity: new UntypedFormControl(null, [Validators.required]),
   };
-  public identityCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(this.identityFormControls);
+  public identityCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(
+    this.identityFormControls,
+  );
 
   public pegasusFormControls = {
     daysForward: new UntypedFormControl(30, [Validators.required, Validators.min(1)]),
@@ -33,7 +35,9 @@ export class RacersCupInputsComponent {
     pegasusSlot: new UntypedFormControl(null),
     pegasusSnapshot: new UntypedFormControl(null),
   };
-  public pegasusCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(this.pegasusFormControls);
+  public pegasusCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(
+    this.pegasusFormControls,
+  );
 
   /** Produces a rejection message from a given identity, if it is rejected. */
   public identityRejectionFn(identity: AugmentedCompositeIdentity): string {

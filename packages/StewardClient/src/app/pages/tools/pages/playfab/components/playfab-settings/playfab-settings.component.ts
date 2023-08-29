@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { PlayFabSettings } from '@models/blob-storage';
 import { BlobStorageService } from '@services/blob-storage';

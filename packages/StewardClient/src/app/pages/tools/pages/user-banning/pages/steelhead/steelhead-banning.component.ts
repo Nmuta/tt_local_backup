@@ -68,7 +68,9 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent implemen
 
   public options: DurationOption[] = BanOverrideDurationOptions;
   public overrideFormControls = {
-    overrideBanDuration: new UntypedFormControl({ value: null, disabled: true }, [Validators.required]),
+    overrideBanDuration: new UntypedFormControl({ value: null, disabled: true }, [
+      Validators.required,
+    ]),
     permaBan: new UntypedFormControl({ value: false, disabled: true }),
     deviceBan: new UntypedFormControl({ value: false, disabled: true }),
   };

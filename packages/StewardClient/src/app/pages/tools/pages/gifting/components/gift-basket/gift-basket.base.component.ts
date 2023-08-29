@@ -95,7 +95,9 @@ export abstract class GiftBasketBaseComponent<
     localizedTitleMessageInfo: new UntypedFormControl({}, [Validators.required]),
     localizedBodyMessageInfo: new UntypedFormControl({}, [Validators.required]),
     giftReason: new UntypedFormControl('', [Validators.required]),
-    expireDate: new UntypedFormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
+    expireDate: new UntypedFormControl(null, [
+      DateValidators.isAfter(DateTime.local().startOf('day')),
+    ]),
     hasExpirationDate: new UntypedFormControl(false),
   };
   public sendGiftForm = new UntypedFormGroup(this.formControls);
