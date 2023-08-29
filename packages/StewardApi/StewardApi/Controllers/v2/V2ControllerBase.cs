@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2
             this.SunriseEndpoint = new Lazy<string>(() => this.GetSunriseEndpoint());
             this.ApolloEndpoint = new Lazy<string>(() => this.GetApolloEndpoint());
 
-            this.SteelheadServices = new Lazy<SteelheadProxyBundle>(() => this.ResolveSteelheadBundle("steelheadProdLiveStewardProxyBundle"));
+            this.SteelheadServices = new Lazy<SteelheadProxyBundle>(() => this.ResolveSteelheadBundle("steelheadProdLiveProxyBundle"));
 
             this.WoodstockServices = new Lazy<WoodstockProxyBundle>(() => this.ResolveWoodstockBundle("woodstockProdLiveStewardProxyBundle"));
 
