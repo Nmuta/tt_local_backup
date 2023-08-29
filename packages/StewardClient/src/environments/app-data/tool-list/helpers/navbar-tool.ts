@@ -21,6 +21,7 @@ export enum NavbarTool {
   WelcomeCenterCalendar = 'welcome-center-calendar',
   PlayFab = 'playfab',
   SearchBounty = 'search-bounty',
+  BountyDetails = 'bounty-details',
 
   AdminPagesSelector = 'admin-selector',
 
