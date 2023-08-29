@@ -10,25 +10,25 @@ import {
 import { verifyChip } from '@support/steward/shared-functions/verify-chip';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
-import { withTags, Tag } from '@support/tags';
+import {
+  verifyNoInputsTest,
+  verifyNoGiftReasonTest,
+  verifyValidGiftTest,
+  verifyTooManyCreditsTest,
+} from './shared-tests';
 
-context('Steward / Tools / Gifting / Apollo', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
+context('Steward / Tools / Gifting / Apollo', () => {
+  before(() => {
     login();
-
     disableFakeApi();
+    goToTool();
+    selectApollo();
+    searchByGtag(RetailUsers['testing1'].gtag);
+    waitForProgressSpinners();
   });
 
   context('GTAG Lookup', () => {
-    beforeEach(() => {
-      goToTool();
-      selectApollo();
-      searchByGtag(RetailUsers['jordan'].gtag);
-      waitForProgressSpinners();
-    });
-
-    verifyChip(RetailUsers['jordan'].gtag);
+    verifyChip(RetailUsers['testing1'].gtag);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -36,14 +36,12 @@ context('Steward / Tools / Gifting / Apollo', withTags(Tag.UnitTestStyle), () =>
   });
 
   context('XUID Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectApollo();
-      searchByXuid(RetailUsers['jordan'].xuid);
-      waitForProgressSpinners();
+      searchByXuid(RetailUsers['testing1'].xuid);
     });
-
-    verifyChip(RetailUsers['jordan'].xuid);
+    verifyChip(RetailUsers['testing1'].xuid);
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
@@ -51,41 +49,14 @@ context('Steward / Tools / Gifting / Apollo', withTags(Tag.UnitTestStyle), () =>
   });
 
   context('GroupId Lookup', () => {
-    beforeEach(() => {
+    before(() => {
       goToTool();
       selectApollo();
       selectLspGroup('Live Ops Developers');
     });
-
     verifyNoInputsTest();
     verifyNoGiftReasonTest();
     verifyTooManyCreditsTest();
     verifyValidGiftTest();
   });
 });
-
-function verifyTooManyCreditsTest(): void {
-  it(
-    'should not be able to gift with too many credits in gift basket',
-    withTags(Tag.Broken),
-    () => {
-      // Setup gift with too many credits
-      cy.contains('mat-form-field', 'Search for an item').click().type('Credits');
-      cy.contains('mat-option', 'Credits').click();
-      cy.contains('mat-form-field', 'Quantity').click().clear().type('600000000'); // 600,000,000
-      cy.contains('button', 'Add Item').click();
-      // Select gift reason
-      cy.contains('mat-form-field', 'Gift Reason').click();
-      cy.contains('mat-option', 'Community Gift').click();
-
-      // Expect
-      cy.contains('button', 'Send Gift', { matchCase: false }).should(
-        'have.class',
-        'mat-button-disabled',
-      );
-      cy.contains('mat-error', 'Credit limit for a gift is 500,000,000.', {
-        matchCase: false,
-      }).should('exist');
-    },
-  );
-}
