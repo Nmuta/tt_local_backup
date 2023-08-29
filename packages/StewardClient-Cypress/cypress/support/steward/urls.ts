@@ -62,11 +62,11 @@ export const stewardUrls = {
       woodstock: '/app/tools/leaderboards/woodstock',
     },
     userGroupManagement: {
-      default: 'app/tools/user-group-management',
-      steelhead: 'app/tools/user-group-management/steelhead',
-      woodstock: 'app/tools/user-group-management/woodstock',
-      sunrise: 'app/tools/user-group-management/sunrise',
-      apollo: 'app/tools/user-group-management/apollo',
+      default: '/app/tools/user-group-management',
+      steelhead: '/app/tools/user-group-management/steelhead',
+      woodstock: '/app/tools/user-group-management/woodstock',
+      sunrise: '/app/tools/user-group-management/sunrise',
+      apollo: '/app/tools/user-group-management/apollo',
     },
     ugcDetails: {
       default: '/app/tools/ugc-details',
@@ -75,30 +75,30 @@ export const stewardUrls = {
       sunrise: '/app/tools/ugc-details/sunrise',
     },
     createAuction: {
-      default: 'app/tools/create-auction',
-      woodstock: 'app/tools/create-auction/woodstock',
+      default: '/app/tools/create-auction',
+      woodstock: '/app/tools/create-auction/woodstock',
     },
     messageOfTheDay: {
-      default: 'app/tools/message-of-the-day',
-      steelhead: 'app/tools/message-of-the-day/steelhead',
+      default: '/app/tools/message-of-the-day',
+      steelhead: '/app/tools/message-of-the-day/steelhead',
     },
     welcomeCenterTiles: {
-      default: 'app/tools/welcome-center-tiles',
-      steelhead: 'app/tools/welcome-center-tiles/steelhead',
+      default: '/app/tools/welcome-center-tiles',
+      steelhead: '/app/tools/welcome-center-tiles/steelhead',
     },
     auctionDetails: {
-      default: 'app/tools/auction-details',
-      woodstock: 'app/tools/auction-details/woodstock',
-      sunrise: 'app/tools/auction-details/sunrise',
+      default: '/app/tools/auction-details',
+      woodstock: '/app/tools/auction-details/woodstock',
+      sunrise: '/app/tools/auction-details/sunrise',
     },
     servicesTableStorage: {
-      default: 'app/tools/services-table-storage',
-      woodstock: 'app/tools/services-table-storage/woodstock',
-      steelhead: 'app/tools/services-table-storage/steelhead',
+      default: '/app/tools/services-table-storage',
+      woodstock: '/app/tools/services-table-storage/woodstock',
+      steelhead: '/app/tools/services-table-storage/steelhead',
     },
     playfab: {
-      default: 'app/tools/playfab',
-      woodstock: 'app/tools/playfab/woodstock',
+      default: '/app/tools/playfab',
+      woodstock: '/app/tools/playfab/woodstock',
     },
     lspTasks: {
       default: '/app/tools/lsp-tasks',
@@ -113,7 +113,7 @@ export const stewardUrls = {
       default: '/app/tools/steward-management',
     },
     permissionManagement: {
-      default: 'app/tools/permission-management',
+      default: '/app/tools/permission-management',
     },
     productPricing: {
       default: '/app/tools/product-pricing',
@@ -123,7 +123,7 @@ export const stewardUrls = {
       steelhead: '/app/tools/ac-log-reader/steelhead',
     },
     calendar: {
-      default: 'app/tools/unified-calendar',
+      default: '/app/tools/unified-calendar',
     },
   },
 };

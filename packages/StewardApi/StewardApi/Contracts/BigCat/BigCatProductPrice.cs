@@ -18,13 +18,5 @@ namespace Turn10.LiveOps.StewardApi.Contracts.BigCat
         public string WholesaleCurrencyCode { get; set; }
 
         public double? WholesalePrice { get; set; }
-
-        /// <summary>
-        ///     Builds cache key for Big Cat Product Price info.
-        /// </summary>
-        public static string BuildCacheKey(string productId)
-        {
-            return $"BigCatProductPrice_{productId}";
-        }
     }
 }

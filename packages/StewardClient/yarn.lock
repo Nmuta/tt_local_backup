@@ -2256,11 +2256,6 @@
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/lodash/-/lodash-4.14.180.tgz#4ab7c9ddfc92ec4a887886483bc14c79fb380670"
   integrity sha1-SrfJ3fyS7EqIeIZIO8FMefs4BnA=
 
-"@types/luxon@1.11.1":
-  version "1.11.1"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/luxon/-/luxon-1.11.1.tgz#819d730cf8ada52bec9c4a1d94347d1250f22c5d"
-  integrity sha1-gZ1zDPitpSvsnEodlDR9ElDyLF0=
-
 "@types/mime@^1":
   version "1.3.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
@@ -6877,11 +6872,6 @@ luxon-angular@^5.0.0:
   dependencies:
     tslib "^2.0.0"
 
-luxon@1.24.0:
-  version "1.24.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/luxon/-/luxon-1.24.0.tgz#6db04b79ec8f7159973d4dcf21871fd6acfb3d58"
-  integrity sha1-bbBLeeyPcVmXPU3PIYcf1qz7PVg=
-
 luxon@^2.5.2:
   version "2.5.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/luxon/-/luxon-2.5.2.tgz#17ed497f0277e72d58a4756d6a9abee4681457b6"
@@ -7270,20 +7260,33 @@ ngx-material-luxon@^1.1.1:
   dependencies:
     tslib "^2.0.0"
 
-ngx-material-timepicker@^5.5.3:
-  version "5.5.3"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-material-timepicker/-/ngx-material-timepicker-5.5.3.tgz#9b65071e8f00477d37d1b0f825baf8fb5ea800db"
-  integrity sha1-m2UHHo8AR3030bD4Jbr4+16oANs=
+ngx-material-timepicker@^13.1.1:
+  version "13.1.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-material-timepicker/-/ngx-material-timepicker-13.1.1.tgz#1dade06660c6a7b9689840396b4ea5681ac0eb35"
+  integrity sha1-Ha3gZmDGp7lomEA5a06laBrA6zU=
   dependencies:
-    "@types/luxon" "1.11.1"
-    luxon "1.24.0"
-    tslib "^1.9.0"
+    tslib "^2.0.0"
 
 ngx-pipes@^2.7.6:
   version "2.7.8"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-pipes/-/ngx-pipes-2.7.8.tgz#c32270ef960d7f448b7766c2ad610e8bc3336ae6"
   integrity sha1-wyJw75YNf0SLd2bCrWEOi8MzauY=
   dependencies:
+    tslib "^2.0.0"
+
+ngx-ui-tour-core@8.0.1:
+  version "8.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-ui-tour-core/-/ngx-ui-tour-core-8.0.1.tgz#ddec51a17d733c48e17aefa333870d97bb050598"
+  integrity sha1-3exRoX1zPEjheu+jM4cNl7sFBZg=
+  dependencies:
+    tslib "^2.0.0"
+
+ngx-ui-tour-md-menu@8.0:
+  version "8.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-ui-tour-md-menu/-/ngx-ui-tour-md-menu-8.0.2.tgz#11de4da246542fb34d2a686bbfafbebca0018973"
+  integrity sha1-Ed5NokZUL7NNKmhrv6++vKABiXM=
+  dependencies:
+    ngx-ui-tour-core "8.0.1"
     tslib "^2.0.0"
 
 nice-napi@^1.0.2:

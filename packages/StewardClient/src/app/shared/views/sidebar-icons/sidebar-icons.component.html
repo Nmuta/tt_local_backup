@@ -1,4 +1,4 @@
-<span>
+<span class="tour-element-highlighted">
   <a
     [routerLink]="[{ outlets: { sidebar: 'changelog' } }]"
     queryParamsHandling="preserve"
@@ -7,6 +7,7 @@
     matTooltip="Changelog"
     #changelogLink
   >
+    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.three"></span>
     <mat-icon
       [matBadge]="changelogNotificationCount > 0 ? changelogNotificationCount : null"
       matBadgeColor="accent"
@@ -16,17 +17,18 @@
   </a>
 </span>
 <span class="short-spacer"></span>
-<span class="info">
+<span class="tour-element-highlighted">
   <a
     href="https://confluence.turn10studios.com/x/r4GiE"
     target="_blank"
     mat-icon-button
     matTooltip="Documentation"
   >
+    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.nine"></span>
     <mat-icon>info</mat-icon>
   </a>
 </span>
-<span>
+<span class="tour-element-highlighted">
   <a
     [routerLink]="[{ outlets: { sidebar: 'contactus' } }]"
     queryParamsHandling="preserve"
@@ -34,11 +36,12 @@
     routerLinkActive="stroked-icon-button"
     matTooltip="Contact Us"
   >
+    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.eight"></span>
     <mat-icon>contact_support</mat-icon>
   </a>
 </span>
 <span class="short-spacer"></span>
-<span>
+<span class="tour-element-highlighted">
   <a
     [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
     queryParamsHandling="preserve"
@@ -46,6 +49,7 @@
     routerLinkActive="stroked-icon-button"
     matTooltip="Settings"
   >
+    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.two"></span>
     <mat-icon
       [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
       matBadgeSize="small"

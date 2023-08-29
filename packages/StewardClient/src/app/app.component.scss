@@ -8,10 +8,20 @@ mat-drawer-container {
   flex-flow: column nowrap;
 }
 
-div {
+.cover {
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   position: absolute;
+}
+
+// used as an anchor for all centered tour elements
+.centered-tour {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  // these values were selected to roughly center typical ngx-ui-tour cards
+  transform: translate(-140px, -78px);
 }

@@ -55,6 +55,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<SteelheadLiveOpsContent.VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
+        ///     Gets tracks.
+        /// </summary>
+        Task<IEnumerable<Track>> GetTracksAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
+
+        /// <summary>
         ///     Gets playlist data for Racer's Cup.
         /// </summary>
         Task<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(
@@ -244,14 +249,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<LiveOpsContracts.CarSale>> GetCarSalesAsync();
 
         /// <summary>
-        ///     Gets Tracks.
-        /// </summary>
-        Task<SteelheadLiveOpsContent.Track[]> GetTracksAsync();
-
-        /// <summary>
         ///     Gets Rivals Events.
         /// </summary>
-        Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync();
+        Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync(string pegasusEnvironment = null);
 
         /// <summary>
         ///     Gets Rivals Events Reference.

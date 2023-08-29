@@ -182,5 +182,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Uploads UGC profile by xuid and profileId
         /// </summary>
         Task UploadUGCProfile(ulong xuid, Guid externalProfileId, string profileDataStr);
+
+        /// <summary>
+        ///     Get active bounties.
+        /// </summary>
+        Task<GetActiveBountiesOutput> GetActiveBounties(int startAt, int maxEntries);
     }
 }
