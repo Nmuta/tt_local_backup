@@ -139,6 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             var thresholdLeaderboardEntry = new ForzaRankedLeaderboardRow();
 
+            // If target is over 100, it means it's a xuid. Otherwise, it's a percentage value between 1 and 100.
             if (target > 100)
             {
                 var searchParams = new ForzaSearchLeaderboardsParametersV2()
