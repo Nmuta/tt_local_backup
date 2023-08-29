@@ -51,7 +51,7 @@ export class DatetimePickerComponent
   implements ControlValueAccessor, Validator, AfterViewInit, OnChanges
 {
   private static readonly UTC_NOW = DateTime.utc();
-  /** REVIEW-COMMENT: Minimum date allowed. */
+  /** Minimum date allowed. */
   @Input() public min: DateTime | null = null;
   public calculatedMinTime: DateTime;
 

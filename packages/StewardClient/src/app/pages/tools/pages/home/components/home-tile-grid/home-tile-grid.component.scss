@@ -84,6 +84,9 @@
         // fixes vertical & horizontal overflow
         padding: 0;
 
+        // Fixes tour highting that purposefull overflows the content
+        overflow: hidden;
+
         // fixes vertical & horizontal overflow
         img[mat-card-image] {
           width: 100%;

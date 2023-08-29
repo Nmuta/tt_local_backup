@@ -30,6 +30,7 @@
     "run:dev-staging:exclude": "cypress run --config-file cypress/configs/dev-staging-exclude.config.ts",
     "run:prod": "cypress run --config-file cypress/configs/prod.config.ts",
     "run:prod-staging": "cypress run --config-file cypress/configs/prod-staging.config.ts",
+    "run:prod-staging:exclude": "cypress run --config-file cypress/configs/prod-staging-exclude.config.ts",
     "run:dev:parallel": "cypress-parallel -s run:dev -t 4 -d cypress/e2e",
     "run:changes-only": "bash ./scripts/execute-changed-specs.sh",
     "build": "yarn tsc",
