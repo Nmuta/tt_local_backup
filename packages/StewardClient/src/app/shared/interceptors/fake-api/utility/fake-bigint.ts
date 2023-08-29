@@ -27,15 +27,13 @@ export function fakeBigNumber(
       }
 
       // handle large differences
-      do {
+      while (difference > ACCUMULATOR_STEP_BIGINT) {
         result = result.plus(new BigNumber(faker.datatype.number(ACCUMULATOR_STEP_NUMBER)));
         difference = difference.minus(ACCUMULATOR_STEP_BIGINT);
-      } while (difference > ACCUMULATOR_STEP_BIGINT);
+      }
 
       // handle any remaining difference
-      if (difference > ZERO) {
-        result = result.plus(new BigNumber(faker.datatype.number(Number(difference))));
-      }
+      result = result.plus(new BigNumber(faker.datatype.number(Number(difference))));
     } else {
       // no max was specified, so anything is fine as long as it's too big to fit into a regular Number
       result = result.plus(new BigNumber(faker.datatype.number()));
