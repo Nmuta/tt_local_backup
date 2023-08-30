@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'a5450e39-f141-4fe3-89de-23c9e558e212',
+      shortText: 'Small fixes to home tour',
+      longText: [
+        'Only show home tour when app is in a valid state.',
+        'Allow buttons to be clickable under highlight buffer.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.BountyDetails },
       uuid: '6eca390d-1d90-4b4a-8727-b65fff0503eb',
       shortText: 'Add new tool to view bounty details',
