@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Setup PlayFab build locks for Forte Dev environment',
     },
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UgcDetails },
+      uuid: '4503257d-09b6-42fc-a973-9cb389c2184b',
+      shortText: 'Add ability to select report reason for report UGC',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'a5450e39-f141-4fe3-89de-23c9e558e212',
       shortText: 'Small fixes to home tour',
