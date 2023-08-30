@@ -15,7 +15,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: 'a5450e39-f141-4fe3-89de-23c9e558e212',
-      shortText: 'Only show home tour when app is in a valid state',
+      shortText: 'Small fixes to home tour',
+      longText: [
+        'Only show home tour when app is in a valid state.',
+        'Allow buttons to be clickable under highlight buffer.',
+      ],
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.BountyDetails },
