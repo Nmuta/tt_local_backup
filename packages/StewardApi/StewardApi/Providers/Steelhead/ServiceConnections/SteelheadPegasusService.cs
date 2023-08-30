@@ -725,7 +725,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var tracksKey = $"{PegasusBaseCacheKey}{environment}_{slot}_Tracks"; //TODO caching
+            var tracksKey = $"{PegasusBaseCacheKey}{environment}_{slot}_{snapshot ?? "current"}_Tracks"; //TODO caching
 
             async Task<IEnumerable<Track>> GetTracks()
             {
@@ -768,8 +768,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<RacersCupChampionships>(
                 CMSFileNames.RacersCupV4,
                 environment: environment,
-                    slot: slot,
-                    snapshot: snapshot).ConfigureAwait(false);
+                slot: slot,
+                snapshot: snapshot).ConfigureAwait(false);
 
             return scheduleData;
         }
@@ -797,7 +797,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             environment ??= this.defaultCmsEnvironment;
             slot ??= this.DefaultCmsSlot;
 
-            var banConfigurationKey = $"{PegasusBaseCacheKey}{environment}_BanConfiguration"; //TODO caching
+            var banConfigurationKey = this.BuildCacheKey(environment, slot, snapshot, "BanConfiguration");
 
             async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
             {
@@ -1185,6 +1185,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 throw new PegasusStewardException(
                     $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {environment}, Slot: {slot}");
             }
+        }
+
+        private string BuildCacheKey(string environment, string slot, string snapshot, string topic)
+        {
+            return $"{PegasusBaseCacheKey}{environment}_{slot}_{snapshot ?? "current"}_{topic}";
         }
     }
 }
