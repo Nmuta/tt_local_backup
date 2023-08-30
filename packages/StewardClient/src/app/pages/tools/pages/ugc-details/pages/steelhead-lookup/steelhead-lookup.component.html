@@ -80,6 +80,19 @@
             >
               <span [matTooltip]="generateSharecodeMatTooltip">Generate Sharecode</span>
             </button>
+            <div *waitForMonitor="getReportReasonsMonitor">
+              <mat-form-field
+                class="sf-full-width sf-default-hint sf-action-list"
+                appearance="fill"
+              >
+                <mat-label>Report reason</mat-label>
+                <mat-select matInput [(ngModel)]="selectedReason">
+                  <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
+                    {{ reason.description }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button
                 #verifyReportBtn

@@ -39,6 +39,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<CarClass>> GetCarClassesAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
 
         /// <summary>
+        ///     Gets Ugc reporting reasons.
+        /// </summary>
+        Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync();
+
+        /// <summary>
         ///     Gets cars.
         /// </summary>
         Task<IEnumerable<SteelheadLiveOpsContent.DataCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Daily);
@@ -296,6 +301,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets ban configurations.
         /// </summary>
-        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
+        Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily);
     }
 }
