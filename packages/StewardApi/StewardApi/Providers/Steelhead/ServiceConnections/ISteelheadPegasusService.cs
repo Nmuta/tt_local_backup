@@ -7,7 +7,6 @@ using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
 using StewardGitApi;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
@@ -45,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets Ugc reporting reasons.
         /// </summary>
-        Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync();
+        Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync(string environment = null, string slot = null, string snapshot = null);
 
         /// <summary>
         ///     Gets cars.
@@ -299,6 +298,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets ban configurations.
         /// </summary>
-        Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string environment = null, string slot = null, string snapshot = null);
+        Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurationsAsync(string environment = null, string slot = null, string snapshot = null);
     }
 }

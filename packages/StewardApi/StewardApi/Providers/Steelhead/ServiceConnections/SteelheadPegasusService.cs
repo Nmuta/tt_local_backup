@@ -121,13 +121,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync()
+        public async Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            var ugcReportingCategoryKey = $"{PegasusBaseCacheKey}UGCReportingCategory";
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
+            var ugcReportingCategoryKey = this.BuildCacheKey(environment, slot, snapshot, "UGCReportingCategory");
 
             async Task<Dictionary<Guid, UGCReportingCategory>> GetUGCReportingCategory()
             {
-                var ugcReportingReasons = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, UGCReportingCategory>>("UGCReportingCategories", this.cmsEnvironment).ConfigureAwait(false);
+                var ugcReportingReasons = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, UGCReportingCategory>>(
+                    "UGCReportingCategories",
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(ugcReportingCategoryKey, TimeSpan.FromDays(1), ugcReportingReasons);
 
@@ -833,7 +840,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string environment = null, string slot = null, string snapshot = null)
+        public async Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurationsAsync(string environment = null, string slot = null, string snapshot = null)
         {
             environment ??= this.defaultCmsEnvironment;
             slot ??= this.DefaultCmsSlot;
@@ -842,7 +849,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             async Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurations()
             {
-                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>(
+                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>>(
                     "BanConfigurations",
                     environment: environment,
                     slot: slot,
