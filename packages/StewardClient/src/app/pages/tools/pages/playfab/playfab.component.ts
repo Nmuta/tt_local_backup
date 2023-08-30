@@ -17,13 +17,14 @@ export class PlayFabComponent {
     {
       name: GameTitleAbbreviation.Forte,
       codename: GameTitleCodeName.Forte,
-      title: GameTitle.Forte,
       route: getPlayFabRoute(GameTitle.Forte),
+      permissionAttribute: PermAttributeName.TitleAccess,
+      permissionTitle: GameTitle.FM8,
+      permissionInvalidActionType: InvalidPermActionType.Hide,
     },
     {
       name: GameTitleAbbreviation.FH5,
       codename: GameTitleCodeName.FH5,
-      title: GameTitle.FH5,
       route: getPlayFabRoute(GameTitle.FH5),
     },
   ];

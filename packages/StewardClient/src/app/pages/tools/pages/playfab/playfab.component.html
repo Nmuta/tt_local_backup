@@ -5,9 +5,9 @@
     mat-button
     routerLinkActive="mat-stroked-button"
     stateManager
-    [permissionAttribute]="PermAttributeName.TitleAccess"
-    [permissionTitle]="link.title"
-    [permissionInvalidActionType]="InvalidPermActionType.Hide"
+    [permissionAttribute]="link.permissionAttribute"
+    [permissionTitle]="link.permissionTitle"
+    [permissionInvalidActionType]="link.permissionInvalidActionType"
     >{{ link.name }}
     <endpoint-selection [titleCodeName]="link.codename"> </endpoint-selection>
   </a>
