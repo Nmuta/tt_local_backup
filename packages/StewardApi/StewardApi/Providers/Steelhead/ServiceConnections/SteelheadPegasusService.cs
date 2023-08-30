@@ -34,6 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private const string PegasusBaseCacheKey = "SteelheadPegasus_";
         private const string LocalizationFileAntecedent = "LiveOps_LocalizationStrings-";
         private const string LocalizationStringIdsMappings = "LiveOps_LocalizationStringMappings";
+        private readonly string DefaultCmsSlot = "live";
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -45,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             ConfigurationKeyConstants.SteelheadContentRepoId,
         };
 
-        private readonly string cmsEnvironment;
+        private readonly string defaultCmsEnvironment;
         private readonly string formatPipelineBuildDefinition;
         private readonly CMSRetrievalHelper cmsRetrievalHelper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
@@ -85,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.refreshableCacheStore = refreshableCacheStore;
             this.mapper = mapper;
 
-            this.cmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
+            this.defaultCmsEnvironment = configuration[ConfigurationKeyConstants.PegasusCmsDefaultSteelhead];
             this.formatPipelineBuildDefinition = configuration[ConfigurationKeyConstants.SteelheadFormatPipelineBuildDefinition];
 
             var steelheadContentPAT = keyVaultConfig.SteelheadContentAccessToken;
@@ -104,27 +105,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<SupportedLocale>> GetSupportedLocalesAsync()
+        public async Task<IEnumerable<SupportedLocale>> GetSupportedLocalesAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             var locales =
-                await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadLiveOpsContent.SupportedLocale>>(
-                    SteelheadLiveOpsContent.CMSFileNames.SupportedLocales,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SupportedLocale>>(
+                    CMSFileNames.SupportedLocales,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             return locales;
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<LiveOpsContracts.CarFeaturedShowcase>> GetCarFeaturedShowcasesAsync()
+        public async Task<IEnumerable<LiveOpsContracts.CarFeaturedShowcase>> GetCarFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             IEnumerable<LiveOpsContracts.CarFeaturedShowcase> carFeaturedShowcases = new List<LiveOpsContracts.CarFeaturedShowcase>();
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
                     CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             foreach (var carListing in carListings)
             {
@@ -165,15 +174,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase>> GetDivisionFeaturedShowcasesAsync()
+        public async Task<IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase>> GetDivisionFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase> divisionFeaturedShowcases = new List<LiveOpsContracts.DivisionFeaturedShowcase>();
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
                     CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             foreach (var carListing in carListings)
             {
@@ -206,15 +219,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase>> GetManufacturerFeaturedShowcasesAsync()
+        public async Task<IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase>> GetManufacturerFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase> manufacturerFeaturedShowcases = new List<LiveOpsContracts.ManufacturerFeaturedShowcase>();
 
             var carListings =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
                     CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             foreach (var carListing in carListings)
             {
@@ -247,15 +264,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<LiveOpsContracts.CarSale>> GetCarSalesAsync()
+        public async Task<IEnumerable<CarSale>> GetCarSalesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            IEnumerable<LiveOpsContracts.CarSale> carSales = new List<LiveOpsContracts.CarSale>();
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
+            IEnumerable<CarSale> carSales = new List<CarSale>();
 
             var carListings =
-                await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.CarListingV2[]>(
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<CarListingV2[]>(
                     CMSFileNames.CarListings.Replace("{:loc}", "en-US", StringComparison.Ordinal),
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             foreach (var carListing in carListings)
             {
@@ -294,20 +315,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync(string pegasusEnvironment = null)
+        public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            pegasusEnvironment ??= this.cmsEnvironment;
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
 
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var rivalsEvents = this.mapper.SafeMap<IEnumerable<LiveOpsContracts.RivalsEvent>>(pegasusRivalEvents);
 
-            var tracks = await this.GetTracksAsync(pegasusEnvironment).ConfigureAwait(false);
+            var tracks = await this.GetTracksAsync(environment).ConfigureAwait(false);
 
             foreach (var rivalsEvent in rivalsEvents)
             {
@@ -319,15 +342,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetRivalsEventsReferenceAsync()
+        public async Task<Dictionary<Guid, string>> GetRivalsEventsReferenceAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RivalEvent[]>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusRivalEvents.ToDictionary(x => x.ProjectedContentId, x => x.Name);
 
@@ -335,15 +362,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetRivalsEventCategoriesAsync()
+        public async Task<Dictionary<Guid, string>> GetRivalsEventCategoriesAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var filename = CMSFileNames.RivalCategories.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalsCategories =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.RivalCategory>>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusRivalsCategories.ToDictionary(kv => kv.Key, kv => kv.Value.Title);
 
@@ -351,15 +382,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetStoreEntitlementsAsync()
+        public async Task<Dictionary<Guid, string>> GetStoreEntitlementsAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var filename = CMSFileNames.StoreEntitlements;
             var pegasusEntitlements =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.Entitlement>>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusEntitlements.ToDictionary(kv => kv.Key, kv => kv.Value.Description);
 
@@ -367,15 +402,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync()
+        public async Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var filename = CMSFileNames.RacersCupSeries.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRacersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipSeriesDataV3>>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusRacersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
@@ -383,15 +422,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetBuildersCupChampionshipsAsync()
+        public async Task<Dictionary<Guid, string>> GetBuildersCupChampionshipsAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var filename = CMSFileNames.BuildersCupChampionships.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupDataV3>>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusBuildersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
@@ -399,15 +442,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetBuildersCupLaddersAsync()
+        public async Task<Dictionary<Guid, string>> GetBuildersCupLaddersAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var filename = CMSFileNames.BuildersCupLadders.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupLadder =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupLadderDataV3>>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusBuildersCupLadder.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
@@ -415,15 +462,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync()
+        public async Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var filename = CMSFileNames.BuildersCupSeries.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusBuildersCupSeries =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.BuildersCupSeriesDataV3>>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusBuildersCupSeries.ToDictionary(kv => kv.Key, kv => kv.Value.Name);
 
@@ -431,21 +482,28 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>> GetDisplayConditionsAsync()
+        public async Task<Dictionary<Guid, DisplayCondition>> GetDisplayConditionsAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             var displayConditions =
-                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.DisplayCondition>>(
-                     SteelheadLiveOpsContent.CMSFileNames.TileDisplayConditions,
-                     this.cmsEnvironment,
-                     slot: "daily").ConfigureAwait(false);
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, DisplayCondition>>(
+                    CMSFileNames.TileDisplayConditions,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             return displayConditions;
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true)
+        public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true, string environment = null, string slot = null, string snapshot = null)
         {
-            var localizedStringCacheKey = $"{PegasusBaseCacheKey}LocalizedStrings{(useInternalIds ? "_useInternalIds" : string.Empty)}";
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
+            var localizedStringCacheKey = $"{PegasusBaseCacheKey}LocalizedStrings{(useInternalIds ? "_useInternalIds" : string.Empty)}"; //TODO caching
 
             async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStrings(bool useInternalIds)
             {
@@ -454,8 +512,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 var localizationIdsMapping = await this.cmsRetrievalHelper
                     .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
                         LocalizationStringIdsMappings,
-                        this.cmsEnvironment,
-                        slot: "daily").ConfigureAwait(false);
+                        environment: environment,
+                        slot: slot,
+                        snapshot: snapshot).ConfigureAwait(false);
 
                 var supportedLocales = await this.GetSupportedLocalesAsync().ConfigureAwait(false);
                 foreach (var supportedLocale in supportedLocales)
@@ -465,8 +524,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     var localizedStrings = await this.cmsRetrievalHelper
                         .GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.LocalizedString>>(
                             filename,
-                            this.cmsEnvironment,
-                            slot: "daily").ConfigureAwait(false);
+                            environment: environment,
+                            slot: slot,
+                            snapshot: snapshot).ConfigureAwait(false);
 
                     foreach (var locStringKey in localizedStrings.Keys)
                     {
@@ -508,24 +568,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<CarClass>> GetCarClassesAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        public async Task<IEnumerable<CarClass>> GetCarClassesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            var carClassKey = $"{PegasusBaseCacheKey}CarClasses";
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
 
-            async Task<IEnumerable<CarClass>> GetCarClasses(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+            var carClassKey = $"{PegasusBaseCacheKey}CarClasses"; //TODO caching
+
+            async Task<IEnumerable<CarClass>> GetCarClasses(string environment, string slot, string snapshot)
             {
-                var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
-
-                if (slotStatus == null)
-                {
-                    throw new PegasusStewardException(
-                        $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {pegasusEnvironment}, Slot: {slotId}");
-                }
+                await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
                 var pegasusCarClasses = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SteelheadLiveOpsContent.CarClass>>(
                     CMSFileNames.CarClasses,
-                    this.cmsEnvironment,
-                    slot: slotId).ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
                 var carClasses = this.mapper.SafeMap<IEnumerable<CarClass>>(pegasusCarClasses);
 
                 this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
@@ -534,26 +592,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             }
 
             return this.refreshableCacheStore.GetItem<IEnumerable<CarClass>>(carClassKey)
-                   ?? await GetCarClasses(pegasusEnvironment ?? this.cmsEnvironment, slotId).ConfigureAwait(false);
+                   ?? await GetCarClasses(environment, slot, snapshot).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
 
-            if (slotStatus == null)
-            {
-                throw new PegasusStewardException(
-                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {pegasusEnvironment}, Slot: {slotId}");
-            }
+            await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var leaderboardsKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_Leaderboards";
+            var leaderboardsKey = $"{PegasusBaseCacheKey}{environment}_Leaderboards"; //TODO caching
 
             async Task<IEnumerable<Leaderboard>> GetLeaderboards()
             {
                 var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
-                var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<RivalEvent>>(filename, pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+                var pegasusLeaderboards = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<RivalEvent>>(
+                    filename,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
                 var leaderboards = this.mapper.SafeMap<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
                 this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
@@ -566,21 +625,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<DataCar>> GetCarsAsync(string slotId = SteelheadPegasusSlot.Daily)
+        public async Task<IEnumerable<DataCar>> GetCarsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
 
-            if (slotStatus == null)
-            {
-                throw new PegasusStewardException(
-                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
-            }
+            await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var carsKey = $"{PegasusBaseCacheKey}{slotId}_Cars";
+            var carsKey = $"{PegasusBaseCacheKey}{slot}_Cars"; //TODO caching
 
             async Task<IEnumerable<DataCar>> GetCars()
             {
-                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(CMSFileNames.DataCars, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
+                var cars = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(
+                    CMSFileNames.DataCars,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
 
@@ -592,15 +652,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetCarsReferenceAsync()
+        public async Task<Dictionary<Guid, string>> GetCarsReferenceAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var filename = CMSFileNames.DataCars.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusCars =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<DataCar>>(
                     filename,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusCars.ToDictionary(x => x.ProjectedContentId, x => x.DisplayName);
 
@@ -608,14 +672,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, string>> GetCarMakesAsync()
+        public async Task<Dictionary<Guid, string>> GetCarMakesAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             // No caching due to small data size
             var pegasusCarMakes =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<ListCarMake>>(
                     CMSFileNames.ListCarMake,
-                    this.cmsEnvironment,
-                    slot: "daily").ConfigureAwait(false);
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             var outputDictionary = pegasusCarMakes.ToDictionary(x => x.ProjectedContentId, x => x.DisplayName);
 
@@ -623,21 +691,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily)
+        public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, slotId).ConfigureAwait(false);
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
 
-            if (slotStatus == null)
-            {
-                throw new PegasusStewardException(
-                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {slotId}");
-            }
+            await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var vanityItemsKey = $"{PegasusBaseCacheKey}VanityItems";
+            var vanityItemsKey = $"{PegasusBaseCacheKey}VanityItems"; //TODO caching
 
             async Task<IEnumerable<VanityItem>> GetVanityItems()
             {
-                var vanityItems = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<VanityItem>>(CMSFileNames.VanityItems, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
+                var vanityItems = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<VanityItem>>(
+                    CMSFileNames.VanityItems,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(vanityItemsKey, TimeSpan.FromDays(1), vanityItems);
 
@@ -649,21 +718,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Track>> GetTracksAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        public async Task<IEnumerable<Track>> GetTracksAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(pegasusEnvironment, slotId).ConfigureAwait(false);
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
 
-            if (slotStatus == null)
-            {
-                throw new PegasusStewardException(
-                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {pegasusEnvironment}, Slot: {slotId}");
-            }
+            await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var tracksKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_{slotId}_Tracks";
+            var tracksKey = $"{PegasusBaseCacheKey}{environment}_{slot}_Tracks"; //TODO caching
 
             async Task<IEnumerable<Track>> GetTracks()
             {
-                var tracks = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<Track>>("LiveOps_Tracks", pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+                var tracks = await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<Track>>(
+                    "LiveOps_Tracks",
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(tracksKey, TimeSpan.FromDays(1), tracks);
 
@@ -675,57 +745,67 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(string pegasusEnvironment = null, string pegasusSlot = null, string pegasusSnapshot = null)
+        public async Task<Dictionary<Guid, ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(string environment = null, string slot = null, string snapshot = null)
         {
-            pegasusEnvironment ??= this.cmsEnvironment;
-            pegasusSlot ??= SteelheadPegasusSlot.Daily;
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
 
-            var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChampionshipPlaylistDataV3>>(
+            var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, ChampionshipPlaylistDataV3>>(
                 CMSFileNames.PlaylistData,
-                environment: pegasusEnvironment,
-                slot: pegasusSlot,
-                snapshot: pegasusSnapshot).ConfigureAwait(false);
+                environment: environment,
+                slot: slot,
+                snapshot: snapshot).ConfigureAwait(false);
 
             return playlists;
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadLiveOpsContent.RacersCupChampionships> GetRacersCupChampionshipScheduleV4Async(string pegasusEnvironment, string pegasusSlot = null, string pegasusSnapshot = null)
+        public async Task<RacersCupChampionships> GetRacersCupChampionshipScheduleV4Async(string environment = null, string slot = null, string snapshot = null)
         {
-            pegasusEnvironment ??= this.cmsEnvironment;
-            pegasusSlot ??= SteelheadPegasusSlot.Daily;
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
 
-            var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.RacersCupChampionships>(
+            var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<RacersCupChampionships>(
                 CMSFileNames.RacersCupV4,
-                environment: pegasusEnvironment,
-                slot: pegasusSlot,
-                snapshot: pegasusSnapshot).ConfigureAwait(false);
+                environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
             return scheduleData;
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadLiveOpsContent.BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync()
+        public async Task<BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            var pegasusSlot = SteelheadPegasusSlot.Daily; // This will need to be updated once Live slot is ready
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US", StringComparison.Ordinal);
 
-            var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.BuildersCupCupDataV3[]>(
+            var featuredCupData = await this.cmsRetrievalHelper.GetCMSObjectAsync<BuildersCupCupDataV3[]>(
                 fileName,
-                environment: this.cmsEnvironment,
-                slot: pegasusSlot).ConfigureAwait(false);
+                environment: environment,
+                slot: slot,
+                snapshot: snapshot).ConfigureAwait(false);
 
             return featuredCupData.Single();
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string pegasusEnvironment, string slotId = SteelheadPegasusSlot.Daily)
+        public async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurationsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            var banConfigurationKey = $"{PegasusBaseCacheKey}{pegasusEnvironment}_BanConfiguration";
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
+            var banConfigurationKey = $"{PegasusBaseCacheKey}{environment}_BanConfiguration"; //TODO caching
 
             async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
             {
-                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>("BanConfigurations", pegasusEnvironment, slot: slotId).ConfigureAwait(false);
+                var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>(
+                    "BanConfigurations",
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
 
                 this.refreshableCacheStore.PutItem(banConfigurationKey, TimeSpan.FromDays(1), banConfigurations);
 
@@ -737,19 +817,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<SteelheadLiveOpsContent.WorldOfForzaConfigV3> GetWelcomeCenterDataAsync()
+        public async Task<WorldOfForzaConfigV3> GetWelcomeCenterDataAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             var filename = CMSFileNames.WorldOfForzaConfig;
-            var wofConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaConfigV3>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
+            var wofConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<WorldOfForzaConfigV3>(
+                filename,
+                environment: environment,
+                slot: slot,
+                snapshot: snapshot).ConfigureAwait(false);
 
             return wofConfig;
         }
 
         /// <inheritdoc/>
-        public async Task<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync()
+        public async Task<WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync(string environment = null, string slot = null, string snapshot = null)
         {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.DefaultCmsSlot;
+
             var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US", StringComparison.Ordinal);
-            var wofTileCollection = await this.cmsRetrievalHelper.GetCMSObjectAsync<SteelheadLiveOpsContent.WorldOfForzaTileCMSCollection>(filename, this.cmsEnvironment, slot: "daily").ConfigureAwait(false);
+            var wofTileCollection = await this.cmsRetrievalHelper.GetCMSObjectAsync<WorldOfForzaTileCMSCollection>(
+                filename,
+                environment: environment,
+                slot: slot,
+                snapshot: snapshot).ConfigureAwait(false);
 
             return wofTileCollection;
         }
@@ -1080,6 +1174,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             };
 
             return change;
+        }
+
+        private async Task VerifySlotStatus(string environment, string slot)
+        {
+            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(environment, slot).ConfigureAwait(false);
+
+            if (slotStatus == null)
+            {
+                throw new PegasusStewardException(
+                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {environment}, Slot: {slot}");
+            }
         }
     }
 }
