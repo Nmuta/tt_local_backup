@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.Forte], tool: NavbarTool.PlayFab },
+      uuid: 'a308d4fa-ef42-4fbf-b8b3-62e82bbcf16d',
+      shortText: 'Setup PlayFab build locks for Forte Dev environment',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UgcDetails },
       uuid: '4503257d-09b6-42fc-a973-9cb389c2184b',
       shortText: 'Add ability to select report reason for report UGC',

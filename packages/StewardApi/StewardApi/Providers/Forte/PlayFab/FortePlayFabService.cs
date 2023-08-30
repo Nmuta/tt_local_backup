@@ -13,24 +13,24 @@ using PlayFab.ProfilesModels;
 using PlayFab.ServerModels;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Forte;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
-using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using EntityKey = PlayFab.EconomyModels.EntityKey;
 using ProfileEntityKey = PlayFab.ProfilesModels.EntityKey;
 
-namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
+namespace Turn10.LiveOps.StewardApi.Providers.Forte.PlayFab
 {
     /// <inheritdoc />
-    public sealed class WoodstockPlayFabService : IWoodstockPlayFabService
+    public sealed class FortePlayFabService : IFortePlayFabService
     {
-        private readonly WoodstockPlayFabConfig playFabConfig;
+        private readonly FortePlayFabConfig playFabConfig;
         private readonly IMapper mapper;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WoodstockPlayFabService"/> class.
+        ///     Initializes a new instance of the <see cref="FortePlayFabService"/> class.
         /// </summary>
-        public WoodstockPlayFabService(WoodstockPlayFabConfig playFabConfig, IMapper mapper)
+        public FortePlayFabService(FortePlayFabConfig playFabConfig, IMapper mapper)
         {
             playFabConfig.ShouldNotBeNull(nameof(playFabConfig));
             mapper.ShouldNotBeNull(nameof(mapper));
@@ -40,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<IList<PlayFabBuildSummary>> GetBuildsAsync(WoodstockPlayFabEnvironment environment)
+        public async Task<IList<PlayFabBuildSummary>> GetBuildsAsync(FortePlayFabEnvironment environment)
         {
             var builds = new List<BuildSummary>();
             string skipToken = null;
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<PlayFabBuildSummary> GetBuildAsync(Guid buildId, WoodstockPlayFabEnvironment environment)
+        public async Task<PlayFabBuildSummary> GetBuildAsync(Guid buildId, FortePlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabMultiplayerAPI.GetBuildAsync();
@@ -77,7 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<PlayFabVoucher>> GetVouchersAsync(WoodstockPlayFabEnvironment environment)
+        public async Task<IEnumerable<PlayFabVoucher>> GetVouchersAsync(FortePlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.SearchItemsAsync();
@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<Dictionary<ulong, PlayFabProfile>> GetPlayerEntityIdsAsync(IList<ulong> xuids, WoodstockPlayFabEnvironment environment)
+        public async Task<Dictionary<ulong, PlayFabProfile>> GetPlayerEntityIdsAsync(IList<ulong> xuids, FortePlayFabEnvironment environment)
         {
             var xuidsAsStrings = xuids.Select(xuid => xuid.ToInvariantString()).ToList();
             var config = this.GetPlayFabConfig(environment);
@@ -100,7 +100,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             var masterResponse = await this.MakePlayFabSecretTokenRequestAsync<GetPlayFabIDsFromXboxLiveIDsResult>(environment, "/Server/GetPlayFabIDsFromXboxLiveIDs", new GetPlayFabIDsFromXboxLiveIDsRequest()
             {
                 XboxLiveAccountIDs = xuidsAsStrings,
-                Sandbox = environment == WoodstockPlayFabEnvironment.Retail ? "RETAIL" : "TURN.1",
+                Sandbox = "TURN.1",
+
+                // TODO: determine sandbox based on environment. e.g.-> Sandbox = environment == FortePlayFabEnvironment.Retail ? "RETAIL" : "TURN.1",
             }).ConfigureAwait(false);
 
             var masterIds = masterResponse.Data.Where(masterAccount => masterAccount.PlayFabId != null).Select(masterAccount => masterAccount.PlayFabId).ToList();
@@ -139,7 +141,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, WoodstockPlayFabEnvironment environment)
+        public async Task<IEnumerable<PlayFabTransaction>> GetTransactionHistoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, FortePlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.GetTransactionHistoryAsync();
@@ -157,7 +159,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, WoodstockPlayFabEnvironment environment)
+        public async Task<IEnumerable<PlayFabInventoryItem>> GetPlayerCurrencyInventoryAsync(string playfabEntityId, PlayFabCollectionId collectionId, FortePlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.GetInventoryItemsAsync();
@@ -176,7 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task AddInventoryItemToPlayerAsync(string playfabEntityId, PlayFabCollectionId collectionId, string itemId, int amount, WoodstockPlayFabEnvironment environment)
+        public async Task AddInventoryItemToPlayerAsync(string playfabEntityId, PlayFabCollectionId collectionId, string itemId, int amount, FortePlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.AddInventoryItemsAsync();
@@ -197,7 +199,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         }
 
         /// <inheritdoc />
-        public async Task RemoveInventoryItemFromPlayerAsync(string playfabEntityId, PlayFabCollectionId collectionId, string itemId, int amount, WoodstockPlayFabEnvironment environment)
+        public async Task RemoveInventoryItemFromPlayerAsync(string playfabEntityId, PlayFabCollectionId collectionId, string itemId, int amount, FortePlayFabEnvironment environment)
         {
             // We have to create our own PlayFab SDK wrapper as their's doesn't have options to use instanceSettings
             // Taken from: PlayFabEconomyAPI.SubtractInventoryItemsAsync();
@@ -220,11 +222,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <summary>
         ///     Gets the PlayFab config based on provided environment.
         /// </summary>
-        private PlayFabConfig GetPlayFabConfig(WoodstockPlayFabEnvironment environment)
+        private PlayFabConfig GetPlayFabConfig(FortePlayFabEnvironment environment)
         {
             if (!this.playFabConfig.Environments.TryGetValue(environment, out var config))
             {
-                throw new UnknownFailureStewardException($"Failed to get PlayFab config. Invalid {nameof(WoodstockPlayFabEnvironment)} provided: {environment}");
+                throw new UnknownFailureStewardException($"Failed to get PlayFab config. Invalid {nameof(FortePlayFabEnvironment)} provided: {environment}");
             }
 
             return config;
@@ -233,7 +235,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// <summary>
         ///     Generates a PlayFab auth context to be passed into PlayFab SDK requests.
         /// </summary>
-        private async Task<PlayFabAuthenticationContext> GeneratePlayFabAuthContextAsync(WoodstockPlayFabEnvironment environment)
+        private async Task<PlayFabAuthenticationContext> GeneratePlayFabAuthContextAsync(FortePlayFabEnvironment environment)
         {
             var config = this.GetPlayFabConfig(environment);
 
@@ -248,7 +250,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             return authContext;
         }
 
-        private async Task<T> MakePlayFabEntityTokenRequestAsync<T>(WoodstockPlayFabEnvironment environment, string path, PlayFabRequestCommon request)
+        private async Task<T> MakePlayFabEntityTokenRequestAsync<T>(FortePlayFabEnvironment environment, string path, PlayFabRequestCommon request)
             where T : PlayFabResultCommon
         {
             var config = this.GetPlayFabConfig(environment);
@@ -262,7 +264,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
             return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayFabJsonSuccess<T>>(serialized).data;
         }
 
-        private async Task<T> MakePlayFabSecretTokenRequestAsync<T>(WoodstockPlayFabEnvironment environment, string path, PlayFabRequestCommon request)
+        private async Task<T> MakePlayFabSecretTokenRequestAsync<T>(FortePlayFabEnvironment environment, string path, PlayFabRequestCommon request)
             where T : PlayFabResultCommon
         {
             var config = this.GetPlayFabConfig(environment);
