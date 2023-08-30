@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UgcDetails },
       uuid: '4503257d-09b6-42fc-a973-9cb389c2184b',
-      shortText: 'Add ability to select report reason for report UGC on Steelhead',
+      shortText: 'Add ability to select report reason for report UGC',
     },
     {
       tag: ChangelogTag.Internal,
