@@ -121,6 +121,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync()
+        {
+            var ugcReportingCategoryKey = $"{PegasusBaseCacheKey}UGCReportingCategory";
+
+            async Task<Dictionary<Guid, UGCReportingCategory>> GetUGCReportingCategory()
+            {
+                var ugcReportingReasons = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, UGCReportingCategory>>("UGCReportingCategories", this.cmsEnvironment).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(ugcReportingCategoryKey, TimeSpan.FromDays(1), ugcReportingReasons);
+
+                return ugcReportingReasons;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, UGCReportingCategory>>(ugcReportingCategoryKey)
+                   ?? await GetUGCReportingCategory().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<IEnumerable<LiveOpsContracts.CarFeaturedShowcase>> GetCarFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
         {
             environment ??= this.defaultCmsEnvironment;
@@ -822,7 +840,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var banConfigurationKey = this.BuildCacheKey(environment, slot, snapshot, "BanConfiguration");
 
-            async Task<Dictionary<Guid, BanConfiguration>> GetBanConfigurations()
+            async Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurations()
             {
                 var banConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, BanConfiguration>>(
                     "BanConfigurations",
@@ -835,7 +853,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                 return banConfigurations;
             }
 
-            return this.refreshableCacheStore.GetItem<Dictionary<Guid, BanConfiguration>>(banConfigurationKey)
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>>(banConfigurationKey)
                    ?? await GetBanConfigurations().ConfigureAwait(false);
         }
 

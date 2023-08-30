@@ -43,6 +43,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<CarClass>> GetCarClassesAsync(string environment = null, string slot = null, string snapshot = null);
 
         /// <summary>
+        ///     Gets Ugc reporting reasons.
+        /// </summary>
+        Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync();
+
+        /// <summary>
         ///     Gets cars.
         /// </summary>
         Task<IEnumerable<DataCar>> GetCarsAsync(string environment = null, string slot = null, string snapshot = null);

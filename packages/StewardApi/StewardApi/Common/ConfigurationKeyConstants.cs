@@ -281,6 +281,16 @@
         public const string WoodstockPlayFabProdKey = "WoodstockEnvironment:PlayFab:Prod:Key";
 
         /// <summary>
+        ///    The Forte PlayFab dev title id.
+        /// </summary>
+        public const string FortePlayFabDevTitleId = "ForteEnvironment:PlayFab:Dev:TitleId";
+
+        /// <summary>
+        ///    The Forte PlayFab dev key.
+        /// </summary>
+        public const string FortePlayFabDevKey = "ForteEnvironment:PlayFab:Dev:Key";
+
+        /// <summary>
         ///    The Teams Help Channel Webhook Secret Name.
         /// </summary>
         public const string TeamsHelpChannelWebhook = "TeamsHelpChannelWebhookSecretName";

@@ -223,7 +223,20 @@ export class PlayFabBuildsManagementComponent
       .getPlayFabSettings$()
       .pipe(this.getPlayFabSettingsMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(settings => {
-        this.buildLocks.max = settings.maxBuildLocks;
+        switch (this.service.gameTitle) {
+          case GameTitle.Forte: {
+            this.buildLocks.max = settings.forteMaxBuildLocks;
+            break;
+          }
+          case GameTitle.FH5: {
+            this.buildLocks.max = settings.woodstockMaxBuildLocks;
+            break;
+          }
+          default: {
+            throw new Error(`Cannot find maximum build lock value for ${this.service.gameTitle}`);
+            break;
+          }
+        }
       });
   }
 
