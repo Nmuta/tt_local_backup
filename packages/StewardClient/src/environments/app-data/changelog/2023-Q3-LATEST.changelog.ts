@@ -13,6 +13,45 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add ability to select report reason for report UGC on Steelhead',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'a5450e39-f141-4fe3-89de-23c9e558e212',
+      shortText: 'Small fixes to home tour',
+      longText: [
+        'Only show home tour when app is in a valid state.',
+        'Allow buttons to be clickable under highlight buffer.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BountyDetails },
+      uuid: '6eca390d-1d90-4b4a-8727-b65fff0503eb',
+      shortText: 'Add new tool to view bounty details',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
+      shortText: 'Implemented new user tour guides',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e298bf3d-042c-429f-bc33-49de2bd3cfbb',
+      shortText: 'Fix Component Governance issues',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
+      uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
+      shortText: 'Add new tool to search rivals bounties',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'f5a5ea45-1ea4-4a36-aed7-55140bc0aada',
+      shortText: 'Automatically select Staging API when using Staging UI',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Leaderboards },
+      uuid: '069c7aa4-1424-4f15-ae7b-cf082cd5531f',
+      shortText: 'Add Time Attack leaderboards',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.ProductPricing },
       uuid: 'c069381d-0e34-48f2-9384-04eb317b79cc',
       shortText:

@@ -6,6 +6,7 @@
     routerLinkActive="stroked-icon-button"
     [ngSwitch]="environmentWarningOption"
     class="home-icon"
+    tourAnchor="shared-tour.nav"
   >
     <mat-icon
       *ngSwitchCase="'warn'"
@@ -23,7 +24,9 @@
     >
     <mat-icon *ngSwitchDefault>home</mat-icon>
   </a>
-  <div *ngIf="!inEditMode" class="link-list-wrapper">
+
+  <div *ngIf="!inEditMode" class="link-list-wrapper tour-element-highlighted">
+    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.seven"></span>
     <ng-container *ngFor="let item of listedTools">
       <a
         *ngIf="!item.navComponent"
@@ -47,6 +50,7 @@
       ></span>
     </ng-container>
   </div>
+
   <div
     *ngIf="inEditMode"
     cdkDropList
@@ -110,6 +114,7 @@
   >
 
   <span class="spacer"></span>
+
   <button
     mat-icon-button
     color="default"
@@ -117,6 +122,7 @@
     *ngIf="!inEditMode"
     (click)="setEditMode(true)"
     matTooltip="Click to allow re-ordering the navbar (disables links)"
+    tourAnchor="home-tour.step.six"
   >
     <mat-icon>edit</mat-icon>
   </button>
@@ -130,6 +136,7 @@
   >
     <mat-icon>edit</mat-icon>
   </button>
+
   <span *ngIf="missingZendesk$ | async" class="warnings">
     <mat-icon matTooltip="Zendesk API missing">warning</mat-icon>
     <mat-icon matTooltip="Refresh page">refresh</mat-icon>
