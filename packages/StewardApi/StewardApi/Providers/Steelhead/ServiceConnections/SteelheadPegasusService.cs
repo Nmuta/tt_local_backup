@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoMapper;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -14,7 +15,6 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
@@ -503,7 +503,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             environment ??= this.defaultCmsEnvironment;
             slot ??= this.DefaultCmsSlot;
 
-            var localizedStringCacheKey = $"{PegasusBaseCacheKey}LocalizedStrings{(useInternalIds ? "_useInternalIds" : string.Empty)}"; //TODO caching
+            var localizedStringCacheKey = this.BuildCacheKey(environment, slot, snapshot, "LocalizedStrings");
+
+            if (useInternalIds)
+            {
+                localizedStringCacheKey += "_useInternalIds";
+            }
 
             async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStrings(bool useInternalIds)
             {
@@ -558,7 +563,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
                 }
 
-                this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
+                if (!snapshot.IsNull())
+                {
+                    this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
+                }
 
                 return results;
             }
@@ -573,7 +581,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             environment ??= this.defaultCmsEnvironment;
             slot ??= this.DefaultCmsSlot;
 
-            var carClassKey = $"{PegasusBaseCacheKey}CarClasses"; //TODO caching
+            var carClassKey = this.BuildCacheKey(environment, slot, snapshot, "CarClasses");
 
             async Task<IEnumerable<CarClass>> GetCarClasses(string environment, string slot, string snapshot)
             {
@@ -586,7 +594,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     snapshot: snapshot).ConfigureAwait(false);
                 var carClasses = this.mapper.SafeMap<IEnumerable<CarClass>>(pegasusCarClasses);
 
-                this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
+                if (!snapshot.IsNull())
+                {
+                    this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
+                }
 
                 return carClasses;
             }
@@ -603,7 +614,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var leaderboardsKey = $"{PegasusBaseCacheKey}{environment}_Leaderboards"; //TODO caching
+            var leaderboardsKey = this.BuildCacheKey(environment, slot, snapshot, "Leaderboards");
 
             async Task<IEnumerable<Leaderboard>> GetLeaderboards()
             {
@@ -615,7 +626,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     snapshot: snapshot).ConfigureAwait(false);
                 var leaderboards = this.mapper.SafeMap<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
-                this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
+                if (!snapshot.IsNull())
+                {
+                    this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
+                }
 
                 return leaderboards;
             }
@@ -632,7 +646,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var carsKey = $"{PegasusBaseCacheKey}{slot}_Cars"; //TODO caching
+            var carsKey = this.BuildCacheKey(environment, slot, snapshot, "Cars");
 
             async Task<IEnumerable<DataCar>> GetCars()
             {
@@ -642,7 +656,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     slot: slot,
                     snapshot: snapshot).ConfigureAwait(false);
 
-                this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
+                if (!snapshot.IsNull())
+                {
+                    this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
+                }
 
                 return cars;
             }
@@ -698,7 +715,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var vanityItemsKey = $"{PegasusBaseCacheKey}VanityItems"; //TODO caching
+            var vanityItemsKey = this.BuildCacheKey(environment, slot, snapshot, "VanityItems");
 
             async Task<IEnumerable<VanityItem>> GetVanityItems()
             {
@@ -708,7 +725,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     slot: slot,
                     snapshot: snapshot).ConfigureAwait(false);
 
-                this.refreshableCacheStore.PutItem(vanityItemsKey, TimeSpan.FromDays(1), vanityItems);
+                if (!snapshot.IsNull())
+                {
+                    this.refreshableCacheStore.PutItem(vanityItemsKey, TimeSpan.FromDays(1), vanityItems);
+                }
 
                 return vanityItems;
             }
@@ -725,7 +745,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
-            var tracksKey = $"{PegasusBaseCacheKey}{environment}_{slot}_{snapshot ?? "current"}_Tracks"; //TODO caching
+            var tracksKey = this.BuildCacheKey(environment, slot, snapshot, "Tracks");
 
             async Task<IEnumerable<Track>> GetTracks()
             {
@@ -735,7 +755,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     slot: slot,
                     snapshot: snapshot).ConfigureAwait(false);
 
-                this.refreshableCacheStore.PutItem(tracksKey, TimeSpan.FromDays(1), tracks);
+                if (!snapshot.IsNull())
+                {
+                    this.refreshableCacheStore.PutItem(tracksKey, TimeSpan.FromDays(1), tracks);
+                }
 
                 return tracks;
             }
