@@ -774,6 +774,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage))
                 .ForMember(dest => dest.Rewards, opt => opt.MapFrom(source => this.PrepareRewardsList(source.rewardGroup)))
                 .ForMember(dest => dest.Phase, opt => opt.MapFrom(source => source.phase));
+
+            this.CreateMap<SteelheadLiveOpsContent.BanConfiguration, Contracts.Common.BanConfiguration>();
         }
 
         private List<string> PrepareRewardsList(string rewardsInput)

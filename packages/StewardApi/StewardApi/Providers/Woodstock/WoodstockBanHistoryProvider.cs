@@ -69,7 +69,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 featureAreas,
                 banParameters.Reason,
                 banParameters.ToJson(),
-                endpoint);
+                endpoint,
+                DateTime.UtcNow);
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
             var tableName = "BanHistory";
