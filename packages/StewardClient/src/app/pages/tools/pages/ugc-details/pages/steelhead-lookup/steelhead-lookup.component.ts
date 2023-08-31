@@ -23,6 +23,7 @@ import {
   of,
   takeUntil,
   EMPTY,
+  throwError,
 } from 'rxjs';
 import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
@@ -32,6 +33,7 @@ import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-
 import { SteelheadEditUgcModalComponent } from '@views/edit-ugc-modal/steelhead/steelhead-edit-ugc-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SteelheadFeatureUgcModalComponent } from '@views/feature-ugc-modal/steelhead/steelhead-feature-ugc-modal.component';
+import { UgcReportReason } from '@models/ugc-report-reason';
 
 const GEO_FLAGS_ORDER = chain(SteelheadGeoFlags).sortBy().value();
 
@@ -47,6 +49,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public unhideMonitor = new ActionMonitor('POST Unhide UGC');
   public reportMonitor = new ActionMonitor('Post Report UGC');
   public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
+  public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
 
   public geoFlagsToggleListEzContract: ToggleListEzContract = {
     initialModel: toCompleteRecord(GEO_FLAGS_ORDER, []),
@@ -56,6 +59,8 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     permAttribute: PermAttributeName.SetUgcGeoFlag,
     submitModel$: () => EMPTY,
   };
+  public reportReasons: UgcReportReason[] = null;
+  public selectedReason: string = null;
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
@@ -168,6 +173,13 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
           this.generateSharecodeMatTooltip = this.generateSharecodeTooltip;
         }
       });
+
+    this.ugcReportService
+      .getUgcReportReasons$()
+      .pipe(this.getReportReasonsMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(results => {
+        this.reportReasons = results;
+      });
   }
 
   /** Features a UGC item in Steelhead */
@@ -253,15 +265,29 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
 
   /** Report a Ugc item in Steelhead */
   public reportUgcItem(): void {
-    if (!this.ugcItem) {
+    if (!this.ugcItem || !this.selectedReason) {
       return;
     }
     this.reportMonitor = this.reportMonitor.repeat();
 
     this.ugcReportService
-      .reportUgc$(this.ugcItem.id)
-      .pipe(this.reportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe();
+      .reportUgc$([this.ugcItem.id], this.selectedReason)
+      .pipe(
+        switchMap(results => {
+          const item = results[0];
+
+          if (item.error) {
+            return throwError(() => item.error);
+          }
+
+          return of(results);
+        }),
+        this.reportMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(() => {
+        this.selectedReason = null;
+      });
   }
 
   /** Generate sharecode for a UGC item in Steelhead */

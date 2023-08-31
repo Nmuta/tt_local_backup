@@ -369,9 +369,9 @@
       },
       "SteelheadLiveOpsContent": {
         "type": "Direct",
-        "requested": "[1.7.26, )",
-        "resolved": "1.7.26",
-        "contentHash": "bl2bmiRvPQ4pZlN5/lsYCcmrDYtuYeDcUMuNbOcbVreQHo86U3+iyop3UESbrPKLlxzCFGGphHTKdJD9tItAmw==",
+        "requested": "[1.7.39, )",
+        "resolved": "1.7.39",
+        "contentHash": "3tye6vKyi2itvxSzUJIcLm4WJVMqr7t+AEwgStfoby4EfJ209wuL7Exfy9aEbuBur2PmlXM+2aQxM2gMvq8dTQ==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.1"
         }
