@@ -58,14 +58,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [HttpGet("schedule")]
         [SwaggerResponse(200, type: typeof(RacersCupSchedule))]
         public async Task<IActionResult> GetCmsRacersCupSchedule(
-            [FromQuery] string pegasusEnvironment,
-            [FromQuery] string pegasusSlotId,
-            [FromQuery] string pegasusSnapshotId,
+            [FromQuery] string environment,
+            [FromQuery] string slot,
+            [FromQuery] string snapshot,
             [FromQuery] DateTimeOffset? startTime,
             [FromQuery] int daysForward)
         {
             daysForward.ShouldBeGreaterThanValue(-1);
-            pegasusEnvironment.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pegasusEnvironment));
+            environment.ShouldNotBeNullEmptyOrWhiteSpace(nameof(environment));
 
             var cutoffTime = DateTimeOffset.UtcNow.AddSeconds(1);
 
@@ -83,13 +83,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             try
             {
                 var eventGeneration = this.Services.LiveOpsService.GetCMSRacersCupScheduleV2(
-                    pegasusEnvironment,
-                    pegasusSlotId ?? string.Empty,
-                    pegasusSnapshotId ?? string.Empty,
+                    environment,
+                    slot ?? string.Empty,
+                    snapshot ?? string.Empty,
                     startTimeUtc.DateTime,
                     daysForward);
-                var racersCupChampionshipScheduleV3 = this.pegasusService.GetRacersCupChampionshipScheduleV4Async(pegasusEnvironment, pegasusSlotId, pegasusSnapshotId);
-                var racersCupPlaylistDataV3 = this.pegasusService.GetRacersCupPlaylistDataV3Async(pegasusEnvironment, pegasusSlotId, pegasusSnapshotId);
+                var racersCupChampionshipScheduleV3 = this.pegasusService.GetRacersCupChampionshipScheduleV4Async(environment, slot, snapshot);
+                var racersCupPlaylistDataV3 = this.pegasusService.GetRacersCupPlaylistDataV3Async(environment, slot, snapshot);
 
                 await Task.WhenAll(eventGeneration, racersCupChampionshipScheduleV3, racersCupPlaylistDataV3).ConfigureAwait(true);
 

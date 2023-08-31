@@ -19,11 +19,12 @@ import {
   collapseAnimation,
 } from 'angular-calendar';
 import { keys } from 'lodash';
-import { takeUntil } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, switchMap, takeUntil, tap } from 'rxjs';
 import {
   WelcomeCenterTileDetailsModalComponent,
   WelcomeCenterTileDetailsModalData,
 } from '../../welcome-center-tile-details-modal/steelhead/welcome-center-tile-details-modal.component';
+import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 
 export interface WelcomeCenterMeta {
   column: WelcomeCenterColumn;
@@ -56,7 +57,7 @@ export type StewardWelcomeCenterMonthViewDay<T> = CalendarMonthViewDay<T> & {
   animations: [collapseAnimation],
 })
 export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent implements OnInit {
-  public getActionMonitor = new ActionMonitor('GET car details');
+  public getMonitor = new ActionMonitor('GET Welcome Center');
   public welcomeCenter: WelcomeCenter;
   public gameTitle: GameTitle;
 
@@ -68,6 +69,9 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
 
   private alwaysAvailableMinDate: Date = new Date(1, 1, 1);
   private alwaysAvailableMaxDate: Date = new Date(3001, 1, 1);
+
+  private readonly getSchedule$ = new Subject<void>();
+  private retrieveSchedule$: Observable<WelcomeCenter>;
 
   constructor(
     private readonly welcomeCenterService: SteelheadWelcomeCenterService,
@@ -83,13 +87,68 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
       throw new Error('No service is defined for Welcome Center Calendar.');
     }
 
-    this.welcomeCenterService
-      .getWelcomeCenterTiles$()
-      .pipe(this.getActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+    this.getSchedule$
+      .pipe(
+        tap(() => {
+          this.welcomeCenter = undefined;
+          this.events = [];
+        }),
+        this.getMonitor.monitorStart(),
+        switchMap(() =>
+          this.retrieveSchedule$.pipe(
+            this.getMonitor.monitorCatch(),
+            catchError(() => {
+              this.welcomeCenter = undefined;
+              return EMPTY;
+            }),
+          ),
+        ),
+        this.getMonitor.monitorEnd(),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe(welcomeCenter => {
         this.welcomeCenter = welcomeCenter;
         this.events = this.makeEvents(this.welcomeCenter);
       });
+
+    // this.welcomeCenterService
+    //   .getWelcomeCenterTiles$()
+    //   .pipe(this.getActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+    //   .subscribe(welcomeCenter => {
+    //     this.welcomeCenter = welcomeCenter;
+    //     this.events = this.makeEvents(this.welcomeCenter);
+    //   });
+  }
+
+  /** Refresh calendar on user interaction. */
+  public refreshTable(inputs: CalendarLookupInputs): void {
+    if (inputs.identity) {
+      if (!inputs.identity?.xuid) {
+        this.events = [];
+        this.welcomeCenter = null;
+
+        return;
+      }
+
+      this.retrieveSchedule$ = this.welcomeCenterService.getWelcomeCenterTilesByUser$(
+        inputs?.identity?.xuid,
+      );
+
+      this.getSchedule$.next();
+    }
+
+    if (inputs.pegasusInfo) {
+      if (!inputs.pegasusInfo.environment) {
+        this.events = [];
+        this.welcomeCenter = null;
+      }
+
+      this.retrieveSchedule$ = this.welcomeCenterService.getWelcomeCenterTilesByPegasus$(
+        inputs.pegasusInfo,
+      );
+
+      this.getSchedule$.next();
+    }
   }
 
   /** Sets calendar view. */

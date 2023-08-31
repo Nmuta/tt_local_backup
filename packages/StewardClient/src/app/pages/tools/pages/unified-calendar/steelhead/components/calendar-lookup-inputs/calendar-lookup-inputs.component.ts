@@ -4,21 +4,21 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
 
-export type RacersCupCalendarInputs = {
+export type CalendarLookupInputs = {
   identity?: IdentityResultAlpha;
   pegasusInfo?: PegasusPathInfo;
   daysForward: number;
 };
 
-/** Inputs for Racers Cup Calendar. */
+/** Inputs for calendar lookup. */
 @Component({
-  selector: 'racers-cup-inputs',
-  templateUrl: './racers-cup-inputs.component.html',
-  styleUrls: ['./racers-cup-inputs.component.scss'],
+  selector: 'calendar-lookup-inputs',
+  templateUrl: './calendar-lookup-inputs.component.html',
+  styleUrls: ['./calendar-lookup-inputs.component.scss'],
 })
-export class RacersCupInputsComponent {
-  /** REVIEW-COMMENT: Output for racers cup schedule lookup.  */
-  @Output() public playerAndDaysForward = new EventEmitter<RacersCupCalendarInputs>();
+export class CalendarLookupInputsComponent {
+  /** Inputs for calendar lookup.  */
+  @Output() public playerAndDaysForward = new EventEmitter<CalendarLookupInputs>();
   public matTabSelectedIndex = 0;
 
   public identityFormControls = {
@@ -53,7 +53,7 @@ export class RacersCupInputsComponent {
     this.identityFormControls.identity.setValue(newIdentity?.steelhead);
   }
 
-  /** Output values for racers cup schedule lookup. */
+  /** Output values for calendar lookup. */
   public submitClicked(): void {
     // Using identity lookup
     if (this.matTabSelectedIndex == 0) {

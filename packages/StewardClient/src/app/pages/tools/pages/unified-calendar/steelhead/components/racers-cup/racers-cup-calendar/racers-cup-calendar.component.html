@@ -9,7 +9,9 @@
   <div class="steward-layout-with-sidebar">
     <div class="steward-layout-sidebar-group">
       <div class="calendar-control-panel">
-        <racers-cup-inputs (playerAndDaysForward)="refreshTable($event)"></racers-cup-inputs>
+        <calendar-lookup-inputs
+          (playerAndDaysForward)="refreshTable($event)"
+        ></calendar-lookup-inputs>
       </div>
     </div>
     <ng-container *waitForMonitor="getMonitor">

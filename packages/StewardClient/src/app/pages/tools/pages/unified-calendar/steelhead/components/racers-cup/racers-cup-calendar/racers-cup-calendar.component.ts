@@ -21,7 +21,6 @@ import {
   RacersCupSeriesModalComponent,
   RacersCupSeriesModalData,
 } from '../racers-cup-series-modal/racers-cup-series-modal.component';
-import { RacersCupCalendarInputs } from '../racers-cup-inputs/racers-cup-inputs.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import {
   buildOutlookDateString,
@@ -30,6 +29,7 @@ import {
 } from '@helpers/outlook-calendar-exporter';
 import { keys } from 'lodash';
 import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
+import { CalendarLookupInputs } from '../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 
 export type EventGroup<T> = {
   name: string;
@@ -125,7 +125,7 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
   }
 
   /** Refresh calendar on user interaction. */
-  public refreshTable(inputs: RacersCupCalendarInputs): void {
+  public refreshTable(inputs: CalendarLookupInputs): void {
     if (inputs.identity) {
       if (!inputs.identity?.xuid) {
         this.events = [];
