@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
+      shortText: 'Update to Angular 14',
+    },
+    {
       tag: { title: [GameTitle.Forte], tool: NavbarTool.PlayFab },
       uuid: 'a308d4fa-ef42-4fbf-b8b3-62e82bbcf16d',
       shortText: 'Setup PlayFab build locks for Forte Dev environment',
@@ -35,11 +40,6 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: ChangelogTag.General,
       uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
       shortText: 'Implemented new user tour guides',
-    },
-    {
-      tag: ChangelogTag.Internal,
-      uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
-      shortText: 'Update to Angular 14',
     },
     {
       tag: ChangelogTag.Internal,
