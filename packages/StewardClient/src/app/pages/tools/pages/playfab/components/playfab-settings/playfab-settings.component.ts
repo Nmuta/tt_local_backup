@@ -1,11 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { PlayFabSettings } from '@models/blob-storage';
 import { GameTitle } from '@models/enums';
@@ -32,13 +26,15 @@ export class PlayFabSettingsComponent extends BaseComponent implements OnInit {
 
   public activeCannotBeValidator: ValidatorFn;
   public formControls = {
-    maxBuildLocks: new UntypedFormControl(null, [
+    maxBuildLocks: new FormControl(null, [
       Validators.required,
       Validators.min(0),
       Validators.max(100),
     ]),
   };
-  public formGroup = new UntypedFormGroup(this.formControls);
+  public formGroup = new FormGroup(this.formControls);
+
+  public settings: PlayFabSettings;
 
   public permAttribute = PermAttributeName.ManagePlayFabSettings;
 
