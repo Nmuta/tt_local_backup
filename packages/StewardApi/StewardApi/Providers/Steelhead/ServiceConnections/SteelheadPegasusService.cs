@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoMapper;
-using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -588,7 +587,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                         .ToDictionary(p => localizationIdsMapping[p.Key], p => p.Value);
                 }
 
-                if (!snapshot.IsNull())
+                if (!string.IsNullOrEmpty(snapshot))
                 {
                     this.refreshableCacheStore.PutItem(localizedStringCacheKey, TimeSpan.FromMinutes(1), results);
                 }
@@ -619,7 +618,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     snapshot: snapshot).ConfigureAwait(false);
                 var carClasses = this.mapper.SafeMap<IEnumerable<CarClass>>(pegasusCarClasses);
 
-                if (!snapshot.IsNull())
+                if (!string.IsNullOrEmpty(snapshot))
                 {
                     this.refreshableCacheStore.PutItem(carClassKey, TimeSpan.FromDays(7), carClasses);
                 }
@@ -651,7 +650,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     snapshot: snapshot).ConfigureAwait(false);
                 var leaderboards = this.mapper.SafeMap<IEnumerable<Leaderboard>>(pegasusLeaderboards);
 
-                if (!snapshot.IsNull())
+                if (!string.IsNullOrEmpty(snapshot))
                 {
                     this.refreshableCacheStore.PutItem(leaderboardsKey, TimeSpan.FromHours(1), leaderboards);
                 }
@@ -681,7 +680,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     slot: slot,
                     snapshot: snapshot).ConfigureAwait(false);
 
-                if (!snapshot.IsNull())
+                if (!string.IsNullOrEmpty(snapshot))
                 {
                     this.refreshableCacheStore.PutItem(carsKey, TimeSpan.FromDays(1), cars);
                 }
@@ -750,7 +749,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     slot: slot,
                     snapshot: snapshot).ConfigureAwait(false);
 
-                if (!snapshot.IsNull())
+                if (!string.IsNullOrEmpty(snapshot))
                 {
                     this.refreshableCacheStore.PutItem(vanityItemsKey, TimeSpan.FromDays(1), vanityItems);
                 }
@@ -780,7 +779,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     slot: slot,
                     snapshot: snapshot).ConfigureAwait(false);
 
-                if (!snapshot.IsNull())
+                if (string.IsNullOrEmpty(snapshot))
                 {
                     this.refreshableCacheStore.PutItem(tracksKey, TimeSpan.FromDays(1), tracks);
                 }
