@@ -14,6 +14,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfTheDay;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza;
@@ -33,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private const string PegasusBaseCacheKey = "SteelheadPegasus_";
         private const string LocalizationFileAntecedent = "LiveOps_LocalizationStrings-";
         private const string LocalizationStringIdsMappings = "LiveOps_LocalizationStringMappings";
-        private readonly string defaultCmsSlot = "live";
+        private readonly string defaultCmsSlot = SteelheadPegasusSlot.Live;
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -135,7 +136,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     slot: slot,
                     snapshot: snapshot).ConfigureAwait(false);
 
-                this.refreshableCacheStore.PutItem(ugcReportingCategoryKey, TimeSpan.FromDays(1), ugcReportingReasons);
+                if (!string.IsNullOrEmpty(snapshot))
+                {
+                    this.refreshableCacheStore.PutItem(ugcReportingCategoryKey, TimeSpan.FromDays(1), ugcReportingReasons);
+                }
 
                 return ugcReportingReasons;
             }
