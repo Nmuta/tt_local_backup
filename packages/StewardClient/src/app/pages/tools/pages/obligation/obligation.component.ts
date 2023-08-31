@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChildren,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { toDuration } from '@helpers/luxon';
@@ -61,12 +61,12 @@ export class DataPipelineObligationComponent
   ];
 
   public formControls = {
-    options: new FormControl(cloneDeep(FullObligationInputComponent.defaults), [
+    options: new UntypedFormControl(cloneDeep(FullObligationInputComponent.defaults), [
       Validators.required,
     ]),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     options: this.formControls.options,
   });
 

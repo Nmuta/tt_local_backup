@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
@@ -34,10 +34,10 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
   ];
 
   public formControls = {
-    fromDuration: new FormControl(this.fromDurations[0].value, Validators.required),
+    fromDuration: new UntypedFormControl(this.fromDurations[0].value, Validators.required),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     fromDuration: this.formControls.fromDuration,
   });
 

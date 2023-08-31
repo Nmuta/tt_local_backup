@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import {
@@ -25,9 +25,9 @@ export class ProductPricingComponent extends BaseComponent implements OnInit {
   public columnsToDisplay = ['currencyCode', 'msrp'];
 
   public formControls = {
-    productId: new FormControl(null, [Validators.required]),
+    productId: new UntypedFormControl(null, [Validators.required]),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   constructor(readonly priceService: ProductPricingService) {
     super();

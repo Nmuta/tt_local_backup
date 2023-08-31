@@ -34,7 +34,7 @@
               </button>
             </div>
             <div>
-              <h2>{{ viewDate | calendarDate: view + 'ViewTitle':'en' }}</h2>
+              <h2>{{ viewDate | calendarDate : view + 'ViewTitle' : 'en' }}</h2>
             </div>
             <div>
               <button
@@ -92,7 +92,9 @@
 
 <ng-template #customDayCellTemplate let-day="day" let-locale="locale">
   <div class="cal-cell-top">
-    <span class="cal-day-number">{{ day.date | calendarDate: 'monthViewDayNumber':locale }}</span>
+    <span class="cal-day-number">{{
+      day.date | calendarDate : 'monthViewDayNumber' : locale
+    }}</span>
   </div>
   <div class="cell-totals">
     <div class="shrink-wrap">

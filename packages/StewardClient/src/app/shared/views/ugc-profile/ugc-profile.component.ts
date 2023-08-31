@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -39,10 +39,10 @@ export class UgcProfileComponent extends BaseComponent implements OnChanges {
   @Input() public profile: FullPlayerInventoryProfile;
 
   public formControls = {
-    profileDataFile: new FormControl({ value: null, disabled: false }),
+    profileDataFile: new UntypedFormControl({ value: null, disabled: false }),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public currentProfile: UgcProfileInfo;
   public profileFound: boolean = false;

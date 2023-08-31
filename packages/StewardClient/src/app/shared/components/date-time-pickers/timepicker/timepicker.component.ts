@@ -15,7 +15,7 @@ import {
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormBuilder,
+  UntypedFormBuilder,
   NgControl,
   ValidationErrors,
   Validator,
@@ -171,7 +171,7 @@ export class TimepickerComponent
     this.stateChanges.next();
   }
   constructor(
-    formBuilder: FormBuilder,
+    formBuilder: UntypedFormBuilder,
     private readonly focusMonitor: FocusMonitor,
     private readonly elementRef: ElementRef<HTMLElement>,
     /** The bound angular control. MatFormFieldControl hook. */

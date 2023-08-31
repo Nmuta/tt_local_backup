@@ -38,6 +38,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
+      shortText: 'Update to Angular 14',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'e298bf3d-042c-429f-bc33-49de2bd3cfbb',
       shortText: 'Fix Component Governance issues',
     },

@@ -21,7 +21,7 @@ import { LspGroup } from '@models/lsp-group';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { GiftReason } from '../gift-basket/gift-basket.base.component';
 import { HCI } from '@environments/environment';
 import { PastableSingleInputComponent } from '@views/pastable-single-input/pastable-single-input.component';
@@ -107,14 +107,16 @@ export class BulkGiftLiveryComponent<IdentityT extends IdentityResultUnion>
 
   public matErrors = { invalidId: 'Invalid Livery ID' };
   public formControls = {
-    localizedTitleMessageInfo: new FormControl({}, [Validators.required]),
-    localizedBodyMessageInfo: new FormControl({}, [Validators.required]),
-    livery: new FormControl(null, [Validators.required]),
-    giftReason: new FormControl('', [Validators.required]),
-    expireDate: new FormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
-    hasExpirationDate: new FormControl(false),
+    localizedTitleMessageInfo: new UntypedFormControl({}, [Validators.required]),
+    localizedBodyMessageInfo: new UntypedFormControl({}, [Validators.required]),
+    livery: new UntypedFormControl(null, [Validators.required]),
+    giftReason: new UntypedFormControl('', [Validators.required]),
+    expireDate: new UntypedFormControl(null, [
+      DateValidators.isAfter(DateTime.local().startOf('day')),
+    ]),
+    hasExpirationDate: new UntypedFormControl(false),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('GET livery');
   public postMonitor = new ActionMonitor('POST gift livery');

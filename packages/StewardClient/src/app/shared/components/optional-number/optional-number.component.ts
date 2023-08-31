@@ -2,8 +2,8 @@ import { Component, ContentChild, forwardRef, Input, TemplateRef } from '@angula
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -86,11 +86,11 @@ export class OptionalNumberComponent
   }
 
   public formControls = {
-    useNumber: new FormControl(false),
-    number: new FormControl({ value: 0, disabled: true }),
+    useNumber: new UntypedFormControl(false),
+    number: new UntypedFormControl({ value: 0, disabled: true }),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     useNumber: this.formControls.useNumber,
     number: this.formControls.number,
   });

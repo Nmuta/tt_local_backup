@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import {
   AuctionSort,
@@ -30,13 +30,13 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
   public sortOptions = keys(AuctionSort) as AuctionSort[];
 
   public formControls = {
-    makeModelInput: new FormControl(undefined),
-    status: new FormControl(DefaultAuctionFilters.status, Validators.required),
-    sort: new FormControl(DefaultAuctionFilters.sort, Validators.required),
+    makeModelInput: new UntypedFormControl(undefined),
+    status: new UntypedFormControl(DefaultAuctionFilters.status, Validators.required),
+    sort: new UntypedFormControl(DefaultAuctionFilters.sort, Validators.required),
   };
 
   /** Auction filters form group. */
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
   public stateGroupOptions$: Observable<MakeModelFilterGroup[]>;
   public makeModelFilterGroups: MakeModelFilterGroup[];
 

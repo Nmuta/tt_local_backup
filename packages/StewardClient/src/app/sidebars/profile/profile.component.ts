@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { Clipboard } from '@helpers/clipboard';
@@ -36,9 +36,9 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
   public deleteNotificationsActionMonitor = new ActionMonitor('DELETE player notifications');
   public deleteNotificationsFormControls = {
-    xuid: new FormControl(null, Validators.required),
+    xuid: new UntypedFormControl(null, Validators.required),
   };
-  public deleteNotificationsFormGroup = new FormGroup(this.deleteNotificationsFormControls);
+  public deleteNotificationsFormGroup = new UntypedFormGroup(this.deleteNotificationsFormControls);
 
   public readonly adminTeamLead = 'Live Ops Admins';
   public readonly adminTeamLeadEmail = EmailAddresses.LiveOpsAdmins;

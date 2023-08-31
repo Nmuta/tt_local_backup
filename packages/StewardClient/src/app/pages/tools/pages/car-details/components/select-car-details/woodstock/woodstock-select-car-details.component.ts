@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { NavbarTool } from '@environments/environment';
@@ -23,7 +23,7 @@ export class WoodstockSelectCarDetailsComponent extends BaseComponent implements
   public readonly pegasusSlotId: PegasusProjectionSlot = PegasusProjectionSlot.LiveSteward;
 
   public formControls = {
-    makeModelSelect: new FormControl(null),
+    makeModelSelect: new UntypedFormControl(null),
   };
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router) {

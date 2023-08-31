@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -24,6 +24,7 @@ describe('SearchLeaderboardsComponent', () => {
   let component: SearchLeaderboardsComponent;
   let fixture: ComponentFixture<SearchLeaderboardsComponent>;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockBlobStorageService: BlobStorageService;
   const mockService: SearchLeaderboardsContract = {
     getLeaderboards$: () => {
@@ -57,7 +58,7 @@ describe('SearchLeaderboardsComponent', () => {
     validationData: [],
   };
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -75,7 +76,10 @@ describe('SearchLeaderboardsComponent', () => {
         PipesModule,
       ],
       declarations: [SearchLeaderboardsComponent, HumanizePipe],
-      providers: [createMockBlobStorageService(), { provide: FormBuilder, useValue: formBuilder }],
+      providers: [
+        createMockBlobStorageService(),
+        { provide: UntypedFormBuilder, useValue: formBuilder },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchLeaderboardsComponent);
@@ -83,7 +87,6 @@ describe('SearchLeaderboardsComponent', () => {
 
     component.service = mockService;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mockBlobStorageService = TestBed.inject(BlobStorageService);
   });
 
