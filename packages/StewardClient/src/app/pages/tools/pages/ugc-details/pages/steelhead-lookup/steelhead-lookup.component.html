@@ -80,27 +80,40 @@
             >
               <span [matTooltip]="generateSharecodeMatTooltip">Generate Sharecode</span>
             </button>
-            <div class="sf-horizontal do-not-manipulate-margin">
-              <verify-button
-                #verifyReportBtn
-                [permissionAttribute]="reportPermAttribute"
-                [permissionTitle]="gameTitle"
-              ></verify-button>
-              <button
-                class="sf-action-list-margins"
-                mat-raised-button
-                color="warn"
-                [verifyWithV2]="verifyReportBtn"
-                (click)="reportUgcItem()"
-                stateManager
-                [monitor]="reportMonitor"
-                monitorDisable
-                monitorWarn
-                monitorWarnSnackbar
-                monitorCompleteSnackbar
+            <div *waitForMonitor="getReportReasonsMonitor">
+              <mat-form-field
+                class="sf-full-width sf-default-hint sf-action-list"
+                appearance="fill"
               >
-                <span>Report</span>
-              </button>
+                <mat-label>Report reason</mat-label>
+                <mat-select matInput [(ngModel)]="selectedReason">
+                  <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
+                    {{ reason.description }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="sf-horizontal do-not-manipulate-margin">
+                <verify-button
+                  #verifyReportBtn
+                  [permissionAttribute]="reportPermAttribute"
+                  [permissionTitle]="gameTitle"
+                ></verify-button>
+                <button
+                  class="sf-action-list-margins"
+                  mat-raised-button
+                  color="warn"
+                  [verifyWithV2]="verifyReportBtn"
+                  (click)="reportUgcItem()"
+                  stateManager
+                  [monitor]="reportMonitor"
+                  monitorDisable
+                  monitorWarn
+                  monitorWarnSnackbar
+                  monitorCompleteSnackbar
+                >
+                  <span>Report</span>
+                </button>
+              </div>
             </div>
             <div *ngIf="!ugcItem?.isHidden" class="sf-horizontal do-not-manipulate-margin">
               <verify-button
