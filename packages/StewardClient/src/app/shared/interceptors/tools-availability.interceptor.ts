@@ -5,6 +5,7 @@ import { environment } from '@environments/environment';
 import { BlobStorageService } from '@services/blob-storage';
 import { LoggerService, LogTopic } from '@services/logger';
 import { ToolsAvailabilityModalComponent } from '@views/tools-availability-modal/tools-availability-modal.component';
+import { includes } from 'lodash';
 import { EMPTY, Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 
@@ -22,8 +23,13 @@ export class ToolsAvailabilityInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const shouldHandle =
-      request.url.startsWith(environment.stewardApiUrl) && request.method === 'POST';
+    const isStewardNonGetRequest =
+      request.url.startsWith(environment.stewardApiUrl) && request.method !== 'GET';
+
+    const isLocal = includes(request.url, 'localhost');
+
+    const shouldHandle = !isLocal && isStewardNonGetRequest;
+
     if (!shouldHandle) {
       return next.handle(request);
     }

@@ -1,24 +1,41 @@
 <section>
   <mat-card>
-    <mat-card-header>
+    <mat-card-header class="sf-header">
       <mat-card-title> Product Pricing </mat-card-title>
+      <div class="sf-spacer"></div>
+      <button
+        mat-stroked-button
+        (click)="lookupProductId()"
+        stateManager
+        [monitor]="getProductPriceMonitor"
+        [disabled]="!formGroup.valid"
+        monitorDisable
+        monitorWarnSnackbar
+        monitorCompleteSnackbar
+      >
+        Lookup Product
+      </button>
     </mat-card-header>
     <mat-card-content>
       <form>
         <mat-form-field class="product-selection" *waitForMonitor="getProductsMoniter">
           <mat-label>Select Product</mat-label>
-          <mat-select>
-            <mat-option
-              *ngFor="let product of products | keyvalue"
-              [value]="product.value"
-              (onSelectionChange)="productSelectionChanged($event)"
+          <input
+            type="text"
+            matInput
+            [formControl]="formControls.productId"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let product of products | keyvalue" [value]="product.value"
               >{{ product.key }}
             </mat-option>
-          </mat-select>
+          </mat-autocomplete>
         </mat-form-field>
       </form>
 
       <ng-container *waitForMonitor="getProductPriceMonitor">
+        <h1>{{ productName }}</h1>
         <table mat-table class="" [dataSource]="productPrices">
           <ng-container matColumnDef="currencyCode">
             <th mat-header-cell *matHeaderCellDef>Currency Code</th>

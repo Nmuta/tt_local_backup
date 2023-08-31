@@ -9,8 +9,9 @@ import { DateTime } from 'luxon';
 import { stewardUrls } from '@support/steward/urls';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
+import { Tag, withTags } from '@support/tags';
 
-context('Steward / Tools / Messaging / Steelhead', () => {
+context('Steward / Tools / Messaging / Steelhead', withTags(Tag.Flakey), () => {
   before(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.messaging.steelhead);

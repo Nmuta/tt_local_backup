@@ -26,7 +26,6 @@ import { merge, clone, cloneDeep, first as _first, assign } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, first, map, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { RefreshEndpointKeys } from '../user-settings/user-settings.actions';
-import { UserSettingsState } from '../user-settings/user-settings.state';
 
 import {
   ApplyProfileOverrides,
@@ -174,9 +173,7 @@ export class UserState {
     );
 
     const location = this.windowService.location();
-    const useStaging =
-      this.store.selectSnapshot<boolean>(UserSettingsState.enableStagingApi) &&
-      location?.origin === environment.stewardUiStagingUrl;
+    const useStaging = location?.origin === environment.stewardUiStagingUrl;
     return from(
       this.msalService.acquireTokenSilent({
         forceRefresh: action.forceTokenRefresh,

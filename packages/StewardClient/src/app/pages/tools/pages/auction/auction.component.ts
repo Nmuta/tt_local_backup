@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
@@ -15,7 +15,7 @@ import { debounceTime, filter, map, pairwise, startWith, takeUntil } from 'rxjs/
 })
 export class AuctionComponent extends BaseComponent implements OnInit {
   public controls = {
-    auctionId: new FormControl(''),
+    auctionId: new UntypedFormControl(''),
   };
 
   public gameTitleCodeName = GameTitleCodeName;

@@ -12,8 +12,9 @@ import {
 } from './shared-functions';
 import { changeEndpoint } from '@support/steward/shared-functions/change-endpoint';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Services Table Storage / Steelhead', () => {
+context('Steward / Tools / Services Table Storage / Steelhead', withTags(Tag.Flakey), () => {
   before(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.servicesTableStorage.steelhead);

@@ -2,8 +2,8 @@ import { Component, forwardRef, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -53,12 +53,12 @@ export class CreditUpdateSortOptionsComponent
 
   /** Credit update sort options form controls. */
   public formControls = {
-    direction: new FormControl(SortDirection.Ascending, Validators.required),
-    column: new FormControl(CreditUpdateColumn.Timestamp, Validators.required),
+    direction: new UntypedFormControl(SortDirection.Ascending, Validators.required),
+    column: new UntypedFormControl(CreditUpdateColumn.Timestamp, Validators.required),
   };
 
   /** Credit update sort options form group. */
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   private readonly onChanges$ = new Subject<CreditUpdateSortOptionsFormValue>();
 

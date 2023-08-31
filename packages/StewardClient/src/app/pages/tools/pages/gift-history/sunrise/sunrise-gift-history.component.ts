@@ -14,7 +14,7 @@ import {
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { SunriseMasterInventory } from '@models/sunrise';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { DateTimeRange } from '@models/datetime-range';
 import { DateTime } from 'luxon';
 import { HCI } from '@environments/environment';
@@ -45,7 +45,7 @@ export class SunriseGiftHistoryComponent
 
   public dateRangeToggleOptions = DATE_TIME_TOGGLE_OPTIONS;
   public formControls = {
-    dateRange: new FormControl({
+    dateRange: new UntypedFormControl({
       value: {
         start: DateTime.local().minus({ days: 7 }),
         end: DateTime.local(),

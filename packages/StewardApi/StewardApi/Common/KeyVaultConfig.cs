@@ -34,6 +34,10 @@ namespace Turn10.LiveOps.StewardApi.Common
 
         public string WoodstockPlayFabProdKey { get; set; }
 
+        public string FortePlayFabDevTitleId { get; set; }
+
+        public string FortePlayFabDevKey { get; set; }
+
         public string BlobConnectionString { get; set; }
 
         public string ObligationClientSecret { get; set; }
@@ -81,6 +85,8 @@ namespace Turn10.LiveOps.StewardApi.Common
                 async () => keyVault.TeamsHelpChannelWebhook = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.TeamsHelpChannelWebhook]).ConfigureAwait(false),
                 async () => keyVault.WoodstockPlayFabDevTitleId = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.WoodstockPlayFabDevTitleId]).ConfigureAwait(false),
                 async () => keyVault.WoodstockPlayFabDevKey = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.WoodstockPlayFabDevKey]).ConfigureAwait(false),
+                async () => keyVault.FortePlayFabDevTitleId = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.FortePlayFabDevTitleId]).ConfigureAwait(false),
+                async () => keyVault.FortePlayFabDevKey = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.FortePlayFabDevKey]).ConfigureAwait(false),
                 async () => keyVault.BlobConnectionString = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).ConfigureAwait(false),
                 async () => keyVault.ObligationClientSecret = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.ObligationClientSecretName]).ConfigureAwait(false),
                 async () => keyVault.ApolloCertificateSecret = await GetSecretInternalAsync(configuration[ConfigurationKeyConstants.ApolloCertificateSecretName]).ConfigureAwait(false),

@@ -1,11 +1,15 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { PegasusEnvironment } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { LeaderboardScoreType } from '@models/leaderboards';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
+import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
 /** Interface that represents a rivals event. */
 export interface RivalsEvent {
+  id: BigNumber;
   name: string;
   description: string;
   category: string;
@@ -25,8 +29,11 @@ export class SteelheadRivalsService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets Rivals Events. */
-  public getRivalsEvents$(): Observable<RivalsEvent[]> {
-    return this.api.getRequest$<RivalsEvent[]>(`${this.basePath}`);
+  public getRivalsEvents$(
+    pegasusEnvironment: string = PegasusEnvironment.Dev,
+  ): Observable<RivalsEvent[]> {
+    const params = new HttpParams().append('pegasusEnvironment', pegasusEnvironment);
+    return this.api.getRequest$<RivalsEvent[]>(`${this.basePath}`, params);
   }
 
   /** Gets the Rivals Event reference. */

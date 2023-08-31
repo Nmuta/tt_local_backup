@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -35,7 +35,7 @@ describe('LeaderboardStatsComponent', () => {
     },
   };
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   const testLeaderboardScores: LeaderboardScore[] = [
     {
@@ -91,7 +91,7 @@ describe('LeaderboardStatsComponent', () => {
         MatInputModule,
       ],
       declarations: [LeaderboardStatsComponent, HumanizePipe],
-      providers: [{ provide: FormBuilder, useValue: formBuilder }],
+      providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LeaderboardStatsComponent);

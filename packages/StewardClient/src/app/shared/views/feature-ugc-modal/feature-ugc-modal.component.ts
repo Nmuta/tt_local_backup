@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
@@ -28,11 +28,11 @@ export type FeatureUgcModalComponentUnion =
 })
 export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
   public formControls = {
-    isFeatured: new FormControl(''),
-    featuredDate: new FormControl('', [DateValidators.isAfter(DateTime.local())]),
-    forceFeaturedDate: new FormControl('', [DateValidators.isAfter(DateTime.local())]),
+    isFeatured: new UntypedFormControl(''),
+    featuredDate: new UntypedFormControl('', [DateValidators.isAfter(DateTime.local())]),
+    forceFeaturedDate: new UntypedFormControl('', [DateValidators.isAfter(DateTime.local())]),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Set Featured Status');
   public ugcItem: PlayerUgcItem;
 

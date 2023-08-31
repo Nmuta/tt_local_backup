@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -55,11 +55,11 @@ export class AuctionActionLogTableComponent
   @ViewChild(MatSort) sort: MatSort;
 
   public formControls = {
-    dateRangeStart: new FormControl(undefined),
-    dateRangeEnd: new FormControl(undefined),
-    makeModel: new FormControl(undefined),
+    dateRangeStart: new UntypedFormControl(undefined),
+    dateRangeEnd: new UntypedFormControl(undefined),
+    makeModel: new UntypedFormControl(undefined),
   };
-  public dateFormGroup = new FormGroup({
+  public dateFormGroup = new UntypedFormGroup({
     dateRangeStart: this.formControls.dateRangeStart,
     dateRangeEnd: this.formControls.dateRangeEnd,
   });

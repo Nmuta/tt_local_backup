@@ -1,5 +1,6 @@
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { withTags, Tag } from '@support/tags';
 
 /** Interface for Lookup Results */
 interface LookupResults {
@@ -112,7 +113,7 @@ export function testLookupWithFilter(results: LookupResults): void {
 
 /** Tests the Show All Rows Toggle */
 export function testShowAllRows(results: LookupResults): void {
-  it('should toggle the Show All Rows Button', () => {
+  it('should toggle the Show All Rows Button', withTags(Tag.Slow), () => {
     // cy.contains('mat-cell', results.result).should('not.exist');
     cy.get('mat-slide-toggle').click();
     cy.contains('button span', 'Lookup').closest('button').click();
