@@ -301,18 +301,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurationsAsync(string environment = null, string slot = null, string snapshot = null);
 
         /// <summary>
-        ///     Gets date time ranges.
+        ///     Gets Date time ranges.
         /// </summary>
-        Task<Dictionary<Guid, string>> GetDateTimeRangesAsync();
+        Task<Dictionary<Guid, string>> GetDateTimeRangesAsync(string environment = null, string slot = null, string snapshot = null);
 
         /// <summary>
         ///     Gets Challenges.
         /// </summary>
-        Task<Dictionary<Guid, string>> GetChallengesAsync();
+        Task<Dictionary<Guid, string>> GetChallengesAsync(string environment = null, string slot = null, string snapshot = null);
 
         /// <summary>
         ///     Gets Featured Showcases.
         /// </summary>
-        Task<Dictionary<Guid, string>> GetFeaturedShowcasesAsync();
+        Task<Dictionary<Guid, string>> GetFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null);
     }
 }
