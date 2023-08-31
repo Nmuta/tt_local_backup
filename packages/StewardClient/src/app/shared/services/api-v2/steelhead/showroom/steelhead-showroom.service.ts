@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { FriendlyNameMap } from '@models/message-of-the-day';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
@@ -88,5 +89,10 @@ export class SteelheadShowroomService {
   /** Gets Showroom Car Sales. */
   public getCarSales$(): Observable<CarSale[]> {
     return this.api.getRequest$<CarSale[]>(`${this.basePath}/carSales`);
+  }
+
+  /** Gets featured showcases mapped to Guid. */
+  public getFeaturedShowcases$(): Observable<FriendlyNameMap> {
+    return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/featuredShowcases`);
   }
 }

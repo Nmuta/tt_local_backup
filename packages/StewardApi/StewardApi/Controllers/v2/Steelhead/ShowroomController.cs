@@ -128,5 +128,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             return this.Ok(carSales);
         }
+
+        /// <summary>
+        ///     Gets all featured showcases.
+        /// </summary>
+        [HttpGet("featuredShowcases")]
+        [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetFeaturedShowcases()
+        {
+            var featuredShowcases = await this.steelheadPegasusService.GetFeaturedShowcasesAsync().ConfigureAwait(true);
+
+            return this.Ok(featuredShowcases);
+        }
     }
 }
