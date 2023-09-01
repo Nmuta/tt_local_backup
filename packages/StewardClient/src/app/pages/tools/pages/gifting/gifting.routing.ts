@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RouteMemoryRedirectGuard, RouteMemorySetGuard, TitleMemoryRedirectLandingComponent } from 'app/route-guards';
+import {
+  RouteMemoryRedirectGuard,
+  RouteMemorySetGuard,
+  TitleMemoryRedirectLandingComponent,
+} from 'app/route-guards';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 import { GiftingComponent } from './gifting.component';
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';

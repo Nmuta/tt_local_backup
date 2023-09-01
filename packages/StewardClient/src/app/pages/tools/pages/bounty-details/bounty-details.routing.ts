@@ -2,7 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SteelheadBountyDetailsComponent } from './pages/steelhead/steelhead-bounty-details.component';
 import { BountyDetailsComponent } from './bounty-details.component';
-import { RouteMemoryRedirectGuard, RouteMemorySetGuard, TitleMemoryRedirectLandingComponent } from 'app/route-guards';
+import {
+  RouteMemoryRedirectGuard,
+  RouteMemorySetGuard,
+  TitleMemoryRedirectLandingComponent,
+} from 'app/route-guards';
 import { PathParams } from '@models/path-params';
 
 const routes: Routes = [

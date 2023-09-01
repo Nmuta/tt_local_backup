@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RouteMemoryRedirectGuard, RouteMemorySetGuard, TitleMemoryRedirectLandingComponent } from 'app/route-guards';
+import {
+  RouteMemoryRedirectGuard,
+  RouteMemorySetGuard,
+  TitleMemoryRedirectLandingComponent,
+} from 'app/route-guards';
 import { WoodstockPlayFabBuildsManagementComponent } from './components/playfab-builds-management/woodstock/woodstock-playfab-builds-management.component';
 import { PlayFabComponent } from './playfab.component';
 import { WoodstockPlayFabComponent } from './woodstock/woodstock-playfab.component';
