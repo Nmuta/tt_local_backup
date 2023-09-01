@@ -19,6 +19,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: ChangelogTag.Internal,
       uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
       shortText: 'Update to Angular 14',
+      longText: ['Patch: Fix invalid routes.'],
     },
     {
       tag: { title: [GameTitle.Forte], tool: NavbarTool.PlayFab },
