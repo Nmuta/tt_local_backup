@@ -10,10 +10,12 @@
         ></player-selection-single>
 
         <form [formGroup]="identityCalendarScheduleForm">
-          <mat-form-field>
+          <mat-form-field *ngIf="requireDaysForward">
             <mat-label> Days Forward to Project </mat-label>
             <input matInput type="number" [formControl]="identityFormControls.daysForward" />
           </mat-form-field>
+        </form>
+        <div class="action-button">
           <button
             mat-raised-button
             color="accent"
@@ -22,7 +24,7 @@
           >
             Search <mat-icon svgIcon="steward-arrow-right"></mat-icon>
           </button>
-        </form>
+        </div>
       </mat-card>
     </mat-tab>
     <mat-tab label="Pegasus Selection">
@@ -44,6 +46,8 @@
             <mat-label> Days Forward to Project </mat-label>
             <input matInput type="number" [formControl]="pegasusFormControls.daysForward" />
           </mat-form-field>
+        </form>
+        <div class="action-button">
           <button
             mat-raised-button
             color="accent"
@@ -52,7 +56,7 @@
           >
             Search <mat-icon svgIcon="steward-arrow-right"></mat-icon>
           </button>
-        </form>
+        </div>
       </mat-card>
     </mat-tab>
   </mat-tab-group>

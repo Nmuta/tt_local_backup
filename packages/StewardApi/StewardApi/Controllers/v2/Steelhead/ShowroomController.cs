@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync().ConfigureAwait(true);
+                carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                divisionFeaturedShowcases = await this.steelheadPegasusService.GetDivisionFeaturedShowcasesAsync().ConfigureAwait(true);
+                divisionFeaturedShowcases = await this.steelheadPegasusService.GetDivisionFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -219,7 +219,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                manufacturerFeaturedShowcases = await this.steelheadPegasusService.GetManufacturerFeaturedShowcasesAsync().ConfigureAwait(true);
+                manufacturerFeaturedShowcases = await this.steelheadPegasusService.GetManufacturerFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
@@ -235,7 +235,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                carSales = await this.steelheadPegasusService.GetCarSalesAsync().ConfigureAwait(true);
+                carSales = await this.steelheadPegasusService.GetCarSalesAsync(environment, slot, snapshot).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
