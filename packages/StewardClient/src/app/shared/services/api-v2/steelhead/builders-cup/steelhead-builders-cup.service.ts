@@ -1,6 +1,8 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SimpleCar } from '@models/cars';
 import { GuidLikeString } from '@models/extended-types';
+import { PegasusPathInfo } from '@models/pegasus-path-info';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
@@ -42,8 +44,27 @@ export class SteelheadBuildersCupService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the Steelhead Builder's Cup featured content schedule. */
-  public getBuildersCupSchedule$(): Observable<BuildersCupFeaturedTour[]> {
-    return this.api.getRequest$<BuildersCupFeaturedTour[]>(`${this.basePath}/schedule`);
+  public getBuildersCupScheduleByPegasus$(info: PegasusPathInfo): Observable<BuildersCupFeaturedTour[]> {
+    let httpParams = new HttpParams();
+
+    if (info?.environment) {
+      httpParams = httpParams.append('environment', info.environment);
+    }
+
+    if (info?.slot) {
+      httpParams = httpParams.append('slot', info.slot);
+    }
+
+    if (info?.snapshot) {
+      httpParams = httpParams.append('snapshot', info.snapshot);
+    }
+
+    return this.api.getRequest$<BuildersCupFeaturedTour[]>(`${this.basePath}/schedule`, httpParams);
+  }
+
+  /** Gets the Steelhead Builder's Cup featured content schedule. */
+  public getBuildersCupScheduleByUser$(xuid: BigNumber): Observable<BuildersCupFeaturedTour[]> {
+    return this.api.getRequest$<BuildersCupFeaturedTour[]>(`${this.basePath}/player/${xuid}/schedule`);
   }
 
   /** Gets the Steelhead Builder's Cup championships. */
