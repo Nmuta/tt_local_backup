@@ -29,9 +29,7 @@ export class SteelheadRivalsService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets Rivals Events. */
-  public getRivalsEventsByPegasus$(
-    info: PegasusPathInfo
-  ): Observable<RivalsEvent[]> {
+  public getRivalsEventsByPegasus$(info: PegasusPathInfo): Observable<RivalsEvent[]> {
     let httpParams = new HttpParams();
 
     if (info?.environment) {

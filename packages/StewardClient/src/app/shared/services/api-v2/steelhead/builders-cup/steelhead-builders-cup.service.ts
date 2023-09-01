@@ -44,7 +44,9 @@ export class SteelheadBuildersCupService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the Steelhead Builder's Cup featured content schedule. */
-  public getBuildersCupScheduleByPegasus$(info: PegasusPathInfo): Observable<BuildersCupFeaturedTour[]> {
+  public getBuildersCupScheduleByPegasus$(
+    info: PegasusPathInfo,
+  ): Observable<BuildersCupFeaturedTour[]> {
     let httpParams = new HttpParams();
 
     if (info?.environment) {
@@ -64,7 +66,9 @@ export class SteelheadBuildersCupService {
 
   /** Gets the Steelhead Builder's Cup featured content schedule. */
   public getBuildersCupScheduleByUser$(xuid: BigNumber): Observable<BuildersCupFeaturedTour[]> {
-    return this.api.getRequest$<BuildersCupFeaturedTour[]>(`${this.basePath}/player/${xuid}/schedule`);
+    return this.api.getRequest$<BuildersCupFeaturedTour[]>(
+      `${this.basePath}/player/${xuid}/schedule`,
+    );
   }
 
   /** Gets the Steelhead Builder's Cup championships. */

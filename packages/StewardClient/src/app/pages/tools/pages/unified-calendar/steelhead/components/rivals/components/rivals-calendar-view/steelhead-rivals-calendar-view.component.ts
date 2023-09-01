@@ -46,25 +46,25 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
     }
 
     this.getSchedule$
-    .pipe(
-      tap(() => {
-        this.events = [];
-      }),
-      this.getMonitor.monitorStart(),
-      switchMap(() =>
-        this.retrieveSchedule$.pipe(
-          this.getMonitor.monitorCatch(),
-          catchError(() => {
-            return EMPTY;
-          }),
+      .pipe(
+        tap(() => {
+          this.events = [];
+        }),
+        this.getMonitor.monitorStart(),
+        switchMap(() =>
+          this.retrieveSchedule$.pipe(
+            this.getMonitor.monitorCatch(),
+            catchError(() => {
+              return EMPTY;
+            }),
+          ),
         ),
-      ),
-      this.getMonitor.monitorEnd(),
-      takeUntil(this.onDestroy$),
-    )
-    .subscribe(rivalsEvents => {
-      this.events = this.makeRivalsEventsCalendarEvent(rivalsEvents);
-    });
+        this.getMonitor.monitorEnd(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(rivalsEvents => {
+        this.events = this.makeRivalsEventsCalendarEvent(rivalsEvents);
+      });
 
     //this.getActionMonitor = this.getActionMonitor.repeat();
 
@@ -76,34 +76,34 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
     //   });
   }
 
-    /** Refresh calendar on user interaction. */
-    public refreshTable(inputs: CalendarLookupInputs): void {
-      if (inputs.identity) {
-        if (!inputs.identity?.xuid) {
-          this.events = [];
-  
-          return;
-        }
-  
-        this.retrieveSchedule$ = this.steelheadRivalsService.getRivalsEventsByUser$(
-          inputs?.identity?.xuid,
-        );
-  
-        this.getSchedule$.next();
+  /** Refresh calendar on user interaction. */
+  public refreshTable(inputs: CalendarLookupInputs): void {
+    if (inputs.identity) {
+      if (!inputs.identity?.xuid) {
+        this.events = [];
+
+        return;
       }
-  
-      if (inputs.pegasusInfo) {
-        if (!inputs.pegasusInfo.environment) {
-          this.events = [];
-        }
-  
-        this.retrieveSchedule$ = this.steelheadRivalsService.getRivalsEventsByPegasus$(
-          inputs.pegasusInfo,
-        );
-  
-        this.getSchedule$.next();
-      }
+
+      this.retrieveSchedule$ = this.steelheadRivalsService.getRivalsEventsByUser$(
+        inputs?.identity?.xuid,
+      );
+
+      this.getSchedule$.next();
     }
+
+    if (inputs.pegasusInfo) {
+      if (!inputs.pegasusInfo.environment) {
+        this.events = [];
+      }
+
+      this.retrieveSchedule$ = this.steelheadRivalsService.getRivalsEventsByPegasus$(
+        inputs.pegasusInfo,
+      );
+
+      this.getSchedule$.next();
+    }
+  }
 
   /** Sets calendar view. */
   public setView(view: CalendarView): void {

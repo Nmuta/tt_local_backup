@@ -93,63 +93,63 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
     }
 
     this.getSchedule$
-    .pipe(
-      tap(() => {
-        this.events = undefined;
-        this.uniqueTours = null;
-        this.events = [];
-      }),
-      this.getMonitor.monitorStart(),
-      switchMap(() =>
-        this.retrieveSchedule$.pipe(
-          this.getMonitor.monitorCatch(),
-          catchError(() => {
-            this.buildersCupSchedule = undefined;
-            this.events = [];
-            return EMPTY;
-          }),
+      .pipe(
+        tap(() => {
+          this.events = undefined;
+          this.uniqueTours = null;
+          this.events = [];
+        }),
+        this.getMonitor.monitorStart(),
+        switchMap(() =>
+          this.retrieveSchedule$.pipe(
+            this.getMonitor.monitorCatch(),
+            catchError(() => {
+              this.buildersCupSchedule = undefined;
+              this.events = [];
+              return EMPTY;
+            }),
+          ),
         ),
-      ),
-      this.getMonitor.monitorEnd(),
-      takeUntil(this.onDestroy$),
-    )
-    .subscribe(returnSchedule => {
-      this.buildersCupSchedule = returnSchedule;
-      this.events = this.makeEvents(this.buildersCupSchedule);
-      this.filterEvents(this.seriesDictionary);
-    });
+        this.getMonitor.monitorEnd(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(returnSchedule => {
+        this.buildersCupSchedule = returnSchedule;
+        this.events = this.makeEvents(this.buildersCupSchedule);
+        this.filterEvents(this.seriesDictionary);
+      });
   }
 
-    /** Refresh calendar on user interaction. */
-    public refreshTable(inputs: CalendarLookupInputs): void {
-      if (inputs.identity) {
-        if (!inputs.identity?.xuid) {
-          this.events = [];
-          this.uniqueTours = null;
-  
-          return;
-        }
-  
-        this.retrieveSchedule$ = this.buildersCupService.getBuildersCupScheduleByUser$(
-          inputs?.identity?.xuid,
-        );
-  
-        this.getSchedule$.next();
+  /** Refresh calendar on user interaction. */
+  public refreshTable(inputs: CalendarLookupInputs): void {
+    if (inputs.identity) {
+      if (!inputs.identity?.xuid) {
+        this.events = [];
+        this.uniqueTours = null;
+
+        return;
       }
-  
-      if (inputs.pegasusInfo) {
-        if (!inputs.pegasusInfo.environment) {
-          this.events = [];
-          this.uniqueTours = null;
-        }
-  
-        this.retrieveSchedule$ = this.buildersCupService.getBuildersCupScheduleByPegasus$(
-          inputs.pegasusInfo,
-        );
-  
-        this.getSchedule$.next();
-      }
+
+      this.retrieveSchedule$ = this.buildersCupService.getBuildersCupScheduleByUser$(
+        inputs?.identity?.xuid,
+      );
+
+      this.getSchedule$.next();
     }
+
+    if (inputs.pegasusInfo) {
+      if (!inputs.pegasusInfo.environment) {
+        this.events = [];
+        this.uniqueTours = null;
+      }
+
+      this.retrieveSchedule$ = this.buildersCupService.getBuildersCupScheduleByPegasus$(
+        inputs.pegasusInfo,
+      );
+
+      this.getSchedule$.next();
+    }
+  }
 
   /** Sets calendar view. */
   public setView(view: CalendarView): void {

@@ -19,8 +19,8 @@ export class MockSteelheadBuildersCupService {
   ];
 
   public getBuildersCupScheduleByPegasus$ = jasmine
-  .createSpy('getBuildersCupScheduleByPegasus')
-  .and.returnValue(of(this.result));
+    .createSpy('getBuildersCupScheduleByPegasus')
+    .and.returnValue(of(this.result));
 
   public getBuildersCupScheduleByUser$ = jasmine
     .createSpy('getBuildersCupScheduleByUser')

@@ -4,9 +4,13 @@ import { SteelheadRivalsService } from './steelhead-rivals.service';
 
 /** Defines the mock for the API Service. */
 export class MockSteelheadRivalsService {
-  public getRivalsEventsByPegasus$ = jasmine.createSpy('getRivalsEventsByPegasus').and.returnValue(of(null));
+  public getRivalsEventsByPegasus$ = jasmine
+    .createSpy('getRivalsEventsByPegasus')
+    .and.returnValue(of(null));
 
-  public getRivalsEventsByUser$ = jasmine.createSpy('getRivalsEventsByUser').and.returnValue(of(null));
+  public getRivalsEventsByUser$ = jasmine
+    .createSpy('getRivalsEventsByUser')
+    .and.returnValue(of(null));
 
   public getRivalsEventReference$ = jasmine
     .createSpy('getRivalsEventReference')

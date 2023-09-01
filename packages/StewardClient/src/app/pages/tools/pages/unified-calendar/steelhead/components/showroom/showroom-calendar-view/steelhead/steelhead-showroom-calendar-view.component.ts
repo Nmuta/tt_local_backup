@@ -4,7 +4,16 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { DomainEnumPrettyPrintOrHumanizePipe } from '@shared/pipes/domain-enum-pretty-print-or-humanize.pipe';
 import { CalendarEvent, CalendarView, collapseAnimation } from 'angular-calendar';
-import { combineLatest, takeUntil } from 'rxjs';
+import {
+  EMPTY,
+  Observable,
+  Subject,
+  catchError,
+  combineLatest,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import {
   CarFeaturedShowcase,
   CarSale,
@@ -17,6 +26,7 @@ import { ShowroomCarFeaturedTileDetailsModalComponent } from '../../showroom-car
 import { ShowroomDivisionFeaturedTileDetailsModalComponent } from '../../showroom-division-featured-tile-details-modal/steelhead/showroom-division-featured-tile-details-modal.component';
 import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from '../../showroom-manufacturer-featured-tile-details-modal/steelhead/showroom-manufacturer-featured-tile-details-modal.component';
 import { MIN_CALENDAR_DATETIME, MAX_CALENDAR_DATETIME } from '@shared/constants';
+import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 
 export enum ShowroomEventType {
   CarSale = 'Car Sale',
@@ -41,7 +51,7 @@ export interface ShowroomMeta {
   animations: [collapseAnimation],
 })
 export class SteelheadShowroomCalendarViewComponent extends BaseComponent implements OnInit {
-  public getActionMonitor = new ActionMonitor('GET showroom calendar details');
+  public getMonitor = new ActionMonitor('GET showroom calendar details');
 
   public view: CalendarView = CalendarView.Month;
   public CalendarView = CalendarView;
@@ -49,6 +59,12 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
 
   public events: CalendarEvent[];
   public filteredEvents: CalendarEvent<ShowroomMeta>[] = [];
+
+  private readonly getSchedule$ = new Subject<void>();
+  private retrieveCarFeaturedShowcases$: Observable<CarFeaturedShowcase[]>;
+  private retrieveDivisionFeaturedShowcases$: Observable<DivisionFeaturedShowcase[]>;
+  private retrieveManufacturerFeaturedShowcases$: Observable<ManufacturerFeaturedShowcase[]>;
+  private retrieveCarSales$: Observable<CarSale[]>;
 
   constructor(
     private readonly steelheadShowroomService: SteelheadShowroomService,
@@ -63,15 +79,33 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
       throw new Error('No service is defined for Showroom Calendar.');
     }
 
-    this.getActionMonitor = this.getActionMonitor.repeat();
+    this.getMonitor = this.getMonitor.repeat();
 
-    combineLatest([
-      this.steelheadShowroomService.getCarFeaturedShowcases$(),
-      this.steelheadShowroomService.getDivisionFeaturedShowcases$(),
-      this.steelheadShowroomService.getManufacturerFeaturedShowcases$(),
-      this.steelheadShowroomService.getCarSales$(),
-    ])
-      .pipe(this.getActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+    this.getSchedule$
+      .pipe(
+        tap(() => {
+          this.events = [];
+          this.filteredEvents = [];
+        }),
+        this.getMonitor.monitorStart(),
+        switchMap(() =>
+          combineLatest([
+            this.retrieveCarFeaturedShowcases$,
+            this.retrieveDivisionFeaturedShowcases$,
+            this.retrieveManufacturerFeaturedShowcases$,
+            this.retrieveCarSales$,
+          ]).pipe(
+            this.getMonitor.monitorCatch(),
+            catchError(() => {
+              this.events = [];
+              this.filteredEvents = [];
+              return EMPTY;
+            }),
+          ),
+        ),
+        this.getMonitor.monitorEnd(),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe(
         ([
           carFeaturedShowcase,
@@ -90,6 +124,95 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
           this.filteredEvents = this.events;
         },
       );
+
+    // combineLatest([
+    //   this.steelheadShowroomService.getCarFeaturedShowcases$(),
+    //   this.steelheadShowroomService.getDivisionFeaturedShowcases$(),
+    //   this.steelheadShowroomService.getManufacturerFeaturedShowcases$(),
+    //   this.steelheadShowroomService.getCarSales$(),
+    // ])
+    //   .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+    //   .subscribe(
+    //     ([
+    //       carFeaturedShowcase,
+    //       divisionFeaturedShowcase,
+    //       manufacturerFeaturedShowcase,
+    //       carSales,
+    //     ]) => {
+    //       this.events = this.makeCarFeaturedEvents(carFeaturedShowcase);
+    //       this.events = this.events.concat(
+    //         this.makeDivisionFeaturedEvents(divisionFeaturedShowcase),
+    //       );
+    //       this.events = this.events.concat(
+    //         this.makeManufacturerFeaturedEvents(manufacturerFeaturedShowcase),
+    //       );
+    //       this.events = this.events.concat(this.makeSaleEvents(carSales));
+    //       this.filteredEvents = this.events;
+    //     },
+    //   );
+  }
+
+  /** Refresh calendar on user interaction. */
+  public refreshTable(inputs: CalendarLookupInputs): void {
+    if (inputs.identity) {
+      if (!inputs.identity?.xuid) {
+        this.events = [];
+        this.filteredEvents = [];
+
+        return;
+      }
+
+      this.retrieveCarFeaturedShowcases$ = this.steelheadShowroomService
+        .getCarFeaturedShowcases$
+        //inputs?.identity?.xuid,
+        ();
+
+      this.retrieveDivisionFeaturedShowcases$ = this.steelheadShowroomService
+        .getDivisionFeaturedShowcases$
+        //inputs?.identity?.xuid,
+        ();
+
+      this.retrieveManufacturerFeaturedShowcases$ = this.steelheadShowroomService
+        .getManufacturerFeaturedShowcases$
+        //inputs?.identity?.xuid,
+        ();
+
+      this.retrieveCarSales$ = this.steelheadShowroomService
+        .getCarSales$
+        //inputs?.identity?.xuid,
+        ();
+
+      this.getSchedule$.next();
+    }
+
+    if (inputs.pegasusInfo) {
+      if (!inputs.pegasusInfo.environment) {
+        this.events = [];
+        this.filteredEvents = [];
+      }
+
+      this.retrieveCarFeaturedShowcases$ = this.steelheadShowroomService
+        .getCarFeaturedShowcases$
+        //inputs.pegasusInfo,
+        ();
+
+      this.retrieveDivisionFeaturedShowcases$ = this.steelheadShowroomService
+        .getDivisionFeaturedShowcases$
+        //inputs?.identity?.xuid,
+        ();
+
+      this.retrieveManufacturerFeaturedShowcases$ = this.steelheadShowroomService
+        .getManufacturerFeaturedShowcases$
+        //inputs?.identity?.xuid,
+        ();
+
+      this.retrieveCarSales$ = this.steelheadShowroomService
+        .getCarSales$
+        //inputs?.identity?.xuid,
+        ();
+
+      this.getSchedule$.next();
+    }
   }
 
   /** Sets calendar view. */
