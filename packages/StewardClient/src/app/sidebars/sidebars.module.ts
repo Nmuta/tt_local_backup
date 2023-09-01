@@ -37,6 +37,7 @@ import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { SidebarsComponent } from './sidebars.component';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -65,6 +66,11 @@ export const sidebarRoutes = [
     component: ContactUsComponent,
     outlet: 'sidebar',
   },
+  {
+    path: 'sidebars',
+    component: SidebarsComponent,
+    outlet: 'sidebar',
+  },
 ];
 
 /** Module containing all routable sidebar components. */
@@ -77,6 +83,7 @@ export const sidebarRoutes = [
     ChangelogGroupComponent,
     ChangelogTagDetailsComponent,
     ContactUsComponent,
+    SidebarsComponent,
   ],
   imports: [
     ChangelogModule,
