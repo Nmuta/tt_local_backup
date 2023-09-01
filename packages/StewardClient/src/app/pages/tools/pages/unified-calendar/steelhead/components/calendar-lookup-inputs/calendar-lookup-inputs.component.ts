@@ -25,15 +25,15 @@ export class CalendarLookupInputsComponent implements OnInit {
   public matTabSelectedIndex = 0;
 
   public identityFormControls = {
-    daysForward: new FormControl(30, [Validators.min(1)]),
-    identity: new FormControl(null, [Validators.required]),
+    daysForward: new UntypedFormControl(30, [Validators.min(1)]),
+    identity: new UntypedFormControl(null, [Validators.required]),
   };
   public identityCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(
     this.identityFormControls,
   );
 
   public pegasusFormControls = {
-    daysForward: new UntypedFormControl(30, [Validators.required, Validators.min(1)]),
+    daysForward: new UntypedFormControl(30, [Validators.min(1)]),
     pegasusEnvironment: new UntypedFormControl(null, [Validators.required]),
     pegasusSlot: new UntypedFormControl(null),
     pegasusSnapshot: new UntypedFormControl(null),
@@ -46,6 +46,7 @@ export class CalendarLookupInputsComponent implements OnInit {
   public ngOnInit(): void {
     if (this.requireDaysForward) {
       this.identityFormControls.daysForward.addValidators([Validators.required]);
+      this.pegasusFormControls.daysForward.addValidators([Validators.required]);
     }
   }
 
