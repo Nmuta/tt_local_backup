@@ -42,6 +42,7 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
     UgcType.Tune,
     UgcType.EventBlueprint,
     UgcType.CommunityChallenge,
+    UgcType.Replay,
   ];
 
   public featureUgcPermAttribute = PermAttributeName.FeatureUgc;
