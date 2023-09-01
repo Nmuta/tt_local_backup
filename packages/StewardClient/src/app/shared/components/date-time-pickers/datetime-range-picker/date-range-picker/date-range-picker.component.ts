@@ -2,8 +2,8 @@ import { AfterViewInit, Component, forwardRef, Input, ViewChild } from '@angular
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -71,13 +71,13 @@ export class DateRangePickerComponent
 
   public formControls = {
     dateRange: {
-      start: new FormControl(this.defaultRange.dateRange.start),
-      end: new FormControl(this.defaultRange.dateRange.end),
+      start: new UntypedFormControl(this.defaultRange.dateRange.start),
+      end: new UntypedFormControl(this.defaultRange.dateRange.end),
     },
   };
 
-  public formGroup = new FormGroup({
-    dateRange: new FormGroup({
+  public formGroup = new UntypedFormGroup({
+    dateRange: new UntypedFormGroup({
       start: this.formControls.dateRange.start,
       end: this.formControls.dateRange.end,
     }),

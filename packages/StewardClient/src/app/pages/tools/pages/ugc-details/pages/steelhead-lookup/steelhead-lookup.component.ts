@@ -64,11 +64,14 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public userHasWritePerms: boolean = false;
   public canFeatureUgc: boolean = false;
   public canGenerateSharecode: boolean = false;
+  public canReportUgc: boolean = true;
+  public canHideUgc: boolean = true;
   public featureMatTooltip: string = null;
   public generateSharecodeMatTooltip: string = null;
   private readonly privateUgcTooltip = 'Cannot feature private UGC content';
   private readonly incorrectPermsTooltip = 'This action is restricted for your user role';
   private readonly privateUgcSharecodeTooltip = 'Cannot generate Sharecode for private UGC';
+  private readonly replayUgcSharecodeTooltip = 'Cannot generate Sharecode for a Replay UGC item';
   private readonly existingSharecodeTooltip = 'Sharecode already exists for UGC';
   private readonly generateSharecodeTooltip = '"Generate sharecode for UGC"';
 
@@ -155,7 +158,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
         }
 
         this.canFeatureUgc = this.ugcItem?.isPublic && this.userHasWritePerms;
-        this.canGenerateSharecode = !this.ugcItem?.shareCode;
+        this.canGenerateSharecode = !this.ugcItem?.shareCode && !this.isReplayUgcItem();
 
         if (!this.userHasWritePerms) {
           this.featureMatTooltip = this.incorrectPermsTooltip;
@@ -168,10 +171,15 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
             this.generateSharecodeMatTooltip = this.existingSharecodeTooltip;
           } else if (!this.ugcItem?.isPublic) {
             this.generateSharecodeMatTooltip = this.privateUgcSharecodeTooltip;
+          } else if (this.isReplayUgcItem()) {
+            this.generateSharecodeMatTooltip = this.replayUgcSharecodeTooltip;
           }
         } else {
           this.generateSharecodeMatTooltip = this.generateSharecodeTooltip;
         }
+
+        this.canReportUgc = !this.isReplayUgcItem();
+        this.canHideUgc = !this.isReplayUgcItem();
       });
 
     this.ugcReportService
@@ -306,5 +314,9 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
         this.ugcItem = cloneDeep(this.ugcItem);
         this.canGenerateSharecode = false;
       });
+  }
+
+  private isReplayUgcItem(): boolean {
+    return this.ugcItem?.type === UgcType.Replay;
   }
 }

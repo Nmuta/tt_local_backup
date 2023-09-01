@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormArray,
-  FormControl,
-  FormGroup,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -49,17 +49,17 @@ export class KustoDataActivitiesComponent
 
   public formControls = [];
 
-  public formArray = new FormArray([]);
+  public formArray = new UntypedFormArray([]);
 
   // NOTE: This is just a container object becuase FormArray must be contained within one.
   // NOTE: Normally, this would be used for the output type output of this would be the output type,
   // NOTE: but in this case, the output type is the FormArray contents.
-  public hiddenFormGroup = new FormGroup({
+  public hiddenFormGroup = new UntypedFormGroup({
     activities: this.formArray,
   });
 
   private readonly onChange$ = new Subject<KustoDataActivityBundles>();
-  private readonly formArray$ = new Subject<FormArray>();
+  private readonly formArray$ = new Subject<UntypedFormArray>();
 
   public readonly permAttribute = PermAttributeName.UpdateObligationPipeline;
 
@@ -137,21 +137,21 @@ export class KustoDataActivitiesComponent
   }
 
   /** Gets a typed value from a form control. */
-  public getFormValue(formControl: FormControl): KustoDataActivityBundle {
+  public getFormValue(formControl: UntypedFormControl): KustoDataActivityBundle {
     return formControl.value as KustoDataActivityBundle;
   }
 
   /** Overrides the list when a new list is created. */
   private overrideList(options: KustoDataActivityBundles): void {
     this.formControls = options.map(v => this.valueToFormControl(v));
-    this.formArray = new FormArray(this.formControls, Validators.minLength(1));
-    this.hiddenFormGroup = new FormGroup({ activities: this.formArray });
+    this.formArray = new UntypedFormArray(this.formControls, Validators.minLength(1));
+    this.hiddenFormGroup = new UntypedFormGroup({ activities: this.formArray });
     this.formArray$.next(this.formArray);
   }
 
   /** Hook for adding standardized validators to each form control. */
-  private valueToFormControl(v: KustoDataActivityBundle): FormControl {
-    return new FormControl(v);
+  private valueToFormControl(v: KustoDataActivityBundle): UntypedFormControl {
+    return new UntypedFormControl(v);
   }
 
   private changeFn = (_data: KustoDataActivityBundles) => {

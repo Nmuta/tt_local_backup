@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { EMPTY, Subject } from 'rxjs';
@@ -21,7 +21,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupNotificationEntry {
   min: DateTime;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   edit?: boolean;
   postMonitor: ActionMonitor;
   deleteMonitor: ActionMonitor;
@@ -193,11 +193,11 @@ export class IndividualNotificationManagementComponent
   private prepareNotifications(playerNotification: PlayerNotification): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), playerNotification.sentDateUtc]);
     const formControls = {
-      message: new FormControl(playerNotification.message, [
+      message: new UntypedFormControl(playerNotification.message, [
         Validators.required,
         Validators.maxLength(this.messageMaxLength),
       ]),
-      expireDateUtc: new FormControl(playerNotification.expirationDateUtc, [
+      expireDateUtc: new UntypedFormControl(playerNotification.expirationDateUtc, [
         Validators.required,
         DateValidators.isAfter(min),
       ]),
@@ -205,7 +205,7 @@ export class IndividualNotificationManagementComponent
 
     const newControls = <FormGroupNotificationEntry>{
       min: min,
-      formGroup: new FormGroup(formControls),
+      formGroup: new UntypedFormGroup(formControls),
       formControls: formControls,
       postMonitor: new ActionMonitor('Edit Notification'),
       deleteMonitor: new ActionMonitor('Delete Notification'),

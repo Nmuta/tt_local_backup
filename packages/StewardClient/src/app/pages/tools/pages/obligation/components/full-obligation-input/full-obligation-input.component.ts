@@ -2,8 +2,8 @@ import { Component, forwardRef, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -66,22 +66,22 @@ export class FullObligationInputComponent
   };
 
   public formControls = {
-    name: new FormControl(FullObligationInputComponent.defaults.name, [
+    name: new UntypedFormControl(FullObligationInputComponent.defaults.name, [
       Validators.required,
       StringValidators.trim,
     ]),
-    description: new FormControl(FullObligationInputComponent.defaults.description, [
+    description: new UntypedFormControl(FullObligationInputComponent.defaults.description, [
       Validators.required,
       StringValidators.trim,
     ]),
-    dataActivities: new FormControl(FullObligationInputComponent.defaults.dataActivities, [
+    dataActivities: new UntypedFormControl(FullObligationInputComponent.defaults.dataActivities, [
       Validators.required,
       Validators.minLength(1),
     ]),
-    principals: new FormControl(FullObligationInputComponent.defaults.principals),
+    principals: new UntypedFormControl(FullObligationInputComponent.defaults.principals),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     name: this.formControls.name,
     description: this.formControls.description,
     dataActivities: this.formControls.dataActivities,
