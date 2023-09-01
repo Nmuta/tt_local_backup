@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets all rivals events.
         /// </summary>
-        [HttpGet]
+        [HttpGet("events")]
         [SwaggerResponse(200, type: typeof(IEnumerable<RivalsEvent>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets all rivals events.
         /// </summary>
-        [HttpGet("player/{xuid}")]
+        [HttpGet("player/{xuid}/events")]
         [SwaggerResponse(200, type: typeof(IEnumerable<RivalsEvent>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]

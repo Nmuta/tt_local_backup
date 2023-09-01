@@ -124,32 +124,6 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
           this.filteredEvents = this.events;
         },
       );
-
-    // combineLatest([
-    //   this.steelheadShowroomService.getCarFeaturedShowcases$(),
-    //   this.steelheadShowroomService.getDivisionFeaturedShowcases$(),
-    //   this.steelheadShowroomService.getManufacturerFeaturedShowcases$(),
-    //   this.steelheadShowroomService.getCarSales$(),
-    // ])
-    //   .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-    //   .subscribe(
-    //     ([
-    //       carFeaturedShowcase,
-    //       divisionFeaturedShowcase,
-    //       manufacturerFeaturedShowcase,
-    //       carSales,
-    //     ]) => {
-    //       this.events = this.makeCarFeaturedEvents(carFeaturedShowcase);
-    //       this.events = this.events.concat(
-    //         this.makeDivisionFeaturedEvents(divisionFeaturedShowcase),
-    //       );
-    //       this.events = this.events.concat(
-    //         this.makeManufacturerFeaturedEvents(manufacturerFeaturedShowcase),
-    //       );
-    //       this.events = this.events.concat(this.makeSaleEvents(carSales));
-    //       this.filteredEvents = this.events;
-    //     },
-    //   );
   }
 
   /** Refresh calendar on user interaction. */
@@ -162,25 +136,20 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
         return;
       }
 
-      this.retrieveCarFeaturedShowcases$ = this.steelheadShowroomService
-        .getCarFeaturedShowcases$
-        //inputs?.identity?.xuid,
-        ();
+      this.retrieveCarFeaturedShowcases$ =
+        this.steelheadShowroomService.getCarFeaturedShowcasesByUser$(inputs?.identity?.xuid);
 
-      this.retrieveDivisionFeaturedShowcases$ = this.steelheadShowroomService
-        .getDivisionFeaturedShowcases$
-        //inputs?.identity?.xuid,
-        ();
+      this.retrieveDivisionFeaturedShowcases$ =
+        this.steelheadShowroomService.getDivisionFeaturedShowcasesByUser$(inputs?.identity?.xuid);
 
-      this.retrieveManufacturerFeaturedShowcases$ = this.steelheadShowroomService
-        .getManufacturerFeaturedShowcases$
-        //inputs?.identity?.xuid,
-        ();
+      this.retrieveManufacturerFeaturedShowcases$ =
+        this.steelheadShowroomService.getManufacturerFeaturedShowcasesByUser$(
+          inputs?.identity?.xuid,
+        );
 
-      this.retrieveCarSales$ = this.steelheadShowroomService
-        .getCarSales$
-        //inputs?.identity?.xuid,
-        ();
+      this.retrieveCarSales$ = this.steelheadShowroomService.getCarSalesByUser$(
+        inputs?.identity?.xuid,
+      );
 
       this.getSchedule$.next();
     }
@@ -191,25 +160,20 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
         this.filteredEvents = [];
       }
 
-      this.retrieveCarFeaturedShowcases$ = this.steelheadShowroomService
-        .getCarFeaturedShowcases$
-        //inputs.pegasusInfo,
-        ();
+      this.retrieveCarFeaturedShowcases$ =
+        this.steelheadShowroomService.getCarFeaturedShowcasesByPegasus$(inputs.pegasusInfo);
 
-      this.retrieveDivisionFeaturedShowcases$ = this.steelheadShowroomService
-        .getDivisionFeaturedShowcases$
-        //inputs?.identity?.xuid,
-        ();
+      this.retrieveDivisionFeaturedShowcases$ =
+        this.steelheadShowroomService.getDivisionFeaturedShowcasesByPegasus$(inputs.pegasusInfo);
 
-      this.retrieveManufacturerFeaturedShowcases$ = this.steelheadShowroomService
-        .getManufacturerFeaturedShowcases$
-        //inputs?.identity?.xuid,
-        ();
+      this.retrieveManufacturerFeaturedShowcases$ =
+        this.steelheadShowroomService.getManufacturerFeaturedShowcasesByPegasus$(
+          inputs.pegasusInfo,
+        );
 
-      this.retrieveCarSales$ = this.steelheadShowroomService
-        .getCarSales$
-        //inputs?.identity?.xuid,
-        ();
+      this.retrieveCarSales$ = this.steelheadShowroomService.getCarSalesByPegasus$(
+        inputs.pegasusInfo,
+      );
 
       this.getSchedule$.next();
     }

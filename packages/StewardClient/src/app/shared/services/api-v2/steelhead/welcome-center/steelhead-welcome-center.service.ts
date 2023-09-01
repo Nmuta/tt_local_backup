@@ -102,11 +102,11 @@ export class SteelheadWelcomeCenterService {
       httpParams = httpParams.append('snapshot', info.snapshot);
     }
 
-    return this.api.getRequest$<WelcomeCenter>(`${this.basePath}`, httpParams);
+    return this.api.getRequest$<WelcomeCenter>(`${this.basePath}/configuration`, httpParams);
   }
 
   /** Gets welcome center tiles as seen by user. */
   public getWelcomeCenterTilesByUser$(xuid: BigNumber): Observable<WelcomeCenter> {
-    return this.api.getRequest$<WelcomeCenter>(`${this.basePath}/player/${xuid}`);
+    return this.api.getRequest$<WelcomeCenter>(`${this.basePath}/player/${xuid}/configuration`);
   }
 }

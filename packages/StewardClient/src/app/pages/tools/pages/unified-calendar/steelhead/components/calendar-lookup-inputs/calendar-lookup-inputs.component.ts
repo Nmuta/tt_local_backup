@@ -7,7 +7,7 @@ import { PegasusPathInfo } from '@models/pegasus-path-info';
 export type CalendarLookupInputs = {
   identity?: IdentityResultAlpha;
   pegasusInfo?: PegasusPathInfo;
-  daysForward: number;
+  daysForward?: number;
 };
 
 /** Inputs for calendar lookup. */

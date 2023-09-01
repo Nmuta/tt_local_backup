@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets current Welcome Center configuration.
         /// </summary>
-        [HttpGet]
+        [HttpGet("configuration")]
         [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
         public async Task<IActionResult> GetWelcomeCenterConfiguration([FromQuery] string environment, [FromQuery] string slot, [FromQuery] string snapshot)
         {
@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets current Welcome Center configuration.
         /// </summary>
-        [HttpGet("player/{xuid}")]
+        [HttpGet("player/{xuid}/configuration")]
         [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
         public async Task<IActionResult> GetWelcomeCenterConfiguration(ulong xuid)
         {

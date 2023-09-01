@@ -44,12 +44,12 @@ export class SteelheadRivalsService {
       httpParams = httpParams.append('snapshot', info.snapshot);
     }
 
-    return this.api.getRequest$<RivalsEvent[]>(`${this.basePath}`, httpParams);
+    return this.api.getRequest$<RivalsEvent[]>(`${this.basePath}/events`, httpParams);
   }
 
   /** Gets Rivals Events. */
   public getRivalsEventsByUser$(xuid: BigNumber): Observable<RivalsEvent[]> {
-    return this.api.getRequest$<RivalsEvent[]>(`${this.basePath}/player/${xuid}`);
+    return this.api.getRequest$<RivalsEvent[]>(`${this.basePath}/player/${xuid}/events`);
   }
 
   /** Gets the Rivals Event reference. */
