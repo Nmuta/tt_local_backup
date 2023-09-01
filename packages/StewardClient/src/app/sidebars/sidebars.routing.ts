@@ -38,56 +38,47 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { SidebarsComponent } from './sidebars.component';
-import { SidebarsRouterModule } from './sidebars.routing';
+
+/** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
+export const sidebarRoutes = [
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    outlet: 'sidebar',
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    outlet: 'sidebar',
+  },
+  {
+    path: 'changelog',
+    component: ChangelogComponent,
+    outlet: 'sidebar',
+  },
+  {
+    path: 'notifications',
+    component: NotificationsComponent,
+    outlet: 'sidebar',
+  },
+  {
+    path: 'contactus',
+    component: ContactUsComponent,
+    outlet: 'sidebar',
+  },
+  {
+    path: 'sidebars',
+    component: SidebarsComponent,
+    outlet: 'sidebar',
+  },
+];
 
 /** Module containing all routable sidebar components. */
 @NgModule({
-  declarations: [
-    ProfileComponent,
-    SettingsComponent,
-    NotificationsComponent,
-    ChangelogComponent,
-    ChangelogGroupComponent,
-    ChangelogTagDetailsComponent,
-    ContactUsComponent,
-    SidebarsComponent,
-  ],
+  declarations: [],
   imports: [
-    ChangelogModule,
-    CommonModule,
-    DataPrivacyNoticeModule,
-    DirectivesModule,
-    FontAwesomeModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HideChangelogModalCheckboxModule,
-    HubsModule,
-    LocationDetailsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatExpansionModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatMenuModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatTooltipModule,
-    MatChipsModule,
-    MatInputModule,
-    SidebarsRouterModule,
-    ThemeModule,
-    PipesModule,
-    MonitorActionModule,
-    DirectivesModule,
-    PipesModule,
-    StateManagersModule,
-    PermissionsModule,
-    StandardCopyModule,
-    MatButtonToggleModule,
-    HelpModule,
+    RouterModule.forChild(sidebarRoutes),
   ],
   exports: [RouterModule],
 })
-export class SidebarsModule {}
+export class SidebarsRouterModule {}

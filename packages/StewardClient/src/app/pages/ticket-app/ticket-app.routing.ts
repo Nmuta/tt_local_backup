@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FourOhFourComponent } from '@shared/views/four-oh-four/four-oh-four.component';
 import { AuthGuard } from 'app/route-guards/auth.guard';
-import { sidebarRoutes } from 'app/sidebars/sidebars.module';
+import { sidebarRoutes } from 'app/sidebars/sidebars.routing';
 import { ApolloComponent } from './pages/apollo/apollo.component';
 import { OpusComponent } from './pages/opus/opus.component';
 import { WoodstockComponent } from './pages/woodstock/woodstock.component';
