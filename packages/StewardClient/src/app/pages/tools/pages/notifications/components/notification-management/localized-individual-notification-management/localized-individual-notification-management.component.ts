@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { EMPTY, Observable, Subject } from 'rxjs';
@@ -34,7 +34,7 @@ export interface LocalizedIndividualMessagingManagementContract {
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupNotificationEntry {
   min: DateTime;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   edit?: boolean;
   postMonitor: ActionMonitor;
   deleteMonitor: ActionMonitor;
@@ -221,9 +221,9 @@ export class LocalizedIndividualNotificationManagementComponent
   ): FormGroupNotificationEntry {
     const min = max([DateTime.utc(), playerNotification.sentDateUtc]);
     const formControls = {
-      localizedTitleInfo: new FormControl({}, [Validators.required]),
-      localizedMessageInfo: new FormControl({}, [Validators.required]),
-      expireDateUtc: new FormControl(playerNotification.expirationDateUtc, [
+      localizedTitleInfo: new UntypedFormControl({}, [Validators.required]),
+      localizedMessageInfo: new UntypedFormControl({}, [Validators.required]),
+      expireDateUtc: new UntypedFormControl(playerNotification.expirationDateUtc, [
         Validators.required,
         DateValidators.isAfter(min),
       ]),
@@ -231,7 +231,7 @@ export class LocalizedIndividualNotificationManagementComponent
 
     const newControls = <FormGroupNotificationEntry>{
       min: min,
-      formGroup: new FormGroup(formControls),
+      formGroup: new UntypedFormGroup(formControls),
       formControls: formControls,
       postMonitor: new ActionMonitor('Edit Notification'),
       deleteMonitor: new ActionMonitor('Delete Notification'),

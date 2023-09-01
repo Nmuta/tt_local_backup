@@ -4,7 +4,7 @@ import { EMPTY } from 'rxjs';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { catchError, takeUntil, filter, map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { ControlValueAccessor, FormControl } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
 import BigNumber from 'bignumber.js';
 
@@ -25,7 +25,7 @@ export abstract class LspGroupSelectionBaseComponent
   public selectedLspGroup: LspGroup = null;
 
   /** Mat-Autocomplete form controls */
-  public autocompleteControl = new FormControl();
+  public autocompleteControl = new UntypedFormControl();
   public filteredLspGroupOptions$: Observable<LspGroups>;
   public lspInputValue: LspGroup = null;
 

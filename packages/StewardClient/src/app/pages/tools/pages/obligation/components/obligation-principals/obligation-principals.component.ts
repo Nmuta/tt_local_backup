@@ -2,9 +2,9 @@ import { Component, forwardRef, OnInit } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
-  FormControl,
-  FormGroup,
-  FormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  UntypedFormArray,
   ControlValueAccessor,
   Validator,
   AbstractControl,
@@ -64,7 +64,7 @@ export class ObligationPrincipalsComponent
   public dataSource$ = new BehaviorSubject<AbstractControl[]>([]);
   public displayColumns = ['type', 'role', 'value', 'actions'];
 
-  public rows = new FormArray([]);
+  public rows = new UntypedFormArray([]);
 
   public PrincipalType = PrincipalType;
   public principalTypeOptions = toPairs(PrincipalType).map(v => {
@@ -88,7 +88,7 @@ export class ObligationPrincipalsComponent
   // NOTE: This is just a container object becuase FormArray must be contained within one.
   // NOTE: Normally, the contents of this would be used for the output type,
   // NOTE: but in this case, the output type is the FormArray contents.
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     rows: this.rows,
   });
 
@@ -106,16 +106,16 @@ export class ObligationPrincipalsComponent
   }
 
   /** Gets a specific form group. */
-  public getFormGroup(arrayIndex: number): FormGroup {
-    return this.rows.get(`${arrayIndex}`) as FormGroup;
+  public getFormGroup(arrayIndex: number): UntypedFormGroup {
+    return this.rows.get(`${arrayIndex}`) as UntypedFormGroup;
   }
 
   /** Gets a specific form group. */
   public getFormControl(
     arrayIndex: number,
     controlName: keyof ObligationPrincipalOptions,
-  ): FormControl {
-    return this.getFormGroup(arrayIndex)?.get(controlName) as FormControl;
+  ): UntypedFormControl {
+    return this.getFormGroup(arrayIndex)?.get(controlName) as UntypedFormControl;
   }
 
   /** Clears the table. */
@@ -191,16 +191,16 @@ export class ObligationPrincipalsComponent
   private overrideList(options: ObligationPrincipalsOptions): void {
     this.data = options;
     const groups = options.map(v => this.valueToFormGroup(v));
-    this.rows = new FormArray(groups);
-    this.formGroup = new FormGroup({ rows: this.rows });
+    this.rows = new UntypedFormArray(groups);
+    this.formGroup = new UntypedFormGroup({ rows: this.rows });
     this.updateView();
   }
 
-  private valueToFormGroup(v: ObligationPrincipalOptions): FormGroup {
-    return new FormGroup({
-      principalType: new FormControl(v.principalType, [Validators.required]),
-      principalValue: new FormControl(v.principalValue, [Validators.required]),
-      role: new FormControl(v.role, [Validators.required]),
+  private valueToFormGroup(v: ObligationPrincipalOptions): UntypedFormGroup {
+    return new UntypedFormGroup({
+      principalType: new UntypedFormControl(v.principalType, [Validators.required]),
+      principalValue: new UntypedFormControl(v.principalValue, [Validators.required]),
+      role: new UntypedFormControl(v.role, [Validators.required]),
     });
   }
 

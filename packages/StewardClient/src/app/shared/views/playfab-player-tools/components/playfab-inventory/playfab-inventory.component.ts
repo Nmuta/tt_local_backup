@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, AbstractControl, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, AbstractControl, UntypedFormControl, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
@@ -38,7 +38,7 @@ export interface PlayFabInventoryServiceContract {
 
 type PlayFabInventoryItemListEntry = PlayFabInventoryItem & {
   isInEditMode?: boolean;
-  editFormGroup?: FormGroup;
+  editFormGroup?: UntypedFormGroup;
   editFormControls?: { [key: string]: AbstractControl };
   editMonitor?: ActionMonitor;
 };
@@ -63,7 +63,11 @@ export class PlayFabInventoryComponent extends BaseComponent implements OnChange
   @Output() inventoryChangeEvent = new EventEmitter<void>();
 
   public currencyFormControls = {
-    amount: new FormControl('', [Validators.required, Validators.min(0), Validators.max(10)]),
+    amount: new UntypedFormControl('', [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(10),
+    ]),
   };
 
   public getInventoryMonitor = new ActionMonitor('Get PlayFab inventory');
@@ -147,7 +151,7 @@ export class PlayFabInventoryComponent extends BaseComponent implements OnChange
   private resetItemForms(item: PlayFabInventoryItemListEntry): void {
     item.editFormControls = cloneDeep(this.currencyFormControls);
     item.editFormControls.amount.setValue(item.amount);
-    item.editFormGroup = new FormGroup(item.editFormControls);
+    item.editFormGroup = new UntypedFormGroup(item.editFormControls);
   }
 
   private resetItemMonitor(item: PlayFabInventoryItemListEntry): void {

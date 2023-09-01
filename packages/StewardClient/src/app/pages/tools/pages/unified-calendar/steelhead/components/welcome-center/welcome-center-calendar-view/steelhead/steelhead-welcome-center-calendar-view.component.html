@@ -22,7 +22,7 @@
             </button>
           </div>
           <div>
-            <h2>{{ viewDate | calendarDate: view + 'ViewTitle':'en' }}</h2>
+            <h2>{{ viewDate | calendarDate : view + 'ViewTitle' : 'en' }}</h2>
           </div>
           <div>
             <button
@@ -84,7 +84,9 @@
       {{ day?.eventGroups[0]?.events?.length }} | {{ day?.eventGroups[1]?.events?.length }} |
       {{ day?.eventGroups[2]?.events?.length }}
     </span>
-    <span class="cal-day-number">{{ day.date | calendarDate: 'monthViewDayNumber':locale }}</span>
+    <span class="cal-day-number">{{
+      day.date | calendarDate : 'monthViewDayNumber' : locale
+    }}</span>
   </div>
   <div class="cell-totals">
     <div class="shrink-wrap">

@@ -3,8 +3,8 @@ import {
   AbstractControl,
   ControlContainer,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -84,10 +84,10 @@ export class SelectLocalizedStringComponent
   public isRequired = false;
 
   public formControls = {
-    selectedLocalizedStringInfo: new FormControl(undefined),
+    selectedLocalizedStringInfo: new UntypedFormControl(undefined),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('GET localized strings');
   public readonly messageMaxLength: number = 512;

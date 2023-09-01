@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
 
 export type CalendarLookupInputs = {
@@ -28,15 +28,19 @@ export class CalendarLookupInputsComponent implements OnInit {
     daysForward: new FormControl(30, [Validators.min(1)]),
     identity: new FormControl(null, [Validators.required]),
   };
-  public identityCalendarScheduleForm: FormGroup = new FormGroup(this.identityFormControls);
+  public identityCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(
+    this.identityFormControls,
+  );
 
   public pegasusFormControls = {
-    daysForward: new FormControl(30, [Validators.required, Validators.min(1)]),
-    pegasusEnvironment: new FormControl(null, [Validators.required]),
-    pegasusSlot: new FormControl(null),
-    pegasusSnapshot: new FormControl(null),
+    daysForward: new UntypedFormControl(30, [Validators.required, Validators.min(1)]),
+    pegasusEnvironment: new UntypedFormControl(null, [Validators.required]),
+    pegasusSlot: new UntypedFormControl(null),
+    pegasusSnapshot: new UntypedFormControl(null),
   };
-  public pegasusCalendarScheduleForm: FormGroup = new FormGroup(this.pegasusFormControls);
+  public pegasusCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(
+    this.pegasusFormControls,
+  );
 
   /** Lifecycle hook. */
   public ngOnInit(): void {

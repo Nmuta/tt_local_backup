@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SteelheadGiftBasketComponent } from './steelhead-gift-basket.component';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SteelheadMasterInventory } from '@models/steelhead';
 import { of } from 'rxjs';
 import { GetSteelheadMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
@@ -23,7 +23,7 @@ describe('SteelheadGiftBasketComponent', () => {
   let fixture: ComponentFixture<SteelheadGiftBasketComponent>;
   let component: SteelheadGiftBasketComponent;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
   let mockStore: Store;
   let mockSteelheadPlayersGiftService: SteelheadPlayersGiftService;
   let mockSteelheadGroupGiftService: SteelheadGroupGiftService;

@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
@@ -20,10 +25,10 @@ export class KustoManagementComponent extends BaseComponent {
   public gameTitles = keys(GameTitleCodeName).map(x => GameTitleCodeName[x]);
 
   /** Kusto query submit form */
-  public querySubmitForm: FormGroup = this.formBuilder.group({
-    name: new FormControl('', Validators.required),
-    title: new FormControl('', Validators.required),
-    query: new FormControl('', Validators.required),
+  public querySubmitForm: UntypedFormGroup = this.formBuilder.group({
+    name: new UntypedFormControl('', Validators.required),
+    title: new UntypedFormControl('', Validators.required),
+    query: new UntypedFormControl('', Validators.required),
   });
 
   public editKustoQueryId: GuidLikeString;
@@ -35,7 +40,7 @@ export class KustoManagementComponent extends BaseComponent {
 
   constructor(
     private readonly kustoService: KustoService,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
   ) {
     super();
   }

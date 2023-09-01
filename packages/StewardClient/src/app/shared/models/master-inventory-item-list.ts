@@ -1,7 +1,7 @@
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { MasterInventoryItem } from './master-inventory-item';
 import { PlayerInventoryCarItem, PlayerInventoryItem } from './player-inventory-item';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { InventoryItemListDisplayComponentContract } from '@views/inventory-item-list-display/inventory-item-list-display.component';
 
 /** Represents a warning symbol to display next to a warning */
@@ -15,7 +15,7 @@ export interface ItemWarning {
 export interface PlayerInventoryItemListEntryExtras {
   warnings?: ItemWarning[];
   isInEditMode?: boolean;
-  editFormGroup?: FormGroup;
+  editFormGroup?: UntypedFormGroup;
   editFormControls?: { [key: string]: AbstractControl };
   editMonitor?: ActionMonitor;
   deleteMonitor?: ActionMonitor;

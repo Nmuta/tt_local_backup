@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
-import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import {
+  TitleMemoryRedirectGuard,
+  TitleMemoryRedirectLandingComponent,
+  TitleMemorySetGuard,
+} from 'app/route-guards';
 import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
 import { ForumBanningComponent } from './pages/forum/forum-banning.component';
 import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
@@ -17,6 +20,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        component: TitleMemoryRedirectLandingComponent,
         canActivate: [TitleMemoryRedirectGuard],
         pathMatch: 'full',
       },
