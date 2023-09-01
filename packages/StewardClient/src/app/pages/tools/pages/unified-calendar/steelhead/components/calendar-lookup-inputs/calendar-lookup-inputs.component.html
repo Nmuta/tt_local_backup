@@ -40,7 +40,7 @@
             <mat-label> Pegasus Snapshot </mat-label>
             <input matInput type="text" [formControl]="pegasusFormControls.pegasusSnapshot" />
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field *ngIf="requireDaysForward">
             <mat-label> Days Forward to Project </mat-label>
             <input matInput type="number" [formControl]="pegasusFormControls.daysForward" />
           </mat-form-field>

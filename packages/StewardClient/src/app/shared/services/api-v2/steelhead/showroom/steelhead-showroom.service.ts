@@ -166,6 +166,11 @@ export class SteelheadShowroomService {
   }
 
   /** Gets Showroom Car Sales. */
+  public getCarSales$(): Observable<CarSale[]> {
+    return this.api.getRequest$<CarSale[]>(`${this.basePath}/carSales`);
+  }
+
+  /** Gets Showroom Car Sales. */
   public getCarSalesByPegasus$(info: PegasusPathInfo): Observable<CarSale[]> {
     let httpParams = new HttpParams();
 

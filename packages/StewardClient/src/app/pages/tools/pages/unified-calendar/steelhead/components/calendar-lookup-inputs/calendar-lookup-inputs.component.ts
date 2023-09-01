@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -16,13 +16,16 @@ export type CalendarLookupInputs = {
   templateUrl: './calendar-lookup-inputs.component.html',
   styleUrls: ['./calendar-lookup-inputs.component.scss'],
 })
-export class CalendarLookupInputsComponent {
+export class CalendarLookupInputsComponent implements OnInit {
   /** Inputs for calendar lookup.  */
+  @Input() public requireDaysForward = true;
+
+  /** Outputs for calendar lookup.  */
   @Output() public playerAndDaysForward = new EventEmitter<CalendarLookupInputs>();
   public matTabSelectedIndex = 0;
 
   public identityFormControls = {
-    daysForward: new FormControl(30, [Validators.required, Validators.min(1)]),
+    daysForward: new FormControl(30, [Validators.min(1)]),
     identity: new FormControl(null, [Validators.required]),
   };
   public identityCalendarScheduleForm: FormGroup = new FormGroup(this.identityFormControls);
@@ -34,6 +37,14 @@ export class CalendarLookupInputsComponent {
     pegasusSnapshot: new FormControl(null),
   };
   public pegasusCalendarScheduleForm: FormGroup = new FormGroup(this.pegasusFormControls);
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    if(this.requireDaysForward)
+    {
+      this.identityFormControls.daysForward.addValidators([Validators.required]);
+    }
+  }
 
   /** Produces a rejection message from a given identity, if it is rejected. */
   public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
