@@ -1,5 +1,3 @@
-import { login } from '@support/steward/auth/login';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { goToTool } from './page';
 import { selectWoodstock } from '@support/steward/shared-functions/game-nav';
 import {
@@ -7,15 +5,14 @@ import {
   verifyAuctionInformation,
   verifyInvalidAuctionSearch,
 } from './shared-tests';
-import { withTags, Tag } from '@support/tags';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 // The following is an auction ID belonging to the dev account chada AKA r2dubs
 const validAuctionId = '91aed181-952c-48ed-a61a-ec4933a95902';
 
-context('Steward / Tools / Auction Details / Woodstock', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
-    login();
-    disableFakeApi();
+context('Steward / Tools / Auction Details / Woodstock', () => {
+  before(() => {
+    resetToDefaultState();
   });
 
   context('Auction Lookup', () => {

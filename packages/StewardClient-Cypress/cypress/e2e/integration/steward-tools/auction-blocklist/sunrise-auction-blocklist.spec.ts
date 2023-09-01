@@ -1,19 +1,15 @@
-import { login } from '@support/steward/auth/login';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { Tag, withTags } from '@support/tags';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
-context('Steward / Support / Auction Blocklist / Sunrise', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+context('Steward / Support / Auction Blocklist / Sunrise', () => {
+  before(() => {
+    resetToDefaultState();
   });
 
   context('Auction House Blocklist lookup', () => {
-    beforeEach(() => {
+    before(() => {
       cy.visit(stewardUrls.tools.auctionBlocklist.sunrise);
       waitForProgressSpinners(10_000);
     });
@@ -25,8 +21,7 @@ context('Steward / Support / Auction Blocklist / Sunrise', withTags(Tag.UnitTest
     });
 
     xcontext('Creating, manipulating, and deleting an entry', () => {
-      beforeEach(() => {
-        cy.visit(stewardUrls.tools.auctionBlocklist.sunrise);
+      before(() => {
         cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
         cy.get('table').find('tr').should('have.length.greaterThan', 5);
         cy.get('table').contains('tr', '1301').should('not.exist');

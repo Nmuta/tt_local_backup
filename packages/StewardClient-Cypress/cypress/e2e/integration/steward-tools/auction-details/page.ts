@@ -8,6 +8,8 @@ export function goToTool(): void {
 
 /** Finds and fills in Auction ID field */
 export function searchByAuctionID(auctionId: string): void {
-  cy.contains('mat-form-field', 'Auction ID', { matchCase: false }).click().type(`${auctionId}\n`);
+  cy.contains('mat-form-field', 'Auction ID', { matchCase: false }).type(
+    `{selectAll}{backspace}${auctionId}\n`,
+  );
   waitForProgressSpinners();
 }
