@@ -110,14 +110,6 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
         this.welcomeCenter = welcomeCenter;
         this.events = this.makeEvents(this.welcomeCenter);
       });
-
-    // this.welcomeCenterService
-    //   .getWelcomeCenterTiles$()
-    //   .pipe(this.getActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-    //   .subscribe(welcomeCenter => {
-    //     this.welcomeCenter = welcomeCenter;
-    //     this.events = this.makeEvents(this.welcomeCenter);
-    //   });
   }
 
   /** Refresh calendar on user interaction. */

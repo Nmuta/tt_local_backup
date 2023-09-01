@@ -46,10 +46,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(IEnumerable<RivalsEvent>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetRivalsEvents([FromQuery] string pegasusEnvironment = null)
+        public async Task<IActionResult> GetRivalsEvents(
+            [FromQuery] string environment,
+            [FromQuery] string slot,
+            [FromQuery] string snapshot)
         {
-            var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
-            var rivalsEvents = await this.steelheadPegasusService.GetRivalsEventsAsync(environment).ConfigureAwait(true);
+            var rivalsEvents = await this.GetRivalsEventsAsync(environment, slot, snapshot).ConfigureAwait(true);
+
+            return this.Ok(rivalsEvents);
+        }
+
+        /// <summary>
+        ///     Gets all rivals events.
+        /// </summary>
+        [HttpGet("player/{xuid}")]
+        [SwaggerResponse(200, type: typeof(IEnumerable<RivalsEvent>))]
+        [LogTagDependency(DependencyLogTags.Pegasus)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
+        public async Task<IActionResult> GetRivalsEvents(ulong xuid)
+        {
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+
+            var rivalsEvents = await this.GetRivalsEventsAsync(
+                gameDetails.forzaUser.CMSEnvironmentOverride,
+                gameDetails.forzaUser.CMSSlotIdOverride,
+                gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(true);
 
             return this.Ok(rivalsEvents);
         }
@@ -80,6 +101,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var rivalCategories = await this.steelheadPegasusService.GetRivalsEventCategoriesAsync().ConfigureAwait(true);
 
             return this.Ok(rivalCategories);
+        }
+
+        private async Task<IEnumerable<RivalsEvent>> GetRivalsEventsAsync(string environment, string slot,  string snapshot)
+        {
+            return await this.steelheadPegasusService.GetRivalsEventsAsync(environment, slot, snapshot).ConfigureAwait(false);
         }
     }
 }
