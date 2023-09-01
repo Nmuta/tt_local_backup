@@ -40,8 +40,7 @@ export class CalendarLookupInputsComponent implements OnInit {
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    if(this.requireDaysForward)
-    {
+    if (this.requireDaysForward) {
       this.identityFormControls.daysForward.addValidators([Validators.required]);
     }
   }
