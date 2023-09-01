@@ -34,3 +34,8 @@ old-changelog {
   justify-content: space-between;
   color: app-color-lighter-contrast($app-background, 70%);
 }
+
+:host {
+  display: block;
+  padding: 1rem 2rem;
+}

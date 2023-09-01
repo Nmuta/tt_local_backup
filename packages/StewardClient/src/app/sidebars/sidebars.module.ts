@@ -39,6 +39,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { SidebarsComponent } from './sidebars.component';
 import { SidebarsRouterModule } from './sidebars.routing';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 /** Module containing all routable sidebar components. */
 @NgModule({
@@ -87,6 +89,8 @@ import { SidebarsRouterModule } from './sidebars.routing';
     StandardCopyModule,
     MatButtonToggleModule,
     HelpModule,
+    MatSidenavModule,
+    MatListModule,
   ],
   exports: [RouterModule],
 })

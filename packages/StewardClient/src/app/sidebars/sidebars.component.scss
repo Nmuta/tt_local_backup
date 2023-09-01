@@ -1,0 +1,6 @@
+mat-drawer-container {
+  height: 100%;
+  &, > * {
+    background-color: lime ! important;
+  }
+}

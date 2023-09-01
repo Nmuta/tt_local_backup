@@ -38,3 +38,8 @@ span.endpoint-selectors {
     margin-top: 1em;
   }
 }
+
+:host {
+  display: block;
+  padding: 1rem 2rem;
+}
