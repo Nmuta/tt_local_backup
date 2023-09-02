@@ -42,3 +42,8 @@ button {
 .large-icon {
   transform: scale(3);
 }
+
+:host {
+  display: block;
+  padding: 1rem 2rem;
+}

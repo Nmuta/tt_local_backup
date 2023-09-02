@@ -1,6 +1,17 @@
 mat-drawer-container {
   height: 100%;
-  &, > * {
-    background-color: lime ! important;
-  }
+}
+
+mat-drawer {
+  border-right: 1px solid black;
+}
+
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 100%;
+}
+
+:host ::ng-deep .mat-list-item-content.mat-list-item-content.mat-list-item-content {
+  padding-left: .5em;
 }

@@ -1,8 +1,35 @@
 <mat-drawer-container>
-  <mat-drawer mode="side" opened>
-    <mat-nav-list></mat-nav-list>
-  </mat-drawer>
+  <!-- Here is where the sidebar content appears. -->
   <mat-drawer-content>
-    <p>sidebars works 2!</p>
+    <router-outlet></router-outlet>
   </mat-drawer-content>
+  
+  <!-- Here is where the navigation is configured. -->
+  <mat-drawer mode="side" position="end" opened>
+    <mat-nav-list>
+
+      <div mat-subheader>Doot</div>
+      <mat-list-item>
+        <button mat-icon-button matListItemMeta><mat-icon>info</mat-icon></button>
+        <a matListItemTitle>Doot</a>
+      </mat-list-item>
+
+      <mat-list-item>
+        <button mat-icon-button matListItemMeta>
+          <mat-icon
+            [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
+            matBadgeSize="small"
+            >settings</mat-icon>
+        </button>
+        <a
+          matListItemTitle
+          [routerLink]="['settings']"
+          queryParamsHandling="preserve"
+          mat-icon-button
+          routerLinkActive="stroked-icon-button"
+          matTooltip="Settings">Settings</a>
+    </mat-list-item>
+
+    </mat-nav-list>
+  </mat-drawer>
 </mat-drawer-container>

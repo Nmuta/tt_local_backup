@@ -45,12 +45,16 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
 
   private setSidebarState(routeSnapshot: ActivatedRouteSnapshot): void {
     const recognizedSidebarRoute = chain(flattenRouteChildren(routeSnapshot))
-      .filter(child => child.outlet === 'sidebar')
+      .filter(child => {
+        const targetsSidebar = child.outlet === 'sidebar';
+        return targetsSidebar;
+      })
       .first()
       .value();
     if (!recognizedSidebarRoute) {
-      this.drawerOpened = false;
-      this.lastSidebarRoute = null;
+      // TODO: why does this break it
+      // this.drawerOpened = false;
+      // this.lastSidebarRoute = null;
       return;
     }
 
@@ -62,8 +66,9 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
     const newRouteMatchesOldRoute = this.lastSidebarRoute === recognizedSidebarPath;
 
     if (newRouteMatchesOldRoute) {
-      this.drawerOpened = false;
-      this.lastSidebarRoute = null;
+      // TODO: why does this break it
+      // this.drawerOpened = false;
+      // this.lastSidebarRoute = null;
     } else {
       this.drawerOpened = !!recognizedSidebarRoute;
       this.lastSidebarRoute = recognizedSidebarPath;

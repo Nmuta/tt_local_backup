@@ -41,6 +41,7 @@ import { SidebarsComponent } from './sidebars.component';
 import { SidebarsRouterModule } from './sidebars.routing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatBadgeModule } from '@angular/material/badge';
 
 /** Module containing all routable sidebar components. */
 @NgModule({
@@ -91,6 +92,7 @@ import { MatListModule } from '@angular/material/list';
     HelpModule,
     MatSidenavModule,
     MatListModule,
+    MatBadgeModule,
   ],
   exports: [RouterModule],
 })
