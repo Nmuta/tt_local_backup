@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
-import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import {
+  TitleMemoryRedirectGuard,
+  TitleMemoryRedirectLandingComponent,
+  TitleMemorySetGuard,
+} from 'app/route-guards';
 import { UserGroupManagementComponent } from './user-group-management.component';
 import { WoodstockUserGroupManagementComponent } from './woodstock/woodstock-user-group-management.component';
 import { SteelheadUserGroupManagementComponent } from './steelhead/steelhead-user-group-management.component';
@@ -16,6 +19,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        component: TitleMemoryRedirectLandingComponent,
         canActivate: [TitleMemoryRedirectGuard],
         pathMatch: 'full',
       },

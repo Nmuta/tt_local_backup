@@ -15,6 +15,7 @@ export class SteelheadUgcDetailsComponent extends BaseComponent implements OnIni
     UgcType.TuneBlob,
     UgcType.LayerGroup,
     UgcType.GameOptions,
+    UgcType.Replay,
   ];
   public hasTypeLookup = {};
 

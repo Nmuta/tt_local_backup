@@ -39,7 +39,7 @@
           <th mat-header-cell *matHeaderCellDef>Expire Date</th>
           <td mat-cell *matCellDef="let entry">
             <ng-container *ngIf="entry.expireDateUtc">
-              {{ entry.expireDateUtc | date: 'fullDate' }}
+              {{ entry.expireDateUtc | date : 'fullDate' }}
             </ng-container>
             <ng-container *ngIf="entry.doesExpire && !entry.expireDateUtc">
               On Series Release

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
@@ -51,7 +51,7 @@ export class InventoryItemListDisplayComponent extends BaseComponent implements 
   public errors: MSError[];
 
   public nonCarFormControls = {
-    quantity: new FormControl('', [Validators.required, Validators.min(1)]),
+    quantity: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
   };
 
   public itemListTableSource = new BetterMatTableDataSource<PlayerInventoryItemListEntry>();
@@ -184,7 +184,7 @@ export class InventoryItemListDisplayComponent extends BaseComponent implements 
   private resetItemFormsAndMonitors(item: PlayerInventoryItemListEntry): void {
     item.editFormControls = cloneDeep(this.nonCarFormControls);
     item.editFormControls.quantity.setValue(item.quantity);
-    item.editFormGroup = new FormGroup(item.editFormControls);
+    item.editFormGroup = new UntypedFormGroup(item.editFormControls);
     item.editMonitor = new ActionMonitor('Edit inventory item');
     item.deleteMonitor = new ActionMonitor('Delete inventory item');
   }

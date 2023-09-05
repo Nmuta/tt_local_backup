@@ -4,8 +4,11 @@ import { PathParams } from '@models/path-params';
 import { CarDetailsComponent } from './car-details.component';
 import { WoodstockSelectCarDetailsComponent } from './components/select-car-details/woodstock/woodstock-select-car-details.component';
 import { WoodstockCarDetailsComponent } from './components/car-details/woodstock/woodstock-car-details.component';
-import { RouteMemoryRedirectGuard } from 'app/route-guards/route-memory/route-memory-redirect.guard';
-import { RouteMemorySetGuard } from 'app/route-guards/route-memory/route-memory-set.guard';
+import {
+  RouteMemoryRedirectGuard,
+  RouteMemorySetGuard,
+  TitleMemoryRedirectLandingComponent,
+} from 'app/route-guards';
 
 const routes: Routes = [
   {
@@ -15,6 +18,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        component: TitleMemoryRedirectLandingComponent,
         canActivate: [RouteMemoryRedirectGuard],
         pathMatch: 'full',
       },

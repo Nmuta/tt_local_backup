@@ -2,8 +2,8 @@ import { Component, forwardRef } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   AbstractControl,
   ValidationErrors,
   ControlValueAccessor,
@@ -55,13 +55,13 @@ export class DeeplinkBuildersCupComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    buildersCupSettingType: new FormControl(null),
-    buildersCupChampionship: new FormControl(null),
-    buildersCupLadder: new FormControl(null),
-    buildersCupSeries: new FormControl(null),
+    buildersCupSettingType: new UntypedFormControl(null),
+    buildersCupChampionship: new UntypedFormControl(null),
+    buildersCupLadder: new UntypedFormControl(null),
+    buildersCupSeries: new UntypedFormControl(null),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor(steelheadBuildersCupService: SteelheadBuildersCupService) {
     super();

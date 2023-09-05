@@ -95,8 +95,8 @@
                 <li><b>Banned Areas:</b> {{ item?.bannedAreas }}</li>
                 <li><b>Last Ban Details:</b></li>
                 <li [class.is-ban-active]="item?.lastBanDescription?.isActive">
-                  {{ item?.lastBanDescription?.startTimeUtc | utcDate: 'short' }} -
-                  {{ item?.lastBanDescription?.expireTimeUtc | utcDate: 'short' }}
+                  {{ item?.lastBanDescription?.startTimeUtc | utcDate : 'short' }} -
+                  {{ item?.lastBanDescription?.expireTimeUtc | utcDate : 'short' }}
                   <mat-icon
                     *ngIf="item?.lastBanDescription?.isActive"
                     [matTooltip]="
@@ -110,7 +110,7 @@
                 <li *ngIf="item?.lastBanDescription?.countOfTimesExtended > 0">
                   Extended {{ item?.lastBanDescription?.countOfTimesExtended }} times for
                   {{ item?.lastBanDescription?.lastExtendedReason }}. Expires:
-                  {{ item?.lastBanDescription?.lastExtendedTimeUtc | utcDate: 'short' }}
+                  {{ item?.lastBanDescription?.lastExtendedTimeUtc | utcDate : 'short' }}
                 </li>
               </ng-container>
             </ul>

@@ -14,6 +14,7 @@ import {
 import { HomeTileInfoExternal, HomeTileInfoInternal } from '@environments/environment.dev';
 import { chain } from 'lodash';
 import { AuthV2Guard } from 'app/route-guards/auth-v2.guard';
+import { RedirectionLandingComponent } from '../redirection-landing/redirection-landing.component';
 
 const routes: Routes = [
   {
@@ -60,6 +61,7 @@ const routes: Routes = [
         .map((tool: HomeTileInfoExternal) => {
           return <Route>{
             path: tool.tool,
+            component: RedirectionLandingComponent,
             resolve: { url: 'externalUrlRedirectResolver' },
             data: { externalUrl: tool.externalUrl },
             canActivate: [AuthGuard, AuthV2Guard],

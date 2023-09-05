@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UserRole } from '@models/enums';
@@ -31,13 +31,13 @@ export class SelectTeamFromListComponent extends BaseComponent implements OnInit
   public filteredTeams$: Observable<StewardTeam[]>;
 
   public formControls = {
-    name: new FormControl('', Validators.required),
-    filterLead: new FormControl(''),
-    lead: new FormControl('', Validators.required),
+    name: new UntypedFormControl('', Validators.required),
+    filterLead: new UntypedFormControl(''),
+    lead: new UntypedFormControl('', Validators.required),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
-  public teamFormControl = new FormControl('');
+  public teamFormControl = new UntypedFormControl('');
 
   constructor(
     private readonly userService: UserService,

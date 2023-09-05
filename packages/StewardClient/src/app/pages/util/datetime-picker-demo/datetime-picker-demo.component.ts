@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 
 /** A routed component for demonstrating icons. */
@@ -9,6 +9,6 @@ import { DateTime } from 'luxon';
 })
 export class DateTimePickerDemoComponent {
   public formControls = {
-    demoDateUtc: new FormControl(DateTime.utc(), [Validators.required]),
+    demoDateUtc: new UntypedFormControl(DateTime.utc(), [Validators.required]),
   };
 }

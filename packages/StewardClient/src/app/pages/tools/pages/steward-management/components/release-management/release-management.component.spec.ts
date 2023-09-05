@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,9 +17,10 @@ describe('ReleaseManagementComponent', () => {
   let component: ReleaseManagementComponent;
   let fixture: ComponentFixture<ReleaseManagementComponent>;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockBlobStorageService: BlobStorageService;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -39,7 +40,7 @@ describe('ReleaseManagementComponent', () => {
       providers: [
         createMockBlobStorageService(),
         createMockBackgroundJobService(),
-        { provide: FormBuilder, useValue: formBuilder },
+        { provide: UntypedFormBuilder, useValue: formBuilder },
       ],
     }).compileComponents();
 
@@ -47,7 +48,6 @@ describe('ReleaseManagementComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mockBlobStorageService = TestBed.inject(BlobStorageService);
   });
 

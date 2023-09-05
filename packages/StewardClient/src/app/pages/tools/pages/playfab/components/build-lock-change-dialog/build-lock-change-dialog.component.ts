@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
@@ -30,9 +30,9 @@ export class BuildLockChangeDialogComponent extends BaseComponent implements OnI
   public actionMonitor: ActionMonitor;
   public playFabBuildsPermAttribute = PermAttributeName.ManagePlayFabBuildLocks;
   public formControls = {
-    reason: new FormControl(null),
+    reason: new UntypedFormControl(null),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public get dialogTitle(): string {
     return this.data.lockBuild ? `Lock PlayFab Build` : `Unlock PlayFab Build`;

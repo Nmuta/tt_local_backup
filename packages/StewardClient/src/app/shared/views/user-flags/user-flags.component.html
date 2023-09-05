@@ -52,7 +52,7 @@
       <ng-container *waitForMonitor="getFlagsActionMonitor">
         <section class="checkboxes">
           <mat-checkbox
-            *ngFor="let control of formControls | keyvalue: keepOrder"
+            *ngFor="let control of formControls | keyvalue : keepOrder"
             [formControl]="formControls[control.key]"
             (change)="verifyDirtyStatus()"
           >

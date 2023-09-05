@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -30,12 +30,20 @@ export class DriverLevelComponent extends BaseComponent implements OnChanges {
   @Input() xuid: BigNumber;
 
   public formControls = {
-    driverLevel: new FormControl('', [Validators.required, Validators.min(1), Validators.max(999)]),
-    prestigeRank: new FormControl('', [Validators.required, Validators.min(0), Validators.max(9)]),
-    experiencePoints: new FormControl({ value: '', disabled: true }, Validators.required),
+    driverLevel: new UntypedFormControl('', [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(999),
+    ]),
+    prestigeRank: new UntypedFormControl('', [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(9),
+    ]),
+    experiencePoints: new UntypedFormControl({ value: '', disabled: true }, Validators.required),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('Get driver level');
 
