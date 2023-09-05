@@ -5,7 +5,7 @@ import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
 import { ApolloService } from '@services/apollo';
 import { ApolloUserFlags } from '@models/apollo';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
@@ -18,13 +18,13 @@ export class ApolloUserFlagsComponent extends UserFlagsBaseComponent<ApolloUserF
   public gameTitle = GameTitle.FM7;
 
   public formControls = {
-    isVip: new FormControl(false),
-    isTurn10Employee: new FormControl(false),
-    isEarlyAccess: new FormControl(false),
-    isUnderReview: new FormControl(false),
+    isVip: new UntypedFormControl(false),
+    isTurn10Employee: new UntypedFormControl(false),
+    isEarlyAccess: new UntypedFormControl(false),
+    isUnderReview: new UntypedFormControl(false),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   constructor(
     private readonly apolloService: ApolloService,

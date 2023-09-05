@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 
 /**
@@ -12,7 +12,7 @@ import { collectErrors } from '@helpers/form-group-collect-errors';
 })
 export class FormGroupErrorsPipe implements PipeTransform {
   /** The transform. */
-  public transform(value: FormGroup): unknown {
+  public transform(value: UntypedFormGroup): unknown {
     return collectErrors(value);
   }
 }

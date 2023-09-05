@@ -5,7 +5,7 @@ import { SunriseGiftBasketComponent } from './sunrise-gift-basket.component';
 import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { of } from 'rxjs';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SunriseService } from '@services/sunrise';
 import { SetSunriseGiftBasket } from '@tools-app/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
 import faker from '@faker-js/faker';
@@ -19,7 +19,7 @@ describe('SunriseGiftBasketComponent', () => {
   let fixture: ComponentFixture<SunriseGiftBasketComponent>;
   let component: SunriseGiftBasketComponent;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
   let mockStore: Store;
   let mockSunriseService: SunriseService;
 

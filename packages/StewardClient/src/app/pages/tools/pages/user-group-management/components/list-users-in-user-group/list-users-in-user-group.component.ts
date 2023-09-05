@@ -7,7 +7,7 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -96,11 +96,11 @@ export class ListUsersInGroupComponent extends BaseComponent implements OnChange
 
   /** Add/remove bulk xuids or gamertags submit form */
   public formControls = {
-    userIdentifications: new FormControl('', Validators.required),
-    useGamertags: new FormControl(false),
+    userIdentifications: new UntypedFormControl('', Validators.required),
+    useGamertags: new UntypedFormControl(false),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('Get players in user group');
   public deleteAllMonitor = new ActionMonitor('Delete all players in user group');

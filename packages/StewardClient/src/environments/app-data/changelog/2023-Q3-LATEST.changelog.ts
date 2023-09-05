@@ -13,6 +13,20 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add Steam purchases to entitlements',
     },
     {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'b1f43ed5-5d78-4499-bba4-4711af3c04a4',
+      shortText: 'Add Replay UGC type',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
+      shortText: 'Update to Angular 14',
+      longText: ['Patch: Fix invalid routes.'],
+    },
+    {
       tag: { title: [GameTitle.Forte], tool: NavbarTool.PlayFab },
       uuid: 'a308d4fa-ef42-4fbf-b8b3-62e82bbcf16d',
       shortText: 'Setup PlayFab build locks for Forte Dev environment',

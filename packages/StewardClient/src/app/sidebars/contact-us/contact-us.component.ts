@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
@@ -95,13 +95,13 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
     externalImpact: RequestImpact.Low,
   };
   public formControlsFeature = {
-    title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-    description: new FormControl('', [Validators.required]),
-    isBusinessCritital: new FormControl(false, [Validators.required]),
-    internalImpact: new FormControl(RequestImpact.Low, [Validators.required]),
-    externalImpact: new FormControl(RequestImpact.Low, [Validators.required]),
+    title: new UntypedFormControl('', [Validators.required, Validators.maxLength(100)]),
+    description: new UntypedFormControl('', [Validators.required]),
+    isBusinessCritital: new UntypedFormControl(false, [Validators.required]),
+    internalImpact: new UntypedFormControl(RequestImpact.Low, [Validators.required]),
+    externalImpact: new UntypedFormControl(RequestImpact.Low, [Validators.required]),
   };
-  public formGroupFeature = new FormGroup(this.formControlsFeature);
+  public formGroupFeature = new UntypedFormGroup(this.formControlsFeature);
 
   public defaultBug: BugReport = {
     ...this.defaultFeature,
@@ -109,15 +109,15 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
     reproductionSteps: '',
   };
   public formControlsBug = {
-    title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-    description: new FormControl('', [Validators.required]),
-    reproductionSteps: new FormControl('', [Validators.required]),
-    isBusinessCritital: new FormControl(false, [Validators.required]),
-    internalImpact: new FormControl(RequestImpact.Low, [Validators.required]),
-    externalImpact: new FormControl(RequestImpact.Low, [Validators.required]),
-    hasWorkaround: new FormControl(false, [Validators.required]),
+    title: new UntypedFormControl('', [Validators.required, Validators.maxLength(100)]),
+    description: new UntypedFormControl('', [Validators.required]),
+    reproductionSteps: new UntypedFormControl('', [Validators.required]),
+    isBusinessCritital: new UntypedFormControl(false, [Validators.required]),
+    internalImpact: new UntypedFormControl(RequestImpact.Low, [Validators.required]),
+    externalImpact: new UntypedFormControl(RequestImpact.Low, [Validators.required]),
+    hasWorkaround: new UntypedFormControl(false, [Validators.required]),
   };
-  public formGroupBug = new FormGroup(this.formControlsBug);
+  public formGroupBug = new UntypedFormGroup(this.formControlsBug);
 
   public defaultPermission: PermissionRequest = {
     permission: '',
@@ -126,20 +126,20 @@ export class ContactUsComponent extends BaseComponent implements OnInit {
     justification: '',
   };
   public formControlsPermission = {
-    permission: new FormControl('', [Validators.required]),
-    titles: new FormControl('', [Validators.required]),
-    environments: new FormControl('', [Validators.required]),
-    justification: new FormControl('', [Validators.required]),
+    permission: new UntypedFormControl('', [Validators.required]),
+    titles: new UntypedFormControl('', [Validators.required]),
+    environments: new UntypedFormControl('', [Validators.required]),
+    justification: new UntypedFormControl('', [Validators.required]),
   };
-  public formGroupPermission = new FormGroup(this.formControlsPermission);
+  public formGroupPermission = new UntypedFormGroup(this.formControlsPermission);
 
   public defaultQuestion: Question = {
     question: '',
   };
   public formControlsQuestion = {
-    question: new FormControl('', [Validators.required]),
+    question: new UntypedFormControl('', [Validators.required]),
   };
-  public formGroupQuestion = new FormGroup(this.formControlsQuestion);
+  public formGroupQuestion = new UntypedFormGroup(this.formControlsQuestion);
 
   public readonly adminTeamLead = 'Live Ops Admins';
   public readonly adminTeamLeadEmail = EmailAddresses.LiveOpsAdmins;

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
@@ -34,10 +34,10 @@ export class PersistUgcModalComponent extends BaseComponent {
   @Input() ugcItem: PlayerUgcItem;
 
   public formControls = {
-    title: new FormControl(null, Validators.maxLength(32)),
-    description: new FormControl(null, Validators.maxLength(128)),
+    title: new UntypedFormControl(null, Validators.maxLength(32)),
+    description: new UntypedFormControl(null, Validators.maxLength(128)),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Persist UGC');
   public persistUgcPermAttribute = PermAttributeName.PersistUgc;
 

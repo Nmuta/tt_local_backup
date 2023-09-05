@@ -10,7 +10,7 @@ import {
 } from '@models/ugc-filters';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   UgcSearchFiltersFormValue,
   UgcSearchFiltersServiceContract,
@@ -54,11 +54,11 @@ export class WoodstockSearchUgcComponent extends BaseComponent implements OnInit
   };
 
   public formControls = {
-    ugcFilters: new FormControl('', Validators.required),
-    ugcCuratedType: new FormControl(''),
+    ugcFilters: new UntypedFormControl('', Validators.required),
+    ugcCuratedType: new UntypedFormControl(''),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   constructor(
     private readonly searchService: WoodstockUgcSearchService,
