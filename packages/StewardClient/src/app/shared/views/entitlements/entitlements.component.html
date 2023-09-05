@@ -21,7 +21,7 @@
                 </tr>
                 <tr>
                   <th>Type</th>
-                  <td>{{ entry.type }}</td>
+                  <td>{{ entry.type | deppoh }}</td>
                 </tr>
                 <tr>
                   <th>Event Date</th>
@@ -89,6 +89,25 @@
                   <tr>
                     <th>Refund Reason Code</th>
                     <td>{{ entry.refundReasonCode }}</td>
+                  </tr>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="entitlementType.PurchasedSteam">
+                  <tr>
+                    <th>Purchase Date</th>
+                    <td>{{ entry.purchaseDateTimeUtc | utcDate: 'short' }}</td>
+                  </tr>
+                  <tr>
+                    <th>Purchase Quantity</th>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <th>Product Name</th>
+                    <td>{{ entry.productDisplayName }}</td>
+                  </tr>
+                  <tr>
+                    <th>Data Source</th>
+                    <td>Steam</td>
                   </tr>
                 </ng-container>
               </table>
