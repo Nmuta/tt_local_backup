@@ -26,8 +26,10 @@ a[mat-list-item] mat-icon {
 div[mat-subheader] {
   padding-top: .5em;
   padding-bottom: .5em;
-  margin-top: 2em;
+  margin-top: 1em;
   margin-bottom: .25em;
   height: auto;
   background-color: app-color-lighter($app-background, 0.2);
+  border-top: 2px solid app-color-darker($app-background);
+  justify-content: center;
 }
