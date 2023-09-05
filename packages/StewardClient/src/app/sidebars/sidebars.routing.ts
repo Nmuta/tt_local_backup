@@ -7,36 +7,12 @@ import { ChangelogComponent } from './changelog/changelog.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { SidebarsComponent } from './sidebars.component';
 
+
 /**
- * Routes that may be displayed in the top-level sidebar as a standalone component.
- * These slide out from the right-hand side and display some data.
+ * Routes that may be displayed in the "unified" sidebar as subroutes.
+ * The unified sidebar includes a vertical navigation handler.
  */
-export const topLevelSidebars: Routes = [
-  {
-    path: 'profile',
-    component: ProfileComponent,
-    outlet: 'sidebar',
-  },
-  {
-    path: 'settings',
-    component: SettingsComponent,
-    outlet: 'sidebar',
-  },
-  {
-    path: 'changelog',
-    component: ChangelogComponent,
-    outlet: 'sidebar',
-  },
-  {
-    path: 'notifications',
-    component: NotificationsComponent,
-    outlet: 'sidebar',
-  },
-  {
-    path: 'contactus',
-    component: ContactUsComponent,
-    outlet: 'sidebar',
-  },
+export const unifiedSidebars: Routes = [
   {
     path: 'unified',
     component: SidebarsComponent,
@@ -46,45 +22,49 @@ export const topLevelSidebars: Routes = [
         path: 'settings',
         component: SettingsComponent,
       },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      },
     ]
   },
-];
+]
 
 /**
- * Routes that may be displayed in the "unified" sidebar as subroutes.
- * The unified sidebar includes a vertical navigation handler.
+ * Routes that may be displayed in the top-level sidebar as a standalone component.
+ * These slide out from the right-hand side and display some data.
  */
-export const unifiedSidebars: Routes = [
+export const originalSidebars: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    outlet: 'unifiedSidebar',
+    outlet: 'sidebar',
   },
   {
     path: 'settings',
     component: SettingsComponent,
-    outlet: 'unifiedSidebar',
+    outlet: 'sidebar',
   },
   {
     path: 'changelog',
     component: ChangelogComponent,
-    outlet: 'unifiedSidebar',
+    outlet: 'sidebar',
   },
   {
     path: 'notifications',
     component: NotificationsComponent,
-    outlet: 'unifiedSidebar',
+    outlet: 'sidebar',
   },
   {
     path: 'contactus',
     component: ContactUsComponent,
-    outlet: 'unifiedSidebar',
+    outlet: 'sidebar',
   },
-]
+];
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes: Routes = [
-  ...topLevelSidebars,
+  ...originalSidebars,
   ...unifiedSidebars,
 ];
 

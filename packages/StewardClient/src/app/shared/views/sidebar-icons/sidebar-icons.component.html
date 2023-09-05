@@ -56,26 +56,11 @@
       >settings</mat-icon
     >
   </a>
-  <a
-    [routerLink]="[{ outlets: { sidebar: 'unified' } }]"
-    queryParamsHandling="preserve"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Sidebar"
-  >
-    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.two"></span>
-    <mat-icon
-      [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
-      matBadgeSize="small"
-      color="accent"
-      >settings</mat-icon
-    >
-  </a>
 </span>
 
 <span>
   <a
-    [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
+    [routerLink]="[{ outlets: { sidebar: 'unified/profile' } }]"
     queryParamsHandling="preserve"
     mat-icon-button
     routerLinkActive="stroked-icon-button"

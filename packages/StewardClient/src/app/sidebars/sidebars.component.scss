@@ -22,3 +22,12 @@ mat-drawer {
 a[mat-list-item] mat-icon {
   padding-right: .25em;
 }
+
+div[mat-subheader] {
+  padding-top: .5em;
+  padding-bottom: .5em;
+  margin-top: 2em;
+  margin-bottom: .25em;
+  height: auto;
+  background-color: app-color-lighter($app-background, 0.2);
+}

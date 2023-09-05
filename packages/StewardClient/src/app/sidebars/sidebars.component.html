@@ -8,7 +8,15 @@
   <mat-drawer mode="side" position="end" opened>
     <mat-nav-list>
 
-      <div mat-subheader>Doot</div>
+      <a mat-list-item
+        [routerLink]="['profile']"
+        queryParamsHandling="preserve"
+        routerLinkActive="list-item-active">
+        <mat-icon>account_circle</mat-icon>
+        Profile
+      </a>
+
+      <div mat-subheader>Settings</div>
 
       <a mat-list-item
         [routerLink]="['settings']"
