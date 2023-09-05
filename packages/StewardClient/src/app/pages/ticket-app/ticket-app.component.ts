@@ -7,6 +7,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { StewardAppBaseComponent } from '../steward-app.base.component';
+import { LoggerService } from '@services/logger';
 
 /** Coordination component for for ticket-app. */
 @Component({
@@ -19,8 +20,13 @@ export class TicketAppComponent extends StewardAppBaseComponent implements OnIni
   public loading: boolean;
   public profile: UserModel;
 
-  constructor(private readonly zendesk: ZendeskService, router: Router, route: ActivatedRoute) {
-    super(router, route);
+  constructor(
+    private readonly zendesk: ZendeskService,
+    logger: LoggerService,
+    router: Router,
+    route: ActivatedRoute
+  ) {
+    super(logger, router, route);
   }
 
   /** Logic for the OnInit component lifecycle. */

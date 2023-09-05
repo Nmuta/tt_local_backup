@@ -5,16 +5,18 @@ import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
 import { LogLevel } from './log-level';
 import { LogTopic } from './log-topic';
+import { TopicLogger } from './topic-logger';
+import { ILogger } from './logger';
 
 /* eslint-disable no-console */
 /* eslint-disable no-debugger */
 
 const logTopicsToIgnoreInConsole = [LogTopic.AuthInterception];
-const logTopicsToIgnoreInAppInsights = [LogTopic.AuthInterception];
+const logTopicsToIgnoreInAppInsights = [LogTopic.AuthInterception, LogTopic.Sidebar];
 
 /** A logger service that acts as a configurable proxy for console.log and app insights. */
 @Injectable({ providedIn: 'root' })
-export class LoggerService {
+export class LoggerService implements ILogger {
   public consoleLevel: LogLevel = LogLevel.Everything;
   public appInsightsLevel: LogLevel = LogLevel.Everything;
   public consoleTopics: LogTopic[] = Object.keys(LogTopic)
@@ -29,6 +31,11 @@ export class LoggerService {
   constructor(private readonly appInsights: ApplicationInsights) {
     this.consoleLevel = environment.loggerConfig.consoleLogLevel;
     this.appInsightsLevel = environment.loggerConfig.appInsightsLogLevel;
+  }
+
+  /** Generates a {@link TopicLogger} that applies a set list of topics to many logs. */
+  public makeTopicLogger(topics: LogTopic[]): TopicLogger {
+    return new TopicLogger(this, topics);
   }
 
   /** Proxy for console.log */
