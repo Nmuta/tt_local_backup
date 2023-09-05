@@ -19,6 +19,11 @@ export const unifiedSidebars: Routes = [
     outlet: 'sidebar',
     children: [
       {
+        path: '',
+        redirectTo: 'profile',
+        pathMatch: 'full',
+      },
+      {
         path: 'settings',
         component: SettingsComponent,
       },
