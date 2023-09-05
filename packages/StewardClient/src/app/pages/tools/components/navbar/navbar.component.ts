@@ -51,9 +51,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   /** True when re-ordering should be enabled. */
   public inEditMode: boolean = false;
 
-  public notificationCount = null;
-  public notificationColor: ThemePalette = undefined;
-
   /** The set Environment Warning Option. */
   public get environmentWarningOption(): ThemeEnvironmentWarningOptions {
     return this.theme.themeEnvironmentWarning;
@@ -66,7 +63,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     private readonly store: Store,
     private readonly windowService: WindowService,
     private readonly zendeskService: ZendeskService,
-    private readonly notificationsService: NotificationsService,
     private readonly theme: ThemeService,
   ) {
     super();
@@ -77,7 +73,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
    * TODO: Remove when Kusto feature is ready.
    */
   public ngOnInit(): void {
-    this.notificationsService.initialize();
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
     this.role = profile?.role;
     this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
@@ -96,16 +91,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
           return setExternalLinkTarget(tool);
         })
         .value();
-    });
-
-    this.notificationsService.notifications$.subscribe(notifications => {
-      const unreadNotifications = notifications.filter(n => !n.isRead);
-      this.notificationCount = unreadNotifications.length ? unreadNotifications.length : null;
-      this.notificationColor = unreadNotifications.some(
-        n => n.status === BackgroundJobStatus.Failed,
-      )
-        ? 'accent'
-        : undefined;
     });
   }
 

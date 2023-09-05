@@ -20,7 +20,7 @@ export const unifiedSidebars: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'profile',
+        redirectTo: 'settings',
         pathMatch: 'full',
       },
       {

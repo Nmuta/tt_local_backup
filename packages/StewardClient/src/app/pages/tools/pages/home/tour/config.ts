@@ -12,7 +12,8 @@ export const homeTourSteps: IStepOption[] = [
   },
   {
     anchorId: 'home-tour.step.two',
-    content: 'Click on the <b>Settings</b> icon to adjust options such as endpoints and theming.',
+    content:
+      '<p>Click on the <b>Profile and Settings</b> icon to adjust options such as endpoints, theming, and permissions.</p>',
     enableBackdrop: true,
   },
   {

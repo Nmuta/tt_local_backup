@@ -141,23 +141,5 @@
     <mat-icon matTooltip="Zendesk API missing">warning</mat-icon>
     <mat-icon matTooltip="Refresh page">refresh</mat-icon>
   </span>
-  <span class="short-spacer"></span>
-  <span>
-    <a
-      [routerLink]="[{ outlets: { sidebar: 'notifications' } }]"
-      queryParamsHandling="preserve"
-      mat-icon-button
-      routerLinkActive="stroked-icon-button"
-      matTooltip="Notifications"
-      aria-label="Notifications"
-    >
-      <mat-icon
-        [matBadge]="notificationCount"
-        [matBadgeColor]="notificationColor"
-        matBadgeSize="small"
-        >notifications</mat-icon
-      >
-    </a>
-  </span>
   <sidebar-icons class="sidebar-icons"></sidebar-icons>
 </mat-toolbar>

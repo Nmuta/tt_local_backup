@@ -1,3 +1,21 @@
+<span class="horizontal-nav-separator"></span>
+<span>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'notifications' } }]"
+    queryParamsHandling="preserve"
+    mat-icon-button
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Notifications"
+    aria-label="Notifications"
+  >
+    <mat-icon
+      [matBadge]="notificationCount"
+      [matBadgeColor]="notificationColor"
+      matBadgeSize="small"
+      >notifications</mat-icon
+    >
+  </a>
+</span>
 <span class="tour-element-highlighted">
   <a
     [routerLink]="[{ outlets: { sidebar: 'changelog' } }]"
@@ -16,7 +34,7 @@
     >
   </a>
 </span>
-<span class="short-spacer"></span>
+<span class="horizontal-nav-separator"></span>
 <span class="tour-element-highlighted">
   <a
     href="https://confluence.turn10studios.com/x/r4GiE"
@@ -40,25 +58,9 @@
     <mat-icon>contact_support</mat-icon>
   </a>
 </span>
-<span class="short-spacer"></span>
-<span class="tour-element-highlighted">
-  <a
-    [routerLink]="[{ outlets: { sidebar: 'unified/settings' } }]"
-    queryParamsHandling="preserve"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Settings"
-  >
-    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.two"></span>
-    <mat-icon
-      [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
-      matBadgeSize="small"
-      >settings</mat-icon
-    >
-  </a>
-</span>
+<span class="horizontal-nav-separator"></span>
 
-<span>
+<span class="tour-element-highlighted">
   <a
     [routerLink]="[{ outlets: { sidebar: 'unified' } }]"
     queryParamsHandling="preserve"
@@ -66,6 +68,7 @@
     routerLinkActive="stroked-icon-button"
     matTooltip="Profile"
   >
+    <span class="tour-highlight-buffer" tourAnchor="home-tour.step.two"></span>
     <mat-icon>manage_accounts</mat-icon>
   </a>
 </span>
