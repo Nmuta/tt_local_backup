@@ -1,9 +1,0 @@
-@import '/src/styles/mixins';
-
-:host {
-  @include flex-column-fill();
-}
-
-.back-icon {
-  cursor: pointer;
-}

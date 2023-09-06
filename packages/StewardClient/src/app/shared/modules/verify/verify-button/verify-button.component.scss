@@ -1,9 +1,0 @@
-@import '/src/styles/mixins';
-
-button {
-  margin-right: $gap-medium;
-
-  &:not(.has-help-icon) {
-    margin: 0px;
-  }
-}

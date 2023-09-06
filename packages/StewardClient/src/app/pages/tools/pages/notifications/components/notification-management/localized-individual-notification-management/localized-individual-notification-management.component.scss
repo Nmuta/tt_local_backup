@@ -1,9 +1,0 @@
-@import '/src/styles/mixins';
-
-:host {
-  @include flex-column-fill();
-}
-
-.mat-column-actions {
-  @include table-width(200);
-}

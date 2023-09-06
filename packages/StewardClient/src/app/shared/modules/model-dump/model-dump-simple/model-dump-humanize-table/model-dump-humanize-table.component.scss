@@ -1,7 +1,0 @@
-@import '/src/styles/mixins';
-
-// Some strings can be VERY long. Limiting the container size stops a single long string causing a full-width container.
-// Ex: Livery download data on UGC details page.
-td {
-  max-width: $container-width-medium;
-}

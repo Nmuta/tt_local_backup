@@ -1,9 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestModuleMetadata } from '@angular/core/testing';
+import { TestModuleMetadata, getTestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgxsModule } from '@ngxs/store';
+import { NgxsModule, Store } from '@ngxs/store';
 import { StateClass } from '@ngxs/store/internals';
 import { createMockApolloService } from '@services/apollo';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
@@ -20,6 +20,10 @@ import { UserState } from '@shared/state/user/user.state';
 import { uniq } from 'lodash';
 import { MatSnackBarMock } from './mat-snack-bar.mock';
 import { createMockMsalServices } from './msal.service.mock';
+import { UserRole } from '@models/enums';
+import { UserModel } from '@models/user.model';
+import { UserStateModel } from '@shared/state/user/user.state.model';
+import { AppState } from '@shared/state/app-state';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

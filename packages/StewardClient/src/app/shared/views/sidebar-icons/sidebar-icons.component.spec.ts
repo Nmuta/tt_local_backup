@@ -9,6 +9,9 @@ import { createMockUserSettingsService } from '@shared/state/user-settings/use-s
 import { createMockChangelogService } from '@services/changelog/changelog.service.mock';
 import { ChangelogService } from '@services/changelog/changelog.service';
 import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
+import { NotificationsService } from '@shared/hubs/notifications.service';
+import { BackgroundJob } from '@models/background-job';
+import { Subject } from 'rxjs';
 
 describe('SidebarIconsComponent', () => {
   let fixture: ComponentFixture<SidebarIconsComponent>;
@@ -16,6 +19,7 @@ describe('SidebarIconsComponent', () => {
 
   let mockChangelogService: ChangelogService;
   let mockUserSettingsService: UserSettingsService;
+  let mockNotificationsService: NotificationsService;
 
   let spyOnSettingsStateAppVersion: jasmine.Spy;
   let spyOnChangelogServicesDisablePopup: jasmine.Spy;
@@ -45,6 +49,10 @@ describe('SidebarIconsComponent', () => {
     spyOnSettingsStateAppVersion = spyOnProperty(mockUserSettingsService, 'appVersion', 'get');
     spyOnSettingsStateAppVersion.and.returnValue(undefined);
 
+    mockNotificationsService = TestBed.inject(NotificationsService);
+    mockNotificationsService.initialize = jasmine.createSpy('initialize');
+    mockNotificationsService.notifications$ = new Subject<BackgroundJob<unknown>[]>();
+
     component.changelogLink = {
       nativeElement: {
         click: () => {
@@ -59,6 +67,15 @@ describe('SidebarIconsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('Method: ngAfterViewInit', () => {
+    it('should call notificationsService.initialize()', () => {
+      component.ngAfterViewInit();
+
+      expect(mockNotificationsService.initialize).toHaveBeenCalled();
+    });
+  });
+
 
   describe('Method: ngAfterViewInit', () => {
     describe('When the app version is undefined', () => {

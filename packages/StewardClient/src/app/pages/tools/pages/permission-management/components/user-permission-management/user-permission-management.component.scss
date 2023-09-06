@@ -1,8 +1,0 @@
-@import '/src/styles/mixins';
-
-@include flex-navbar-fill;
-
-.select-tree-view {
-  max-width: $container-width-small;
-  width: 100%;
-}

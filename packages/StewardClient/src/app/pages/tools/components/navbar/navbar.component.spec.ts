@@ -54,12 +54,6 @@ describe('ToolsNavbarComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    it('should call notificationsService.initialize()', () => {
-      component.ngOnInit();
-
-      expect(mockNotificationsService.initialize).toHaveBeenCalled();
-    });
-
     describe('When profile$ provides a value', () => {
       const role = UserRole.LiveOpsAdmin;
       beforeEach(() => {

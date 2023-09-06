@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
-import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
 import { GameTitle, UserRole } from '@models/enums';
@@ -14,8 +13,6 @@ import { TourState, TourStateModel } from '@shared/state/tours/tours.state';
 import { SetFakeApi, SetApolloEndpointKey, SetSunriseEndpointKey, SetWoodstockEndpointKey, SetForteEndpointKey, SetSteelheadEndpointKey } from '@shared/state/user-settings/user-settings.actions';
 import { UserSettingsState, UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
-import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
-import { keys } from 'lodash';
 import { Observable, filter, takeUntil } from 'rxjs';
 
 /** Controls settings relating to Endpoints. */
@@ -28,20 +25,14 @@ export class EndpointsComponent extends BaseComponent implements OnInit {
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
   @Select(TourState) public tourState$: Observable<TourStateModel>;
 
-  public guestAccountStatus: undefined | boolean = undefined;
-  public activeRole: UserRole;
   public enableFakeApi: boolean;
   public apolloEndpointKey: string;
   public sunriseEndpointKey: string;
   public woodstockEndpointKey: string;
   public steelheadEndpointKey: string;
   public forteEndpointKey: string;
-  public showVerifyCheckboxPopup: boolean;
-  public showProfileOverrideOptions: boolean;
   public showFakeApiToggle: boolean; // Only show on dev or if user is a live ops admin
-  public showStagingApiToggle: boolean; // Only show on staging slot
 
-  public roleList: UserRole[] = keys(UserRole).map(key => UserRole[key]);
   public apolloEndpointKeyList: string[];
   public sunriseEndpointKeyList: string[];
   public woodstockEndpointKeyList: string[];
@@ -55,8 +46,6 @@ export class EndpointsComponent extends BaseComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly windowService: WindowService,
-    private readonly router: Router,
-    private readonly userTourService: UserTourService, // loaded here so tours will run
   ) {
     super();
   }
@@ -64,14 +53,6 @@ export class EndpointsComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     const profile = this.store.selectSnapshot<UserModel>(UserState.profileForceTrueData); // Force true data so live ops admins can change their settings around
     this.showFakeApiToggle = profile.role === UserRole.LiveOpsAdmin || !environment.production;
-    this.showProfileOverrideOptions = profile.role === UserRole.LiveOpsAdmin;
-    if (this.showProfileOverrideOptions) {
-      this.activeRole = profile.overrides?.role;
-      this.guestAccountStatus = profile.overrides?.isMicrosoftEmail;
-    }
-
-    const location = this.windowService.location();
-    this.showStagingApiToggle = location?.origin === environment.stewardUiStagingUrl;
 
     this.endpointKeys$
       .pipe(
@@ -95,7 +76,6 @@ export class EndpointsComponent extends BaseComponent implements OnInit {
       });
 
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
-      this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
       this.enableFakeApi = latest.enableFakeApi;
       this.apolloEndpointKey = latest.apolloEndpointKey;
       this.sunriseEndpointKey = latest.sunriseEndpointKey;
