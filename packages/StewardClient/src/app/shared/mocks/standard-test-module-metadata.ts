@@ -1,9 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestModuleMetadata, getTestBed } from '@angular/core/testing';
+import { TestModuleMetadata } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { NgxsModule, Store } from '@ngxs/store';
+import { NgxsModule } from '@ngxs/store';
 import { StateClass } from '@ngxs/store/internals';
 import { createMockApolloService } from '@services/apollo';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
@@ -20,10 +20,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { uniq } from 'lodash';
 import { MatSnackBarMock } from './mat-snack-bar.mock';
 import { createMockMsalServices } from './msal.service.mock';
-import { UserRole } from '@models/enums';
-import { UserModel } from '@models/user.model';
-import { UserStateModel } from '@shared/state/user/user.state.model';
-import { AppState } from '@shared/state/app-state';
+import { ChangelogState } from '@shared/state/changelog/changelog.state';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -34,11 +31,12 @@ export interface StandardTestModuleMetadataConfiguration extends TestModuleMetad
 export function createStandardTestModuleMetadata(
   additions: StandardTestModuleMetadataConfiguration,
 ): TestModuleMetadata {
+  const allNgxsModules = uniq([UserState, UserSettingsState, ChangelogState, ...uniq(additions.ngxsModules ?? [])]);
   const metadata: TestModuleMetadata = {
     imports: [
       RouterTestingModule.withRoutes([]),
       HttpClientTestingModule,
-      NgxsModule.forRoot([UserState, UserSettingsState, ...uniq(additions.ngxsModules ?? [])]),
+      NgxsModule.forRoot(allNgxsModules),
       PipesModule,
     ],
     declarations: additions.declarations ?? [],

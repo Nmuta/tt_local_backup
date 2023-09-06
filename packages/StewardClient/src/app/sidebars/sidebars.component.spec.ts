@@ -6,6 +6,7 @@ import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoi
 import { TourState } from '@shared/state/tours/tours.state';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ChangelogState } from '@shared/state/changelog/changelog.state';
 
 describe('SidebarsComponent', () => {
   let component: SidebarsComponent;
@@ -15,7 +16,7 @@ describe('SidebarsComponent', () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadata({
         declarations: [SidebarsComponent],
-        ngxsModules: [EndpointKeyMemoryState, TourState],
+        ngxsModules: [EndpointKeyMemoryState, TourState, ChangelogState],
         imports: [MatDialogModule],
         providers: [createMockUserTourService()],
       }))
@@ -23,6 +24,7 @@ describe('SidebarsComponent', () => {
 
     fixture = TestBed.createComponent(SidebarsComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
