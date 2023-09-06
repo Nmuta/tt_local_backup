@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Display warning beside user flag when lookup provides conflicting data',
+    },
+    {
       tag: {
         title: GameTitle.FM8,
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],

@@ -51,6 +51,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,
+    MatIconModule,
   ],
   exports: [
     WoodstockUserFlagsComponent,

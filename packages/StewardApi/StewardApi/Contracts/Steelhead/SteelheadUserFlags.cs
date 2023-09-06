@@ -7,24 +7,24 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// </summary>
     public sealed class SteelheadUserFlags
     {
-        public bool IsGamecoreVip { get; set; }
+        public SteelheadUserFlag IsGamecoreVip { get; set; }
 
-        public bool IsGamecoreUltimateVip { get; set; }
+        public SteelheadUserFlag IsGamecoreUltimateVip { get; set; }
 
-        public bool IsSteamVip { get; set; }
+        public SteelheadUserFlag IsSteamVip { get; set; }
 
-        public bool IsSteamUltimateVip { get; set; }
+        public SteelheadUserFlag IsSteamUltimateVip { get; set; }
 
-        public bool IsTurn10Employee { get; set; }
+        public SteelheadUserFlag IsTurn10Employee { get; set; }
 
-        public bool IsEarlyAccess { get; set; }
+        public SteelheadUserFlag IsEarlyAccess { get; set; }
 
-        public bool IsUnderReview { get; set; }
+        public SteelheadUserFlag IsUnderReview { get; set; }
 
-        public bool IsRaceMarshall { get; set; }
+        public SteelheadUserFlag IsRaceMarshall { get; set; }
 
-        public bool IsContentCreator { get; set; }
+        public SteelheadUserFlag IsContentCreator { get; set; }
 
-        public bool IsCommunityManager { get; set; }
+        public SteelheadUserFlag IsCommunityManager { get; set; }
     }
 }

@@ -55,6 +55,9 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
 
   public readonly permAttribute = PermAttributeName.UpdateUserFlags;
 
+  public readonly tooltipText =
+    "User's membership is stale, we have differing membership from user details. To repair, add and remove the user to force a sync.";
+
   /** Alternate text per key. */
   public readonly alteredLabels: { [key in keyof UserFlagsIntersection]?: string } = {
     isGamecoreVip: 'Is Windows/Xbox Vip',
@@ -129,7 +132,9 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
     this.hasChanges = false;
     for (const flag in this.currentFlags) {
       const key = flag.toString();
-      this.formControls[key]?.setValue(this.currentFlags[key]);
+      this.isVerifiedFlags(key)
+        ? this.formControls[key]?.setValue(this.currentFlags[key].isMember)
+        : this.formControls[key]?.setValue(this.currentFlags[key]);
     }
 
     this.formGroup.markAsPristine();
@@ -156,4 +161,8 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public keepOrder = (a: never, _b: never): never => {
     return a;
   };
+
+  private isVerifiedFlags(key: string): boolean {
+    return this.currentFlags[key]?.isMember !== undefined;
+  }
 }

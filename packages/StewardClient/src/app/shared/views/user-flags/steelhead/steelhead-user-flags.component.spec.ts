@@ -78,10 +78,19 @@ describe('SteelheadUserFlagsComponent', () => {
 
       describe('And getFlagsByXuid$ return valid response', () => {
         const flags = {
-          isSteamVip: faker.datatype.boolean(),
-          isTurn10Employee: faker.datatype.boolean(),
-          isEarlyAccess: faker.datatype.boolean(),
-          isUnderReview: faker.datatype.boolean(),
+          isSteamVip: { isMember: faker.datatype.boolean(), hasConflict: faker.datatype.boolean() },
+          isTurn10Employee: {
+            isMember: faker.datatype.boolean(),
+            hasConflict: faker.datatype.boolean(),
+          },
+          isEarlyAccess: {
+            isMember: faker.datatype.boolean(),
+            hasConflict: faker.datatype.boolean(),
+          },
+          isUnderReview: {
+            isMember: faker.datatype.boolean(),
+            hasConflict: faker.datatype.boolean(),
+          },
         } as SteelheadUserFlags;
 
         beforeEach(() => {
@@ -95,10 +104,12 @@ describe('SteelheadUserFlagsComponent', () => {
           component.ngOnChanges(<any>{});
 
           expect(component.currentFlags).toEqual(flags);
-          expect(component.formControls.isSteamVip.value).toEqual(flags.isSteamVip);
-          expect(component.formControls.isTurn10Employee.value).toEqual(flags.isTurn10Employee);
-          expect(component.formControls.isEarlyAccess.value).toEqual(flags.isEarlyAccess);
-          expect(component.formControls.isUnderReview.value).toEqual(flags.isUnderReview);
+          expect(component.formControls.isSteamVip.value).toEqual(flags.isSteamVip.isMember);
+          expect(component.formControls.isTurn10Employee.value).toEqual(
+            flags.isTurn10Employee.isMember,
+          );
+          expect(component.formControls.isEarlyAccess.value).toEqual(flags.isEarlyAccess.isMember);
+          expect(component.formControls.isUnderReview.value).toEqual(flags.isUnderReview.isMember);
         });
       });
 

@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.LiveOps.StewardApi.Validation;
+using Xls.FM8.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
@@ -73,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             try
             {
                 var results = await this.BuildUserFlags(xuid, service).ConfigureAwait(true);
-
+                results.IsCommunityManager.HasConflict = true;
                 return this.Ok(results);
             }
             catch (Exception ex)
@@ -105,24 +106,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var validatedFlags = this.mapper.SafeMap<SteelheadUserFlags>(userFlags);
-
             // If UltimateVip is selected we force normal Vip to true
-            if (validatedFlags.IsGamecoreUltimateVip)
+            if (userFlags.IsGamecoreUltimateVip.Value)
             {
-                validatedFlags.IsGamecoreVip = true;
+                userFlags.IsGamecoreVip = true;
             }
 
-            if (validatedFlags.IsSteamUltimateVip)
+            if (userFlags.IsSteamUltimateVip.Value)
             {
-                validatedFlags.IsSteamVip = true;
+                userFlags.IsSteamVip = true;
             }
 
             var service = this.Services.UserManagementService;
             try
             {
-                var addGroupList = this.PrepareGroupIds(validatedFlags, true);
-                var removeGroupList = this.PrepareGroupIds(validatedFlags, false);
+                var addGroupList = this.PrepareGroupIds(userFlags, true);
+                var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
                 await service.AddToUserGroups(xuid, addGroupList.ToArray()).ConfigureAwait(true);
                 await service.RemoveFromUserGroups(xuid, removeGroupList.ToArray()).ConfigureAwait(true);
@@ -140,32 +139,94 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
         private async Task<SteelheadUserFlags> BuildUserFlags(ulong xuid, IUserManagementService service)
         {
-            var userGroupResults = await service
-                .GetUserGroupMemberships(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(true);
-            var suspiciousResults = await service.GetIsUnderReview(xuid).ConfigureAwait(true);
+            var userGroupQuery = service
+                .GetUserGroupMemberships(xuid, Array.Empty<int>(), DefaultMaxResults);
+            var suspiciousQuery = service.GetIsUnderReview(xuid);
+
+            var verificationQuery = service.GetUserDetails(xuid);
+
+            await Task.WhenAll(userGroupQuery, suspiciousQuery, verificationQuery).ConfigureAwait(true);
+
+            var userGroupResults = userGroupQuery.GetAwaiter().GetResult();
+            var suspiciousResults = suspiciousQuery.GetAwaiter().GetResult();
+            var verificationResults = verificationQuery.GetAwaiter().GetResult();
 
             userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
+            verificationResults.forzaUser.ShouldNotBeNull(nameof(verificationResults.forzaUser));
 
             var nonStandardUserGroups = NonStandardUserGroupHelpers.GetUserGroups(this.Services.Endpoint);
 
+            var verificationEnum = (ForzaUserFlags)verificationResults.forzaUser.Flags;
+
+            var isGamecoreVip = userGroupResults.userGroups.Any(r => r.Id == GamecoreVipUserGroupId);
+            var isGamecoreUltimateVip = userGroupResults.userGroups.Any(r => r.Id == GamecoreUltimateVipUserGroupId);
+            var isSteamVip = userGroupResults.userGroups.Any(r => r.Id == SteamVipUserGroupId);
+            var isSteamUltimateVip = userGroupResults.userGroups.Any(r => r.Id == SteamUltimateVipUserGroupId);
+            var isTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId);
+            var isEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId);
+            var isUnderReview = suspiciousResults.isUnderReview;
+            var isRaceMarshall = userGroupResults.userGroups.Any(r => r.Id == RaceMarshallUserGroupId);
+            var isCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId);
+            var isContentCreator = userGroupResults.userGroups.Any(r => r.Id == nonStandardUserGroups.ContentCreatorId);
+
             var flags = new SteelheadUserFlags
             {
-                IsGamecoreVip = userGroupResults.userGroups.Any(r => r.Id == GamecoreVipUserGroupId),
-                IsGamecoreUltimateVip = userGroupResults.userGroups.Any(r => r.Id == GamecoreUltimateVipUserGroupId),
-                IsSteamVip = userGroupResults.userGroups.Any(r => r.Id == SteamVipUserGroupId),
-                IsSteamUltimateVip = userGroupResults.userGroups.Any(r => r.Id == SteamUltimateVipUserGroupId),
-                IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
-                IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
-                IsUnderReview = suspiciousResults.isUnderReview,
-                IsRaceMarshall = userGroupResults.userGroups.Any(r => r.Id == RaceMarshallUserGroupId),
-                IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
-                IsContentCreator = userGroupResults.userGroups.Any(r => r.Id == nonStandardUserGroups.ContentCreatorId),
+                IsGamecoreVip = new SteelheadUserFlag
+                {
+                    IsMember = isGamecoreVip,
+                    HasConflict = isGamecoreVip != verificationEnum.HasFlag(ForzaUserFlags.GameCoreVip),
+                },
+                IsGamecoreUltimateVip = new SteelheadUserFlag
+                {
+                    IsMember = isGamecoreUltimateVip,
+                    HasConflict = isGamecoreUltimateVip != verificationEnum.HasFlag(ForzaUserFlags.GameCoreUltimateVip),
+                },
+                IsSteamVip = new SteelheadUserFlag
+                {
+                    IsMember = isSteamVip,
+                    HasConflict = isSteamVip != verificationEnum.HasFlag(ForzaUserFlags.SteamVip),
+                },
+                IsSteamUltimateVip = new SteelheadUserFlag
+                {
+                    IsMember = isSteamUltimateVip,
+                    HasConflict = isSteamUltimateVip != verificationEnum.HasFlag(ForzaUserFlags.SteamUltimateVip),
+                },
+                IsTurn10Employee = new SteelheadUserFlag
+                {
+                    IsMember = isTurn10Employee,
+                    HasConflict = isTurn10Employee != verificationEnum.HasFlag(ForzaUserFlags.Turn10Employee),
+                },
+                IsEarlyAccess = new SteelheadUserFlag
+                {
+                    IsMember = isEarlyAccess,
+                    HasConflict = isEarlyAccess != verificationEnum.HasFlag(ForzaUserFlags.UltimateVip), // Correct flag per LukeFoust/TomBojarski
+                },
+                IsUnderReview = new SteelheadUserFlag
+                {
+                    IsMember = isUnderReview,
+                    HasConflict = isUnderReview != verificationResults.forzaUser.IsUserUnderReview,
+                },
+                IsRaceMarshall = new SteelheadUserFlag
+                {
+                    IsMember = isRaceMarshall,
+                    HasConflict = isRaceMarshall != verificationEnum.HasFlag(ForzaUserFlags.RaceMarshall),
+                },
+                IsCommunityManager = new SteelheadUserFlag
+                {
+                    IsMember = isCommunityManager,
+                    HasConflict = isCommunityManager != verificationEnum.HasFlag(ForzaUserFlags.CommunityManager),
+                },
+                IsContentCreator = new SteelheadUserFlag
+                {
+                    IsMember = isContentCreator,
+                    HasConflict = isContentCreator != verificationEnum.HasFlag(ForzaUserFlags.ContentCreator),
+                },
             };
 
             return flags;
         }
 
-        private IList<int> PrepareGroupIds(SteelheadUserFlags userFlags, bool toggleState)
+        private IList<int> PrepareGroupIds(SteelheadUserFlagsInput userFlags, bool toggleState)
         {
             var nonStandardUserGroups = NonStandardUserGroupHelpers.GetUserGroups(this.Services.Endpoint);
 

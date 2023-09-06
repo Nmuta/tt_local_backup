@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
-import { SteelheadUserFlags } from '@models/steelhead';
+import { SteelheadUserFlags, SteelheadUserFlagsInput } from '@models/steelhead';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { OldPermissionsService } from '@services/old-permissions';
 import { SteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service';
@@ -70,7 +70,7 @@ export class SteelheadUserFlagsComponent
 
   /** Sets the newly selected Steelhead flags. */
   public putFlagsByXuid$(xuid: BigNumber): Observable<SteelheadUserFlags> {
-    return this.steelheadPlayerFlagsService.putFlagsByXuid$(xuid, {
+    const x = {
       isGamecoreVip: this.formControls.isGamecoreVip.value,
       isGamecoreUltimateVip: this.formControls.isGamecoreUltimateVip.value,
       isSteamVip: this.formControls.isSteamVip.value,
@@ -81,6 +81,8 @@ export class SteelheadUserFlagsComponent
       isRaceMarshall: this.formControls.isRaceMarshall.value,
       isCommunityManager: this.formControls.isCommunityManager.value,
       isContentCreator: this.formControls.isContentCreator.value,
-    } as SteelheadUserFlags);
+    } as SteelheadUserFlagsInput;
+
+    return this.steelheadPlayerFlagsService.putFlagsByXuid$(xuid, x);
   }
 }

@@ -62,6 +62,12 @@
             <ng-container *ngIf="!alteredLabels[control.key]">
               {{ control.key | humanize }}
             </ng-container>
+            <mat-icon
+              *ngIf="this.currentFlags[control.key].hasConflict"
+              [matTooltip]="tooltipText"
+              color="warn"
+              >warning</mat-icon
+            >
           </mat-checkbox>
         </section>
       </ng-container>
