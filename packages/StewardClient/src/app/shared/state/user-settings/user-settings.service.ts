@@ -3,6 +3,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, startWith } from 'rxjs';
 import { SetAppVersion } from './user-settings.actions';
 import { UserSettingsState, UserSettingsStateModel } from './user-settings.state';
+import { environment } from '@environments/environment';
 
 /** Helper methods for handling User Settings State. */
 @Injectable({
@@ -15,7 +16,15 @@ export class UserSettingsService {
 
   /** Produces the app version. */
   public get appVersion(): string {
-    return this.state.appVersion;
+    const configuredAppVersion = this.state.appVersion;
+
+    const appVersionIsUnconfigured = configuredAppVersion === environment.adoVersion;
+    const isLocalhost = environment.stewardUiUrl.includes('localhost');
+    if (isLocalhost && appVersionIsUnconfigured) {
+      return 'localhost';
+    }
+
+    return configuredAppVersion;
   }
 
   /** Sets the app version. */
