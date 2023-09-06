@@ -27,3 +27,8 @@
 .stroked-icon-button {
   border: 1px solid app-color-default-contrast($app-primary, 0.5) !important;
 }
+
+.sidebar-active-icon {
+  background-color: app-color-default-contrast($app-primary);
+  color: app-color-default($app-primary);
+}
