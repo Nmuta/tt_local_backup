@@ -46,7 +46,7 @@ export const settingsSidebar: Routes = [
 export const unifiedSidebars: Routes = [
   {
     path: '',
-    redirectTo: 'settings',
+    redirectTo: 'profile',
     pathMatch: 'full',
   },
   {
