@@ -39,18 +39,7 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
   /** Lifecycle hook. */
   public ngAfterViewInit(): void {
     this.notificationsService.initialize();
-
-    if (!!this.userSettingsService.appVersion) {
-      const currentVersion = environment.adoVersion;
-      const isNewAppVersion = currentVersion !== this.userSettingsService.appVersion;
-      if (isNewAppVersion) {
-        if (!this.changelogService.disableAutomaticPopup) {
-          this.changelogLink?.nativeElement?.click();
-        }
-      }
-    } else {
-      this.userSettingsService.appVersion = environment.adoVersion;
-    }
+    this.handleNewVersion();
 
     this.allPendingIds$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
       this.changelogNotificationCount = v?.length ?? 0;
@@ -81,5 +70,24 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
     }
 
     this.profileTooltip = newTooltip;
+  }
+
+  // TODO: I think this is not really where this belongs, but moving it elsewhere seems beyond the scope of this PR.
+  private handleNewVersion() {
+    // if there's no app version, we need to update it.
+    if (!this.userSettingsService.appVersion) {
+      this.userSettingsService.appVersion = environment.adoVersion;
+      return;
+    }
+
+    // otherwise, guard against unwanted popups and then produce the popup
+    if (this.changelogService.disableAutomaticPopup) { return; }
+    if (this.changelogService.allAreAcknowledged) { return; }
+
+    const currentVersion = environment.adoVersion;
+    const isNewAppVersion = currentVersion !== this.userSettingsService.appVersion;
+    if (!isNewAppVersion) { return; }
+
+    this.changelogLink?.nativeElement?.click();
   }
 }

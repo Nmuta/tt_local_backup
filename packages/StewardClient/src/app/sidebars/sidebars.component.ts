@@ -40,19 +40,8 @@ export class SidebarsComponent extends BaseComponent implements AfterViewInit {
 
   /** Lifecycle hook. */
   public ngAfterViewInit(): void {
+    // TODO: Not sure where this should be initialized. Probably the root?
     // this.notificationsService.initialize();
-    if (!!this.userSettingsService.appVersion) {
-      const currentVersion = environment.adoVersion;
-      const isNewAppVersion = currentVersion !== this.userSettingsService.appVersion;
-      if (isNewAppVersion) {
-        if (!this.changelogService.disableAutomaticPopup) {
-          this.changelogLink?.nativeElement?.click();
-        }
-      }
-    } else {
-      this.userSettingsService.appVersion = environment.adoVersion;
-    }
-
     this.allPendingIds$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
       this.changelogNotificationCount = v?.length ?? 0;
     });

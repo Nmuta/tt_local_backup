@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { Select, Store } from '@ngxs/store';
+import { ChangelogService } from '@services/changelog/changelog.service';
 import { ConfigureShowVerifyCheckboxPopup } from '@shared/state/user-settings/user-settings.actions';
 import {
   UserSettingsState,
@@ -17,7 +18,10 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   public showVerifyCheckboxPopup: boolean;
 
-  constructor(private readonly store: Store) {
+  constructor(
+    private readonly store: Store,
+    private readonly changelogService: ChangelogService,
+  ) {
     super();
   }
 
@@ -31,5 +35,15 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   /** Sets the show verify checkbox popup value in settings. */
   public setShowVerifyCheckboxPopup(): void {
     this.store.dispatch(new ConfigureShowVerifyCheckboxPopup(this.showVerifyCheckboxPopup));
+  }
+
+  /** True when the automatic popup is disabled. */
+  public get enableAutomaticChangelogPopup(): boolean {
+    return !this.changelogService.disableAutomaticPopup;
+  }
+
+  /** Sets the state of automatic popup disabling. */
+  public set enableAutomaticChangelogPopup(value: boolean) {
+    this.changelogService.disableAutomaticPopup = !value;
   }
 }
