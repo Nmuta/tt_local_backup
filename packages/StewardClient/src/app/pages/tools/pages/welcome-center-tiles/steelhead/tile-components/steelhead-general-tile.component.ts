@@ -1,8 +1,8 @@
 import { Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -36,7 +36,7 @@ import { combineLatest, filter, map, Observable, pairwise, startWith, takeUntil 
 export type BaseTileFormValue = WelcomeCenterTile;
 
 /** FormGroup extension for a display condition item. */
-class DisplayConditionItemFormGroup extends FormGroup {
+class DisplayConditionItemFormGroup extends UntypedFormGroup {
   get reference(): AbstractControl {
     return this.get('reference');
   }
@@ -103,23 +103,27 @@ export class GeneralTileComponent extends BaseComponent {
   public minDate = DateTime.fromSeconds(0);
 
   public formControls = {
-    size: new FormControl(null, [Validators.required]),
-    localizedTileTitle: new FormControl({ value: {}, disabled: true }, [Validators.required]),
-    localizedTileType: new FormControl({ value: {}, disabled: true }),
-    localizedTileDescription: new FormControl({ value: {}, disabled: true }, [Validators.required]),
-    tileImagePath: new FormControl(null),
-    timerInstance: new FormControl(),
-    timerLocalizedStartTextOverride: new FormControl({ value: {}, disabled: true }),
-    timerLocalizedEndTextOverride: new FormControl({ value: {}, disabled: true }),
-    timerType: new FormControl(TimerType.ToStartOrToEnd),
-    timerReferenceId: new FormControl(),
-    timerCustomFromDate: new FormControl(),
-    timerCustomToDate: new FormControl(),
-    timerCustomName: new FormControl(),
+    size: new UntypedFormControl(null, [Validators.required]),
+    localizedTileTitle: new UntypedFormControl({ value: {}, disabled: true }, [
+      Validators.required,
+    ]),
+    localizedTileType: new UntypedFormControl({ value: {}, disabled: true }),
+    localizedTileDescription: new UntypedFormControl({ value: {}, disabled: true }, [
+      Validators.required,
+    ]),
+    tileImagePath: new UntypedFormControl(null),
+    timerInstance: new UntypedFormControl(),
+    timerLocalizedStartTextOverride: new UntypedFormControl({ value: {}, disabled: true }),
+    timerLocalizedEndTextOverride: new UntypedFormControl({ value: {}, disabled: true }),
+    timerType: new UntypedFormControl(TimerType.ToStartOrToEnd),
+    timerReferenceId: new UntypedFormControl(),
+    timerCustomFromDate: new UntypedFormControl(),
+    timerCustomToDate: new UntypedFormControl(),
+    timerCustomName: new UntypedFormControl(),
     displayConditions: new BetterFormArray<DisplayConditionItemFormGroup>([]),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
@@ -452,8 +456,8 @@ export class GeneralTileComponent extends BaseComponent {
   /** Add a new display condition. */
   public addDisplayCondition(reference: string, when: string): void {
     const newDisplayConditionForm = new DisplayConditionItemFormGroup({
-      reference: new FormControl(reference, [Validators.required]),
-      when: new FormControl(when),
+      reference: new UntypedFormControl(reference, [Validators.required]),
+      when: new UntypedFormControl(when),
     });
     this.formControls.displayConditions.push(newDisplayConditionForm);
   }

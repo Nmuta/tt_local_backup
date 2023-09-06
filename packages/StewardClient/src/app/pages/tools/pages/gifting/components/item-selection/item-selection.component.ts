@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
@@ -58,15 +58,15 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   public questionIcon = faQuestionCircle;
 
   public formControls = {
-    itemInput: new FormControl('', Validators.required),
-    quantity: new FormControl(1, [
+    itemInput: new UntypedFormControl('', Validators.required),
+    quantity: new UntypedFormControl(1, [
       Validators.required,
       Validators.min(1),
       Validators.max(999_999_999),
       Validators.pattern('^(0|[1-9][0-9]*)$'),
     ]),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
   public stateGroupOptions$: Observable<InventoryItemGroup[]>;
 
   constructor() {

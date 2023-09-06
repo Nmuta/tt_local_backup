@@ -48,7 +48,7 @@
                   "with": "src/environments/environment.dev.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
@@ -234,5 +234,7 @@
       }
     }
   },
-  "defaultProject": "angular-zendesk"
+  "cli": {
+    "analytics": false
+  }
 }

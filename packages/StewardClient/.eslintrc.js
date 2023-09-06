@@ -36,7 +36,7 @@ module.exports = {
         'prettier',
         'plugin:jsdoc/recommended',
       ],
-      plugins: ['jsdoc', 'rxjs'],
+      plugins: ['jsdoc', 'rxjs', '@typescript-eslint'],
       rules: {
         /**
          * Any TypeScript related rules you wish to use/reconfigure over and above the
@@ -91,7 +91,6 @@ module.exports = {
               // Methods
               'public-abstract-method',
               'protected-abstract-method',
-              'private-abstract-method',
               'public-instance-method',
               'protected-instance-method',
               'private-instance-method',

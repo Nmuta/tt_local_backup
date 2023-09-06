@@ -3,7 +3,7 @@ import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { KustoQueryGroup, KustoQuerySelectionComponent } from './kusto-query-selection.component';
 import faker from '@faker-js/faker';
@@ -16,7 +16,7 @@ describe('KustoQuerySelectionComponent', () => {
   let fixture: ComponentFixture<KustoQuerySelectionComponent>;
   let component: KustoQuerySelectionComponent;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
   let mockKustoService: KustoService;
 
   beforeEach(waitForAsync(() => {
@@ -30,7 +30,7 @@ describe('KustoQuerySelectionComponent', () => {
       ],
       declarations: [KustoQuerySelectionComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: FormBuilder, useValue: formBuilder }, createMockKustoService()],
+      providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }, createMockKustoService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KustoQuerySelectionComponent);

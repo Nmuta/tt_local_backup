@@ -9,6 +9,7 @@ describe('BlobStorageService', () => {
   let injector: TestBed;
   let service: BlobStorageService;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let apiServiceMock: ApiService;
   const nextReturnValue: unknown = {};
 
@@ -21,7 +22,6 @@ describe('BlobStorageService', () => {
 
     injector = getTestBed();
     service = injector.inject(BlobStorageService);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     apiServiceMock = injector.inject(ApiService);
   });
 

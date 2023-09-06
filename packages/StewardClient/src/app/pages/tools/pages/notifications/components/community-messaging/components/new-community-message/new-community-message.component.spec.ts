@@ -10,13 +10,13 @@ import { createMockWindowService } from '@services/window';
 import { createMockZendeskService } from '@services/zendesk';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { NewCommunityMessageComponent } from './new-community-message.component';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 
 describe('NewCommunityMessageComponent', () => {
   let fixture: ComponentFixture<NewCommunityMessageComponent>;
   let component: NewCommunityMessageComponent;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -32,7 +32,7 @@ describe('NewCommunityMessageComponent', () => {
         ...createMockMsalServices(),
         createMockZendeskService(),
         createMockLoggerService(),
-        { provide: FormBuilder, useValue: formBuilder },
+        { provide: UntypedFormBuilder, useValue: formBuilder },
       ],
     }).compileComponents();
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ReportWeightType, UserReportWeight } from '@models/report-weight';
@@ -44,7 +44,7 @@ export class ReportWeightComponent extends BaseComponent implements OnInit, OnCh
   public currentReportWeight: UserReportWeight;
   public reportWeightTypes = keys(ReportWeightType).map(x => ReportWeightType[x]);
   public formControls = {
-    reportWeightType: new FormControl(ReportWeightType.Default, Validators.required),
+    reportWeightType: new UntypedFormControl(ReportWeightType.Default, Validators.required),
   };
 
   public getMonitor = new ActionMonitor('Get player report weight');
