@@ -15,7 +15,7 @@
 
 <mat-card>
   <mat-card-title>Specific Tours</mat-card-title>
-  <mat-card-subtitle>A list of tours</mat-card-subtitle>
+  <mat-card-subtitle>A list of all tours</mat-card-subtitle>
 
   <mat-card-content>
     <p>
@@ -31,8 +31,8 @@
       <mat-slide-toggle
         [(ngModel)]="enableHomeTour"
         (ngModelChange)="syncHomeTour()"
-        matTooltip="Toggles Home page tour on and off."
-        matTooltipPosition="before"
+        matTooltip="Begin tour automatically"
+        matTooltipPosition="after"
         >Home Tour</mat-slide-toggle
       >
     </div>

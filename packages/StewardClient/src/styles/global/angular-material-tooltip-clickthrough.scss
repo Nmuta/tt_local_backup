@@ -1,0 +1,4 @@
+/** The tooltip spacer element covers up elements and make it so its not possible to click on them, even tho you can see them clearly */
+.mat-tooltip-panel {
+  pointer-events: none;
+}

@@ -17,6 +17,10 @@
   }
 }
 
+mat-slide-toggle {
+  display: block;
+}
+
 mat-slide-toggle + mat-slide-toggle {
   margin-top: 1em;
 }
