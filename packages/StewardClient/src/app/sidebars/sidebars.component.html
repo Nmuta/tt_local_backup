@@ -49,6 +49,27 @@
           Changelog
         </a>
 
+        <div mat-subheader><mat-icon inline>help</mat-icon> Get Help</div>
+
+        <a mat-list-item
+          [routerLink]="['settings/contactus']"
+          queryParamsHandling="preserve"
+          routerLinkActive="list-item-active"
+          matTooltip="Forms for contacting Support"
+          matTooltipPosition="left">
+          <mat-icon>contact_support</mat-icon>
+          Contact Us
+        </a>
+
+        <a mat-list-item
+          href="https://confluence.turn10studios.com/x/r4GiE"
+          target="_blank"
+          matTooltip="Open Steward's Confluence Documentation"
+          matTooltipPosition="before">
+          <mat-icon>info</mat-icon>
+          Documentation
+        </a>
+
         <div mat-subheader><mat-icon inline>settings</mat-icon> Settings</div>
 
         <a mat-list-item
@@ -91,6 +112,7 @@
           <mat-icon>settings</mat-icon>
           Old Settings
         </a>
+
       </mat-nav-list>
 
       <span class="spacer"></span>
