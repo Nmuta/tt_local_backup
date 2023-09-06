@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 var racersCupChampionshipScheduleV3 = this.pegasusService.GetRacersCupChampionshipScheduleV4Async(environment, slot, snapshot);
                 var racersCupPlaylistDataV3 = this.pegasusService.GetRacersCupPlaylistDataV3Async(environment, slot, snapshot);
 
-                await Task.WhenAll(eventGeneration, racersCupChampionshipScheduleV3, racersCupPlaylistDataV3).ConfigureAwait(true);
+                await Task.WhenAll(eventGeneration, racersCupChampionshipScheduleV3, racersCupPlaylistDataV3);
 
                 var racersCupChampionshipSchedule = this.BuildChampionship(
                     eventGeneration.GetAwaiter().GetResult().scheduleData,
@@ -117,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] int daysForward)
         {
             daysForward.ShouldBeGreaterThanValue(-1);
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            await this.EnsurePlayerExist(this.Services, xuid);
             var cutoffTime = DateTimeOffset.UtcNow.AddSeconds(1);
 
             if (!startTime.HasValue)
@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     daysForward);
                 var racersCupChampionshipScheduleV3 = this.pegasusService.GetRacersCupChampionshipScheduleV4Async();
                 var racersCupPlaylistDataV3 = this.pegasusService.GetRacersCupPlaylistDataV3Async();
-                await Task.WhenAll(eventGeneration, racersCupChampionshipScheduleV3, racersCupPlaylistDataV3).ConfigureAwait(true);
+                await Task.WhenAll(eventGeneration, racersCupChampionshipScheduleV3, racersCupPlaylistDataV3);
 
                 var racersCupChampionshipSchedule = this.BuildChampionship(
                     eventGeneration.GetAwaiter().GetResult().scheduleData,
@@ -266,7 +266,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetRacersCupSeries()
         {
-            var racersCupSeries = await this.pegasusService.GetRacersCupSeriesAsync().ConfigureAwait(true);
+            var racersCupSeries = await this.pegasusService.GetRacersCupSeriesAsync();
 
             return this.Ok(racersCupSeries);
         }

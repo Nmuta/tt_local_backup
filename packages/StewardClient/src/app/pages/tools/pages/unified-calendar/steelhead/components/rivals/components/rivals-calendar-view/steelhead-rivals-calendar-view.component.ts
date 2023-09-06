@@ -65,15 +65,6 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
       .subscribe(rivalsEvents => {
         this.events = this.makeRivalsEventsCalendarEvent(rivalsEvents);
       });
-
-    //this.getActionMonitor = this.getActionMonitor.repeat();
-
-    // this.steelheadRivalsService
-    //   .getRivalsEvents$()
-    //   .pipe(this.getActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-    //   .subscribe(rivalsEvents => {
-    //     this.events = this.makeRivalsEventsCalendarEvent(rivalsEvents);
-    //   });
   }
 
   /** Refresh calendar on user interaction. */

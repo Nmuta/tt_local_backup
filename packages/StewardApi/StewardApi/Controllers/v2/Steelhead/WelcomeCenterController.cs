@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
         public async Task<IActionResult> GetWelcomeCenterConfiguration([FromQuery] string environment, [FromQuery] string slot, [FromQuery] string snapshot)
         {
-            var response = await this.GetWelcomeCenterConfigurationAsync(environment, slot, snapshot).ConfigureAwait(true);
+            var response = await this.GetWelcomeCenterConfigurationAsync(environment, slot, snapshot);
 
             return this.Ok(response);
         }
@@ -60,12 +60,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
         public async Task<IActionResult> GetWelcomeCenterConfiguration(ulong xuid)
         {
-            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var response = await this.GetWelcomeCenterConfigurationAsync(
                 gameDetails.forzaUser.CMSEnvironmentOverride,
                 gameDetails.forzaUser.CMSSlotIdOverride,
-                gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(true);
+                gameDetails.forzaUser.CMSSnapshotId);
 
             return this.Ok(response);
         }
@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var welcomeCenterLookup = this.pegasusService.GetWelcomeCenterDataAsync();
             var welcomeCenterTilesLookup = this.pegasusService.GetWelcomeCenterTileDataAsync();
 
-            await Task.WhenAll(welcomeCenterLookup, welcomeCenterTilesLookup).ConfigureAwait(true);
+            await Task.WhenAll(welcomeCenterLookup, welcomeCenterTilesLookup);
 
             var welcomeCenter = welcomeCenterLookup.GetAwaiter().GetResult();
             var welcomeCenterTiles = welcomeCenterTilesLookup.GetAwaiter().GetResult();

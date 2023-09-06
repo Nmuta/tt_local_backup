@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string slot,
             [FromQuery] string snapshot)
         {
-            var carFeaturedShowcases = await this.GetCarFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(false);
+            var carFeaturedShowcases = await this.GetCarFeaturedShowcasesAsync(environment, slot, snapshot).;
 
             return this.Ok(carFeaturedShowcases);
         }
@@ -63,12 +63,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarFeaturedShowcases(ulong xuid)
         {
-            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var carFeaturedShowcases = await this.GetCarFeaturedShowcasesAsync(
                 gameDetails.forzaUser.CMSEnvironmentOverride,
                 gameDetails.forzaUser.CMSSlotIdOverride,
-                gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(false);
+                gameDetails.forzaUser.CMSSnapshotId);
 
             return this.Ok(carFeaturedShowcases);
         }
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string slot,
             [FromQuery] string snapshot)
         {
-            var divisionFeaturedShowcases = await this.GetDivisionFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(false);
+            var divisionFeaturedShowcases = await this.GetDivisionFeaturedShowcasesAsync(environment, slot, snapshot);
 
             return this.Ok(divisionFeaturedShowcases);
         }
@@ -99,12 +99,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetDivisionFeaturedShowcases(ulong xuid)
         {
-            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var divisionFeaturedShowcases = await this.GetDivisionFeaturedShowcasesAsync(
                 gameDetails.forzaUser.CMSEnvironmentOverride,
                 gameDetails.forzaUser.CMSSlotIdOverride,
-                gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(false);
+                gameDetails.forzaUser.CMSSnapshotId);
 
             return this.Ok(divisionFeaturedShowcases);
         }
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string slot,
             [FromQuery] string snapshot)
         {
-            var manufacturerFeaturedShowcases = await this.GetManufacturerFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(false);
+            var manufacturerFeaturedShowcases = await this.GetManufacturerFeaturedShowcasesAsync(environment, slot, snapshot);
 
             return this.Ok(manufacturerFeaturedShowcases);
         }
@@ -135,12 +135,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetManufacturerFeaturedShowcases(ulong xuid)
         {
-            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var manufacturerFeaturedShowcases = await this.GetManufacturerFeaturedShowcasesAsync(
                 gameDetails.forzaUser.CMSEnvironmentOverride,
                 gameDetails.forzaUser.CMSSlotIdOverride,
-                gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(false);
+                gameDetails.forzaUser.CMSSnapshotId);
 
             return this.Ok(manufacturerFeaturedShowcases);
         }
@@ -157,7 +157,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string slot,
             [FromQuery] string snapshot)
         {
-            var carSales = await this.GetCarSalesAsync(environment, slot, snapshot).ConfigureAwait(false);
+            var carSales = await this.GetCarSalesAsync(environment, slot, snapshot);
 
             return this.Ok(carSales);
         }
@@ -171,12 +171,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarSales(ulong xuid)
         {
-            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var carSales = await this.GetCarSalesAsync(
                 gameDetails.forzaUser.CMSEnvironmentOverride,
                 gameDetails.forzaUser.CMSSlotIdOverride,
-                gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(false);
+                gameDetails.forzaUser.CMSSnapshotId);
 
             return this.Ok(carSales);
         }
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(true);
+                carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync(environment, slot, snapshot);
             }
             catch (Exception ex)
             {
@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                divisionFeaturedShowcases = await this.steelheadPegasusService.GetDivisionFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(true);
+                divisionFeaturedShowcases = await this.steelheadPegasusService.GetDivisionFeaturedShowcasesAsync(environment, slot, snapshot);
             }
             catch (Exception ex)
             {
@@ -219,7 +219,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                manufacturerFeaturedShowcases = await this.steelheadPegasusService.GetManufacturerFeaturedShowcasesAsync(environment, slot, snapshot).ConfigureAwait(true);
+                manufacturerFeaturedShowcases = await this.steelheadPegasusService.GetManufacturerFeaturedShowcasesAsync(environment, slot, snapshot);
             }
             catch (Exception ex)
             {
@@ -235,7 +235,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                carSales = await this.steelheadPegasusService.GetCarSalesAsync(environment, slot, snapshot).ConfigureAwait(true);
+                carSales = await this.steelheadPegasusService.GetCarSalesAsync(environment, slot, snapshot);
             }
             catch (Exception ex)
             {

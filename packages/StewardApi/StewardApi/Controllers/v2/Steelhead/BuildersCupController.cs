@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string slot,
             [FromQuery] string snapshot)
         {
-            var result = await this.GetBuildersCupScheduleAsync(environment, slot, snapshot).ConfigureAwait(true);
+            var result = await this.GetBuildersCupScheduleAsync(environment, slot, snapshot);
 
             return this.Ok(result);
         }
@@ -68,12 +68,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(IList<BuildersCupFeaturedTour>))]
         public async Task<IActionResult> GetCmsBuildersCupSchedule(ulong xuid)
         {
-            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var result = await this.GetBuildersCupScheduleAsync(
                 gameDetails.forzaUser.CMSEnvironmentOverride,
                 gameDetails.forzaUser.CMSSlotIdOverride,
-                gameDetails.forzaUser.CMSSnapshotId).ConfigureAwait(true);
+                gameDetails.forzaUser.CMSSnapshotId);
 
             return this.Ok(result);
         }
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetBuildersCupChampionships()
         {
-            var buildersCupChampionships = await this.pegasusService.GetBuildersCupChampionshipsAsync().ConfigureAwait(true);
+            var buildersCupChampionships = await this.pegasusService.GetBuildersCupChampionshipsAsync();
 
             return this.Ok(buildersCupChampionships);
         }
@@ -101,7 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetBuildersCupLadders()
         {
-            var buildersCupLadders = await this.pegasusService.GetBuildersCupLaddersAsync().ConfigureAwait(true);
+            var buildersCupLadders = await this.pegasusService.GetBuildersCupLaddersAsync();
 
             return this.Ok(buildersCupLadders);
         }
@@ -115,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetBuildersCupSeries()
         {
-            var buildersCupSeries = await this.pegasusService.GetBuildersCupSeriesAsync().ConfigureAwait(true);
+            var buildersCupSeries = await this.pegasusService.GetBuildersCupSeriesAsync();
 
             return this.Ok(buildersCupSeries);
         }
@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             BuildersCupCupDataV3 featuredCupData;
             try
             {
-                featuredCupData = await this.pegasusService.GetBuildersCupFeaturedCupLadderAsync(environment, slot, snapshot).ConfigureAwait(true);
+                featuredCupData = await this.pegasusService.GetBuildersCupFeaturedCupLadderAsync(environment, slot, snapshot);
             }
             catch (Exception ex)
             {
