@@ -43,3 +43,18 @@ div[mat-subheader] {
     color: app-color-text-contrast($app-background, 0.4) !important;
   }
 }
+
+.sidebar-navigation {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.app-version {
+  padding: .5em;
+  color: app-color-lighter-contrast($app-background, 70%);
+}

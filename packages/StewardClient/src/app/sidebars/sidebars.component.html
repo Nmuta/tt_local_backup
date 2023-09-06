@@ -6,91 +6,96 @@
   
   <!-- Here is where the navigation is configured. -->
   <mat-drawer mode="side" position="end" opened>
-    <mat-nav-list>
+    <div class="sidebar-navigation">
+      <mat-nav-list>
+        <a mat-list-item
+          [routerLink]="['profile']"
+          queryParamsHandling="preserve"
+          routerLinkActive="list-item-active"
+          matTooltip="Information and Settings about your account"
+          matTooltipPosition="left">
+          <mat-icon>account_circle</mat-icon>
+          Profile
+        </a>
 
-      <a mat-list-item
-        [routerLink]="['profile']"
-        queryParamsHandling="preserve"
-        routerLinkActive="list-item-active"
-        matTooltip="Information and Settings about your account"
-        matTooltipPosition="left">
-        <mat-icon>account_circle</mat-icon>
-        Profile
-      </a>
+        <a mat-list-item
+          [routerLink]="['notifications']"
+          queryParamsHandling="preserve"
+          routerLinkActive="list-item-active"
+          matTooltip="Notifications & Background Jobs"
+          matTooltipPosition="left">
+          <mat-icon
+            [matBadge]="notificationCount"
+            [matBadgeColor]="notificationColor"
+            matBadgeSize="small"
+            matBadgePosition="before"
+            >notifications</mat-icon
+          >
+          Notifications
+        </a>
 
-      <a mat-list-item
-        [routerLink]="['notifications']"
-        queryParamsHandling="preserve"
-        routerLinkActive="list-item-active"
-        matTooltip="Notifications & Background Jobs"
-        matTooltipPosition="left">
-        <mat-icon
-          [matBadge]="notificationCount"
-          [matBadgeColor]="notificationColor"
-          matBadgeSize="small"
-          >notifications</mat-icon
-        >
-        Notifications
-      </a>
+        <a mat-list-item
+          [routerLink]="['changelog']"
+          queryParamsHandling="preserve"
+          routerLinkActive="list-item-active"
+          matTooltip="A list of recent updates"
+          matTooltipPosition="left">
+          <mat-icon
+            [matBadge]="changelogNotificationCount > 0 ? changelogNotificationCount : null"
+            matBadgeColor="accent"
+            matBadgeSize="small"
+            matBadgePosition="before"
+            >sticky_note_2</mat-icon>
+          Changelog
+        </a>
 
-      <a mat-list-item
-        [routerLink]="['changelog']"
-        queryParamsHandling="preserve"
-        routerLinkActive="list-item-active"
-        matTooltip="A list of recent updates"
-        matTooltipPosition="left">
-        <mat-icon
-          [matBadge]="changelogNotificationCount > 0 ? changelogNotificationCount : null"
-          matBadgeColor="accent"
-          matBadgeSize="small"
-          matBadgePosition="before"
-          >sticky_note_2</mat-icon>
-        Changelog
-      </a>
+        <div mat-subheader><mat-icon inline>settings</mat-icon> Settings</div>
 
-      <div mat-subheader><mat-icon inline>settings</mat-icon> Settings</div>
+        <a mat-list-item
+          [routerLink]="['settings/endpoints']"
+          queryParamsHandling="preserve"
+          routerLinkActive="list-item-active"
+          matTooltip="Endpoint selection"
+          matTooltipPosition="left">
+          <mat-icon>gps_fixed</mat-icon>
+          Endpoints
+        </a>
 
-      <a mat-list-item
-        [routerLink]="['settings/endpoints']"
-        queryParamsHandling="preserve"
-        routerLinkActive="list-item-active"
-        matTooltip="Endpoint selection"
-        matTooltipPosition="left">
-        <mat-icon>gps_fixed</mat-icon>
-        Endpoints
-      </a>
+        <a mat-list-item
+          [routerLink]="['settings/experience']"
+          queryParamsHandling="preserve"
+          routerLinkActive="list-item-active"
+          matTooltip="Theme and Interface preferences"
+          matTooltipPosition="left">
+          <mat-icon>visibility</mat-icon>
+          Experience
+        </a>
 
-      <a mat-list-item
-        [routerLink]="['settings/experience']"
-        queryParamsHandling="preserve"
-        routerLinkActive="list-item-active"
-        matTooltip="Theme and Interface preferences"
-        matTooltipPosition="left">
-        <mat-icon>visibility</mat-icon>
-        Experience
-      </a>
+        <a mat-list-item
+          [routerLink]="['settings/tours']"
+          queryParamsHandling="preserve"
+          routerLinkActive="list-item-active"
+          matTooltip="Enable/disable Tours"
+          matTooltipPosition="left">
+          <mat-icon>tour</mat-icon>
+          Tours
+        </a>
 
-      <a mat-list-item
-        [routerLink]="['settings/tours']"
-        queryParamsHandling="preserve"
-        routerLinkActive="list-item-active"
-        matTooltip="Enable/disable Tours"
-        matTooltipPosition="left">
-        <mat-icon>tour</mat-icon>
-        Tours
-      </a>
+        <a mat-list-item
+          [routerLink]="['settings/legacy']"
+          queryParamsHandling="preserve"
+          class="deprecated"
+          routerLinkActive="list-item-active"
+          matTooltip="The original settings panel"
+          matTooltipPosition="left">
+          <mat-icon>settings</mat-icon>
+          Old Settings
+        </a>
+      </mat-nav-list>
 
-      <a mat-list-item
-        [routerLink]="['settings/legacy']"
-        queryParamsHandling="preserve"
-        class="deprecated"
-        routerLinkActive="list-item-active"
-        matTooltip="The original settings panel"
-        matTooltipPosition="left">
-        <mat-icon>settings</mat-icon>
-        Old Settings
-      </a>
+      <span class="spacer"></span>
+      <span class="app-version">{{ adoVersion }}</span>
+    </div>
 
-    </mat-nav-list>
   </mat-drawer>
 </mat-drawer-container>

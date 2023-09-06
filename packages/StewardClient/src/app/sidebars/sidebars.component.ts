@@ -24,6 +24,10 @@ export class SidebarsComponent extends BaseComponent implements AfterViewInit {
   public notificationCount = null;
   public notificationColor: ThemePalette = undefined;
 
+  /** Gets the ado version from the environment. */
+  public get adoVersion(): string {
+    return environment.adoVersion;
+  }
   constructor(
     private readonly userSettingsService: UserSettingsService,
     private readonly changelogService: ChangelogService,
