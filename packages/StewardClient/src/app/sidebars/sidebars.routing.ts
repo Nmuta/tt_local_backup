@@ -57,6 +57,14 @@ export const unifiedSidebars: Routes = [
     path: 'profile',
     component: ProfileComponent,
   },
+  {
+    path: 'changelog',
+    component: ChangelogComponent,
+  },
+  {
+    path: 'notifications',
+    component: NotificationsComponent,
+  },
 ]
 
 /**

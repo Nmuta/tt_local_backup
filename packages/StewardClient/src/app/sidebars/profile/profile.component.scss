@@ -1,9 +1,17 @@
-@import '/src/styles/mixins';
+@import '/src/styles/mixins/';
+
+/* Tasteful margin */
+:host {
+  display: block;
+  padding: 1rem 2rem;
+  min-width: 30vw;
+}
 
 :host ::ng-deep mat-card {
   margin-bottom: $gap-medium;
 }
 
+/* Specific styles */
 .profile-actions {
   margin-top: $gap-large;
 }
@@ -19,7 +27,11 @@ pre {
   word-wrap: break-word;
 }
 
-:host {
-  display: block;
-  padding: 1rem 2rem;
+.override-section {
+  display: flex;
+  flex-flow: row wrap;
+  margin: calc(-1 * $gap-small / 2);
+  & > * {
+    margin: calc($gap-small / 2);
+  }
 }

@@ -18,6 +18,36 @@
         Profile
       </a>
 
+      <a mat-list-item
+        [routerLink]="['notifications']"
+        queryParamsHandling="preserve"
+        routerLinkActive="list-item-active"
+        matTooltip="Notifications & Background Jobs"
+        matTooltipPosition="left">
+        <mat-icon
+          [matBadge]="notificationCount"
+          [matBadgeColor]="notificationColor"
+          matBadgeSize="small"
+          >notifications</mat-icon
+        >
+        Notifications
+      </a>
+
+      <a mat-list-item
+        [routerLink]="['changelog']"
+        queryParamsHandling="preserve"
+        routerLinkActive="list-item-active"
+        matTooltip="Changelog"
+        matTooltipPosition="left">
+        <mat-icon
+          [matBadge]="changelogNotificationCount > 0 ? changelogNotificationCount : null"
+          matBadgeColor="accent"
+          matBadgeSize="small"
+          matBadgePosition="before"
+          >sticky_note_2</mat-icon>
+        Changelog
+      </a>
+
       <div mat-subheader><mat-icon inline>settings</mat-icon> Settings</div>
 
       <a mat-list-item

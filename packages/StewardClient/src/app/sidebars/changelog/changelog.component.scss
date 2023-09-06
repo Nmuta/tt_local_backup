@@ -1,5 +1,17 @@
-@import '/src/styles/mixins';
+@import '/src/styles/mixins/';
 
+/* Tasteful margin */
+:host {
+  display: block;
+  padding: 1rem 2rem;
+  min-width: 30vw;
+}
+
+:host ::ng-deep mat-card {
+  margin-bottom: $gap-medium;
+}
+
+/* Specific styles */
 .title-bar {
   display: flex;
   flex-flow: row nowrap;
@@ -33,9 +45,4 @@ old-changelog {
   flex-flow: row wrap;
   justify-content: space-between;
   color: app-color-lighter-contrast($app-background, 70%);
-}
-
-:host {
-  display: block;
-  padding: 1rem 2rem;
 }

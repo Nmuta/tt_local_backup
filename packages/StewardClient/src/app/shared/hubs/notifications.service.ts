@@ -21,6 +21,7 @@ export class NotificationsService {
   >();
   public notifications: BackgroundJob<unknown>[] = [];
 
+  public isStarting = false;
   public isReady = false;
   private notificationsHub: HubConnection;
 
@@ -35,9 +36,11 @@ export class NotificationsService {
   /** Initialization method. */
   public async initialize(): Promise<void> {
     // do not initialize twice
-    if (this.isReady) {
+    if (this.isReady || this.isStarting) {
       return;
     }
+    
+    this.isStarting = true;
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
