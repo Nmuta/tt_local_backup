@@ -15,11 +15,11 @@ const expectedObligationValues = {
   query : 'get_telemetry_fact_player_usage_daily',
   startTime : '',
   endTime : '',
-  maximumExecutionInterval : 'Maximum Execution Time',
+  maximumExecutionInterval : '1440',
   executionInterval : '1440',
   executionDelay : '4754',
   parallelism : '4'
-}
+};
 
 context('Steward / Tools / Obligation / Search', withTags(Tag.Broken, Tag.UnitTestStyle), () => {
   before(() => {
@@ -47,10 +47,12 @@ context('Steward / Tools / Obligation / Search', withTags(Tag.Broken, Tag.UnitTe
       .contains('mat-expansion-panel', expectedObligationValues.name)
       .first();
     $firstActivity.should('exist');
-    $firstActivity.find('.mat-expansion-indicator').click();
-    waitForProgressSpinners();
+
+    cy.contains('mat-expansion-panel', expectedObligationValues.name)
+    .first().contains('mat-form-field', 'Name');
 
     $firstActivity.within(() => {
+      cy.get('.mat-expansion-indicator').click();
       inputHasValue('Name', expectedObligationValues.name);
       inputHasValue('Table', expectedObligationValues.table);
       inputHasValue('Database', expectedObligationValues.database);
