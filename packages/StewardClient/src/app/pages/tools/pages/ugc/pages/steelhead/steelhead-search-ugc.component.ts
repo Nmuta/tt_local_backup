@@ -5,7 +5,7 @@ import { PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcCurationType, UgcSearchFilters, UgcType } from '@models/ugc-filters';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   UgcSearchFiltersFormValue,
   UgcSearchFiltersServiceContract,
@@ -41,18 +41,25 @@ export class SteelheadSearchUgcComponent extends BaseComponent implements OnInit
   public serviceContract: UgcSearchFiltersServiceContract = {
     gameTitle: this.gameTitle,
     makeModelAutocompleteServiceContract: { getSimpleCars$: () => this.getSimpleCars$() },
-    supportedUgcTypes: [UgcType.Livery, UgcType.Photo, UgcType.TuneBlob],
+    supportedUgcTypes: [
+      UgcType.Livery,
+      UgcType.Photo,
+      UgcType.TuneBlob,
+      UgcType.LayerGroup,
+      UgcType.GameOptions,
+      UgcType.Replay,
+    ],
     specialIdentitiesAllowed: [],
     foundFn: this.foundFn,
     rejectionFn: this.rejectionFn,
   };
 
   public formControls = {
-    ugcFilters: new FormControl('', Validators.required),
-    ugcCuratedType: new FormControl(''),
+    ugcFilters: new UntypedFormControl('', Validators.required),
+    ugcCuratedType: new UntypedFormControl(''),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   constructor(
     private readonly ugcLookupService: SteelheadUgcLookupService,

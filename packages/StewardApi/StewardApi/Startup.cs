@@ -35,6 +35,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Forte;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -54,6 +55,7 @@ using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.BigCat;
 using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Providers.Forte.PlayFab;
 using Turn10.LiveOps.StewardApi.Providers.MsGraph;
 using Turn10.LiveOps.StewardApi.Providers.MsTeams;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
@@ -333,6 +335,15 @@ namespace Turn10.LiveOps.StewardApi
             });
             builder.Register(c => new WoodstockPlayFabService(woodstockPlayFabConfig, mapper)).As<IWoodstockPlayFabService>().SingleInstance();
 
+            // Forte PlayFab Service
+            var fortePlayFabConfig = new FortePlayFabConfig();
+            fortePlayFabConfig.Environments.Add(FortePlayFabEnvironment.Dev, new PlayFabConfig()
+            {
+                TitleId = keyVaultConfig.FortePlayFabDevTitleId,
+                Key = keyVaultConfig.FortePlayFabDevKey,
+            });
+            builder.Register(c => new FortePlayFabService(fortePlayFabConfig, mapper)).As<IFortePlayFabService>().SingleInstance();
+
             builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
             builder.RegisterType<StsClientWrapper>().As<IStsClient>().SingleInstance();
             builder.RegisterType<LoggingService>().As<ILoggingService>().SingleInstance();
@@ -427,6 +438,18 @@ namespace Turn10.LiveOps.StewardApi
 
         private void RegisterForzaClients(ContainerBuilder builder)
         {
+            builder.RegisterType<Client>().Named<Client>("steelheadClientProdLive")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<SteelheadSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(SteelheadPegasusEnvironment.Prod, SteelheadPegasusSlot.Live));
+
+            builder.RegisterType<Client>().Named<Client>("steelheadClientDevLive")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<SteelheadSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(SteelheadPegasusEnvironment.Dev, SteelheadPegasusSlot.Live));
+
             builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())

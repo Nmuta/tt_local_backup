@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
@@ -43,15 +43,15 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
   public loadError: unknown;
 
   /** Master Inventory autocomplete varsiables */
-  public querySelectionForm: FormGroup = this.formBuilder.group({
-    queryInput: new FormControl('', Validators.required),
+  public querySelectionForm: UntypedFormGroup = this.formBuilder.group({
+    queryInput: new UntypedFormControl('', Validators.required),
   });
 
   public stateGroupOptions$: Observable<KustoQueryGroup[]>;
 
   constructor(
     private readonly kustoService: KustoService,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
   ) {
     super();
   }

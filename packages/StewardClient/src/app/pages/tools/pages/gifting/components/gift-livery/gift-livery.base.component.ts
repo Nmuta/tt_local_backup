@@ -19,7 +19,7 @@ import { LspGroup } from '@models/lsp-group';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PlayerUgcItem } from '@models/player-ugc-item';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { GiftReason } from '../gift-basket/gift-basket.base.component';
 import { HCI } from '@environments/environment';
 import { ActivatedRoute } from '@angular/router';
@@ -49,10 +49,10 @@ export abstract class GiftLiveryBaseComponent<IdentityT extends IdentityResultUn
 
   public matErrors = { invalidId: 'Invalid Livery ID' };
   public formControls = {
-    livery: new FormControl(null, [Validators.required]),
-    giftReason: new FormControl('', [Validators.required]),
+    livery: new UntypedFormControl(null, [Validators.required]),
+    giftReason: new UntypedFormControl('', [Validators.required]),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('GET livery');
   public postMonitor = new ActionMonitor('POST gift livery');

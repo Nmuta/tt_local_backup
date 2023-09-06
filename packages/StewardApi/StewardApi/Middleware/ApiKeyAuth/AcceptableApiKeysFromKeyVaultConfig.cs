@@ -32,6 +32,8 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
         /// </summary>
         public AllSecretVersions StewardApiKeyTesting { get; set; }
 
+        public AllSecretVersions StewardApiKeyAutomation { get; private set; }
+
         /// <summary>
         ///     A set of all composite keys structured like "specific-guid|shared-guid" which are valid.
         /// </summary>
@@ -79,6 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
             {
                 async () => keyVault.StewardApiKeyPlayFab = await GetSecretsInternalAsync(nameof(keyVault.StewardApiKeyPlayFab)).ConfigureAwait(false),
                 async () => keyVault.StewardApiKeyTesting = await GetSecretsInternalAsync(nameof(keyVault.StewardApiKeyTesting)).ConfigureAwait(false),
+                async () => keyVault.StewardApiKeyAutomation = await GetSecretsInternalAsync(nameof(keyVault.StewardApiKeyAutomation)).ConfigureAwait(false),
             };
 
             var tasks = operations.Select(o => o());
@@ -86,7 +89,8 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
 
             keyVault.All = AllSecretVersions.Collect(
                 keyVault.StewardApiKeyPlayFab,
-                keyVault.StewardApiKeyTesting);
+                keyVault.StewardApiKeyTesting,
+                keyVault.StewardApiKeyAutomation);
 
             if (initializationFailures.Any())
             {
@@ -111,6 +115,8 @@ namespace Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth
                     return this.StewardApiKeyPlayFab;
                 case StewardApiKey.Testing:
                     return this.StewardApiKeyTesting;
+                case StewardApiKey.StewardAutomation:
+                    return this.StewardApiKeyAutomation;
                 default:
                     throw new ArgumentException($"Unacceptable {nameof(apiKey)}");
             }

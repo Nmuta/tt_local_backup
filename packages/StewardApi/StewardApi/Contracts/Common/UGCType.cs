@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+#pragma warning disable CA1027 // Mark enums with FlagsAttribute
+
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents UGC type options.
     /// </summary>
-    /// <remarks>Copies enum values from Forza.LiveOps.FH4.Generated.ForzaUGCContentType.</remarks>
+    /// <remarks>Copies enum values from <see cref="Turn10.Services.LiveOps.FM8.Generated.ForzaUGCContentType" /></remarks>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum UgcType
     {
@@ -31,6 +33,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         Tune = 3,
 
         /// <summary>
+        ///     Replay UGC item type.
+        /// </summary>
+        Replay = 4,
+
+        /// <summary>
         ///     Photo UGC item type.
         /// </summary>
         Photo = 5,
@@ -49,5 +56,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Event Community Challenge UGC item type.
         /// </summary>
         CommunityChallenge = 8,
+
+        /// <summary>
+        ///     Game Options UGC item type.
+        /// </summary>
+        GameOptions = 10,
     }
 }

@@ -317,9 +317,73 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
                 .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.Ignore())
                 .ReverseMap();
+            this.CreateMap<ForzaLayerGroupData, SteelheadUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.MapFrom(source => source.Thumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Thumbnail) : null))
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.Photo))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Metadata.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
+                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
+                .ForMember(dest => dest.PopularityBucket, opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.Metadata.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.Metadata.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
+                .ForMember(dest => dest.OwnerGamertag, opt => opt.Ignore())
+                .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.Ignore())
+                .ReverseMap();
             this.CreateMap<ForzaTuneBlob, SteelheadUgcTuneBlobItem>()
                 .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
                 .ForMember(dest => dest.TuneBlobDownloadDataBase64, opt => opt.MapFrom(source => source.TuneData))
+                .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.TuneBlob))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
+                .ForMember(dest => dest.ShareCode, opt => opt.MapFrom(source => source.Metadata.ShareCode))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.Metadata.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Metadata.MakeId))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Metadata.CreatedDate))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
+                .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
+                .ForMember(dest => dest.ForceFeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.FeaturedEndDateUtc, opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate.CovertToNullIfMin()))
+                .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
+                .ForMember(dest => dest.OwnerXuid, opt => opt.MapFrom(source => source.Metadata.Owner))
+                .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
+                .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
+                .ForMember(dest => dest.PopularityBucket, opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
+                .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.Metadata.ReportingState))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))
+                .ForMember(dest => dest.TimesDisliked, opt => opt.MapFrom(source => source.Metadata.TimesDisliked))
+                .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
+                .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
+                .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ForMember(dest => dest.IsHidden, opt => opt.MapFrom(source => source.Metadata.HiddenTime != default(DateTime)))
+                .ForMember(dest => dest.HiddenTimeUtc, opt => opt.MapFrom(source => source.Metadata.HiddenTime.CovertToNullIfMin()))
+                .ForMember(dest => dest.OwnerGamertag, opt => opt.Ignore())
+                .ForMember(dest => dest.CarDescription, opt => opt.Ignore())
+                .ForMember(dest => dest.ThumbnailOneImageBase64, opt => opt.Ignore())
+                .ForMember(dest => dest.ThumbnailTwoImageBase64, opt => opt.Ignore())
+                .ReverseMap();
+            this.CreateMap<ForzaUGCGameOptions, SteelheadUgcItem>()
+                .ForMember(dest => dest.GeoFlags, opt => opt.MapFrom(source => source.Metadata.GeoFlags.AsEnumList<SteelheadUgcGeoFlagOption>()))
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => UgcType.TuneBlob))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Metadata.GuidId))
@@ -489,6 +553,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.LastRulesChange, opt => opt.Ignore());
 
             this.CreateMap<SteelheadLiveOpsContent.RivalEvent, Contracts.Common.RivalsEvent>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RivalEventId))
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Track))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.EventCategory))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartEndDate.From))
@@ -694,6 +759,46 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<DownloadUGCProfileOutput, UgcProfileInfo>()
                 .ForMember(dest => dest.DecompressionData, opt => opt.MapFrom(source => source.decompressionResult));
+
+            this.CreateMap<ForzaBountyEntry, SteelheadBountySummary>()
+                .ForMember(dest => dest.MessageTitle, opt => opt.MapFrom(source => source.messageTitleEnglish))
+                .ForMember(dest => dest.MessageDescription, opt => opt.MapFrom(source => source.messageBodyEnglish))
+                .ForMember(dest => dest.RivalsEventId, opt => opt.MapFrom(source => source.rivalEventId))
+                .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage))
+                .ForMember(dest => dest.RivalsEventTitle, opt => opt.Ignore())
+                .ForMember(dest => dest.RivalsEventDescription, opt => opt.Ignore());
+
+            this.CreateMap<ForzaBountyEntry, SteelheadBounty>()
+                .ForMember(dest => dest.RivalsEvent, opt => opt.Ignore())
+                .ForMember(dest => dest.MessageTitle, opt => opt.MapFrom(source => source.messageTitleEnglish))
+                .ForMember(dest => dest.MessageDescription, opt => opt.MapFrom(source => source.messageBodyEnglish))
+                .ForMember(dest => dest.EndTime, opt => opt.MapFrom(source => source.eventEndTime))
+                .ForMember(dest => dest.UserGroupId, opt => opt.MapFrom(source => source.userGroupId))
+                .ForMember(dest => dest.PlayerRewardedCount, opt => opt.Ignore())
+                .ForMember(dest => dest.TrackId, opt => opt.MapFrom(source => source.trackId))
+                .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage))
+                .ForMember(dest => dest.Rewards, opt => opt.MapFrom(source => this.PrepareRewardsList(source.rewardGroup)))
+                .ForMember(dest => dest.Phase, opt => opt.MapFrom(source => source.phase));
+
+            this.CreateMap<SteelheadLiveOpsContent.BanConfiguration, Contracts.Common.BanConfiguration>();
+        }
+
+        private List<string> PrepareRewardsList(string rewardsInput)
+        {
+            var rewardsParsed = Newtonsoft.Json.JsonConvert.DeserializeObject<SteelheadContent.RewardGroup>(rewardsInput);
+            var simplifiedRewards = new List<string>();
+
+            if (rewardsParsed.CarRewards != null)
+            {
+                simplifiedRewards.AddRange(rewardsParsed.CarRewards.Select(x => $"{x.RewardName}, {x.Quantity}, {x.CarReward.ModelShort}"));
+            }
+
+            if (rewardsParsed.Credits != null)
+            {
+                simplifiedRewards.AddRange(rewardsParsed.Credits.Select(x => $"{x.RewardName}, {x.Quantity}, {x.RewardCreditType}"));
+            }
+
+            return simplifiedRewards;
         }
 
         private DeeplinkDestination PrepareBridgeDestination(WofBaseDestination destination)

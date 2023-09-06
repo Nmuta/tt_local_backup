@@ -7,7 +7,7 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatChipListChange } from '@angular/material/chips';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -120,12 +120,12 @@ export class LeaderboardStatsComponent extends BaseComponent implements OnChange
   public sortedTalentScores: LeaderboardScore[] = [];
   public matCardSubtitle = this.matCardSubtitleDefault;
   public talentFormControls = {
-    numberToShow: new FormControl(this.numberOfTopScoresToDisplay, [
+    numberToShow: new UntypedFormControl(this.numberOfTopScoresToDisplay, [
       Validators.required,
       Validators.min(0),
     ]),
   };
-  public talentForm: FormGroup = new FormGroup(this.talentFormControls);
+  public talentForm: UntypedFormGroup = new UntypedFormGroup(this.talentFormControls);
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router) {
     super();

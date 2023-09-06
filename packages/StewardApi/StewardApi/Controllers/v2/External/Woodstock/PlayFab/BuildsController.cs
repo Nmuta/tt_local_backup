@@ -23,7 +23,6 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
-#pragma warning disable CA1308 // Use .ToUpperInvariant
 namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
 {
     /// <summary>
@@ -107,9 +106,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Woodstock.PlayFab
 
             // Verify that the new build lock will not break configured max # of allowed locks
             var expectedBuildLockCount = activeBuildLocks.Count + 1;
-            if (expectedBuildLockCount > playFabSettings.MaxBuildLocks)
+            if (expectedBuildLockCount > playFabSettings.WoodstockMaxBuildLocks)
             {
-                throw new BadRequestStewardException($"Maximum number of build locks has already been met. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId}) (activeBuildLockCount: ${activeBuildLocks.Count}) (activeBuildLockCount: ${playFabSettings.MaxBuildLocks})");
+                throw new BadRequestStewardException($"Maximum number of build locks has already been met. (playFabEnvironment: {playFabEnvironment}) (buildId: {buildId}) (activeBuildLockCount: ${activeBuildLocks.Count}) (activeBuildLockCount: ${playFabSettings.WoodstockMaxBuildLocks})");
             }
 
             try

@@ -8,6 +8,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
@@ -45,30 +46,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(IEnumerable<RivalsEvent>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetRivalsEvents()
+        public async Task<IActionResult> GetRivalsEvents([FromQuery] string pegasusEnvironment = null)
         {
-            var getRivalsEvents = this.steelheadPegasusService.GetRivalsEventsAsync();
-            var getTracks = this.steelheadPegasusService.GetTracksAsync();
+            var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
+            var rivalsEvents = await this.steelheadPegasusService.GetRivalsEventsAsync(environment).ConfigureAwait(true);
 
-            try
-            {
-                await Task.WhenAll(getRivalsEvents, getTracks).ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"Failed to get rivals events.", ex);
-            }
-
-            var getRivalsEventsResults = getRivalsEvents.GetAwaiter().GetResult();
-            var getTracksResults = getTracks.GetAwaiter().GetResult();
-
-            foreach (var rivalsEvent in getRivalsEventsResults)
-            {
-                var trackData = getTracksResults.FirstOrDefault(track => track.id == rivalsEvent.TrackId);
-                rivalsEvent.TrackName = trackData != null ? $"{trackData.MediaName} - {trackData.DisplayName}" : string.Empty;
-            }
-
-            return this.Ok(getRivalsEventsResults);
+            return this.Ok(rivalsEvents);
         }
 
         /// <summary>

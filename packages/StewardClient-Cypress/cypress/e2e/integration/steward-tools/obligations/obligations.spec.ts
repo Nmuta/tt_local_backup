@@ -2,8 +2,9 @@ import { inputHasValue } from '@support/mat-form/input-has-value';
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Obligation', () => {
+context('Steward / Tools / Obligation', withTags(Tag.UnitTestStyle), () => {
   beforeEach(() => {
     login();
 

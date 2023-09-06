@@ -25,7 +25,6 @@ import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { environment, SecondaryAADScopes, AllAADScopes } from '../environments/environment';
 
@@ -76,6 +75,10 @@ import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
 import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state';
 import { NavModule } from '@shared/modules/nav/nav.module';
+import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
+import { TourState } from '@shared/state/tours/tours.state';
+import { RedirectionLandingComponent } from './pages/redirection-landing/redirection-landing.component';
+import { TitleMemoryRedirectLandingComponent } from './route-guards/title-memory-redirect-landing/title-memory-redirect-landing.component';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -132,7 +135,12 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent],
+  declarations: [
+    AppComponent,
+    ErrorComponent,
+    RedirectionLandingComponent,
+    TitleMemoryRedirectLandingComponent,
+  ],
   imports: [
     BrowserAnimationsModule,
     ThemeModule,
@@ -149,7 +157,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     LuxonModule,
     MatNativeDateModule,
     CenterContentsModule,
-    FlexLayoutModule,
     AvailableAppsModule,
     HubsModule,
     NgxsModule.forRoot(
@@ -172,16 +179,20 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         SteelheadGiftHistoryState,
         SunriseGiftHistoryState,
         ApolloGiftHistoryState,
+        // NGX tour state
+        TourState,
       ],
       { developmentMode: !environment.production },
     ),
     NgxsStoragePluginModule.forRoot({
-      key: [UserSettingsState, UserState, ChangelogState],
+      key: [UserSettingsState, UserState, ChangelogState, TourState],
     }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule,
+    TourMatMenuModule.forRoot(), // loaded to ensure tours run properly
   ],
   providers: [
+    TourService,
     ZafClientService,
     {
       provide: HTTP_INTERCEPTORS,

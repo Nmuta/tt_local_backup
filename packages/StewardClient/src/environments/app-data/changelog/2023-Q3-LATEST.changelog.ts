@@ -14,6 +14,85 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
         'Safety rating minimum and maximum score values now based on Pegasus configuration',
     },
     {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'b1f43ed5-5d78-4499-bba4-4711af3c04a4',
+      shortText: 'Add Replay UGC type',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
+      shortText: 'Update to Angular 14',
+      longText: ['Patch: Fix invalid routes.'],
+    },
+    {
+      tag: { title: [GameTitle.Forte], tool: NavbarTool.PlayFab },
+      uuid: 'a308d4fa-ef42-4fbf-b8b3-62e82bbcf16d',
+      shortText: 'Setup PlayFab build locks for Forte Dev environment',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UgcDetails },
+      uuid: '4503257d-09b6-42fc-a973-9cb389c2184b',
+      shortText: 'Add ability to select report reason for report UGC',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a5450e39-f141-4fe3-89de-23c9e558e212',
+      shortText: 'Small fixes to home tour',
+      longText: [
+        'Only show home tour when app is in a valid state.',
+        'Allow buttons to be clickable under highlight buffer.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BountyDetails },
+      uuid: '6eca390d-1d90-4b4a-8727-b65fff0503eb',
+      shortText: 'Add new tool to view bounty details',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
+      shortText: 'Implemented new user tour guides',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e298bf3d-042c-429f-bc33-49de2bd3cfbb',
+      shortText: 'Fix Component Governance issues',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
+      uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
+      shortText: 'Add new tool to search rivals bounties',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'f5a5ea45-1ea4-4a36-aed7-55140bc0aada',
+      shortText: 'Automatically select Staging API when using Staging UI',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Leaderboards },
+      uuid: '069c7aa4-1424-4f15-ae7b-cf082cd5531f',
+      shortText: 'Add Time Attack leaderboards',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.ProductPricing },
+      uuid: 'c069381d-0e34-48f2-9384-04eb317b79cc',
+      shortText:
+        'Add ability to look up any product ID alongside dropdown to select Forza products',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionBlocklist },
+      uuid: 'a6e7f4a7-7345-4f27-9446-83680ae4e516',
+      shortText: 'Update auction blocklist to display new accurate data',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '3594283a-d0e7-4d79-bfd0-ebc0de4eafd8',
+      shortText: 'Add Layer Group & Game Options UGC types',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '0c6114ad-6e1b-46c7-a3ee-ebca53244f65',
       shortText: 'Small fixes to Steward sidebars',

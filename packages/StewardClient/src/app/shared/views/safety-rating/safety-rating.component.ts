@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -38,7 +38,7 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
   };
 
   public safetyRating: SafetyRating;
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('Get safety rating');
 
