@@ -8,6 +8,7 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { SidebarsComponent } from './sidebars.component';
 import { EndpointsComponent } from './settings/endpoints/endpoints.component';
 import { ExperienceComponent } from './settings/experience/experience.component';
+import { ToursComponent } from './settings/tours/tours.component';
 
 /**
  * Routes that are considered "settings" configuration.
@@ -31,6 +32,10 @@ export const settingsSidebar: Routes = [
   {
     path: 'experience',
     component: ExperienceComponent,
+  },
+  {
+    path: 'tours',
+    component: ToursComponent,
   },
 ]
 

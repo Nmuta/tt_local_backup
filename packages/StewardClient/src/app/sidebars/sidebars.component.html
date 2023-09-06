@@ -18,17 +18,7 @@
         Profile
       </a>
 
-      <div mat-subheader>Settings</div>
-
-      <a mat-list-item
-        [routerLink]="['settings/legacy']"
-        queryParamsHandling="preserve"
-        routerLinkActive="list-item-active"
-        matTooltip="The original settings panel"
-        matTooltipPosition="left">
-        <mat-icon>settings</mat-icon>
-        Old Settings
-      </a>
+      <div mat-subheader><mat-icon inline>settings</mat-icon> Settings</div>
 
       <a mat-list-item
         [routerLink]="['settings/endpoints']"
@@ -44,10 +34,31 @@
         [routerLink]="['settings/experience']"
         queryParamsHandling="preserve"
         routerLinkActive="list-item-active"
-        matTooltip="Interface preferences"
+        matTooltip="Theme and Interface preferences"
         matTooltipPosition="left">
         <mat-icon>visibility</mat-icon>
         Experience
+      </a>
+
+      <a mat-list-item
+        [routerLink]="['settings/tours']"
+        queryParamsHandling="preserve"
+        routerLinkActive="list-item-active"
+        matTooltip="Enable/disable Tours"
+        matTooltipPosition="left">
+        <mat-icon>tour</mat-icon>
+        Tours
+      </a>
+
+      <a mat-list-item
+        [routerLink]="['settings/legacy']"
+        queryParamsHandling="preserve"
+        class="deprecated"
+        routerLinkActive="list-item-active"
+        matTooltip="The original settings panel"
+        matTooltipPosition="left">
+        <mat-icon>settings</mat-icon>
+        Old Settings
       </a>
 
     </mat-nav-list>

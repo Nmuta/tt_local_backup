@@ -44,6 +44,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatBadgeModule } from '@angular/material/badge';
 import { EndpointsComponent } from './settings/endpoints/endpoints.component';
 import { ExperienceComponent } from './settings/experience/experience.component';
+import { ToursComponent } from './settings/tours/tours.component';
 
 /** Module containing all routable sidebar components. */
 @NgModule({
@@ -58,6 +59,7 @@ import { ExperienceComponent } from './settings/experience/experience.component'
     SidebarsComponent,
     EndpointsComponent,
     ExperienceComponent,
+    ToursComponent,
   ],
   imports: [
     ChangelogModule,

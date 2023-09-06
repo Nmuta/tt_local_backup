@@ -32,4 +32,14 @@ div[mat-subheader] {
   background-color: app-color-lighter($app-background, 0.2);
   border-top: 2px solid app-color-darker($app-background);
   justify-content: center;
+
+  mat-icon {
+    padding-right: .25em;
+  }
+}
+
+.deprecated {
+  &, * {
+    color: app-color-text-contrast($app-background, 0.4) !important;
+  }
 }

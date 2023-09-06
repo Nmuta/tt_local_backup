@@ -4,6 +4,11 @@
 :host {
   display: block;
   padding: 1rem 2rem;
+  min-width: 30vw;
+}
+
+:host ::ng-deep mat-card {
+  margin-bottom: $gap-medium;
 }
 
 
