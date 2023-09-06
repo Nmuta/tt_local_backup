@@ -97,7 +97,11 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
     }
 
     const isAlreadyOnChangelog = this.router.url.includes('sidebar:unified/changelog');
-    if (isAlreadyOnChangelog) { return; }
-    this.router.navigate([{ outlets: { sidebar: 'unified/changelog'}}], { relativeTo: this.activatedRoute });
+    if (isAlreadyOnChangelog) {
+      return;
+    }
+    this.router.navigate([{ outlets: { sidebar: 'unified/changelog' } }], {
+      relativeTo: this.activatedRoute,
+    });
   }
 }
