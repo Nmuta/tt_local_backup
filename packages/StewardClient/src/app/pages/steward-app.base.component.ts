@@ -67,15 +67,15 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
       })
       .first()
       .value();
-    const flattenedSidebarRoute = flattenRouteChildren(recognizedSidebarRoute);
 
     if (!recognizedSidebarRoute) {
-      this.logger.log('setSidebarState: route not recognized as sidebar route', 'Closing sidebar and clearing path', flattenedSidebarRoute);
+      this.logger.log('setSidebarState: route not recognized as sidebar route', 'Closing sidebar and clearing path', recognizedSidebarRoute);
       this.drawerOpened = false;
       this.lastSidebarRoute = null;
       return;
     }
 
+    const flattenedSidebarRoute = flattenRouteChildren(recognizedSidebarRoute);
     this.logger.log('setSidebarState: route recognized as sidebar route', flattenedRoute);
 ;
     const recognizedSidebarPath = flattenedSidebarRoute.flatMap(p => p.url).join('/');
