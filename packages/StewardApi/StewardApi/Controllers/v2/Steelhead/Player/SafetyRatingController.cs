@@ -55,12 +55,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetSafetyRatingAsync(
             ulong xuid)
         {
-            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             var getSafetyRatingConfig = this.GetPlayerSafetyRatingConfigAsync(xuid);
             var getPlayerSafetyRating = this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid);
 
-            await Task.WhenAll(getSafetyRatingConfig, getPlayerSafetyRating).ConfigureAwait(true);
+            await Task.WhenAll(getSafetyRatingConfig, getPlayerSafetyRating);
 
             var safetyRatingConfig = getSafetyRatingConfig.GetAwaiter().GetResult();
             var playerSafetyRating = getPlayerSafetyRating.GetAwaiter().GetResult();
@@ -81,11 +81,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> ClearSafetyRatingAsync(
             ulong xuid)
         {
-            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
-            var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid).ConfigureAwait(true);
-            await this.Services.LiveOpsService.DeleteLiveOpsOverallSafetyRatingByXuid(xuid).ConfigureAwait(true);
-            var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid).ConfigureAwait(true);
+            var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid);
+            await this.Services.LiveOpsService.DeleteLiveOpsOverallSafetyRatingByXuid(xuid);
+            var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid);
 
             var result = this.mapper.SafeMap<SafetyRating>((response.safetyRating, safetyRatingConfig));
 
@@ -103,8 +103,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> SetSafetyRatingAsync(
             ulong xuid, [FromBody] SafetyRatingInput safetyRating)
         {
-            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
-            var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
+            var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid);
 
             safetyRating.Score.ShouldBeGreaterThanOrEqual(safetyRatingConfig.MinScore, nameof(safetyRating.Score));
             safetyRating.Score.ShouldBeLessThanOrEqual(safetyRatingConfig.MaxScore, nameof(safetyRating.Score));
@@ -120,9 +120,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var scoreArray = new double[arrayLength];
             Array.Fill<double>(scoreArray, safetyRating.Score);
 
-            await this.Services.LiveOpsService.SetLiveOpsSafetyRatingHistory(xuid, scoreArray).ConfigureAwait(true);
+            await this.Services.LiveOpsService.SetLiveOpsSafetyRatingHistory(xuid, scoreArray);
 
-            var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid).ConfigureAwait(true);
+            var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid);
 
             var result = this.mapper.SafeMap<SafetyRating>((response.safetyRating, safetyRatingConfig));
 
@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
         private async Task<SafetyRatingConfiguration> GetPlayerSafetyRatingConfigAsync(ulong xuid)
         {
-            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var safetyRatingConfig = await this.pegasusService.GetSafetyRatingConfig(
                 gameDetails.forzaUser.CMSEnvironmentOverride,
