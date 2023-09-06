@@ -45,21 +45,20 @@ context('Steward / Tools / Obligation / Search', withTags(Tag.Broken, Tag.UnitTe
     // verify we got the item
     const $firstActivity = cy
       .contains('mat-expansion-panel', expectedObligationValues.name)
-      //.first();
+      .first();
     $firstActivity.should('exist');
     $firstActivity.find('.mat-expansion-indicator').click();
     waitForProgressSpinners();
 
-    //inputHasValue('Name', expectedObligationValues.name);
-
     $firstActivity.within(() => {
-      //inputHasValue('Name', expectedObligationValues.name);
+      inputHasValue('Name', expectedObligationValues.name);
       inputHasValue('Table', expectedObligationValues.table);
       inputHasValue('Database', expectedObligationValues.database);
       inputHasValue('Pipeline Dependencies', expectedObligationValues.pipelineDependencies);
       inputHasValue('Query', expectedObligationValues.query);
-      //inputHasValue('Start Time', '22:54');
-      //inputHasValue('End Time', '22:54');
+      // These may be desired for future edits
+      // inputHasValue('Start Time', '22:54');
+      // inputHasValue('End Time', '22:54');
       inputHasValue('Maximum Execution Time', expectedObligationValues.maximumExecutionInterval);
       inputHasValue('Execution Interval', expectedObligationValues.executionInterval);
       inputHasValue('Execution Delay', expectedObligationValues.executionDelay);
