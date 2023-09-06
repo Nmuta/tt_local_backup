@@ -7,6 +7,7 @@ import {
   UserSettingsState,
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
+import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
 import { Observable, takeUntil } from 'rxjs';
 
 /** Basic UX settings. */
@@ -21,6 +22,7 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly changelogService: ChangelogService,
+    private readonly userTourService: UserTourService,
   ) {
     super();
   }
@@ -37,13 +39,23 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
     this.store.dispatch(new ConfigureShowVerifyCheckboxPopup(this.showVerifyCheckboxPopup));
   }
 
-  /** True when the automatic popup is disabled. */
+  /** True when the automatic changelog popup is enabled. */
   public get enableAutomaticChangelogPopup(): boolean {
     return !this.changelogService.disableAutomaticPopup;
   }
 
-  /** Sets the state of automatic popup disabling. */
+  /** Sets the state of automatic changelog popups. */
   public set enableAutomaticChangelogPopup(value: boolean) {
     this.changelogService.disableAutomaticPopup = !value;
+  }
+
+  /** True when automatic user tours are enabled. */
+  public get enableAutomaticTours(): boolean {
+    return this.userTourService.enableTours;
+  }
+
+  /** Sets the state of automatic user tours. */
+  public set enableAutomaticTours(value: boolean) {
+    this.userTourService.enableTours = value;
   }
 }

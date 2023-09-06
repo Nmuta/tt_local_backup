@@ -3,7 +3,7 @@ import { TourService } from 'ngx-ui-tour-md-menu';
 import { Select, Store } from '@ngxs/store';
 import { Observable, startWith } from 'rxjs';
 import { renderGuard } from '@helpers/rxjs';
-import { SetHomeTour } from '@shared/state/tours/tours.actions';
+import { SetHomeTour, SetUserTours } from '@shared/state/tours/tours.actions';
 import { TourState, TourStateModel } from '@shared/state/tours/tours.state';
 import { homeTourSteps } from './config';
 
@@ -21,6 +21,10 @@ export class UserTourService {
     this.tourState$.pipe(startWith(snapshot)).subscribe(state => (this.state = state));
   }
 
+  /** Enables or disables automatic user tours. */
+  public get enableTours(): boolean { return this.state.enableUserTours; }
+  public set enableTours(value: boolean) { this.store.dispatch(new SetUserTours(value)); }
+
   /** Checks if the Home tour should run */
   public shouldShowHomeTour(): boolean {
     const showUserTours = this.store.selectSnapshot<boolean>(TourState.enableUserTours);
@@ -37,8 +41,8 @@ export class UserTourService {
   }
 
   /** Starts the Home tour */
-  public startHomeTour(): void {
-    if (this.shouldShowHomeTour()) {
+  public startHomeTour(forced: boolean = false): void {
+    if (forced || this.shouldShowHomeTour()) {
       this.tourService.initialize(homeTourSteps);
 
       this.tourService.end$.subscribe(() => {
