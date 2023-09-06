@@ -17,8 +17,8 @@ describe('ToursComponent', () => {
         ngxsModules: [EndpointKeyMemoryState, TourState],
         imports: [],
         providers: [createMockUserTourService()],
-      }))
-    .compileComponents();
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ToursComponent);
     component = fixture.componentInstance;

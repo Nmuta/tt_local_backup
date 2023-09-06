@@ -4,12 +4,9 @@ import { WindowService } from '@services/window';
 import { ZendeskService } from '@services/zendesk';
 import { Observable } from 'rxjs';
 
-import { NotificationsService } from '@shared/hubs/notifications.service';
-import { BackgroundJobStatus } from '@models/background-job';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { UserRole } from '@models/enums';
-import { ThemePalette } from '@angular/material/core';
 import { environment, HomeTileInfo, NavbarTool } from '@environments/environment';
 import {
   UserSettingsState,

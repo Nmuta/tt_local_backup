@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -14,13 +14,13 @@ import { Observable, takeUntil } from 'rxjs';
 /** Handles the unified sidebar selector. */
 @Component({
   templateUrl: './sidebars.component.html',
-  styleUrls: ['./sidebars.component.scss']
+  styleUrls: ['./sidebars.component.scss'],
 })
 export class SidebarsComponent extends BaseComponent implements AfterViewInit {
   @ViewChild('changelogLink', { read: ElementRef }) changelogLink: ElementRef;
   @Select(ChangelogState.allPendingIds) public allPendingIds$: Observable<string[]>;
   public changelogNotificationCount = 0;
-  
+
   public notificationCount = null;
   public notificationColor: ThemePalette = undefined;
 

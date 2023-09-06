@@ -76,7 +76,6 @@ describe('SidebarIconsComponent', () => {
     });
   });
 
-
   describe('Method: ngAfterViewInit', () => {
     describe('When the app version is undefined', () => {
       const environmentAdoVerion: string = 'env-ado-verion';

@@ -10,7 +10,7 @@ import { Observable, takeUntil } from 'rxjs';
 /** Configuration page for Tours. */
 @Component({
   templateUrl: './tours.component.html',
-  styleUrls: ['./tours.component.scss']
+  styleUrls: ['./tours.component.scss'],
 })
 export class ToursComponent extends BaseComponent implements OnInit {
   @Select(TourState) public tourState$: Observable<TourStateModel>;
@@ -33,7 +33,6 @@ export class ToursComponent extends BaseComponent implements OnInit {
       this.enableUserTours = latest.enableUserTours;
     });
   }
-
 
   /** Fired when any setting changes. */
   public syncUserTours(): void {

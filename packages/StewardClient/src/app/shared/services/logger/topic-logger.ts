@@ -3,10 +3,7 @@ import { ILogger } from './logger';
 
 /** Applies a set list of topics to many logs. */
 export class TopicLogger {
-  constructor(
-    private readonly service: ILogger,
-    private readonly topics: LogTopic[],
-  ) { }
+  constructor(private readonly service: ILogger, private readonly topics: LogTopic[]) {}
 
   /** Proxy for console.log */
   public log(...data: unknown[]): void {

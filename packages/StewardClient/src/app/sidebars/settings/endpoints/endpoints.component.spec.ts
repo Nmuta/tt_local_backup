@@ -18,8 +18,8 @@ describe('EndpointsComponent', () => {
         ngxsModules: [EndpointKeyMemoryState, TourState],
         imports: [],
         providers: [createMockUserTourService()],
-      }))
-    .compileComponents();
+      }),
+    ).compileComponents();
 
     setUserProfile();
 

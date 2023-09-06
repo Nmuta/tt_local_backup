@@ -39,7 +39,7 @@ export class NotificationsService {
     if (this.isReady || this.isStarting) {
       return;
     }
-    
+
     this.isStarting = true;
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias

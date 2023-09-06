@@ -13,7 +13,7 @@ import { ToursComponent } from './settings/tours/tours.component';
 /**
  * Routes that are considered "settings" configuration.
  * These routes will be displayed as children of sidebar:unified/settings/*
- * 
+ *
  */
 export const settingsSidebar: Routes = [
   {
@@ -37,7 +37,7 @@ export const settingsSidebar: Routes = [
     path: 'tours',
     component: ToursComponent,
   },
-]
+];
 
 /**
  * Routes that may be displayed in the "unified" sidebar as subroutes.
@@ -51,7 +51,7 @@ export const unifiedSidebars: Routes = [
   },
   {
     path: 'settings',
-    children: settingsSidebar
+    children: settingsSidebar,
   },
   {
     path: 'profile',
@@ -69,7 +69,7 @@ export const unifiedSidebars: Routes = [
     path: 'contactus',
     component: ContactUsComponent,
   },
-]
+];
 
 /**
  * Deprecated sidebar route redirects.
@@ -85,7 +85,7 @@ export const oldRoutes: Routes = [
     redirectTo: 'unified/settings',
     outlet: 'sidebar',
   },
-]
+];
 
 /**
  * Routes that may be displayed in the top-level sidebar as a standalone component.
@@ -119,9 +119,7 @@ export const sidebarRoutes: Routes = [
 /** Module containing all routable sidebar components. */
 @NgModule({
   declarations: [],
-  imports: [
-    RouterModule.forChild(sidebarRoutes),
-  ],
+  imports: [RouterModule.forChild(sidebarRoutes)],
   exports: [RouterModule],
 })
 export class SidebarsRouterModule {}

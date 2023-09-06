@@ -10,7 +10,7 @@ export const adminProfile: UserModel = {
   name: 'fake-name',
   objectId: '9ed33253-9446-41eb-b9c9-99f69060da62',
   role: UserRole.LiveOpsAdmin,
-}
+};
 
 /**
  * Sets the UserModel in Store without modifying anything else.
@@ -25,6 +25,6 @@ export function setUserProfile(profile: UserModel = adminProfile): void {
     user: {
       ...storeSnapshot.user,
       profile,
-    }
+    },
   });
 }

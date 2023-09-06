@@ -1,8 +1,6 @@
 <mat-card>
   <mat-card-title>Tour Settings</mat-card-title>
-  <mat-card-subtitle
-    >Settings for how tours behave</mat-card-subtitle
-  >
+  <mat-card-subtitle>Settings for how tours behave</mat-card-subtitle>
   <mat-card-content>
     <mat-slide-toggle
       [(ngModel)]="enableUserTours"
@@ -21,21 +19,22 @@
 
   <mat-card-content>
     <p>
-      New tours are enabled by default and will trigger automatically.<br>
+      New tours are enabled by default and will trigger automatically.<br />
       Tours are disabled after they are completed or dismissed.
     </p>
-    <p>
-      To disable all future tours, toggle Enable Tours above.
-    </p>
+    <p>To disable all future tours, toggle Enable Tours above.</p>
 
     <div class="tour-row">
-      <button mat-mini-fab matTooltip="Begin Home Tour" (click)="beginHomeTour()"><mat-icon>play_arrow</mat-icon></button>
+      <button mat-mini-fab matTooltip="Begin Home Tour" (click)="beginHomeTour()">
+        <mat-icon>play_arrow</mat-icon>
+      </button>
       <mat-slide-toggle
         [(ngModel)]="enableHomeTour"
         (ngModelChange)="syncHomeTour()"
         matTooltip="Toggles Home page tour on and off."
         matTooltipPosition="before"
-        >Home Tour</mat-slide-toggle>
+        >Home Tour</mat-slide-toggle
+      >
     </div>
   </mat-card-content>
 </mat-card>

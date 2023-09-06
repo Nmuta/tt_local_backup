@@ -19,8 +19,8 @@ describe('SidebarsComponent', () => {
         ngxsModules: [EndpointKeyMemoryState, TourState, ChangelogState],
         imports: [MatDialogModule],
         providers: [createMockUserTourService()],
-      }))
-    .compileComponents();
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SidebarsComponent);
     component = fixture.componentInstance;

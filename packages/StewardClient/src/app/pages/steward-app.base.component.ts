@@ -20,7 +20,7 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
   constructor(
     private loggerService: LoggerService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
   ) {
     super();
     this.logger = this.loggerService.makeTopicLogger([LogTopic.Sidebar]);
@@ -49,7 +49,7 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
         takeUntil(this.onDestroy$),
       )
       .subscribe((e: RoutesRecognized) => {
-        this.logger.log('registerSidebarStateMachine: RoutesRecognized', e)
+        this.logger.log('registerSidebarStateMachine: RoutesRecognized', e);
         this.setSidebarState(e.state.root);
       });
   }
@@ -69,7 +69,11 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
       .value();
 
     if (!recognizedSidebarRoute) {
-      this.logger.log('setSidebarState: route not recognized as sidebar route', 'Closing sidebar and clearing path', recognizedSidebarRoute);
+      this.logger.log(
+        'setSidebarState: route not recognized as sidebar route',
+        'Closing sidebar and clearing path',
+        recognizedSidebarRoute,
+      );
       this.drawerOpened = false;
       this.lastSidebarRoute = null;
       return;
@@ -77,14 +81,21 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
 
     const flattenedSidebarRoute = flattenRouteChildren(recognizedSidebarRoute);
     this.logger.log('setSidebarState: route recognized as sidebar route', flattenedRoute);
-;
     const recognizedSidebarPath = flattenedSidebarRoute.flatMap(p => p.url).join('/');
-    this.logger.log('setSidebarState: comparing sidebar paths', this.lastSidebarRoute, flattenedSidebarRoute)
+    this.logger.log(
+      'setSidebarState: comparing sidebar paths',
+      this.lastSidebarRoute,
+      flattenedSidebarRoute,
+    );
 
     // Special Case: same route; so we will "toggle" it closed
     const newRouteMatchesOldRoute = this.lastSidebarRoute === recognizedSidebarPath;
     if (newRouteMatchesOldRoute) {
-      this.logger.log('setSidebarState: routes match', 'Closing sidebar and clearing path', recognizedSidebarPath);
+      this.logger.log(
+        'setSidebarState: routes match',
+        'Closing sidebar and clearing path',
+        recognizedSidebarPath,
+      );
       this.drawerOpened = false;
       this.lastSidebarRoute = null;
       return;
@@ -95,7 +106,12 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
     if (navigatingToRoot) {
       const newRouteIsSameRoot = startsWith(this.lastSidebarRoute, recognizedSidebarPath);
       if (newRouteIsSameRoot) {
-        this.logger.log('setSidebarState: navigating to same root', 'Closing sidebar and clearing path', this.lastSidebarRoute, recognizedSidebarPath);
+        this.logger.log(
+          'setSidebarState: navigating to same root',
+          'Closing sidebar and clearing path',
+          this.lastSidebarRoute,
+          recognizedSidebarPath,
+        );
         this.drawerOpened = false;
         this.lastSidebarRoute = null;
         return;
@@ -103,7 +119,12 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
     }
 
     // Default: If we did not hit a special case, set the Drawer state based on navigation
-    this.logger.log('setSidebarState: no special case', 'Setting state based on existence of sidebar route', this.lastSidebarRoute, recognizedSidebarPath);
+    this.logger.log(
+      'setSidebarState: no special case',
+      'Setting state based on existence of sidebar route',
+      this.lastSidebarRoute,
+      recognizedSidebarPath,
+    );
     this.drawerOpened = !!recognizedSidebarRoute;
     this.lastSidebarRoute = recognizedSidebarPath;
 

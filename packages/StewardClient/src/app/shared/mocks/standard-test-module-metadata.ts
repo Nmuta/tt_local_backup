@@ -31,7 +31,12 @@ export interface StandardTestModuleMetadataConfiguration extends TestModuleMetad
 export function createStandardTestModuleMetadata(
   additions: StandardTestModuleMetadataConfiguration,
 ): TestModuleMetadata {
-  const allNgxsModules = uniq([UserState, UserSettingsState, ChangelogState, ...uniq(additions.ngxsModules ?? [])]);
+  const allNgxsModules = uniq([
+    UserState,
+    UserSettingsState,
+    ChangelogState,
+    ...uniq(additions.ngxsModules ?? []),
+  ]);
   const metadata: TestModuleMetadata = {
     imports: [
       RouterTestingModule.withRoutes([]),

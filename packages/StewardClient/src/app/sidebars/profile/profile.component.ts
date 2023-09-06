@@ -12,7 +12,12 @@ import { WindowService } from '@services/window';
 import { EmailAddresses } from '@shared/constants';
 import { UserModel } from '@shared/models/user.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { ApplyProfileOverrides, BreakAccessToken, LogoutUser, RecheckAuth } from '@shared/state/user/user.actions';
+import {
+  ApplyProfileOverrides,
+  BreakAccessToken,
+  LogoutUser,
+  RecheckAuth,
+} from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { keys } from 'lodash';
 import { combineLatest, Observable } from 'rxjs';

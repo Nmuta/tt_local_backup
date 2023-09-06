@@ -8,17 +8,30 @@ import { Select, Store } from '@ngxs/store';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { WindowService } from '@services/window';
 import { InvalidPermActionType } from '@shared/modules/permissions/directives/permission-attribute.base.directive';
-import { EndpointKeyMemoryState, EndpointKeyMemoryModel } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
+import {
+  EndpointKeyMemoryState,
+  EndpointKeyMemoryModel,
+} from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { TourState, TourStateModel } from '@shared/state/tours/tours.state';
-import { SetFakeApi, SetApolloEndpointKey, SetSunriseEndpointKey, SetWoodstockEndpointKey, SetForteEndpointKey, SetSteelheadEndpointKey } from '@shared/state/user-settings/user-settings.actions';
-import { UserSettingsState, UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
+import {
+  SetFakeApi,
+  SetApolloEndpointKey,
+  SetSunriseEndpointKey,
+  SetWoodstockEndpointKey,
+  SetForteEndpointKey,
+  SetSteelheadEndpointKey,
+} from '@shared/state/user-settings/user-settings.actions';
+import {
+  UserSettingsState,
+  UserSettingsStateModel,
+} from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable, filter, takeUntil } from 'rxjs';
 
 /** Controls settings relating to Endpoints. */
 @Component({
   templateUrl: './endpoints.component.html',
-  styleUrls: ['./endpoints.component.scss']
+  styleUrls: ['./endpoints.component.scss'],
 })
 export class EndpointsComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
@@ -43,10 +56,7 @@ export class EndpointsComponent extends BaseComponent implements OnInit {
   public PermAttributeName = PermAttributeName;
   public GameTitle = GameTitle;
 
-  constructor(
-    private readonly store: Store,
-    private readonly windowService: WindowService,
-  ) {
+  constructor(private readonly store: Store, private readonly windowService: WindowService) {
     super();
   }
   /** Initialization hook. */
@@ -84,7 +94,6 @@ export class EndpointsComponent extends BaseComponent implements OnInit {
       this.forteEndpointKey = latest.forteEndpointKey;
     });
   }
-
 
   /** Fired when any setting changes. */
   public syncFakeApiSettings(): void {

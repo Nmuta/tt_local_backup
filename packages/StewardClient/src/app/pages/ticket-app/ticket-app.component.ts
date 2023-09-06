@@ -24,7 +24,7 @@ export class TicketAppComponent extends StewardAppBaseComponent implements OnIni
     private readonly zendesk: ZendeskService,
     logger: LoggerService,
     router: Router,
-    route: ActivatedRoute
+    route: ActivatedRoute,
   ) {
     super(logger, router, route);
   }
