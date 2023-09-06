@@ -26,11 +26,25 @@ mat-slide-toggle {
   display: block;
 }
 
-span.endpoint-selectors {
+div.endpoint-selectors {
   margin-top: $gap-large;
   display: block;
 }
 
+.endpoint-group {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1em;
+
+  mat-form-field {
+    padding-bottom: 1em;
+  }
+}
+
 .endpoint-selection-warning {
   display: block;
+}
+:host {
+  display: block;
+  padding: 1rem 2rem;
 }

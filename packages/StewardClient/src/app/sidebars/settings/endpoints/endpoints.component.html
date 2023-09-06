@@ -11,56 +11,64 @@
     Fake API</mat-slide-toggle
   >
 
-  <!-- This span isn't rendered. For now we will use defaults pointing to production LSP instances. -->
-  <span class="endpoint-selectors" *ngIf="true">
+  <div class="endpoint-selectors">
     <span class="endpoint-selection-warning">Changing endpoint selection causes app reload.</span>
-    <mat-form-field class="set-apollo-endpoint" appearance="fill">
-      <mat-label>Apollo Endpoint</mat-label>
-      <mat-select
-        [(ngModel)]="apolloEndpointKey"
-        (selectionChange)="syncApolloEndpointKey($event)"
-      >
-        <mat-option *ngFor="let endpointKey of apolloEndpointKeyList" [value]="endpointKey">
-          {{ endpointKey }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
 
-    <mat-form-field class="set-sunrise-endpoint" appearance="fill">
-      <mat-label>Sunrise Endpoint</mat-label>
-      <mat-select
-        [(ngModel)]="sunriseEndpointKey"
-        (selectionChange)="syncSunriseEndpointKey($event)"
-      >
-        <mat-option *ngFor="let endpointKey of sunriseEndpointKeyList" [value]="endpointKey">
-          {{ endpointKey }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="endpoint-group">
+      <mat-form-field class="set-steelhead-endpoint" appearance="fill">
+        <mat-label>Steelhead Endpoint</mat-label>
+        <mat-select
+          [(ngModel)]="steelheadEndpointKey"
+          (selectionChange)="syncSteelheadEndpointKey($event)"
+        >
+          <mat-option *ngFor="let endpointKey of steelheadEndpointKeyList" [value]="endpointKey">
+            {{ endpointKey }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Forza Motorsport</mat-hint>
+      </mat-form-field>
 
-    <mat-form-field class="set-woodstock-endpoint" appearance="fill">
-      <mat-label>Woodstock Endpoint</mat-label>
-      <mat-select
-        [(ngModel)]="woodstockEndpointKey"
-        (selectionChange)="syncWoodstockEndpointKey($event)"
-      >
-        <mat-option *ngFor="let endpointKey of woodstockEndpointKeyList" [value]="endpointKey">
-          {{ endpointKey }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field class="set-apollo-endpoint" appearance="fill">
+        <mat-label>Apollo Endpoint</mat-label>
+        <mat-select
+          [(ngModel)]="apolloEndpointKey"
+          (selectionChange)="syncApolloEndpointKey($event)"
+        >
+          <mat-option *ngFor="let endpointKey of apolloEndpointKeyList" [value]="endpointKey">
+            {{ endpointKey }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Forza Motorsport 7</mat-hint>
+      </mat-form-field>
+    </div>
 
-    <mat-form-field class="set-steelhead-endpoint" appearance="fill">
-      <mat-label>Steelhead Endpoint</mat-label>
-      <mat-select
-        [(ngModel)]="steelheadEndpointKey"
-        (selectionChange)="syncSteelheadEndpointKey($event)"
-      >
-        <mat-option *ngFor="let endpointKey of steelheadEndpointKeyList" [value]="endpointKey">
-          {{ endpointKey }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="endpoint-group">
+      <mat-form-field class="set-woodstock-endpoint" appearance="fill">
+        <mat-label>Woodstock Endpoint</mat-label>
+        <mat-select
+          [(ngModel)]="woodstockEndpointKey"
+          (selectionChange)="syncWoodstockEndpointKey($event)"
+        >
+          <mat-option *ngFor="let endpointKey of woodstockEndpointKeyList" [value]="endpointKey">
+            {{ endpointKey }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Forza Horizon 5</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="set-sunrise-endpoint" appearance="fill">
+        <mat-label>Sunrise Endpoint</mat-label>
+        <mat-select
+          [(ngModel)]="sunriseEndpointKey"
+          (selectionChange)="syncSunriseEndpointKey($event)"
+        >
+          <mat-option *ngFor="let endpointKey of sunriseEndpointKeyList" [value]="endpointKey">
+            {{ endpointKey }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Forza Horizon 4</mat-hint>
+      </mat-form-field>
+    </div>
 
     <div
       stateManager
@@ -79,7 +87,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-  </span>
+  </div>
 
   <p>No settings available</p>
 </mat-card>
