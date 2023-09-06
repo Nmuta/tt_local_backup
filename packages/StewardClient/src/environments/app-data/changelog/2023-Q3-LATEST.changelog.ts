@@ -42,6 +42,12 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '0d448404-57a3-437c-a057-8cb8ec246f40',
+      shortText:
+        'Safety rating minimum and maximum score values now based on Pegasus configuration',
+    },
+    {
       tag: {
         title: GameTitle.FM8,
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
