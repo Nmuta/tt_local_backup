@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { BackgroundJob } from '@models/background-job';
@@ -80,9 +80,9 @@ export class GiftSpecialLiveriesComponent extends BaseComponent implements OnIni
   public sendGiftMonitor = new ActionMonitor('Send liveries');
 
   public formControls = {
-    giftReason: new FormControl('', [Validators.required]),
+    giftReason: new UntypedFormControl('', [Validators.required]),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
   public giftReasons: string[] = [
     GiftReason.CommunityGift,
     GiftReason.LostSave,

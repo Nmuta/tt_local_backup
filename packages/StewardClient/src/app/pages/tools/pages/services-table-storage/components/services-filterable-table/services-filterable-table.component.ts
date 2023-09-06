@@ -1,6 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
@@ -41,15 +41,15 @@ export class ServicesFilterableTableComponent extends BaseComponent implements O
   public filteredTableData: JsonTableResult<ServicesTableStorageEntity>[] = [];
   public filters: string[] = [];
 
-  public categoryControl = new FormControl('');
+  public categoryControl = new UntypedFormControl('');
   public categories: string[] = [];
   public filteredCategories: Observable<string[]>;
 
   public formControls = {
-    showAll: new FormControl(false),
+    showAll: new UntypedFormControl(false),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor: ActionMonitor = new ActionMonitor('Get Table Storage');
 

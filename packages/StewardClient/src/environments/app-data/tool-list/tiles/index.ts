@@ -34,3 +34,4 @@ export * from './widgets/themeing';
 export * from './tools/playfab';
 export * from './tools/lsp-tasks';
 export * from './tools/bounty-search';
+export * from './tools/bounty-details';

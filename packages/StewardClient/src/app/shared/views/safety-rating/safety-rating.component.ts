@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -31,22 +31,14 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
   @Input() xuid: BigNumber;
 
   public formControls = {
-    safetyRatingScore: new FormControl('', [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(100),
-    ]),
-    probationarySafetyRatingScore: new FormControl('', [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(100),
-    ]),
-    isInProbation: new FormControl(false),
-    grade: new FormControl({ value: null, disabled: true }),
+    safetyRatingScore: new UntypedFormControl('', [Validators.required]),
+    probationarySafetyRatingScore: new UntypedFormControl('', [Validators.required]),
+    isInProbation: new UntypedFormControl(false),
+    grade: new UntypedFormControl({ value: null, disabled: true }),
   };
 
   public safetyRating: SafetyRating;
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('Get safety rating');
 
@@ -122,8 +114,25 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
     this.formControls.isInProbation.setValue(safetyRating.isInProbationaryPeriod);
     this.formControls.grade.setValue(safetyRating.grade);
 
-    this.formControls.isInProbation.value
-      ? this.formControls.safetyRatingScore.disable()
-      : this.formControls.probationarySafetyRatingScore.disable();
+    if (safetyRating.configuration.probationRaceCount.isLessThanOrEqualTo(1)) {
+      this.formControls.isInProbation.setValue(false);
+      this.formControls.isInProbation.disable();
+      this.formControls.probationarySafetyRatingScore.disable();
+      this.formControls.probationarySafetyRatingScore.setValue(false);
+    } else {
+      this.formControls.isInProbation.value
+        ? this.formControls.safetyRatingScore.disable()
+        : this.formControls.probationarySafetyRatingScore.disable();
+    }
+
+    this.formControls.probationarySafetyRatingScore.addValidators([
+      Validators.min(safetyRating.configuration.minScore.toNumber()),
+      Validators.max(safetyRating.configuration.maxScore.toNumber()),
+    ]);
+
+    this.formControls.safetyRatingScore.addValidators([
+      Validators.min(safetyRating.configuration.minScore.toNumber()),
+      Validators.max(safetyRating.configuration.maxScore.toNumber()),
+    ]);
   }
 }

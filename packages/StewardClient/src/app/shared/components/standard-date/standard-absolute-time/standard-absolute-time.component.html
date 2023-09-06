@@ -2,12 +2,12 @@
   <standard-copy>
     {{
       formats[format]?.dateFormat
-        ? (timeUtc | dateTimeToJsDate | date: formats[format]?.dateFormat)
+        ? (timeUtc | dateTimeToJsDate | date : formats[format]?.dateFormat)
         : ''
     }}
     {{
       formats[format]?.timeFormat
-        ? (timeUtc | dateTimeToJsDate | date: formats[format]?.timeFormat)
+        ? (timeUtc | dateTimeToJsDate | date : formats[format]?.timeFormat)
         : ''
     }}
   </standard-copy>

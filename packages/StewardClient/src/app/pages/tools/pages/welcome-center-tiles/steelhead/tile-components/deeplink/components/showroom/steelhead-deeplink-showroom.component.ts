@@ -2,8 +2,8 @@ import { Component, forwardRef } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   AbstractControl,
   ValidationErrors,
   ControlValueAccessor,
@@ -54,12 +54,12 @@ export class DeeplinkShowroomComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    showroomSettingType: new FormControl(null),
-    showroomCar: new FormControl(null),
-    showroomManufacturer: new FormControl(null),
+    showroomSettingType: new UntypedFormControl(null),
+    showroomCar: new UntypedFormControl(null),
+    showroomManufacturer: new UntypedFormControl(null),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor(steelheadCarsService: SteelheadCarsService) {
     super();

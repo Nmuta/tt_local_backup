@@ -4,10 +4,12 @@ import { PegasusEnvironment } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { LeaderboardScoreType } from '@models/leaderboards';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
+import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 
 /** Interface that represents a rivals event. */
 export interface RivalsEvent {
+  id: BigNumber;
   name: string;
   description: string;
   category: string;

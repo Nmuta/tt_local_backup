@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -52,15 +52,15 @@ export class CreateBulkAuctionComponent extends BaseComponent {
   public readonly permAttribute = PermAttributeName.CreateAuctions;
 
   public formControls = {
-    sellerId: new FormControl(null, [Validators.required]),
-    oneOfEveryCar: new FormControl(null),
-    numberOfRandomCars: new FormControl(0, [Validators.required]),
-    durationInMinutes: new FormControl(null, [Validators.required]),
-    durationOptions: new FormControl(null),
-    isOneOfEveryCars: new FormControl(true, [Validators.required]),
+    sellerId: new UntypedFormControl(null, [Validators.required]),
+    oneOfEveryCar: new UntypedFormControl(null),
+    numberOfRandomCars: new UntypedFormControl(0, [Validators.required]),
+    durationInMinutes: new UntypedFormControl(null, [Validators.required]),
+    durationOptions: new UntypedFormControl(null),
+    isOneOfEveryCars: new UntypedFormControl(true, [Validators.required]),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor() {
     super();

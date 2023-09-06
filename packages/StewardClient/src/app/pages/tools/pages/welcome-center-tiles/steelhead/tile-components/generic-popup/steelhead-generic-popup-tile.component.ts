@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { GameTitle } from '@models/enums';
@@ -49,14 +49,16 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
   public localizationSelectServiceContract: SelectLocalizedStringContract;
 
   public formControls = {
-    baseTile: new FormControl(null),
-    localizedPopupTitle: new FormControl({ value: {}, disabled: true }, [Validators.required]),
-    localizedPopupDescription: new FormControl({ value: {}, disabled: true }, [
+    baseTile: new UntypedFormControl(null),
+    localizedPopupTitle: new UntypedFormControl({ value: {}, disabled: true }, [
+      Validators.required,
+    ]),
+    localizedPopupDescription: new UntypedFormControl({ value: {}, disabled: true }, [
       Validators.required,
     ]),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public readonly permAttribute = PermAttributeName.UpdateWelcomeCenterTiles;
 

@@ -24,18 +24,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
     /// <inheritdoc />
     public sealed class WoodstockPlayFabService : IWoodstockPlayFabService
     {
-        private readonly WoodstockPlayFabConfig playerFabConfig;
+        private readonly WoodstockPlayFabConfig playFabConfig;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayFabService"/> class.
         /// </summary>
-        public WoodstockPlayFabService(WoodstockPlayFabConfig playerFabConfig, IMapper mapper)
+        public WoodstockPlayFabService(WoodstockPlayFabConfig playFabConfig, IMapper mapper)
         {
-            playerFabConfig.ShouldNotBeNull(nameof(playerFabConfig));
+            playFabConfig.ShouldNotBeNull(nameof(playFabConfig));
             mapper.ShouldNotBeNull(nameof(mapper));
 
-            this.playerFabConfig = playerFabConfig;
+            this.playFabConfig = playFabConfig;
             this.mapper = mapper;
         }
 
@@ -222,7 +222,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.PlayFab
         /// </summary>
         private PlayFabConfig GetPlayFabConfig(WoodstockPlayFabEnvironment environment)
         {
-            if (!this.playerFabConfig.Environments.TryGetValue(environment, out var config))
+            if (!this.playFabConfig.Environments.TryGetValue(environment, out var config))
             {
                 throw new UnknownFailureStewardException($"Failed to get PlayFab config. Invalid {nameof(WoodstockPlayFabEnvironment)} provided: {environment}");
             }

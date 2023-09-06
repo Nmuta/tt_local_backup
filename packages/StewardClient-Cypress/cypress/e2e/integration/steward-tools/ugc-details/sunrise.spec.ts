@@ -1,8 +1,12 @@
 import { stewardUrls } from '@support/steward/urls';
 import { sunriseSamples, testInputUgcID } from './shared-functions';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
+import { Tag, withTags } from '@support/tags';
 
-context('Steward / Tools / UGC Details / Sunrise', () => {
+// get model-dump-simple-table happens right after inputting a UGC id,
+// and it can take more than 4 seconds, causing a timeout. This get is parallel to the progress spinners
+// but not tracked by them, causing failures occasionally
+context('Steward / Tools / UGC Details / Sunrise', withTags(Tag.Flakey), () => {
   before(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.ugcDetails.sunrise);

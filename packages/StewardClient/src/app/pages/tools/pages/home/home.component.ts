@@ -1,6 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
@@ -30,10 +30,11 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { cloneDeep, intersection } from 'lodash';
-import { Observable, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 import { UserTourService } from './tour/tour.service';
+import { SidebarService } from 'app/sidebars/sidebars.service';
 
 /** Types of filters to use on home page. */
 export enum FilterType {
@@ -83,7 +84,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
   // Bits and bobs used for sorting below
   public readonly separatorKeysCodes = [ENTER, COMMA] as const;
-  public filterControl = new FormControl('');
+  public filterControl = new UntypedFormControl('');
   public titleFilterOptions: Observable<FilterChip[]>;
   public permissionFilterOptions: Observable<FilterChip[]>;
   public preparedTitleFilters: FilterChip[] = [
@@ -109,6 +110,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly permAttributesService: PermAttributesService,
+    private readonly sidebarService: SidebarService,
     private readonly userTourService: UserTourService, // loaded here so tours will run without errors
   ) {
     super();
@@ -177,7 +179,12 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
       this.isEnabled = cloneDeep(this.isEnabled); // have to clone it to make it editable
     });
 
-    this.userTourService.startHomeTour();
+    // Wait on perms and no sidebar before trying to start the home tour
+    combineLatest([this.permAttributesService.initializationGuard$, this.sidebarService.isClosed$])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.userTourService.startHomeTour();
+      });
   }
 
   /** Remove all filters for tiles. */

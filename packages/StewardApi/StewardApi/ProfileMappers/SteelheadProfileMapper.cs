@@ -553,6 +553,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.LastRulesChange, opt => opt.Ignore());
 
             this.CreateMap<SteelheadLiveOpsContent.RivalEvent, Contracts.Common.RivalsEvent>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RivalEventId))
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Track))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.EventCategory))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartEndDate.From))
@@ -677,8 +678,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TargetLspGroupId, opt => opt.Ignore());
 
             this.CreateMap<ForzaSafetyRatingLetterGrade, SafetyRatingGrade>();
-            this.CreateMap<ForzaSafetyRating, SafetyRating>()
-                .ForMember(dest => dest.Score, opt => opt.MapFrom(source => source.scoreValue));
+            this.CreateMap<SafetyRatingConfiguration, SafetyRatingConfig>();
+            this.CreateMap<(ForzaSafetyRating rating, SafetyRatingConfiguration config), SafetyRating>()
+                .ForMember(dest => dest.ProbationaryScoreEstimate, opt => opt.MapFrom(source => source.rating.probationaryScoreEstimate))
+                .ForMember(dest => dest.IsInProbationaryPeriod, opt => opt.MapFrom(source => source.rating.isInProbationaryPeriod))
+                .ForMember(dest => dest.Grade, opt => opt.MapFrom(source => source.rating.grade))
+                .ForMember(dest => dest.Score, opt => opt.MapFrom(source => source.rating.scoreValue))
+                .ForMember(dest => dest.Configuration, opt => opt.MapFrom(source => source.config));
 
             this.CreateMap<ForzaPlayerSkillRatingSummary, SkillRatingSummary>();
 
@@ -761,6 +767,38 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage))
                 .ForMember(dest => dest.RivalsEventTitle, opt => opt.Ignore())
                 .ForMember(dest => dest.RivalsEventDescription, opt => opt.Ignore());
+
+            this.CreateMap<ForzaBountyEntry, SteelheadBounty>()
+                .ForMember(dest => dest.RivalsEvent, opt => opt.Ignore())
+                .ForMember(dest => dest.MessageTitle, opt => opt.MapFrom(source => source.messageTitleEnglish))
+                .ForMember(dest => dest.MessageDescription, opt => opt.MapFrom(source => source.messageBodyEnglish))
+                .ForMember(dest => dest.EndTime, opt => opt.MapFrom(source => source.eventEndTime))
+                .ForMember(dest => dest.UserGroupId, opt => opt.MapFrom(source => source.userGroupId))
+                .ForMember(dest => dest.PlayerRewardedCount, opt => opt.Ignore())
+                .ForMember(dest => dest.TrackId, opt => opt.MapFrom(source => source.trackId))
+                .ForMember(dest => dest.Target, opt => opt.MapFrom(source => source.targetXuid != 0 ? source.targetXuid : source.targetPercentage))
+                .ForMember(dest => dest.Rewards, opt => opt.MapFrom(source => this.PrepareRewardsList(source.rewardGroup)))
+                .ForMember(dest => dest.Phase, opt => opt.MapFrom(source => source.phase));
+
+            this.CreateMap<SteelheadLiveOpsContent.BanConfiguration, Contracts.Common.BanConfiguration>();
+        }
+
+        private List<string> PrepareRewardsList(string rewardsInput)
+        {
+            var rewardsParsed = Newtonsoft.Json.JsonConvert.DeserializeObject<SteelheadContent.RewardGroup>(rewardsInput);
+            var simplifiedRewards = new List<string>();
+
+            if (rewardsParsed.CarRewards != null)
+            {
+                simplifiedRewards.AddRange(rewardsParsed.CarRewards.Select(x => $"{x.RewardName}, {x.Quantity}, {x.CarReward.ModelShort}"));
+            }
+
+            if (rewardsParsed.Credits != null)
+            {
+                simplifiedRewards.AddRange(rewardsParsed.Credits.Select(x => $"{x.RewardName}, {x.Quantity}, {x.RewardCreditType}"));
+            }
+
+            return simplifiedRewards;
         }
 
         private DeeplinkDestination PrepareBridgeDestination(WofBaseDestination destination)

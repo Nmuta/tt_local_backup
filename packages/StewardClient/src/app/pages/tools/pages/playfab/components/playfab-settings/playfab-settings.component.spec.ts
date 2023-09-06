@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { PlayFabSettingsComponent } from './playfab-settings.component';
+import { GameTitle } from '@models/enums';
 
 describe('PlayFabSettingsComponent', () => {
   let component: PlayFabSettingsComponent;
@@ -34,6 +35,7 @@ describe('PlayFabSettingsComponent', () => {
 
     fixture = TestBed.createComponent(PlayFabSettingsComponent);
     component = fixture.componentInstance;
+    component.title = GameTitle.FH5;
     fixture.detectChanges();
   });
 

@@ -9,6 +9,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Forte;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 
@@ -85,20 +86,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task<IList<PlayFabBuildLock>> GetMultipleAsync(WoodstockPlayFabEnvironment environment)
         {
-            IList<PlayFabBuildLockInternal> result;
+            return await this.GetMultipleAsync(environment.ToString(), TitleConstants.WoodstockCodeName.ToLowerInvariant()).ConfigureAwait(false);
+        }
 
-            try
-            {
-                var tableQuery = new TableQuery<PlayFabBuildLockInternal>().Where(TableQuery.GenerateFilterCondition("PlayFabEnvironment", QueryComparisons.Equal, environment.ToString()));
-
-                result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException("Failed to get PlayFab build locks.", ex);
-            }
-
-            return this.mapper.SafeMap<IList<PlayFabBuildLock>>(result);
+        /// <inheritdoc />
+        public async Task<IList<PlayFabBuildLock>> GetMultipleAsync(FortePlayFabEnvironment environment)
+        {
+            return await this.GetMultipleAsync(environment.ToString(), TitleConstants.ForteCodeName.ToLowerInvariant()).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -123,10 +117,40 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task<PlayFabBuildLock> DeleteAsync(WoodstockPlayFabEnvironment environment, Guid buildId)
         {
+            return await this.DeleteAsync(environment.ToString(), buildId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<PlayFabBuildLock> DeleteAsync(FortePlayFabEnvironment environment, Guid buildId)
+        {
+            return await this.DeleteAsync(environment.ToString(), buildId).ConfigureAwait(false);
+        }
+
+        private async Task<IList<PlayFabBuildLock>> GetMultipleAsync(string environment, string title)
+        {
+            IList<PlayFabBuildLockInternal> result;
+
+            try
+            {
+                var tableQuery = new TableQuery<PlayFabBuildLockInternal>()
+                    .Where(TableQuery.GenerateFilterCondition("PlayFabEnvironment", QueryComparisons.Equal, environment))
+                    .Where(TableQuery.GenerateFilterCondition("GameTitle", QueryComparisons.Equal, title));
+
+                result = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Failed to get PlayFab build locks.", ex);
+            }
+
+            return this.mapper.SafeMap<IList<PlayFabBuildLock>>(result);
+        }
+
+        private async Task<PlayFabBuildLock> DeleteAsync(string environment, Guid buildId)
+        {
             var existingBuildLock = await this.GetAsync(buildId).ConfigureAwait(true);
             var existingBuildLockInternal = this.mapper.SafeMap<PlayFabBuildLockInternal>(existingBuildLock);
-            var parsedExistingLockEnvironment = existingBuildLockInternal.PlayFabEnvironment.TryParseEnumElseThrow<WoodstockPlayFabEnvironment>(nameof(existingBuildLockInternal.PlayFabEnvironment));
-            if (parsedExistingLockEnvironment != environment)
+            if (existingBuildLockInternal.PlayFabEnvironment != environment)
             {
                 throw new InvalidArgumentsStewardException($"PlayFab build was found, but incorrect environment was provided. (environment: {environment}) (buildId: {buildId})");
             }

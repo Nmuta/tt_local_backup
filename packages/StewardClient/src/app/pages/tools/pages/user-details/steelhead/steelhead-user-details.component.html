@@ -93,6 +93,9 @@
           <inline-spinner [monitor]="gameOptions.getMonitor | renderGuard"
             >({{ gameOptions?.ugcContent?.length }})</inline-spinner
           >
+          <inline-spinner [monitor]="ugcReplays.getMonitor | renderGuard"
+            >({{ ugcReplays?.ugcContent?.length }})</inline-spinner
+          >
           <!-- <inline-spinner [monitor]="ugcHidden.getMonitor | renderGuard"></inline-spinner> -->
         </ng-template>
         <mat-tab-group>
@@ -207,6 +210,28 @@
               </mat-card-content>
             </mat-card>
           </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Replays
+              <inline-spinner [monitor]="ugcReplays.getMonitor | renderGuard"
+                >({{ ugcReplays?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Replays</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-ugc
+                  #ugcReplays
+                  [identity]="identity"
+                  [contentType]="UgcType.Replay"
+                  [usingIdentities]="true"
+                ></steelhead-player-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
         </mat-tab-group>
       </mat-tab>
       <mat-tab>
@@ -226,6 +251,9 @@
           >
           <inline-spinner [monitor]="hiddenUgcGameOptions.getMonitor | renderGuard"
             >({{ hiddenUgcGameOptions?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcReplays.getMonitor | renderGuard"
+            >({{ hiddenUgcReplays?.ugcContent?.length }})</inline-spinner
           >
         </ng-template>
         <mat-tab-group>
@@ -334,6 +362,28 @@
                   #hiddenUgcGameOptions
                   [identity]="identity"
                   [contentType]="UgcType.GameOptions"
+                  [usingIdentities]="true"
+                ></steelhead-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Replays
+              <inline-spinner [monitor]="hiddenUgcReplays.getMonitor | renderGuard"
+                >({{ hiddenUgcReplays?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Replays</mat-card-title>
+                <mat-card-subtitle>Steelhead</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <steelhead-player-hidden-ugc
+                  #hiddenUgcReplays
+                  [identity]="identity"
+                  [contentType]="UgcType.Replay"
                   [usingIdentities]="true"
                 ></steelhead-player-hidden-ugc>
               </mat-card-content>

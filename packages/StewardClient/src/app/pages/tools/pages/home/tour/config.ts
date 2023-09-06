@@ -8,6 +8,7 @@ export const homeTourSteps: IStepOption[] = [
     anchorId: 'shared-tour.centered',
     content:
       'Welcome to <b>Steward</b>!<br /><br />This brief tour will help familiarize you with some of the basic functions of the app.',
+    enableBackdrop: true,
   },
   {
     anchorId: 'home-tour.step.two',
@@ -61,5 +62,6 @@ export const homeTourSteps: IStepOption[] = [
   {
     anchorId: 'shared-tour.centered',
     content: "Now that we've covered the basics, you're ready to get started!",
+    enableBackdrop: true,
   },
 ];

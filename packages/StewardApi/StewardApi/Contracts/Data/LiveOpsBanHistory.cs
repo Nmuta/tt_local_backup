@@ -34,7 +34,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 featureArea,
                 reason,
                 banParameters,
-                endpoint)
+                endpoint,
+                null)
         {
         }
 
@@ -52,7 +53,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             string featureArea,
             string reason,
             string banParameters,
-            string endpoint)
+            string endpoint,
+            DateTime? createdTimeUtc)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -76,6 +78,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             this.Reason = reason;
             this.BanParameters = banParameters;
             this.Endpoint = endpoint;
+            this.CreatedTimeUtc = createdTimeUtc;
         }
 
         /// <summary>
@@ -156,11 +159,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public bool IsDeleted { get; set; }
 
         /// <summary>
+        ///     Gets or sets the created time of the ban.
+        /// </summary>
+        public DateTime? CreatedTimeUtc { get; set; }
+
+        /// <summary>
         ///     Makes a query for ban history that this model can read.
         /// </summary>
         public static string MakeQuery(ulong xuid, string title, string endpoint)
         {
-            return $"BanHistory | where Xuid == {xuid} and Title == '{title}' and Endpoint == '{endpoint}' | project Xuid, BanEntryId = coalesce(column_ifexists('BanEntryId', toint(-1)), toint(-1)), Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters, Endpoint";
+            return $"BanHistory | where Xuid == {xuid} and Title == '{title}' and Endpoint == '{endpoint}' | project Xuid, BanEntryId = coalesce(column_ifexists('BanEntryId', toint(-1)), toint(-1)), Title, RequesterObjectId = coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters, Endpoint, CreatedTimeUtc";
         }
 
         /// <summary>
@@ -178,7 +186,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                 reader.Get<string>(nameof(FeatureArea)),
                 reader.Get<string>(nameof(Reason)),
                 reader.Get<string>(nameof(BanParameters)),
-                reader.Get<string>(nameof(Endpoint)));
+                reader.Get<string>(nameof(Endpoint)),
+                reader.Get<DateTime>(nameof(CreatedTimeUtc)));
         }
     }
 }

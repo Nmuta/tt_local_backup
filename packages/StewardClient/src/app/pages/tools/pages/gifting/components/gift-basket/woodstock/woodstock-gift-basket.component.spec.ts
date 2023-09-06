@@ -5,7 +5,7 @@ import { WoodstockGiftBasketComponent } from './woodstock-gift-basket.component'
 import { GetWoodstockMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { of } from 'rxjs';
 import { WoodstockMasterInventory } from '@models/woodstock/woodstock-master-inventory.model';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SetWoodstockGiftBasket } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state.actions';
 import faker from '@faker-js/faker';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
@@ -23,7 +23,7 @@ describe('WoodstockGiftBasketComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftBasketComponent>;
   let component: WoodstockGiftBasketComponent;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
   let mockStore: Store;
   let mockWoodstockPlayersGiftService: WoodstockPlayersGiftService;
   let mockWoodstockGroupGiftService: WoodstockGroupGiftService;

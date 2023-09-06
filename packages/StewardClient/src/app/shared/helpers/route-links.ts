@@ -101,3 +101,8 @@ export function getLspTasksRoute(gameTitle: GameTitle) {
 export function getBountySearchRoute(gameTitle: GameTitle) {
   return getComponentBaseRoute(NavbarTool.SearchBounty, gameTitle);
 }
+
+/** Make bounty details route. */
+export function getBountyDetailsRoute(gameTitle: GameTitle, bountyId: string) {
+  return ['/app/tools/bounty-details/', gameTitle, bountyId];
+}
