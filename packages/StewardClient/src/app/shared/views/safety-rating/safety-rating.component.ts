@@ -114,7 +114,7 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
     this.formControls.isInProbation.setValue(safetyRating.isInProbationaryPeriod);
     this.formControls.grade.setValue(safetyRating.grade);
 
-    if (safetyRating.configuration.probationRaceCount.toNumber() <= 1) {
+    if (safetyRating.configuration.probationRaceCount.isLessThanOrEqualTo(1)) {
       this.formControls.isInProbation.setValue(false);
       this.formControls.isInProbation.disable();
       this.formControls.probationarySafetyRatingScore.disable();
