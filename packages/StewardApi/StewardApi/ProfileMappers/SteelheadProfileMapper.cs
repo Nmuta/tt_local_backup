@@ -678,8 +678,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TargetLspGroupId, opt => opt.Ignore());
 
             this.CreateMap<ForzaSafetyRatingLetterGrade, SafetyRatingGrade>();
-            this.CreateMap<ForzaSafetyRating, SafetyRating>()
-                .ForMember(dest => dest.Score, opt => opt.MapFrom(source => source.scoreValue));
+            this.CreateMap<SafetyRatingConfiguration, SafetyRatingConfig>();
+            this.CreateMap<(ForzaSafetyRating rating, SafetyRatingConfiguration config), SafetyRating>()
+                .ForMember(dest => dest.ProbationaryScoreEstimate, opt => opt.MapFrom(source => source.rating.probationaryScoreEstimate))
+                .ForMember(dest => dest.IsInProbationaryPeriod, opt => opt.MapFrom(source => source.rating.isInProbationaryPeriod))
+                .ForMember(dest => dest.Grade, opt => opt.MapFrom(source => source.rating.grade))
+                .ForMember(dest => dest.Score, opt => opt.MapFrom(source => source.rating.scoreValue))
+                .ForMember(dest => dest.Configuration, opt => opt.MapFrom(source => source.config));
 
             this.CreateMap<ForzaPlayerSkillRatingSummary, SkillRatingSummary>();
 
