@@ -1,0 +1,36 @@
+@import '/src/styles/mixins/';
+
+/* Force the card to cover everything */
+:host {
+  display: flex;
+  height: 100%;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+}
+
+mat-card {
+  flex-grow: 1;
+  max-height: unset;
+}
+
+/* Standard "No Settings Available" text */
+p {
+  display: none;
+}
+h2 + p {
+  display: unset;
+}
+
+/* Specific styles */
+mat-slide-toggle {
+  display: block;
+}
+
+span.endpoint-selectors {
+  margin-top: $gap-large;
+  display: block;
+}
+
+.endpoint-selection-warning {
+  display: block;
+}

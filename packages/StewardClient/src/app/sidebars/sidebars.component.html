@@ -19,14 +19,21 @@
       <div mat-subheader>Settings</div>
 
       <a mat-list-item
-        [routerLink]="['settings']"
+        [routerLink]="['settings/legacy']"
         queryParamsHandling="preserve"
         routerLinkActive="list-item-active"
         matTooltip="Settings">
-        <mat-icon
-          [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
-          matBadgeSize="small">settings</mat-icon>
-        Settings
+        <mat-icon>settings</mat-icon>
+        Old Settings
+      </a>
+
+      <a mat-list-item
+        [routerLink]="['settings/endpoints']"
+        queryParamsHandling="preserve"
+        routerLinkActive="list-item-active"
+        matTooltip="Settings">
+        <mat-icon>gps_fixed</mat-icon>
+        Endpoints
       </a>
 
     </mat-nav-list>

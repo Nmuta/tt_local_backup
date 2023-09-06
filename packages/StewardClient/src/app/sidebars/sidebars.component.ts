@@ -17,7 +17,6 @@ export class SidebarsComponent extends BaseComponent implements AfterViewInit {
   @ViewChild('changelogLink', { read: ElementRef }) changelogLink: ElementRef;
   @Select(ChangelogState.allPendingIds) public allPendingIds$: Observable<string[]>;
   public changelogNotificationCount = 0;
-  public settingsNotificationCount = 0;
 
   constructor(
     private readonly userSettingsService: UserSettingsService,

@@ -42,6 +42,7 @@ import { SidebarsRouterModule } from './sidebars.routing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatBadgeModule } from '@angular/material/badge';
+import { EndpointsComponent } from './settings/endpoints/endpoints.component';
 
 /** Module containing all routable sidebar components. */
 @NgModule({
@@ -54,6 +55,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     ChangelogTagDetailsComponent,
     ContactUsComponent,
     SidebarsComponent,
+    EndpointsComponent,
   ],
   imports: [
     ChangelogModule,
