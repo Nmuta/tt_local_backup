@@ -54,6 +54,37 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card *ngIf="showProfileOverrideOptions">
+  <mat-card-title>Profile Overrides</mat-card-title>
+  <mat-card-subtitle>
+    When selected, these controls force Steward to display as if you were another role. API access
+    does not change.
+  </mat-card-subtitle>
+  <div class="override-section">
+    <mat-form-field appearance="fill">
+      <mat-label>Active Role</mat-label>
+      <mat-select [(ngModel)]="activeRole" (selectionChange)="changeActiveRole($event)">
+        <mat-option [value]="undefined"> Do not override </mat-option>
+        <mat-option *ngFor="let role of roleList" [value]="role">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Guest Account Status</mat-label>
+      <mat-select
+        [(ngModel)]="guestAccountStatus"
+        (selectionChange)="changeGuestAccountStatus($event)"
+      >
+        <mat-option [value]="undefined">Do not override</mat-option>
+        <mat-option [value]="true">View as @microsoft</mat-option>
+        <mat-option [value]="false">View as Guest</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-card>
+
 <mat-card>
   <location-details></location-details>
 </mat-card>
