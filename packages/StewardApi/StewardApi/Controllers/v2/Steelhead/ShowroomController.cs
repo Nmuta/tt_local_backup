@@ -183,66 +183,58 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
         private async Task<IEnumerable<LiveOpsContracts.CarFeaturedShowcase>> GetCarFeaturedShowcasesAsync(string environment, string slot, string snapshot)
         {
-            IEnumerable<LiveOpsContracts.CarFeaturedShowcase> carFeaturedShowcases;
-
             try
             {
-                carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync(environment, slot, snapshot);
+                var carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync(environment, slot, snapshot);
+
+                return carFeaturedShowcases;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to get car featured showcases.", ex);
             }
-
-            return carFeaturedShowcases;
         }
 
         private async Task<IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase>> GetDivisionFeaturedShowcasesAsync(string environment, string slot, string snapshot)
         {
-            IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase> divisionFeaturedShowcases;
-
             try
             {
-                divisionFeaturedShowcases = await this.steelheadPegasusService.GetDivisionFeaturedShowcasesAsync(environment, slot, snapshot);
+                var divisionFeaturedShowcases = await this.steelheadPegasusService.GetDivisionFeaturedShowcasesAsync(environment, slot, snapshot);
+
+                return divisionFeaturedShowcases;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to get division featured showcases.", ex);
             }
-
-            return divisionFeaturedShowcases;
         }
 
         private async Task<IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase>> GetManufacturerFeaturedShowcasesAsync(string environment, string slot, string snapshot)
         {
-            IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase> manufacturerFeaturedShowcases;
-
             try
             {
-                manufacturerFeaturedShowcases = await this.steelheadPegasusService.GetManufacturerFeaturedShowcasesAsync(environment, slot, snapshot);
+                var manufacturerFeaturedShowcases = await this.steelheadPegasusService.GetManufacturerFeaturedShowcasesAsync(environment, slot, snapshot);
+
+                return manufacturerFeaturedShowcases;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to get car manufacturer showcases.", ex);
             }
-
-            return manufacturerFeaturedShowcases;
         }
 
         private async Task<IEnumerable<LiveOpsContracts.CarSale>> GetCarSalesAsync(string environment, string slot, string snapshot)
         {
-            IEnumerable<LiveOpsContracts.CarSale> carSales;
-
             try
             {
-                carSales = await this.steelheadPegasusService.GetCarSalesAsync(environment, slot, snapshot);
+                var carSales = await this.steelheadPegasusService.GetCarSalesAsync(environment, slot, snapshot);
+
+                return carSales;
             }
             catch (Exception ex)
             {
                 throw new UnknownFailureStewardException($"Failed to get car sales.", ex);
             }
-
-            return carSales;
         }
     }
 }
