@@ -1,0 +1,49 @@
+@import '/src/styles/mixins';
+
+$quantity-column-width: 200px;
+$actions-column-width: 160px;
+
+table {
+  width: 100%;
+
+  tr.giftError {
+    background-color: app-color-lighter($app-warn);
+  }
+}
+
+.item-id-text {
+  color: app-color-default($app-primary);
+}
+
+mat-panel-description {
+  flex-grow: 0;
+  text-align: right;
+}
+
+.mat-column-quantity {
+  padding-left: 0;
+  padding-right: 2em;
+}
+
+.item-warning {
+  height: 1em;
+  width: 1em;
+  font-size: 1em;
+  margin-left: 0.25em;
+  margin-right: 0;
+  padding: 0;
+}
+
+.mat-column-actions {
+  @include table-width($actions-column-width);
+  text-align: right;
+}
+
+.mat-column-quantity {
+  @include table-width($quantity-column-width);
+}
+
+.edit-button,
+.undo-button {
+  margin-left: $gap-medium;
+}

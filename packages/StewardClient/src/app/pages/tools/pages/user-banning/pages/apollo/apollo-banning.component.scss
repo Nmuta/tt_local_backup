@@ -1,0 +1,13 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+.ban-action-container {
+  margin-top: $gap-medium;
+
+  .mat-checkbox {
+    margin-left: $gap-small;
+  }
+}

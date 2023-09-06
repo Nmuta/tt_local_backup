@@ -1,0 +1,20 @@
+.mat-button .mat-button-wrapper,
+.mat-flat-button .mat-button-wrapper,
+.mat-stroked-button .mat-button-wrapper,
+.mat-raised-button .mat-button-wrapper,
+.mat-icon-button .mat-button-wrapper,
+.mat-fab .mat-button-wrapper,
+.mat-mini-fab .mat-button-wrapper {
+  // In the angular-material rules, this is & > * { vertical-align: middle }
+  // which does not work with SVG Icons.
+  & > mat-icon[svgIcon] {
+    vertical-align: unset;
+  }
+}
+
+// The default size for svgIcon containers is 24*24px, though the SVG itself seems to respect the inherited font size
+// This forces the container to also respect the inherited font size
+mat-icon[svgIcon] {
+  height: 1em;
+  width: 1em;
+}

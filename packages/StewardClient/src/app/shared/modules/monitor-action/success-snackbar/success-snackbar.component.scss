@@ -1,0 +1,19 @@
+@import '/src/styles/mixins';
+
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message {
+  font-size: 1.25em;
+  .label {
+    font-weight: bold;
+  }
+}
+
+.spacer {
+  flex-grow: 1;
+}

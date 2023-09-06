@@ -1,0 +1,56 @@
+@import '/src/styles/mixins/';
+
+/* Tasteful margin */
+:host {
+  display: block;
+  padding: 1rem 2rem;
+  width: 50vw;
+}
+
+:host ::ng-deep mat-card {
+  margin-bottom: $gap-medium;
+}
+
+/* Specific styles */
+$textAreaMinSizePx: 100px;
+$labelMaxSizePx: 700px;
+
+.mat-button-toggle-checked.mat-button-toggle-checked {
+  background-color: app-color-default($app-primary);
+  color: app-color-default-contrast($app-primary);
+}
+
+mat-label {
+  max-width: $labelMaxSizePx;
+}
+
+textarea {
+  min-height: $textAreaMinSizePx;
+}
+
+mat-button-toggle,
+button {
+  min-width: $button-min-size;
+}
+
+.message-too-long {
+  color: app-color-default($app-warn);
+}
+
+.submitted-container {
+  .sf-horizontal {
+    margin-top: $gap-large;
+  }
+
+  p {
+    text-align: center;
+  }
+}
+
+.mat-icon {
+  flex-grow: 0;
+}
+
+.large-icon {
+  transform: scale(3);
+}

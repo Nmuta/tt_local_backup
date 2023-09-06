@@ -1,0 +1,11 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+mat-form-field {
+  max-width: $single-input-max-width;
+  width: 100%;
+  flex-grow: 0;
+}

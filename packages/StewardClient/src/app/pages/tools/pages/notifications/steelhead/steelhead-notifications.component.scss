@@ -1,0 +1,10 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+steelhead-active-pull-requests {
+  display: block;
+  margin-top: $gap-medium;
+}

@@ -1,0 +1,14 @@
+@import '/src/styles/mixins';
+
+.gift-results-container {
+  overflow: auto;
+  margin-bottom: $gap-medium;
+
+  .players-with-errors-text {
+    color: app-color-default($app-warn);
+  }
+
+  .gift-result-error {
+    background-color: app-color-lighter($app-warn);
+  }
+}

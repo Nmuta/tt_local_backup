@@ -1,0 +1,21 @@
+@import '/src/styles/mixins';
+
+mat-icon {
+  &.disabled {
+    color: app-color($app-foreground, 'disabled-text') !important;
+  }
+
+  &.green-icon {
+    color: app-color-default($app-success);
+  }
+
+  &.red-icon {
+    color: app-color-default($app-warn);
+  }
+}
+
+button button.mat-icon-button {
+  height: 36px;
+  width: 36px;
+  line-height: 36px;
+}

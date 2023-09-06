@@ -1,0 +1,38 @@
+@import '/src/styles/mixins';
+
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+
+mat-drawer-container {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+mat-drawer {
+  max-width: 75%;
+  background: $sidebar-background;
+}
+
+// this is an implicit element, so we have to use ::ng-deep
+:host ::ng-deep mat-drawer-content {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100%;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+// grow only the transcluded content
+:host ::ng-deep .content > router-outlet + * {
+  flex-grow: 1;
+}

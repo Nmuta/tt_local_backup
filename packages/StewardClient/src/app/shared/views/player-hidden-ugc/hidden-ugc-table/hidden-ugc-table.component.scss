@@ -1,0 +1,50 @@
+@import '/src/styles/mixins';
+
+img.inline-preview {
+  max-width: 20vw;
+}
+
+table {
+  width: 100%;
+}
+
+td.mat-column-actions {
+  button {
+    margin-right: $gap-small;
+  }
+
+  div.unhide-score {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+
+    button {
+      margin-right: $gap-small;
+      display: inline-block;
+    }
+  }
+}
+
+img {
+  @include standard-image-border();
+}
+
+.placeholder-image-wrapper {
+  width: 20em;
+  position: relative;
+  > img {
+    width: 100%;
+  }
+  filter: sepia() hue-rotate(-44deg) saturate(500%) opacity(0.1); // faded red image
+
+  > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

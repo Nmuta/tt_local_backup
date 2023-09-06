@@ -1,0 +1,64 @@
+@import '/src/styles/mixins';
+
+mat-card {
+  position: absolute;
+
+  top: 50%;
+  transform: translateY(-50%);
+
+  max-width: $intro-card-width;
+  width: 100%;
+
+  h1,
+  h2 {
+    color: app-color-default($app-primary);
+  }
+}
+
+center-contents {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  &.bg1 {
+    background: url('/assets/promo/FH5_Mural_CIX_16000x16000_RGB-3840.png') center center / cover;
+  }
+
+  &.bg2 {
+    background: url('/assets/promo/FH5_Mural_Farid-Rueda-Leon_16001x10360_RGB-3840.png') center
+      center / cover;
+  }
+
+  &.bg3 {
+    background: url('/assets/promo/FH5_Mural_Farid-Rueda-Oso_14504x10187_RGB-3840.png') center
+      center / cover;
+  }
+
+  &.bg4 {
+    background: url('/assets/promo/FH5_Mural_Raularias_16000x16000_RGB-3840.png') center center /
+      cover;
+  }
+
+  &.bg5 {
+    background: url('/assets/promo/FH5_Mural_Senkoeilus_16000x16000_RGB-3840.png') center center /
+      cover;
+  }
+
+  &.bg6 {
+    background: url('/assets/promo/FH5_Mural_Spaid-Fiesta-en-el-bajio_16000x16000_RGB-3840.png')
+      center center / cover;
+  }
+
+  &.bg7 {
+    background: url('/assets/promo/FH5_Mural_STAR27_16001x16001_RGB-3840.png') center center / cover;
+  }
+}
+
+mat-card.glassy {
+  backdrop-filter: blur(10px);
+  background-color: app-color-default($app-background, 60%);
+}

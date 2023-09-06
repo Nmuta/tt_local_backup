@@ -1,0 +1,24 @@
+:host {
+  height: 100%;
+}
+
+.center-message {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  &,
+  * {
+    text-align: center;
+  }
+}
+
+img {
+  width: 640px;
+  height: 480px;
+}
+
+pre {
+  white-space: pre-wrap;
+  overflow: hidden;
+}

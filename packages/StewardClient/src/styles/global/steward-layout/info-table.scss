@@ -1,0 +1,13 @@
+table.info-table {
+  th {
+    white-space: nowrap;
+    vertical-align: top;
+    text-align: right;
+    padding-right: 5px;
+  }
+
+  td {
+    width: 100%;
+    overflow-wrap: break-word;
+  }
+}

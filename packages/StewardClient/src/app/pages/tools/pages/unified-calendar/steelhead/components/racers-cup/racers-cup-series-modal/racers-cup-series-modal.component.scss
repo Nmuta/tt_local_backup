@@ -1,0 +1,71 @@
+@import '/src/styles/mixins';
+
+.subtitle {
+  @include modal-subtitle;
+}
+
+:host {
+  max-width: 80vw;
+}
+
+h2 {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.modal-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.dialog-content {
+  max-height: unset;
+  overflow: unset;
+  min-width: 60vw;
+}
+
+.event-details {
+  flex: 0 0 18rem;
+  margin: 0.5em;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.event-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  /* This is better for small screens, once min() is better supported */
+  /* grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); */
+  gap: 1rem;
+
+  .spacer {
+    flex-grow: 1;
+  }
+
+  > * {
+    margin: 0.5em;
+  }
+}
+
+.series-events {
+  flex: 70 0 0;
+  max-height: 60vh;
+  overflow-y: scroll;
+}
+
+div.game-options {
+  border-top: 0.25em solid app-color-default($app-primary);
+  border-bottom: none;
+  border-right: none;
+  border-left: none;
+}
+
+racers-cup-event-card {
+  border: 5px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  &.selected {
+    border-color: app-color-default($app-primary);
+  }
+}

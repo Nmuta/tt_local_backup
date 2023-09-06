@@ -1,0 +1,30 @@
+@import '/src/styles/mixins';
+
+:host ::ng-deep mat-card {
+  margin-top: 20px;
+
+  width: 500px;
+  max-width: 500px;
+  max-height: unset;
+
+  h1,
+  h2 {
+    color: app-color-default($app-primary);
+  }
+}
+
+ul {
+  display: flex;
+  flex-flow: row wrap;
+  li {
+    list-style-type: none;
+    padding: 0;
+    a {
+      padding: 10px;
+    }
+  }
+}
+
+center-contents {
+  padding-bottom: 5em;
+}

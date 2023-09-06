@@ -1,0 +1,24 @@
+ul {
+  list-style: none;
+  margin-top: 0;
+  padding-left: 0;
+}
+
+* {
+  text-align: left;
+}
+
+mat-expansion-panel.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+button {
+  margin: 0.25em;
+}
+
+h2 {
+  margin-top: 1em;
+  margin-bottom: 0;
+}

@@ -1,0 +1,22 @@
+@import '/src/styles/mixins';
+
+mat-card {
+  form {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .clear-selection-button {
+    line-height: 100%;
+    margin-left: 1em;
+    @include align-mat-fab-button-with-input();
+  }
+}
+
+.preselect-error {
+  color: app-color-default($app-warn);
+}

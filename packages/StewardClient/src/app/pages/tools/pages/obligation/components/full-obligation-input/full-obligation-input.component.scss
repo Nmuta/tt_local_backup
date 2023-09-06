@@ -1,0 +1,5 @@
+@import '/src/styles/mixins';
+
+:host ::ng-deep .standard-form {
+  @include standard-form;
+}

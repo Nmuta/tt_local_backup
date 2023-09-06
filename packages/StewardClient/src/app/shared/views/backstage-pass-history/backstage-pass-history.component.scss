@@ -1,0 +1,23 @@
+@import '/src/styles/mixins';
+
+mat-card {
+  @include flex-column-fill;
+}
+
+.table-container {
+  width: 100%;
+  overflow: auto;
+
+  table {
+    width: 100%;
+  }
+}
+
+.load-more-container {
+  text-align: center;
+
+  button {
+    margin-top: $gap-medium;
+    margin-bottom: $gap-medium;
+  }
+}

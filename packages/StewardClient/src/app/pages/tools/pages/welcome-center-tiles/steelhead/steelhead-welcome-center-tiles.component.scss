@@ -1,0 +1,23 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+mat-card {
+  mat-card-content {
+    padding: $gap-medium 0;
+  }
+}
+
+mat-tab-group {
+  margin: $gap-medium;
+}
+
+::ng-deep mat-card {
+  margin-bottom: $gap-medium;
+}
+
+.mat-checkbox {
+  margin-left: $gap-small;
+}

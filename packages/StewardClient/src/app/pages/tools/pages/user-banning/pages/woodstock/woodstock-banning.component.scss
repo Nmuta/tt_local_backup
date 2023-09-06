@@ -1,0 +1,53 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+.ban-area {
+  margin-bottom: $gap-medium;
+}
+
+.ban-action-container {
+  margin-bottom: $gap-medium;
+  button {
+    min-width: $button-min-size;
+  }
+}
+
+.ban-override-container {
+  margin-top: $gap-large;
+}
+
+.ban-override-duration-picker {
+  margin-top: $gap-large;
+}
+
+.override-field {
+  max-width: $container-width-small;
+}
+
+.ban-area {
+  label,
+  span {
+    display: block;
+  }
+}
+
+.mat-button-toggle-checked.mat-button-toggle-checked {
+  background-color: app-color-default($app-primary);
+  color: app-color-default-contrast($app-primary);
+}
+
+.warn {
+  color: app-color-default($app-warn);
+}
+
+button {
+  max-width: $button-min-size;
+  width: 100%;
+}
+
+.duration {
+  flex-grow: 0;
+}

@@ -1,0 +1,188 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@import './_palettes.scss';
+
+/// Produces an "r, g, b" string for embedding in a CSS var
+@function toRGB($color) {
+  @return red($color) + ', ' + green($color) + ', ' + blue($color);
+}
+
+/// Produces an "r, g, b, a" string for embedding in a CSS var
+@function toRGBA($color) {
+  @return red($color) + ', ' + green($color) + ', ' + blue($color) + ', ' + alpha($color);
+}
+
+/// Produces CSS vars for a given color
+/// --hex-name: hexcode
+/// --rgb-name: r, g, b
+/// --rgba-name: r, g, b, a
+@mixin colorToVars($name, $color) {
+  --hex-#{$name}: #{$color};
+  --rgb-#{$name}: #{toRGB($color)};
+  --rgba-#{$name}: #{toRGBA($color)};
+}
+
+/// Determines the CSS var-name suffix for the given palette+style
+@function makeLookupName($palette-name, $style) {
+  @return $palette-name + '-' + $style;
+}
+
+/// Produces the CSS vars, given color + darkmode + palette + style-names
+@mixin entryToVars($color-config, $is-dark, $palette-name, $style, $darkmode-style-name) {
+  $lookup-name: makeLookupName($palette-name, $style);
+  @if ($is-dark) {
+    $lookup-name: makeLookupName($palette-name, $darkmode-style-name);
+  }
+
+  $palette: map.get($color-config, $palette-name);
+  $color: mat.get-color-from-palette($palette, $style);
+  @include colorToVars($lookup-name, $color);
+}
+
+// Produces CSS vars for a given color-config
+@mixin colorConfigToVars($color-config, $is-dark) {
+  @include entryToVars($color-config, $is-dark, 'primary', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'primary', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'primary', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'primary', 'text', 'text');
+  @include entryToVars($color-config, $is-dark, 'accent', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'accent', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'accent', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'accent', 'text', 'text');
+  @include entryToVars($color-config, $is-dark, 'warn', 'default', 'default');
+  @include entryToVars($color-config, $is-dark, 'warn', 'lighter', 'darker');
+  @include entryToVars($color-config, $is-dark, 'warn', 'darker', 'lighter');
+  @include entryToVars($color-config, $is-dark, 'warn', 'text', 'text');
+  @include colorToVars(makeLookupName('unknown', 'default'), lime);
+  @include colorToVars(makeLookupName('unknown', 'lighter'), lime);
+  @include colorToVars(makeLookupName('unknown', 'darker'), lime);
+  @include colorToVars(makeLookupName('unknown', 'text'), lime);
+  @include entryToVars($color-config, $is-dark, 'primary', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'primary', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'primary', 'darker-contrast', 'lighter-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'accent', 'darker-contrast', 'lighter-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'default-contrast', 'default-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'lighter-contrast', 'darker-contrast');
+  @include entryToVars($color-config, $is-dark, 'warn', 'darker-contrast', 'lighter-contrast');
+
+  // you'd expect this to exist, since `text` does above. but it does not
+  // @include entryToVars($color-config, $is-dark, 'primary', 'text-contrast', 'text-contrast');
+  // @include entryToVars($color-config, $is-dark, 'accent', 'text-contrast', 'text-contrast');
+  // @include entryToVars($color-config, $is-dark, 'warn', 'text-contrast', 'text-contrast');
+
+  @include colorToVars(makeLookupName('unknown', 'default-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'lighter-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'darker-contrast'), lime);
+  @include colorToVars(makeLookupName('unknown', 'text-contrast'), lime);
+}
+
+// Produces the CSS vars for a given foreground/background palette combination
+@mixin themePalettesToVars(
+  $theme-foreground-palette,
+  $theme-background-palette,
+  $lighten-operator,
+  $darken-operator
+) {
+  $secondary-text-color: map.get($theme-foreground-palette, 'secondary-text');
+
+  // special vars
+  --#{makeLookupName('foreground', 'secondary-text-opacity')}: #{alpha($secondary-text-color)};
+
+  // foreground-based vars
+  @include colorToVars(makeLookupName('foreground', 'secondary-text'), $secondary-text-color);
+  @include colorToVars(
+    makeLookupName('background', 'default-contrast'),
+    map-get($theme-foreground-palette, 'base')
+  );
+  @include colorToVars(
+    makeLookupName('background', 'default-contrast'),
+    map-get($theme-foreground-palette, 'base')
+  );
+  @include colorToVars(
+    makeLookupName('background', 'lighter-contrast'),
+    adjustColor($lighten-operator, map-get($theme-foreground-palette, 'base'), 20%)
+  );
+  @include colorToVars(
+    makeLookupName('background', 'darker-contrast'),
+    adjustColor($darken-operator, map-get($theme-foreground-palette, 'base'), 20%)
+  );
+  @include colorToVars(
+    makeLookupName('background', 'text-contrast'),
+    map-get($theme-foreground-palette, 'base')
+  );
+  @include colorToVars(
+    makeLookupName('foreground', 'disabled-text'),
+    map-get($theme-foreground-palette, 'disabled-text')
+  );
+
+  // background-based vars
+  @include colorToVars(
+    makeLookupName('background', 'default'),
+    map-get($theme-background-palette, 'background')
+  );
+  @include colorToVars(
+    makeLookupName('background', 'lighter'),
+    adjustColor($lighten-operator, map-get($theme-background-palette, 'background'), 20%)
+  );
+  @include colorToVars(
+    makeLookupName('background', 'darker'),
+    adjustColor($darken-operator, map-get($theme-background-palette, 'background'), 20%)
+  );
+  @include colorToVars(
+    makeLookupName('background', 'text'),
+    map-get($theme-background-palette, 'background')
+  );
+  @include colorToVars(
+    makeLookupName('background', 'card'),
+    map-get($theme-background-palette, 'card')
+  );
+}
+
+/// Applies the provided $operator to the provided $color, with $percentage as the second param
+/// Supports 'lighten' and 'darken'
+@function adjustColor($operator, $color, $percentage) {
+  @if ($operator == 'lighten') {
+    @return lighten($color, $percentage);
+  } @else if ($operator == 'darken') {
+    @return darken($color, $percentage);
+  } @else {
+    @error 'Unsupported operator. Use `lighten` or `darken`.';
+  }
+}
+
+/// Converts a palette into a string used by CSS vars
+@function paletteToString($palette) {
+  @if ($palette == $app-primary) {
+    @return 'primary';
+  } @else if ($palette == $app-accent) {
+    @return 'accent';
+  } @else if ($palette == $app-warn) {
+    @return 'warn';
+  } @else if ($palette == $app-background) {
+    @return 'background';
+  } @else if ($palette == $app-foreground) {
+    @return 'foreground';
+  } @else {
+    @return 'unknown';
+  }
+}
+
+// if a number, returns the number
+// if a string, returns the valid mapped value
+// in all other cases, errors
+@function namedOpacityVarOrValue($opacity) {
+  @if (type-of($opacity) == 'number') {
+    // all numbers are considered valid
+    @return $opacity;
+  } @else if (type-of($opacity) == 'string') {
+    // if it's a string, it must be on this list to be valid
+    @if ($opacity == 'secondary-text') {
+      @return var(--#{makeLookupName('foreground', 'secondary-text-opacity')});
+    }
+  }
+
+  // all other values are illegal
+  @error 'namedOpacityOrValue was given unrecognized value "#{$opacity}';
+}

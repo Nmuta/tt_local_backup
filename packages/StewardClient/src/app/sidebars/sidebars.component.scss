@@ -1,0 +1,60 @@
+@import '/src/styles/mixins';
+
+mat-drawer-container {
+  height: 100%;
+}
+
+mat-drawer {
+  border-right: 1px solid black;
+}
+
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 100%;
+}
+
+.list-item-active {
+  background-color: $sidebar-navigation-background;
+  color: $sidebar-navigation-text;
+}
+
+a[mat-list-item] mat-icon {
+  padding-right: .25em;
+}
+
+div[mat-subheader] {
+  padding-top: .5em;
+  padding-bottom: .5em;
+  margin-top: 1em;
+  margin-bottom: .25em;
+  height: auto;
+  background-color: app-color-lighter($app-background, 0.2);
+  border-top: 2px solid app-color-darker($app-background);
+  justify-content: center;
+
+  mat-icon {
+    padding-right: .25em;
+  }
+}
+
+.deprecated {
+  &, * {
+    color: app-color-text-contrast($app-background, 0.4) !important;
+  }
+}
+
+.sidebar-navigation {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.app-version {
+  padding: .5em;
+  color: app-color-lighter-contrast($app-background, 70%);
+}

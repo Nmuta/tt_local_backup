@@ -1,0 +1,50 @@
+table {
+  width: 100%;
+}
+
+tr {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: 1em;
+  > td {
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+
+    &:not(:last-child) {
+      padding-right: 1em;
+    }
+
+    &:not(:first-child) {
+      padding-left: 1em;
+    }
+
+    &.grow {
+      flex-grow: 1;
+    }
+  }
+}
+
+.table-scrollbox {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.grow mat-form-field {
+  width: 100%;
+}
+
+td.mat-cell {
+  border-bottom: none;
+}
+
+.actions {
+  margin: 1em 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}

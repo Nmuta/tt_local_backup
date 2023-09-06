@@ -1,0 +1,21 @@
+@import '/src/styles/mixins';
+
+.top-spacing {
+  margin-top: $gap-medium;
+  display: block;
+}
+
+.lookup-failed-card {
+  margin-top: $gap-large;
+  padding: $gap-large 0;
+  text-align: center;
+
+  mat-card-content {
+    margin-top: $gap-medium;
+  }
+}
+
+json-dump {
+  width: 100%;
+  margin: 0;
+}

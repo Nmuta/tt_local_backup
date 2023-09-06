@@ -1,0 +1,46 @@
+@import '/src/styles/mixins';
+
+table {
+  width: 100%;
+}
+
+.mat-column-actions {
+  @include table-width($container-width-small);
+}
+
+mat-checkbox {
+  margin-left: $gap-small;
+}
+
+.delete-all-button {
+  margin-top: $gap-small;
+}
+
+form {
+  mat-form-field.useridentifications {
+    max-width: $container-width-large;
+    width: 100%;
+
+    textarea {
+      min-height: $container-height-small;
+      max-height: $container-height-medium;
+    }
+  }
+
+  .actions-group {
+    display: inline-block;
+  }
+
+  .player-type-toggle {
+    margin-bottom: $gap-small;
+  }
+
+  .action {
+    margin-left: $gap-small;
+    margin-bottom: $gap-small;
+  }
+}
+
+.warning-for-users {
+  color: app-color-default($app-warn);
+}

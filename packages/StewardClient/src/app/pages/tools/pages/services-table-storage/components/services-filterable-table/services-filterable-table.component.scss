@@ -1,0 +1,11 @@
+@import '/src/styles/mixins';
+
+.lookup {
+  max-width: $button-min-size;
+  width: 100%;
+}
+
+div.actions {
+  display: grid;
+  margin-bottom: $gap-small;
+}

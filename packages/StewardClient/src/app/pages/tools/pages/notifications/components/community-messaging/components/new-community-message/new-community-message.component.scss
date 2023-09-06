@@ -1,0 +1,28 @@
+@import '/src/styles/mixins';
+
+mat-form-field.community-message {
+  width: 100%;
+
+  textarea {
+    min-height: $text-area-medium-height;
+    max-height: $text-area-max-height;
+  }
+}
+
+mat-form-field.device-type {
+  margin-right: 1.5em;
+}
+
+mat-form-field.expiry-date {
+  margin-right: 1.5em;
+}
+
+button {
+  max-width: $button-min-size;
+  width: 100%;
+  position: relative;
+}
+
+.lockStartTimeWarning {
+  color: app-color-default($app-warn);
+}

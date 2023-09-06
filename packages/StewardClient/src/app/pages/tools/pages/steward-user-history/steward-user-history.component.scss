@@ -1,0 +1,39 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+
+  mat-card {
+    margin: $gap-medium;
+    flex-grow: unset;
+  }
+
+  tr {
+    cursor: pointer;
+  }
+
+  tr:hover {
+    background-color: $table-tr-hover;
+  }
+}
+
+table {
+  width: 100%;
+
+  .row-error {
+    background-color: app-color-lighter($app-warn);
+  }
+}
+
+.selected-background-job {
+  margin-top: $gap-large;
+
+  button {
+    margin-right: $gap-small;
+  }
+
+  json-table-results {
+    margin-top: $gap-large;
+    display: block;
+  }
+}

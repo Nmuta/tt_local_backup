@@ -1,0 +1,47 @@
+mat-accordion .mat-expansion-panel-header-title {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-accordion .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-panel-title {
+  flex-basis: 33%;
+  flex-grow: 0;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+mat-panel-description {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.flex-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 0;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.actions {
+  margin: 1em 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}

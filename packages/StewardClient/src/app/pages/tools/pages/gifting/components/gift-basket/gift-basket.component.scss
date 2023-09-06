@@ -1,0 +1,77 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill;
+}
+
+mat-card {
+  h2 {
+    margin-bottom: 0;
+  }
+
+  .hide-content {
+    display: none;
+  }
+
+  .item-selection-form-field {
+    width: 100%;
+    margin-right: $gap-small;
+  }
+
+  .quantity-form-field {
+    margin-right: $gap-small;
+  }
+
+  .table-container {
+    .row-error {
+      background-color: app-color-highlight-background();
+    }
+
+    table {
+      width: 100%;
+
+      .mat-column-itemId {
+        @include table-width(100);
+      }
+
+      .mat-column-quantity {
+        @include table-width(180);
+
+        .edit {
+          width: 100%;
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+        }
+
+        ::ng-deep .mat-form-field-infix {
+          width: 100%;
+        }
+
+        mat-icon {
+          margin-left: 0.6em;
+          margin-right: 0.6em;
+        }
+      }
+
+      .mat-column-description {
+        padding-right: $gap-large;
+      }
+
+      .mat-column-itemType {
+        @include table-width(120);
+      }
+
+      .mat-column-remove {
+        @include table-width(50);
+      }
+
+      .mat-row {
+        td {
+          margin-top: $gap-small;
+          margin-bottom: $gap-small;
+        }
+      }
+    }
+  }
+}

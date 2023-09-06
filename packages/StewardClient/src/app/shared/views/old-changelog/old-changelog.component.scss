@@ -1,0 +1,33 @@
+@import '/src/styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+  margin-top: $gap-large;
+  bottom: 0;
+  left: 0;
+  position: relative;
+
+  max-height: 40vh;
+
+  mat-panel-title {
+    font-weight: 700;
+  }
+
+  .new-release-found-text {
+    color: app-color-default($app-accent);
+  }
+}
+
+.chipify {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border-radius: 1em;
+}
+
+mat-icon {
+  height: 1em;
+  width: 1em;
+  font-size: 1em;
+  line-height: 1em;
+}

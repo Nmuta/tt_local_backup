@@ -1,0 +1,25 @@
+@import '/src/styles/mixins';
+
+$xuidTextAreaMinSizePx: 200px;
+$xuidTextAreaMaxSizePx: 500px;
+
+form {
+  mat-form-field.env-selection {
+    margin-right: $gap-small;
+  }
+
+  mat-form-field.xuids {
+    max-width: $xuidTextAreaMaxSizePx;
+    width: 100%;
+    display: block;
+
+    textarea {
+      min-height: $xuidTextAreaMinSizePx;
+      max-height: $xuidTextAreaMaxSizePx;
+    }
+  }
+
+  .lookup-xuids-form button {
+    display: block;
+  }
+}

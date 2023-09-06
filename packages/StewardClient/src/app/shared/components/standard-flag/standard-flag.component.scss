@@ -1,0 +1,15 @@
+@import '/src/styles/mixins';
+
+mat-icon {
+  top: $gap-micro;
+  position: relative;
+  overflow: visible;
+
+  &.green-icon {
+    color: app-color-default($app-success);
+  }
+
+  &.red-icon {
+    color: app-color-default($app-warn);
+  }
+}

@@ -1,0 +1,49 @@
+@import '/src/styles/mixins/';
+
+/* Tasteful margin */
+:host {
+  display: block;
+  padding: 1rem 2rem;
+  min-width: 30vw;
+}
+
+:host ::ng-deep mat-card {
+  margin-bottom: $gap-medium;
+}
+
+/* Specific styles */
+
+p {
+  display: none;
+}
+h2 + p {
+  display: unset;
+}
+
+mat-slide-toggle {
+  display: block;
+}
+
+span.endpoint-selectors {
+  margin-top: $gap-large;
+  display: block;
+}
+
+.override-section {
+  display: flex;
+  flex-flow: row wrap;
+  margin: calc(-1 * $gap-small / 2);
+  & > * {
+    margin: calc($gap-small / 2);
+  }
+}
+
+.endpoint-selection-warning {
+  display: block;
+}
+
+.theme-card-content {
+  * {
+    margin-top: 1em;
+  }
+}

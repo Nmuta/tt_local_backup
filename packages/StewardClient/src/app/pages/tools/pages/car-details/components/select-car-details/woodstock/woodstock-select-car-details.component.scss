@@ -1,0 +1,7 @@
+@import '/src/styles/mixins';
+
+@include flex-navbar-fill;
+
+woodstock-make-model-autocomplete {
+  margin: $gap-large;
+}

@@ -1,0 +1,12 @@
+// apply vertical margin to a <mat-divider> by modifying its padding and the immediate sibling's padding.
+//
+// ```scss
+// # example
+// mat-divider { @include tweak-mat-divider-vertical-padding(3em, 2em); }
+// ```
+@mixin tweak-mat-divider-vertical-padding($top-margin, $bottom-margin) {
+  margin-top: $top-margin;
+  & + * {
+    margin-top: $top-margin + $bottom-margin !important; // must be important to avoid css specificity issues
+  }
+}

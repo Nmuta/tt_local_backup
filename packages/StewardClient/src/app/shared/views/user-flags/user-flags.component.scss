@@ -1,0 +1,20 @@
+@import '/src/styles/mixins';
+mat-card-header {
+  > mat-checkbox {
+    margin-top: $gap-small;
+  }
+}
+
+section.checkboxes {
+  > mat-checkbox {
+    display: block;
+  }
+}
+
+.reset-button {
+  margin: 0 0.5em;
+}
+
+:host ::ng-deep .mat-card-title-group {
+  justify-content: unset;
+}

@@ -1,0 +1,98 @@
+@import './_helpers';
+
+/// Helper for all following functions.
+/// Turns a given palette + style + opacity into a usable color by referencing CSS vars
+@function app-color($palette, $style, $opacity: null) {
+  $palette-name: paletteToString($palette);
+  $var-name: makeLookupName($palette-name, $style);
+  @if ($opacity) {
+    $real-opacity: namedOpacityVarOrValue($opacity);
+    @return rgba(var(--rgb-#{$var-name}), $real-opacity);
+  } @else {
+    @return var(--hex-#{$var-name});
+  }
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-default($palette, $opacity: null) {
+  @return app-color($palette, 'default', $opacity);
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-lighter($palette, $opacity: null) {
+  @return app-color($palette, 'lighter', $opacity);
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-darker($palette, $opacity: null) {
+  @return app-color($palette, 'darker', $opacity);
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-text($palette, $opacity: null) {
+  @return app-color($palette, 'text', $opacity);
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-default($app-primary)
+/// color: app-color-default-contrast($app-primary)
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-default-contrast($theme, $opacity: null) {
+  @return app-color($theme, default-contrast, $opacity);
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-lighter($app-primary)
+/// color: app-color-lighter-contrast($app-primary)
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-lighter-contrast($theme, $opacity: null) {
+  @return app-color($theme, lighter-contrast, $opacity);
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-darker($app-primary)
+/// color: app-color-darker-contrast($app-primary)
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-darker-contrast($theme, $opacity: null) {
+  @return app-color($theme, darker-contrast, $opacity);
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-text($app-primary)
+/// color: app-color-text-contrast($app-primary)
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-text-contrast($palette, $opacity: null) {
+  @return app-color($palette, text-contrast, $opacity);
+}
+
+/// Gets a color from a theme palette (the output of mat-palette).
+/// This helper is generally used with
+/// background: app-color-highlight-background($app-primary)
+@function app-color-highlight-background() {
+  $var-name: makeLookupName('highlight', 'default');
+  @return var(--hex-#{$var-name});
+}

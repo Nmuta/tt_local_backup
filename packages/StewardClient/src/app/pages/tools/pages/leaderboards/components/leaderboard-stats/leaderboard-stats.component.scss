@@ -1,0 +1,33 @@
+@import '/src/styles/mixins';
+
+.actions-container {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+
+  .info {
+    max-width: $width-mediaquery-sidebar-large-break;
+  }
+
+  .change-graph-view {
+    margin-left: auto;
+  }
+}
+
+.user-group-management-link {
+  margin-top: $gap-medium;
+}
+
+.text-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.graph-container {
+  display: grid;
+  height: $ngx-chart-height;
+}
+
+h3 {
+  display: inline;
+}

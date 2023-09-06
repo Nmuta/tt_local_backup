@@ -1,0 +1,10 @@
+@import '/src/styles/mixins';
+
+h5 {
+  margin-left: $gap-micro + $gap-small;
+}
+
+mat-progress-spinner {
+  margin: auto;
+  margin-top: $gap-small;
+}

@@ -1,0 +1,26 @@
+@import '/src/styles/mixins';
+
+:host {
+  display: flex !important;
+  flex-flow: row wrap;
+  align-items: center;
+  > * {
+    margin: 0 $gap-micro;
+  }
+}
+
+// this element has a reserved area below it for warnings, which we are not using
+// removing it makes the items align better
+:host ::ng-deep {
+  mat-form-field.date-picker {
+    &,
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.mat-button-toggle-checked.mat-button-toggle-checked {
+  background-color: app-color-default($app-primary);
+  color: app-color-default-contrast($app-primary);
+}

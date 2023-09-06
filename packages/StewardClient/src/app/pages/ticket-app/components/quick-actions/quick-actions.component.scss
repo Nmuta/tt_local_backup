@@ -1,0 +1,12 @@
+@import '/src/styles/mixins';
+
+h1,
+h2 {
+  display: inline-block;
+  margin: 0;
+}
+
+div.actions {
+  width: 100%;
+  margin-top: $gap-medium;
+}

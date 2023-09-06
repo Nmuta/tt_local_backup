@@ -1,0 +1,7 @@
+mat-card-title {
+  display: flex;
+  flex-flow: row wrap;
+  span {
+    white-space: nowrap;
+  }
+}

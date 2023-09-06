@@ -1,0 +1,27 @@
+@import '/src/styles/mixins';
+
+// The use of !important here is unfortunate, but apparently required for darkmode
+
+.snackbar-warn {
+  background-color: app-color-lighter($app-warn) !important;
+  color: app-color-lighter-contrast($app-warn) !important;
+  button {
+    color: app-color-lighter-contrast($app-warn) !important;
+  }
+}
+
+.snackbar-success {
+  background-color: app-color-lighter($app-primary) !important;
+  color: app-color-lighter-contrast($app-primary) !important;
+  button {
+    color: app-color-lighter-contrast($app-primary) !important;
+  }
+}
+
+.snackbar-info {
+  background-color: app-color-lighter($app-accent) !important;
+  color: app-color-lighter-contrast($app-accent) !important;
+  button {
+    color: app-color-lighter-contrast($app-accent) !important;
+  }
+}

@@ -1,0 +1,79 @@
+@import '/src/styles/mixins';
+
+mat-card {
+  @include flex-column-fill;
+}
+
+.cdk-wrapper {
+  height: 65vh;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.load-more-container {
+  text-align: center;
+
+  button {
+    margin-right: $gap-medium;
+    margin-top: $gap-medium;
+    margin-bottom: $gap-medium;
+  }
+}
+
+.timeMatchesAbove {
+  border-top: 2px solid transparent;
+
+  &:first-child {
+    border: none;
+  }
+}
+.timeMatchesBelow {
+  border-bottom: 2px solid transparent;
+
+  &:first-child {
+    border: none;
+  }
+}
+
+.totalXp mat-icon {
+  height: 1em;
+  width: 1em;
+  font-size: 1em;
+  line-height: 1em;
+}
+
+mat-expansion-panel {
+  margin-bottom: 2em;
+}
+
+.no-more-results {
+  padding-top: $gap-medium;
+  padding-bottom: $gap-medium;
+  text-align: center;
+  color: app-color-lighter-contrast($app-background, 70%);
+}
+
+::ng-deep {
+  .mat-expansion-panel-header-description,
+  .mat-expansion-panel-header-title {
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.mat-expansion-panel-header-description,
+.mat-expansion-panel-header-title {
+  flex-basis: 0;
+}
+
+.panel-description-with-timestamp {
+  display: flex;
+
+  standard-absolute-time {
+    padding-left: $gap-micro;
+  }
+}
