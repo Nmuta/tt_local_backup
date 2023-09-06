@@ -72,12 +72,12 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
   private updateProfileTooltip(): void {
     let newTooltip = 'Profile & Settings';
 
-    if (!!this.changelogNotificationCount) {
-      newTooltip += `\r\nNew Changelog Entries: ${this.changelogNotificationCount}`;
-    }
-
     if (!!this.notificationCount) {
       newTooltip += `\r\nNotifications: ${this.notificationCount}`;
+    }
+
+    if (!!this.changelogNotificationCount) {
+      newTooltip += `\r\nNew Changelog Entries: ${this.changelogNotificationCount}`;
     }
 
     this.profileTooltip = newTooltip;
