@@ -1,5 +1,17 @@
 @import '/src/styles/mixins/';
 
+/* Tasteful margin */
+:host {
+  display: block;
+  padding: 1rem 2rem;
+  width: 50vw;
+}
+
+:host ::ng-deep mat-card {
+  margin-bottom: $gap-medium;
+}
+
+/* Specific styles */
 $textAreaMinSizePx: 100px;
 $labelMaxSizePx: 700px;
 
@@ -41,9 +53,4 @@ button {
 
 .large-icon {
   transform: scale(3);
-}
-
-:host {
-  display: block;
-  padding: 1rem 2rem;
 }
