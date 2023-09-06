@@ -11,7 +11,7 @@ import { ILogger } from './logger';
 /* eslint-disable no-console */
 /* eslint-disable no-debugger */
 
-const logTopicsToIgnoreInConsole = [LogTopic.AuthInterception];
+const logTopicsToIgnoreInConsole = [LogTopic.AuthInterception, LogTopic.Sidebar];
 const logTopicsToIgnoreInAppInsights = [LogTopic.AuthInterception, LogTopic.Sidebar];
 
 /** A logger service that acts as a configurable proxy for console.log and app insights. */
