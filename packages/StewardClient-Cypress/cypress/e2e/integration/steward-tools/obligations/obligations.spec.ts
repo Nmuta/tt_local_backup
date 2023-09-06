@@ -5,7 +5,7 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { withTags, Tag } from '@support/tags';
 
 context('Steward / Tools / Obligation', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
+  before(() => {
     login();
 
     disableFakeApi();
