@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string slot,
             [FromQuery] string snapshot)
         {
-            var carFeaturedShowcases = await this.GetCarFeaturedShowcasesAsync(environment, slot, snapshot).;
+            var carFeaturedShowcases = await this.GetCarFeaturedShowcasesAsync(environment, slot, snapshot);
 
             return this.Ok(carFeaturedShowcases);
         }

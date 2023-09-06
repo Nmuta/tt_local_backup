@@ -158,6 +158,8 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
       if (!inputs.pegasusInfo.environment) {
         this.events = [];
         this.filteredEvents = [];
+
+        return;
       }
 
       this.retrieveCarFeaturedShowcases$ =

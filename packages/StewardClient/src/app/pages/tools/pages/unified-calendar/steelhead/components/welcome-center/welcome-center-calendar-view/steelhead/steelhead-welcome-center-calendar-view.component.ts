@@ -133,6 +133,8 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
       if (!inputs.pegasusInfo.environment) {
         this.events = [];
         this.welcomeCenter = null;
+
+        return;
       }
 
       this.retrieveSchedule$ = this.welcomeCenterService.getWelcomeCenterTilesByPegasus$(

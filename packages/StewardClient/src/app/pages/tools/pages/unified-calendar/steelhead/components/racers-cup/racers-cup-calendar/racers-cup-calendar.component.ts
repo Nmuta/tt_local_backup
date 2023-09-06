@@ -150,7 +150,9 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
         this.events = [];
         this.uniqueSeries = null;
         this.playlistDictionary = null;
-        this.schedule = null;
+        this.schedule = null;        
+
+        return;
       }
 
       this.retrieveSchedule$ = this.steelheadService.getRacersCupScheduleByPegasusPath$(

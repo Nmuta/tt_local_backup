@@ -86,6 +86,8 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
     if (inputs.pegasusInfo) {
       if (!inputs.pegasusInfo.environment) {
         this.events = [];
+
+        return;
       }
 
       this.retrieveSchedule$ = this.steelheadRivalsService.getRivalsEventsByPegasus$(

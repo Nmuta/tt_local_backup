@@ -141,6 +141,8 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
       if (!inputs.pegasusInfo.environment) {
         this.events = [];
         this.uniqueTours = null;
+
+        return;
       }
 
       this.retrieveSchedule$ = this.buildersCupService.getBuildersCupScheduleByPegasus$(
