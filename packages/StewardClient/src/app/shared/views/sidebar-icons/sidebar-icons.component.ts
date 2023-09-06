@@ -10,6 +10,7 @@ import { UserSettingsService } from '@shared/state/user-settings/user-settings.s
 import { NotificationsService } from '@shared/hubs/notifications.service';
 import { ThemePalette } from '@angular/material/core';
 import { BackgroundJobStatus } from '@models/background-job';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /** A menu dropdown with links to all Steward Apps. */
 @Component({
@@ -18,7 +19,6 @@ import { BackgroundJobStatus } from '@models/background-job';
   styleUrls: ['./sidebar-icons.component.scss'],
 })
 export class SidebarIconsComponent extends BaseComponent implements AfterViewInit {
-  @ViewChild('changelogLink', { read: ElementRef }) changelogLink: ElementRef;
   @Select(ChangelogState.allPendingIds) public allPendingIds$: Observable<string[]>;
   public changelogNotificationCount = 0;
   public settingsNotificationCount = 0;
@@ -31,6 +31,8 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
     private readonly userSettingsService: UserSettingsService,
     private readonly changelogService: ChangelogService,
     private readonly notificationsService: NotificationsService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     protected dialog: MatDialog,
   ) {
     super();
@@ -94,6 +96,8 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
       return;
     }
 
-    this.changelogLink?.nativeElement?.click();
+    const isAlreadyOnChangelog = this.router.url.includes('sidebar:unified/changelog');
+    if (isAlreadyOnChangelog) { return; }
+    this.router.navigate([{ outlets: { sidebar: 'unified/changelog'}}], { relativeTo: this.activatedRoute });
   }
 }

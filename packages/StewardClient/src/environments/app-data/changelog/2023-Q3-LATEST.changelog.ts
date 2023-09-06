@@ -8,6 +8,23 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'aa928195-cd76-4db8-ac46-a4f43ac00704',
+      shortText: 'Rework Navbar Sidebars',
+      longText: [
+        'All previous navbar icon routes have been moved to a unified sidebar.\r\n Navbar icon padding has been replaced with separator bars.',
+        'Settings and Profile have been merged into a single button. Total Notification count is displayed over the new button.',
+        'The previous Settings page has been moved to Old Settings. Its contents have been split into Endpoints, Experience, Tours, and Profile.',
+        'The Profile panel no longer has a Location sub-panel. Some super-admin tools have been moved to this panel.',
+        'The Notifications panel is unchanged, aside from an increase in defauld width to avoid button shifting.',
+        'The Changelog panel now respects newlines in changelog entries. Very old changelog entries have been removed.',
+        'The Endpoints panel has been updated with some game titles. Show Help Icons is now in the Experience panel.',
+        'The Experience panel contains general user experience settings, some of which may appear in other panels.',
+        'The Tours panel now allows launching tours immediately, separately from enabling them to run.',
+        'The Old Settings panel is the unmodified version of the prior Settings panel. We plan to remove it later.',
+      ],
+    },
+    {
       tag: {
         title: GameTitle.FM8,
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
