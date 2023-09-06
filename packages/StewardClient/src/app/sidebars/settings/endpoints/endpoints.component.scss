@@ -1,19 +1,13 @@
 @import '/src/styles/mixins/';
 
-/* Force the card to cover everything */
+/* Tasteful margin */
 :host {
-  display: flex;
-  height: 100%;
-  flex-flow: column nowrap;
-  flex-grow: 1;
+  display: block;
+  padding: 1rem 2rem;
 }
 
-mat-card {
-  flex-grow: 1;
-  max-height: unset;
-}
 
-/* Standard "No Settings Available" text */
+/* "No Settings Available" text */
 p {
   display: none;
 }
@@ -43,8 +37,4 @@ div.endpoint-selectors {
 
 .endpoint-selection-warning {
   display: block;
-}
-:host {
-  display: block;
-  padding: 1rem 2rem;
 }

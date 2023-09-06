@@ -11,7 +11,9 @@
       <a mat-list-item
         [routerLink]="['profile']"
         queryParamsHandling="preserve"
-        routerLinkActive="list-item-active">
+        routerLinkActive="list-item-active"
+        matTooltip="Information and Settings about your account"
+        matTooltipPosition="left">
         <mat-icon>account_circle</mat-icon>
         Profile
       </a>
@@ -22,7 +24,8 @@
         [routerLink]="['settings/legacy']"
         queryParamsHandling="preserve"
         routerLinkActive="list-item-active"
-        matTooltip="Settings">
+        matTooltip="The original settings panel"
+        matTooltipPosition="left">
         <mat-icon>settings</mat-icon>
         Old Settings
       </a>
@@ -31,9 +34,20 @@
         [routerLink]="['settings/endpoints']"
         queryParamsHandling="preserve"
         routerLinkActive="list-item-active"
-        matTooltip="Settings">
+        matTooltip="Endpoint selection"
+        matTooltipPosition="left">
         <mat-icon>gps_fixed</mat-icon>
         Endpoints
+      </a>
+
+      <a mat-list-item
+        [routerLink]="['settings/experience']"
+        queryParamsHandling="preserve"
+        routerLinkActive="list-item-active"
+        matTooltip="Interface preferences"
+        matTooltipPosition="left">
+        <mat-icon>visibility</mat-icon>
+        Experience
       </a>
 
     </mat-nav-list>

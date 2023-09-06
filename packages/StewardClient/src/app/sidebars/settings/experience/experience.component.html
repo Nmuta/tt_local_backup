@@ -1,0 +1,26 @@
+<mat-card>
+  <mat-card-title-group>
+    <mat-card-title>Theming</mat-card-title>
+    <mat-card-subtitle>Darkmode, lightmode, and environment warning badges</mat-card-subtitle>
+  </mat-card-title-group>
+  <mat-card-content class="theme-card-content">
+    <toggle-darkmode></toggle-darkmode>
+    <toggle-environment-warning></toggle-environment-warning>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title-group>
+    <mat-card-title>Other Settings</mat-card-title>
+    <mat-card-subtitle>Miscellaneous toggles and other settings</mat-card-subtitle>
+  </mat-card-title-group>
+  <mat-card-content>
+
+    <mat-slide-toggle
+      [(ngModel)]="showVerifyCheckboxPopup"
+      (ngModelChange)="setShowVerifyCheckboxPopup()"
+    >
+      Show Help Icon on Verification Checkboxes</mat-slide-toggle
+    >
+  </mat-card-content>
+</mat-card>

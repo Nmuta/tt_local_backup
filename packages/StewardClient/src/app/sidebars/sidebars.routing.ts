@@ -7,6 +7,7 @@ import { ChangelogComponent } from './changelog/changelog.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { SidebarsComponent } from './sidebars.component';
 import { EndpointsComponent } from './settings/endpoints/endpoints.component';
+import { ExperienceComponent } from './settings/experience/experience.component';
 
 /**
  * Routes that are considered "settings" configuration.
@@ -26,6 +27,10 @@ export const settingsSidebar: Routes = [
   {
     path: 'endpoints',
     component: EndpointsComponent,
+  },
+  {
+    path: 'experience',
+    component: ExperienceComponent,
   },
 ]
 
