@@ -20,26 +20,27 @@ mat-drawer {
 }
 
 a[mat-list-item] mat-icon {
-  padding-right: .25em;
+  padding-right: 0.25em;
 }
 
 div[mat-subheader] {
-  padding-top: .5em;
-  padding-bottom: .5em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   margin-top: 1em;
-  margin-bottom: .25em;
+  margin-bottom: 0.25em;
   height: auto;
   background-color: app-color-lighter($app-background, 0.2);
   border-top: 2px solid app-color-darker($app-background);
   justify-content: center;
 
   mat-icon {
-    padding-right: .25em;
+    padding-right: 0.25em;
   }
 }
 
 .deprecated {
-  &, * {
+  &,
+  * {
     color: app-color-text-contrast($app-background, 0.4) !important;
   }
 }
@@ -55,7 +56,7 @@ div[mat-subheader] {
 }
 
 .app-version {
-  padding: .5em;
+  padding: 0.5em;
   color: app-color-lighter-contrast($app-background, 70%);
   text-align: center;
 }

@@ -30,7 +30,7 @@ export enum AppIcon {
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',
   DevEnvironment = 'admin_panel_settings',
-  Endpoints = 'explore',
+  Endpoints = 'gps_fixed',
   CarDetails = 'minor_crash',
   PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',

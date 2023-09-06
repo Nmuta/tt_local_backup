@@ -15,13 +15,19 @@
     <mat-card-subtitle>Miscellaneous toggles and other settings</mat-card-subtitle>
   </mat-card-title-group>
   <mat-card-content>
-    <mat-slide-toggle [(ngModel)]="showVerifyCheckboxPopup" (ngModelChange)="setShowVerifyCheckboxPopup()">
-      Show Help Icon on Verification Checkboxes</mat-slide-toggle>
+    <mat-slide-toggle
+      [(ngModel)]="showVerifyCheckboxPopup"
+      (ngModelChange)="setShowVerifyCheckboxPopup()"
+    >
+      Show Help Icon on Verification Checkboxes</mat-slide-toggle
+    >
 
     <mat-slide-toggle [(ngModel)]="enableAutomaticChangelogPopup">
-      Automatically pop out the Changelog when there are new entries</mat-slide-toggle>
+      Automatically pop out the Changelog when there are new entries</mat-slide-toggle
+    >
 
     <mat-slide-toggle [(ngModel)]="enableAutomaticTours">
-      Automatically begin tours when you find them</mat-slide-toggle>
+      Automatically begin tours when you find them</mat-slide-toggle
+    >
   </mat-card-content>
 </mat-card>

@@ -22,8 +22,12 @@ export class UserTourService {
   }
 
   /** Enables or disables automatic user tours. */
-  public get enableTours(): boolean { return this.state.enableUserTours; }
-  public set enableTours(value: boolean) { this.store.dispatch(new SetUserTours(value)); }
+  public get enableTours(): boolean {
+    return this.state.enableUserTours;
+  }
+  public set enableTours(value: boolean) {
+    this.store.dispatch(new SetUserTours(value));
+  }
 
   /** Checks if the Home tour should run */
   public shouldShowHomeTour(): boolean {

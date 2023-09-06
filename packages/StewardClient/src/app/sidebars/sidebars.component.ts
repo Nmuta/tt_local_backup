@@ -28,7 +28,7 @@ export class SidebarsComponent extends BaseComponent implements AfterViewInit {
   public get adoVersion(): string {
     return this.userSettingsService.appVersion;
   }
-  
+
   constructor(
     private readonly userSettingsService: UserSettingsService,
     private readonly changelogService: ChangelogService,

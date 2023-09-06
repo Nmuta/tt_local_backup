@@ -81,12 +81,18 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
     }
 
     // otherwise, guard against unwanted popups and then produce the popup
-    if (this.changelogService.disableAutomaticPopup) { return; }
-    if (this.changelogService.allAreAcknowledged) { return; }
+    if (this.changelogService.disableAutomaticPopup) {
+      return;
+    }
+    if (this.changelogService.allAreAcknowledged) {
+      return;
+    }
 
     const currentVersion = environment.adoVersion;
     const isNewAppVersion = currentVersion !== this.userSettingsService.appVersion;
-    if (!isNewAppVersion) { return; }
+    if (!isNewAppVersion) {
+      return;
+    }
 
     this.changelogLink?.nativeElement?.click();
   }
