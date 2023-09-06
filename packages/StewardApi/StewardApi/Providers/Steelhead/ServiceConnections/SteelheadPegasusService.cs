@@ -767,24 +767,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<SafetyRatingConfiguration> GetSafetyRatingConfig(string pegasusEnvironment = null, string pegasusSlot = null, string pegasusSnapshot = null)
+        public async Task<SafetyRatingConfiguration> GetSafetyRatingConfig(string environment = null, string slot = null, string snapshot = null)
         {
-            pegasusEnvironment ??= this.cmsEnvironment;
-            pegasusSlot ??= SteelheadPegasusSlot.Daily;
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
 
-            var slotStatus = await this.cmsRetrievalHelper.GetSlotStatusAsync(this.cmsEnvironment, pegasusSlot).ConfigureAwait(false);
-
-            if (slotStatus == null)
-            {
-                throw new PegasusStewardException(
-                    $"The environment and slot provided are not supported in {TitleConstants.SteelheadCodeName} Pegasus. Environment: {this.cmsEnvironment}, Slot: {pegasusSlot}");
-            }
+            await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
             var safetyRatingConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<SafetyRatingConfiguration>(
                 CMSFileNames.SafetyRatingConfiguration,
-                environment: pegasusEnvironment,
-                slot: pegasusSlot,
-                snapshot: pegasusSnapshot).ConfigureAwait(false);
+                environment: environment,
+                slot: slot,
+                snapshot: snapshot).ConfigureAwait(false);
 
             return safetyRatingConfig;
         }

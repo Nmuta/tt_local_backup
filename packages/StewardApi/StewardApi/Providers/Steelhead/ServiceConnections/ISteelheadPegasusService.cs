@@ -65,10 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <summary>
         ///     Gets safety rating configuration.
         /// </summary>
-        Task<SafetyRatingConfiguration> GetSafetyRatingConfig(
-            string pegasusEnvironment = null,
-            string pegasusSlot = null,
-            string pegasusSnapshot = null);
+        Task<SafetyRatingConfiguration> GetSafetyRatingConfig(string environment = null, string slot = null, string snapshot = null);
 
         /// <summary>
         ///     Gets tracks.
