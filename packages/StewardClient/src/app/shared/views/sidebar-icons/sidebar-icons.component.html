@@ -65,7 +65,8 @@
     queryParamsHandling="preserve"
     mat-icon-button
     routerLinkActive="sidebar-active-icon"
-    matTooltip="Profile"
+    [matTooltip]="profileTooltip"
+    matTooltipClass="multiline-tooltip"
   >
     <span class="tour-highlight-buffer" tourAnchor="home-tour.step.two"></span>
     <mat-icon>manage_accounts</mat-icon>

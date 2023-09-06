@@ -22,10 +22,10 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
   @Select(ChangelogState.allPendingIds) public allPendingIds$: Observable<string[]>;
   public changelogNotificationCount = 0;
   public settingsNotificationCount = 0;
-  
 
   public notificationCount = null;
   public notificationColor: ThemePalette = undefined;
+  public profileTooltip: string = 'Profile & Settings';
 
   constructor(
     private readonly userSettingsService: UserSettingsService,
@@ -54,6 +54,7 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
 
     this.allPendingIds$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
       this.changelogNotificationCount = v?.length ?? 0;
+      this.updateProfileTooltip();
     });
 
     this.notificationsService.notifications$.subscribe(notifications => {
@@ -64,6 +65,21 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
       )
         ? 'accent'
         : undefined;
+      this.updateProfileTooltip();
     });
+  }
+
+  private updateProfileTooltip(): void {
+    let newTooltip = 'Profile & Settings';
+
+    if (!!this.changelogNotificationCount) {
+      newTooltip += `\r\nNew Changelog Entries: ${this.changelogNotificationCount}`;
+    }
+
+    if (!!this.notificationCount) {
+      newTooltip += `\r\nNotifications: ${this.notificationCount}`;
+    }
+
+    this.profileTooltip = newTooltip;
   }
 }
