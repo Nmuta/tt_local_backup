@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             safetyRating.Score.ShouldBeLessThanOrEqual(safetyRatingConfig.MaxScore, nameof(safetyRating.Score));
 
             // If they want to be in probation, their safety rating must have fewer than 'ProbationRaceCount' entries.
-            // If they don't want to be in probation, we must make their safety rating more than 5 'ProbationRaceCount'.
+            // If they don't want to be in probation, we must make their safety rating more than 'ProbationRaceCount' entries.
             if (safetyRatingConfig.ProbationRaceCount <= 1 && safetyRating.IsInProbationaryPeriod == true)
             {
                 throw new BadRequestStewardException($"Cannot set probationary period for player. Probation Race Count is too low. {safetyRatingConfig.ProbationRaceCount}");
@@ -131,7 +131,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
         private async Task<SafetyRatingConfiguration> GetPlayerSafetyRatingConfigAsync(ulong xuid)
         {
-            // Need CMS details to pull correct safety rating config
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid).ConfigureAwait(true);
 
             var safetyRatingConfig = await this.pegasusService.GetSafetyRatingConfig(

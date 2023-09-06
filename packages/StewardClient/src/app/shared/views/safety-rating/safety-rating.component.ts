@@ -31,10 +31,10 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
   @Input() xuid: BigNumber;
 
   public formControls = {
-    safetyRatingScore: new FormControl('', [Validators.required]),
-    probationarySafetyRatingScore: new FormControl('', [Validators.required]),
-    isInProbation: new FormControl(false),
-    grade: new FormControl({ value: null, disabled: true }),
+    safetyRatingScore: new UntypedFormControl('', [Validators.required]),
+    probationarySafetyRatingScore: new UntypedFormControl('', [Validators.required]),
+    isInProbation: new UntypedFormControl(false),
+    grade: new UntypedFormControl({ value: null, disabled: true }),
   };
 
   public safetyRating: SafetyRating;
