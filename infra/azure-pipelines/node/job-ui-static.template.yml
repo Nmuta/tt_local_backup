@@ -26,8 +26,17 @@ jobs:
       workingDirectory: ${{parameters.workingDirectory}}
       targetType: 'inline'
       script: |
-        echo "$(System.PullRequest.SourceBranch)"
-      
+        STATIC_ENV=$(echo "$(System.PullRequest.SourceBranch)" | grep -Po '(?<=refs/heads/).*?(?=/)')
+        echo "$(System.PullRequest.SourceBranch) -> $STATIC_ENV"
+        echo "##vso[task.setvariable variable=$STATIC_ENV;]static_env"
+  
+  - task: Bash@3
+    displayName: Test target environment
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      script: |
+        echo "$(static_env)"
 
   - task: Bash@3
     displayName: Static Build (Dev)
