@@ -41,7 +41,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetDateTimeRanges()
         {
-            var datetimeRanges = await this.steelheadPegasusService.GetDateTimeRangesAsync().ConfigureAwait(true);
+            var datetimeRanges = await this.steelheadPegasusService.GetDateTimeRangesAsync();
 
             return this.Ok(datetimeRanges);
         }
@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetChallenges()
         {
-            var challenges = await this.steelheadPegasusService.GetChallengesAsync().ConfigureAwait(true);
+            var challenges = await this.steelheadPegasusService.GetChallengesAsync();
 
             return this.Ok(challenges);
         }

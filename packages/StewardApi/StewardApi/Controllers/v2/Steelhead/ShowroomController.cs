@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync().ConfigureAwait(true);
+                carFeaturedShowcases = await this.steelheadPegasusService.GetCarFeaturedShowcasesAsync();
             }
             catch (Exception ex)
             {
@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                divisionFeaturedShowcases = await this.steelheadPegasusService.GetDivisionFeaturedShowcasesAsync().ConfigureAwait(true);
+                divisionFeaturedShowcases = await this.steelheadPegasusService.GetDivisionFeaturedShowcasesAsync();
             }
             catch (Exception ex)
             {
@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                manufacturerFeaturedShowcases = await this.steelheadPegasusService.GetManufacturerFeaturedShowcasesAsync().ConfigureAwait(true);
+                manufacturerFeaturedShowcases = await this.steelheadPegasusService.GetManufacturerFeaturedShowcasesAsync();
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
             try
             {
-                carSales = await this.steelheadPegasusService.GetCarSalesAsync().ConfigureAwait(true);
+                carSales = await this.steelheadPegasusService.GetCarSalesAsync();
             }
             catch (Exception ex)
             {
@@ -138,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetFeaturedShowcases()
         {
-            var featuredShowcases = await this.steelheadPegasusService.GetFeaturedShowcasesAsync().ConfigureAwait(true);
+            var featuredShowcases = await this.steelheadPegasusService.GetFeaturedShowcasesAsync();
 
             return this.Ok(featuredShowcases);
         }
