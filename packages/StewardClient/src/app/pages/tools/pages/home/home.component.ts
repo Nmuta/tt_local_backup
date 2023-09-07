@@ -23,7 +23,10 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { GameTitleAbbreviationPipe } from '@shared/pipes/game-title-abbreviation.pipe';
-import { ResetNavbarTools, SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
+import {
+  ResetNavbarTools,
+  SetNavbarTools,
+} from '@shared/state/user-settings/user-settings.actions';
 import {
   UserSettingsState,
   UserSettingsStateModel,

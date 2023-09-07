@@ -9,6 +9,16 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: 'c898bf28-c7b4-4828-bf00-f338b5f0326b',
+      shortText: 'Adjust standard toolbar',
+      longText: [
+        'Toolbar now defaults to a set of standard tools for new users.',
+        'Reset Tools button on the homepage now sets tools to the standard set of tools.',
+        'Clear Tools button added. It removes all tools in the toolbar.'
+      ]
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'aa928195-cd76-4db8-ac46-a4f43ac00704',
       shortText: 'Rework Navbar Sidebars',
       longText: [
