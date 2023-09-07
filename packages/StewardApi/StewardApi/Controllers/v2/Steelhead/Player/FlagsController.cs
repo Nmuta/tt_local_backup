@@ -171,56 +171,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var flags = new SteelheadUserFlags
             {
-                IsGamecoreVip = new VerifiedUserFlag
-                {
-                    IsMember = isGamecoreVip,
-                    HasConflict = isGamecoreVip != verificationEnum.HasFlag(ForzaUserFlags.GameCoreVip),
-                },
-                IsGamecoreUltimateVip = new VerifiedUserFlag
-                {
-                    IsMember = isGamecoreUltimateVip,
-                    HasConflict = isGamecoreUltimateVip != verificationEnum.HasFlag(ForzaUserFlags.GameCoreUltimateVip),
-                },
-                IsSteamVip = new VerifiedUserFlag
-                {
-                    IsMember = isSteamVip,
-                    HasConflict = isSteamVip != verificationEnum.HasFlag(ForzaUserFlags.SteamVip),
-                },
-                IsSteamUltimateVip = new VerifiedUserFlag
-                {
-                    IsMember = isSteamUltimateVip,
-                    HasConflict = isSteamUltimateVip != verificationEnum.HasFlag(ForzaUserFlags.SteamUltimateVip),
-                },
-                IsTurn10Employee = new VerifiedUserFlag
-                {
-                    IsMember = isTurn10Employee,
-                    HasConflict = isTurn10Employee != verificationEnum.HasFlag(ForzaUserFlags.Turn10Employee),
-                },
-                IsEarlyAccess = new VerifiedUserFlag
-                {
-                    IsMember = isEarlyAccess,
-                    HasConflict = isEarlyAccess != verificationEnum.HasFlag(ForzaUserFlags.Whitelisted),
-                },
-                IsUnderReview = new VerifiedUserFlag
-                {
-                    IsMember = isUnderReview,
-                    HasConflict = isUnderReview != verificationResults.forzaUser.IsUserUnderReview,
-                },
-                IsRaceMarshall = new VerifiedUserFlag
-                {
-                    IsMember = isRaceMarshall,
-                    HasConflict = isRaceMarshall != verificationEnum.HasFlag(ForzaUserFlags.RaceMarshall),
-                },
-                IsCommunityManager = new VerifiedUserFlag
-                {
-                    IsMember = isCommunityManager,
-                    HasConflict = isCommunityManager != verificationEnum.HasFlag(ForzaUserFlags.CommunityManager),
-                },
-                IsContentCreator = new VerifiedUserFlag
-                {
-                    IsMember = isContentCreator,
-                    HasConflict = isContentCreator != verificationEnum.HasFlag(ForzaUserFlags.ContentCreator),
-                },
+                IsGamecoreVip = this.BuildVerifiedFlag(isGamecoreVip, verificationEnum.HasFlag(ForzaUserFlags.GameCoreVip)),
+                IsGamecoreUltimateVip = this.BuildVerifiedFlag(isGamecoreUltimateVip, verificationEnum.HasFlag(ForzaUserFlags.GameCoreUltimateVip)),
+                IsSteamVip = this.BuildVerifiedFlag(isSteamVip, verificationEnum.HasFlag(ForzaUserFlags.SteamVip)),
+                IsSteamUltimateVip = this.BuildVerifiedFlag(isSteamUltimateVip, verificationEnum.HasFlag(ForzaUserFlags.SteamUltimateVip)),
+                IsTurn10Employee = this.BuildVerifiedFlag(isTurn10Employee, verificationEnum.HasFlag(ForzaUserFlags.Turn10Employee)),
+                IsEarlyAccess = this.BuildVerifiedFlag(isEarlyAccess, verificationEnum.HasFlag(ForzaUserFlags.Whitelisted)),
+                IsUnderReview = this.BuildVerifiedFlag(isUnderReview, verificationResults.forzaUser.IsUserUnderReview),
+                IsRaceMarshall = this.BuildVerifiedFlag(isRaceMarshall, verificationEnum.HasFlag(ForzaUserFlags.RaceMarshall)),
+                IsCommunityManager = this.BuildVerifiedFlag(isCommunityManager, verificationEnum.HasFlag(ForzaUserFlags.CommunityManager)),
+                IsContentCreator = this.BuildVerifiedFlag(isContentCreator, verificationEnum.HasFlag(ForzaUserFlags.ContentCreator)),
             };
 
             return flags;
@@ -242,6 +202,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             if (userFlags.IsContentCreator == toggleState) { resultGroupIds.Add(nonStandardUserGroups.ContentCreatorId); }
 
             return resultGroupIds;
+        }
+
+        private VerifiedUserFlag BuildVerifiedFlag(bool isMemberOfGroup, bool isMarkedInUserDetails)
+        {
+            return new VerifiedUserFlag
+            {
+                IsMember = isMemberOfGroup,
+                HasConflict = isMemberOfGroup != isMarkedInUserDetails,
+            };
         }
     }
 }
