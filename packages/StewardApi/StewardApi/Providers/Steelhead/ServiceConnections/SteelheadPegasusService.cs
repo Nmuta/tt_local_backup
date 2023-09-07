@@ -431,6 +431,66 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetDateTimeRangesAsync(string environment = null, string slot = null, string snapshot = null)
+        {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
+
+            // No caching due to small data size
+            var filename = CMSFileNames.DateTimeRanges;
+            var datetimeRanges =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, string>>(
+                    filename,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
+
+            var outputDictionary = datetimeRanges.ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetChallengesAsync(string environment = null, string slot = null, string snapshot = null)
+        {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
+
+            // No caching due to small data size
+            var filename = CMSFileNames.ChallengeData.Replace("{:loc}", "en-US", StringComparison.Ordinal);
+            var challenges =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.ChallengeData>>(
+                    filename,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
+
+            var outputDictionary = challenges.ToDictionary(kv => kv.Key, kv => kv.Value.ChallengeFriendlyName);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
+        public async Task<Dictionary<Guid, string>> GetFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
+        {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
+
+            // No caching due to small data size
+            var filename = CMSFileNames.FeaturedShowcases.Replace("{:loc}", "en-US", StringComparison.Ordinal);
+            var featuredShowcases =
+                await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, SteelheadLiveOpsContent.FeaturedShowcase>>(
+                    filename,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
+
+            var outputDictionary = featuredShowcases.ToDictionary(kv => kv.Key, kv => kv.Value.Title);
+
+            return outputDictionary;
+        }
+
+        /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync(string environment = null, string slot = null, string snapshot = null)
         {
             environment ??= this.defaultCmsEnvironment;
