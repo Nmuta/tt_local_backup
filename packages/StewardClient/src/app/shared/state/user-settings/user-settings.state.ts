@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment, NavbarTool } from '@environments/environment';
 import { InitEndpointKeysError } from '@models/enums';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { chain, cloneDeep, fromPairs } from 'lodash';
+import { chain, cloneDeep } from 'lodash';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 import { InitEndpointKeys } from '../endpoint-key-memory/endpoint-key-memory.actions';
 import { EndpointKeyMemoryState } from '../endpoint-key-memory/endpoint-key-memory.state';
@@ -48,13 +48,11 @@ export class UserSettingsStateModel {
 }
 
 /** The default tools that appear in the navbar. */
-export const defaultToolsConfig: NavbarToolsConfig
-  = chain([
-    NavbarTool.Endpoints,
-    NavbarTool.Theming,
-    NavbarTool.UserDetails,
-  ]
-  .map((tool: NavbarTool, index) => [tool, index+1]))
+export const defaultToolsConfig: NavbarToolsConfig = chain(
+  [NavbarTool.Endpoints, NavbarTool.Theming, NavbarTool.UserDetails].map(
+    (tool: NavbarTool, index) => [tool, index + 1],
+  ),
+)
   .fromPairs()
   .value();
 
