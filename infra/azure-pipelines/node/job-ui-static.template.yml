@@ -38,5 +38,6 @@ jobs:
     inputs:
       app_location: ${{parameters.distDirectory}}
       azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
+      deployment_environment: "one"
       skip_app_build: true
       skip_api_build: true
