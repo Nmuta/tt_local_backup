@@ -15,6 +15,7 @@ import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
 import { withTags, Tag } from '@support/tags';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const devLeaderboardToSearch: string = 'Grand Prix Circuit Time Attack';
 const prodLeaderboardToSearch: string = 'Grand Prix Circuit Time Attack';
@@ -23,9 +24,7 @@ const validUserToSearch = RetailUsers['chad'];
 //These tests will need to be updated when Steelhead has more data
 context('Steward / Tools / Leaderboads', () => {
   before(() => {
-    login();
-
-    disableFakeApi();
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.leaderboards.steelhead);
     waitForProgressSpinners();
   });

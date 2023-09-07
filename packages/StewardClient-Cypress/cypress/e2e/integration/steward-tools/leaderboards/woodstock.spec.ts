@@ -1,6 +1,4 @@
 import env from '@support/env';
-import { login } from '@support/steward/auth/login';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { inputHasValue } from '@support/mat-form/input-has-value';
 import {
   pressSearch,
@@ -14,6 +12,7 @@ import {
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 const devLeaderboardToSearch: string = 'River Scramble - A Class Laptime';
 const prodLeaderboardToSearch: string = 'Bahía de Plano Circuit - D Class';
@@ -21,9 +20,7 @@ const validUserToSearch = RetailUsers['chad'];
 
 context('Steward / Tools / Leaderboads', () => {
   before(() => {
-    login();
-
-    disableFakeApi();
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.leaderboards.default);
     waitForProgressSpinners();
     waitForProgressSpinners();
