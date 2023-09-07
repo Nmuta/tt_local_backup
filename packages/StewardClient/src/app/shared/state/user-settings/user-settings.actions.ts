@@ -67,6 +67,15 @@ export class RefreshEndpointKeys {
   public static readonly type = '[Settings] Refresh Endpoint Keys';
 }
 
+/**
+ * Resets the current list of tools to show in the navbar.
+ * Applies default tools.
+ */
+export class ResetNavbarTools {
+  public static readonly type = '[Settings] Reset Navbar Tools';
+  constructor() {}
+}
+
 /** Sets the current list of tools to show in the navbar. */
 export class SetNavbarTools {
   public static readonly type = '[Settings] Set Navbar Tools';
