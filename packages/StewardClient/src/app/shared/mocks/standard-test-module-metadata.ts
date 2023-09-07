@@ -27,7 +27,7 @@ import { Routes } from '@angular/router';
 
 export interface StandardTestModuleMetadataConfiguration extends TestModuleMetadata {
   ngxsModules?: StateClass<any>[];
-  routes?: Routes,
+  routes?: Routes;
 }
 
 export function createStandardTestModuleMetadata(

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { environment } from '@environments/environment';
 import { MatDialog } from '@angular/material/dialog';
@@ -76,7 +76,6 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
 
   // TODO: I think this is not really where this belongs, but moving it elsewhere seems beyond the scope of this PR.
   private handleNewVersion() {
-    debugger;
     // if there's no app version, we need to update it.
     if (!this.userSettingsService.appVersion) {
       this.userSettingsService.appVersion = environment.adoVersion;

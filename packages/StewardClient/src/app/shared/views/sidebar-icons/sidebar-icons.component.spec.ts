@@ -37,7 +37,7 @@ describe('SidebarIconsComponent', () => {
       }),
     ).compileComponents();
 
-    router =  TestBed.inject(Router);
+    router = TestBed.inject(Router);
     TestBed.inject(MatDialog).open = jasmine.createSpy('open');
     fixture = TestBed.createComponent(SidebarIconsComponent);
     component = fixture.debugElement.componentInstance;
