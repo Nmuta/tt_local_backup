@@ -279,3 +279,12 @@ mat-icon[mat-card-avatar] {
   flex-grow: 1;
   background: url('/assets/promo/1.png') center center / cover fixed border-box;
 }
+
+// TODO: May be worth making this standard?
+.sf-horizontal {
+  gap: 1em;
+  padding: 1em;
+  > * {
+    margin: 0;
+  }
+}
