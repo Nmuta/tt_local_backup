@@ -138,8 +138,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var getPurchasedEntitlements = this.kustoProvider.GetPlayerPurchasedEntitlementsAsync(xuid).SuccessOrDefault(Array.Empty<PurchasedEntitlement>(), exceptions);
             var getRefundedEntitlements = this.kustoProvider.GetPlayerRefundedEntitlementsAsync(xuid).SuccessOrDefault(Array.Empty<RefundedEntitlement>(), exceptions);
             var getCancelledEntitlements = this.kustoProvider.GetPlayerCancelledEntitlementsAsync(xuid).SuccessOrDefault(Array.Empty<CancelledEntitlement>(), exceptions);
+            var getPurchasedSteamEntitlements = this.kustoProvider.GetPlayerPurchasedSteamEntitlementsAsync(xuid).SuccessOrDefault(Array.Empty<PurchasedSteamEntitlement>(), exceptions);
 
-            await Task.WhenAll(getPurchasedEntitlements, getRefundedEntitlements, getCancelledEntitlements).ConfigureAwait(true);
+            await Task.WhenAll(getPurchasedEntitlements, getRefundedEntitlements, getCancelledEntitlements, getPurchasedSteamEntitlements).ConfigureAwait(true);
 
             var allEntitlements = new List<Entitlement>();
             if (getPurchasedEntitlements.IsCompletedSuccessfully)
@@ -155,6 +156,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (getCancelledEntitlements.IsCompletedSuccessfully)
             {
                 allEntitlements.AddRange(getCancelledEntitlements.GetAwaiter().GetResult());
+            }
+
+            if (getPurchasedSteamEntitlements.IsCompletedSuccessfully)
+            {
+                allEntitlements.AddRange(getPurchasedSteamEntitlements.GetAwaiter().GetResult());
             }
 
             return this.Ok(allEntitlements);

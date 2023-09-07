@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 
-#pragma warning disable CS1591
 namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
 {
     /// <summary>
@@ -9,7 +8,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
     /// </summary>
     public class CancelledEntitlement : Entitlement
     {
-#pragma warning disable SA1600 // ElementsMustBeDocumented
         public CancelledEntitlement()
         {
             this.Type = EntitlementType.Cancelled;
@@ -52,4 +50,3 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
         }
     }
 }
-#pragma warning restore CS1591
