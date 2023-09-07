@@ -1,0 +1,12 @@
+{
+  "routes": [],
+  "navigationFallback": {
+    "rewrite": "404.html",
+    "exclude": ["*.{png,jpg,gif,ico}", "/images/*", "/lottie/*"]
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/404.html"
+    }
+  }
+}
