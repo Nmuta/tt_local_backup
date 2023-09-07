@@ -10,6 +10,9 @@ import { CalendarModule, CalendarView, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { max } from 'lodash';
 import { SteelheadBuildersCupCalendarViewComponent } from './steelhead-builders-cup-calendar-view.component';
+import faker from '@faker-js/faker';
+import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
+import BigNumber from 'bignumber.js';
 
 describe('SteelheadBuildersCupCalendarViewComponent', () => {
   let component: SteelheadBuildersCupCalendarViewComponent;
@@ -42,12 +45,24 @@ describe('SteelheadBuildersCupCalendarViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: ngOnInit', () => {
+  describe('When Search button is clicked', () => {
+    const gamertag = faker.random.word();
+    const inputs: CalendarLookupInputs = {
+      identity: {
+        query: { gamertag: gamertag },
+        gamertag: gamertag,
+        xuid: new BigNumber(faker.datatype.number()),
+      },
+    };
+
+    beforeEach(() => {
+      component.refreshTable(inputs);
+    });
+
     it('should call service lookup method', () => {
-      expect(mockSteelheadService.getBuildersCupSchedule$).toHaveBeenCalled();
-      expect(component.buildersCupSchedule.length).toEqual(1);
-      expect(component.events.length).toEqual(0);
-      expect(component.filteredEvents.length).toEqual(0);
+      expect(mockSteelheadService.getBuildersCupScheduleByUser$).toHaveBeenCalledWith(
+        inputs.identity.xuid,
+      );
     });
   });
 

@@ -18,8 +18,12 @@ export class MockSteelheadBuildersCupService {
     },
   ];
 
-  public getBuildersCupSchedule$ = jasmine
-    .createSpy('getBuildersCupSchedule')
+  public getBuildersCupScheduleByPegasus$ = jasmine
+    .createSpy('getBuildersCupScheduleByPegasus')
+    .and.returnValue(of(this.result));
+
+  public getBuildersCupScheduleByUser$ = jasmine
+    .createSpy('getBuildersCupScheduleByUser')
     .and.returnValue(of(this.result));
 
   public getBuildersCupChampionships$ = jasmine

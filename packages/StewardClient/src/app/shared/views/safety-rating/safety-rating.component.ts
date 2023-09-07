@@ -31,16 +31,8 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
   @Input() xuid: BigNumber;
 
   public formControls = {
-    safetyRatingScore: new UntypedFormControl('', [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(100),
-    ]),
-    probationarySafetyRatingScore: new UntypedFormControl('', [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(100),
-    ]),
+    safetyRatingScore: new UntypedFormControl('', [Validators.required]),
+    probationarySafetyRatingScore: new UntypedFormControl('', [Validators.required]),
     isInProbation: new UntypedFormControl(false),
     grade: new UntypedFormControl({ value: null, disabled: true }),
   };
@@ -122,8 +114,25 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
     this.formControls.isInProbation.setValue(safetyRating.isInProbationaryPeriod);
     this.formControls.grade.setValue(safetyRating.grade);
 
-    this.formControls.isInProbation.value
-      ? this.formControls.safetyRatingScore.disable()
-      : this.formControls.probationarySafetyRatingScore.disable();
+    if (safetyRating.configuration.probationRaceCount.isLessThanOrEqualTo(1)) {
+      this.formControls.isInProbation.setValue(false);
+      this.formControls.isInProbation.disable();
+      this.formControls.probationarySafetyRatingScore.disable();
+      this.formControls.probationarySafetyRatingScore.setValue(false);
+    } else {
+      this.formControls.isInProbation.value
+        ? this.formControls.safetyRatingScore.disable()
+        : this.formControls.probationarySafetyRatingScore.disable();
+    }
+
+    this.formControls.probationarySafetyRatingScore.addValidators([
+      Validators.min(safetyRating.configuration.minScore.toNumber()),
+      Validators.max(safetyRating.configuration.maxScore.toNumber()),
+    ]);
+
+    this.formControls.safetyRatingScore.addValidators([
+      Validators.min(safetyRating.configuration.minScore.toNumber()),
+      Validators.max(safetyRating.configuration.maxScore.toNumber()),
+    ]);
   }
 }
