@@ -27,7 +27,6 @@ jobs:
     workingDirectory: ${{parameters.workingDirectory}}
     distDirectory: ${{parameters.workingDirectory}}/dist
     distArtifactName: ui-drop-dev-static
-    staticWebAppConfigPath: staticwebapp.dev.config.json
 
 - template: job-ui-test-unit.template.yml
   parameters:

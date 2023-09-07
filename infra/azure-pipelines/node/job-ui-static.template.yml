@@ -11,8 +11,6 @@ parameters:
 - name: 'distArtifactName'
   displayName: "Name of artifact to publish from dist directory. Like 'ui-drop-dev'."
   type: string
-- name: 'staticWebAppConfigPath'
-  displayName: "Relative path to staticwebapp configuration file. From $distDirectory. Like 'staticwebapp.dev.config.json'."
 
 jobs:
 - job: UI_Static_Build
@@ -40,7 +38,6 @@ jobs:
     inputs:
       workingDirectory: ${{parameters.workingDirectory}}
       output_location: ${{parameters.distDirectory}}
-      config_file_location: ${{parameters.staticWebAppConfigPath}}
       azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
       skip_app_build: true
       skip_api_build: true
