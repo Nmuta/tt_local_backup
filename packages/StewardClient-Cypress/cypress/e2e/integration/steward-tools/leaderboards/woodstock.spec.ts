@@ -14,13 +14,12 @@ import {
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
-import { withTags, Tag } from '@support/tags';
 
 const devLeaderboardToSearch: string = 'River Scramble - A Class Laptime';
 const prodLeaderboardToSearch: string = 'Bahía de Plano Circuit - D Class';
 const validUserToSearch = RetailUsers['chad'];
 
-context('Steward / Tools / Leaderboads', withTags(Tag.UnitTestStyle), () => {
+context('Steward / Tools / Leaderboads', () => {
   before(() => {
     login();
 
