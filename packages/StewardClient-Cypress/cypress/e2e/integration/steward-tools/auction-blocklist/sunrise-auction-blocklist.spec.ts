@@ -20,14 +20,14 @@ context('Steward / Support / Auction Blocklist / Sunrise', () => {
       cy.contains('button', 'Submit').should('be.disabled');
     });
 
-    xcontext('Creating, manipulating, and deleting an entry', () => {
+    context('Creating, manipulating, and deleting an entry', () => {
       before(() => {
         cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
         cy.get('table').find('tr').should('have.length.greaterThan', 5);
         cy.get('table').contains('tr', '1301').should('not.exist');
         cy.contains('button', 'Submit').should('be.disabled');
-        cy.contains('mat-form-field', 'Search for make and model').click().type('1301\n');
-        cy.contains('.mat-option-text', 'Jaguar D-Type [1301]').click();
+        cy.contains('mat-form-field', 'Search for model').click().type('1301\n');
+        cy.contains('.mat-option-text', 'Jaguar D-Type (1956) [1301]').click();
         cy.contains('mat-form-field', 'Expire Date (mm/dd/yyyy)').click().type('12/12/3999');
         cy.contains('button', 'Submit').should('be.enabled').click();
         cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
@@ -51,7 +51,7 @@ context('Steward / Support / Auction Blocklist / Sunrise', () => {
         cy.contains('td', '1301').siblings().contains('button', 'Edit').should('exist');
       });
 
-      afterEach(() => {
+      after(() => {
         cy.contains('td', '1301')
           .siblings()
           .contains('button', 'Delete')
@@ -61,10 +61,8 @@ context('Steward / Support / Auction Blocklist / Sunrise', () => {
           .siblings()
           .contains('button', 'Delete')
           .siblings()
-          .within(() => {
-            cy.get('[type="checkbox"]').should('exist');
-            cy.get('[type="checkbox"]').check({ force: true });
-          });
+          .contains('mat-icon', 'lock_open')
+          .click();
         cy.contains('td', '1301')
           .siblings()
           .contains('button', 'Delete')

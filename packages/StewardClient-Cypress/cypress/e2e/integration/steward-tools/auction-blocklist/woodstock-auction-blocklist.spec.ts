@@ -9,8 +9,8 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
   });
 
   // Enable tests when Woodstock has testable content in Prod.
-  xcontext('Auction House Blocklist lookup', () => {
-    beforeEach(() => {
+  context('Auction House Blocklist lookup', () => {
+    before(() => {
       cy.visit(stewardUrls.tools.auctionBlocklist.woodstock);
       waitForProgressSpinners(10_000);
     });
@@ -21,7 +21,7 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
       cy.contains('button', 'Submit').should('be.disabled');
     });
 
-    xcontext('Creating, manipulating, and deleting an entry', () => {
+    context('Creating, manipulating, and deleting an entry', () => {
       before(() => {
         cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
         cy.get('table').find('tr').should('have.length.greaterThan', 5);
@@ -52,7 +52,7 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
         cy.contains('td', '1301').siblings().contains('button', 'Edit').should('exist');
       });
 
-      afterEach(() => {
+      after(() => {
         cy.contains('td', '1301')
           .siblings()
           .contains('button', 'Delete')
@@ -62,10 +62,8 @@ context('Steward / Support / Auction Blocklist / Woodstock', () => {
           .siblings()
           .contains('button', 'Delete')
           .siblings()
-          .within(() => {
-            cy.get('[type="checkbox"]').should('exist');
-            cy.get('[type="checkbox"]').check({ force: true });
-          });
+          .contains('mat-icon', 'lock_open')
+          .click();
         cy.contains('td', '1301')
           .siblings()
           .contains('button', 'Delete')
