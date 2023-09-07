@@ -36,7 +36,8 @@ jobs:
       workingDirectory: ${{parameters.workingDirectory}}
       targetType: 'inline'
       script: |
-        echo "$(static_env)"
+        echo "build time: $(static_env)"
+        echo "run time: $[static_env]"
 
   - task: Bash@3
     displayName: Static Build (Dev)
@@ -56,6 +57,6 @@ jobs:
     inputs:
       app_location: ${{parameters.distDirectory}}
       azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
-      deployment_environment: "one"
+      deployment_environment: $(static_env)
       skip_app_build: true
       skip_api_build: true
