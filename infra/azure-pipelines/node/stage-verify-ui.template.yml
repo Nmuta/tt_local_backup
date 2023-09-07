@@ -20,6 +20,8 @@ jobs:
 - template: job-ui-test-unit.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}
+    distDirectory: ${{parameters.workingDirectory}}/dist
+    distArtifactName: ui-drop-dev
 - template: job-ui-test-changelog.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}

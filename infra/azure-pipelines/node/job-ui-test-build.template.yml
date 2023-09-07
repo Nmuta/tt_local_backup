@@ -5,6 +5,12 @@ parameters:
 - name: 'workingDirectory'
   displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."
   type: string
+- name: 'distDirectory'
+  displayName: "Path to a directory where files will be after build. Like 'packages/StewardClient/dist'."
+  type: string
+- name: 'distArtifactName'
+  displayName: "Name of artifact to publish from dist directory. Like 'ui-drop-dev'."
+  type: string
 
 jobs:
 - job: UI_Test_Build
@@ -20,3 +26,9 @@ jobs:
       workingDirectory: ${{parameters.workingDirectory}}
       targetType: 'inline'
       script: yarn run build:dev
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: ${{parameters.distArtifactName}}'
+    inputs:
+      PathtoPublish: ${{parameters.distDirectory}}
+      ArtifactName: ${{parameters.distArtifactName}}
