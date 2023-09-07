@@ -260,7 +260,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .subscribe(() => {
         this.canFeatureUgc = false;
         this.ugcItem.isHidden = true;
-        this.ugcItem.isPublic = false;
       });
   }
 
@@ -277,7 +276,6 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
       .subscribe(() => {
         this.canFeatureUgc = true;
         this.ugcItem.isHidden = false;
-        this.ugcItem.isPublic = true;
       });
   }
 
