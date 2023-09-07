@@ -41,5 +41,6 @@ jobs:
       workingDirectory: ${{parameters.workingDirectory}}
       output_location: ${{parameters.distDirectory}}
       config_file_location: ${{parameters.staticWebAppConfigPath}}
+      azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
       skip_app_build: true
       skip_api_build: true
