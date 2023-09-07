@@ -22,7 +22,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections
             ConfigurationKeyConstants.OpusClientVersion,
             ConfigurationKeyConstants.OpusAdminXuid,
             ConfigurationKeyConstants.OpusCertificateKeyVaultName,
-            ConfigurationKeyConstants.OpusCertificateSecretName,
         };
 
         private readonly string environmentUri;

@@ -53,12 +53,12 @@
         /// <summary>
         ///     The Kusto client secret name.
         /// </summary>
-        public const string KustoClientSecretName = "KustoClientSecretName";
+        // public const string KustoClientSecretName = "KustoClientSecretName";
 
         /// <summary>
         ///     The blob connection string secret name.
         /// </summary>
-        public const string BlobConnectionSecretName = "BlobConnectionSecretName";
+        // public const string BlobConnectionSecretName = "BlobConnectionSecretName";
 
         /// <summary>
         ///     The group gift password secret name.
@@ -68,7 +68,7 @@
         /// <summary>
         ///     Secret name to get cosmos DB connection string.
         /// </summary>
-        public const string CosmosTableSecretName = "CosmosTableSecretName";
+        // public const string CosmosTableSecretName = "CosmosTableSecretName";
 
         /// <summary>
         ///     Secret name to get shared cosmos DB connection string.
@@ -103,7 +103,7 @@
         /// <summary>
         ///     The Apollo certificate secret name.
         /// </summary>
-        public const string ApolloCertificateSecretName = "ApolloEnvironment:CertificateSecretName";
+        // public const string ApolloCertificateSecretName = "ApolloEnvironment:CertificateSecretName";
 
         /// <summary>
         ///     The Opus uri.
@@ -128,7 +128,7 @@
         /// <summary>
         ///     The Opus certificate secret name.
         /// </summary>
-        public const string OpusCertificateSecretName = "OpusEnvironment:CertificateSecretName";
+        // public const string OpusCertificateSecretName = "OpusEnvironment:CertificateSecretName";
 
         /// <summary>
         ///     The Sunrise uri.
@@ -263,41 +263,41 @@
         /// <summary>
         ///    The Woodstock PlayFab dev title id.
         /// </summary>
-        public const string WoodstockPlayFabDevTitleId = "WoodstockEnvironment:PlayFab:Dev:TitleId";
+        // public const string WoodstockPlayFabDevTitleId = "WoodstockEnvironment:PlayFab:Dev:TitleId";
 
         /// <summary>
         ///    The Woodstock PlayFab dev key.
         /// </summary>
-        public const string WoodstockPlayFabDevKey = "WoodstockEnvironment:PlayFab:Dev:Key";
+        // public const string WoodstockPlayFabDevKey = "WoodstockEnvironment:PlayFab:Dev:Key";
 
         /// <summary>
         ///    The Woodstock PlayFab dev title id.
         /// </summary>
-        public const string WoodstockPlayFabProdTitleId = "WoodstockEnvironment:PlayFab:Prod:TitleId";
+        // public const string WoodstockPlayFabProdTitleId = "WoodstockEnvironment:PlayFab:Prod:TitleId";
 
         /// <summary>
         ///    The Woodstock PlayFab dev key.
         /// </summary>
-        public const string WoodstockPlayFabProdKey = "WoodstockEnvironment:PlayFab:Prod:Key";
+        // public const string WoodstockPlayFabProdKey = "WoodstockEnvironment:PlayFab:Prod:Key";
 
         /// <summary>
         ///    The Forte PlayFab dev title id.
         /// </summary>
-        public const string FortePlayFabDevTitleId = "ForteEnvironment:PlayFab:Dev:TitleId";
+        // public const string FortePlayFabDevTitleId = "ForteEnvironment:PlayFab:Dev:TitleId";
 
         /// <summary>
         ///    The Forte PlayFab dev key.
         /// </summary>
-        public const string FortePlayFabDevKey = "ForteEnvironment:PlayFab:Dev:Key";
+        // public const string FortePlayFabDevKey = "ForteEnvironment:PlayFab:Dev:Key";
 
         /// <summary>
         ///    The Teams Help Channel Webhook Secret Name.
         /// </summary>
-        public const string TeamsHelpChannelWebhook = "TeamsHelpChannelWebhookSecretName";
+        // public const string TeamsHelpChannelWebhook = "TeamsHelpChannelWebhookSecretName";
 
         /// <summary>
         ///    The Obligation Client Secret Name.
         /// </summary>
-        public const string ObligationClientSecretName = "ObligationClientSecretName";
+        // public const string ObligationClientSecretName = "ObligationClientSecretName";
     }
 }

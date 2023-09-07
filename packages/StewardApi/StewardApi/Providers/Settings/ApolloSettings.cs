@@ -17,7 +17,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
             ConfigurationKeyConstants.ApolloClientVersion,
             ConfigurationKeyConstants.ApolloAdminXuid,
             ConfigurationKeyConstants.ApolloCertificateKeyVaultName,
-            ConfigurationKeyConstants.ApolloCertificateSecretName,
         };
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 configuration[ConfigurationKeyConstants.ApolloAdminXuid],
                 CultureInfo.InvariantCulture);
             this.CertificateKeyVaultName = configuration[ConfigurationKeyConstants.ApolloCertificateKeyVaultName];
-            this.CertificateSecretName = configuration[ConfigurationKeyConstants.ApolloCertificateSecretName];
+            this.CertificateSecretName = KeyVaultNameConstants.ApolloCertificateSecretName;
         }
 
         /// <summary>
