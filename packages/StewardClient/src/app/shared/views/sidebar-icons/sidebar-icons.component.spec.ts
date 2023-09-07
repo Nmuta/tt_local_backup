@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { SidebarIconsComponent } from './sidebar-icons.component';
 import { environment } from '@environments/environment';
 import { MatMenuModule } from '@angular/material/menu';
@@ -9,13 +9,20 @@ import { createMockUserSettingsService } from '@shared/state/user-settings/use-s
 import { createMockChangelogService } from '@services/changelog/changelog.service.mock';
 import { ChangelogService } from '@services/changelog/changelog.service';
 import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
+import { NotificationsService } from '@shared/hubs/notifications.service';
+import { BackgroundJob } from '@models/background-job';
+import { Subject } from 'rxjs';
+import { sidebarRoutes } from 'app/sidebars/sidebars.routing';
+import { Router } from '@angular/router';
 
 describe('SidebarIconsComponent', () => {
   let fixture: ComponentFixture<SidebarIconsComponent>;
   let component: SidebarIconsComponent;
+  let router: Router;
 
   let mockChangelogService: ChangelogService;
   let mockUserSettingsService: UserSettingsService;
+  let mockNotificationsService: NotificationsService;
 
   let spyOnSettingsStateAppVersion: jasmine.Spy;
   let spyOnChangelogServicesDisablePopup: jasmine.Spy;
@@ -26,9 +33,11 @@ describe('SidebarIconsComponent', () => {
         declarations: [SidebarIconsComponent],
         imports: [MatMenuModule, MatDialogModule, BrowserAnimationsModule],
         providers: [createMockUserSettingsService(), createMockChangelogService()],
+        routes: [...sidebarRoutes],
       }),
     ).compileComponents();
 
+    router = TestBed.inject(Router);
     TestBed.inject(MatDialog).open = jasmine.createSpy('open');
     fixture = TestBed.createComponent(SidebarIconsComponent);
     component = fixture.debugElement.componentInstance;
@@ -45,19 +54,21 @@ describe('SidebarIconsComponent', () => {
     spyOnSettingsStateAppVersion = spyOnProperty(mockUserSettingsService, 'appVersion', 'get');
     spyOnSettingsStateAppVersion.and.returnValue(undefined);
 
-    component.changelogLink = {
-      nativeElement: {
-        click: () => {
-          return;
-        },
-      },
-    };
-
-    component.changelogLink.nativeElement.click = jasmine.createSpy('changelogLinkClick');
+    mockNotificationsService = TestBed.inject(NotificationsService);
+    mockNotificationsService.initialize = jasmine.createSpy('initialize');
+    mockNotificationsService.notifications$ = new Subject<BackgroundJob<unknown>[]>();
   }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Method: ngAfterViewInit', () => {
+    it('should call notificationsService.initialize()', () => {
+      component.ngAfterViewInit();
+
+      expect(mockNotificationsService.initialize).toHaveBeenCalled();
+    });
   });
 
   describe('Method: ngAfterViewInit', () => {
@@ -69,11 +80,11 @@ describe('SidebarIconsComponent', () => {
         environment.adoVersion = environmentAdoVerion;
       });
 
-      it('should not open the changelog sidebar', () => {
+      it('should not open the changelog sidebar', fakeAsync(() => {
         component.ngAfterViewInit();
-
-        expect(component.changelogLink.nativeElement.click).not.toHaveBeenCalled();
-      });
+        tick();
+        expect(router.url).not.toContain('unified/changelog');
+      }));
     });
 
     describe('When the app version is defined', () => {
@@ -91,11 +102,12 @@ describe('SidebarIconsComponent', () => {
           environment.adoVersion = oldtAdoVerion;
         });
 
-        it('should not open the changelog sidebar', () => {
+        it('should not open the changelog sidebar', fakeAsync(() => {
           component.ngAfterViewInit();
 
-          expect(component.changelogLink.nativeElement.click).not.toHaveBeenCalled();
-        });
+          tick();
+          expect(router.url).not.toContain('unified/changelog');
+        }));
       });
 
       describe('And it does not match the environment version', () => {
@@ -108,11 +120,23 @@ describe('SidebarIconsComponent', () => {
             spyOnChangelogServicesDisablePopup.and.returnValue(false);
           });
 
-          it('should open the changelog sidebar', () => {
+          it('should not open the changelog sidebar when there are no changes', fakeAsync(() => {
+            spyOnProperty(mockChangelogService, 'allAreAcknowledged', 'get').and.returnValue(true);
+            spyOnProperty(mockChangelogService, 'allArePending', 'get').and.returnValue(false);
             component.ngAfterViewInit();
 
-            expect(component.changelogLink.nativeElement.click).toHaveBeenCalled();
-          });
+            tick();
+            expect(router.url).not.toContain('unified/changelog');
+          }));
+
+          it('should open the changelog sidebar when there are changes', fakeAsync(() => {
+            spyOnProperty(mockChangelogService, 'allAreAcknowledged', 'get').and.returnValue(false);
+            spyOnProperty(mockChangelogService, 'allArePending', 'get').and.returnValue(false);
+            component.ngAfterViewInit();
+
+            tick();
+            expect(router.url).toContain('unified/changelog');
+          }));
         });
 
         describe('And disableAutomaticPopup is true', () => {
@@ -120,11 +144,12 @@ describe('SidebarIconsComponent', () => {
             spyOnChangelogServicesDisablePopup.and.returnValue(true);
           });
 
-          it('should not open the changelog sidebar', () => {
+          it('should not open the changelog sidebar', fakeAsync(() => {
             component.ngAfterViewInit();
 
-            expect(component.changelogLink.nativeElement.click).not.toHaveBeenCalled();
-          });
+            tick();
+            expect(router.url).not.toContain('unified/changelog');
+          }));
         });
       });
     });

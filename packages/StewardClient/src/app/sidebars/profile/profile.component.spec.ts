@@ -18,11 +18,11 @@ import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { LogoutUser } from '@shared/state/user/user.actions';
 import { of } from 'rxjs';
 import { UserModel } from '@models/user.model';
-import { delay } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
 import faker from '@faker-js/faker';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { setUserProfile } from '@mocks/standard-test-module-helpers';
 
 describe('ProfileComponent', () => {
   let mockRouter: Router;
@@ -61,6 +61,7 @@ describe('ProfileComponent', () => {
 
   describe('Method: logout', () => {
     beforeEach(() => {
+      // TODO: We shouldn't do it this way, but fixing it is beyond the scope of this PR. Refer to https://www.ngxs.io/recipes/unit-testing
       mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
     });
 
@@ -101,9 +102,8 @@ describe('ProfileComponent', () => {
 
     describe('When subscribing to profile returns a value', () => {
       beforeEach(() => {
-        mockRouter.navigate = jasmine.createSpy('navigate');
-        Object.defineProperty(component, 'profile$', { writable: true });
-        component.profile$ = of(testProfile);
+        mockRouter.navigate = jasmine.createSpy('navigate', mockRouter.navigate);
+        setUserProfile(testProfile);
       });
 
       it('Should set profile', () => {
@@ -118,7 +118,7 @@ describe('ProfileComponent', () => {
 
       describe('If profile is valid', () => {
         beforeEach(() => {
-          component.profile$ = of(testProfile);
+          setUserProfile(testProfile);
         });
 
         it('Should not redirect to auth page', () => {
@@ -135,8 +135,7 @@ describe('ProfileComponent', () => {
 
       beforeEach(() => {
         mockRouter.navigate = jasmine.createSpy('navigate');
-        Object.defineProperty(component, 'profile$', { writable: true });
-        component.profile$ = of(testProfile).pipe(delay(delayTime));
+        setUserProfile(testProfile);
       });
 
       it('Should set loading to false', fakeAsync(() => {

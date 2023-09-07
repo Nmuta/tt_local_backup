@@ -1,6 +1,24 @@
+<span class="horizontal-nav-separator"></span>
+<span>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'unified/notifications' } }]"
+    queryParamsHandling="preserve"
+    mat-icon-button
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Notifications"
+    aria-label="Notifications"
+  >
+    <mat-icon
+      [matBadge]="notificationCount"
+      [matBadgeColor]="notificationColor"
+      matBadgeSize="small"
+      >notifications</mat-icon
+    >
+  </a>
+</span>
 <span class="tour-element-highlighted">
   <a
-    [routerLink]="[{ outlets: { sidebar: 'changelog' } }]"
+    [routerLink]="[{ outlets: { sidebar: 'unified/changelog' } }]"
     queryParamsHandling="preserve"
     mat-icon-button
     routerLinkActive="stroked-icon-button"
@@ -16,7 +34,7 @@
     >
   </a>
 </span>
-<span class="short-spacer"></span>
+<span class="horizontal-nav-separator"></span>
 <span class="tour-element-highlighted">
   <a
     href="https://confluence.turn10studios.com/x/r4GiE"
@@ -30,7 +48,7 @@
 </span>
 <span class="tour-element-highlighted">
   <a
-    [routerLink]="[{ outlets: { sidebar: 'contactus' } }]"
+    [routerLink]="[{ outlets: { sidebar: 'unified/contactus' } }]"
     queryParamsHandling="preserve"
     mat-icon-button
     routerLinkActive="stroked-icon-button"
@@ -40,32 +58,23 @@
     <mat-icon>contact_support</mat-icon>
   </a>
 </span>
-<span class="short-spacer"></span>
+
 <span class="tour-element-highlighted">
   <a
-    [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
+    [routerLink]="[{ outlets: { sidebar: 'unified' } }]"
     queryParamsHandling="preserve"
     mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Settings"
+    routerLinkActive="sidebar-active-icon"
+    [matTooltip]="profileTooltip"
+    matTooltipClass="multiline-tooltip"
   >
     <span class="tour-highlight-buffer" tourAnchor="home-tour.step.two"></span>
-    <mat-icon
-      [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
+    <mat-icon>manage_accounts</mat-icon>
+    <span
+      [matBadge]="changelogNotificationCount + notificationCount"
+      matBadgeColor="accent"
       matBadgeSize="small"
-      >settings</mat-icon
-    >
-  </a>
-</span>
-
-<span>
-  <a
-    [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
-    queryParamsHandling="preserve"
-    mat-icon-button
-    routerLinkActive="stroked-icon-button"
-    matTooltip="Profile"
-  >
-    <mat-icon>account_circle</mat-icon>
+      matBadgePosition="above after"
+    ></span>
   </a>
 </span>

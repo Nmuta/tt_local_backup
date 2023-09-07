@@ -20,21 +20,30 @@ import { UserState } from '@shared/state/user/user.state';
 import { uniq } from 'lodash';
 import { MatSnackBarMock } from './mat-snack-bar.mock';
 import { createMockMsalServices } from './msal.service.mock';
+import { ChangelogState } from '@shared/state/changelog/changelog.state';
+import { Routes } from '@angular/router';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface StandardTestModuleMetadataConfiguration extends TestModuleMetadata {
   ngxsModules?: StateClass<any>[];
+  routes?: Routes;
 }
 
 export function createStandardTestModuleMetadata(
   additions: StandardTestModuleMetadataConfiguration,
 ): TestModuleMetadata {
+  const allNgxsModules = uniq([
+    UserState,
+    UserSettingsState,
+    ChangelogState,
+    ...uniq(additions.ngxsModules ?? []),
+  ]);
   const metadata: TestModuleMetadata = {
     imports: [
-      RouterTestingModule.withRoutes([]),
+      RouterTestingModule.withRoutes(additions.routes ?? []),
       HttpClientTestingModule,
-      NgxsModule.forRoot([UserState, UserSettingsState, ...uniq(additions.ngxsModules ?? [])]),
+      NgxsModule.forRoot(allNgxsModules),
       PipesModule,
     ],
     declarations: additions.declarations ?? [],
