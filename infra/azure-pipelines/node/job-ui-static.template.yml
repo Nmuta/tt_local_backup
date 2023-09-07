@@ -19,6 +19,15 @@ jobs:
   - template: load-yarn-project.template.yml
     parameters:
       workingDirectory: ${{parameters.workingDirectory}}
+  
+  - task: Bash@3
+    displayName: Determine target environment
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      script: |
+        echo "$(System.PullRequest.SourceBranch)"
+      
 
   - task: Bash@3
     displayName: Static Build (Dev)
@@ -34,7 +43,7 @@ jobs:
       ArtifactName: ${{parameters.distArtifactName}}
 
   - task: AzureStaticWebApp@0
-    displayName: Publish Dev
+    displayName: Publish Dev to Static Staging Environment
     inputs:
       app_location: ${{parameters.distDirectory}}
       azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
