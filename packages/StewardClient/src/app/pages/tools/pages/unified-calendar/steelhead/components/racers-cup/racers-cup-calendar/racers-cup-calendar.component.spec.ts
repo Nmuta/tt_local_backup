@@ -5,9 +5,9 @@ import { CalendarModule, CalendarView, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { RacersCupCalendarComponent } from './racers-cup-calendar.component';
 import BigNumber from 'bignumber.js';
-import { RacersCupCalendarInputs } from '../racers-cup-inputs/racers-cup-inputs.component';
 import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
 import { createMockSteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service.mock';
+import { CalendarLookupInputs } from '../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 
 describe('RacersCupCalendarComponent', () => {
   let component: RacersCupCalendarComponent;
@@ -47,7 +47,7 @@ describe('RacersCupCalendarComponent', () => {
 
   describe('When Search button is clicked', () => {
     const gamertag = faker.random.word();
-    const inputs: RacersCupCalendarInputs = {
+    const inputs: CalendarLookupInputs = {
       identity: {
         query: { gamertag: gamertag },
         gamertag: gamertag,

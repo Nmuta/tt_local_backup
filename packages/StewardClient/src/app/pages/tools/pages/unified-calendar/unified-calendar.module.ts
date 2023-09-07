@@ -34,7 +34,6 @@ import { SteelheadUnifiedCalendarComponent } from './steelhead/steelhead-unified
 import { RacersCupSeriesModalComponent } from './steelhead/components/racers-cup/racers-cup-series-modal/racers-cup-series-modal.component';
 import { RacersCupCalendarComponent } from './steelhead/components/racers-cup/racers-cup-calendar/racers-cup-calendar.component';
 import { RacersCupEventCardComponent } from './steelhead/components/racers-cup/racers-cup-event-card/racers-cup-event-card.component';
-import { RacersCupInputsComponent } from './steelhead/components/racers-cup/racers-cup-inputs/racers-cup-inputs.component';
 import { RacersCupKeyComponent } from './steelhead/components/racers-cup/racers-cup-key/racers-cup-key.component';
 import { DataPrivacyNoticeModule } from '@views/data-privacy-notice/data-privacy-notice.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -68,6 +67,7 @@ import { ShowroomDivisionFeaturedTileDetailsModalComponent } from './steelhead/c
 import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from './steelhead/components/showroom/showroom-manufacturer-featured-tile-details-modal/steelhead/showroom-manufacturer-featured-tile-details-modal.component';
 import { ShowroomSaleTileDetailsModalComponent } from './steelhead/components/showroom/showroom-sale-tile-details-modal/steelhead/showroom-sale-tile-details-modal.component';
 import { ShowroomKeyComponent } from './steelhead/components/showroom/showroom-key/showroom-key.component';
+import { CalendarLookupInputsComponent } from './steelhead/components/calendar-lookup-inputs/calendar-lookup-inputs.component';
 
 /** Module for the PlayFab tool. */
 @NgModule({
@@ -75,9 +75,10 @@ import { ShowroomKeyComponent } from './steelhead/components/showroom/showroom-k
     UnifiedCalendarComponent,
     SteelheadUnifiedCalendarComponent,
 
+    CalendarLookupInputsComponent,
+
     RacersCupCalendarComponent,
     RacersCupEventCardComponent,
-    RacersCupInputsComponent,
     RacersCupKeyComponent,
     RacersCupSeriesModalComponent,
 
