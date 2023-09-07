@@ -14,8 +14,8 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       longText: [
         'Toolbar now defaults to a set of standard tools for new users.',
         'Reset Tools button on the homepage now sets tools to the standard set of tools.',
-        'Clear Tools button added. It removes all tools in the toolbar.'
-      ]
+        'Clear Tools button added. It removes all tools in the toolbar.',
+      ],
     },
     {
       tag: ChangelogTag.General,
