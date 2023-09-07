@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '34637ef2-c305-4514-bc20-a849bb90ede4',
+      shortText: 'Add player and pegasus lookup inputs to all calendars',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '0d448404-57a3-437c-a057-8cb8ec246f40',
       shortText:
