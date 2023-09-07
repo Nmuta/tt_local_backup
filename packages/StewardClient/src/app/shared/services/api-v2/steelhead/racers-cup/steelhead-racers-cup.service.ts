@@ -25,15 +25,15 @@ export class SteelheadRacersCupService {
     let httpParams = new HttpParams();
 
     if (info?.environment) {
-      httpParams = httpParams.append('pegasusEnvironment', info.environment);
+      httpParams = httpParams.append('environment', info.environment);
     }
 
     if (info?.slot) {
-      httpParams = httpParams.append('pegasusSlotId', info.slot);
+      httpParams = httpParams.append('slot', info.slot);
     }
 
     if (info?.snapshot) {
-      httpParams = httpParams.append('pegasusSnapshotId', info.snapshot);
+      httpParams = httpParams.append('snapshot', info.snapshot);
     }
 
     if (startTime) {

@@ -25,6 +25,7 @@ enum SafetyRatingGrade {
 
 /** Interface for a player's safety rating. */
 export interface SafetyRating {
+  configuration: SafetyRatingConfig;
   grade: SafetyRatingGrade;
   score: BigNumber;
   isInProbationaryPeriod: boolean;
@@ -35,4 +36,11 @@ export interface SafetyRating {
 export interface SafetyRatingUpdate {
   score: BigNumber;
   isInProbationaryPeriod: boolean;
+}
+
+/** Interface for a safety rating configuration. */
+export interface SafetyRatingConfig {
+  probationRaceCount: BigNumber;
+  minScore: BigNumber;
+  maxScore: BigNumber;
 }

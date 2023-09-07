@@ -4,6 +4,7 @@ export enum EntitlementType {
   Purchased = 'Purchased',
   Cancelled = 'Cancelled',
   Refunded = 'Refunded',
+  PurchasedSteam = 'PurchasedSteam',
 }
 
 /** Interface for a player entitlement. */
@@ -52,4 +53,9 @@ export type CancelledEntitlement = Entitlement & {
   revokedDateId: BigNumber;
   clientDeviceType: string;
   orderStateName: string;
+};
+
+/** Type for a purchased steam entitlement */
+export type PurchasedSteamEntitlement = Entitlement & {
+  purchaseDateTimeUtc: string;
 };

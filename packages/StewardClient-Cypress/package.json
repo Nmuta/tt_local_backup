@@ -20,6 +20,7 @@
     "open:prod-staging": "cypress open --config-file cypress/configs/prod-staging.config.ts",
     "run": "yarn run:local",
     "run:local": "cypress run --config-file cypress/configs/localhost.config.ts",
+    "run:local:exclude": "cypress run --config-file cypress/configs/localhost-exclude.config.ts",
     "run:local-dev": "cypress run --config-file cypress/configs/localhost-dev.config.ts",
     "run:dev": "cypress run --config-file cypress/configs/dev.config.ts",
     "run:dev:isolated": "cypress run --config-file cypress/configs/dev-isolated.config.ts",

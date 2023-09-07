@@ -7,6 +7,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// </summary>
     public sealed class SafetyRating
     {
+        public SafetyRatingConfig Configuration { get; set; }
+
         public SafetyRatingGrade Grade { get; set; }
 
         public double Score { get; set; }
