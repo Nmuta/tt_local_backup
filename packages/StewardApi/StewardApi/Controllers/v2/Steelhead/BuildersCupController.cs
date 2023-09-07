@@ -50,27 +50,32 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Gets a Builder's Cup featured content schedule.
         /// </summary>
         [HttpGet("schedule")]
-        [SwaggerResponse(200, type: typeof(BuildersCupFeaturedTour))]
-        public async Task<IActionResult> GetCmsBuildersCupSchedule()
+        [SwaggerResponse(200, type: typeof(IList<BuildersCupFeaturedTour>))]
+        public async Task<IActionResult> GetCmsBuildersCupSchedule(
+            [FromQuery] string environment,
+            [FromQuery] string slot,
+            [FromQuery] string snapshot)
         {
-            BuildersCupCupDataV3 featuredCupData;
-            try
-            {
-                featuredCupData = await this.pegasusService.GetBuildersCupFeaturedCupLadderAsync().ConfigureAwait(true);
-            }
-            catch (Exception ex)
-            {
-                throw new UnknownFailureStewardException($"No builders cup schedule data found for {TitleConstants.SteelheadFullName}", ex);
-            }
+            var result = await this.GetBuildersCupScheduleAsync(environment, slot, snapshot);
 
-            if (featuredCupData == null)
-            {
-                throw new UnknownFailureStewardException($"No builders cup schedule data found for {TitleConstants.SteelheadFullName}");
-            }
+            return this.Ok(result);
+        }
 
-            var featuredTours = this.mapper.SafeMap<IList<BuildersCupFeaturedTour>>(featuredCupData.ChampionshipLadder);
+        /// <summary>
+        ///     Gets a Builder's Cup featured content schedule.
+        /// </summary>
+        [HttpGet("player/{xuid}/schedule")]
+        [SwaggerResponse(200, type: typeof(IList<BuildersCupFeaturedTour>))]
+        public async Task<IActionResult> GetCmsBuildersCupSchedule(ulong xuid)
+        {
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
-            return this.Ok(featuredTours);
+            var result = await this.GetBuildersCupScheduleAsync(
+                gameDetails.forzaUser.CMSEnvironmentOverride,
+                gameDetails.forzaUser.CMSSlotIdOverride,
+                gameDetails.forzaUser.CMSSnapshotId);
+
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -82,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetBuildersCupChampionships()
         {
-            var buildersCupChampionships = await this.pegasusService.GetBuildersCupChampionshipsAsync().ConfigureAwait(true);
+            var buildersCupChampionships = await this.pegasusService.GetBuildersCupChampionshipsAsync();
 
             return this.Ok(buildersCupChampionships);
         }
@@ -96,7 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetBuildersCupLadders()
         {
-            var buildersCupLadders = await this.pegasusService.GetBuildersCupLaddersAsync().ConfigureAwait(true);
+            var buildersCupLadders = await this.pegasusService.GetBuildersCupLaddersAsync();
 
             return this.Ok(buildersCupLadders);
         }
@@ -110,9 +115,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetBuildersCupSeries()
         {
-            var buildersCupSeries = await this.pegasusService.GetBuildersCupSeriesAsync().ConfigureAwait(true);
+            var buildersCupSeries = await this.pegasusService.GetBuildersCupSeriesAsync();
 
             return this.Ok(buildersCupSeries);
+        }
+
+        private async Task<IList<BuildersCupFeaturedTour>> GetBuildersCupScheduleAsync(string environment, string slot, string snapshot)
+        {
+            BuildersCupCupDataV3 featuredCupData;
+            try
+            {
+                featuredCupData = await this.pegasusService.GetBuildersCupFeaturedCupLadderAsync(environment, slot, snapshot);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"No builders cup schedule data found for {TitleConstants.SteelheadFullName}", ex);
+            }
+
+            if (featuredCupData == null)
+            {
+                throw new UnknownFailureStewardException($"No builders cup schedule data found for {TitleConstants.SteelheadFullName}");
+            }
+
+            return this.mapper.SafeMap<IList<BuildersCupFeaturedTour>>(featuredCupData.ChampionshipLadder);
         }
     }
 }

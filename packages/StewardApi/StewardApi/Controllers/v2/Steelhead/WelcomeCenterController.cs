@@ -44,14 +44,38 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Gets current Welcome Center configuration.
         /// </summary>
-        [HttpGet]
+        [HttpGet("configuration")]
         [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
-        public async Task<IActionResult> GetWelcomeCenterConfiguration()
+        public async Task<IActionResult> GetWelcomeCenterConfiguration([FromQuery] string environment, [FromQuery] string slot, [FromQuery] string snapshot)
+        {
+            var response = await this.GetWelcomeCenterConfigurationAsync(environment, slot, snapshot);
+
+            return this.Ok(response);
+        }
+
+        /// <summary>
+        ///     Gets current Welcome Center configuration.
+        /// </summary>
+        [HttpGet("player/{xuid}/configuration")]
+        [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
+        public async Task<IActionResult> GetWelcomeCenterConfiguration(ulong xuid)
+        {
+            var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
+
+            var response = await this.GetWelcomeCenterConfigurationAsync(
+                gameDetails.forzaUser.CMSEnvironmentOverride,
+                gameDetails.forzaUser.CMSSlotIdOverride,
+                gameDetails.forzaUser.CMSSnapshotId);
+
+            return this.Ok(response);
+        }
+
+        private async Task<WelcomeCenterOutput> GetWelcomeCenterConfigurationAsync(string environment, string slot, string snapshot)
         {
             var welcomeCenterLookup = this.pegasusService.GetWelcomeCenterDataAsync();
             var welcomeCenterTilesLookup = this.pegasusService.GetWelcomeCenterTileDataAsync();
 
-            await Task.WhenAll(welcomeCenterLookup, welcomeCenterTilesLookup).ConfigureAwait(true);
+            await Task.WhenAll(welcomeCenterLookup, welcomeCenterTilesLookup);
 
             var welcomeCenter = welcomeCenterLookup.GetAwaiter().GetResult();
             var welcomeCenterTiles = welcomeCenterTilesLookup.GetAwaiter().GetResult();
@@ -71,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                         (column, welcomeCenterTiles.TileCMSCollection.Where(x => x.CMSTileID == (column as WoFTileConfigCMSDeeplink).CMSTileDataID).FirstOrDefault()))).ToList(),
             };
 
-            return this.Ok(response);
+            return response;
         }
     }
 }

@@ -1,28 +1,31 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
 
-export type RacersCupCalendarInputs = {
+export type CalendarLookupInputs = {
   identity?: IdentityResultAlpha;
   pegasusInfo?: PegasusPathInfo;
-  daysForward: number;
+  daysForward?: number;
 };
 
-/** Inputs for Racers Cup Calendar. */
+/** Inputs for calendar lookup. */
 @Component({
-  selector: 'racers-cup-inputs',
-  templateUrl: './racers-cup-inputs.component.html',
-  styleUrls: ['./racers-cup-inputs.component.scss'],
+  selector: 'calendar-lookup-inputs',
+  templateUrl: './calendar-lookup-inputs.component.html',
+  styleUrls: ['./calendar-lookup-inputs.component.scss'],
 })
-export class RacersCupInputsComponent {
-  /** REVIEW-COMMENT: Output for racers cup schedule lookup.  */
-  @Output() public playerAndDaysForward = new EventEmitter<RacersCupCalendarInputs>();
+export class CalendarLookupInputsComponent implements OnInit {
+  /** Inputs for calendar lookup.  */
+  @Input() public requireDaysForward = true;
+
+  /** Outputs for calendar lookup.  */
+  @Output() public playerAndDaysForward = new EventEmitter<CalendarLookupInputs>();
   public matTabSelectedIndex = 0;
 
   public identityFormControls = {
-    daysForward: new UntypedFormControl(30, [Validators.required, Validators.min(1)]),
+    daysForward: new UntypedFormControl(30, [Validators.min(1)]),
     identity: new UntypedFormControl(null, [Validators.required]),
   };
   public identityCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(
@@ -30,7 +33,7 @@ export class RacersCupInputsComponent {
   );
 
   public pegasusFormControls = {
-    daysForward: new UntypedFormControl(30, [Validators.required, Validators.min(1)]),
+    daysForward: new UntypedFormControl(30, [Validators.min(1)]),
     pegasusEnvironment: new UntypedFormControl(null, [Validators.required]),
     pegasusSlot: new UntypedFormControl(null),
     pegasusSnapshot: new UntypedFormControl(null),
@@ -38,6 +41,14 @@ export class RacersCupInputsComponent {
   public pegasusCalendarScheduleForm: UntypedFormGroup = new UntypedFormGroup(
     this.pegasusFormControls,
   );
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    if (this.requireDaysForward) {
+      this.identityFormControls.daysForward.addValidators([Validators.required]);
+      this.pegasusFormControls.daysForward.addValidators([Validators.required]);
+    }
+  }
 
   /** Produces a rejection message from a given identity, if it is rejected. */
   public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
@@ -57,7 +68,7 @@ export class RacersCupInputsComponent {
     this.identityFormControls.identity.setValue(newIdentity?.steelhead);
   }
 
-  /** Output values for racers cup schedule lookup. */
+  /** Output values for calendar lookup. */
   public submitClicked(): void {
     // Using identity lookup
     if (this.matTabSelectedIndex == 0) {

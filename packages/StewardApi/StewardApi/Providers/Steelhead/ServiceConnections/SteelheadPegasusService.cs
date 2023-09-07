@@ -22,6 +22,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
+using BanConfiguration = SteelheadLiveOpsContent.BanConfiguration;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 using PullRequest = Turn10.LiveOps.StewardApi.Contracts.Git.PullRequest;
@@ -823,6 +824,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             return this.refreshableCacheStore.GetItem<IEnumerable<VanityItem>>(vanityItemsKey)
                    ?? await GetVanityItems().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<SafetyRatingConfiguration> GetSafetyRatingConfig(string environment = null, string slot = null, string snapshot = null)
+        {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
+
+            await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
+
+            var safetyRatingConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<SafetyRatingConfiguration>(
+                CMSFileNames.SafetyRatingConfiguration,
+                environment: environment,
+                slot: slot,
+                snapshot: snapshot).ConfigureAwait(false);
+
+            return safetyRatingConfig;
         }
 
         /// <inheritdoc />
