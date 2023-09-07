@@ -42,6 +42,21 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '736e71dd-630f-4960-984f-ad5c611e383c',
+      shortText: 'Add Steam purchases to entitlements',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'a58c3f63-61df-4718-9fa7-384a001776fd',
+      shortText: 'Add pegasus data to timer dropdowns',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '34637ef2-c305-4514-bc20-a849bb90ede4',
+      shortText: 'Add player and pegasus lookup inputs to all calendars',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '0d448404-57a3-437c-a057-8cb8ec246f40',
       shortText:

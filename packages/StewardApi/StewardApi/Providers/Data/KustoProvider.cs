@@ -204,6 +204,43 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
+        public async Task<IEnumerable<PurchasedSteamEntitlement>> GetPlayerPurchasedSteamEntitlementsAsync(ulong xuid)
+        {
+            try
+            {
+                var query = PurchasedSteamEntitlement.MakeQuery(xuid);
+
+                async Task<IList<PurchasedSteamEntitlement>> Entitlements()
+                {
+                    var entitlements = new List<PurchasedSteamEntitlement>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(LiveOpsDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
+                    {
+                        while (reader.Read())
+                        {
+                            entitlements.Add(PurchasedSteamEntitlement.FromQueryResult(reader));
+                        }
+
+                        reader.Close();
+                    }
+
+                    this.refreshableCacheStore.PutItem(query, TimeSpan.FromMinutes(5), entitlements);
+
+                    return entitlements;
+                }
+
+                return this.refreshableCacheStore.GetItem<IList<PurchasedSteamEntitlement>>(query)
+                       ?? await Entitlements().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new QueryFailedStewardException($"Get purchased steam entitlements query failed for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<IList<MasterInventoryItem>> GetMasterInventoryListAsync(string kustoQuery)
         {
             try

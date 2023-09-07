@@ -1,7 +1,10 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DateTimeRange } from '@models/datetime-range';
+import { PegasusPathInfo } from '@models/pegasus-path-info';
 import { WelcomeCenterTileSize } from '@models/welcome-center';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
+import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 
@@ -83,8 +86,27 @@ export class SteelheadWelcomeCenterService {
   private basePath: string = 'title/steelhead/welcomeCenter';
   constructor(private readonly api: ApiV2Service) {}
 
-  /** Gets the Steelhead lsp groups. */
-  public getWelcomeCenterTiles$(): Observable<WelcomeCenter> {
-    return this.api.getRequest$<WelcomeCenter>(`${this.basePath}`);
+  /** Gets welcome center tiles for given pegasus path. */
+  public getWelcomeCenterTilesByPegasus$(info: PegasusPathInfo): Observable<WelcomeCenter> {
+    let httpParams = new HttpParams();
+
+    if (info?.environment) {
+      httpParams = httpParams.append('environment', info.environment);
+    }
+
+    if (info?.slot) {
+      httpParams = httpParams.append('slot', info.slot);
+    }
+
+    if (info?.snapshot) {
+      httpParams = httpParams.append('snapshot', info.snapshot);
+    }
+
+    return this.api.getRequest$<WelcomeCenter>(`${this.basePath}/configuration`, httpParams);
+  }
+
+  /** Gets welcome center tiles as seen by user. */
+  public getWelcomeCenterTilesByUser$(xuid: BigNumber): Observable<WelcomeCenter> {
+    return this.api.getRequest$<WelcomeCenter>(`${this.basePath}/player/${xuid}/configuration`);
   }
 }
