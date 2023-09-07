@@ -171,52 +171,52 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var flags = new SteelheadUserFlags
             {
-                IsGamecoreVip = new SteelheadUserFlag
+                IsGamecoreVip = new VerifiedUserFlag
                 {
                     IsMember = isGamecoreVip,
                     HasConflict = isGamecoreVip != verificationEnum.HasFlag(ForzaUserFlags.GameCoreVip),
                 },
-                IsGamecoreUltimateVip = new SteelheadUserFlag
+                IsGamecoreUltimateVip = new VerifiedUserFlag
                 {
                     IsMember = isGamecoreUltimateVip,
                     HasConflict = isGamecoreUltimateVip != verificationEnum.HasFlag(ForzaUserFlags.GameCoreUltimateVip),
                 },
-                IsSteamVip = new SteelheadUserFlag
+                IsSteamVip = new VerifiedUserFlag
                 {
                     IsMember = isSteamVip,
                     HasConflict = isSteamVip != verificationEnum.HasFlag(ForzaUserFlags.SteamVip),
                 },
-                IsSteamUltimateVip = new SteelheadUserFlag
+                IsSteamUltimateVip = new VerifiedUserFlag
                 {
                     IsMember = isSteamUltimateVip,
                     HasConflict = isSteamUltimateVip != verificationEnum.HasFlag(ForzaUserFlags.SteamUltimateVip),
                 },
-                IsTurn10Employee = new SteelheadUserFlag
+                IsTurn10Employee = new VerifiedUserFlag
                 {
                     IsMember = isTurn10Employee,
                     HasConflict = isTurn10Employee != verificationEnum.HasFlag(ForzaUserFlags.Turn10Employee),
                 },
-                IsEarlyAccess = new SteelheadUserFlag
+                IsEarlyAccess = new VerifiedUserFlag
                 {
                     IsMember = isEarlyAccess,
-                    HasConflict = isEarlyAccess != verificationEnum.HasFlag(ForzaUserFlags.UltimateVip), // Correct flag per LukeFoust/TomBojarski
+                    HasConflict = isEarlyAccess != verificationEnum.HasFlag(ForzaUserFlags.Whitelisted),
                 },
-                IsUnderReview = new SteelheadUserFlag
+                IsUnderReview = new VerifiedUserFlag
                 {
                     IsMember = isUnderReview,
                     HasConflict = isUnderReview != verificationResults.forzaUser.IsUserUnderReview,
                 },
-                IsRaceMarshall = new SteelheadUserFlag
+                IsRaceMarshall = new VerifiedUserFlag
                 {
                     IsMember = isRaceMarshall,
                     HasConflict = isRaceMarshall != verificationEnum.HasFlag(ForzaUserFlags.RaceMarshall),
                 },
-                IsCommunityManager = new SteelheadUserFlag
+                IsCommunityManager = new VerifiedUserFlag
                 {
                     IsMember = isCommunityManager,
                     HasConflict = isCommunityManager != verificationEnum.HasFlag(ForzaUserFlags.CommunityManager),
                 },
-                IsContentCreator = new SteelheadUserFlag
+                IsContentCreator = new VerifiedUserFlag
                 {
                     IsMember = isContentCreator,
                     HasConflict = isContentCreator != verificationEnum.HasFlag(ForzaUserFlags.ContentCreator),

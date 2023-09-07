@@ -70,7 +70,7 @@ export class SteelheadUserFlagsComponent
 
   /** Sets the newly selected Steelhead flags. */
   public putFlagsByXuid$(xuid: BigNumber): Observable<SteelheadUserFlags> {
-    const x = {
+    const flagsInput = {
       isGamecoreVip: this.formControls.isGamecoreVip.value,
       isGamecoreUltimateVip: this.formControls.isGamecoreUltimateVip.value,
       isSteamVip: this.formControls.isSteamVip.value,
@@ -83,6 +83,6 @@ export class SteelheadUserFlagsComponent
       isContentCreator: this.formControls.isContentCreator.value,
     } as SteelheadUserFlagsInput;
 
-    return this.steelheadPlayerFlagsService.putFlagsByXuid$(xuid, x);
+    return this.steelheadPlayerFlagsService.putFlagsByXuid$(xuid, flagsInput);
   }
 }

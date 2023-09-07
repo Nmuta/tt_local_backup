@@ -17,5 +17,8 @@ interface VerifiedUserFlag {
   hasConflict: boolean;
 }
 
+/** Type used for Steelhead flags GET requests */
 export type SteelheadUserFlags = BaseSteelheadUserFlags<VerifiedUserFlag>;
+
+/** Type used for Steelhead flags POST requests */
 export type SteelheadUserFlagsInput = BaseSteelheadUserFlags<boolean>;

@@ -1,9 +1,9 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents a Steelhead user flag.
+    ///     Represents a verified user flag.
     /// </summary>
-    public sealed class SteelheadUserFlag
+    public sealed class VerifiedUserFlag
     {
         /// <summary>
         ///     True if user is member of a specific user group.

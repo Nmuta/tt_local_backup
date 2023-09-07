@@ -56,7 +56,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public readonly permAttribute = PermAttributeName.UpdateUserFlags;
 
   public readonly tooltipText =
-    "User's membership is stale, we have differing membership from user details. To repair, add and remove the user to force a sync.";
+    'Conflicting user details have been detected. To resolve, manually remove and then re-add the user to force the data to sync.';
 
   /** Alternate text per key. */
   public readonly alteredLabels: { [key in keyof UserFlagsIntersection]?: string } = {
