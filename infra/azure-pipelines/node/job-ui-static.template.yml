@@ -36,8 +36,7 @@ jobs:
   - task: AzureStaticWebApp@0
     displayName: Publish Dev
     inputs:
-      workingDirectory: ${{parameters.workingDirectory}}
-      output_location: ${{parameters.distDirectory}}
+      app_location: ${{parameters.distDirectory}}
       azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
       skip_app_build: true
       skip_api_build: true
