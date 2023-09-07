@@ -11,14 +11,23 @@ $tile-gap-size: 1px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  position: relative;
+  z-index: 0;
 }
 
 .label {
-  padding-left: 0.5em;
+  margin-left: -.4em;
+  color: app-color-default-contrast($app-primary, 0.3);
+  z-index: -1;
 }
 
 .summary,
 .inline-summary {
+  &.summary {
+    // setting this so the icon overlap looks better.
+    background-color: app-color-default($app-primary);
+  }
+
   .row {
     display: flex;
     flex-flow: row nowrap;
@@ -59,9 +68,35 @@ $tile-gap-size: 1px;
   display: flex;
   flex-flow: column wrap;
   align-items: center;
-  padding: 0 0.5em;
-  > .toggle-group {
-    padding: 0.5em;
+  padding: .5em;
+  gap: .5em;
+
+  > .menu-header-title {
+    text-align: center;
+    font-weight: bolder;
+    font-size: 1.25em;
+  }
+
+  .mat-header-column {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+  
+  .mat-header-row {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    padding: .5em;
+    gap: 1em;
+  }
+
+  .toggle-group {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: .5em;
+    padding-top: 1em;
     label {
       display: block;
     }

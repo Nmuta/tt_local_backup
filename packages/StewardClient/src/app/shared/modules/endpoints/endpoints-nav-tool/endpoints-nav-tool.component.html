@@ -5,10 +5,10 @@
         <div *ngFor="let entry of line.entries" [ngClass]="entry.classes"></div>
       </div>
     </div>
-    <span class="label" [matTooltip]="item.tooltipDescription">{{ item.title }}</span>
+    <span class="label" [matTooltip]="item.tooltipDescription"><mat-icon>gps_fixed</mat-icon></span>
   </div>
 </button>
-<mat-menu #quickOptions class="sf-menu-relative-container">
+<mat-menu #quickOptions class="sf-menu-relative-container" class="mat-menu-wide">
   <help-popover-icon
     class="sf-menu-top-right"
     clickStop
@@ -43,31 +43,69 @@
       </li>
     </ul>
   </help-popover-icon>
+
   <div class="menu-header">
-    <div class="toggle-group">
-      <label>Forza Motorsport</label>
-      <mat-button-toggle-group
-        [(ngModel)]="steelheadEndpointKey"
-        (ngModelChange)="setSteelheadEndpoint($event)"
-      >
-        <mat-button-toggle *ngFor="let key of steelheadEndpointKeyList" [value]="key">{{
-          key
-        }}</mat-button-toggle>
-      </mat-button-toggle-group>
+    <div class="menu-header-title">
+      Endpoints Summary
     </div>
-    <div class="toggle-group">
-      <label>Forza Horizon 5</label>
-      <mat-button-toggle-group
-        [(ngModel)]="woodstockEndpointKey"
-        (ngModelChange)="setWoodstockEndpoint($event)"
-      >
-        <mat-button-toggle *ngFor="let key of woodstockEndpointKeyList" [value]="key">{{
-          key
-        }}</mat-button-toggle>
-      </mat-button-toggle-group>
+    
+    <div class="mat-header-row">
+      <div class="menu-header-column">
+        <div class="toggle-group">
+          <label>Forza Motorsport</label>
+          <mat-button-toggle-group
+            [(ngModel)]="steelheadEndpointKey"
+            (ngModelChange)="setSteelheadEndpoint($event)"
+          >
+            <mat-button-toggle *ngFor="let key of steelheadEndpointKeyList" [value]="key">{{
+              key
+            }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <div class="toggle-group">
+          <label>Forza Motorsport 7</label>
+          <mat-button-toggle-group
+            [(ngModel)]="apolloEndpointKey"
+            (ngModelChange)="setApolloEndpoint($event)"
+          >
+            <mat-button-toggle *ngFor="let key of apolloEndpointKeyList" [value]="key">{{
+              key
+            }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+      
+      <div class="menu-header-column">
+        <div class="toggle-group">
+          <label>Forza Horizon 5</label>
+          <mat-button-toggle-group
+            [(ngModel)]="woodstockEndpointKey"
+            (ngModelChange)="setWoodstockEndpoint($event)"
+          >
+            <mat-button-toggle *ngFor="let key of woodstockEndpointKeyList" [value]="key">{{
+              key
+            }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <div class="toggle-group">
+          <label>Forza Horizon 4</label>
+          <mat-button-toggle-group
+            [(ngModel)]="woodstockEndpointKey"
+            (ngModelChange)="setWoodstockEndpoint($event)"
+          >
+            <mat-button-toggle *ngFor="let key of woodstockEndpointKeyList" [value]="key">{{
+              key
+            }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
     </div>
   </div>
+
   <hr />
+
   <a
     *ngFor="let optionSet of quickEndpointOptions"
     [matTooltip]="optionSet.tooltip"
@@ -87,6 +125,6 @@
     matTooltip="Configure manually in the settings menu"
     matTooltipPosition="right"
   >
-    <mat-icon>engineering</mat-icon>Configure Manually
+    <mat-icon>engineering</mat-icon>Configure API settings
   </a>
 </mat-menu>

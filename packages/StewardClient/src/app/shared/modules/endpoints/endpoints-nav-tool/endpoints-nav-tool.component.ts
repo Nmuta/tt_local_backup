@@ -185,16 +185,30 @@ export class EndpointsNavToolComponent
       });
   }
 
-  /** Sets all endpoints and reloads the page. */
+  /** Sets steelhead endpoint and reloads the page. */
   public setSteelheadEndpoint(newEndpoint: string): void {
     this.store.dispatch([new SetSteelheadEndpointKey(newEndpoint)]).subscribe(() => {
       this.windowService.location().reload();
     });
   }
 
-  /** Sets all endpoints and reloads the page. */
+  /** Sets woodstock endpoint and reloads the page. */
   public setWoodstockEndpoint(newEndpoint: string): void {
     this.store.dispatch([new SetWoodstockEndpointKey(newEndpoint)]).subscribe(() => {
+      this.windowService.location().reload();
+    });
+  }
+
+  /** Sets apollo endpoint and reloads the page. */
+  public setApolloEndpoint(newEndpoint: string): void {
+    this.store.dispatch([new SetApolloEndpointKey(newEndpoint)]).subscribe(() => {
+      this.windowService.location().reload();
+    });
+  }
+
+  /** Sets sunrise endpoint and reloads the page. */
+  public setSunriseEndpoint(newEndpoint: string): void {
+    this.store.dispatch([new SetSunriseEndpointKey(newEndpoint)]).subscribe(() => {
       this.windowService.location().reload();
     });
   }
