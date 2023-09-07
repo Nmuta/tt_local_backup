@@ -92,6 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             /// <summary>Use for services that do not call LSP, or do not care which LSP/title they call.</summary>
             public const string Agnostic = "Title: Agnostic";
 
+            public const string Forte = "Title: Forte";
             public const string Steelhead = "Title: Steelhead";
             public const string Woodstock = "Title: Woodstock";
             public const string Sunrise = "Title: Sunrise";

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GameTitle } from '@models/enums';
@@ -30,16 +30,16 @@ export class AuctionBlocklistNewEntryComponent extends BaseComponent implements 
   private readonly noExpireDefaultTime = DateTime.local(9999, 12, 31);
 
   public formControls = {
-    carId: new FormControl(null, [Validators.required]),
-    description: new FormControl(null),
-    doesExpire: new FormControl(true, [Validators.required]),
-    expireDateUtc: new FormControl(null, [
+    carId: new UntypedFormControl(null, [Validators.required]),
+    description: new UntypedFormControl(null),
+    doesExpire: new UntypedFormControl(true, [Validators.required]),
+    expireDateUtc: new UntypedFormControl(null, [
       Validators.required,
       DateValidators.isAfter(DateTime.local().startOf('day')),
     ]),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public postMonitor: ActionMonitor = new ActionMonitor('INPUT POST');
 

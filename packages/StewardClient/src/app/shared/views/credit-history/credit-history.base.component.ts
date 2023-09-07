@@ -11,7 +11,7 @@ import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 import { clamp, slice } from 'lodash';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 /** Acceptable values for which direction to sort a column */
 export enum SortDirection {
@@ -143,10 +143,10 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   @Input() public identity?: IdentityResultUnion;
 
   public formControls = {
-    sortOptions: new FormControl('', Validators.required),
+    sortOptions: new UntypedFormControl('', Validators.required),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getCreditUpdatesMonitor = new ActionMonitor('Get credit updates');
   public saveRollbackMonitor = new ActionMonitor('GET save rollback');

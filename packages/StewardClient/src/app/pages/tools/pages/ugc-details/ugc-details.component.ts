@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
@@ -21,7 +21,7 @@ import { ScopedSharedLookupService } from './services/scoped-shared-lookup.servi
 })
 export class UgcDetailsComponent extends BaseComponent implements OnInit {
   public controls = {
-    sharecode: new FormControl(''),
+    sharecode: new UntypedFormControl(''),
   };
 
   public GameTitleCodeName = GameTitleCodeName;

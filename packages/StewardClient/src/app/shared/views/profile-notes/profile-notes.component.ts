@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GameTitle } from '@models/enums';
 import { ProfileNote } from '@models/profile-note.model';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
@@ -37,10 +37,10 @@ export class ProfileNotesComponent extends BaseComponent implements OnInit, OnCh
   public displayColumns: string[] = ['date', 'author', 'text'];
 
   public formControls = {
-    note: new FormControl(''),
+    note: new UntypedFormControl(''),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('Get player profile notes');
   public postMonitor = new ActionMonitor('Add a player note');

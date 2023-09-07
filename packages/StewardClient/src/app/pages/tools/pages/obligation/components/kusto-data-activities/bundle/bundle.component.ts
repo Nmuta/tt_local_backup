@@ -2,8 +2,8 @@ import { Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -53,13 +53,13 @@ export class BundleComponent implements ControlValueAccessor, Validator {
   };
 
   public formControls = {
-    dataActivity: new FormControl(cloneDeep(BundleComponent.defaults.dataActivity), [
+    dataActivity: new UntypedFormControl(cloneDeep(BundleComponent.defaults.dataActivity), [
       Validators.required,
     ]),
-    restateOMatic: new FormControl(cloneDeep(BundleComponent.defaults.restateOMatic)),
+    restateOMatic: new UntypedFormControl(cloneDeep(BundleComponent.defaults.restateOMatic)),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     dataActivity: this.formControls.dataActivity,
     restateOMatic: this.formControls.restateOMatic,
   });

@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { GameTitle } from '@models/enums';
@@ -49,15 +49,15 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
   public localizationSelectServiceContract: SelectLocalizedStringContract;
 
   public formControls = {
-    baseTile: new FormControl(null),
-    contentImagePath: new FormControl(null),
-    localizedPopupTitle: new FormControl({ value: {}, disabled: true }),
-    localizedPopupHeader: new FormControl({ value: {}, disabled: true }),
-    localizedPopupSubHeader: new FormControl({ value: {}, disabled: true }),
-    localizedPopupDescription: new FormControl({ value: {}, disabled: true }),
+    baseTile: new UntypedFormControl(null),
+    contentImagePath: new UntypedFormControl(null),
+    localizedPopupTitle: new UntypedFormControl({ value: {}, disabled: true }),
+    localizedPopupHeader: new UntypedFormControl({ value: {}, disabled: true }),
+    localizedPopupSubHeader: new UntypedFormControl({ value: {}, disabled: true }),
+    localizedPopupDescription: new UntypedFormControl({ value: {}, disabled: true }),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public readonly permAttribute = PermAttributeName.UpdateWelcomeCenterTiles;
 

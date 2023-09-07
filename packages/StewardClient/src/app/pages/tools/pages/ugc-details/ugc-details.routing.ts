@@ -13,6 +13,7 @@ import { SunriseRedirectComponent } from './pages/sunrise-redirect/sunrise-redir
 import { SteelheadLookupComponent } from './pages/steelhead-lookup/steelhead-lookup.component';
 import { SteelheadRedirectComponent } from './pages/steelhead-redirect/steelhead-redirect.component';
 import { SteelheadUgcDetailsComponent } from './pages/steelhead/steelhead-ugc-details.component';
+import { TitleMemoryRedirectLandingComponent } from 'app/route-guards';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        component: TitleMemoryRedirectLandingComponent,
         canActivate: [RouteMemoryRedirectGuard],
         pathMatch: 'full',
       },

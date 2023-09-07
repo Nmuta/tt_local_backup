@@ -12,6 +12,7 @@ import { createMockWindowService, WindowService } from '@services/window';
 
 describe('State: User', () => {
   let store: Store;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let actions$: Actions;
   let mockAuthService: MsalService;
   let mockWindowService: WindowService;
@@ -28,7 +29,6 @@ describe('State: User', () => {
     }).compileComponents();
 
     store = TestBed.inject(Store);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     actions$ = TestBed.inject(Actions);
     mockAuthService = TestBed.inject(MsalService);
     mockWindowService = TestBed.inject(WindowService);

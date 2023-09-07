@@ -2,8 +2,8 @@ import { AfterViewInit, Component, forwardRef, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -86,46 +86,46 @@ export class KustoDataActivityComponent implements AfterViewInit, ControlValueAc
   };
 
   public formControls = {
-    name: new FormControl(KustoDataActivityComponent.defaults.name, [
+    name: new UntypedFormControl(KustoDataActivityComponent.defaults.name, [
       Validators.required,
       StringValidators.trim,
       StringValidators.uniqueInList(() => this.activePipeline.activityNames),
     ]),
-    table: new FormControl(KustoDataActivityComponent.defaults.table, [
+    table: new UntypedFormControl(KustoDataActivityComponent.defaults.table, [
       Validators.required,
       StringValidators.trim,
     ]),
-    database: new FormControl(KustoDataActivityComponent.defaults.database, [
+    database: new UntypedFormControl(KustoDataActivityComponent.defaults.database, [
       Validators.required,
       StringValidators.trim,
     ]),
-    query: new FormControl(KustoDataActivityComponent.defaults.query, [Validators.required]),
-    dateRange: new FormControl(KustoDataActivityComponent.defaults.dateRange),
-    maximumExecutionTimeInMinutes: new FormControl(
+    query: new UntypedFormControl(KustoDataActivityComponent.defaults.query, [Validators.required]),
+    dateRange: new UntypedFormControl(KustoDataActivityComponent.defaults.dateRange),
+    maximumExecutionTimeInMinutes: new UntypedFormControl(
       KustoDataActivityComponent.defaults.maximumExecutionTimeInMinutes,
       [Validators.required, Validators.min(60), Validators.max(1440)],
     ),
-    executionIntervalInMinutes: new FormControl(
+    executionIntervalInMinutes: new UntypedFormControl(
       KustoDataActivityComponent.defaults.executionIntervalInMinutes,
       [Validators.required],
     ),
-    executionDelayInMinutes: new FormControl(
+    executionDelayInMinutes: new UntypedFormControl(
       KustoDataActivityComponent.defaults.executionDelayInMinutes,
       [Validators.required],
     ),
-    parallelismLimit: new FormControl(KustoDataActivityComponent.defaults.parallelismLimit, [
+    parallelismLimit: new UntypedFormControl(KustoDataActivityComponent.defaults.parallelismLimit, [
       Validators.required,
       Validators.min(1),
       Validators.max(25),
     ]),
-    isTimeAgnostic: new FormControl(KustoDataActivityComponent.defaults.isTimeAgnostic),
-    dependencyNames: new FormControl(KustoDataActivityComponent.defaults.dependencyNames),
-    selfDependency: new FormControl(false),
-    creationBehavior: new FormControl(KustoDataActivityComponent.defaults.creationBehavior),
-    fromApi: new FormControl(KustoDataActivityComponent.defaults.fromApi),
+    isTimeAgnostic: new UntypedFormControl(KustoDataActivityComponent.defaults.isTimeAgnostic),
+    dependencyNames: new UntypedFormControl(KustoDataActivityComponent.defaults.dependencyNames),
+    selfDependency: new UntypedFormControl(false),
+    creationBehavior: new UntypedFormControl(KustoDataActivityComponent.defaults.creationBehavior),
+    fromApi: new UntypedFormControl(KustoDataActivityComponent.defaults.fromApi),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     name: this.formControls.name,
     table: this.formControls.table,
     database: this.formControls.database,

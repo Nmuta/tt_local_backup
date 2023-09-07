@@ -8,4 +8,5 @@ export enum LogTopic {
   RouteReuse = 'RouteReuse',
   ToolsAvailabilityInterceptor = 'ToolsAvailabilityInterceptor',
   Test = 'Test',
+  Sidebar = 'Sidebar',
 }

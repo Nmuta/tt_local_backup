@@ -9,14 +9,14 @@ import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { createMockWindowService } from '@services/window';
 import { createMockZendeskService } from '@services/zendesk';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { NewLocalizedMessageComponent } from './new-localized-message.component';
 
 describe('NewLocalizedMessageComponent', () => {
   let fixture: ComponentFixture<NewLocalizedMessageComponent>;
   let component: NewLocalizedMessageComponent;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -32,7 +32,7 @@ describe('NewLocalizedMessageComponent', () => {
         ...createMockMsalServices(),
         createMockZendeskService(),
         createMockLoggerService(),
-        { provide: FormBuilder, useValue: formBuilder },
+        { provide: UntypedFormBuilder, useValue: formBuilder },
       ],
     }).compileComponents();
 

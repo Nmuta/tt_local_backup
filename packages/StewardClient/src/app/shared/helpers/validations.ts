@@ -1,8 +1,8 @@
-import { FormControl, ValidationErrors } from '@angular/forms';
+import { UntypedFormControl, ValidationErrors } from '@angular/forms';
 import _ from 'lodash';
 
 /** Verify that the value is part of the parent banReasons list. */
-export function requireReasonListMatch(control: FormControl): ValidationErrors | null {
+export function requireReasonListMatch(control: UntypedFormControl): ValidationErrors | null {
   const selection = control.value;
 
   // The calling class must have a string[] variable of all ban reasons.
@@ -14,7 +14,7 @@ export function requireReasonListMatch(control: FormControl): ValidationErrors |
 }
 
 /** Verify that the value is part of the parent cars list. */
-export function requireValidCarSelection(control: FormControl): ValidationErrors | null {
+export function requireValidCarSelection(control: UntypedFormControl): ValidationErrors | null {
   const selection = control.value;
 
   if (!selection?.id) {

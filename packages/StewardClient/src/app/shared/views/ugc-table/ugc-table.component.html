@@ -187,18 +187,18 @@
           <ng-container *ngIf="entry.featuredByT10">
             {{
               entry.featuredEndDateUtc
-                ? (entry.featuredEndDateUtc | utcDate: 'short')
+                ? (entry.featuredEndDateUtc | utcDate : 'short')
                 : 'Featured with no end date'
             }}
           </ng-container>
         </li>
         <li>
           <b>Force Featured:</b>
-          {{ entry.featuredByT10 ? (entry.forceFeaturedEndDateUtc | utcDate: 'short') : 'No' }}
+          {{ entry.featuredByT10 ? (entry.forceFeaturedEndDateUtc | utcDate : 'short') : 'No' }}
         </li>
         <li><b>Title:</b> {{ entry.title }}</li>
         <li><b>Description:</b> {{ entry.description }}</li>
-        <li><b>Created:</b> {{ entry.createdDateUtc | utcDate: 'short' }}</li>
+        <li><b>Created:</b> {{ entry.createdDateUtc | utcDate : 'short' }}</li>
       </ul>
     </td>
   </ng-container>
@@ -312,14 +312,14 @@
           <ng-container *ngIf="entry.featuredByT10">
             {{
               entry.featuredEndDateUtc
-                ? (entry.featuredEndDateUtc | utcDate: 'short')
+                ? (entry.featuredEndDateUtc | utcDate : 'short')
                 : 'Featured with no end date'
             }}
           </ng-container>
         </li>
         <li>
           <b>Force Featured:</b>
-          {{ entry.featuredByT10 ? (entry.forceFeaturedEndDateUtc | utcDate: 'short') : 'No' }}
+          {{ entry.featuredByT10 ? (entry.forceFeaturedEndDateUtc | utcDate : 'short') : 'No' }}
         </li>
         <li><b>Title:</b> {{ entry.title }}</li>
         <li><b>Description:</b> {{ entry.description }}</li>
@@ -354,7 +354,7 @@
       >
         <ul>
           <div>
-            <li><b>Created:</b> {{ entry.createdDateUtc | utcDate: 'short' }}</li>
+            <li><b>Created:</b> {{ entry.createdDateUtc | utcDate : 'short' }}</li>
             <li><b>Share Code:</b> {{ entry.shareCode || 'N/A' }}</li>
             <li><b>Popularity:</b> {{ entry.popularityBucket }}/5</li>
             <li><b>Likes:</b> {{ entry.timesLiked }}</li>

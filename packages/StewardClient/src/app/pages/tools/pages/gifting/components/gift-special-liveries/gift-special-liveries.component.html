@@ -29,7 +29,7 @@
               clickStop
               [(ngModel)]="livery.checked"
               matTooltip="Check to send this livery"
-              >{{ livery.data.label }} on {{ livery.data.date | dateTimeToJsDate | date: 'short' }}
+              >{{ livery.data.label }} on {{ livery.data.date | dateTimeToJsDate | date : 'short' }}
             </mat-checkbox>
           </mat-panel-title>
         </mat-expansion-panel-header>
@@ -38,7 +38,7 @@
           <li><b>Car:</b> {{ livery.ugcData.carDescription }}</li>
           <li><b>Title:</b> {{ livery.ugcData.title }}</li>
           <li><b>Description:</b> {{ livery.ugcData.description }}</li>
-          <li><b>Created:</b> {{ livery.ugcData.createdDateUtc | utcDate: 'shortDate' }}</li>
+          <li><b>Created:</b> {{ livery.ugcData.createdDateUtc | utcDate : 'shortDate' }}</li>
           <li><b>Share Code:</b> {{ livery.ugcData.shareCode || 'N/A' }}</li>
           <li><b>Id:</b> {{ livery.ugcData.id }}</li>
           <li>

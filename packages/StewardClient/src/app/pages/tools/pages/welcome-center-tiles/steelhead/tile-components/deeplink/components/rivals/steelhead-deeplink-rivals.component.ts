@@ -2,8 +2,8 @@ import { Component, forwardRef } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   AbstractControl,
   ValidationErrors,
   ControlValueAccessor,
@@ -54,12 +54,12 @@ export class DeeplinkRivalsComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    rivalsSettingType: new FormControl(null),
-    rivalsCategory: new FormControl(null),
-    rivalsEvent: new FormControl(null),
+    rivalsSettingType: new UntypedFormControl(null),
+    rivalsCategory: new UntypedFormControl(null),
+    rivalsEvent: new UntypedFormControl(null),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor(steelheadRivalsService: SteelheadRivalsService) {
     super();

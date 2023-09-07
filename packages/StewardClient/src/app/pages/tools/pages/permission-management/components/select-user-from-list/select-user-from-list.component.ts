@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
@@ -41,7 +41,7 @@ export class SelectUserFromListComponent extends BaseComponent implements OnInit
   public selectedUser: UserModelWithPermissions;
 
   public selectUserToManage$ = new Subject<UserModelWithPermissions>();
-  public nameFilterFormControl = new FormControl(null);
+  public nameFilterFormControl = new UntypedFormControl(null);
 
   public userProfile: UserModel;
   public isAdmin: boolean = false;

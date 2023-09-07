@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         /// <summary>
         ///     Gets prod LSP endpoint.
         /// </summary>
-        public static string Retail => "https://gameservices.fm.forzamotorsport.net/Services/o.xtsw";
+        public static string Retail => "https://liveops.fm.forzamotorsport.net/Services/o.xtsw";
 
         /// <summary>
         ///     Gets studio LSP endpoint.

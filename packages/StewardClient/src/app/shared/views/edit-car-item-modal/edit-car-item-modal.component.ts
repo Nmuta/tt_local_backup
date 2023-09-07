@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -33,13 +33,13 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent {
   // We have the ability to also edit clientCarInfo, entitlementId, & tiersAchieved for a car
   // But have not implemented it yet
   public formControls = {
-    versionedLiveryId: new FormControl(null, Validators.required),
-    versionedTuneId: new FormControl(null, Validators.required),
-    experiencePoints: new FormControl(null, [Validators.required, Validators.min(0)]),
-    flags: new FormControl(null, Validators.required),
-    purchasePrice: new FormControl(null, [Validators.required, Validators.min(0)]),
+    versionedLiveryId: new UntypedFormControl(null, Validators.required),
+    versionedTuneId: new UntypedFormControl(null, Validators.required),
+    experiencePoints: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
+    flags: new UntypedFormControl(null, Validators.required),
+    purchasePrice: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
   public postMonitor = new ActionMonitor('Save car data');
   public carItem: PlayerInventoryCarItem;
 

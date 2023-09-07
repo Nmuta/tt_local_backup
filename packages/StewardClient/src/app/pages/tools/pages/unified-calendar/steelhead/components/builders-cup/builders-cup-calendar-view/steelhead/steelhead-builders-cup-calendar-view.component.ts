@@ -18,12 +18,13 @@ import {
 } from 'angular-calendar';
 import { includes, indexOf, max, sortBy, uniq } from 'lodash';
 import { DateTime } from 'luxon';
-import { takeUntil } from 'rxjs';
+import { EMPTY, Observable, Subject, catchError, switchMap, takeUntil, tap } from 'rxjs';
 import {
   SteelheadBuildersCupLadderModalComponent,
   SteelheadBuildersCupLadderModalData,
 } from '../../builders-cup-ladder-modal/steelhead/steelhead-builders-cup-ladder-modal.component';
 import { MIN_CALENDAR_DATETIME, MAX_CALENDAR_DATETIME } from '@shared/constants';
+import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 
 type TourGroup<T> = {
   tourName: string;
@@ -58,7 +59,7 @@ export interface BuildersCupMeta {
   animations: [collapseAnimation],
 })
 export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent implements OnInit {
-  public getActionMonitor = new ActionMonitor('GET car details');
+  public getMonitor = new ActionMonitor('GET Builders Cup Calendar');
   public buildersCupSchedule: BuildersCupFeaturedTour[];
 
   public view: CalendarView = CalendarView.Month;
@@ -70,6 +71,9 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
 
   public uniqueTours: string[];
   public seriesDictionary = new Map<string, string[]>();
+
+  private readonly getSchedule$ = new Subject<void>();
+  private retrieveSchedule$: Observable<BuildersCupFeaturedTour[]>;
 
   public get tourCount() {
     return max([this.uniqueTours?.length, 5]);
@@ -88,16 +92,65 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
       throw new Error("No service is defined for Builder's Cup Calendar.");
     }
 
-    this.getActionMonitor = this.getActionMonitor.repeat();
-    this.buildersCupService
-      .getBuildersCupSchedule$()
-      .pipe(this.getActionMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(buildersCupSchedule => {
-        this.uniqueTours = null;
-        this.buildersCupSchedule = buildersCupSchedule;
+    this.getSchedule$
+      .pipe(
+        tap(() => {
+          this.events = undefined;
+          this.uniqueTours = null;
+          this.events = [];
+        }),
+        this.getMonitor.monitorStart(),
+        switchMap(() =>
+          this.retrieveSchedule$.pipe(
+            this.getMonitor.monitorCatch(),
+            catchError(() => {
+              this.buildersCupSchedule = undefined;
+              this.events = [];
+              return EMPTY;
+            }),
+          ),
+        ),
+        this.getMonitor.monitorEnd(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(returnSchedule => {
+        this.buildersCupSchedule = returnSchedule;
         this.events = this.makeEvents(this.buildersCupSchedule);
         this.filterEvents(this.seriesDictionary);
       });
+  }
+
+  /** Refresh calendar on user interaction. */
+  public refreshTable(inputs: CalendarLookupInputs): void {
+    if (inputs.identity) {
+      if (!inputs.identity?.xuid) {
+        this.events = [];
+        this.uniqueTours = null;
+
+        return;
+      }
+
+      this.retrieveSchedule$ = this.buildersCupService.getBuildersCupScheduleByUser$(
+        inputs?.identity?.xuid,
+      );
+
+      this.getSchedule$.next();
+    }
+
+    if (inputs.pegasusInfo) {
+      if (!inputs.pegasusInfo.environment) {
+        this.events = [];
+        this.uniqueTours = null;
+
+        return;
+      }
+
+      this.retrieveSchedule$ = this.buildersCupService.getBuildersCupScheduleByPegasus$(
+        inputs.pegasusInfo,
+      );
+
+      this.getSchedule$.next();
+    }
   }
 
   /** Sets calendar view. */

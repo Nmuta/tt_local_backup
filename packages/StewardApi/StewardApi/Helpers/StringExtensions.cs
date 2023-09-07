@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static async Task<T> DeserializeAsync<T>(this string xml)
         {
             using TextReader reader = new StringReader(xml);
-            using XmlReader xmlreader = XmlReader.Create(reader);
+            using var xmlreader = XmlReader.Create(reader);
             return await Task.Run(() => (T)new XmlSerializer(typeof(T)).Deserialize(xmlreader)).ConfigureAwait(false);
         }
 

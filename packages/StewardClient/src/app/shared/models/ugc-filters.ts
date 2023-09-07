@@ -53,6 +53,7 @@ export enum UgcType {
   TuneBlob = 'TuneBlob',
   CommunityChallenge = 'CommunityChallenge',
   GameOptions = 'GameOptions',
+  Replay = 'Replay',
 }
 
 /** Order to display UGC results. */

@@ -2,8 +2,8 @@ import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -67,12 +67,12 @@ export class UgcSearchFiltersComponent
   public orderByOptions = keys(UgcOrderBy) as UgcOrderBy[];
 
   public formControls = {
-    ugcType: new FormControl(null, Validators.required),
-    makeModelInput: new FormControl(null),
-    keywords: new FormControl(''),
-    orderBy: new FormControl(UgcOrderBy.PopularityScoreDesc, Validators.required),
-    isFeatured: new FormControl(false, Validators.required),
-    identity: new FormControl(null),
+    ugcType: new UntypedFormControl(null, Validators.required),
+    makeModelInput: new UntypedFormControl(null),
+    keywords: new UntypedFormControl(''),
+    orderBy: new UntypedFormControl(UgcOrderBy.PopularityScoreDesc, Validators.required),
+    isFeatured: new UntypedFormControl(false, Validators.required),
+    identity: new UntypedFormControl(null),
   };
 
   public playerNotFound: boolean = false;
@@ -80,7 +80,7 @@ export class UgcSearchFiltersComponent
   public ugcDetailsRoute = null;
 
   /** UGC filters form group. */
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   private readonly onChanges$ = new Subject<UgcSearchFiltersFormValue>();
 

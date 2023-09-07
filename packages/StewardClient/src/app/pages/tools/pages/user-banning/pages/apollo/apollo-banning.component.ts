@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApolloBanArea, ApolloBanRequest, ApolloBanSummary } from '@models/apollo';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
@@ -21,10 +21,10 @@ import { GameTitle } from '@models/enums';
 })
 export class ApolloBanningComponent extends UserBanningBaseComponent {
   public formControls = {
-    banOptions: new FormControl('', [Validators.required]),
+    banOptions: new UntypedFormControl('', [Validators.required]),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     banOptions: this.formControls.banOptions,
   });
 

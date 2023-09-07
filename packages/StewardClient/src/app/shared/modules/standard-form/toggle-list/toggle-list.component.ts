@@ -2,8 +2,8 @@ import { Component, forwardRef, Input, OnChanges } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -40,9 +40,9 @@ export class ToggleListComponent implements OnChanges, ControlValueAccessor, Val
   @Input() public initial: ToggleListOptions = {};
   public current: ToggleListOptions = {};
 
-  public formControls: Record<string, FormControl> = {};
+  public formControls: Record<string, UntypedFormControl> = {};
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   /** Angular lifecycle hook. */
   public ngOnChanges(_changes: BetterSimpleChanges<ToggleListComponent>): void {
@@ -57,10 +57,10 @@ export class ToggleListComponent implements OnChanges, ControlValueAccessor, Val
 
     this.current = clone(this.initial);
     this.formControls = chain(initialKeys)
-      .map(k => [k, new FormControl(this.initial[k])])
+      .map(k => [k, new UntypedFormControl(this.initial[k])])
       .fromPairs()
       .value();
-    this.formGroup = new FormGroup(this.formControls);
+    this.formGroup = new UntypedFormGroup(this.formControls);
 
     this.formGroup.valueChanges.subscribe(_ => this.changeFn(this.formGroup.value));
   }

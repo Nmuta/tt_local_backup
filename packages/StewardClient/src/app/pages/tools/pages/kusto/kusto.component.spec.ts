@@ -1,6 +1,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GameTitleCodeName } from '@models/enums';
@@ -19,7 +24,7 @@ describe('KustoComponent', () => {
 
   let mockKustoService: KustoService;
 
-  const formBuilder: FormBuilder = new FormBuilder();
+  const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,7 +36,7 @@ describe('KustoComponent', () => {
         MatAutocompleteModule,
       ],
       declarations: [KustoComponent],
-      providers: [createMockKustoService(), { provide: FormBuilder, useValue: formBuilder }],
+      providers: [createMockKustoService(), { provide: UntypedFormBuilder, useValue: formBuilder }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(KustoComponent);
@@ -41,7 +46,7 @@ describe('KustoComponent', () => {
     mockKustoService = TestBed.inject(KustoService);
 
     component.kustoQueryForm = formBuilder.group({
-      queryInput: new FormControl('', Validators.required),
+      queryInput: new UntypedFormControl('', Validators.required),
     });
   });
 
@@ -59,7 +64,7 @@ describe('KustoComponent', () => {
 
     beforeEach(() => {
       component.kustoQueryForm = formBuilder.group({
-        queryInput: new FormControl('', Validators.required),
+        queryInput: new UntypedFormControl('', Validators.required),
       });
     });
 
@@ -99,7 +104,7 @@ describe('KustoComponent', () => {
         component.isLoading = false;
 
         component.kustoQueryForm = formBuilder.group({
-          queryInput: new FormControl('', Validators.required),
+          queryInput: new UntypedFormControl('', Validators.required),
         });
       });
 
@@ -117,7 +122,7 @@ describe('KustoComponent', () => {
         component.isLoading = false;
 
         component.kustoQueryForm = formBuilder.group({
-          queryInput: new FormControl(fakeQuery, Validators.required),
+          queryInput: new UntypedFormControl(fakeQuery, Validators.required),
         });
       });
 

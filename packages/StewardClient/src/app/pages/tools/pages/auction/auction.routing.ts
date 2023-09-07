@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
-import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import {
+  TitleMemoryRedirectGuard,
+  TitleMemoryRedirectLandingComponent,
+  TitleMemorySetGuard,
+} from 'app/route-guards';
 import { AuctionComponent } from './auction.component';
 import { SunriseAuctionComponent } from './sunrise-auction/sunrise-auction.component';
 import { WaitingForInputComponent } from './waiting-for-input/waiting-for-input.component';
@@ -15,6 +18,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        component: TitleMemoryRedirectLandingComponent,
         canActivate: [TitleMemoryRedirectGuard],
         pathMatch: 'full',
       },

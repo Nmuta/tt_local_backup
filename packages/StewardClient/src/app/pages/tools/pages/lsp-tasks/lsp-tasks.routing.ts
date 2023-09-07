@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LspTasksComponent } from './lsp-tasks.component';
-import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
-import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import {
+  TitleMemoryRedirectGuard,
+  TitleMemoryRedirectLandingComponent,
+  TitleMemorySetGuard,
+} from 'app/route-guards';
 import { SteelheadLspTaskManagementComponent } from './components/steelhead/steelhead-lsp-task-management.component';
 import { WoodstockLspTaskManagementComponent } from './components/woodstock/woodstock-lsp-task-management.component';
 
@@ -14,6 +17,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        component: TitleMemoryRedirectLandingComponent,
         canActivate: [TitleMemoryRedirectGuard],
         pathMatch: 'full',
       },

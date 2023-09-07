@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, Route, RouterModule, Routes } from '@angular/router';
-import { sidebarRoutes } from 'app/sidebars/sidebars.module';
 import { FourOhFourComponent } from '@shared/views/four-oh-four/four-oh-four.component';
 import { AuthGuard } from 'app/route-guards/auth.guard';
 import { ToolsAppComponent } from './tools-app.component';
@@ -14,6 +13,8 @@ import {
 import { HomeTileInfoExternal, HomeTileInfoInternal } from '@environments/environment.dev';
 import { chain } from 'lodash';
 import { AuthV2Guard } from 'app/route-guards/auth-v2.guard';
+import { RedirectionLandingComponent } from '../redirection-landing/redirection-landing.component';
+import { sidebarRoutes } from 'app/sidebars/sidebars.routing';
 
 const routes: Routes = [
   {
@@ -60,6 +61,7 @@ const routes: Routes = [
         .map((tool: HomeTileInfoExternal) => {
           return <Route>{
             path: tool.tool,
+            component: RedirectionLandingComponent,
             resolve: { url: 'externalUrlRedirectResolver' },
             data: { externalUrl: tool.externalUrl },
             canActivate: [AuthGuard, AuthV2Guard],

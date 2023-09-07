@@ -375,6 +375,51 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
+        ///     Gets a UGC Replay by ID.
+        /// </summary>
+        [HttpGet("replay/{ugcId}")]
+        [SwaggerResponse(200, type: typeof(SteelheadUgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetUgcReplay(string ugcId)
+        {
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
+
+            async Task<SteelheadUgcItem> GetReplayAsync()
+            {
+                ForzaUGCData replayOutput = null;
+
+                var replayOutputResponse = await this.Services.StorefrontManagementService.GetUGCObject(parsedUgcId).ConfigureAwait(false);
+                replayOutput = replayOutputResponse.result;
+
+                var replay = this.mapper.SafeMap<SteelheadUgcItem>(replayOutput);
+
+                if (replay.GameTitle != (int)GameTitle.FM8)
+                {
+                    throw new NotFoundStewardException($"Replay id could not found: {parsedUgcId}");
+                }
+
+                return replay;
+            }
+
+            var getReplay = GetReplayAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
+
+            await Task.WhenAll(getReplay, getCars).ConfigureAwait(true);
+
+            var replay = getReplay.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
+
+            var carData = cars.FirstOrDefault(car => car.Id == replay.CarId);
+            replay.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
+
+            return this.Ok(replay);
+        }
+
+        /// <summary>
         ///     Gets UGC item by share code.
         /// </summary>
         [HttpGet("shareCode/{shareCode}")]

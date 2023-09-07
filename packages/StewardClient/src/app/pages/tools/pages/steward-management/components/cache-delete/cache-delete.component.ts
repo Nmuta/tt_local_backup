@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CacheService } from '@services/settings/cache/cache.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -13,9 +13,9 @@ import { take, takeUntil } from 'rxjs';
 })
 export class CacheDeleteComponent extends BaseComponent {
   public formControls = {
-    cacheKey: new FormControl('', Validators.required),
+    cacheKey: new UntypedFormControl('', Validators.required),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public deleteMonitor = new ActionMonitor(null);
 

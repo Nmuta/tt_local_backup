@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GameTitle } from '@models/enums';
@@ -25,11 +25,11 @@ export class WoodstockAuctionBlocklistBaseComponent extends BaseComponent implem
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
 
   public formControls = {
-    keyword: new FormControl(''),
-    currentSeries: new FormControl(24, Validators.required),
+    keyword: new UntypedFormControl(''),
+    currentSeries: new UntypedFormControl(24, Validators.required),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor(private readonly woodstockAuctionsService: WoodstockAuctionsService) {
     super();

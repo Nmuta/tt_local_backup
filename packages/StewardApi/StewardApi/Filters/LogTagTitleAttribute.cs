@@ -51,5 +51,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         Gravity = 16,
         Woodstock = 32,
         Steelhead = 64,
+        Forte = 128,
     }
 }

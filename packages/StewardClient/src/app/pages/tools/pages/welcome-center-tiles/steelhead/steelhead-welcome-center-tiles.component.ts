@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
@@ -46,10 +46,10 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
   public readonly permAttributeLocString = PermAttributeName.AddLocalizedString;
 
   public formControls = {
-    selectedWelcomeCenterTile: new FormControl(null, [Validators.required]),
+    selectedWelcomeCenterTile: new UntypedFormControl(null, [Validators.required]),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public readonly permAttribute = PermAttributeName.UpdateWelcomeCenterTiles;
 

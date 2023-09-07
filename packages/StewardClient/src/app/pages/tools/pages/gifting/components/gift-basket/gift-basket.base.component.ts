@@ -5,7 +5,7 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitle } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
 import { GiftResponse } from '@models/gift-response';
@@ -92,13 +92,15 @@ export abstract class GiftBasketBaseComponent<
 
   /** Send form gift */
   public formControls = {
-    localizedTitleMessageInfo: new FormControl({}, [Validators.required]),
-    localizedBodyMessageInfo: new FormControl({}, [Validators.required]),
-    giftReason: new FormControl('', [Validators.required]),
-    expireDate: new FormControl(null, [DateValidators.isAfter(DateTime.local().startOf('day'))]),
-    hasExpirationDate: new FormControl(false),
+    localizedTitleMessageInfo: new UntypedFormControl({}, [Validators.required]),
+    localizedBodyMessageInfo: new UntypedFormControl({}, [Validators.required]),
+    giftReason: new UntypedFormControl('', [Validators.required]),
+    expireDate: new UntypedFormControl(null, [
+      DateValidators.isAfter(DateTime.local().startOf('day')),
+    ]),
+    hasExpirationDate: new UntypedFormControl(false),
   };
-  public sendGiftForm = new FormGroup(this.formControls);
+  public sendGiftForm = new UntypedFormGroup(this.formControls);
 
   /** Font awesome icons */
   public trashIcon = faTrashAlt;

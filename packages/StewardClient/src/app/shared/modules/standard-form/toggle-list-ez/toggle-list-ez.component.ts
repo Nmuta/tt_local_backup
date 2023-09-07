@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { GameTitle } from '@models/enums';
@@ -36,7 +36,7 @@ export class ToggleListEzComponent extends BaseComponent implements OnChanges {
   }
 
   public submitMonitor = new ActionMonitor('Submit Toggle List');
-  public formControl = new FormControl();
+  public formControl = new UntypedFormControl();
 
   constructor() {
     super();

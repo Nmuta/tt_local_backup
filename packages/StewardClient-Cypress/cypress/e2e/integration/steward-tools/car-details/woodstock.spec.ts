@@ -1,28 +1,23 @@
-import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
-import { withTags, Tag } from '@support/tags';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
-context('Steward / Support / Car Details / Woodstock', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+context('Steward / Support / Car Details / Woodstock', () => {
+  before(() => {
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.carDetails.woodstock);
   });
 
   context('Valid Selections', () => {
     it('Should search for a valid car', () => {
       cy.contains('mat-form-field', 'Search for model').click().type('Ferrari');
-      cy.contains('mat-option', 'Ferrari FXX (2005) [1006]').wait(5000).click();
+      cy.contains('mat-option', 'Ferrari FXX (2005) [1006]').wait(1_000).click();
       waitForProgressSpinners();
       cy.contains('mat-card-header', 'Car Details').should('exist');
       cy.contains('mat-card-header', 'Car Flags').should('exist');
     });
 
     it('Should redirect to the default page when pressing the "clear input" button', () => {
-      cy.visit(stewardUrls.tools.carDetails.woodstock + '/1006');
       cy.contains('mat-icon', 'close').click();
       cy.contains('mat-card-header', 'Car Details').should('not.exist');
       cy.contains('mat-card-header', 'Car Flags').should('not.exist');

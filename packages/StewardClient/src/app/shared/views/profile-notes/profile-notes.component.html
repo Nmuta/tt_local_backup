@@ -9,7 +9,7 @@
         <table mat-table [dataSource]="profileNotes">
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>Date</th>
-            <td mat-cell *matCellDef="let element">{{ element.dateUtc | date: 'short' }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.dateUtc | date : 'short' }}</td>
           </ng-container>
 
           <ng-container matColumnDef="author">

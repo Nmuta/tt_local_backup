@@ -6,6 +6,7 @@ import { WoodstockAuctionBlocklistService } from './woodstock-auction-blocklist.
 
 describe('WoodstockAuctionBlocklistService', () => {
   let service: WoodstockAuctionBlocklistService;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockWoodstockAuctionBlocklistService: WoodstockAuctionBlocklistService;
 
   beforeEach(waitForAsync(() => {
@@ -17,7 +18,6 @@ describe('WoodstockAuctionBlocklistService', () => {
 
     service = TestBed.inject(WoodstockAuctionBlocklistService);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mockWoodstockAuctionBlocklistService = TestBed.inject(WoodstockAuctionBlocklistService);
   }));
 

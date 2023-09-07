@@ -71,11 +71,6 @@ div {
   color: app-color-default($app-primary);
 }
 
-:host ::ng-deep mat-drawer > * {
-  box-sizing: border-box;
-  padding: 1rem 2rem;
-}
-
 pre {
   white-space: pre-wrap;
 }

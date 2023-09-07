@@ -1615,8 +1615,8 @@
       },
       "SteelheadLiveOpsContent": {
         "type": "Transitive",
-        "resolved": "1.7.26",
-        "contentHash": "bl2bmiRvPQ4pZlN5/lsYCcmrDYtuYeDcUMuNbOcbVreQHo86U3+iyop3UESbrPKLlxzCFGGphHTKdJD9tItAmw==",
+        "resolved": "1.7.41",
+        "contentHash": "/r38RWz5HdqYcE90WGPTK4mtWJHOC2Ain188+xaKo7ZSp4rHwcbwzRFA4WtC13Sw1ExGji++twzBaLUvcQG+eA==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.1"
         }
@@ -3246,7 +3246,7 @@
           "Newtonsoft.Json": "[13.0.1, )",
           "PlayFabAllSDK": "[1.144.230123, )",
           "SteelheadContent": "[1.7.37, )",
-          "SteelheadLiveOpsContent": "[1.7.26, )",
+          "SteelheadLiveOpsContent": "[1.7.41, )",
           "StewardGitApi": "[1.0.0, )",
           "Swashbuckle.AspNetCore": "[6.4.0, )",
           "Swashbuckle.AspNetCore.Annotations": "[6.4.0, )",

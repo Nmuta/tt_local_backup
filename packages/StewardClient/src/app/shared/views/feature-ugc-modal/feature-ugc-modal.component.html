@@ -4,10 +4,10 @@
   <span class="mat-subheading-2">
     <ng-container *ngIf="!!ugcItem.featuredByT10; else notFeaturedTemplate">
       <ng-container *ngIf="!!ugcItem.forceFeaturedEndDateUtc">
-        Force Featured until: {{ ugcItem.forceFeaturedEndDateUtc | utcDate: 'short' }}
+        Force Featured until: {{ ugcItem.forceFeaturedEndDateUtc | utcDate : 'short' }}
       </ng-container>
       <ng-container *ngIf="!!ugcItem.featuredEndDateUtc; else noFeaturedEndDateTemplate">
-        Featured until: {{ ugcItem.featuredEndDateUtc | utcDate: 'short' }}
+        Featured until: {{ ugcItem.featuredEndDateUtc | utcDate : 'short' }}
       </ng-container>
     </ng-container>
   </span>

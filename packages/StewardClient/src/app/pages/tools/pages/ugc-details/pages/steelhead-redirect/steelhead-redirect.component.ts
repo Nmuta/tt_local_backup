@@ -18,6 +18,7 @@ export class SteelheadRedirectComponent extends BaseComponent implements OnInit 
     UgcType.TuneBlob,
     UgcType.LayerGroup,
     UgcType.GameOptions,
+    UgcType.Replay,
   ];
   public hasTypeLookup = {};
 

@@ -160,9 +160,9 @@
                 >{{ entry.isClean ? 'Clean' : 'Dirty' }}</standard-flag
               >
               <div>
-                <b>{{ entry.score.toNumber() | number: '1.2-2' }}</b> {{ scoreTypeQualifier }}
+                <b>{{ entry.score.toNumber() | number : '1.2-2' }}</b> {{ scoreTypeQualifier }}
                 <div *ngFor="let altScore of entry?.alternateScoreRepresentations">
-                  <b>{{ altScore.value.toNumber() | number: '1.2-2' }}</b> {{ altScore.label }}
+                  <b>{{ altScore.value.toNumber() | number : '1.2-2' }}</b> {{ altScore.label }}
                 </div>
               </div>
               <div>
