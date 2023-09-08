@@ -1,7 +1,11 @@
-<button mat-button [matMenuTriggerFor]="quickOptions" #menuButton="matMenuTrigger"
+<button
+  mat-button
+  [matMenuTriggerFor]="quickOptions"
+  #menuButton="matMenuTrigger"
   [class.menu-button]="true"
   [class.menu-opened]="menuButton.menuOpen"
-  *ngIf="isLoaded; else spinner">
+  *ngIf="isLoaded; else spinner"
+>
   <div class="container" [matTooltip]="allUpTooltip" matTooltipClass="sf-tooltip-multiline">
     <div class="summary">
       <div class="row" *ngFor="let line of endpointStateGrid">
@@ -14,8 +18,17 @@
 <ng-template #spinner>
   <error-spinner [isActive]="true" matTooltip="Loading endpoints"></error-spinner>
 </ng-template>
-<mat-menu #quickOptions="matMenu" class="sf-menu-relative-container" class="mat-menu-wide mat-menu-topnav">
-  <help-popover-icon class="sf-menu-top-right" clickStop cardTitle="Current Endpoints" cardSubtitle="Navbar widget">
+<mat-menu
+  #quickOptions="matMenu"
+  class="sf-menu-relative-container"
+  class="mat-menu-wide mat-menu-topnav"
+>
+  <help-popover-icon
+    class="sf-menu-top-right"
+    clickStop
+    cardTitle="Current Endpoints"
+    cardSubtitle="Navbar widget"
+  >
     <p>The colored tiles on the left of this widget summarize the currently selected endpoints.</p>
     <p>
       Each row represents a title's endpoints. Hovering over the tiles shows a summary of the
@@ -45,29 +58,39 @@
   </help-popover-icon>
 
   <div class="menu-header">
-    <div class="menu-header-title">
-      Endpoints Summary
-    </div>
+    <div class="menu-header-title">Endpoints Summary</div>
 
     <div class="menu-header-row">
       <div class="menu-header-column">
         <div class="toggle-group">
           <label>Forza Motorsport</label>
-          <mat-button-toggle-group [(ngModel)]="steelheadEndpointKey" (ngModelChange)="setSteelheadEndpoint($event)">
-            <mat-button-toggle *ngFor="let option of steelheadButtonOptions" [value]="option.endpoint"
-              [class]="option.classes" [class.mat-button-toggle-slim]="true">{{
-              option.endpoint
-              }}</mat-button-toggle>
+          <mat-button-toggle-group
+            [(ngModel)]="steelheadEndpointKey"
+            (ngModelChange)="setSteelheadEndpoint($event)"
+          >
+            <mat-button-toggle
+              *ngFor="let option of steelheadButtonOptions"
+              [value]="option.endpoint"
+              [class]="option.classes"
+              [class.mat-button-toggle-slim]="true"
+              >{{ option.endpoint }}</mat-button-toggle
+            >
           </mat-button-toggle-group>
         </div>
 
         <div class="toggle-group">
           <label>Forza Motorsport 7</label>
-          <mat-button-toggle-group [(ngModel)]="apolloEndpointKey" (ngModelChange)="setApolloEndpoint($event)">
-            <mat-button-toggle *ngFor="let option of apolloButtonOptions" [value]="option.endpoint"
-              [class]="option.classes" [class.mat-button-toggle-slim]="true">{{
-              option.endpoint
-              }}</mat-button-toggle>
+          <mat-button-toggle-group
+            [(ngModel)]="apolloEndpointKey"
+            (ngModelChange)="setApolloEndpoint($event)"
+          >
+            <mat-button-toggle
+              *ngFor="let option of apolloButtonOptions"
+              [value]="option.endpoint"
+              [class]="option.classes"
+              [class.mat-button-toggle-slim]="true"
+              >{{ option.endpoint }}</mat-button-toggle
+            >
           </mat-button-toggle-group>
         </div>
       </div>
@@ -75,21 +98,33 @@
       <div class="menu-header-column">
         <div class="toggle-group">
           <label>Forza Horizon 5</label>
-          <mat-button-toggle-group [(ngModel)]="woodstockEndpointKey" (ngModelChange)="setWoodstockEndpoint($event)">
-            <mat-button-toggle *ngFor="let option of woodstockButtonOptions" [value]="option.endpoint"
-              [class]="option.classes" [class.mat-button-toggle-slim]="true">{{
-              option.endpoint
-              }}</mat-button-toggle>
+          <mat-button-toggle-group
+            [(ngModel)]="woodstockEndpointKey"
+            (ngModelChange)="setWoodstockEndpoint($event)"
+          >
+            <mat-button-toggle
+              *ngFor="let option of woodstockButtonOptions"
+              [value]="option.endpoint"
+              [class]="option.classes"
+              [class.mat-button-toggle-slim]="true"
+              >{{ option.endpoint }}</mat-button-toggle
+            >
           </mat-button-toggle-group>
         </div>
 
         <div class="toggle-group">
           <label>Forza Horizon 4</label>
-          <mat-button-toggle-group [(ngModel)]="sunriseEndpointKey" (ngModelChange)="setSunriseEndpoint($event)">
-            <mat-button-toggle *ngFor="let option of sunriseButtonOptions" [value]="option.endpoint"
-              [class]="option.classes" [class.mat-button-toggle-slim]="true">{{
-              option.endpoint
-              }}</mat-button-toggle>
+          <mat-button-toggle-group
+            [(ngModel)]="sunriseEndpointKey"
+            (ngModelChange)="setSunriseEndpoint($event)"
+          >
+            <mat-button-toggle
+              *ngFor="let option of sunriseButtonOptions"
+              [value]="option.endpoint"
+              [class]="option.classes"
+              [class.mat-button-toggle-slim]="true"
+              >{{ option.endpoint }}</mat-button-toggle
+            >
           </mat-button-toggle-group>
         </div>
       </div>
@@ -98,13 +133,25 @@
 
   <hr />
 
-  <a *ngFor="let optionSet of quickEndpointOptions" [matTooltip]="optionSet.tooltip" matTooltipPosition="right"
-    (click)="setAllEndpoints(optionSet)" mat-menu-item [disabled]="!optionSet.isPossible">
-    <mat-icon>{{ optionSet.icon ?? '' }}</mat-icon>{{ optionSet.name }}
+  <a
+    *ngFor="let optionSet of quickEndpointOptions"
+    [matTooltip]="optionSet.tooltip"
+    matTooltipPosition="right"
+    (click)="setAllEndpoints(optionSet)"
+    mat-menu-item
+    [disabled]="!optionSet.isPossible"
+  >
+    <mat-icon>{{ optionSet.icon ?? '' }}</mat-icon
+    >{{ optionSet.name }}
   </a>
-  <a [routerLink]="[{ outlets: { sidebar: 'settings/endpoints' } }]" queryParamsHandling="preserve" mat-menu-item
-    routerLinkActive="stroked-icon-button" matTooltip="Configure manually in the settings menu"
-    matTooltipPosition="right">
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'settings/endpoints' } }]"
+    queryParamsHandling="preserve"
+    mat-menu-item
+    routerLinkActive="stroked-icon-button"
+    matTooltip="Configure manually in the settings menu"
+    matTooltipPosition="right"
+  >
     <mat-icon>engineering</mat-icon>Configure API settings
   </a>
 </mat-menu>

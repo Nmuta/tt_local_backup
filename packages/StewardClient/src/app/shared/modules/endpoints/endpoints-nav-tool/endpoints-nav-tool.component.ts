@@ -95,10 +95,7 @@ const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
   templateUrl: './endpoints-nav-tool.component.html',
   styleUrls: ['./endpoints-nav-tool.component.scss'],
 })
-export class EndpointsNavToolComponent
-  extends BaseComponent
-  implements OnInit
-{
+export class EndpointsNavToolComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
 
@@ -237,13 +234,15 @@ export class EndpointsNavToolComponent
   }
 
   private refreshState(): void {
-    const hasAllLists = 
-      this.steelheadEndpointKeyList
-      && this.woodstockEndpointKeyList
-      && this.sunriseEndpointKeyList
-      && this.apolloEndpointKeyList
+    const hasAllLists =
+      this.steelheadEndpointKeyList &&
+      this.woodstockEndpointKeyList &&
+      this.sunriseEndpointKeyList &&
+      this.apolloEndpointKeyList;
 
-    if (!hasAllLists) { return; }
+    if (!hasAllLists) {
+      return;
+    }
     renderGuard(() => {
       const optionSets = QUICK_ENDPOINT_OPTIONS;
       const withPossibilityState = this.markEndpointPossibilities(optionSets);
@@ -260,10 +259,18 @@ export class EndpointsNavToolComponent
         `FM7: ${this.apolloEndpointKey}`,
       ].join('\n');
 
-      this.steelheadButtonOptions = this.steelheadEndpointKeyList.map(endpoint => this.summarizeEndpointButton(endpoint, this.steelheadEndpointKey));
-      this.woodstockButtonOptions = this.woodstockEndpointKeyList.map(endpoint => this.summarizeEndpointButton(endpoint, this.woodstockEndpointKey));
-      this.sunriseButtonOptions = this.sunriseEndpointKeyList.map(endpoint => this.summarizeEndpointButton(endpoint, this.sunriseEndpointKey));
-      this.apolloButtonOptions = this.apolloEndpointKeyList.map(endpoint => this.summarizeEndpointButton(endpoint, this.apolloEndpointKey));
+      this.steelheadButtonOptions = this.steelheadEndpointKeyList.map(endpoint =>
+        this.summarizeEndpointButton(endpoint, this.steelheadEndpointKey),
+      );
+      this.woodstockButtonOptions = this.woodstockEndpointKeyList.map(endpoint =>
+        this.summarizeEndpointButton(endpoint, this.woodstockEndpointKey),
+      );
+      this.sunriseButtonOptions = this.sunriseEndpointKeyList.map(endpoint =>
+        this.summarizeEndpointButton(endpoint, this.sunriseEndpointKey),
+      );
+      this.apolloButtonOptions = this.apolloEndpointKeyList.map(endpoint =>
+        this.summarizeEndpointButton(endpoint, this.apolloEndpointKey),
+      );
 
       this.isLoaded = true;
     });
