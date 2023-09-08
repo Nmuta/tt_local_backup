@@ -7,7 +7,7 @@
     }
   ],
   "navigationFallback": {
-    "rewrite": "index.html",
+    "rewrite": "/index.html",
     "exclude": ["*.{png,jpg,gif,ico}", "/images/*", "/lottie/*"]
   },
   "responseOverrides": {
