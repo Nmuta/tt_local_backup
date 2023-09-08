@@ -33,5 +33,9 @@ context('Steward / Tools / UGC Details / Sunrise', withTags(Tag.Flakey), () => {
     it('should find Events data', () => {
       testInputUgcID(sunriseSamples.events);
     });
+
+    it('should find known hidden data', () => {
+      testInputUgcID(sunriseSamples.knownHidden);
+    });
   });
 });
