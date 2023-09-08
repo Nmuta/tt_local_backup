@@ -28,67 +28,61 @@
 }
 
 /// Produces the CSS vars, given color + darkmode + palette + style-names
-@mixin entryToVars($color-config, $is-dark, $palette-name, $style, $darkmode-style-name) {
-  $palette: map.get($color-config, $palette-name);
-  @include paletteToVars($palette, $is-dark, $palette-name, $style, $darkmode-style-name);
-}
-
-/// Produces the CSS vars, given color + darkmode + palette + style-names
-@mixin paletteToVars($palette, $is-dark, $palette-name, $style, $darkmode-style-name) {
+@mixin paletteEntryToVars($palette, $is-dark, $palette-name, $style, $darkmode-style-name) {
+  $source-style: $style;
   $lookup-name: makeLookupName($palette-name, $style);
   @if ($is-dark) {
+    $source-style: $darkmode-style-name;
     $lookup-name: makeLookupName($palette-name, $darkmode-style-name);
   }
 
-  $color: mat.get-color-from-palette($palette, $style);
+  $color: mat.get-color-from-palette($palette, $source-style);
   @include colorToVars($lookup-name, $color);
+}
+
+/// Produces the CSS vars, given color + darkmode + palette + style-names
+@mixin themePaletteToVars($color-config, $is-dark, $palette-name) {
+  $palette: map.get($color-config, $palette-name);
+  
+  @include paletteToVars($palette, $is-dark, $palette-name);
+}
+
+/// Produces the CSS vars, given color + darkmode + palette
+@mixin paletteToVars($palette, $is-dark, $palette-name) {
+  // original colors. inverts darker/lighter between darkmode/lightmode
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 'default-contrast', 'default-contrast');
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 'lighter-contrast', 'darker-contrast');
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 'darker-contrast', 'lighter-contrast');
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 'default', 'default');
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 'lighter', 'darker');
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 'darker', 'lighter');
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 'text', 'text');
+
+  // passthru colors
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 50, 50);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 100, 100);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 200, 200);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 300, 300);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 400, 400);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 500, 500);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 600, 600);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 700, 700);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 800, 800);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, 900, 900);
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "A100", "A100");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "A200", "A200");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "A400", "A400");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "A700", "A700");
 }
 
 // Produces CSS vars for a given color-config
 @mixin colorConfigToVars($color-config, $is-dark) {
-  @include entryToVars($color-config, $is-dark, 'primary', 'default', 'default');
-  @include entryToVars($color-config, $is-dark, 'primary', 'lighter', 'darker');
-  @include entryToVars($color-config, $is-dark, 'primary', 'darker', 'lighter');
-  @include entryToVars($color-config, $is-dark, 'primary', 'text', 'text');
-  @include entryToVars($color-config, $is-dark, 'accent', 'default', 'default');
-  @include entryToVars($color-config, $is-dark, 'accent', 'lighter', 'darker');
-  @include entryToVars($color-config, $is-dark, 'accent', 'darker', 'lighter');
-  @include entryToVars($color-config, $is-dark, 'accent', 'text', 'text');
-  @include entryToVars($color-config, $is-dark, 'warn', 'default', 'default');
-  @include entryToVars($color-config, $is-dark, 'warn', 'lighter', 'darker');
-  @include entryToVars($color-config, $is-dark, 'warn', 'darker', 'lighter');
-  @include entryToVars($color-config, $is-dark, 'warn', 'text', 'text');
-  @include colorToVars(makeLookupName('unknown', 'default'), hotpink);
-  @include colorToVars(makeLookupName('unknown', 'lighter'), hotpink);
-  @include colorToVars(makeLookupName('unknown', 'darker'), hotpink);
-  @include colorToVars(makeLookupName('unknown', 'text'), hotpink);
-  @include entryToVars($color-config, $is-dark, 'primary', 'default-contrast', 'default-contrast');
-  @include entryToVars($color-config, $is-dark, 'primary', 'lighter-contrast', 'darker-contrast');
-  @include entryToVars($color-config, $is-dark, 'primary', 'darker-contrast', 'lighter-contrast');
-  @include entryToVars($color-config, $is-dark, 'accent', 'default-contrast', 'default-contrast');
-  @include entryToVars($color-config, $is-dark, 'accent', 'lighter-contrast', 'darker-contrast');
-  @include entryToVars($color-config, $is-dark, 'accent', 'darker-contrast', 'lighter-contrast');
-  @include entryToVars($color-config, $is-dark, 'warn', 'default-contrast', 'default-contrast');
-  @include entryToVars($color-config, $is-dark, 'warn', 'lighter-contrast', 'darker-contrast');
-  @include entryToVars($color-config, $is-dark, 'warn', 'darker-contrast', 'lighter-contrast');
-
-  // you'd expect this to exist, since `text` does above. but it does not
-  // @include entryToVars($color-config, $is-dark, 'primary', 'text-contrast', 'text-contrast');
-  // @include entryToVars($color-config, $is-dark, 'accent', 'text-contrast', 'text-contrast');
-  // @include entryToVars($color-config, $is-dark, 'warn', 'text-contrast', 'text-contrast');
+  @include themePaletteToVars($color-config, $is-dark, 'primary');
+  @include themePaletteToVars($color-config, $is-dark, 'accent');
+  @include themePaletteToVars($color-config, $is-dark, 'warn');
 
   // angular themes are limited to three colors, but we use more. This should work, but the color is the same between dark and light themes.
-  @include paletteToVars($app-success, $is-dark, 'success', 'default', 'default');
-  @include paletteToVars($app-success, $is-dark, 'success', 'lighter', 'darker');
-  @include paletteToVars($app-success, $is-dark, 'success', 'darker', 'lighter');
-  @include paletteToVars($app-success, $is-dark, 'success', 'default-contrast', 'default-contrast');
-  @include paletteToVars($app-success, $is-dark, 'success', 'lighter-contrast', 'darker-contrast');
-  @include paletteToVars($app-success, $is-dark, 'success', 'darker-contrast', 'lighter-contrast');
-
-  @include colorToVars(makeLookupName('unknown', 'default-contrast'), hotpink);
-  @include colorToVars(makeLookupName('unknown', 'lighter-contrast'), hotpink);
-  @include colorToVars(makeLookupName('unknown', 'darker-contrast'), hotpink);
-  @include colorToVars(makeLookupName('unknown', 'text-contrast'), hotpink);
+  @include paletteToVars($app-success, $is-dark, 'success');
 }
 
 // Produces the CSS vars for a given foreground/background palette combination
@@ -180,6 +174,8 @@
   } @else if ($palette == $app-foreground) {
     @return 'foreground';
   } @else {
+    @debug "Unrecognized Palette: " $palette;
+    @debug 'unrecognized pallet would have produced "unknown"';
     @return 'unknown';
   }
 }

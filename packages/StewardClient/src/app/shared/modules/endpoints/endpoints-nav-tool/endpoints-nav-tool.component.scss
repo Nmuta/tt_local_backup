@@ -54,7 +54,7 @@ $tile-gap-size: 1px;
       background-color: app-color-default-contrast($app-primary);
 
       &.retail {
-        background-color: app-color-default($app-success);
+        background-color: app-color-passthru($app-success, 'A700');
       }
 
       &.flight {
