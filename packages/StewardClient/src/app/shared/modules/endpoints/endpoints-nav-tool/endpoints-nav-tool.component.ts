@@ -239,6 +239,13 @@ export class EndpointsNavToolComponent
   }
 
   private refreshState(): void {
+    const hasAllLists = 
+      this.steelheadEndpointKeyList
+      && this.woodstockEndpointKeyList
+      && this.sunriseEndpointKeyList
+      && this.apolloEndpointKeyList
+
+    if (!hasAllLists) { return; }
     renderGuard(() => {
       const optionSets = QUICK_ENDPOINT_OPTIONS;
       const withPossibilityState = this.markEndpointPossibilities(optionSets);
