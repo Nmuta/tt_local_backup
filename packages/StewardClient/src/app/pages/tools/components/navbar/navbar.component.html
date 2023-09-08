@@ -91,27 +91,12 @@
     mat-raised-button
     class="configure-defaults"
     color="default"
-    *ngIf="(!listedTools || listedTools.length === 0) && standardTools"
+    *ngIf="!listedTools || listedTools.length === 0"
     [matTooltip]="'Click to enable default navbar for ' + (role | humanize) + ' role'"
     (click)="setRoleDefaultNav()"
   >
     Click to set standard tools
   </button>
-
-  <a
-    mat-raised-button
-    class="configure-defaults"
-    color="accent"
-    *ngIf="!listedTools || listedTools.length === 0"
-    [matTooltip]="
-      !standardTools
-        ? 'There is no standard nav for your role. Click to configure'
-        : 'Click to configure your tools list'
-    "
-    [routerLink]="parentRoute + '/home'"
-    routerLinkActive="hidden"
-    >Click to customize tools</a
-  >
 
   <span class="spacer"></span>
 

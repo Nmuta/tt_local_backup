@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { UserRole } from '@models/enums';
-import { environment, HomeTileInfo, NavbarTool } from '@environments/environment';
+import { environment, HomeTileInfo } from '@environments/environment';
 import {
   UserSettingsState,
   UserSettingsStateModel,
@@ -15,6 +15,7 @@ import {
 import { BaseComponent } from '@components/base-component/base.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import {
+  ResetNavbarTools,
   SetNavbarTools,
   ThemeEnvironmentWarningOptions,
 } from '@shared/state/user-settings/user-settings.actions';
@@ -35,13 +36,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
   public role: UserRole = undefined;
   public listedTools: HomeTileInfoForNav[] = [];
-  public standardTools: Partial<Record<NavbarTool, number>> = {
-    [NavbarTool.UserDetails]: 1,
-    [NavbarTool.Gifting]: 2,
-    [NavbarTool.Messaging]: 3,
-    [NavbarTool.Endpoints]: 4,
-    [NavbarTool.Theming]: 5,
-  };
 
   public parentRoute: string = '/app/tools/';
 
@@ -103,10 +97,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
   /** Configures the navbar with sensible defaults for a given role. */
   public setRoleDefaultNav(): void {
-    if (!this.standardTools) {
-      return;
-    }
-    this.store.dispatch(new SetNavbarTools(this.standardTools));
+    this.store.dispatch(new ResetNavbarTools());
   }
 
   /** Called when the list is re-ordered. */
