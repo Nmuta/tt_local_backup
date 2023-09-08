@@ -28,6 +28,7 @@ jobs:
       script: |
         STATIC_ENV=$(echo "$(System.PullRequest.SourceBranch)" | grep -Po '(?<=refs/heads/).*?(?=/)')
         echo "$(System.PullRequest.SourceBranch) -> $STATIC_ENV"
+        echo "vso[task.setvariable variable=$STATIC_ENV ;]static_env"
         echo "##vso[task.setvariable variable=$STATIC_ENV ;]static_env"
   
   - task: Bash@3
