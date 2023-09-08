@@ -26,7 +26,7 @@ export function login(): Cypress.Chainable<unknown> {
       cy.get('#is-synced', { timeout: 20000 }).should('exist');
 
       cy.visit('/');
-
+      cy.get('mat-card').contains('mat-icon', 'close').click();
       cy.get('.mat-card-title', { timeout: 20000 }).contains('Player Details').should('exist');
     });
 }
