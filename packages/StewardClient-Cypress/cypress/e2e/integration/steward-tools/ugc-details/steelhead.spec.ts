@@ -29,5 +29,9 @@ context('Steward / Tools / UGC Details / Steelhead', withTags(Tag.Flakey), () =>
     it('should find Layer Group data', () => {
       testInputUgcID(steelheadSamples.layerGroup);
     });
+
+    it('should find private data', () => {
+      testInputUgcID(steelheadSamples.private);
+    });
   });
 });
