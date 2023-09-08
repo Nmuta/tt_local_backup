@@ -73,6 +73,22 @@
   @include paletteEntryToVars($palette, $is-dark, $palette-name, "A200", "A200");
   @include paletteEntryToVars($palette, $is-dark, $palette-name, "A400", "A400");
   @include paletteEntryToVars($palette, $is-dark, $palette-name, "A700", "A700");
+
+  // passthru colors (contrast)
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "50-contrast", "50-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "100-contrast", "100-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "200-contrast", "200-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "300-contrast", "300-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "400-contrast", "400-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "500-contrast", "500-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "600-contrast", "600-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "700-contrast", "700-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "800-contrast", "800-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "900-contrast", "900-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "A100-contrast", "A100-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "A200-contrast", "A200-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "A400-contrast", "A400-contrast");
+  @include paletteEntryToVars($palette, $is-dark, $palette-name, "A700-contrast", "A700-contrast");
 }
 
 // Produces CSS vars for a given color-config

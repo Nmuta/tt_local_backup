@@ -8,9 +8,8 @@
     <span class="label" [matTooltip]="item.tooltipDescription"><mat-icon>gps_fixed</mat-icon></span>
   </div>
 </button>
-<mat-menu #quickOptions class="sf-menu-relative-container" class="mat-menu-wide">
-  <help-popover-icon class="sf-menu-top-right" clickStop cardTitle="Current Endpoints" cardSubtitle="Navbar widget"
-    confluenceName="current-endpoints-navbar-widget">
+<mat-menu #quickOptions class="sf-menu-relative-container" class="mat-menu-wide mat-menu-topnav">
+  <help-popover-icon class="sf-menu-top-right" clickStop cardTitle="Current Endpoints" cardSubtitle="Navbar widget">
     <p>The colored tiles on the left of this widget summarize the currently selected endpoints.</p>
     <p>
       Each row represents a title's endpoints. Hovering over the tiles shows a summary of the
@@ -44,7 +43,7 @@
       Endpoints Summary
     </div>
 
-    <div class="mat-header-row">
+    <div class="menu-header-row">
       <div class="menu-header-column">
         <div class="toggle-group">
           <label>Forza Motorsport</label>

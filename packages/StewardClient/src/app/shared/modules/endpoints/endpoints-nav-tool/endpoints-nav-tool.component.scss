@@ -68,19 +68,28 @@ $tile-gap-size: 1px;
   line-height: 24px ;
 }
 
+::ng-deep .mat-menu-topnav {
+  margin-top: 1em;
+}
+
 mat-button-toggle {
+
+  &:not(.active) {
+    background-color: app-color-darker($app-background, 0.4);
+    color: app-color-darker-contrast($app-background, 0.4);
+  }
 
   &.spacer {
     background-color: transparent;
   }
 
   &.active.active {
-    background-color: app-color-default-contrast($app-primary);
-    color: app-color-default($app-primary);
+    background-color: app-color-default($app-primary);
+    color: app-color-default-contrast($app-primary);
 
     &.retail {
-      background-color: app-color-default($app-success, 0.3);
-      color: app-color-default-contrast($app-success);
+      background-color: app-color-passthru($app-success, 'A700', 0.7);
+      color: app-color-default-contrast($app-background);
     }
 
     &.flight {
@@ -93,23 +102,23 @@ mat-button-toggle {
 .menu-header {
   display: flex;
   flex-flow: column wrap;
-  align-items: center;
   padding: .5em;
   gap: .5em;
 
   > .menu-header-title {
-    text-align: center;
     font-weight: bolder;
     font-size: 1.25em;
+    padding-left: 1em;
   }
 
-  .mat-header-column {
+  .menu-header-column {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    gap: 1em;
   }
   
-  .mat-header-row {
+  .menu-header-row {
     display: flex;
     flex-flow: row wrap;
     align-items: center;
@@ -122,7 +131,6 @@ mat-button-toggle {
     flex-flow: column nowrap;
     align-items: center;
     gap: .5em;
-    padding-top: 1.5em;
     label {
       display: block;
     }
