@@ -6,7 +6,15 @@
     ></builders-cup-key>
   </mat-drawer>
   <div class="steward-layout-with-sidebar">
-    <ng-container *waitForMonitor="getActionMonitor">
+    <div class="steward-layout-sidebar-group">
+      <div class="calendar-control-panel">
+        <calendar-lookup-inputs
+          (playerAndDaysForward)="refreshTable($event)"
+          [requireDaysForward]="false"
+        ></calendar-lookup-inputs>
+      </div>
+    </div>
+    <ng-container *waitForMonitor="getMonitor">
       <div class="steward-layout-pane steward-layout-main-group">
         <mat-card>
           <mat-card-header class="sf-header">

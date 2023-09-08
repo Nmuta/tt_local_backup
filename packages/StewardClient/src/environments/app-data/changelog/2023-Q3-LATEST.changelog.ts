@@ -8,6 +8,61 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: 'aa928195-cd76-4db8-ac46-a4f43ac00704',
+      shortText: 'Rework Navbar Sidebars',
+      longText: [
+        'All previous navbar icon routes have been moved to a unified sidebar.\r\n' +
+          'Navbar icon padding has been replaced with separator bars.',
+
+        'Settings and Profile have been merged into a single button.\r\n' +
+          'Total Notification count is displayed over the new button.',
+
+        'The previous Settings page has been moved to Old Settings.\r\n' +
+          'Its contents have been split into Endpoints, Experience, Tours, and Profile.',
+
+        'The Profile panel no longer has a Location sub-panel.\r\n' +
+          'Some super-admin tools have been moved to this panel.',
+
+        'The Notifications panel is unchanged, aside from an increase in default width to avoid button shifting.',
+
+        'The Changelog panel now respects newlines in changelog entries.\r\n' +
+          'Very old changelog entries have been removed.\r\n' +
+          'The changelog will now only automatically open when there are new entries as well as a new version,\r\n' +
+          'and will not open automatically if you are already viewing it.',
+
+        'The Endpoints panel has been updated with some game titles.\r\n' +
+          'Show Help Icons is now in the Experience panel.',
+
+        'The Experience panel contains general user experience settings, some of which may appear in other panels.',
+
+        'The Tours panel now allows launching tours immediately, separately from enabling them to run.',
+
+        'The Old Settings panel is the unmodified version of the prior Settings panel. We plan to remove it later.',
+      ],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '736e71dd-630f-4960-984f-ad5c611e383c',
+      shortText: 'Add Steam purchases to entitlements',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'a58c3f63-61df-4718-9fa7-384a001776fd',
+      shortText: 'Add pegasus data to timer dropdowns',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '34637ef2-c305-4514-bc20-a849bb90ede4',
+      shortText: 'Add player and pegasus lookup inputs to all calendars',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '0d448404-57a3-437c-a057-8cb8ec246f40',
+      shortText:
+        'Safety rating minimum and maximum score values now based on Pegasus configuration',
+    },
+    {
       tag: {
         title: GameTitle.FM8,
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
@@ -19,6 +74,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: ChangelogTag.Internal,
       uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
       shortText: 'Update to Angular 14',
+      longText: ['Patch: Fix invalid routes.'],
     },
     {
       tag: { title: [GameTitle.Forte], tool: NavbarTool.PlayFab },

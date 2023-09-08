@@ -1,5 +1,13 @@
-<div>
-  <ng-container *waitForMonitor="getActionMonitor">
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="calendar-control-panel">
+      <calendar-lookup-inputs
+        (playerAndDaysForward)="refreshTable($event)"
+        [requireDaysForward]="false"
+      ></calendar-lookup-inputs>
+    </div>
+  </div>
+  <ng-container *waitForMonitor="getMonitor">
     <div class="steward-layout-pane">
       <mat-card class="calendar-card">
         <mat-card-title>Welcome Center Schedule</mat-card-title>
@@ -73,8 +81,8 @@
 <ng-template #customDayCellTemplate let-day="day" let-locale="locale">
   <div class="cal-cell-top">
     <span class="cal-day-badge">
-      {{ day.eventGroups[0].events.length }} | {{ day.eventGroups[1].events.length }} |
-      {{ day.eventGroups[2].events.length }}
+      {{ day?.eventGroups[0]?.events?.length }} | {{ day?.eventGroups[1]?.events?.length }} |
+      {{ day?.eventGroups[2]?.events?.length }}
     </span>
     <span class="cal-day-number">{{
       day.date | calendarDate : 'monthViewDayNumber' : locale

@@ -63,6 +63,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string environment = null, string slot = null, string snapshot = null);
 
         /// <summary>
+        ///     Gets safety rating configuration.
+        /// </summary>
+        Task<SafetyRatingConfiguration> GetSafetyRatingConfig(string environment = null, string slot = null, string snapshot = null);
+
+        /// <summary>
         ///     Gets tracks.
         /// </summary>
         Task<IEnumerable<Track>> GetTracksAsync(string environment = null, string slot = null, string snapshot = null);
@@ -299,5 +304,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Gets ban configurations.
         /// </summary>
         Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurationsAsync(string environment = null, string slot = null, string snapshot = null);
+
+        /// <summary>
+        ///     Gets Date time ranges.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetDateTimeRangesAsync(string environment = null, string slot = null, string snapshot = null);
+
+        /// <summary>
+        ///     Gets Challenges.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetChallengesAsync(string environment = null, string slot = null, string snapshot = null);
+
+        /// <summary>
+        ///     Gets Featured Showcases.
+        /// </summary>
+        Task<Dictionary<Guid, string>> GetFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null);
     }
 }

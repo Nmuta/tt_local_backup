@@ -24,6 +24,7 @@ import {
 } from '@models/welcome-center';
 import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
 import { SteelheadLocalizationService } from '@services/api-v2/steelhead/localization/steelhead-localization.service';
+import { SteelheadPegasusService } from '@services/api-v2/steelhead/pegasus/steelhead-pegasus.service';
 import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
 import { SteelheadRivalsService } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
 import { SteelheadShowroomService } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
@@ -76,6 +77,9 @@ export class GeneralTileComponent extends BaseComponent {
   public rivalsEventReferences: Map<string, string>;
   public showroomListingReferences: Map<string, string>;
   public seriesReferences: Map<string, string>;
+  public datetimeRangeReferences: Map<string, string>;
+  public challengeReferences: Map<string, string>;
+  public featuredShowcaseReferences: Map<string, string>;
   public displayConditionReferences: FriendlyNameMap;
   public whenFieldReferences: string[] = [
     '#builderscup',
@@ -132,6 +136,7 @@ export class GeneralTileComponent extends BaseComponent {
     steelheadRacersCupService: SteelheadRacersCupService,
     steelheadRivalsService: SteelheadRivalsService,
     steelheadShowroomService: SteelheadShowroomService,
+    steelheadPegasusService: SteelheadPegasusService,
   ) {
     super();
 
@@ -213,29 +218,50 @@ export class GeneralTileComponent extends BaseComponent {
           case TimerInstance.DateTimeRange:
             this.selectedTimerReferenceInstance = TimerReferenceInstance.DateTimeRange;
 
-            // TODO: Change the following references to use actual projected data
-            // https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1576997
-            this.timerReferenceOptions = new Map([
-              [
-                '39565392-c6d2-48ed-8dc3-f64ffc6ddd5d',
-                '[R.1] Ending Week 2 (10/11/2023 11:59:59 PM)',
-              ],
-              ['b67daceb-08fc-4870-b57d-11e82affcb94', 'Car Pass 2'],
-            ]);
+            if (this.datetimeRangeReferences) {
+              this.timerReferenceOptions = this.datetimeRangeReferences;
+            } else {
+              this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+              steelheadPegasusService
+                .getDatetimeRanges$()
+                .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+                .subscribe(dateRangeReferences => {
+                  this.datetimeRangeReferences = dateRangeReferences;
+                  this.timerReferenceOptions = this.datetimeRangeReferences;
+                });
+            }
             break;
           case TimerInstance.ChallengeData:
             this.selectedTimerReferenceInstance = TimerReferenceInstance.ChallengeData;
 
-            this.timerReferenceOptions = new Map([
-              ['89c2750f-5d95-41d6-ab42-e20612878996', 'Beat 5 Rivals'],
-            ]);
+            if (this.challengeReferences) {
+              this.timerReferenceOptions = this.challengeReferences;
+            } else {
+              this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+              steelheadPegasusService
+                .getChallenges$()
+                .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+                .subscribe(challengeReferences => {
+                  this.challengeReferences = challengeReferences;
+                  this.timerReferenceOptions = this.challengeReferences;
+                });
+            }
             break;
           case TimerInstance.FeaturedShowcase:
             this.selectedTimerReferenceInstance = TimerReferenceInstance.FeaturedShowcase;
 
-            this.timerReferenceOptions = new Map([
-              ['cffd5821-02db-4e03-9a49-0347e85286c3', 'Test Manufacturer Showcase'],
-            ]);
+            if (this.featuredShowcaseReferences) {
+              this.timerReferenceOptions = this.featuredShowcaseReferences;
+            } else {
+              this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
+              steelheadShowroomService
+                .getFeaturedShowcases$()
+                .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+                .subscribe(featuredShowcaseReferences => {
+                  this.featuredShowcaseReferences = featuredShowcaseReferences;
+                  this.timerReferenceOptions = this.featuredShowcaseReferences;
+                });
+            }
             break;
           case TimerInstance.RivalsEvent:
             this.selectedTimerReferenceInstance = TimerReferenceInstance.RivalsEvent;

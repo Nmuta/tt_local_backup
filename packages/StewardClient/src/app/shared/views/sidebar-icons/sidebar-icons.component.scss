@@ -5,6 +5,14 @@
   min-width: 2em;
 }
 
+.horizontal-nav-separator {
+  flex: 0 1 2px;
+  min-width: 2px;
+  background-color: app-color-default-contrast($app-primary, 0.2);
+  margin: 0 0.25em;
+  border-radius: 1em;
+}
+
 .mat-menu-trigger {
   padding: 0;
   min-width: $gap-medium + $gap-medium;
@@ -18,4 +26,9 @@
 .mat-stroked-button,
 .stroked-icon-button {
   border: 1px solid app-color-default-contrast($app-primary, 0.5) !important;
+}
+
+.sidebar-active-icon {
+  background-color: app-color-default-contrast($app-primary);
+  color: app-color-default($app-primary);
 }
