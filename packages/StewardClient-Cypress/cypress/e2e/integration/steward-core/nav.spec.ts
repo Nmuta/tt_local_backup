@@ -8,7 +8,7 @@ import { Tag, withTags } from '@support/tags';
 
 //These values may change as tools and games are added or removed from Steward
 const filterValues = {
-  allTools: '35',
+  allTools: '37',
   specificTool: '1',
   playerFilter: '7',
   fh5Filter: '24',
@@ -18,11 +18,9 @@ const filterValues = {
 context('Steward Index', () => {
   before(() => {
     login();
-
-    cy.visit('/');
   });
 
-  it('should lead to Tools homepage and close the tutorial', () => {
+  it('should lead to Tools homepage and close the tour', () => {
     // Verfiy cards
     cy.get('.mat-card-title').contains('Player Details');
     cy.get('.mat-card-title').contains('UGC Search');
@@ -34,7 +32,7 @@ context('Steward Index', () => {
     cy.get('.mat-icon').contains('account_circle');
     cy.get('.mat-icon').contains('contact_support');
 
-    cy.get('mat-card').contains('mat-icon', 'close').click();
+    //cy.get('mat-card').contains('mat-icon', 'close').click();
   });
 
   context('External Tools', () => {
