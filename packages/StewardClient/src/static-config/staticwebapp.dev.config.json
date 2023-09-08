@@ -8,7 +8,7 @@
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["*.{png,jpg,gif,ico}", "/images/*", "/lottie/*"]
+    "exclude": ["*.{png,jpg,gif,ico}", "/images/*", "/assets/*"]
   },
   "responseOverrides": {
     "401": {
