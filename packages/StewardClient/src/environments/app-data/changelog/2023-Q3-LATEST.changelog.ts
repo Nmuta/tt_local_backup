@@ -17,6 +17,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
         'Utility size has been reduced, and it may no longer be removed from the toolbar.',
         'Quick-change-button color now matches the color in the summary grid.',
         'Quick-change-button is replaced by a spinner while endpoint data is being retrieved.',
+        'Navbar theme-toggle button has been adjusted to match toolbar',
       ],
     },
     {
