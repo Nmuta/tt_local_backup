@@ -29,15 +29,6 @@ jobs:
         STATIC_ENV=$(echo "$(System.PullRequest.SourceBranch)" | grep -Po '(?<=refs/heads/).*?(?=/)')
         echo "$(System.PullRequest.SourceBranch) -> $STATIC_ENV"
         echo "##vso[task.setvariable variable=static_env]$STATIC_ENV"
-  
-  - task: Bash@3
-    displayName: Test target environment
-    inputs:
-      workingDirectory: ${{parameters.workingDirectory}}
-      targetType: 'inline'
-      script: |
-        echo "build time: $(static_env)"
-        echo "run time: $[static_env]"
 
   - task: Bash@3
     displayName: Static Build (Dev)

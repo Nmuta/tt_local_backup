@@ -45,7 +45,7 @@ describe('GoToInventoryButtonComponent', () => {
       component.goToInventory();
 
       const expectedUrl = `${
-        environment.stewardUiUrl
+        window.origin
       }/app/tools/user-details/${gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${xuid}`;
 
       expect(window.open).toHaveBeenCalledWith(expectedUrl, '_blank');

@@ -18,7 +18,7 @@ export class GoToInventoryButtonComponent {
   /** Routes to the inventory app. */
   public goToInventory(): void {
     if (!!this.gameTitle && !!this.xuid) {
-      const domain = environment.stewardUiUrl;
+      const domain = window.origin;
       const userDetailsLink = `${domain}/app/tools/user-details/${this.gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${
         this.xuid
       }`;

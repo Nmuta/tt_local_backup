@@ -53,7 +53,7 @@ describe('LogoutComponent:', () => {
     it('should redirect and open new window', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith([
-        new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank'),
+        new WindowOpen(`${window.origin}/auth/logout`, '_blank'),
         new Navigate(['/auth/logout-iframe']),
       ]);
       expect(store.dispatch).toHaveBeenCalledTimes(1);

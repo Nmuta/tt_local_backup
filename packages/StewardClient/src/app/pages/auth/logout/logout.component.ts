@@ -31,7 +31,7 @@ export class LogoutComponent implements OnInit {
       this.store.dispatch(new ResetUserProfile());
     } else {
       this.store.dispatch([
-        new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank'),
+        new WindowOpen(`${window.origin}/auth/logout`, '_blank'),
         new Navigate([`/auth/logout-iframe`]),
       ]);
     }

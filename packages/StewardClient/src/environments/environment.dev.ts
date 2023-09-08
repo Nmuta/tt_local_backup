@@ -16,7 +16,6 @@ export const environment: StewardEnvironment = {
   production: false,
   azureAppId: 'cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4',
   azureAppScope: 'api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access',
-  stewardUiUrl: 'https://steward-ui-dev.azurewebsites.net',
   stewardApiUrl: 'https://steward-api-dev.azurewebsites.net',
   stewardUiStagingUrl: 'https://steward-ui-dev-staging.azurewebsites.net',
   stewardApiStagingUrl: 'https://steward-api-dev-staging.azurewebsites.net',
