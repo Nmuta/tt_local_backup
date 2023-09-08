@@ -33,7 +33,6 @@
   $lookup-name: makeLookupName($palette-name, $style);
   @if ($is-dark) {
     $source-style: $darkmode-style-name;
-    $lookup-name: makeLookupName($palette-name, $darkmode-style-name);
   }
 
   $color: mat.get-color-from-palette($palette, $source-style);

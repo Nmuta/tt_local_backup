@@ -76,7 +76,7 @@ button.menu-opened {
   background-color: app-color($app-background, 'card');
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  z-index: 10000;
+  z-index: 5;
 
   .label {
     color: app-color-default-contrast($app-background, 0.3);
