@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { CustomTileComponent, HomeTileInfo } from '@environments/environment';
 import { renderGuard } from '@helpers/rxjs';
 import { Select, Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -92,20 +91,19 @@ const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
  * View and adjust current endpoint settings in the navbar.
  */
 @Component({
+  selector: 'endpoints-nav-tool',
   templateUrl: './endpoints-nav-tool.component.html',
   styleUrls: ['./endpoints-nav-tool.component.scss'],
 })
 export class EndpointsNavToolComponent
   extends BaseComponent
-  implements OnInit, CustomTileComponent
+  implements OnInit
 {
-  /** Set to true when this component should be disabled. */
-  @Input() public disabled: boolean;
-  /** The nav item we are working with. */
-  @Input() public item: HomeTileInfo;
-
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
+
+  /** True once all endpoints have been loaded and the component is ready for display. */
+  public isLoaded: boolean = false;
 
   public apolloEndpointKey: string;
   public sunriseEndpointKey: string;
@@ -255,6 +253,7 @@ export class EndpointsNavToolComponent
       this.endpointStateGrid = this.makeGrid();
 
       this.allUpTooltip = [
+        'Options for changing current endpoint settings. Hover over the grid to view current settings',
         `FM: ${this.steelheadEndpointKey}`,
         `FH5: ${this.woodstockEndpointKey}`,
         `FH4: ${this.sunriseEndpointKey}`,
@@ -265,6 +264,8 @@ export class EndpointsNavToolComponent
       this.woodstockButtonOptions = this.woodstockEndpointKeyList.map(endpoint => this.summarizeEndpointButton(endpoint, this.woodstockEndpointKey));
       this.sunriseButtonOptions = this.sunriseEndpointKeyList.map(endpoint => this.summarizeEndpointButton(endpoint, this.sunriseEndpointKey));
       this.apolloButtonOptions = this.apolloEndpointKeyList.map(endpoint => this.summarizeEndpointButton(endpoint, this.apolloEndpointKey));
+
+      this.isLoaded = true;
     });
   }
 

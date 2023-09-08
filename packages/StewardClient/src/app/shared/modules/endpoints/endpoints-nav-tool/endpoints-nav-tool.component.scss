@@ -5,6 +5,26 @@ $tile-gap-size: 1px;
 
 :host {
   display: flex;
+  min-width: 3em; // chosen to reserve space for the tool as it pops into view
+  padding: 0 .25em;
+}
+
+error-spinner {
+  font-size: 1.8em;
+}
+
+:host ::ng-deep error-spinner {
+  mat-progress-spinner {
+    circle {
+      color: app-color-default-contrast($app-primary) !important;
+      stroke: app-color-default-contrast($app-primary) !important;
+    }
+  }
+}
+
+.menu-button {
+  padding: .25em .5em;
+  min-width: 0;
 }
 
 .container {

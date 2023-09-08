@@ -1,14 +1,19 @@
-<button mat-button [matMenuTriggerFor]="quickOptions" [disabled]="disabled" #menuButton="matMenuTrigger"
-  [class.menu-opened]="menuButton.menuOpen">
-  <div class="container">
-    <div class="summary" [matTooltip]="allUpTooltip" matTooltipClass="sf-tooltip-multiline">
+<button mat-button [matMenuTriggerFor]="quickOptions" #menuButton="matMenuTrigger"
+  [class.menu-button]="true"
+  [class.menu-opened]="menuButton.menuOpen"
+  *ngIf="isLoaded; else spinner">
+  <div class="container" [matTooltip]="allUpTooltip" matTooltipClass="sf-tooltip-multiline">
+    <div class="summary">
       <div class="row" *ngFor="let line of endpointStateGrid">
         <div *ngFor="let entry of line.entries" [ngClass]="entry.classes"></div>
       </div>
     </div>
-    <span class="label" [matTooltip]="item.tooltipDescription"><mat-icon>gps_fixed</mat-icon></span>
+    <span class="label"><mat-icon>gps_fixed</mat-icon></span>
   </div>
 </button>
+<ng-template #spinner>
+  <error-spinner [isActive]="true" matTooltip="Loading endpoints"></error-spinner>
+</ng-template>
 <mat-menu #quickOptions="matMenu" class="sf-menu-relative-container" class="mat-menu-wide mat-menu-topnav">
   <help-popover-icon class="sf-menu-top-right" clickStop cardTitle="Current Endpoints" cardSubtitle="Navbar widget">
     <p>The colored tiles on the left of this widget summarize the currently selected endpoints.</p>
