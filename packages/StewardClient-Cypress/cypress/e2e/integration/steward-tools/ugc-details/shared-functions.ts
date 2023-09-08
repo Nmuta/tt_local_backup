@@ -28,7 +28,7 @@ export const woodstockSamples: Record<string, SampleUgc> = {
     time: '2/8/22 3:16:11 PM',
   },
 
-  private: {
+  knownHidden: {
     id: '5ebd5fb1-b7ca-40e0-8d77-f316a7a158a0',
     time: '2/8/22 3:14:18 PM',
   },
@@ -56,7 +56,7 @@ export const sunriseSamples: Record<string, SampleUgc> = {
     time: '10/11/18 5:51:25 PM',
   },
 
-  private: {
+  knownHidden: {
     id: '0f8d8e88-6ecb-43ab-b386-6b56c9889390',
     time: '3/15/21 8:30:02 AM',
   },
@@ -79,7 +79,7 @@ export const steelheadSamples: Record<string, SampleUgc> = {
     time: '7/30/23 12:03:42 AM',
   },
 
-  private: {
+  knownHidden: {
     id: '5a7d2474-e880-45c4-b8ec-499bfc350b8d',
     time: '8/14/23 10:12:25 PM',
   },

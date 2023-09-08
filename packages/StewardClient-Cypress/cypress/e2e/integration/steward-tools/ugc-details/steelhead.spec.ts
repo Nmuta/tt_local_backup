@@ -30,8 +30,8 @@ context('Steward / Tools / UGC Details / Steelhead', withTags(Tag.Flakey), () =>
       testInputUgcID(steelheadSamples.layerGroup);
     });
 
-    it('should find private data', () => {
-      testInputUgcID(steelheadSamples.private);
+    it('should find known hidden data', () => {
+      testInputUgcID(steelheadSamples.knownHidden);
     });
   });
 });
