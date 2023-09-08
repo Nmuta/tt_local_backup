@@ -64,6 +64,32 @@ $tile-gap-size: 1px;
   }
 }
 
+:host ::ng-deep .mat-button-toggle-label-content {
+  line-height: 24px ;
+}
+
+mat-button-toggle {
+
+  &.spacer {
+    background-color: transparent;
+  }
+
+  &.active.active {
+    background-color: app-color-default-contrast($app-primary);
+    color: app-color-default($app-primary);
+
+    &.retail {
+      background-color: app-color-default($app-success, 0.3);
+      color: app-color-default-contrast($app-success);
+    }
+
+    &.flight {
+      background-color: app-color-default($app-accent, 0.3);
+      color: app-color-default-contrast($app-accent);
+    }
+  }
+}
+
 .menu-header {
   display: flex;
   flex-flow: column wrap;
@@ -96,7 +122,7 @@ $tile-gap-size: 1px;
     flex-flow: column nowrap;
     align-items: center;
     gap: .5em;
-    padding-top: 1em;
+    padding-top: 1.5em;
     label {
       display: block;
     }

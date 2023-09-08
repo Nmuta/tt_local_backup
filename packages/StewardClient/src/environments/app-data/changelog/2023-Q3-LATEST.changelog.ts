@@ -9,6 +9,17 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: 'c59b7731-7ee8-4b34-a64f-0c0d47d484db',
+      shortText: 'Rework Endpoints/Environment navbar utility',
+      longText: [
+        'All references to "endpoints" have been replaced with "environment".',
+        'Utility is now capable of setting all environment endpoints.',
+        'Utility size has been reduced, and it may no longer be removed from the toolbar.',
+        'Quick-change-button color now matches the color in the summary grid.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'c898bf28-c7b4-4828-bf00-f338b5f0326b',
       shortText: 'Adjust standard toolbar',
       longText: [
