@@ -34,6 +34,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SteelheadFeatureUgcModalComponent } from '@views/feature-ugc-modal/steelhead/steelhead-feature-ugc-modal.component';
 import { SteelheadUgcHideStatusService } from '@services/api-v2/steelhead/ugc/hide-status/steelhead-ugc-hide-status.service';
 import { UgcReportReason } from '@models/ugc-report-reason';
+import { SteelheadUgcVisibilityStatusService } from '@services/api-v2/steelhead/ugc/visibility-status/steelhead-ugc-visibility-status.service';
 
 const GEO_FLAGS_ORDER = chain(SteelheadGeoFlags).sortBy().value();
 
@@ -47,6 +48,8 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('Post Hide UGC');
   public unhideMonitor = new ActionMonitor('POST Unhide UGC');
+  public privateMonitor = new ActionMonitor('POST Mark UGC Private');
+  public publicMonitor = new ActionMonitor('POST Mark UGC Public');
   public reportMonitor = new ActionMonitor('Post Report UGC');
   public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
   public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
@@ -80,6 +83,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public hidePermAttribute = PermAttributeName.HideUgc;
   public unhidePermAttribute = PermAttributeName.UnhideUgc;
   public editPermAttribute = PermAttributeName.EditUgc;
+  public visibilityPermAttribute = PermAttributeName.UpdateUgcVisibility;
   public gameTitle = GameTitle.FM8;
 
   constructor(
@@ -89,6 +93,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly ugcReportService: SteelheadUgcReportService,
     private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
     private readonly ugcHideStatusService: SteelheadUgcHideStatusService,
+    private readonly ugcVisibilityStatusService: SteelheadUgcVisibilityStatusService,
     private readonly ugcGeoFlagsService: SteelheadUgcGeoFlagsService,
     private readonly dialog: MatDialog,
   ) {
@@ -210,7 +215,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       });
   }
 
-  /** Edits a UGC item in Woodstock */
+  /** Edits a UGC item in Steelhead */
   public editUgcItem(): void {
     if (!this.ugcItem) {
       return;
@@ -247,7 +252,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       });
   }
 
-  /** Unhide a UGC item in Woodstock */
+  /** Unhide a UGC item in Steelhead */
   public unhideUgcItem(): void {
     if (!this.ugcItem) {
       return;
@@ -258,9 +263,40 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       .unhideUgcItems$([this.ugcItem.id])
       .pipe(this.unhideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.canFeatureUgc = true;
         this.ugcItem.isHidden = false;
+        this.canFeatureUgc = this.ugcItem.isPublic && !this.ugcItem.isHidden;
+      });
+  }
+
+  /** Mark a UGC item private in Steelhead */
+  public privateUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.privateMonitor = this.privateMonitor.repeat();
+
+    this.ugcVisibilityStatusService
+      .privateUgcItems$([this.ugcItem.id])
+      .pipe(this.privateMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = false;
+        this.ugcItem.isPublic = false;
+      });
+  }
+
+  /** Mark a UGC item public in Steelhead */
+  public publicUgcItem(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.publicMonitor = this.publicMonitor.repeat();
+
+    this.ugcVisibilityStatusService
+      .publicUgcItems$([this.ugcItem.id])
+      .pipe(this.publicMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
         this.ugcItem.isPublic = true;
+        this.canFeatureUgc = this.ugcItem.isPublic && !this.ugcItem.isHidden;
       });
   }
 

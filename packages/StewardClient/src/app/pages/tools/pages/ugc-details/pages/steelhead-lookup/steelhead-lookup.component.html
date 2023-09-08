@@ -172,6 +172,56 @@
               </div>
               <mat-error *ngIf="!canHideUgc">Cannot unhide Replay UGC item</mat-error>
             </div>
+
+            <div *ngIf="!ugcItem?.isPublic" class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyPublicBtn
+                [permissionAttribute]="visibilityPermAttribute"
+                [permissionTitle]="gameTitle"
+                [disabled]="ugcItem?.isHidden"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyPublicBtn"
+                (click)="publicUgcItem()"
+                stateManager
+                [monitor]="publicMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Mark UGC Public
+                <help-popover-icon cardTitle="Mark UGC Public"
+                  >Hidden UGC cannot be made public.</help-popover-icon
+                >
+              </button>
+            </div>
+
+            <div *ngIf="ugcItem.isPublic" class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyPrivateBtn
+                [permissionAttribute]="visibilityPermAttribute"
+                [permissionTitle]="gameTitle"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyPrivateBtn"
+                (click)="privateUgcItem()"
+                stateManager
+                [monitor]="privateMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                Mark UGC Private
+              </button>
+            </div>
           </div>
         </div>
       </div>
