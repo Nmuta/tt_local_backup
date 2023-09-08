@@ -69,11 +69,57 @@ $tile-gap-size: 1px;
 }
 
 ::ng-deep .mat-menu-topnav {
-  margin-top: 1em;
+  border-top-left-radius: 0;
+}
+
+button.menu-opened {
+  background-color: app-color($app-background, 'card');
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 10000;
+
+  .label {
+    color: app-color-default-contrast($app-background, 0.3);
+  }
+  .summary {
+    &.summary {
+      background-color: app-color($app-background, 'card');
+    }
+  
+    .row {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+    }
+  
+    &.inline-summary {
+      display: inline-flex;
+      align-items: center;
+    }
+  
+    .entry {
+      background-color: app-color-default-contrast($app-background, 0.1);
+  
+      &.spacer {
+        background-color: transparent;
+      }
+  
+      &.active {
+        background-color: app-color-default($app-primary);
+  
+        &.retail {
+          background-color: app-color-passthru($app-success, 'A700');
+        }
+  
+        &.flight {
+          background-color: app-color-default($app-accent);
+        }
+      }
+    }
+  }
 }
 
 mat-button-toggle {
-
   &:not(.active) {
     background-color: app-color-darker($app-background, 0.4);
     color: app-color-darker-contrast($app-background, 0.4);
