@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '317fabba-9068-4444-9fe7-4a2140d252e9',
+      shortText: 'Prepare Steward UI for new deployment model',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: 'c898bf28-c7b4-4828-bf00-f338b5f0326b',
       shortText: 'Adjust standard toolbar',
