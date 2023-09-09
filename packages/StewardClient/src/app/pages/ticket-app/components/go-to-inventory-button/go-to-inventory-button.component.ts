@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
 import BigNumber from 'bignumber.js';
 
