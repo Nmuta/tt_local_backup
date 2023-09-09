@@ -45,6 +45,7 @@ jobs:
 
   - task: AzureStaticWebApp@0
     displayName: Publish Dev to Static Staging Environment
+    continueOnError: true
     inputs:
       app_location: ${{parameters.distDirectory}}
       azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
