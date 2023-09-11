@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { SteelheadPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/ugc';
 import { SteelheadSearchUgcComponent } from './steelhead-search-ugc.component';
 import { UgcSearchFilters, UgcType } from '@models/ugc-filters';

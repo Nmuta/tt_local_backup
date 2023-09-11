@@ -1,6 +1,6 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, Provider } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MsalBroadcastService,
@@ -59,7 +59,7 @@ import { WoodstockGiftHistoryState } from '@tools-app/pages/gift-history/woodsto
 import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { LuxonModule } from 'luxon-angular';
 import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import {
   InteractionType,
   IPublicClientApplication,

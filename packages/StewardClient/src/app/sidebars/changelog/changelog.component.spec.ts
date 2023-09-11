@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { NgxsModule } from '@ngxs/store';
 import { createMockChangelogService } from '@services/changelog/changelog.service.mock';
 import { createMockUserService } from '@services/user';

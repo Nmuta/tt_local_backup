@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { StandardRelativeTimeComponent } from './standard-relative-time/standard-relative-time.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';

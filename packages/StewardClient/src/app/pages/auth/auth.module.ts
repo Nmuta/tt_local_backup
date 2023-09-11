@@ -7,7 +7,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { AadLoginComponent } from './aad-login/aad-login.component';
 import { AadLogoutComponent } from './aad-logout/aad-logout.component';
 import { StuckModule } from '@shared/views/stuck/stuck.module';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { LogoutIframeComponent } from './logout-iframe/logout-iframe.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 import { SyncStateComponent } from './sync-state/sync-state.component';

@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { fakePlayerUgcItem } from '@models/player-ugc-item';
 import { SteelheadUgcTableComponent } from './steelhead-ugc-table.component';
@@ -10,7 +10,7 @@ import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
 import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service.mock';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { createMockSteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service.mock';
 import { createMockSteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service.mock';

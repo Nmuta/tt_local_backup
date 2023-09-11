@@ -17,7 +17,7 @@ import { SteelheadMasterInventory } from '@models/steelhead';
 import { UntypedFormControl } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { HCI } from '@environments/environment';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggleChange as MatSlideToggleChange } from '@angular/material/legacy-slide-toggle';
 import { DateTimeRange } from '@models/datetime-range';
 import { DATE_TIME_TOGGLE_OPTIONS } from '@components/date-time-pickers/datetime-range-picker/datetime-range-toggle-defaults';
 import { DateRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/date-range-picker/date-range-picker.component';

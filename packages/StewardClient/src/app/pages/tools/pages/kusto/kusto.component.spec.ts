@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GameTitleCodeName } from '@models/enums';
 import { KustoQuery } from '@models/kusto';

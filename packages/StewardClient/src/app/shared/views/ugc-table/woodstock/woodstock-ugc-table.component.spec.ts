@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { fakePlayerUgcItem } from '@models/player-ugc-item';
 import { WoodstockUgcTableComponent } from './woodstock-ugc-table.component';
@@ -12,7 +12,7 @@ import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup/woodstock-ugc-lookup.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { createMockWoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service.mock';
 import { createMockWoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service.mock';
 import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';

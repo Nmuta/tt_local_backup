@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatLegacyOptionSelectionChange as MatOptionSelectionChange } from '@angular/material/legacy-core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { GameTitle } from '@models/enums';

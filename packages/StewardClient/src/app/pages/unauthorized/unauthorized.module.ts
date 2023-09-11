@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UnauthorizedRouterModule } from './unauthorized.routing.module';

@@ -9,7 +9,7 @@ import { Observable, takeUntil } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { PlayerCmsOverride } from '@models/player-cms-override.model';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 
 export interface CmsOverrideServiceContract {

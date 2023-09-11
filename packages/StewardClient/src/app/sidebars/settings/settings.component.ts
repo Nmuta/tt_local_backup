@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
 import { GameTitle, UserRole } from '@models/enums';

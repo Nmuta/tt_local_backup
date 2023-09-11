@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SunriseAuctionFiltersComponent } from './sunrise-auction-filters.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { SimpleCar } from '@models/cars';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';

@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSelectChange } from '@angular/material/select';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { JsonTableResult } from '@models/json-table-result';

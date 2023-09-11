@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { renderGuard } from '@helpers/rxjs';
 import { PlayFabCollectionId, PlayFabTransaction, PlayFabVoucher } from '@models/playfab';
 import { PlayFabProfile } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service';

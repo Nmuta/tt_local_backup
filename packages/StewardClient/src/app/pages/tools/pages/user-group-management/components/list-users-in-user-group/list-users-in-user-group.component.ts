@@ -8,8 +8,8 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { tryParseBigNumbers } from '@helpers/bignumbers';

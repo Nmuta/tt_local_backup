@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 
 import { SteelheadPlayerInventoryComponent } from './steelhead-player-inventory.component';
 import { NgxsModule } from '@ngxs/store';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import BigNumber from 'bignumber.js';
 import faker from '@faker-js/faker';

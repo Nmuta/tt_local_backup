@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
-import { MatChipInputEvent, MatChipListChange } from '@angular/material/chips';
+import { MatLegacyChipInputEvent as MatChipInputEvent, MatLegacyChipListChange as MatChipListChange } from '@angular/material/legacy-chips';
 import { BaseComponent } from '@components/base-component/base.component';
 import {
   IdentityQueryAlpha,

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -15,12 +15,12 @@ import { SteelheadUserGroupManagementComponent } from './steelhead/steelhead-use
 import { WoodstockUserGroupManagementComponent } from './woodstock/woodstock-user-group-management.component';
 
 import { UserGroupManagementRouterModule } from './user-group-management.routing';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { LspGroupSelectionModule } from '@shared/views/lsp-group-selection/lsp-group-selection.module';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { CreateUserGroupModule } from './components/create-user-group/create-user-group.module';
 import { ListUsersInUserGroupModule } from './components/list-users-in-user-group/list-users-in-user-group.module';

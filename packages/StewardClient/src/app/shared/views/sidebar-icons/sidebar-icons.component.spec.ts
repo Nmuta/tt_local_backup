@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { SidebarIconsComponent } from './sidebar-icons.component';
 import { environment } from '@environments/environment';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { createMockUserSettingsService } from '@shared/state/user-settings/use-settings.service.mock';

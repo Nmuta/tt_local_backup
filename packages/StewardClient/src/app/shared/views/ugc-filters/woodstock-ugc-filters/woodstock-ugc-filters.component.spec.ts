@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WoodstockUgcFiltersComponent } from './woodstock-ugc-filters.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { SimpleCar } from '@models/cars';

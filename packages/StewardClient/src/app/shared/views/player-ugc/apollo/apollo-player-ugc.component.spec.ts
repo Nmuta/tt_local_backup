@@ -8,8 +8,8 @@ import { of, throwError } from 'rxjs';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { ApolloPlayerUgcComponent } from './apollo-player-ugc.component';
 import { ApolloPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/ugc';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ApolloPlayerUgcComponent', () => {

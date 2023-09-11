@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UntypedFormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { KustoQueryGroup, KustoQuerySelectionComponent } from './kusto-query-selection.component';
 import faker from '@faker-js/faker';
 import { KustoQuery } from '@models/kusto';

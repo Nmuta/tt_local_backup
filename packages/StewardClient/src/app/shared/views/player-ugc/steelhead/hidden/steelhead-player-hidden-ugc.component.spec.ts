@@ -5,8 +5,8 @@ import faker from '@faker-js/faker';
 import { of, throwError } from 'rxjs';
 
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockSteelheadPlayerUgcService } from '@services/api-v2/steelhead/player/ugc/steelhead-player-ugc.service.mock';
 import { SteelheadPlayerHiddenUgcComponent } from './steelhead-player-hidden-ugc.component';

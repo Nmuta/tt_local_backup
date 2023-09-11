@@ -10,7 +10,7 @@ import {
 } from './steward-user-history.component';
 import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { toDateTime } from '@helpers/luxon';
 

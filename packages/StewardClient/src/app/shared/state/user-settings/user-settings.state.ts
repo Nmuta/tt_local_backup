@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { environment, NavbarTool } from '@environments/environment';
 import { InitEndpointKeysError } from '@models/enums';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';

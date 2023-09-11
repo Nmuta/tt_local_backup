@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnChanges, QueryList, ViewChildren } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { PullRequest } from '@models/git-operation';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
