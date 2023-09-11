@@ -16,7 +16,7 @@ If this is a new environment, it will need to be set up with the
 ---
 
 Info:
-Your environment: `\$env:DEPLOYMENT_ENVIRONMENT`
+Your environment: **$env:DEPLOYMENT_ENVIRONMENT**
 Your access URL: $env:ACCESS_URL
 
 (automated comment)
@@ -45,7 +45,7 @@ try {
     Write-Host "Team Project ID: $env:SYSTEM_TEAMPROJECTID"
     Write-Host "  Repository ID: $env:BUILD_REPOSITORY_ID"
     Write-Host "          PR ID: $env:SYSTEM_PULLREQUEST_PULLREQUESTID"
-    $url = "$env:SYSTEM_COLLECTIONURI/$env:SYSTEM_TEAMPROJECTID/_apis/git/repositories/$env:BUILD_REPOSITORY_ID/pullRequests/$env:SYSTEM_PULLREQUEST_PULLREQUESTID/threads?api-version=5.1"
+    $url = "$env:SYSTEM_COLLECTIONURI/$env:SYSTEM_TEAMPROJECTID/_apis/git/repositories/$env:BUILD_REPOSITORY_ID/pullRequests/$env:SYSTEM_PULLREQUEST_PULLREQUESTID/threads?api-version=6.0"
     Write-Host "URL: $url"
     $response = Invoke-RestMethod -Uri $url -Method POST -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"} -Body $Body -ContentType application/json
   if ($response -ne $Null) {
