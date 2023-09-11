@@ -49,7 +49,7 @@ export class UserSettingsStateModel {
 
 /** The default tools that appear in the navbar. */
 export const defaultToolsConfig: NavbarToolsConfig = chain(
-  [NavbarTool.Endpoints, NavbarTool.Theming, NavbarTool.UserDetails].map(
+  [ NavbarTool.Theming, NavbarTool.UserDetails].map(
     (tool: NavbarTool, index) => [tool, index + 1],
   ),
 )
