@@ -68,7 +68,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.OpusUri},{ConfigurationKeyConstants.OpusClientVersion},{ConfigurationKeyConstants.OpusAdminXuid},{ConfigurationKeyConstants.OpusCertificateKeyVaultName},{ConfigurationKeyConstants.OpusCertificateSecretName}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.OpusUri},{ConfigurationKeyConstants.OpusClientVersion},{ConfigurationKeyConstants.OpusAdminXuid},{ConfigurationKeyConstants.OpusCertificateKeyVaultName},{KeyVaultNameConstants.OpusCertificateSecretName}");
         }
 
         private sealed class Dependencies
