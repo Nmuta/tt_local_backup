@@ -18,7 +18,7 @@ steps:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
   inputs:
       targetType: filePath
-      filePath: infra/scripts/post-to-pr.access-test.ps1
+      filePath: /infra/scripts/post-to-pr.access-test.ps1
 
 - task: Cache@2
   displayName: "Prepare: Cache yarn packages for ${{parameters.workingDirectory}}/yarn.lock"
