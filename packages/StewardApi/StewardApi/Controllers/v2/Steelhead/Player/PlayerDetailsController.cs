@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using AutoMapper;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -75,6 +77,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
 
+            if (result.Xuid == default(ulong))
+            {
+                throw new NotFoundStewardException($"Player details not found. (XUID: {xuid})");
+            }
+            if (result.Region < 0)
+            {
+                throw new Services.ServiceClient.ServiceException(HttpStatusCode.InternalServerError, $"Player details not found. (XUID: {xuid})");
+            }
+
             return this.Ok(result);
         }
 
@@ -97,6 +108,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
 
             var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
+
+            if (result.Gamertag.IsNullOrEmpty())
+            {
+                throw new Services.ServiceClient.ServiceException(HttpStatusCode.InternalServerError, $"Game details not found. (XUID: {xuid})");
+            }
 
             return this.Ok(result);
         }
