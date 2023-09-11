@@ -8,9 +8,7 @@ $Things = "$($env:System_TeamFoundationCollectionUri)$($env:System_TeamProject)/
 
 #Build Up a Markdown Message to 
 $Markdown = @"
-|Version |Download Link|
-|--------|---------|
-|$Stuff|$Things|  
+## This is an automated PR comment access test.
 "@
 
 #Build the JSON body up
@@ -40,7 +38,7 @@ try {
     Write-Host "URL: $url"
     $response = Invoke-RestMethod -Uri $url -Method POST -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"} -Body $Body -ContentType application/json
   if ($response -ne $Null) {
-    Write-Host "*******************Bingo*********************************"
+    Write-Host "********************************* Comment Posted *********************************"
   }
 }
 catch {
