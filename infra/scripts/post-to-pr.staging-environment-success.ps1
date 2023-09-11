@@ -19,7 +19,6 @@ Your access URL: $env:ACCESS_URL
 
 [Manage Auth]($env:MANAGE_RELEASES_URL)
 [Manage Releases]($env:MANAGE_RELEASES_URL)
-(automated comment)
 "@
 
 #Build the JSON body up
