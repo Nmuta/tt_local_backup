@@ -22,7 +22,7 @@ jobs:
     distDirectory: ${{parameters.workingDirectory}}/dist
     distArtifactName: ui-drop-dev
 
-- template: job-ui-static.template.yml
+- template: job-ui-static-pr.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}
     distDirectory: ${{parameters.workingDirectory}}/dist
