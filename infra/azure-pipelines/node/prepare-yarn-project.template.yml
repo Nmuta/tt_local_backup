@@ -13,21 +13,12 @@ steps:
 
 - task: PowerShell@2
   condition: eq(variables['Build.Reason'], 'PullRequest')
-  displayName: Check dir
-  env:
-    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-  inputs:
-      targetType: inline
-      script: ls infra/scripts
-
-- task: PowerShell@2
-  condition: eq(variables['Build.Reason'], 'PullRequest')
   displayName: Post Message to PR
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
   inputs:
       targetType: filePath
-      filePath: infra/scripts/post-to-pr.access-test.ps1
+      filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.access-test.ps1
 
 - task: Cache@2
   displayName: "Prepare: Cache yarn packages for ${{parameters.workingDirectory}}/yarn.lock"
