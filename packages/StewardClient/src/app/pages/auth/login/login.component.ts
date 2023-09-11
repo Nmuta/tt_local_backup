@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
         .loginPopup({
           scopes: [environment.azureAppScope],
           redirectUri: `${
-            useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
+            useStaging ? environment.stewardUiStagingUrl : location.origin
           }/auth/aad-login`,
         })
         .toPromise();

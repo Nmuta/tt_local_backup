@@ -23,7 +23,10 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { GameTitleAbbreviationPipe } from '@shared/pipes/game-title-abbreviation.pipe';
-import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
+import {
+  ResetNavbarTools,
+  SetNavbarTools,
+} from '@shared/state/user-settings/user-settings.actions';
 import {
   UserSettingsState,
   UserSettingsStateModel,
@@ -267,6 +270,10 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   /** Called when the clear tools button is clicked. */
   public clearTools(): void {
     this.store.dispatch(new SetNavbarTools({}));
+  }
+  /** Called when the reset tools button is clicked. */
+  public resetTools(): void {
+    this.store.dispatch(new ResetNavbarTools());
   }
 
   /** Used in tile filtering logic. */

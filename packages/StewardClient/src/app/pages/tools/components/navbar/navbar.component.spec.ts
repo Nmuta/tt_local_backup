@@ -58,7 +58,6 @@ describe('ToolsNavbarComponent', () => {
       const role = UserRole.LiveOpsAdmin;
       beforeEach(() => {
         component.role = null;
-        component.standardTools = null;
         component.profile$ = of({
           emailAddress: faker.internet.email(),
           role: role,

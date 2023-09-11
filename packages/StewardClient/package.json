@@ -21,6 +21,7 @@
     "build:check:ado:changelog-is-modified": "bash ./scripts/changelog-is-modified-or-fail.sh",
     "build": "yarn run build:dev",
     "build:dev": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=dev --cross-origin=anonymous && yarn run build:configMoveToBuild",
+    "build:dev-static": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=dev --cross-origin=anonymous && yarn run build:configMoveToBuild",
     "build:dev-api": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=dev-api --cross-origin=anonymous && yarn run build:configMoveToBuild",
     "build:configMoveToBuild": "cp web.config dist/",
     "build:prod": "node --max-old-space-size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=production --cross-origin=anonymous --subresource-integrity=true && yarn run build:configMoveToBuild",

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
-import { environment } from '@environments/environment';
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -31,7 +30,7 @@ export class LogoutComponent implements OnInit {
       this.store.dispatch(new ResetUserProfile());
     } else {
       this.store.dispatch([
-        new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank'),
+        new WindowOpen(`${window.origin}/auth/logout`, '_blank'),
         new Navigate([`/auth/logout-iframe`]),
       ]);
     }
