@@ -7,7 +7,7 @@ $StatusCode = 1
 $Markdown = @"
 **The UI portion of this PR was unable to be deployed.**  
 There is a limit of 5 staging environment slots. There may be too many.  
-They can be managed under [steward-ui-static-dev -> Environments](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments)
+Releases can be managed under `steward-ui-static-dev -> Environments` (see below).
 
 ---
 
@@ -15,6 +15,8 @@ Info:
 Your environment: **$env:DEPLOYMENT_ENVIRONMENT**
 Your access URL: $env:ACCESS_URL
 
+[Manage Auth]($env:MANAGE_RELEASES_URL)
+[Manage Releases]($env:MANAGE_RELEASES_URL)
 (automated comment)
 "@
 

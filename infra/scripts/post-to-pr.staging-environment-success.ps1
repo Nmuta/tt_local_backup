@@ -5,13 +5,12 @@ $StatusCode = 1
 
 #Build Up a Markdown Message
 $Markdown = @"
-The UI portion of this PR is now available in your staging environment (**$env:DEPLOYMENT_ENVIRONMENT**).
+The UI portion of this PR is now available in your staging environment.
 
 You only have a single staging environment. Any prior deploys have been overwritten.  
 The API is not currently deployed, so this only works for UI-only changes for now.
 
-If this is a new environment, it will need to be set up with the
-[Steward Dev AAD app](https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Authentication/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp~/false).
+If this is a new environment, URLs will need to be set up to allow login.
 
 ---
 
@@ -19,6 +18,8 @@ Info:
 Your environment: **$env:DEPLOYMENT_ENVIRONMENT**
 Your access URL: $env:ACCESS_URL
 
+[Manage Auth]($env:MANAGE_RELEASES_URL)
+[Manage Releases]($env:MANAGE_RELEASES_URL)
 (automated comment)
 "@
 
