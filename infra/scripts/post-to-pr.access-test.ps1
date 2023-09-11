@@ -32,6 +32,10 @@ Write-Debug $Body
 # https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull%20request%20threads?view=azure-devops-rest-5.1
 # https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-request-threads/create?view=azure-devops-rest-6.0&tabs=HTTP
 try {
+    Write-Host " Collection URI: $env:SYSTEM_COLLECTIONURI"
+    Write-Host "Team Project ID: $env:SYSTEM_TEAMPROJECTID"
+    Write-Host "  Repository ID: $env:BUILD_REPOSITORYID"
+    Write-Host "          PR ID: $env:SYSTEM_PULLREQUEST_PULLREQUESTID"
     $url = "https://dev.azure.com/$env:SYSTEM_ORGANIZATIONID/$env:SYSTEM_TEAMPROJECTID/_apis/git/repositories/$($env:Build_Repository_Name)/pullRequests/$($env:System_PullRequest_PullRequestId)/threads?api-version=5.1"
     Write-Host "URL: $url"
     $response = Invoke-RestMethod -Uri $url -Method POST -Headers @{Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"} -Body $Body -ContentType application/json
