@@ -12,7 +12,7 @@ They can be managed under [steward-ui-static-dev -> Environments](https://ms.por
 ---
 
 Info:
-Your environment: `\$env:DEPLOYMENT_ENVIRONMENT`
+Your environment: **$env:DEPLOYMENT_ENVIRONMENT**
 Your access URL: $env:ACCESS_URL
 
 (automated comment)
