@@ -340,7 +340,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      tag: ChangelogTag.General,
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
     },
