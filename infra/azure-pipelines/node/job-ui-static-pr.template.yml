@@ -43,12 +43,36 @@ jobs:
       PathtoPublish: ${{parameters.distDirectory}}
       ArtifactName: ${{parameters.distArtifactName}}
 
-  # - task: AzureStaticWebApp@0
-  #   displayName: Publish Dev to Static Staging Environment
-  #   continueOnError: true
-  #   inputs:
-  #     app_location: ${{parameters.distDirectory}}
-  #     azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
-  #     deployment_environment: $(static_env)
-  #     skip_app_build: true
-  #     skip_api_build: true
+  - task: AzureStaticWebApp@0
+    displayName: Publish Dev to Static Staging Environment
+    continueOnError: true
+    inputs:
+      app_location: ${{parameters.distDirectory}}
+      azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
+      deployment_environment: $(static_env)
+      skip_app_build: true
+      skip_api_build: true
+
+  - task: PowerShell@2
+    condition: and(eq(variables['Build.Reason'], 'PullRequest'), succeeded())
+    displayName: Post link to PR (successful deploy)
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      DEPLOYMENT_ENVIRONMENT: $(static_env)
+      ACCESS_URL: $(static_env)
+      MANAGE_RELEASES_URL: $(static_env)
+    inputs:
+      targetType: filePath
+      filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.staging-environment-success.ps1
+
+  - task: PowerShell@2
+    condition: and(eq(variables['Build.Reason'], 'PullRequest'), failed())
+    displayName: Post link to PR (failed deploy)
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      DEPLOYMENT_ENVIRONMENT: $(static_env)
+      ACCESS_URL: https://gentle-cliff-004fcc01e-$(static_env).westus2.3.azurestaticapps.net/
+      MANAGE_RELEASES_URL: $(static_env)
+    inputs:
+      targetType: filePath
+      filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.staging-environment-failure.ps1

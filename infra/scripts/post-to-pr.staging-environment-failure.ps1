@@ -3,12 +3,19 @@
 # and then edited based on https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-request-threads/create?view=azure-devops-rest-6.0&tabs=HTTP
 $StatusCode = 1 
 
-$Stuff = $env:newVersion
-$Things = "$($env:System_TeamFoundationCollectionUri)$($env:System_TeamProject)/_apis/build/builds/$($env:Build_BuildId)/artifacts?artifactName=PM_$($env:newVersion)&%24format=zip"
-
 #Build Up a Markdown Message
 $Markdown = @"
-## This is an automated PR comment access test.
+**The UI portion of this PR was unable to be deployed.**  
+There is a limit of 5 staging environment slots. There may be too many.  
+They can be managed under [steward-ui-static-dev -> Environments](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments)
+
+---
+
+Info:
+Your environment: `\$env:DEPLOYMENT_ENVIRONMENT`
+Your access URL: $env:ACCESS_URL
+
+(automated comment)
 "@
 
 #Build the JSON body up

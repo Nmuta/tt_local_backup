@@ -1,14 +1,25 @@
 # pulled from https://stackoverflow.com/questions/60048492/how-to-create-a-comment-in-azure-devops-pr-in-case-of-build-failure
 # and then from https://stackoverflow.com/questions/73770796/is-it-possible-to-add-comment-as-resolved-to-pr-in-azure-devops
 # and then edited based on https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-request-threads/create?view=azure-devops-rest-6.0&tabs=HTTP
-$StatusCode = 1 
-
-$Stuff = $env:newVersion
-$Things = "$($env:System_TeamFoundationCollectionUri)$($env:System_TeamProject)/_apis/build/builds/$($env:Build_BuildId)/artifacts?artifactName=PM_$($env:newVersion)&%24format=zip"
+$StatusCode = 1
 
 #Build Up a Markdown Message
 $Markdown = @"
-## This is an automated PR comment access test.
+The UI portion of this PR is now available in your staging environment (**$env:DEPLOYMENT_ENVIRONMENT**).
+
+You only have a single staging environment. Any prior deploys have been overwritten.  
+The API is not currently deployed, so this only works for UI-only changes for now.
+
+If this is a new environment, it will need to be set up with the
+[Steward Dev AAD app](https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Authentication/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp~/false).
+
+---
+
+Info:
+Your environment: `\$env:DEPLOYMENT_ENVIRONMENT`
+Your access URL: $env:ACCESS_URL
+
+(automated comment)
 "@
 
 #Build the JSON body up
