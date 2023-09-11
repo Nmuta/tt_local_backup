@@ -56,6 +56,7 @@ jobs:
   - task: PowerShell@2
     condition: and(eq(variables['Build.Reason'], 'PullRequest'), succeeded())
     displayName: Post link to PR (successful deploy)
+    continueOnError: true
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       DEPLOYMENT_ENVIRONMENT: $(static_env)
@@ -69,6 +70,7 @@ jobs:
   - task: PowerShell@2
     condition: and(eq(variables['Build.Reason'], 'PullRequest'), failed())
     displayName: Post link to PR (failed deploy)
+    continueOnError: true
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       DEPLOYMENT_ENVIRONMENT: $(static_env)
