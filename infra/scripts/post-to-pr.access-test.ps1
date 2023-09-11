@@ -1,7 +1,6 @@
 # pulled from https://stackoverflow.com/questions/60048492/how-to-create-a-comment-in-azure-devops-pr-in-case-of-build-failure
 # and then from https://stackoverflow.com/questions/73770796/is-it-possible-to-add-comment-as-resolved-to-pr-in-azure-devops
 # and then edited based on https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-request-threads/create?view=azure-devops-rest-6.0&tabs=HTTP
-$StatusCode = 1 
 
 #Build Up a Markdown Message
 $Markdown = @"
@@ -18,7 +17,7 @@ $body = @"
         "commentType": 1
       }
     ],
-    "status": $StatusCode 
+    "status": 'closed'
   }
 "@
 
