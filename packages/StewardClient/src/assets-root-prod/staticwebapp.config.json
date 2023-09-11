@@ -1,5 +1,5 @@
 {
-  "_which": "prod",
+  "_which": "static-root-prod",
   "routes": [
     {
       "route": "*",
@@ -7,8 +7,8 @@
     }
   ],
   "navigationFallback": {
-    "rewrite": "404.html",
-    "exclude": ["*.{png,jpg,gif,ico}", "/images/*", "/lottie/*"]
+    "rewrite": "/index.html",
+    "exclude": ["*.{png,jpg,gif,ico}", "/images/*", "/assets/*"]
   },
   "responseOverrides": {
     "401": {

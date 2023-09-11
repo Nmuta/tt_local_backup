@@ -11,6 +11,9 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: ChangelogTag.Internal,
       uuid: '317fabba-9068-4444-9fe7-4a2140d252e9',
       shortText: 'Prepare Steward UI for new deployment model',
+      longText: [
+        'Update 1: Restructure static deploy config files. Add Favicon.'
+      ]
     },
     {
       tag: ChangelogTag.General,
