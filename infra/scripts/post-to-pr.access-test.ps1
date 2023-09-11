@@ -3,9 +3,6 @@
 # and then edited based on https://learn.microsoft.com/en-us/rest/api/azure/devops/git/pull-request-threads/create?view=azure-devops-rest-6.0&tabs=HTTP
 $StatusCode = 1 
 
-$Stuff = $env:newVersion
-$Things = "$($env:System_TeamFoundationCollectionUri)$($env:System_TeamProject)/_apis/build/builds/$($env:Build_BuildId)/artifacts?artifactName=PM_$($env:newVersion)&%24format=zip"
-
 #Build Up a Markdown Message
 $Markdown = @"
 ## This is an automated PR comment access test.

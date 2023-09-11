@@ -127,7 +127,7 @@
               "assets": [
                 {
                   "glob": "**/*",
-                  "input": "src/assets-root-dev/",
+                  "input": "src/assets-root-dev-pr/",
                   "output": "/"
                 }
               ],
