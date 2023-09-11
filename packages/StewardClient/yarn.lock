@@ -114,18 +114,6 @@
     "@angular-devkit/architect" "0.1402.12"
     rxjs "6.6.7"
 
-"@angular-devkit/core@13.3.11":
-  version "13.3.11"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@angular-devkit/core/-/core-13.3.11.tgz#875b02b973a60869781447cc2723f660752f12a1"
-  integrity sha1-h1sCuXOmCGl4FEfMJyP2YHUvEqE=
-  dependencies:
-    ajv "8.9.0"
-    ajv-formats "2.1.1"
-    fast-json-stable-stringify "2.1.0"
-    magic-string "0.25.7"
-    rxjs "6.6.7"
-    source-map "0.7.3"
-
 "@angular-devkit/core@14.2.12":
   version "14.2.12"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@angular-devkit/core/-/core-14.2.12.tgz#7716cb8c3aa8436ba8d1189110b8f2ac30c25631"
@@ -136,17 +124,6 @@
     jsonc-parser "3.1.0"
     rxjs "6.6.7"
     source-map "0.7.4"
-
-"@angular-devkit/schematics@13.3.11":
-  version "13.3.11"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@angular-devkit/schematics/-/schematics-13.3.11.tgz#9bda91a7784be5ab453e4812d7f750aa62af826e"
-  integrity sha1-m9qRp3hL5atFPkgS1/dQqmKvgm4=
-  dependencies:
-    "@angular-devkit/core" "13.3.11"
-    jsonc-parser "3.0.0"
-    magic-string "0.25.7"
-    ora "5.4.1"
-    rxjs "6.6.7"
 
 "@angular-devkit/schematics@14.2.12":
   version "14.2.12"
@@ -351,13 +328,13 @@
     tslib "^2.3.0"
     xhr2 "^0.2.0"
 
-"@angular/pwa@^13.1.2":
-  version "13.3.11"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@angular/pwa/-/pwa-13.3.11.tgz#74b99890a933344de13a9fa474c259dc0bf66bf4"
-  integrity sha1-dLmYkKkzNE3hOp+kdMJZ3Av2a/Q=
+"@angular/pwa@^14.2.12":
+  version "14.2.12"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@angular/pwa/-/pwa-14.2.12.tgz#20c62cd62aefb6912c63e48d21bf76685b9762f2"
+  integrity sha1-IMYs1irvtpEsY+SNIb92aFuXYvI=
   dependencies:
-    "@angular-devkit/schematics" "13.3.11"
-    "@schematics/angular" "13.3.11"
+    "@angular-devkit/schematics" "14.2.12"
+    "@schematics/angular" "14.2.12"
     parse5-html-rewriting-stream "6.0.1"
 
 "@angular/router@^14.3.0":
@@ -2257,15 +2234,6 @@
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@scarf/scarf/-/scarf-1.1.1.tgz#d8b9f20037b3a37dbf8dcdc4b3b72f9285bfce35"
   integrity sha1-2LnyADezo32/jc3Es7cvkoW/zjU=
 
-"@schematics/angular@13.3.11":
-  version "13.3.11"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@schematics/angular/-/angular-13.3.11.tgz#7e3264c0da1ab16967eed85ef79c5445735c6160"
-  integrity sha1-fjJkwNoasWln7the95xURXNcYWA=
-  dependencies:
-    "@angular-devkit/core" "13.3.11"
-    "@angular-devkit/schematics" "13.3.11"
-    jsonc-parser "3.0.0"
-
 "@schematics/angular@14.2.12":
   version "14.2.12"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@schematics/angular/-/angular-14.2.12.tgz#b3ea12b5fd402fadf619d388f16c312eb2c61c3a"
@@ -3191,16 +3159,6 @@ ajv@8.11.0:
   version "8.11.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
   integrity sha1-l36R3ZbKZp9UoR4j43jjO4hKVl8=
-  dependencies:
-    fast-deep-equal "^3.1.1"
-    json-schema-traverse "^1.0.0"
-    require-from-string "^2.0.2"
-    uri-js "^4.2.2"
-
-ajv@8.9.0:
-  version "8.9.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ajv/-/ajv-8.9.0.tgz#738019146638824dea25edcf299dcba1b0e7eb18"
-  integrity sha1-c4AZFGY4gk3qJe3PKZ3LobDn6xg=
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
@@ -5732,7 +5690,7 @@ fast-glob@^3.2.11, fast-glob@^3.2.9, fast-glob@^3.3.0:
     merge2 "^1.3.0"
     micromatch "^4.0.4"
 
-fast-json-stable-stringify@2.1.0, fast-json-stable-stringify@^2.0.0:
+fast-json-stable-stringify@^2.0.0:
   version "2.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz#874bf69c6f404c2b5d99c481341399fd55892633"
   integrity sha1-h0v2nG9ATCtdmcSBNBOZ/VWJJjM=
@@ -7143,11 +7101,6 @@ json5@^2.1.2, json5@^2.2.1, json5@^2.2.3:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
   integrity sha1-eM1vGhm9wStz21rQxh79ZsHikoM=
 
-jsonc-parser@3.0.0:
-  version "3.0.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/jsonc-parser/-/jsonc-parser-3.0.0.tgz#abdd785701c7e7eaca8a9ec8cf070ca51a745a22"
-  integrity sha1-q914VwHH5+rKip7IzwcMpRp0WiI=
-
 jsonc-parser@3.1.0:
   version "3.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/jsonc-parser/-/jsonc-parser-3.1.0.tgz#73b8f0e5c940b83d03476bc2e51a20ef0932615d"
@@ -7550,13 +7503,6 @@ luxon@^2.5.2:
   version "2.5.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/luxon/-/luxon-2.5.2.tgz#17ed497f0277e72d58a4756d6a9abee4681457b6"
   integrity sha1-F+1JfwJ35y1YpHVtapq+5GgUV7Y=
-
-magic-string@0.25.7:
-  version "0.25.7"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
-  integrity sha1-P0l9b9NMZpxnmNy4IfLvMfVEUFE=
-  dependencies:
-    sourcemap-codec "^1.4.4"
 
 magic-string@0.26.2:
   version "0.26.2"
@@ -9905,11 +9851,6 @@ source-map@0.6.1, source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0, sourc
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha1-dHIq8y6WFOnCh6jQu95IteLxomM=
 
-source-map@0.7.3:
-  version "0.7.3"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
-  integrity sha1-UwL4FpAxc1ImVECS5kmB91F1A4M=
-
 source-map@0.7.4, source-map@^0.7.3:
   version "0.7.4"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/source-map/-/source-map-0.7.4.tgz#a9bbe705c9d8846f4e08ff6765acf0f1b0898656"
@@ -9920,7 +9861,7 @@ source-map@^0.5.7:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
 
-sourcemap-codec@^1.4.4, sourcemap-codec@^1.4.8:
+sourcemap-codec@^1.4.8:
   version "1.4.8"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
   integrity sha1-6oBL2UhXQC5pktBaOO8a41qatMQ=
