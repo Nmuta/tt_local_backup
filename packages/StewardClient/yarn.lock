@@ -7857,19 +7857,19 @@ ngx-pipes@^3.2.2:
     tslib "^2.3.0"
     webpack "^5.75.0"
 
-ngx-ui-tour-core@9.2.1:
-  version "9.2.1"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-ui-tour-core/-/ngx-ui-tour-core-9.2.1.tgz#fd01942008ba8199340bf9c04e272a3525e2dfbe"
-  integrity sha1-/QGUIAi6gZk0C/nATicqNSXi374=
+ngx-ui-tour-core@10.6.0:
+  version "10.6.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-ui-tour-core/-/ngx-ui-tour-core-10.6.0.tgz#cd2d7e687cc219e1ceec2a83b8f081ea49d679a2"
+  integrity sha1-zS1+aHzCGeHO7CqDuPCB6knWeaI=
   dependencies:
     tslib "^2.0.0"
 
-ngx-ui-tour-md-menu@9.3.1:
-  version "9.3.1"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-ui-tour-md-menu/-/ngx-ui-tour-md-menu-9.3.1.tgz#727f6cd857e09278596b5d7946e2f03a2063b09d"
-  integrity sha1-cn9s2FfgknhZa115RuLwOiBjsJ0=
+ngx-ui-tour-md-menu@10:
+  version "10.7.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-ui-tour-md-menu/-/ngx-ui-tour-md-menu-10.7.0.tgz#b1626562f7c994bc1d7d8ccdd145ea52eb6742aa"
+  integrity sha1-sWJlYvfJlLwdfYzN0UXqUutnQqo=
   dependencies:
-    ngx-ui-tour-core "9.2.1"
+    ngx-ui-tour-core "10.6.0"
     tslib "^2.0.0"
 
 nice-napi@^1.0.2:
