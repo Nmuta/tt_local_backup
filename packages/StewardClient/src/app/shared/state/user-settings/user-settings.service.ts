@@ -19,7 +19,7 @@ export class UserSettingsService {
     const configuredAppVersion = this.state.appVersion;
 
     const appVersionIsUnconfigured = configuredAppVersion === environment.adoVersion;
-    const isLocalhost = environment.stewardUiUrl.includes('localhost');
+    const isLocalhost = window.origin.includes('localhost');
     if (isLocalhost && appVersionIsUnconfigured) {
       return 'localhost';
     }

@@ -29,6 +29,10 @@ context('Steward / Tools / UGC Details / Woodstock', withTags(Tag.Flakey), () =>
       testInputUgcID(woodstockSamples.tune);
     });
 
+    it('should find known hidden data', () => {
+      testInputUgcID(woodstockSamples.knownHidden);
+    });
+
     //No Known Events to Test
     // it('should find Events data', () => {
     //   testInputUgcID('*insert ugcid here*');

@@ -102,8 +102,8 @@ export function MSALInstanceFactory(): IPublicClientApplication {
       clientId: environment.azureAppId,
       authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
       navigateToLoginRequestUrl: false,
-      redirectUri: `${environment.stewardUiUrl}/auth/aad-login`,
-      postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aad-logout`,
+      redirectUri: `${window.origin}/auth/aad-login`,
+      postLogoutRedirectUri: `${window.origin}/auth/aad-logout`,
     },
     cache: {
       cacheLocation: 'localStorage',
