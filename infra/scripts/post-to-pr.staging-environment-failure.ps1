@@ -5,8 +5,8 @@
 #Build Up a Markdown Message
 $Markdown = @"
 **The UI portion of this PR was unable to be deployed.**  
-There is a limit of 5 staging environment slots. There may be too many.  
-Releases can be managed under `steward-ui-static-dev -> Environments` (see below).
+There is a limit of 10 staging environment slots. There may be too many.  
+Read the deploy log and check Manage Environments below.
 
 ---
 
@@ -14,8 +14,10 @@ Info:
 Your environment: **$env:DEPLOYMENT_ENVIRONMENT**
 Your access URL: $env:ACCESS_URL
 
-[Manage Auth]($env:MANAGE_RELEASES_URL)
-[Manage Releases]($env:MANAGE_RELEASES_URL)
+[Docs]($env:DOCS_URL)
+[Manage Auth]($env:MANAGE_AUTH_URL)
+[Manage Environments]($env:MANAGE_ENVIRONMENTS_URL)
+[Manage CORS]($env:MANAGE_CORS_URL)
 "@
 
 #Build the JSON body up

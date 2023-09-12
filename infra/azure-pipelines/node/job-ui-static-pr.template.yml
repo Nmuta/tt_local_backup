@@ -61,8 +61,10 @@ jobs:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       DEPLOYMENT_ENVIRONMENT: $(static_env)
       ACCESS_URL: https://gentle-cliff-004fcc01e-$(static_env).westus2.3.azurestaticapps.net/
-      MANAGE_RELEASES_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments
+      DOCS_URL: https://confluence.turn10studios.com/display/FT/New+Dev+Staging+Environment+Setup
+      MANAGE_ENVIRONMENTS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments
       MANAGE_AUTH_URL: https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Authentication/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp~/false
+      MANAGE_CORS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/sites/steward-api-dev/apiCors
     inputs:
       targetType: filePath
       filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.staging-environment-success.ps1
@@ -75,8 +77,10 @@ jobs:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       DEPLOYMENT_ENVIRONMENT: $(static_env)
       ACCESS_URL: https://gentle-cliff-004fcc01e-$(static_env).westus2.3.azurestaticapps.net/
-      MANAGE_RELEASES_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments
+      DOCS_URL: https://confluence.turn10studios.com/display/FT/New+Dev+Staging+Environment+Setup
+      MANAGE_ENVIRONMENTS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments
       MANAGE_AUTH_URL: https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Authentication/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp~/false
+      MANAGE_CORS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/sites/steward-api-dev/apiCors
     inputs:
       targetType: filePath
       filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.staging-environment-failure.ps1

@@ -9,7 +9,7 @@ The UI portion of this PR is now available in your staging environment.
 You only have a single staging environment. Any prior deploys have been overwritten.  
 The API is not currently deployed, so this only works for UI-only changes for now.
 
-If this is a new environment, URLs will need to be set up to allow login.
+[If this is a new environment, URLs will need to be set up to allow login.]($env:DOCS_URL)
 
 ---
 
@@ -17,8 +17,10 @@ Info:
 Your environment: **$env:DEPLOYMENT_ENVIRONMENT**
 Your access URL: $env:ACCESS_URL
 
-[Manage Auth]($env:MANAGE_RELEASES_URL)
-[Manage Releases]($env:MANAGE_RELEASES_URL)
+[Docs]($env:DOCS_URL)
+[Manage Auth]($env:MANAGE_AUTH_URL)
+[Manage Environments]($env:MANAGE_ENVIRONMENTS_URL)
+[Manage CORS]($env:MANAGE_CORS_URL)
 "@
 
 #Build the JSON body up
