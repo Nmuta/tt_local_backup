@@ -184,7 +184,7 @@ namespace Turn10.LiveOps.StewardApi
 
                     var certificateSecret = keyVaultProvider.GetSecretAsync(
                         this.configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                        "web-client").GetAwaiter().GetResult();
+                        KeyVaultNameConstants.StsSecretName).GetAwaiter().GetResult();
 
                     var stsForgeryCertificate = StsClientWrapper.ConvertToCertificate(certificateSecret);
                     httpClientHandler.ClientCertificates.Add(stsForgeryCertificate);
