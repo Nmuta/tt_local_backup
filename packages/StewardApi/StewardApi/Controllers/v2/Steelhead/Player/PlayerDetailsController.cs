@@ -81,6 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             {
                 throw new NotFoundStewardException($"Player details not found. (XUID: {xuid})");
             }
+
             if (result.Region < 0)
             {
                 throw new Services.ServiceClient.ServiceException(HttpStatusCode.InternalServerError, $"Player details not found. (XUID: {xuid})");
