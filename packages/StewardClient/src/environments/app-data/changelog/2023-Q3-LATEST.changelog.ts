@@ -15,6 +15,18 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.General,
+      uuid: 'c59b7731-7ee8-4b34-a64f-0c0d47d484db',
+      shortText: 'Rework Endpoints navbar utility',
+      longText: [
+        'Utility is now capable of setting all environment endpoints.',
+        'Utility size has been reduced, and it may no longer be removed from the toolbar.',
+        'Quick-change-button color now matches the color in the summary grid.',
+        'Quick-change-button is replaced by a spinner while endpoint data is being retrieved.',
+        'Navbar theme-toggle button has been adjusted to match toolbar',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: 'c898bf28-c7b4-4828-bf00-f338b5f0326b',
       shortText: 'Adjust standard toolbar',
       longText: [
@@ -334,7 +346,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      tag: ChangelogTag.General,
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
     },
