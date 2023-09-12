@@ -54,6 +54,7 @@ export enum UgcType {
   CommunityChallenge = 'CommunityChallenge',
   GameOptions = 'GameOptions',
   Replay = 'Replay',
+  PropPrefab = 'PropPrefab',
 }
 
 /** Order to display UGC results. */
@@ -73,19 +74,6 @@ export const DefaultUgcFilters: UgcFilters = {
   orderBy: UgcOrderBy.CreatedDateDesc,
 };
 
-/**
- * Default values for UgcFilters.
- * @deprecated
- */
-export const WoodstockSupportedUgcTypes = [
-  UgcType.Livery,
-  UgcType.LayerGroup,
-  UgcType.Photo,
-  UgcType.Tune,
-  UgcType.EventBlueprint,
-  UgcType.CommunityChallenge,
-];
-
 /** Types and metadata relating to supported UGC Types. */
 export interface ExtendedSupportedUgcType {
   ugcType: UgcType;
@@ -100,6 +88,7 @@ export const WoodstockExtendedSupportedUgcTypes: ExtendedSupportedUgcType[] = [
   { ugcType: UgcType.Tune },
   { ugcType: UgcType.EventBlueprint },
   { ugcType: UgcType.CommunityChallenge },
+  { ugcType: UgcType.PropPrefab },
 ];
 
 /** Ordered list of Supported UGC Types for Sunrise*/

@@ -8,6 +8,14 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: {
+        title: GameTitle.FH5,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'cdd66b5e-b3d5-49f6-8a73-bc02fdf3595b',
+      shortText: 'Add Prop Prefab UGC type',
+    },
+    {
       tag: { title: 'all', tool: NavbarTool.WelcomeCenterTiles },
       uuid: '6bd26f9c-2af3-44f3-aba2-7f0c486ed5e8',
       shortText: 'Add autocomplete feature and validation',
