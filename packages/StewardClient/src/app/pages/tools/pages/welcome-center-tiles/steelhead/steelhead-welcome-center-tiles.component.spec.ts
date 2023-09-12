@@ -11,6 +11,7 @@ import { SteelheadImageTextTileService } from '@services/api-v2/steelhead/welcom
 import { createMockSteelheadImageTextTileService } from '@services/api-v2/steelhead/welcome-center-tiles/world-of-forza/image-text/steelhead-image-text-tiles.service.mock';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { SteelheadWelcomeCenterTilesComponent } from './steelhead-welcome-center-tiles.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 describe('SteelheadWelcomeCenterTilesComponent', () => {
   let component: SteelheadWelcomeCenterTilesComponent;
@@ -26,6 +27,7 @@ describe('SteelheadWelcomeCenterTilesComponent', () => {
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
         PipesModule,
+        MatAutocompleteModule,
       ],
       declarations: [SteelheadWelcomeCenterTilesComponent],
       schemas: [NO_ERRORS_SCHEMA],
