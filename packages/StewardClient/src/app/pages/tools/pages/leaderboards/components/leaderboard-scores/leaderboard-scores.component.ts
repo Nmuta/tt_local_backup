@@ -9,7 +9,10 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
+import {
+  MatLegacyPaginator as MatPaginator,
+  LegacyPageEvent as PageEvent,
+} from '@angular/material/legacy-paginator';
 import { MatLegacySlideToggle as MatSlideToggle } from '@angular/material/legacy-slide-toggle';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';

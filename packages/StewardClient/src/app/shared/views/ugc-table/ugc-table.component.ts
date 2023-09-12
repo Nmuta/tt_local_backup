@@ -10,7 +10,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
-import { MatLegacyColumnDef as MatColumnDef, MatLegacyTable as MatTable, MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import {
+  MatLegacyColumnDef as MatColumnDef,
+  MatLegacyTable as MatTable,
+  MatLegacyTableDataSource as MatTableDataSource,
+} from '@angular/material/legacy-table';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { state, style, trigger } from '@angular/animations';
 import { EMPTY, from, fromEvent, Observable, of, throwError } from 'rxjs';

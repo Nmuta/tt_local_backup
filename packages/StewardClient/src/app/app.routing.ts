@@ -92,13 +92,13 @@ const routes: Routes = [
   imports: [
     TourMatMenuModule, // loaded to ensure tours run properly
     RouterModule.forRoot(routes, {
-    useHash: false,
-    onSameUrlNavigation: 'reload',
-    initialNavigation: 'enabledBlocking',
-    scrollPositionRestoration: 'top',
-    anchorScrolling: 'enabled',
-    enableTracing: false
-}),
+      useHash: false,
+      onSameUrlNavigation: 'reload',
+      initialNavigation: 'enabledBlocking',
+      scrollPositionRestoration: 'top',
+      anchorScrolling: 'enabled',
+      enableTracing: false,
+    }),
   ],
   exports: [RouterModule],
 })

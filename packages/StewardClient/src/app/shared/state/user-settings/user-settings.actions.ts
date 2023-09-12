@@ -27,9 +27,6 @@ export class ConfigureShowVerifyCheckboxPopup {
 /** Sets endpoint key defaults if none are present in local storage.. */
 export class VerifyEndpointKeyDefaults {
   public static readonly type = '[Settings] Verify Endpoint Key Defaults';
-  constructor() {
-    //EMPTY
-  }
 }
 
 /** Sets the current Apollo endpoint key of the Steward app the client is running. */

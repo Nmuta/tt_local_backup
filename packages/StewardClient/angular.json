@@ -42,9 +42,7 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "src/global.scss"
-            ],
+            "styles": ["src/global.scss"],
             "scripts": [],
             "aot": false,
             "vendorChunk": true,
@@ -241,15 +239,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/global.scss"
-            ],
+            "styles": ["src/global.scss"],
             "scripts": [],
             "sourceMap": false,
             "watch": true,
-            "assets": [
-              "src/assets"
-            ],
+            "assets": ["src/assets"],
             "codeCoverageExclude": [
               "/**/fake-api/**/*.ts",
               "/**/polyfills.ts",
@@ -264,13 +258,8 @@
         "tslint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "lint": {
@@ -279,10 +268,7 @@
             "eslintConfig": ".eslintrc.js",
             "fix": true,
             "cache": true,
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.component.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.component.html"]
           }
         }
       }

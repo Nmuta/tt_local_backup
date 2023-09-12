@@ -1,6 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { Observable } from 'rxjs';

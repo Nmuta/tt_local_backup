@@ -1,5 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
 import { RacersCupQualificationLimitType } from '@models/racers-cup.model';
 import { CalendarEvent } from 'angular-calendar';
 import { BuildersCupMeta } from '../../builders-cup-calendar-view/steelhead/steelhead-builders-cup-calendar-view.component';

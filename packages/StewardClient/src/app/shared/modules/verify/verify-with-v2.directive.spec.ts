@@ -1,6 +1,9 @@
 import { EventEmitter, NO_ERRORS_SCHEMA, Renderer2 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatLegacyButton as MatButton, MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import {
+  MatLegacyButton as MatButton,
+  MatLegacyButtonModule as MatButtonModule,
+} from '@angular/material/legacy-button';
 import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { VerifyWithV2ButtonDirective } from './verify-with-v2.directive';
 import { VerifyButtonComponent } from './verify-button/verify-button.component';

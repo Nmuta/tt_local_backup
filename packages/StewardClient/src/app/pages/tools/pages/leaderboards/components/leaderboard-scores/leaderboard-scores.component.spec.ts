@@ -18,7 +18,10 @@ import {
 import faker from '@faker-js/faker';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { toDateTime } from '@helpers/luxon';
-import { MatLegacyPaginatorModule as MatPaginatorModule, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
+import {
+  MatLegacyPaginatorModule as MatPaginatorModule,
+  LegacyPageEvent as PageEvent,
+} from '@angular/material/legacy-paginator';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { Router } from '@angular/router';

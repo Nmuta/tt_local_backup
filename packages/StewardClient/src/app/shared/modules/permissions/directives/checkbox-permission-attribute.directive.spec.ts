@@ -1,6 +1,9 @@
 import { NO_ERRORS_SCHEMA, Renderer2 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatLegacyButton as MatButton, MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import {
+  MatLegacyButton as MatButton,
+  MatLegacyButtonModule as MatButtonModule,
+} from '@angular/material/legacy-button';
 import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';

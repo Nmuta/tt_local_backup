@@ -6,7 +6,10 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { MatLegacyChipList as MatChipList, MatLegacyChipListChange as MatChipListChange } from '@angular/material/legacy-chips';
+import {
+  MatLegacyChipList as MatChipList,
+  MatLegacyChipListChange as MatChipListChange,
+} from '@angular/material/legacy-chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { renderDelay, renderGuard } from '@helpers/rxjs';
 import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
