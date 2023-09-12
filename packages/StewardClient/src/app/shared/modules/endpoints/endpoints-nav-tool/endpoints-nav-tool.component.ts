@@ -252,7 +252,9 @@ export class EndpointsNavToolComponent extends BaseComponent implements OnInit {
       this.endpointStateGrid = this.makeGrid();
 
       this.allUpTooltip = [
-        'Options for changing current endpoint settings. Hover over the grid to view current settings',
+        'Options for changing current endpoint settings.',
+        'Rows represent titles, with each column being a specific environment',
+        'Row-order summary:',
         `FM: ${this.steelheadEndpointKey}`,
         `FH5: ${this.woodstockEndpointKey}`,
         `FH4: ${this.sunriseEndpointKey}`,
