@@ -29,7 +29,7 @@ describe('SettingsComponent', () => {
       createStandardTestModuleMetadata({
         declarations: [SettingsComponent],
         ngxsModules: [EndpointKeyMemoryState, TourState],
-        imports: [TourMatMenuModule.forRoot()],
+        imports: [TourMatMenuModule],
         providers: [createMockUserTourService()],
       }),
     ).compileComponents();
