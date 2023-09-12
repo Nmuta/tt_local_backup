@@ -57,6 +57,11 @@ error-spinner {
   &.inline-summary {
     display: inline-flex;
     align-items: center;
+    gap: .25em;
+
+    .entry {
+      margin-right: .25em;
+    }
   }
 
   .entry {
@@ -118,7 +123,7 @@ button.menu-opened {
     }
 
     .entry {
-      background-color: app-color-default-contrast($app-background, 0.1);
+      background-color: app-color-default-contrast($app-background, 0.3);
 
       &.spacer {
         background-color: transparent;
@@ -200,5 +205,16 @@ mat-button-toggle {
     label {
       display: block;
     }
+  }
+}
+
+.explanation-background {
+  background-color: app-color-default($app-primary);
+  color: app-color-default-contrast($app-primary);
+  border-radius: .5em;
+  padding: .5em;
+
+  ul {
+    margin: 0;
   }
 }
