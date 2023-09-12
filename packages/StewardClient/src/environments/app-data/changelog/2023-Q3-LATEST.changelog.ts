@@ -13,7 +13,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Prepare Steward UI for new deployment model',
       longText: [
         'Update 1: Restructure static deploy config files. Add Favicon.',
-        'Update 2: Adjust build pipeline.'
+        'Update 2: Adjust build pipeline.',
       ],
     },
     {
