@@ -70,7 +70,6 @@ export class RefreshEndpointKeys {
  */
 export class ResetNavbarTools {
   public static readonly type = '[Settings] Reset Navbar Tools';
-  constructor() {}
 }
 
 /** Sets the current list of tools to show in the navbar. */
