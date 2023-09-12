@@ -50,7 +50,7 @@ import { ApolloGiftHistoryState } from '@tools-app/pages/gift-history/apollo/sta
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { AvailableAppsModule } from '@shared/views/available-apps/available-apps.module';
 import { StoreForeverStrategy } from '@helpers/route-reuse-strategy/store-forever-strategy';
-import { RouteReuseStrategy } from '@angular/router';
+import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { HubsModule } from '@shared/hubs/hubs.module';
 import { SteelheadGiftingState } from '@tools-app/pages/gifting/steelhead/state/steelhead-gifting.state';
 import { SteelheadGiftHistoryState } from '@tools-app/pages/gift-history/steelhead/state/steelhead-gift-history.state';
@@ -70,7 +70,6 @@ import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interce
 import { ToolsAvailabilityInterceptor } from '@interceptors/tools-availability.interceptor';
 import { ToolsAvailabilityModalModule } from '@views/tools-availability-modal/tools-availability-modal.module';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
 import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state';
@@ -79,6 +78,7 @@ import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
 import { TourState } from '@shared/state/tours/tours.state';
 import { RedirectionLandingComponent } from './pages/redirection-landing/redirection-landing.component';
 import { TitleMemoryRedirectLandingComponent } from './route-guards/title-memory-redirect-landing/title-memory-redirect-landing.component';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -143,6 +143,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   ],
   imports: [
     BrowserAnimationsModule,
+    RouterModule,
     ThemeModule,
     NavModule,
     AppRoutingModule,
@@ -189,7 +190,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule,
-    TourMatMenuModule.forRoot(), // loaded to ensure tours run properly
+    TourMatMenuModule, // loaded to ensure tours run properly
   ],
   providers: [
     TourService,
