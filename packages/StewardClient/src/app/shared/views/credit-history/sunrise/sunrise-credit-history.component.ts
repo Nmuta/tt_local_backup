@@ -7,7 +7,7 @@ import {
   CreditUpdateColumn,
   SortDirection,
 } from '../credit-history.base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { SunrisePlayerService } from '@services/api-v2/sunrise/sunrise-player.service';
 import { SunrisePlayerCreditUpdatesService } from '@services/api-v2/sunrise/player/credit-updates/sunrise-credit-updates.service';
@@ -21,7 +21,7 @@ import { UserSettingsStateModel, UserSettingsState } from '@shared/state/user-se
   styleUrls: ['../credit-history.component.scss'],
 })
 export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<SunriseCreditDetailsEntry> {
-  public gameTitle = GameTitleCodeName.FH4;
+  public gameTitle = GameTitle.FH4;
   public isSaveRollbackSupported = true;
 
   constructor(

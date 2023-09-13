@@ -7,7 +7,7 @@ import {
   CreditUpdateColumn,
   SortDirection,
 } from '../credit-history.base.component';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { WoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.service';
 import { Store } from '@ngxs/store';
@@ -20,7 +20,7 @@ import { UserSettingsStateModel, UserSettingsState } from '@shared/state/user-se
   styleUrls: ['../credit-history.component.scss'],
 })
 export class WoodstockCreditHistoryComponent extends CreditHistoryBaseComponent<WoodstockCreditDetailsEntry> {
-  public gameTitle = GameTitleCodeName.FH5;
+  public gameTitle = GameTitle.FH5;
   public isSaveRollbackSupported = false;
 
   constructor(private readonly store: Store, private readonly woodstock: WoodstockPlayerCreditUpdatesService) {
