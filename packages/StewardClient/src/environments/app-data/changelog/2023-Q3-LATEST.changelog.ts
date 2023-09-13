@@ -15,6 +15,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
         'Correct automatic changelog-opening behavior.',
         'Reduce console errors.',
         'Correct missing icon font.',
+        'Mimic hourly releases when running localhost development environment.'
       ],
     },
     {
