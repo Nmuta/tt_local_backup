@@ -8,9 +8,11 @@ describe('SteelheadPlayerDriverLevelService', () => {
   let service: SteelheadPlayerDriverLevelService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadPlayerDriverLevelService);
   });
 

@@ -9,11 +9,13 @@ import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-mo
 
 describe('FakeApiInterceptor', () => {
   beforeEach(() =>
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      providers: [FakeApiInterceptor, createMockLoggerService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }),
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        providers: [FakeApiInterceptor, createMockLoggerService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ),
   );
 
   it('should be created', () => {

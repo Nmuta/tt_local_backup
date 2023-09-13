@@ -15,10 +15,12 @@ describe('UserTourService', () => {
   let service: TourState;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([TourState]), TourMatMenuModule],
-      providers: [createMockUserTourService()],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([TourState]), TourMatMenuModule],
+        providers: [createMockUserTourService()],
+      }),
+    );
     service = TestBed.inject(TourState);
     store = TestBed.inject(Store);
   });

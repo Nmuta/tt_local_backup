@@ -14,11 +14,13 @@ describe('service: UserService', () => {
   let apiMock: ApiService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [UserService, createMockApiService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [UserService, createMockApiService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.get(UserService);
     apiMock = TestBed.get(ApiService);
   });

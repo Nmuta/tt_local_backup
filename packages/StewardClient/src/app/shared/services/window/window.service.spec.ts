@@ -11,11 +11,13 @@ describe('service: WindowService', () => {
   let store: Store;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([WindowService])],
-      providers: [WindowService],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([WindowService])],
+        providers: [WindowService],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
 
     store = TestBed.inject(Store);
   });

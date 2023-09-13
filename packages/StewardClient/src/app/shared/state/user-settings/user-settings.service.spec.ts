@@ -14,16 +14,18 @@ describe('UserSettingsServiceService', () => {
   let service: UserSettingsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserSettingsState]),
-        MatSnackBarModule,
-      ],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserSettingsState]),
+          MatSnackBarModule,
+        ],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
 
     const injector = getTestBed();
     service = injector.inject(UserSettingsService);

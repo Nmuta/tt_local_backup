@@ -12,15 +12,17 @@ describe('OldPermissionsService', () => {
   let service: OldPermissionsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-      ],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
 
     service = TestBed.inject(OldPermissionsService);
   });

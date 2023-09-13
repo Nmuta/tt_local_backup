@@ -8,9 +8,11 @@ describe('ProductPricingService', () => {
   let service: ProductPricingService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(ProductPricingService);
   });
 

@@ -15,11 +15,13 @@ describe('WoodstockPlayerNotificationsService', () => {
   const nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     const injector = getTestBed();
     service = injector.inject(WoodstockPlayerNotificationsService);
     apiServiceMock = injector.inject(ApiV2Service);

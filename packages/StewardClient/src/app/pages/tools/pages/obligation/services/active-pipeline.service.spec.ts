@@ -8,7 +8,7 @@ describe('ActivePipelineServiceService', () => {
   let service: ActivePipelineService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule(createStandardTestModuleMetadataMinimal({}));
     service = TestBed.inject(ActivePipelineService);
   });
 

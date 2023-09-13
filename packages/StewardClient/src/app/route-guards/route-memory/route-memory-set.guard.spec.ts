@@ -28,10 +28,12 @@ describe('RouteMemorySetGuard', () => {
   const testSnapshot: Partial<RouterStateSnapshot> = { url: 'tools/ugc-details/woodstock' };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([RouteMemoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([RouteMemoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     guard = TestBed.inject(RouteMemorySetGuard);
     store = TestBed.inject(Store);
 

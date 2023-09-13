@@ -19,11 +19,13 @@ describe('service: ApiV2Service', () => {
   let mockRouter: Router;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      providers: [ApiV2Service],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        providers: [ApiV2Service],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     apiService = injector.inject(ApiV2Service);
     httpMock = injector.inject(HttpTestingController);

@@ -16,11 +16,13 @@ describe('EndpointKeyMemoryState', () => {
   let mockSettingsService: SettingsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([EndpointKeyMemoryState])],
-      providers: [createMockSettingsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([EndpointKeyMemoryState])],
+        providers: [createMockSettingsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(EndpointKeyMemoryState);
     store = TestBed.inject(Store);
     mockSettingsService = TestBed.inject(SettingsService);

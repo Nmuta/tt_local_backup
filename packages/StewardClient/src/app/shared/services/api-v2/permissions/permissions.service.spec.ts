@@ -9,10 +9,12 @@ describe('PermissionsService', () => {
   let service: PermissionsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [createMockPermAttributesService()],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        providers: [createMockPermAttributesService()],
+      }),
+    );
     service = TestBed.inject(PermissionsService);
   });
 

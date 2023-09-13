@@ -11,10 +11,12 @@ describe('NotificationsService', () => {
   let service: NotificationsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot()],
-      providers: [createMockReauthService(), createMockLoggerService()],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot()],
+        providers: [createMockReauthService(), createMockLoggerService()],
+      }),
+    );
     service = TestBed.inject(NotificationsService);
   });
 

@@ -8,9 +8,11 @@ describe('SteelheadGenericPopupTileService', () => {
   let service: SteelheadGenericPopupTileService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadGenericPopupTileService);
   });
 

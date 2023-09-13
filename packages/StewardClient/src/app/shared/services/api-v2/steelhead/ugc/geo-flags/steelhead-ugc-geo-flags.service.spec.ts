@@ -8,9 +8,11 @@ describe('FindService', () => {
   let service: SteelheadUgcGeoFlagsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadUgcGeoFlagsService);
   });
 

@@ -8,9 +8,11 @@ describe('MsTeamsService', () => {
   let service: MsTeamsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(MsTeamsService);
   });
 

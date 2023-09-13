@@ -8,9 +8,11 @@ describe('MultipleBanHistoryService', () => {
   let service: MultipleBanHistoryService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(MultipleBanHistoryService);
   });
 

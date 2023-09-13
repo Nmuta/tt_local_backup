@@ -8,9 +8,11 @@ describe('SteelheadConsolesService', () => {
   let service: SteelheadServicesTableStorageService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadServicesTableStorageService);
   });
 

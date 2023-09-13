@@ -16,10 +16,12 @@ describe('WoodstockGiftHistoryState', () => {
   let service: WoodstockGiftHistoryState;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([WoodstockGiftHistoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([WoodstockGiftHistoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(WoodstockGiftHistoryState);
     store = TestBed.inject(Store);
   });

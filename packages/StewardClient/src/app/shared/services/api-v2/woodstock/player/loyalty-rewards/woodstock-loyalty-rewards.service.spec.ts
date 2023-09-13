@@ -8,9 +8,11 @@ describe('WoodstockLoyaltyRewardsService', () => {
   let service: WoodstockLoyaltyRewardsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(WoodstockLoyaltyRewardsService);
   });
 

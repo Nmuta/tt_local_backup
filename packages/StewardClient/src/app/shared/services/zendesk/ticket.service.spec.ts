@@ -10,10 +10,12 @@ describe('TicketService', () => {
   let service: TicketService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [createMockZendeskService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        providers: [createMockZendeskService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(TicketService);
   });
 

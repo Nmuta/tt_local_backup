@@ -8,9 +8,11 @@ describe('SteelheadPlayerCmsOverrideService', () => {
   let service: SteelheadPlayerCmsOverrideService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadPlayerCmsOverrideService);
   });
 

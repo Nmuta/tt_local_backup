@@ -8,9 +8,11 @@ describe('SteelheadImageTextTileService', () => {
   let service: SteelheadImageTextTileService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadImageTextTileService);
   });
 

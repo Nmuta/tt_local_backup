@@ -18,15 +18,17 @@ describe('PermAttributesService', () => {
   let service: PermAttributesService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState, UserSettingsState]),
-        MatSnackBarModule,
-      ],
-      providers: [createMockMsalServices(), createMockLoggerService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState, UserSettingsState]),
+          MatSnackBarModule,
+        ],
+        providers: [createMockMsalServices(), createMockLoggerService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
 
     const injector = getTestBed();
     service = injector.inject(PermAttributesService);

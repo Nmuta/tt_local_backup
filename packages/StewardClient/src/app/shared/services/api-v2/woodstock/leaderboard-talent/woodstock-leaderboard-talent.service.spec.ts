@@ -8,9 +8,11 @@ describe('WoodstockLeaderboardTalentService', () => {
   let service: WoodstockLeaderboardTalentService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(WoodstockLeaderboardTalentService);
   });
 

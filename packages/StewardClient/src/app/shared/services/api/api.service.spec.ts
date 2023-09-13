@@ -19,11 +19,13 @@ describe('service: ApiService', () => {
   let mockRouter: Router;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      providers: [ApiService],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        providers: [ApiService],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     apiService = injector.inject(ApiService);
     httpMock = injector.inject(HttpTestingController);

@@ -14,11 +14,13 @@ describe('service: BackgroundJobService', () => {
   let apiMock: ApiService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [BackgroundJobService, createMockApiService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [BackgroundJobService, createMockApiService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.get(BackgroundJobService);
     apiMock = TestBed.get(ApiService);
   });

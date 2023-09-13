@@ -8,9 +8,11 @@ describe('SteelheadMessageOfTheDayService', () => {
   let service: SteelheadMessageOfTheDayService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadMessageOfTheDayService);
   });
 

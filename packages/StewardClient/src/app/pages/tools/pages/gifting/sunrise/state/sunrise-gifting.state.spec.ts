@@ -17,10 +17,12 @@ describe('SunriseGiftingState', () => {
   let service: SunriseGiftingState;
   let store: Store;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([SunriseGiftingState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([SunriseGiftingState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(SunriseGiftingState);
     store = TestBed.inject(Store);
   });

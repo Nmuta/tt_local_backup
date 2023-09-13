@@ -8,9 +8,11 @@ describe('WoodstockLspTaskService', () => {
   let service: WoodstockLspTaskService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(WoodstockLspTaskService);
   });
 

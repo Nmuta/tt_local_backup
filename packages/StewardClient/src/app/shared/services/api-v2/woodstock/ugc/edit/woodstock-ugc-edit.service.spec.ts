@@ -8,9 +8,11 @@ describe('WoodstockUgcEditService', () => {
   let service: WoodstockUgcEditService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(WoodstockUgcEditService);
   });
 

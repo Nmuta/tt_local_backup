@@ -14,10 +14,12 @@ describe('WoodstockLeaderboardsService', () => {
   const nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+      }),
+    );
 
     service = TestBed.inject(WoodstockLeaderboardsService);
     apiServiceMock = TestBed.inject(ApiV2Service);

@@ -10,9 +10,11 @@ import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-mo
 describe('ClickEnlargeImageDirective', () => {
   let dialog: MatDialog;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [MatDialogModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule],
+      }),
+    );
 
     dialog = TestBed.inject(MatDialog);
     dialog.open = jasmine.createSpy('open');

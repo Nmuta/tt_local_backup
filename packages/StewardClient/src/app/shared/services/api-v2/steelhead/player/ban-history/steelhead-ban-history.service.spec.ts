@@ -8,9 +8,11 @@ describe('SteelheadBanHistoryService', () => {
   let service: SteelheadBanHistoryService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadBanHistoryService);
   });
 

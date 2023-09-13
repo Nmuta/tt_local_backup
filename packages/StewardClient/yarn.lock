@@ -3793,22 +3793,20 @@
     "@webassemblyjs/ast" "1.11.6"
     "@xtuc/long" "4.2.2"
 
-"@webpack-cli/configtest@^1.2.0":
-  version "1.2.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@webpack-cli/configtest/-/configtest-1.2.0.tgz"
-  integrity sha1-eyDOHBJTORLDshfqaCYjZfoppvU=
+"@webpack-cli/configtest@^2.1.1":
+  version "2.1.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@webpack-cli/configtest/-/configtest-2.1.1.tgz#3b2f852e91dac6e3b85fb2a314fb8bef46d94646"
+  integrity sha1-Oy+FLpHaxuO4X7KjFPuL70bZRkY=
 
-"@webpack-cli/info@^1.5.0":
-  version "1.5.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@webpack-cli/info/-/info-1.5.0.tgz"
-  integrity sha1-bHjBPFh0hS1uLdF/CKQfP+TCYbE=
-  dependencies:
-    envinfo "^7.7.3"
+"@webpack-cli/info@^2.0.2":
+  version "2.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@webpack-cli/info/-/info-2.0.2.tgz#cc3fbf22efeb88ff62310cf885c5b09f44ae0fdd"
+  integrity sha1-zD+/Iu/riP9iMQz4hcWwn0SuD90=
 
-"@webpack-cli/serve@^1.7.0":
-  version "1.7.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@webpack-cli/serve/-/serve-1.7.0.tgz"
-  integrity sha1-4Zk2iaxC0rFukZQ3bPtnU/YlTbE=
+"@webpack-cli/serve@^2.0.5":
+  version "2.0.5"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@webpack-cli/serve/-/serve-2.0.5.tgz#325db42395cd49fe6c14057f9a900e427df8810e"
+  integrity sha1-Ml20I5XNSf5sFAV/mpAOQn34gQ4=
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -4810,6 +4808,11 @@ commander@1.0.4:
   dependencies:
     keypress "0.1.x"
 
+commander@^10.0.1:
+  version "10.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-10.0.1.tgz#881ee46b4f77d1c1dccc5823433aa39b022cbe06"
+  integrity sha1-iB7ka0930cHczFgjQzqjmwIsvgY=
+
 commander@^2.11.0, commander@^2.12.1, commander@^2.20.0:
   version "2.20.3"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-2.20.3.tgz"
@@ -4820,7 +4823,7 @@ commander@^5.1.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-5.1.0.tgz"
   integrity sha1-Rqu9FlL44Fm92u+Zu9yyrZzxea4=
 
-commander@^7.0.0, commander@^7.2.0:
+commander@^7.2.0:
   version "7.2.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-7.2.0.tgz"
   integrity sha1-o2y1fQtQHOEI5NIFWaFQo5HZerc=
@@ -7172,10 +7175,10 @@ internmap@^1.0.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/internmap/-/internmap-1.0.1.tgz"
   integrity sha1-ABfMijuZYF8DAvKxmNJy4BXl35U=
 
-interpret@^2.2.0:
-  version "2.2.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/interpret/-/interpret-2.2.0.tgz"
-  integrity sha1-GnigtZZcQKVBbQB61vUK0nxBffk=
+interpret@^3.1.1:
+  version "3.1.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/interpret/-/interpret-3.1.1.tgz#5be0ceed67ca79c6c4bc5cf0d7ee843dcea110c4"
+  integrity sha1-W+DO7WfKecbEvFzw1+6EPc6hEMQ=
 
 ip@^2.0.0:
   version "2.0.0"
@@ -9460,12 +9463,12 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-rechoir@^0.7.0:
-  version "0.7.1"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/rechoir/-/rechoir-0.7.1.tgz"
-  integrity sha1-lHipahyhNbXoj8An8D7pLWxkVoY=
+rechoir@^0.8.0:
+  version "0.8.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/rechoir/-/rechoir-0.8.0.tgz#49f866e0d32146142da3ad8f0eff352b3215ff22"
+  integrity sha1-Sfhm4NMhRhQto62PDv81KzIV/yI=
   dependencies:
-    resolve "^1.9.0"
+    resolve "^1.20.0"
 
 reflect-metadata@^0.1.2:
   version "0.1.13"
@@ -9640,7 +9643,7 @@ resolve@1.22.1:
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
-resolve@^1.14.2, resolve@^1.22.4, resolve@^1.3.2, resolve@^1.9.0:
+resolve@^1.14.2, resolve@^1.20.0, resolve@^1.22.4, resolve@^1.3.2:
   version "1.22.4"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/resolve/-/resolve-1.22.4.tgz"
   integrity sha1-HcQN9GVUza+JSKSGoQ9roeICbDQ=
@@ -11027,22 +11030,23 @@ webpack-bundle-analyzer@^4.5.0:
     sirv "^2.0.3"
     ws "^7.3.1"
 
-webpack-cli@^4.9.1:
-  version "4.10.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/webpack-cli/-/webpack-cli-4.10.0.tgz"
-  integrity sha1-N8HWnI2FIUxaZeWJN49TrsZNqzE=
+webpack-cli@^5.1.4:
+  version "5.1.4"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/webpack-cli/-/webpack-cli-5.1.4.tgz#c8e046ba7eaae4911d7e71e2b25b776fcc35759b"
+  integrity sha1-yOBGun6q5JEdfnHislt3b8w1dZs=
   dependencies:
     "@discoveryjs/json-ext" "^0.5.0"
-    "@webpack-cli/configtest" "^1.2.0"
-    "@webpack-cli/info" "^1.5.0"
-    "@webpack-cli/serve" "^1.7.0"
+    "@webpack-cli/configtest" "^2.1.1"
+    "@webpack-cli/info" "^2.0.2"
+    "@webpack-cli/serve" "^2.0.5"
     colorette "^2.0.14"
-    commander "^7.0.0"
+    commander "^10.0.1"
     cross-spawn "^7.0.3"
+    envinfo "^7.7.3"
     fastest-levenshtein "^1.0.12"
     import-local "^3.0.2"
-    interpret "^2.2.0"
-    rechoir "^0.7.0"
+    interpret "^3.1.1"
+    rechoir "^0.8.0"
     webpack-merge "^5.7.3"
 
 webpack-dev-middleware@6.0.1:
@@ -11163,6 +11167,36 @@ webpack@5.76.1:
 webpack@^5.75.0:
   version "5.88.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/webpack/-/webpack-5.88.2.tgz"
+  integrity sha1-9itLhC8cb/WA8/yy7U8LV59MIQ4=
+  dependencies:
+    "@types/eslint-scope" "^3.7.3"
+    "@types/estree" "^1.0.0"
+    "@webassemblyjs/ast" "^1.11.5"
+    "@webassemblyjs/wasm-edit" "^1.11.5"
+    "@webassemblyjs/wasm-parser" "^1.11.5"
+    acorn "^8.7.1"
+    acorn-import-assertions "^1.9.0"
+    browserslist "^4.14.5"
+    chrome-trace-event "^1.0.2"
+    enhanced-resolve "^5.15.0"
+    es-module-lexer "^1.2.1"
+    eslint-scope "5.1.1"
+    events "^3.2.0"
+    glob-to-regexp "^0.4.1"
+    graceful-fs "^4.2.9"
+    json-parse-even-better-errors "^2.3.1"
+    loader-runner "^4.2.0"
+    mime-types "^2.1.27"
+    neo-async "^2.6.2"
+    schema-utils "^3.2.0"
+    tapable "^2.1.1"
+    terser-webpack-plugin "^5.3.7"
+    watchpack "^2.4.0"
+    webpack-sources "^3.2.3"
+
+webpack@^5.88.2:
+  version "5.88.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/webpack/-/webpack-5.88.2.tgz#f62b4b842f1c6ff580f3fcb2ed4f0b579f4c210e"
   integrity sha1-9itLhC8cb/WA8/yy7U8LV59MIQ4=
   dependencies:
     "@types/eslint-scope" "^3.7.3"

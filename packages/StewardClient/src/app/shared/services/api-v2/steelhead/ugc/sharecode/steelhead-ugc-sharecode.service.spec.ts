@@ -8,9 +8,11 @@ describe('SteelheadUgcSharecodeService', () => {
   let service: SteelheadUgcSharecodeService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadUgcSharecodeService);
   });
 

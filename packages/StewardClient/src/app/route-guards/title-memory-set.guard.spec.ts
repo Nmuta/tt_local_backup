@@ -29,10 +29,12 @@ describe('TitleMemorySetGuard', () => {
   const testSnapshot: Partial<RouterStateSnapshot> = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([TitleMemoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([TitleMemoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     guard = TestBed.inject(TitleMemorySetGuard);
     store = TestBed.inject(Store);
 

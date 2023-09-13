@@ -19,10 +19,12 @@ describe('ApolloGiftingState', () => {
   let store: Store;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([ApolloGiftingState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([ApolloGiftingState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(ApolloGiftingState);
     store = TestBed.inject(Store);
   });

@@ -8,9 +8,11 @@ describe('SteelheadAcLogReaderService', () => {
   let service: SteelheadAcLogReaderService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadAcLogReaderService);
   });
 

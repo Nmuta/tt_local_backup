@@ -8,9 +8,11 @@ describe('WoodstockPlayFabPlayerInventoryService', () => {
   let service: WoodstockPlayFabPlayerInventoryService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(WoodstockPlayFabPlayerInventoryService);
   });
 

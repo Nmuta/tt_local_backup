@@ -8,9 +8,11 @@ describe('WoodstockUgcSharecodeService', () => {
   let service: WoodstockUgcSharecodeService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(WoodstockUgcSharecodeService);
   });
 

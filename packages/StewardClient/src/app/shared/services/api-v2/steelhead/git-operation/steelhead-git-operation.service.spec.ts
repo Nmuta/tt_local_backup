@@ -8,9 +8,11 @@ describe('SteelheadGitOperationService', () => {
   let service: SteelheadGitOperationService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadGitOperationService);
   });
 

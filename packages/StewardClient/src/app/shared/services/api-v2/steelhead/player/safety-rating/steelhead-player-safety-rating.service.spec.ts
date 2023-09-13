@@ -8,9 +8,11 @@ describe('SteelheadPlayerSafetyRatingService', () => {
   let service: SteelheadPlayerSafetyRatingService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadPlayerSafetyRatingService);
   });
 

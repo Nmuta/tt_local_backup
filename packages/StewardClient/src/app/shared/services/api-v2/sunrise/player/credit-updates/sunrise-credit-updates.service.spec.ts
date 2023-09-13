@@ -8,9 +8,11 @@ describe('SunrisePlayerCreditUpdatesService', () => {
   let service: SunrisePlayerCreditUpdatesService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SunrisePlayerCreditUpdatesService);
   });
 

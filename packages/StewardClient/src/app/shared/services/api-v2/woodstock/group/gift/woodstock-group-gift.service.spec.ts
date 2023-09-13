@@ -18,11 +18,13 @@ describe('WoodstockGroupGiftService', () => {
   let mockApiService: ApiV2Service;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     mockService = TestBed.inject(WoodstockGroupGiftService);
     mockApiService = TestBed.inject(ApiV2Service);
   });

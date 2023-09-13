@@ -8,9 +8,11 @@ describe('SteelheadPaidEntitlementsService', () => {
   let service: SteelheadPaidEntitlementsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadPaidEntitlementsService);
   });
 

@@ -9,10 +9,12 @@ describe('ScopedSharedLookupService', () => {
   let service: ScopedSharedLookupService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ScopedSharedLookupService],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        providers: [ScopedSharedLookupService],
+      }),
+    );
     service = TestBed.inject(ScopedSharedLookupService);
   });
 

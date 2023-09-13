@@ -10,9 +10,11 @@ describe('CarsCacheService', () => {
   const nextValue = [];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [createMockApiService(() => nextValue)],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        providers: [createMockApiService(() => nextValue)],
+      }),
+    );
     service = TestBed.inject(WoodstockCarsCacheService);
   });
 

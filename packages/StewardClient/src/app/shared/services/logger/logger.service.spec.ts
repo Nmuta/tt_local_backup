@@ -15,10 +15,12 @@ describe('LoggerService', () => {
   let mockAppInsights: ApplicationInsights;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [createMockApplicationInsights()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        providers: [createMockApplicationInsights()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(LoggerService);
     mockAppInsights = TestBed.inject(ApplicationInsights);
     mockConsole = new MockConsole();

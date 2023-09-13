@@ -16,10 +16,12 @@ describe('ClickStopDirective', () => {
   let elementRef: ElementRef;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ContainerComponent, ClickStopDirective],
-      providers: [{ provide: ElementRef, useValue: MockElementRef }],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ContainerComponent, ClickStopDirective],
+        providers: [{ provide: ElementRef, useValue: MockElementRef }],
+      }),
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fixture = TestBed.createComponent(ContainerComponent);

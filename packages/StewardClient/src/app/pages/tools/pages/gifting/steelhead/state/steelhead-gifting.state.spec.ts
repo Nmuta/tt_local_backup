@@ -19,10 +19,12 @@ describe('SteelheadGiftingState', () => {
   let store: Store;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([SteelheadGiftingState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([SteelheadGiftingState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(SteelheadGiftingState);
     store = TestBed.inject(Store);
   });

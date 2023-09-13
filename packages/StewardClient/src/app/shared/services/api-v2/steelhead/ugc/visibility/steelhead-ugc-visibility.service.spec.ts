@@ -8,9 +8,11 @@ describe('SteelheadUgcVisibilityService', () => {
   let service: SteelheadUgcVisibilityService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(SteelheadUgcVisibilityService);
   });
 

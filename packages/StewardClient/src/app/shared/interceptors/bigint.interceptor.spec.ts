@@ -21,17 +21,19 @@ describe('BigNumberInterceptor:', () => {
   beforeEach(() => {
     interceptor = new BigNumberInterceptor();
     interceptor.handle = jasmine.createSpy('handle', interceptor.handle).and.callThrough();
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useValue: interceptor,
-          multi: true,
-        },
-      ],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: HTTP_INTERCEPTORS,
+            useValue: interceptor,
+            multi: true,
+          },
+        ],
+      }),
+    );
 
     http = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);

@@ -14,16 +14,18 @@ describe('MultiEnvironmentService', () => {
   let service: MultiEnvironmentService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      providers: [
-        createMockSunriseService(),
-        createMockApolloService(),
-        createMockOpusService(),
-        createMockSteelheadService(),
-        createMockWoodstockService(),
-      ],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        providers: [
+          createMockSunriseService(),
+          createMockApolloService(),
+          createMockOpusService(),
+          createMockSteelheadService(),
+          createMockWoodstockService(),
+        ],
+      }),
+    );
     service = TestBed.inject(MultiEnvironmentService);
   });
 
