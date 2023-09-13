@@ -15,18 +15,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<Dictionary<Guid, string>> GetRivalsEvents()
+        public async Task<IEnumerable<RivalsEvent>> GetRivalsEvents()
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/rivals/events");
 
-            return await ServiceClient.SendRequestAsync<Dictionary<Guid, string>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IEnumerable<RivalsEvent>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<Dictionary<Guid, string>> GetRivalsEvents(ulong xuid)
+        public async Task<IEnumerable<RivalsEvent>> GetRivalsEvents(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/rivals/player/{xuid}/events");
 
-            return await ServiceClient.SendRequestAsync<Dictionary<Guid, string>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IEnumerable<RivalsEvent>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<Dictionary<Guid, string>> GetRivalsEventsReference()
