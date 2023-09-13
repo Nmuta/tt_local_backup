@@ -21,7 +21,7 @@ export class UserSettingsService {
     const appVersionIsUnconfigured = configuredAppVersion === environment.adoVersion;
     const isLocalhost = window.origin.includes('localhost');
     if (isLocalhost && appVersionIsUnconfigured) {
-      return 'localhost';
+      return 'localhost-' + new Date(Date.now()).toLocaleDateString().replace(/\//g, '.');
     }
 
     return configuredAppVersion;
