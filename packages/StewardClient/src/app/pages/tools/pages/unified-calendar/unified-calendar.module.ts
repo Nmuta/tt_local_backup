@@ -47,7 +47,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
-import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { PlayerSelectionModule } from '@views/player-selection/player-selection.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MatTreeModule } from '@angular/material/tree';

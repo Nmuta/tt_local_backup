@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ObligationPrincipalsComponent } from './obligation-principals.component';
 
-describe('ObligationPrincipalsComponent', () => {
+fdescribe('ObligationPrincipalsComponent', () => {
   let component: ObligationPrincipalsComponent;
   let fixture: ComponentFixture<ObligationPrincipalsComponent>;
 

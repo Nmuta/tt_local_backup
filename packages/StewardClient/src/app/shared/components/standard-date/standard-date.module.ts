@@ -9,7 +9,7 @@ import { StandardAbsoluteTimeComponent } from './standard-absolute-time/standard
 import { StandardAbsoluteTimeRangeComponent } from './standard-absolute-time-range/standard-absolute-time-range.component';
 import { StandardRelativeTimeRangeComponent } from './standard-relative-time-range/standard-relative-time-range.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { StandardAbsoluteTimeUtcComponent } from './standard-absolute-time-utc/standard-absolute-time-utc.component';
 import { MatBadgeModule } from '@angular/material/badge';
 

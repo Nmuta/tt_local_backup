@@ -30,6 +30,7 @@ export interface StandardTestModuleMetadataConfiguration extends TestModuleMetad
   routes?: Routes;
 }
 
+/** Configures a standardized, near-complete testing module for use with TestBed.configureTestingModule */
 export function createStandardTestModuleMetadata(
   additions: StandardTestModuleMetadataConfiguration,
 ): TestModuleMetadata {

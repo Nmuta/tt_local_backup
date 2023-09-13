@@ -7,7 +7,7 @@ import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { DirectivesModule } from '@shared/directives/directives.module';
-import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatetimePickerComponent } from './datetime-picker/datetime-picker.component';

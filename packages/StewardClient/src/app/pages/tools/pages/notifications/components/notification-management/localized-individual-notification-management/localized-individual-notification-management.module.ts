@@ -27,7 +27,7 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { LocalizedIndividualNotificationManagementComponent } from './localized-individual-notification-management.component';
-import { LuxonDateModule } from 'ngx-material-luxon';
+import { LuxonDateModule } from '@angular/material-luxon-adapter';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { LocalizationModule } from '@components/localization/localization.module';

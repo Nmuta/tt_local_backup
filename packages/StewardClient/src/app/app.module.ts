@@ -56,7 +56,7 @@ import { SteelheadGiftingState } from '@tools-app/pages/gifting/steelhead/state/
 import { SteelheadGiftHistoryState } from '@tools-app/pages/gift-history/steelhead/state/steelhead-gift-history.state';
 import { WoodstockGiftingState } from '@tools-app/pages/gifting/woodstock/state/woodstock-gifting.state';
 import { WoodstockGiftHistoryState } from '@tools-app/pages/gift-history/woodstock/state/woodstock-gift-history.state';
-import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { LuxonModule } from 'luxon-angular';
 import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';

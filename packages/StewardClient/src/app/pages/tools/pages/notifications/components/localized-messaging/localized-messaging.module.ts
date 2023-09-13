@@ -21,7 +21,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';

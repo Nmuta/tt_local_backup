@@ -23,7 +23,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { DateTimePickersModule } from '@components/date-time-pickers/date-time-pickers.module';
-import { LuxonDateModule } from 'ngx-material-luxon';
+import { LuxonDateModule } from '@angular/material-luxon-adapter';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';

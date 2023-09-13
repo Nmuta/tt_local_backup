@@ -41,6 +41,8 @@ export interface KustoDataActivityOptions {
   fromApi: boolean;
 }
 
+const UTC_NOW = DateTime.utc();
+
 /** A form component for a single kusto pipeline activity. */
 @Component({
   selector: 'kusto-data-activity',
@@ -60,7 +62,6 @@ export interface KustoDataActivityOptions {
   ],
 })
 export class KustoDataActivityComponent implements AfterViewInit, ControlValueAccessor, Validator {
-  private static readonly UTC_NOW = DateTime.utc();
 
   @ViewChild('kustoFunction') public kustoFunction: KustoFunctionComponent;
 
@@ -71,8 +72,8 @@ export class KustoDataActivityComponent implements AfterViewInit, ControlValueAc
     database: 'T10Analytics',
     query: KustoFunctionComponent.defaults,
     dateRange: {
-      start: KustoDataActivityComponent.UTC_NOW.startOf('day').toUTC(),
-      end: KustoDataActivityComponent.UTC_NOW.plus({ days: 7 }).startOf('day').toUTC(),
+      start: UTC_NOW.startOf('day').toUTC(),
+      end: UTC_NOW.plus({ days: 7 }).startOf('day').toUTC(),
     },
     maximumExecutionTimeInMinutes: 1440,
     executionIntervalInMinutes: 1440,

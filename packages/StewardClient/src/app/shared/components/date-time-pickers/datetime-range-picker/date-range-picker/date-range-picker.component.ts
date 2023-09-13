@@ -17,7 +17,7 @@ import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { map, retry, startWith, tap } from 'rxjs/operators';
 import { DateTimeRange, stringifyDateTimeRange } from '@models/datetime-range';
-import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateAdapterOptions } from 'ngx-material-luxon';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateAdapterOptions } from '@angular/material-luxon-adapter';
 import { renderDelay } from '@helpers/rxjs';
 
 /** Outputted form value of the date range picker. */

@@ -241,7 +241,7 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": ["src/global.scss"],
             "scripts": [],
-            "sourceMap": false,
+            "sourceMap": true,
             "watch": true,
             "assets": ["src/assets"],
             "codeCoverageExclude": [
