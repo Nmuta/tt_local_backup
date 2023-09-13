@@ -1,5 +1,5 @@
 {
-  "_which": "dev",
+  "_which": "static-root-dev",
   "routes": [
     {
       "route": "*",

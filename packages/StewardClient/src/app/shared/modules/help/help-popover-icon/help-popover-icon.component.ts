@@ -14,11 +14,11 @@ import { TooltipPosition } from '@angular/material/tooltip';
 })
 export class HelpPopoverIconComponent extends BaseComponent implements OnInit {
   @ViewChild(CdkConnectedOverlay) overlay;
-  /** REVIEW-COMMENT: Card title. Default to empty string. */
+  /** Card title. Default to empty string. */
   @Input() public cardTitle: string = '';
-  /** REVIEW-COMMENT: Card subtitle. Default to "Help card". */
+  /** Card subtitle. Default to "Help card". */
   @Input() public cardSubtitle: string = 'Help card';
-  /** REVIEW-COMMENT: Confluence name. Default to empty string. */
+  /** Confluence name. Default to empty string. */
   @Input() public confluenceName: string = '';
   /** Mat tooltip position */
   @Input() public matTooltipPosition: TooltipPosition = 'below';

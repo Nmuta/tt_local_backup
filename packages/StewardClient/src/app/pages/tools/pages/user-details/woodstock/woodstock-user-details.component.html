@@ -99,6 +99,9 @@
           <inline-spinner [monitor]="ugcEvents.getMonitor | renderGuard"
             >({{ ugcEvents?.ugcContent?.length }})</inline-spinner
           >
+          <inline-spinner [monitor]="ugcPropPrefabs.getMonitor | renderGuard"
+            >({{ ugcPropPrefabs?.ugcContent?.length }})</inline-spinner
+          >
         </ng-template>
         <mat-tab-group>
           <mat-tab>
@@ -216,6 +219,29 @@
               </mat-card-content>
             </mat-card>
           </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Prop Prefabs
+              <inline-spinner [monitor]="ugcPropPrefabs.getMonitor | renderGuard"
+                >({{ ugcPropPrefabs?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Prop Prefabs</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <woodstock-player-ugc
+                  #ugcPropPrefabs
+                  [identity]="identity"
+                  [contentType]="UgcType.PropPrefab"
+                  [usingIdentities]="true"
+                ></woodstock-player-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
         </mat-tab-group>
       </mat-tab>
       <mat-tab>
@@ -235,6 +261,9 @@
           >
           <inline-spinner [monitor]="hiddenUgcEvents.getMonitor | renderGuard"
             >({{ hiddenUgcEvents?.ugcContent?.length }})</inline-spinner
+          >
+          <inline-spinner [monitor]="hiddenUgcPropPrefabs.getMonitor | renderGuard"
+            >({{ hiddenUgcPropPrefabs?.ugcContent?.length }})</inline-spinner
           >
         </ng-template>
         <mat-tab-group>
@@ -348,6 +377,29 @@
                   #hiddenUgcEvents
                   [identity]="identity"
                   [contentType]="UgcType.EventBlueprint"
+                  [usingIdentities]="true"
+                ></woodstock-player-hidden-ugc>
+              </mat-card-content>
+            </mat-card>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Prop Prefabs
+              <inline-spinner [monitor]="hiddenUgcPropPrefabs.getMonitor | renderGuard"
+                >({{ hiddenUgcPropPrefabs?.ugcContent?.length }})</inline-spinner
+              >
+            </ng-template>
+
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title>Prop Prefabs</mat-card-title>
+                <mat-card-subtitle>Woodstock</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <woodstock-player-hidden-ugc
+                  #hiddenUgcPropPrefabs
+                  [identity]="identity"
+                  [contentType]="UgcType.PropPrefab"
                   [usingIdentities]="true"
                 ></woodstock-player-hidden-ugc>
               </mat-card-content>

@@ -13,9 +13,38 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Display warning beside user flag when lookup provides conflicting data',
     },
     {
+      tag: {
+        title: GameTitle.FH5,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'cdd66b5e-b3d5-49f6-8a73-bc02fdf3595b',
+      shortText: 'Add Prop Prefab UGC type',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '6bd26f9c-2af3-44f3-aba2-7f0c486ed5e8',
+      shortText: 'Add autocomplete feature and validation',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '317fabba-9068-4444-9fe7-4a2140d252e9',
       shortText: 'Prepare Steward UI for new deployment model',
+      longText: [
+        'Update 1: Restructure static deploy config files. Add Favicon.',
+        'Update 2: Adjust build pipeline.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c59b7731-7ee8-4b34-a64f-0c0d47d484db',
+      shortText: 'Rework Endpoints navbar utility',
+      longText: [
+        'Utility is now capable of setting all environment endpoints.',
+        'Utility size has been reduced, and it may no longer be removed from the toolbar.',
+        'Quick-change-button color now matches the color in the summary grid.',
+        'Quick-change-button is replaced by a spinner while endpoint data is being retrieved.',
+        'Navbar theme-toggle button has been adjusted to match toolbar',
+      ],
     },
     {
       tag: ChangelogTag.General,
@@ -338,7 +367,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      tag: ChangelogTag.General,
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
     },

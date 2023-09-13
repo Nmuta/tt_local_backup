@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// <summary>
     ///     Represents UGC type options.
     /// </summary>
-    /// <remarks>Copies enum values from <see cref="Turn10.Services.LiveOps.FM8.Generated.ForzaUGCContentType" /></remarks>
+    /// <remarks>Copies enum values from <see cref="Turn10.Services.LiveOps.FH5_main.Generated.ForzaUGCContentType" /></remarks>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum UgcType
     {
@@ -60,6 +60,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Game Options UGC item type.
         /// </summary>
-        GameOptions = 10,
+        GameOptions = 11,
+
+        /// <summary>
+        ///     Prop Prefab UGC item type.
+        /// </summary>
+        PropPrefab = 12,
     }
 }

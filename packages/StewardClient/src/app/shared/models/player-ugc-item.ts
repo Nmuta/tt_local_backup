@@ -40,6 +40,9 @@ export interface PlayerUgcItem {
 
   /** Only for tune blob type UGC items.  */
   tuneBlobDownloadDataBase64?: string;
+
+  /** Only for tune blob type UGC items.  */
+  propPrefabDownloadDataBase64?: string;
 }
 
 /** Geoflags that are valid in Woodstock. */

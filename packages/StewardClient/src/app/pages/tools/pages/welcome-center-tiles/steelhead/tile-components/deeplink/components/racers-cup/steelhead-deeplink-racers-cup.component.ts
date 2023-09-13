@@ -8,6 +8,7 @@ import {
   ValidationErrors,
   ControlValueAccessor,
   Validator,
+  Validators,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -42,7 +43,7 @@ export class DeeplinkRacersCupComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    racersCupSeries: new UntypedFormControl(null),
+    racersCupSeries: new UntypedFormControl(null, [Validators.required]),
   };
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
@@ -106,13 +107,5 @@ export class DeeplinkRacersCupComponent
     }
 
     return null;
-  }
-
-  /** Set the fields of a racers cup destination using the form values. */
-  public mapFormToDestination() {
-    return {
-      series: this.formControls.racersCupSeries.value,
-      destinationType: DestinationType.RacersCup,
-    } as RacersCupDestination;
   }
 }

@@ -55,6 +55,7 @@ export class EditUgcModalBaseComponent extends BaseComponent {
     UgcType.EventBlueprint,
     UgcType.CommunityChallenge,
     UgcType.Replay,
+    UgcType.PropPrefab,
   ];
 
   public editUgcPermAttribute = PermAttributeName.EditUgc;
