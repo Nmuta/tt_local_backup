@@ -91,17 +91,21 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
     }
 
     const currentVersion = environment.adoVersion;
-    const isNewAppVersion = currentVersion !== this.userSettingsService.appVersion;
+    const lastSeenVersion = this.userSettingsService.appVersion;
+    const isNewAppVersion = currentVersion !== lastSeenVersion;
     if (!isNewAppVersion) {
       return;
     }
 
+    this.userSettingsService.appVersion = environment.adoVersion;
     const isAlreadyOnChangelog = this.router.url.includes('sidebar:unified/changelog');
     if (isAlreadyOnChangelog) {
       return;
     }
     this.router.navigate([{ outlets: { sidebar: 'unified/changelog' } }], {
       relativeTo: this.activatedRoute,
+      preserveFragment: true,
+      queryParamsHandling: 'preserve',
     });
   }
 }

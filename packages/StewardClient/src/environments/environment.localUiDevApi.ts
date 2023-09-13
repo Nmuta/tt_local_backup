@@ -22,7 +22,7 @@ export const environment: StewardEnvironment = {
   stewardApiStagingUrl: 'NO_DEV_STAGING_SLOT',
   stewardBlobStorageUrl: 'https://stewardblobdev.blob.core.windows.net',
   oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net',
-  adoVersion: 'ADO_VERSION_TO_REPLACE',
+  adoVersion: 'localhost-9.12.2023',
   enableFakeApi: true,
   appInsightsConfig: {
     instrumentationKey: '18e41d53-e8c7-465e-808d-ec4b1f9e5812',

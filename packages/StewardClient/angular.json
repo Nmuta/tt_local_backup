@@ -67,6 +67,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-dev/",
@@ -96,6 +99,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-dev/",
@@ -125,6 +131,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-dev-pr/",
@@ -154,6 +163,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-prod/",
@@ -183,6 +195,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-dev/",
@@ -212,6 +227,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-prod/",
