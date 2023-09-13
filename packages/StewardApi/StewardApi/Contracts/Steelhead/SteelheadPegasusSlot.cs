@@ -12,15 +12,6 @@
         public const string Live = "live";
 
         /// <summary>
-        ///     Gets Steelhead 'live-steward' Pegasus slot.
-        /// </summary>
-        /// /// <remarks>
-        ///     Similar to live slot, but has increased release version for items.
-        ///     A 'preview' of what will be in the game soon.
-        /// </remarks>
-        public const string LiveSteward = "live-steward";
-
-        /// <summary>
         ///     Gets Steelhead 'daily' Pegasus slot.
         /// </summary>
         /// <remarks>

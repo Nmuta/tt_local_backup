@@ -2,8 +2,8 @@ import { AfterViewInit, Component, forwardRef, Input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -66,7 +66,7 @@ export class RestateOMaticComponent
 {
   public static readonly NAME_PREFIX = 'ROM_';
   private static readonly UTC_NOW = DateTime.utc();
-  private readonly attachedToFormControl$ = new ReplaySubject<FormControl>(1);
+  private readonly attachedToFormControl$ = new ReplaySubject<UntypedFormControl>(1);
   private readonly attachedToFormControlValue$: Observable<KustoDataActivityOptions> =
     this.attachedToFormControl$.pipe(
       mergeMap(fc => fc?.valueChanges.pipe(startWith(fc.value)) ?? of([null])),
@@ -75,7 +75,7 @@ export class RestateOMaticComponent
     );
 
   /** Sets the attached form control. Used for populating some values. */
-  @Input() public set attachedToFormControl(value: FormControl) {
+  @Input() public set attachedToFormControl(value: UntypedFormControl) {
     this.attachedToFormControl$.next(value);
   }
 
@@ -99,41 +99,41 @@ export class RestateOMaticComponent
   };
 
   public formControls = {
-    name: new FormControl({ value: RestateOMaticComponent.defaults.name, disabled: true }, [
+    name: new UntypedFormControl({ value: RestateOMaticComponent.defaults.name, disabled: true }, [
       Validators.required,
       StringValidators.trim,
       StringValidators.uniqueInList(() => this.activePipeline.activityNames),
     ]),
-    database: new FormControl(RestateOMaticComponent.defaults.database, [
+    database: new UntypedFormControl(RestateOMaticComponent.defaults.database, [
       Validators.required,
       StringValidators.trim,
     ]),
-    query: new FormControl(RestateOMaticComponent.defaults.query, [Validators.required]),
-    dateRange: new FormControl(RestateOMaticComponent.defaults.dateRange),
-    maximumExecutionTimeInMinutes: new FormControl(
+    query: new UntypedFormControl(RestateOMaticComponent.defaults.query, [Validators.required]),
+    dateRange: new UntypedFormControl(RestateOMaticComponent.defaults.dateRange),
+    maximumExecutionTimeInMinutes: new UntypedFormControl(
       RestateOMaticComponent.defaults.maximumExecutionTimeInMinutes,
       [Validators.required, Validators.min(60), Validators.max(1440)],
     ),
-    executionIntervalInMinutes: new FormControl(
+    executionIntervalInMinutes: new UntypedFormControl(
       RestateOMaticComponent.defaults.executionIntervalInMinutes,
       [Validators.required],
     ),
-    executionDelayInMinutes: new FormControl(
+    executionDelayInMinutes: new UntypedFormControl(
       RestateOMaticComponent.defaults.executionDelayInMinutes,
       [Validators.required],
     ),
-    parallelismLimit: new FormControl(RestateOMaticComponent.defaults.parallelismLimit, [
+    parallelismLimit: new UntypedFormControl(RestateOMaticComponent.defaults.parallelismLimit, [
       Validators.required,
       Validators.min(1),
       Validators.max(25),
     ]),
-    dependencyNames: new FormControl(RestateOMaticComponent.defaults.dependencyNames),
-    includeChildren: new FormControl(RestateOMaticComponent.defaults.includeChildren),
-    creationBehavior: new FormControl(RestateOMaticComponent.defaults.creationBehavior),
-    fromApi: new FormControl(RestateOMaticComponent.defaults.fromApi),
+    dependencyNames: new UntypedFormControl(RestateOMaticComponent.defaults.dependencyNames),
+    includeChildren: new UntypedFormControl(RestateOMaticComponent.defaults.includeChildren),
+    creationBehavior: new UntypedFormControl(RestateOMaticComponent.defaults.creationBehavior),
+    fromApi: new UntypedFormControl(RestateOMaticComponent.defaults.fromApi),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     name: this.formControls.name,
     database: this.formControls.database,
     query: this.formControls.query,

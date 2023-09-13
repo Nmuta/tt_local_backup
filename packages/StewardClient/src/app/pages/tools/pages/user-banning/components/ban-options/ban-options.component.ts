@@ -2,8 +2,8 @@ import { Component, forwardRef, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -168,24 +168,26 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator, OnI
   public banReasons: string[] = [];
 
   public formControls = {
-    banArea: new FormControl(this.defaults.banArea, [Validators.required]),
-    banReason: new FormControl(this.defaults.banReason, [
+    banArea: new UntypedFormControl(this.defaults.banArea, [Validators.required]),
+    banReason: new UntypedFormControl(this.defaults.banReason, [
       Validators.required,
       requireReasonListMatch.bind(this),
     ]),
-    banDuration: new FormControl(this.defaults.banDuration, [Validators.required]),
+    banDuration: new UntypedFormControl(this.defaults.banDuration, [Validators.required]),
     checkboxes: {
-      banAllXboxes: new FormControl(this.defaults.checkboxes.banAllXboxes),
-      banAllPCs: new FormControl(this.defaults.checkboxes.banAllPCs),
-      deleteLeaderboardEntries: new FormControl(this.defaults.checkboxes.deleteLeaderboardEntries),
+      banAllXboxes: new UntypedFormControl(this.defaults.checkboxes.banAllXboxes),
+      banAllPCs: new UntypedFormControl(this.defaults.checkboxes.banAllPCs),
+      deleteLeaderboardEntries: new UntypedFormControl(
+        this.defaults.checkboxes.deleteLeaderboardEntries,
+      ),
     },
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     banArea: this.formControls.banArea,
     banReason: this.formControls.banReason,
     banDuration: this.formControls.banDuration,
-    checkboxes: new FormGroup({
+    checkboxes: new UntypedFormGroup({
       banAllXboxes: this.formControls.checkboxes.banAllXboxes,
       banAllPCs: this.formControls.checkboxes.banAllPCs,
       deleteLeaderboardEntries: this.formControls.checkboxes.deleteLeaderboardEntries,

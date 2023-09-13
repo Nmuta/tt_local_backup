@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunriseServiceNull_Throws()
         {
             // Arrange.
@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceNull_Throws()
         {
             // Arrange.
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetAuctionBlockListAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetAuctionBlockListAsync_WithInvalidMaxResults_Throws()
         {
             // Arrange.
@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void AddAuctionBlockListEntriesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void AddAuctionBlockListEntriesAsync_WithNullBlockListEntries_Throws()
         {
             // Arrange.
@@ -149,7 +149,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeleteAuctionBlockListEntriesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -165,7 +165,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeleteAuctionBlockListEntriesAsync_WithNullCarIds_Throws()
         {
             // Arrange.

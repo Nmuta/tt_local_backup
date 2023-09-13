@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { chain, Dictionary, filter, keyBy, min } from 'lodash';
@@ -58,11 +58,11 @@ export class ForumBanningComponent extends BaseComponent implements OnInit {
   public banReasonOptions: Observable<BanReasonGroup[]>;
 
   public formControls = {
-    banReason: new FormControl('', [Validators.required]),
-    issuedDate: new FormControl(DateTime.utc().startOf('day'), [Validators.required]),
+    banReason: new UntypedFormControl('', [Validators.required]),
+    issuedDate: new UntypedFormControl(DateTime.utc().startOf('day'), [Validators.required]),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public summaryLookup: Dictionary<ForumBanSummary> = {};
   public bannedXuids: BigNumber[] = [];

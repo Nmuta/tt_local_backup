@@ -6,4 +6,5 @@ export class RouteMemoryModel {
   public gifting: string;
   public playfab: string;
   public unifiedCalendar: string;
+  public bountyDetails: string;
 }

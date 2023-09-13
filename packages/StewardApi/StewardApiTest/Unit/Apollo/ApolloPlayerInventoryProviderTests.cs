@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -38,7 +38,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenApolloServiceNull_Throws()
         {
             // Arrange.
@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenNotificationHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -119,7 +119,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -136,7 +136,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -166,7 +166,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGroupInventoriesAsync_WithNullGift_Throws()
         {
             // Arrange.
@@ -190,7 +190,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullGift_Throws()
         {
             // Arrange.
@@ -213,7 +213,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullEmptyWhitespaceRequesterObjectId_Throws()
         {
             // Arrange.
@@ -248,7 +248,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullXuids_Throws()
         {
             // Arrange.
@@ -267,7 +267,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendCarLiveryAsync_ToUserGroup_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -286,7 +286,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendCarLiveryAsync_ToUserGroup_WithNullRequesterId_Throws()
         {
             // Arrange.
@@ -304,7 +304,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendCarLiveryAsync_ToPlayers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -322,7 +322,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendCarLiveryAsync_ToPlayers_WithNullRequesterId_Throws()
         {
             // Arrange.

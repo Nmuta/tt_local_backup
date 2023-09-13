@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, OnInit, ViewChildren } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { WoodstockBanRequest, WoodstockBanSummary } from '@models/woodstock';
 import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
@@ -26,7 +26,6 @@ import { WoodstockPlayersBanService } from '@services/api-v2/woodstock/players/b
 import { BanConfiguration } from '@models/ban-configuration';
 import { requireReasonListMatch } from '@helpers/validations';
 import { BanReasonGroup } from '@models/ban-reason-group';
-import { MatOptionSelectionChange } from '@angular/material/core/option';
 import { HCI } from '@environments/environment';
 import { WoodstockPlayerBanService } from '@services/api-v2/woodstock/player/ban/woodstock-player-ban.service';
 import { BanDuration } from '@models/ban-duration';
@@ -35,6 +34,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Duration } from 'luxon';
 import { DurationOption } from '../../components/duration-picker/duration-picker.component';
+import { MatOptionSelectionChange } from '@angular/material/core';
 
 export const BanOverrideDurationOptions: DurationOption[] = [
   { duration: Duration.fromObject({ days: 1 }), humanized: '1 day' },
@@ -59,21 +59,23 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent implemen
   public banReasons: string[] = [];
 
   public formControls = {
-    banReason: new FormControl('', [Validators.required, requireReasonListMatch.bind(this)]),
-    deleteLeaderboardEntries: new FormControl(false),
-    override: new FormControl(false),
+    banReason: new UntypedFormControl('', [Validators.required, requireReasonListMatch.bind(this)]),
+    deleteLeaderboardEntries: new UntypedFormControl(false),
+    override: new UntypedFormControl(false),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public options: DurationOption[] = BanOverrideDurationOptions;
   public overrideFormControls = {
-    overrideBanDuration: new FormControl({ value: null, disabled: true }, [Validators.required]),
-    permaBan: new FormControl({ value: false, disabled: true }),
-    deviceBan: new FormControl({ value: false, disabled: true }),
+    overrideBanDuration: new UntypedFormControl({ value: null, disabled: true }, [
+      Validators.required,
+    ]),
+    permaBan: new UntypedFormControl({ value: false, disabled: true }),
+    deviceBan: new UntypedFormControl({ value: false, disabled: true }),
   };
 
-  public overrideFormGroup = new FormGroup(this.overrideFormControls);
+  public overrideFormGroup = new UntypedFormGroup(this.overrideFormControls);
 
   public summaryLookup: Dictionary<WoodstockBanSummary> = {};
   public bannedXuids: BigNumber[] = [];

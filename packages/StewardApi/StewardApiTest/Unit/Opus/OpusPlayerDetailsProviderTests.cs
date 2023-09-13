@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenOpusServiceNull_Throws()
         {
             // Arrange.
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerIdentitiesAsync_WithNullQuery_Throws()
         {
             // Arrange.
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerDetailsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -118,7 +118,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetailsAsync_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -140,7 +140,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DoesPlayerExistAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

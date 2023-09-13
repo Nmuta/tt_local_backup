@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunriseServiceIsNull_Throws()
         {
             // Arrange.
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperIsNull_Throws()
         {
             // Arrange.
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithUnknownUgcType_Throws()
         {
             // Arrange.
@@ -111,7 +111,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithNullUgcFilters_Throws()
         {
             // Arrange.
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCLiveryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -151,7 +151,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCPhotoAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -168,7 +168,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCTuneAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -184,7 +184,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SetUGCFeaturedStatusAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetHiddenUGCForUser_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void HideUgc_WithValidInputs_DoesNotThrow()
         {
             // Arrange.
@@ -233,7 +233,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UnhideUgc_WithValidInputs_DoesNotThrow()
         {
             // Arrange.

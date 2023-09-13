@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { DefaultUgcFilters, UgcAccessLevel, UgcFilters, UgcOrderBy } from '@models/ugc-filters';
@@ -25,14 +25,14 @@ export abstract class UgcFiltersBaseComponent extends BaseComponent {
   public orderByOptions = keys(UgcOrderBy) as UgcOrderBy[];
 
   public formControls = {
-    makeModelInput: new FormControl(null),
-    keyword: new FormControl(''),
-    accessLevel: new FormControl(DefaultUgcFilters.accessLevel, Validators.required),
-    orderBy: new FormControl(DefaultUgcFilters.orderBy, Validators.required),
+    makeModelInput: new UntypedFormControl(null),
+    keyword: new UntypedFormControl(''),
+    accessLevel: new UntypedFormControl(DefaultUgcFilters.accessLevel, Validators.required),
+    orderBy: new UntypedFormControl(DefaultUgcFilters.orderBy, Validators.required),
   };
 
   /** UGC filters form group. */
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
   public stateGroupOptions$: Observable<MakeModelFilterGroup[]>;
   public makeModelFilterGroups: MakeModelFilterGroup[];
 

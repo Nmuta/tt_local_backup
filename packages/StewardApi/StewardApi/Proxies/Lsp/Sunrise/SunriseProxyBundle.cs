@@ -9,6 +9,9 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise.Services;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise
 {
+    /// <summary>
+    ///     Bundle of LSP proxies for Sunrise
+    /// </summary>
     public class SunriseProxyBundle
     {
         private string endpoint;

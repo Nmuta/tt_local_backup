@@ -11,7 +11,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
     {
         public PlayerDetailsControllerTestingClient(Uri baseUri, string authKey) : base(baseUri, authKey)
         {
-            this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Flight));
+            this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
         public async Task<SteelheadPlayerDetails> GetPlayerDetails(string gamertag)

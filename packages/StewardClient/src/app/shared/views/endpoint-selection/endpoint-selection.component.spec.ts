@@ -29,7 +29,6 @@ describe('EndpointSelectionComponent', () => {
     Object.defineProperty(component, 'settings$', { writable: true });
     component.settings$ = of({
       enableFakeApi: false,
-      enableStagingApi: false,
       appVersion: '',
       showAppUpdatePopup: false,
       apolloEndpointKey: endpoint,

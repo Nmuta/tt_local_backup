@@ -8,7 +8,6 @@ import { Select, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { WindowService } from '@services/window';
 import { EmailAddresses } from '@shared/constants';
-import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
@@ -44,15 +43,13 @@ export class LoginComponent implements OnInit {
   /** Launches the login popup. */
   public async login$(): Promise<void> {
     const location = this.windowService.location();
-    const useStaging =
-      this.store.selectSnapshot<boolean>(UserSettingsState.enableStagingApi) &&
-      location?.origin === environment.stewardUiStagingUrl;
+    const useStaging = location?.origin === environment.stewardUiStagingUrl;
     try {
       await this.msalService
         .loginPopup({
           scopes: [environment.azureAppScope],
           redirectUri: `${
-            useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
+            useStaging ? environment.stewardUiStagingUrl : location.origin
           }/auth/aad-login`,
         })
         .toPromise();

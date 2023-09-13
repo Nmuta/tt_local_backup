@@ -8,7 +8,7 @@ export const playFabTile = <HomeTileInfoInternal>{
   accessList: [UserRole.LiveOpsAdmin, UserRole.GeneralUser],
   title: 'PlayFab',
   subtitle: 'Management helpers for PlayFab',
-  supportedTitles: [GameTitle.FH5],
+  supportedTitles: [GameTitle.FH5, GameTitle.Forte],
   allPermissions: [
     PermAttributeName.ManagePlayFabBuildLocks,
     PermAttributeName.ManagePlayFabSettings,

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, ViewChild, ViewChildren } from '@angul
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
 import { BaseComponent } from '@components/base-component/base.component';
-import { ChangelogEntry, ChangelogGroup } from '@environments/app-data/changelog';
+import { ChangelogEntry, ChangelogGroup, ChangelogTag } from '@environments/app-data/changelog';
 import { renderDelay } from '@helpers/rxjs';
 import { Select } from '@ngxs/store';
 import { ChangelogService } from '@services/changelog/changelog.service';
@@ -18,13 +18,17 @@ import { Observable, takeUntil } from 'rxjs';
 })
 export class ChangelogGroupComponent extends BaseComponent implements AfterViewInit {
   @Select(ChangelogState) public changelogState$: Observable<ChangelogModel>;
-  /** REVIEW-COMMENT: Changelog group to be displayed. */
+  /** Changelog group to be displayed. */
   @Input() public group: ChangelogGroup;
+  /** Show internal changelog entries. */
+  @Input() public showInternal: boolean;
   @ViewChild(MatAccordion) public accordion: MatAccordion;
   @ViewChildren(MatExpansionPanel) public panels: MatExpansionPanel[];
 
   public groupIsComplete = false;
   public groupIsIndeterminate = false;
+
+  public readonly ChangelogTag = ChangelogTag;
 
   constructor(private readonly changelogService: ChangelogService) {
     super();

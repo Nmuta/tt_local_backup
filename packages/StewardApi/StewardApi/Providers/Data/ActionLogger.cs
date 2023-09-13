@@ -58,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 RequestPath = this.actionData.RequestPath ?? string.Empty,
                 RequesterObjectId = this.actionData.RequesterObjectId ?? string.Empty,
                 RequesterRole = this.actionData.RequesterRole ?? string.Empty,
+                RequesterApiKeyName = this.actionData.RequesterApiKeyName ?? string.Empty,
                 HttpMethod = this.actionData.HttpMethod ?? string.Empty,
                 RouteData = this.actionData.RouteData.ToJson() ?? string.Empty,
                 Title = this.actionData.Title ?? string.Empty,

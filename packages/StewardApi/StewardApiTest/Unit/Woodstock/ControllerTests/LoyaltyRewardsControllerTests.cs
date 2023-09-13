@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -53,7 +53,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         [Ignore] // TODO: Investigate testing of V2 controllers that rely on proxy interfaces.
         public async Task GetHasPlayedRecord_ShouldReturnValidValue()
         {
@@ -73,7 +73,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetHasPlayedRecord_WithNullProfileId_ShouldThrow()
         {
             // Arrange.
@@ -88,7 +88,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetHasPlayedRecord_WithNonGuidProfileId_ShouldThrow()
         {
             // Arrange.
@@ -104,7 +104,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         [Ignore] // TODO: Investigate testing of V2 controllers that rely on proxy interfaces.
         public void ResendLoyaltyRewards_DoesNotThrow()
         {
@@ -122,7 +122,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void ResendLoyaltyRewards_WithNullProfileId_ShouldThrow()
         {
             // Arrange.
@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void ResendLoyaltyRewards_WithNonGuidProfileId_ShouldThrow()
         {
             // Arrange.
@@ -156,7 +156,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void ResendLoyaltyRewards_WithNullTitles_ShouldThrow()
         {
             // Arrange.

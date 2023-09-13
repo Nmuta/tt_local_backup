@@ -5,6 +5,9 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 {
+    /// <summary>
+    ///     Racer's Cup game options
+    /// </summary>
     public sealed class RacersCupGameOptions
     {
         public RacersCupWeatherCondition EndRaceWeatherCondition { get; set; }

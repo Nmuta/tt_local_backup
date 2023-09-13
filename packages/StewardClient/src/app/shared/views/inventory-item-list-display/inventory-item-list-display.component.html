@@ -44,7 +44,7 @@
     </ng-container>
     <ng-container matColumnDef="dateAquired">
       <td mat-cell *matCellDef="let item">
-        <span *ngIf="item.acquiredUtc">{{ item.acquiredUtc | date: 'shortDate' }}</span>
+        <span *ngIf="item.acquiredUtc">{{ item.acquiredUtc | date : 'shortDate' }}</span>
         <span *ngIf="!item.acquiredUtc">N/A</span>
       </td>
     </ng-container>

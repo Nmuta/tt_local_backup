@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Hosting;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -51,7 +52,15 @@ namespace Turn10.LiveOps.StewardApi.Filters
             context.ExceptionHandled = true;
             context.HttpContext.Response.StatusCode = (int)baseException.StatusCode;
             context.HttpContext.Response.ContentType = "application/json";
+
+            // Generate error from exception, strip out inner exception if request came from one of our external API endpoints.
             var error = new StewardError(baseException.ErrorCode, context.Exception.Message, context.Exception);
+            var isExternalApiPath = context.HttpContext.Request?.Path.Value?.ToLowerInvariant().Contains("api/v2/external", StringComparison.InvariantCultureIgnoreCase) ?? false;
+            if (isExternalApiPath)
+            {
+                error.InnerException = null;
+            }
+
             context.Result = new ObjectResult(new StewardErrorResult { Error = error });
 
             return Task.CompletedTask;

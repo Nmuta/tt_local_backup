@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GameTitle } from '@models/enums';
@@ -18,7 +18,7 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupBlocklistEntry {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   edit?: boolean;
   postMonitor: ActionMonitor;
   deleteMonitor: ActionMonitor;
@@ -45,8 +45,8 @@ export class AuctionBlocklistBaseComponent extends BaseComponent implements OnIn
   public blocklist = new MatTableDataSource<FormGroupBlocklistEntry>();
   public columnsToDisplay = ['carId', 'description', 'expireDate', 'actions'];
 
-  public formArray: FormArray = new FormArray([]);
-  public formGroup = new FormGroup({ expireDate: this.formArray });
+  public formArray: UntypedFormArray = new UntypedFormArray([]);
+  public formGroup = new UntypedFormGroup({ expireDate: this.formArray });
 
   public inputPostMonitor: ActionMonitor = new ActionMonitor('INPUT POST');
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
@@ -92,11 +92,11 @@ export class AuctionBlocklistBaseComponent extends BaseComponent implements OnIn
       .subscribe(returnList => {
         const controls: FormGroupBlocklistEntry[] = returnList.map(entry => {
           const newControls = <FormGroupBlocklistEntry>{
-            formGroup: new FormGroup({
-              carId: new FormControl(entry.carId, [Validators.required]),
-              description: new FormControl(entry.description),
-              doesExpire: new FormControl(entry.doesExpire, [Validators.required]),
-              expireDateUtc: new FormControl(
+            formGroup: new UntypedFormGroup({
+              carId: new UntypedFormControl(entry.carId, [Validators.required]),
+              description: new UntypedFormControl(entry.description),
+              doesExpire: new UntypedFormControl(entry.doesExpire, [Validators.required]),
+              expireDateUtc: new UntypedFormControl(
                 { value: entry.expireDateUtc.toISO(), disabled: !entry.doesExpire },
                 [Validators.required, DateValidators.isAfter(DateTime.local().startOf('day'))],
               ),
@@ -121,7 +121,7 @@ export class AuctionBlocklistBaseComponent extends BaseComponent implements OnIn
           this.getMonitor,
           this.inputPostMonitor,
         );
-        this.formArray = new FormArray(controls.map(v => v.formGroup));
+        this.formArray = new UntypedFormArray(controls.map(v => v.formGroup));
         this.blocklist.data = controls;
       });
 

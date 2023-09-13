@@ -7,6 +7,7 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
     [TestClass]
+    [IntegrationTest]
     public sealed class TestProxiesControllerTests : SteelheadControllerTestsBase
     {
         private static TestProxiesControllerTestingClient stewardClient;
@@ -22,7 +23,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task VerifyServiceProxies()
         {
             try
@@ -36,7 +37,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task VerifyServiceProxies_InvalidAuth()
         {
             try

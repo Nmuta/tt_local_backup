@@ -7,10 +7,11 @@ jobs:
   - checkout: self
     fetchDepth: 1
     submodules: true
-  - task: Assembly-Info-NetCore@2
-    displayName: Set Assembly Version
-    inputs:
-      InformationalVersion: $(Build.BuildNumber)
+  # Disabling as it is breaking on Analyzer.Vsix.csproj
+  # - task: Assembly-Info-NetCore@2
+  #   displayName: Set Assembly Version
+  #   inputs:
+  #     InformationalVersion: $(Build.BuildNumber)
   - task: DotNetCoreCLI@2
     displayName: dotnet restore
     inputs:

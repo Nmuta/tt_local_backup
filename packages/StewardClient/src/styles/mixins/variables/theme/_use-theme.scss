@@ -96,3 +96,21 @@
   $var-name: makeLookupName('highlight', 'default');
   @return var(--hex-#{$var-name});
 }
+
+/// Gets a color from a theme or non-theme palette.
+/// Does not invert lighter/darker for darkmode.
+/// Can be used with any specific index of mat-palette.
+/// background: app-color-passthru($app-success, 'A700', 0.3)
+/// background: app-color-passthru($app-success, 'A700')
+@function app-color-passthru($palette, $fieldName, $opacity: null) {
+  @return app-color($palette, $fieldName, $opacity);
+}
+
+/// Gets a color from a theme or non-theme palette.
+/// Does not invert lighter/darker for darkmode.
+/// Can be used with any specific index of mat-palette.
+/// background: app-color-passthru-contrast($app-success, 'A700', 0.3)
+/// background: app-color-passthru-contrast($app-success, 'A700')
+@function app-color-passthru-contrast($palette, $fieldName, $opacity: null) {
+  @return app-color($palette, $fieldName + '-contrast', $opacity);
+}

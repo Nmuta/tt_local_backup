@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
@@ -84,14 +84,14 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   public getLeaderboards = new ActionMonitor('GET leaderboards');
 
   public formControls = {
-    filters: new FormControl([]),
-    leaderboard: new FormControl(''),
-    xuid: new FormControl('', [BigNumberValidators.isBigNumber()]),
-    deviceTypes: new FormControl([]),
-    leaderboardEnvironment: new FormControl('Prod', [Validators.required]),
+    filters: new UntypedFormControl([]),
+    leaderboard: new UntypedFormControl(''),
+    xuid: new UntypedFormControl('', [BigNumberValidators.isBigNumber()]),
+    deviceTypes: new UntypedFormControl([]),
+    leaderboardEnvironment: new UntypedFormControl('Prod', [Validators.required]),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   /** Getter for selected leaderboard */
   public get leaderboard(): Leaderboard {

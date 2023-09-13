@@ -36,6 +36,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.MsTeams
     /// </summary>
     public static class MsTeamsBugReportExtensions
     {
+        /// <summary>
+        ///     Json to create Adaptive Card in Microsoft Teams
+        /// </summary>
         public static string ToMsTeamsAdaptiveCardJson(this MsTeamsBugReport bugReport, StewardClaimsUser user)
         {
             // Adaptive Card Designer: https://adaptivecards.io/designer/

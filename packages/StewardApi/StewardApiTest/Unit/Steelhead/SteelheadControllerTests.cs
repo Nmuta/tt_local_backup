@@ -34,7 +34,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceNull_Throws()
         {
             // Arrange.
@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKustoProviderNull_Throws()
         {
             // Arrange.
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSteelheadPlayerDetailsProviderNull_Throws()
         {
             // Arrange.
@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSteelheadPlayerInventoryProviderNull_Throws()
         {
             // Arrange.
@@ -104,7 +104,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSteelheadServiceManagementProviderNull_Throws()
         {
             // Arrange.
@@ -118,7 +118,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSteelheadNotificationProviderNull_Throws()
         {
             // Arrange.
@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKeyVaultProviderNull_Throws()
         {
             // Arrange.
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -160,7 +160,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenBanHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -174,7 +174,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenNotificationHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -188,7 +188,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -202,7 +202,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSchedulerNull_Throws()
         {
             // Arrange.
@@ -216,7 +216,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenJobTrackerNull_Throws()
         {
             // Arrange.
@@ -230,7 +230,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMasterInventoryRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -244,7 +244,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -258,7 +258,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGroupGiftRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -272,7 +272,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -286,7 +286,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -306,7 +306,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerIdentities_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
@@ -321,7 +321,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -351,7 +351,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
         {
             // Arrange.
@@ -372,7 +372,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithValidEndpointKeyHeader_DoesNotThrows()
         {
             // Arrange.
@@ -388,7 +388,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_EmptyStringEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -409,7 +409,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_InvalidTitleEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -430,7 +430,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_InvalidKeyEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -451,7 +451,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_NoEndpointKeyEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -472,7 +472,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_NoTitleEndpointKeyHeader_Throws()
         {
             // Arrange.
@@ -493,7 +493,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetConsoles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -514,7 +514,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetConsoles_WithNegativeMaxResults_Throws()
         {
             // Arrange.
@@ -530,7 +530,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetSharedConsoleUsers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -552,7 +552,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetSharedConsoleUsers_WithNegativeStartIndex_Throws()
         {
             // Arrange.
@@ -569,7 +569,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetSharedConsoleUsers_WithNegativeMaxResults_Throws()
         {
             // Arrange.
@@ -587,7 +587,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBanSummaries_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -607,7 +607,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetBanHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -635,7 +635,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetBanHistory_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
@@ -657,7 +657,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SetConsoleBanStatus_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -676,7 +676,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetgiftInventoryProfiles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -696,7 +696,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroups_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -715,7 +715,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdatePlayerInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -742,7 +742,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventories_WithNullGroupGift_Throws()
         {
             // Arrange.
@@ -756,7 +756,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
         {
             // Arrange.
@@ -775,7 +775,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventories_WithNullGroupGift_UseBackgroundProcessing_Throws()
         {
             // Arrange.
@@ -789,7 +789,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task UpdateGroupInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -811,7 +811,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGroupInventories_WithNullGift_Throws()
         {
             // Arrange.
@@ -826,7 +826,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGiftHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -848,7 +848,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroupGiftHistory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -870,7 +870,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -890,7 +890,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroupNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -910,7 +910,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SendPlayerNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -932,7 +932,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithNullCommunityMessage_Throws()
         {
             // Arrange.
@@ -954,7 +954,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithNullEmptyWhitespaceMessage_Throws()
         {
             // Arrange.
@@ -983,7 +983,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithTooLongMessage_Throws()
         {
             // Arrange.
@@ -1009,7 +1009,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendPlayerNotifications_WithExpirationBeforeNow_Throws()
         {
             // Arrange.
@@ -1035,7 +1035,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SendGroupNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1059,7 +1059,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task EditNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1081,7 +1081,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task EditGroupNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1103,7 +1103,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditNotification_WithNullEditParameters_Throws()
         {
             // Arrange.
@@ -1126,7 +1126,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditNotification_WithNullEmptyWhitespaceMessage_Throws()
         {
             // Arrange.
@@ -1156,7 +1156,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditPlayerNotifications_WithTooLongMessage_Throws()
         {
             // Arrange.
@@ -1183,7 +1183,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DeleteNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1202,7 +1202,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task DeleteGroupNotification_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

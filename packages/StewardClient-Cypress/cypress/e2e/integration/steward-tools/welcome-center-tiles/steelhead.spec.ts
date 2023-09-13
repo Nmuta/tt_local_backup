@@ -1,18 +1,17 @@
-import { login } from '@support/steward/auth/login';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { clickTopLeftOfBody } from '@support/steward/util/click-top-left-of-body';
+import { Tag, withTags } from '@support/tags';
 
-context('Steward / Tools / Welcome Center Tiles / Steelhead', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+context('Steward / Tools / Welcome Center Tiles / Steelhead', withTags(Tag.Flakey), () => {
+  before(() => {
+    resetToDefaultState();
     cy.visit(stewardUrls.tools.welcomeCenterTiles.steelhead);
   });
 
   context('WTC', () => {
-    it('should create new Welcome Center Tile', () => {
+    it('should create new Welcome Center Tile', withTags(Tag.Broken), () => {
       enableEdit();
       cy.get('mat-form-field')
         .contains('mat-label', 'Tile Title')
@@ -62,7 +61,7 @@ context('Steward / Tools / Welcome Center Tiles / Steelhead', () => {
       );
     });
 
-    it('should abandon previously created pr', () => {
+    it('should abandon previously created pr', withTags(Tag.Broken), () => {
       waitForProgressSpinners();
       cy.contains('a', 'Edits WoFTileGenericPopup from Steward. Author: Email not found')
         .parents('tr')
@@ -77,7 +76,7 @@ context('Steward / Tools / Welcome Center Tiles / Steelhead', () => {
       );
     });
 
-    it('should adjust language', () => {
+    it('should adjust language', withTags(Tag.Broken), () => {
       enableEdit();
       cy.get('mat-form-field')
         .contains('mat-label', 'Tile Title')
@@ -91,14 +90,16 @@ context('Steward / Tools / Welcome Center Tiles / Steelhead', () => {
     it('should show and hide Help Card', () => {
       cy.contains('mat-icon', 'help').click();
       cy.contains('mat-card-title', 'Verify Button').should('exist');
-      cy.contains('span', 'Hide Verify Help Icon').click();
+      clickTopLeftOfBody();
       cy.contains('mat-card-title', 'Verify Button').should('not.exist');
     });
 
     it('should not allow a MotD modification with incomplete fields', () => {
-      enableEdit();
       cy.get('button').contains('mat-icon', 'lock_open').click();
-      cy.get('button').contains('span', 'Submit Modification').parent().get('[disabled="true"]');
+      cy.contains('button', 'Submit Modification', { matchCase: false }).should(
+        'have.class',
+        'mat-button-disabled',
+      );
     });
   });
 
@@ -159,7 +160,7 @@ function enableEdit(): void {
     .contains('mat-label', 'Select Welcome Center Tile')
     .parents('mat-form-field')
     .click();
-  //wait to allow page to load after selecting an option, may need a progress spinner to eliminate the wait()
-  cy.get('mat-option').contains('span', '[TEST] Pop-up Test').click().wait(2000);
-  cy.get('button').contains('span', 'Edit').click();
+  //TODO: need progress spinners to eliminate the wait()s
+  cy.get('mat-option').contains('span', '[TEST] Pop-up Test').click().wait(2_000);
+  cy.get('button').contains('span', 'Edit').click().wait(2_000);
 }

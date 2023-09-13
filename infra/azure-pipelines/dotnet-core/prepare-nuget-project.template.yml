@@ -11,11 +11,6 @@ steps:
   fetchDepth: 1
   submodules: true
 
-- task: Assembly-Info-NetCore@2
-  displayName: Set Assembly Version
-  inputs:
-    InformationalVersion: $(Build.BuildNumber)
-
 - task: Cache@2
   displayName: Cache
   inputs:
@@ -26,7 +21,6 @@ steps:
     path: '$(NUGET_PACKAGES)'
     cacheHitVar: 'CACHE_RESTORED'
 
-
 - task: NuGetAuthenticate@1
 
 - task: DotNetCoreCLI@2
@@ -35,9 +29,7 @@ steps:
   inputs:
     command: restore
     projects: >-
-      ${{parameters.workingDirectory}}/StewardApi/*.csproj
-
-      ${{parameters.workingDirectory}}/StewardApiTest/*.csproj
+      ${{parameters.workingDirectory}}/**/*.csproj
     selectOrConfig: config
     feedRestore: /2cea4146-e4d1-416d-9823-c02540cc01a9
     nugetConfigPath: ${{parameters.workingDirectory}}/nuget.config

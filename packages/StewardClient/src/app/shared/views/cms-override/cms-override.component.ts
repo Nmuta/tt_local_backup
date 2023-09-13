@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle, PegasusEnvironment } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -46,12 +46,12 @@ export class CmsOverrideComponent extends BaseComponent implements OnInit, OnCha
   public hasCmsOverride = false;
 
   public formControls = {
-    environment: new FormControl(''),
-    snapshot: new FormControl(''),
-    slot: new FormControl(''),
+    environment: new UntypedFormControl(''),
+    snapshot: new UntypedFormControl(''),
+    slot: new UntypedFormControl(''),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('Get player cms override');
   public postMonitor = new ActionMonitor('Set player cms override');

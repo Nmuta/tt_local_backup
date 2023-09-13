@@ -14,10 +14,10 @@ jobs:
 - template: infra/azure-pipelines/cypress/job-cypress-execute-changed.template.yml
   parameters:
     timeoutInMinutes: 10
-    command: 'run:dev'
+    command: 'run:dev:exclude'
     label: 'Dev'
 - template: infra/azure-pipelines/cypress/job-cypress-execute-changed.template.yml
   parameters:
     timeoutInMinutes: 10
-    command: 'run:dev:isolated'
+    command: 'run:dev:exclude:isolated'
     label: 'Isolated Dev'

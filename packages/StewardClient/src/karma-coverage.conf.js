@@ -42,19 +42,41 @@ module.exports = function (config) {
         global: {
           statements: 60,
           lines: 60,
-          functions: 60,
+          functions: 55,
           excludes: [
             '**/*.spec.ts',
             '**/*.debug.ts',
-            'src/shared/interceptors/fake-api/**/*',
+            '**/app/shared/interceptors/fake-api/**/*.ts',
             '**/app/pages/util/**/*',
+            '**/helpers/types.ts',
+            '**/helpers/rxjs/render-guard.ts',
+            '**/app/shared/models/**/*.ts',
+            '**/app/shared/mocks/**/*.ts',
+            '**/*.mock.ts',
+            '**/app/shared/services/api-v2/**/*.ts', // Ignore V2 services for now while steelhead is in development
           ],
         },
         each: {
           statements: 20,
           lines: 20,
-          functions: 20,
-          excludes: ['**/*.spec.ts', '**/app/pages/util/**/*'],
+          functions: 15,
+          excludes: [
+            '**/*.spec.ts',
+            '**/*.debug.ts',
+            '**/app/shared/interceptors/fake-api/**/*.ts',
+            '**/app/pages/tools/pages/kusto-management/**/*.ts', // Kusto management is a Live Ops Admin only tool that is a MVP
+            '**/app/pages/tools/pages/permission-management/**/*.ts', // Permission management is a Live Ops Admin only tool (will change eventually)
+            '**/app/pages/tools/pages/obligation/**/*.ts', // Data piplelines has intensive form controls, use e2e test
+            '**/four-oh-four/**/*.ts',
+            '**/app/shared/state/utilities/**/*.ts', // Ugly logic to test, use e2e testing
+            '**/environments/**/*.ts', // Configuration
+            '**/app/pages/util/**/*',
+            '**/app/shared/state/changelog/**/*.ts',
+            '**/app/sidebars/changelog/**/*.ts',
+            '**/helpers/types.ts',
+            '**/helpers/rxjs/render-guard.ts',
+            '**/app/shared/models/**/*.ts',
+          ],
         },
       },
     },

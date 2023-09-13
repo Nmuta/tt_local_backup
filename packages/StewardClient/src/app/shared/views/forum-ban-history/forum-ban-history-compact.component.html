@@ -6,12 +6,12 @@
       </mat-panel-title>
       <mat-panel-description>
         <span class="timespan">{{
-          entry.startTimeUtc | dateTimeToJsDate | date: 'shortDate'
+          entry.startTimeUtc | dateTimeToJsDate | date : 'shortDate'
         }}</span>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ul>
-      <li><b>Issued Date:</b> {{ entry.startTimeUtc | dateTimeToJsDate | date: 'short' }}</li>
+      <li><b>Issued Date:</b> {{ entry.startTimeUtc | dateTimeToJsDate | date : 'short' }}</li>
       <li><b>Feature Area:</b> {{ entry.featureArea | humanize }}</li>
       <li>
         <b>Banned By: </b> <steward-user [objectId]="entry.requesterObjectId"> </steward-user>

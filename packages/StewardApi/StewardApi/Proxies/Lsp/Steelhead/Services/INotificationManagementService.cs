@@ -10,6 +10,9 @@ using NotificationManagementService = Turn10.Services.LiveOps.FM8.Generated.Noti
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages notifications. Proxy for Client object.
+    /// </summary>
     public interface INotificationManagementService
     {
         /// <summary>
@@ -92,6 +95,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         Task<NotificationManagementService.DeleteNotificationsForUserOutput> DeleteNotificationsForUser(
             ulong xuid);
 
+        /// <summary>
+        ///     Send message to multiple users
+        /// </summary>
         Task<NotificationManagementService.SendMessageOutput> SendMessage(
             ulong[] recipients,
             Guid titleId,
@@ -100,6 +106,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
             DateTime expirationTime,
             string messageType);
 
+        /// <summary>
+        ///     Send message to LSP group
+        /// </summary>
         Task<NotificationManagementService.SendGroupMessageOutput> SendGroupMessage(
             int userGroupId,
             Guid titleId,

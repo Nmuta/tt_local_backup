@@ -18,6 +18,7 @@ import { RouteMemoryModel } from './route-memory.model';
     gifting: `${GameTitleCodeName.FH5}`,
     playfab: `${GameTitleCodeName.FH5}`,
     unifiedCalendar: `${GameTitleCodeName.FM8}`,
+    bountyDetails: `${GameTitleCodeName.FM8}`,
   },
 })
 @Injectable()

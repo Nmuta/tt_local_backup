@@ -2,12 +2,13 @@ import { Component, forwardRef } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   AbstractControl,
   ValidationErrors,
   ControlValueAccessor,
   Validator,
+  Validators,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -54,12 +55,12 @@ export class DeeplinkRivalsComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    rivalsSettingType: new FormControl(null),
-    rivalsCategory: new FormControl(null),
-    rivalsEvent: new FormControl(null),
+    rivalsSettingType: new UntypedFormControl(null, [Validators.required]),
+    rivalsCategory: new UntypedFormControl(null, [Validators.required]),
+    rivalsEvent: new UntypedFormControl(null),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor(steelheadRivalsService: SteelheadRivalsService) {
     super();
@@ -74,12 +75,26 @@ export class DeeplinkRivalsComponent
         this.rivalsCategories = categories;
         this.rivalsEvents = events;
       });
+
+    this.formControls.rivalsSettingType.valueChanges.subscribe((value: RivalsSettingType) => {
+      this.formControls.rivalsEvent.removeValidators([Validators.required]);
+
+      if (value == RivalsSettingType.Event) {
+        this.formControls.rivalsEvent.addValidators([Validators.required]);
+      }
+
+      this.formControls.rivalsEvent.updateValueAndValidity();
+    });
   }
 
   /** Form control hook. */
   public writeValue(data: DeeplinkDestination): void {
     const rivalsDestination = data as RivalsDestination;
-    this.formControls.rivalsSettingType.setValue(rivalsDestination.settingType);
+    if (
+      Object.values(RivalsSettingType).includes(rivalsDestination.settingType as RivalsSettingType)
+    ) {
+      this.formControls.rivalsSettingType.setValue(rivalsDestination.settingType);
+    }
 
     if (rivalsDestination.settingType == RivalsSettingType.Category) {
       this.formControls.rivalsCategory.setValue(rivalsDestination.category);

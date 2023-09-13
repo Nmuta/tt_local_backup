@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenApolloServiceIsNull_Throws()
         {
             // Arrange.
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperIsNull_Throws()
         {
             // Arrange.
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithUnknownUgcType_Throws()
         {
             // Arrange.
@@ -111,7 +111,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SearchUgcItemsAsync_WithNullUgcFilters_Throws()
         {
             // Arrange.
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetUGCLiveryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

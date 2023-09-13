@@ -20,11 +20,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Gets or sets the expire date.
         /// </summary>
-        public DateTime ExpireDateUtc { get; set; }
+        public DateTime? ExpireDateUtc { get; set; }
 
         /// <summary>
         ///     Gets or sets the description.
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the release series.
+        /// </summary>
+        public int Series { get; set; }
     }
 }

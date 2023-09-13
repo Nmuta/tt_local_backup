@@ -13,27 +13,22 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         /// <summary>
         ///     The default value for V1 endpoint key header.
         /// </summary>
-        public const string V1Default = "Steelhead|Studio";
+        public const string V1Default = "Steelhead|Retail";
 
         /// <summary>
         ///     The default value for V2 endpoint key header.
         /// </summary>
-        public const string V2Default = "Studio";
+        public const string V2Default = "Retail";
 
         /// <summary>
-        ///     Gets flight LSP endpoint.
+        ///     Gets prod LSP endpoint.
         /// </summary>
-        public static string Flight => "https://steelhead-flight-final.dev.services.forzamotorsport.net/Services/o.xtsw";
+        public static string Retail => "https://liveops.fm.forzamotorsport.net/Services/o.xtsw";
 
         /// <summary>
         ///     Gets studio LSP endpoint.
         /// </summary>
         public static string Studio => "https://steelhead-final.dev.services.forzamotorsport.net/Services/o.xtsw";
-
-        /// <summary>
-        ///     Gets prod LSP endpoint.
-        /// </summary>
-        public static string Retail => "https://gameservices.fm.forzamotorsport.net/Services/o.xtsw";
 
         /// <summary>
         ///     Converts endpoint key into endpoint.

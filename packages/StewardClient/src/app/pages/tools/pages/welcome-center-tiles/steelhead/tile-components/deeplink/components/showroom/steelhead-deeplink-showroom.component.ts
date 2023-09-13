@@ -2,12 +2,13 @@ import { Component, forwardRef } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   AbstractControl,
   ValidationErrors,
   ControlValueAccessor,
   Validator,
+  Validators,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -54,12 +55,12 @@ export class DeeplinkShowroomComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    showroomSettingType: new FormControl(null),
-    showroomCar: new FormControl(null),
-    showroomManufacturer: new FormControl(null),
+    showroomSettingType: new UntypedFormControl(null, [Validators.required]),
+    showroomCar: new UntypedFormControl(null),
+    showroomManufacturer: new UntypedFormControl(null),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor(steelheadCarsService: SteelheadCarsService) {
     super();
@@ -74,12 +75,32 @@ export class DeeplinkShowroomComponent
         this.showroomCars = cars;
         this.showroomManufacturers = manufacturers;
       });
+
+    this.formControls.showroomSettingType.valueChanges.subscribe((value: ShowroomSettingType) => {
+      this.formControls.showroomCar.removeValidators([Validators.required]);
+      this.formControls.showroomManufacturer.removeValidators([Validators.required]);
+
+      if (value == ShowroomSettingType.Car) {
+        this.formControls.showroomCar.addValidators([Validators.required]);
+      } else if (value == ShowroomSettingType.Manufacturer) {
+        this.formControls.showroomManufacturer.addValidators([Validators.required]);
+      }
+
+      this.formControls.showroomCar.updateValueAndValidity();
+      this.formControls.showroomManufacturer.updateValueAndValidity();
+    });
   }
 
   /** Form control hook. */
   public writeValue(data: DeeplinkDestination): void {
     const showroomDestination = data as ShowroomDestination;
-    this.formControls.showroomSettingType.setValue(showroomDestination.settingType);
+    if (
+      Object.values(ShowroomSettingType).includes(
+        showroomDestination.settingType as ShowroomSettingType,
+      )
+    ) {
+      this.formControls.showroomSettingType.setValue(showroomDestination.settingType);
+    }
 
     if (showroomDestination.settingType == ShowroomSettingType.Car) {
       this.formControls.showroomCar.setValue(showroomDestination.car);

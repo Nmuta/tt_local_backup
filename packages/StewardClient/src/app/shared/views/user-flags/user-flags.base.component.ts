@@ -5,7 +5,7 @@ import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { WoodstockUserFlags } from '@models/woodstock';
 import { SteelheadUserFlags } from '@models/steelhead';
 import { SunriseUserFlags } from '@models/sunrise';
@@ -68,7 +68,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
 
   public abstract gameTitle: GameTitle;
   public abstract formControls: unknown;
-  public abstract formGroup: FormGroup;
+  public abstract formGroup: UntypedFormGroup;
 
   constructor(private readonly permissionsService: OldPermissionsService) {
     super();

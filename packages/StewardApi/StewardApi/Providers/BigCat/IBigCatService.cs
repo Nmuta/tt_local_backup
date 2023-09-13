@@ -12,6 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.BigCat
         /// <summary>
         ///     Retrieves product pricing information by product ID.
         /// </summary>
-        Task<List<BigCatProductPrice>> RetrievePriceCatalogAsync(string productId);
+        Task<BigCatProductInfo> RetrievePriceCatalogAsync(string productId);
     }
 }

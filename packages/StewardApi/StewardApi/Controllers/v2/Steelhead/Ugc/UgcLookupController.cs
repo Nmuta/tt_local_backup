@@ -67,11 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             parameters.ShouldNotBeNull(nameof(parameters));
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
-            if (!Enum.TryParse(ugcType, out UgcType typeEnum))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(UgcType)} provided: {ugcType}");
-            }
-
+            var typeEnum = ugcType.TryParseEnumElseThrow<UgcType>(nameof(ugcType));
             var searchParameters = this.mapper.SafeMap<ServicesLiveOps.ForzaUGCSearchRequest>(parameters);
 
             async Task<IList<SteelheadUgcItem>> SearchUGC()
@@ -116,15 +112,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
             curationType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(curationType));
 
-            if (!Enum.TryParse(ugcType, out ForzaUGCContentType ugcTypeEnum))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(ForzaUGCContentType)} provided: {ugcType}");
-            }
-
-            if (!Enum.TryParse(curationType, out ForzaCurationMethod curationTypeEnum))
-            {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(ForzaCurationMethod)} provided: {curationType}");
-            }
+            var ugcTypeEnum = ugcType.TryParseEnumElseThrow<ForzaUGCContentType>(nameof(ugcType));
+            var curationTypeEnum = curationType.TryParseEnumElseThrow<ForzaCurationMethod>(nameof(curationType));
 
             var getCuratedUgc = this.Services.StorefrontManagementService.GetCuratedUgc(ugcTypeEnum, curationTypeEnum, 500);
             var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
@@ -159,10 +148,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcLivery(string ugcId)
         {
-            if (!Guid.TryParse(ugcId, out var parsedUgcId))
-            {
-                throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
-            }
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
 
             async Task<SteelheadUgcLiveryItem> GetLiveryAsync()
             {
@@ -206,10 +192,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcPhoto(string ugcId)
         {
-            if (!Guid.TryParse(ugcId, out var parsedUgcId))
-            {
-                throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
-            }
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
 
             var getPhoto = this.GetPhotoAsync(parsedUgcId);
             var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
@@ -268,10 +251,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
         public async Task<IActionResult> GetUgcTune(string ugcId)
         {
-            if (!Guid.TryParse(ugcId, out var parsedUgcId))
-            {
-                throw new BadRequestStewardException("Auction ID could not be parsed as GUID.");
-            }
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
 
             async Task<UgcTuneBlobItem> GetTuneAsync()
             {
@@ -305,6 +285,138 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             tune.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
 
             return this.Ok(tune);
+        }
+
+        /// <summary>
+        ///     Gets a UGC layer group by ID.
+        /// </summary>
+        [HttpGet("layerGroup/{ugcId}")]
+        [SwaggerResponse(200, type: typeof(SteelheadUgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetUgcLayerGroup(string ugcId)
+        {
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
+
+            async Task<SteelheadUgcItem> GetLayerGroupAsync()
+            {
+                var layerGroupOutput = await this.Services.StorefrontManagementService.GetUGCLayerGroup(parsedUgcId).ConfigureAwait(false);
+
+                var layerGroup = this.mapper.SafeMap<SteelheadUgcItem>(layerGroupOutput.result);
+
+                if (layerGroup.GameTitle != (int)GameTitle.FM8)
+                {
+                    throw new NotFoundStewardException($"Layer Group id could not found: {parsedUgcId}");
+                }
+
+                return layerGroup;
+            }
+
+            var getLayerGroup = GetLayerGroupAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
+
+            await Task.WhenAll(getLayerGroup, getCars).ConfigureAwait(true);
+
+            var layerGroup = getLayerGroup.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
+
+            var carData = cars.FirstOrDefault(car => car.Id == layerGroup.CarId);
+            layerGroup.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
+
+            return this.Ok(layerGroup);
+        }
+
+        /// <summary>
+        ///     Gets a UGC game options by ID.
+        /// </summary>
+        [HttpGet("gameOptions/{ugcId}")]
+        [SwaggerResponse(200, type: typeof(SteelheadUgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetUgcGameOptions(string ugcId)
+        {
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
+
+            async Task<SteelheadUgcItem> GetGameOptionsAsync()
+            {
+                ForzaUGCGameOptions gameOptionsOutput = null;
+
+                var gameOptionOutputResponse = await this.Services.LiveOpsService.LiveOpsGetUGCGameOptions(new[] { parsedUgcId }).ConfigureAwait(false);
+                gameOptionsOutput = gameOptionOutputResponse.results.First();
+
+                var gameOptions = this.mapper.SafeMap<SteelheadUgcItem>(gameOptionsOutput);
+
+                if (gameOptions.GameTitle != (int)GameTitle.FM8)
+                {
+                    throw new NotFoundStewardException($"Game Options id could not found: {parsedUgcId}");
+                }
+
+                return gameOptions;
+            }
+
+            var getGameOptions = GetGameOptionsAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
+
+            await Task.WhenAll(getGameOptions, getCars).ConfigureAwait(true);
+
+            var gameOptions = getGameOptions.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
+
+            var carData = cars.FirstOrDefault(car => car.Id == gameOptions.CarId);
+            gameOptions.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
+
+            return this.Ok(gameOptions);
+        }
+
+        /// <summary>
+        ///     Gets a UGC Replay by ID.
+        /// </summary>
+        [HttpGet("replay/{ugcId}")]
+        [SwaggerResponse(200, type: typeof(SteelheadUgcItem))]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc | DependencyLogTags.Kusto)]
+        [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Ugc)]
+        public async Task<IActionResult> GetUgcReplay(string ugcId)
+        {
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
+
+            async Task<SteelheadUgcItem> GetReplayAsync()
+            {
+                ForzaUGCData replayOutput = null;
+
+                var replayOutputResponse = await this.Services.StorefrontManagementService.GetUGCObject(parsedUgcId).ConfigureAwait(false);
+                replayOutput = replayOutputResponse.result;
+
+                var replay = this.mapper.SafeMap<SteelheadUgcItem>(replayOutput);
+
+                if (replay.GameTitle != (int)GameTitle.FM8)
+                {
+                    throw new NotFoundStewardException($"Replay id could not found: {parsedUgcId}");
+                }
+
+                return replay;
+            }
+
+            var getReplay = GetReplayAsync();
+            var getCars = this.itemsProvider.GetCarsAsync().SuccessOrDefault(Array.Empty<SimpleCar>(), new Action<Exception>(ex =>
+            {
+                this.loggingService.LogException(new AppInsightsException("Failed to get Pegasus cars.", ex));
+            }));
+
+            await Task.WhenAll(getReplay, getCars).ConfigureAwait(true);
+
+            var replay = getReplay.GetAwaiter().GetResult();
+            var cars = getCars.GetAwaiter().GetResult();
+
+            var carData = cars.FirstOrDefault(car => car.Id == replay.CarId);
+            replay.CarDescription = carData != null ? $"{carData.DisplayName}" : "No car name in Pegasus.";
+
+            return this.Ok(replay);
         }
 
         /// <summary>

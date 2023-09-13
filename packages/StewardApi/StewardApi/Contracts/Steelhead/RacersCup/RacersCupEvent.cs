@@ -5,6 +5,9 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.RacersCup
 {
+    /// <summary>
+    ///     Racer's Cup event
+    /// </summary>
     public sealed class RacersCupEvent
     {
         public string Name { get; set; }

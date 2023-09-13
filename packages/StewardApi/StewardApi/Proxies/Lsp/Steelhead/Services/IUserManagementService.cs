@@ -11,6 +11,9 @@ using UserManagementService = Turn10.Services.LiveOps.FM8.Generated.UserManageme
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+        /// <summary>
+        ///     Look up specified liveries.
+        /// </summary>
     public interface IUserManagementService
     {
         /// <summary>

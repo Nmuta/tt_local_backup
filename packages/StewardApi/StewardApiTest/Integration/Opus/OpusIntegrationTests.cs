@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByXuid()
         {
             var query = new IdentityQueryAlpha { Xuid = xuid };
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByXuid_InvalidXuid()
         {
             var query = new IdentityQueryAlpha { Xuid = TestConstants.InvalidXuid };
@@ -79,7 +79,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByXuid_XuidBelow100()
         {
             var query = new IdentityQueryAlpha { Xuid = TestConstants.InvalidXuidBelow100 };
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByGamertag()
         {
             var query = new IdentityQueryAlpha { Gamertag = gamertag };
@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerIdentityByGamertag_InvalidGamertag()
         {
             var query = new IdentityQueryAlpha { Gamertag = TestConstants.InvalidGamertag };
@@ -120,7 +120,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByGamertag()
         {
             var result = await stewardClient.GetPlayerDetailsAsync(gamertag).ConfigureAwait(false);
@@ -130,7 +130,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByGamertag_InvalidGamertag()
         {
             try
@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByGamertag_Unauthorized()
         {
             try
@@ -160,7 +160,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByXuid()
         {
             var result = await stewardClient.GetPlayerDetailsAsync(xuid).ConfigureAwait(false);
@@ -170,7 +170,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByXuid_InvalidXuid()
         {
             try
@@ -185,7 +185,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetailsByXuid_Unauthorized()
         {
             try
@@ -200,7 +200,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByXuid()
         {
             var result = await stewardClient.GetPlayerInventoryAsync(xuid).ConfigureAwait(false);
@@ -210,7 +210,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByXuid_InvalidXuid()
         {
             try
@@ -225,7 +225,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByXuid_Unauthorized()
         {
             try
@@ -240,7 +240,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByProfileId()
         {
             var result = await stewardClient.GetPlayerInventoryAsync(profileId).ConfigureAwait(false);
@@ -250,7 +250,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByProfileId_InvalidProfileId()
         {
             try
@@ -265,7 +265,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerInventoryByProfileId_Unauthorized()
         {
             try
@@ -280,7 +280,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetInventoryProfilesByXuid()
         {
             var result = await stewardClient.GetInventoryProfilesAsync(xuid).ConfigureAwait(false);
@@ -290,7 +290,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetInventoryProfilesByXuid_InvalidXuid()
         {
             var result = await stewardClient.GetInventoryProfilesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
@@ -299,7 +299,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetInventoryProfilesByXuid_Unauthorized()
         {
             try

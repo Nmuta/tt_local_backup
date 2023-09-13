@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -33,7 +33,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKustoProviderNull_Throws()
         {
             // Arrange.
@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKustoQueryProviderNull_Throws()
         {
             // Arrange.
@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task RunQuery_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -81,7 +81,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void RunQuery_WithNullEmtpyWhitespaceQuery_Throws()
         {
             // Arrange.
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void RunQuery_WithBadlyFormedQuery_Throws()
         {
             // Arrange.
@@ -117,7 +117,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SaveQuery_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -132,7 +132,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SaveQuery_WithNullQueries_Throws()
         {
             // Arrange.
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task RetrieveQueries_ReturnsCorrectType()
         {
             // Arrange.
@@ -165,7 +165,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeleteQuery_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -180,7 +180,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeleteQuery_WithNullEmptyWhitespaceQueryId_DoesNotThrow()
         {
             // Arrange.

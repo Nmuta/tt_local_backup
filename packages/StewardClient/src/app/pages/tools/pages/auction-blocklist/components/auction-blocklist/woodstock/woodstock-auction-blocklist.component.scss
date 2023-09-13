@@ -1,0 +1,27 @@
+@import '/src/styles/mixins';
+
+mat-card {
+  margin: $gap-medium;
+  flex-grow: unset;
+}
+
+table {
+  width: 100%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+
+  > * {
+    margin: $gap-micro;
+  }
+}

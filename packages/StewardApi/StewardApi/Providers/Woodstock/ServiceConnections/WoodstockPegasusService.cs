@@ -320,5 +320,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             return this.refreshableCacheStore.GetItem<Dictionary<Guid, BanConfiguration>>(banConfigurationKey)
                    ?? await GetBanConfigurations().ConfigureAwait(false);
         }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<int>> GetAuctionBannedCarsAsync(string slotId = WoodstockPegasusSlot.LiveSteward)
+        {
+            var bannedCarsKey = $"{PegasusBaseCacheKey}{slotId}_BannedCars";
+
+            async Task<IEnumerable<int>> GetBannedCars()
+            {
+                var auctionConfigurations = await this.cmsRetrievalHelper.GetCMSObjectAsync<AuctionHouseConfiguration>(CMSFileNames.AuctionHouseConfiguration, this.cmsEnvironment, slot: slotId).ConfigureAwait(false);
+
+                this.refreshableCacheStore.PutItem(bannedCarsKey, TimeSpan.FromDays(1), auctionConfigurations.BannedCars);
+
+                return auctionConfigurations.BannedCars;
+            }
+
+            return this.refreshableCacheStore.GetItem<IEnumerable<int>>(bannedCarsKey)
+                   ?? await GetBannedCars().ConfigureAwait(false);
+        }
     }
 }

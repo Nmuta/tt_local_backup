@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -7,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { GameTitle } from '@models/enums';
@@ -60,18 +61,19 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
   public destinationTypes = DestinationType;
 
   public formControls = {
-    baseTile: new FormControl(null),
-    baseDestination: new FormControl(null),
-    destinationType: new FormControl(null),
+    baseTile: new UntypedFormControl(null),
+    baseDestination: new UntypedFormControl(null),
+    destinationType: new UntypedFormControl(null),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   public readonly permAttribute = PermAttributeName.UpdateWelcomeCenterTiles;
 
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
     private readonly steelheadDeeplinkTileService: SteelheadDeeplinkTileService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     super();
 
@@ -86,6 +88,11 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
   /** Lifecycle hook. */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.deeplinkTile) {
+      // Force reset destination type so the subcomponent is destroyed before replacing baseDestination in the setFields method
+      // If this is not done, when switching from Destination A to Destination B, the Destination A component would receive the new baseDestination
+      // instead of the Destination B component because of how Angular deals with formControls observable and template ngIf.
+      this.formControls.destinationType.setValue(null);
+      this.changeDetectorRef.detectChanges();
       this.setFields(this.deeplinkTile);
     }
 

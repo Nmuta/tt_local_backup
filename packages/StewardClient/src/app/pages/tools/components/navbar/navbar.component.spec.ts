@@ -10,6 +10,8 @@ import { BackgroundJob } from '@models/background-job';
 
 import { NavbarComponent } from './navbar.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 
 describe('ToolsNavbarComponent', () => {
   let component: NavbarComponent;
@@ -20,7 +22,11 @@ describe('ToolsNavbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
-      createStandardTestModuleMetadata({ declarations: [NavbarComponent] }),
+      createStandardTestModuleMetadata({
+        declarations: [NavbarComponent],
+        imports: [TourMatMenuModule.forRoot()],
+        providers: [createMockUserTourService()],
+      }),
     ).compileComponents();
 
     fixture = TestBed.createComponent(NavbarComponent);
@@ -48,17 +54,10 @@ describe('ToolsNavbarComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    it('should call notificationsService.initialize()', () => {
-      component.ngOnInit();
-
-      expect(mockNotificationsService.initialize).toHaveBeenCalled();
-    });
-
     describe('When profile$ provides a value', () => {
       const role = UserRole.LiveOpsAdmin;
       beforeEach(() => {
         component.role = null;
-        component.standardTools = null;
         component.profile$ = of({
           emailAddress: faker.internet.email(),
           role: role,
@@ -79,7 +78,6 @@ describe('ToolsNavbarComponent', () => {
         component.listedTools = [];
         component.settings$ = of({
           enableFakeApi: false,
-          enableStagingApi: false,
           appVersion: undefined,
           navbarTools: { 'user-details': 1, 'search-ugc': 2, gifting: 3, 'ban-review': 4 },
           apolloEndpointKey: undefined,

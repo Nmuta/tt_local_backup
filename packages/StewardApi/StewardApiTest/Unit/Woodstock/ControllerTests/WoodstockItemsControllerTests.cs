@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenLoggingServiceNull_Throws()
         {
             // Arrange.
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenItemsProviderNull_Throws()
         {
             // Arrange.
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetCarsAsync_ReturnsCorrectType()
         {
             // Arrange.

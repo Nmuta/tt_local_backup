@@ -1,8 +1,9 @@
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Job History', () => {
+context('Steward / Tools / Job History', withTags(Tag.Flakey), () => {
   before(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.jobHistory);

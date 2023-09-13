@@ -7,7 +7,6 @@ import {
   banHistoryTile,
   banningTile,
   carDetailsTile,
-  endpointsWidgetTile,
   giftHistoryTile,
   giftingTile,
   kustoTile,
@@ -35,6 +34,8 @@ import {
   productPricingTile,
   playFabTile,
   lspTasksTile,
+  bountySearchTile,
+  bountyDetailsTile,
 } from './tiles';
 
 /** The unprocessed tool list. Use @see environment.tools instead. */
@@ -55,6 +56,9 @@ export const unprocessedToolList: HomeTileInfo[] = [
   auctionCreateTile,
 
   carDetailsTile,
+
+  bountySearchTile,
+  bountyDetailsTile,
 
   motdTile,
   messagingTile,
@@ -83,7 +87,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
   powerBIExternalDropdownTile,
 
   themeingWidgetTile,
-  endpointsWidgetTile,
 
   permissionManagementInternalTile,
   metaToolsInternalTile,

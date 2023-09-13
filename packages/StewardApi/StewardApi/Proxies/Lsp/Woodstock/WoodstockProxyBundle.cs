@@ -9,6 +9,9 @@ using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
 {
+    /// <summary>
+    ///     Bundle of LSP proxies for Woodstock
+    /// </summary>
     public class WoodstockProxyBundle
     {
         private string endpoint;

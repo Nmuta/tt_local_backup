@@ -42,6 +42,8 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { UgcOperationSnackbarComponent } from './components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { PersistUgcModalModule } from '@views/persist-ugc-modal/persist-ugc-modal.module';
 import { EditUgcModalModule } from '@views/edit-ugc-modal/edit-ugc-modal.module';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 /**
  *  Routed module for interacting with UGC Details.
@@ -89,6 +91,8 @@ import { EditUgcModalModule } from '@views/edit-ugc-modal/edit-ugc-modal.module'
     StateManagersModule,
     StandardFormModule,
     MatSelectModule,
+    MatOptionModule,
+    MatFormFieldModule,
     PermissionsModule,
     MatIconModule,
     ClipboardModule,

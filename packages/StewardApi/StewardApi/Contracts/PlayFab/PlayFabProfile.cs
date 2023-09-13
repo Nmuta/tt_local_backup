@@ -2,6 +2,9 @@
 
 namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
+    /// <summary>
+    ///     PlayFab profile
+    /// </summary>
     public class PlayFabProfile
     {
         public string Master { get; set; }

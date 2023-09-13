@@ -2,8 +2,8 @@ import { Component, forwardRef } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
   ValidationErrors,
@@ -55,17 +55,17 @@ export class KustoFunctionComponent implements ControlValueAccessor, Validator {
   private _isTimeAgnostic: boolean;
 
   public formControls = {
-    name: new FormControl(KustoFunctionComponent.defaults.name, [
+    name: new UntypedFormControl(KustoFunctionComponent.defaults.name, [
       Validators.required,
       StringValidators.trim,
     ]),
-    makeFunctionCall: new FormControl(KustoFunctionComponent.defaults.makeFunctionCall),
-    useEndDate: new FormControl(KustoFunctionComponent.defaults.useEndDate),
-    useSplitting: new FormControl(KustoFunctionComponent.defaults.useSplitting),
-    numberOfBuckets: new FormControl(KustoFunctionComponent.defaults.numberOfBuckets),
+    makeFunctionCall: new UntypedFormControl(KustoFunctionComponent.defaults.makeFunctionCall),
+    useEndDate: new UntypedFormControl(KustoFunctionComponent.defaults.useEndDate),
+    useSplitting: new UntypedFormControl(KustoFunctionComponent.defaults.useSplitting),
+    numberOfBuckets: new UntypedFormControl(KustoFunctionComponent.defaults.numberOfBuckets),
   };
 
-  public formGroup = new FormGroup({
+  public formGroup = new UntypedFormGroup({
     name: this.formControls.name,
     makeFunctionCall: this.formControls.makeFunctionCall,
     useEndDate: this.formControls.useEndDate,

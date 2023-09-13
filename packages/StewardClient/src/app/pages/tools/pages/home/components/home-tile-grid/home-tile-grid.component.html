@@ -1,13 +1,13 @@
 <main class="app-tiles-wrapper">
   <div
     class="tile-container"
-    *ngFor="let item of tiles; let i = index"
+    *ngFor="let item of tiles; first as isFirst"
     [class.activated]="isEnabled[item.tool]"
     [class.no-access]="!item.hasAccess"
   >
     <div class="tile-aspect"></div>
     <div class="tile-content">
-      <mat-card>
+      <mat-card class="tour-element-highlighted">
         <mat-card-header
           *ngIf="!item.tileActionComponent"
           [routerLink]="parentRoute + item.tool"
@@ -46,12 +46,17 @@
           ></div>
         </mat-card-content>
         <mat-card-actions align="end">
+          <span class="tour-element-highlighted"></span>
           <mat-checkbox
             [matTooltip]="item.hasAccess ? 'Check to include in nav' : undefined"
             [disabled]="!isEnabled[item.tool] && !item.hasAccess"
             [ngModel]="isEnabled[item.tool]"
             (ngModelChange)="onCheckboxChecked(item.tool, $event)"
           >
+            <span
+              class="tour-highlight-buffer"
+              [tourAnchor]="isFirst ? 'home-tour.step.five' : ''"
+            ></span>
             In Nav
           </mat-checkbox>
           <div class="spacer"></div>
@@ -72,6 +77,10 @@
             ></span>
           </span>
         </mat-card-actions>
+        <span
+          class="tour-highlight-buffer"
+          [tourAnchor]="isFirst ? 'home-tour.step.four' : ''"
+        ></span>
       </mat-card>
     </div>
   </div>

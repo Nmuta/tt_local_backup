@@ -10,6 +10,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// </summary>
     public sealed class RivalsEvent
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }

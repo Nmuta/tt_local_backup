@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunriseServiceNull_Throws()
         {
             // Arrange.
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenNotificationHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerNotificationsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetGroupNotificationsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SendNotificationsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task SendGroupNotificationAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -155,7 +155,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendNotificationsAsync_WithNullXuids_Throws()
         {
             // Arrange.
@@ -173,7 +173,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendGroupNotificationAsync_WithInvalidGroupId_Throws()
         {
             // Arrange.
@@ -192,7 +192,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendNotificationsAsync_WithNullEmptyWhitespaceMessage_Throws()
         {
             // Arrange.
@@ -223,7 +223,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditNotificationAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -251,7 +251,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void EditNotificationAsync_WithNullEmptyWhiteSpaceMessage_DoesNotThrow()
         {
             // Arrange.
@@ -282,7 +282,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeleteNotificationAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.

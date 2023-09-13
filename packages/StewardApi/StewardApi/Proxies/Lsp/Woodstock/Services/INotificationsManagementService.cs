@@ -8,6 +8,9 @@ using NotificationsManagementService = Turn10.Services.LiveOps.FH5_main.Generate
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
+    /// <summary>
+    ///     Manages notifications. Proxy for Client object.
+    /// </summary>
     public interface INotificationsManagementService
     {
         /// <summary>

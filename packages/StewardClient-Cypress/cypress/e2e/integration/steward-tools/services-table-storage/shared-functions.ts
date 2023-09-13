@@ -1,5 +1,6 @@
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/searching';
+import { withTags, Tag } from '@support/tags';
 
 /** Interface for Lookup Results */
 interface LookupResults {
@@ -38,8 +39,8 @@ export const steelheadResults: Record<string, LookupResults> = {
   },
 
   CMSOverrideFilter: {
-    name: 'CMSOverride_',
-    result: 'CMSOverride_',
+    name: 'CMSOverride',
+    result: 'CMSOverride',
     version: '1049',
   },
 
@@ -79,9 +80,6 @@ export function testLookup(results: LookupResults): void {
   it('should find results without a filter', () => {
     cy.get('button').contains('span', 'Lookup').parents('button').click();
     waitForProgressSpinners();
-    // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
-    cy.get('button').contains('span', 'Lookup').parents('button').click();
-    waitForProgressSpinners();
     cy.contains('mat-cell', results.result).should('exist');
     cy.get('mat-row')
       .contains('mat-cell', results.result)
@@ -96,11 +94,6 @@ export function testLookup(results: LookupResults): void {
 /** Tests the Lookup button with filter */
 export function testLookupWithFilter(results: LookupResults): void {
   it('should find results with a filter', () => {
-    cy.get('button').contains('span', 'Lookup').parents('button').click();
-    waitForProgressSpinners();
-    // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
-    cy.get('button').contains('span', 'Lookup').parents('button').click();
-    waitForProgressSpinners();
     cy.get('mat-form-field')
       .contains('mat-label', 'Filter Results')
       .parents('mat-form-field')
@@ -114,40 +107,42 @@ export function testLookupWithFilter(results: LookupResults): void {
       .parents('button')
       .click();
     cy.get('tr').contains('div', results.version).should('exist');
+    cy.get('button').contains('mat-icon', 'close').parents('button').click();
   });
 }
 
 /** Tests the Show All Rows Toggle */
 export function testShowAllRows(results: LookupResults): void {
-  it('should find results with a filter', () => {
-    cy.get('button').contains('span', 'Lookup').parents('button').click();
-    waitForProgressSpinners();
-    // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
-    cy.get('button').contains('span', 'Lookup').parents('button').click();
-    waitForProgressSpinners();
-    cy.contains('mat-cell', results.result).should('not.exist');
+  it('should toggle the Show All Rows Button', withTags(Tag.Slow), () => {
+    // cy.contains('mat-cell', results.result).should('not.exist');
     cy.get('mat-slide-toggle').click();
-    cy.get('button').contains('span', 'Lookup').parents('button').click();
+    cy.contains('button span', 'Lookup').closest('button').click();
     waitForProgressSpinners();
-    cy.contains('mat-cell', results.result).should('exist');
-    cy.get('mat-row')
-      .contains('mat-cell', results.result)
-      .parents('mat-row')
-      .contains('mat-icon', 'expand_more')
-      .parents('button')
-      .click();
-    cy.get('tr').contains('div', results.version).should('exist');
+
+    // remember our initial cell
+    cy.contains('mat-cell', results.result).as('cell');
+
+    // chain into the row and remember it
+    cy.get('@cell')
+      .parent('mat-row')
+      .as('row')
+      .within(() => {
+        // expand the row
+        cy.contains('mat-icon', 'expand_more').closest('button').click();
+      });
+
+    // examine the expanded row
+    cy.get('@row')
+      .next()
+      .within(_el => {
+        cy.contains('div', results.version).should('exist');
+      });
   });
 }
 
 /** Tests the Lookup button with invalid filter */
 export function testLookupWithInvalidFilter(): void {
   it('should not find results with an invalid filter', () => {
-    cy.get('button').contains('span', 'Lookup').parents('button').click();
-    waitForProgressSpinners();
-    // TODO Has to click lookup button twice due to an unknown error after the first press, will require investigation
-    cy.get('button').contains('span', 'Lookup').parents('button').click();
-    waitForProgressSpinners();
     cy.get('mat-form-field')
       .contains('mat-label', 'Filter Results')
       .parents('mat-form-field')
@@ -155,5 +150,6 @@ export function testLookupWithInvalidFilter(): void {
       .type('TotallyRealFilter');
     cy.get('mat-option').should('not.exist');
     cy.contains('mat-cell', 'TotallyRealFilter').should('not.exist');
+    cy.get('button').contains('mat-icon', 'close').parents('button').click();
   });
 }

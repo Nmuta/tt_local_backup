@@ -10,27 +10,29 @@
     <span class="spacer"></span>
   </h3>
   <mat-accordion multi displayMode="flat">
-    <mat-expansion-panel
-      *ngFor="let entry of group.entries"
-      [class.no-expand]="!(entry.longText?.length ?? false)"
-      [hideToggle]="!(entry.longText?.length ?? false)"
-      [expanded]="entry.longText?.length ?? false"
-      class="top-border"
-    >
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <mat-checkbox
-            clickStop
-            [ngModel]="isAcknowledgedEntry(entry)"
-            (change)="updateEntry(entry, $event)"
-          >
-            {{ entry.shortText }}
-          </mat-checkbox>
-          <span class="sf-spacer"></span>
-          <changelog-tag-details [entry]="entry"></changelog-tag-details>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <p *ngFor="let paragraph of entry.longText">{{ paragraph }}</p>
-    </mat-expansion-panel>
+    <ng-container *ngFor="let entry of group.entries">
+      <mat-expansion-panel
+        *ngIf="showInternal || entry?.tag !== ChangelogTag.Internal"
+        [class.no-expand]="!(entry.longText?.length ?? false)"
+        [hideToggle]="!(entry.longText?.length ?? false)"
+        [expanded]="entry.longText?.length ?? false"
+        class="top-border"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-checkbox
+              clickStop
+              [ngModel]="isAcknowledgedEntry(entry)"
+              (change)="updateEntry(entry, $event)"
+            >
+              {{ entry.shortText }}
+            </mat-checkbox>
+            <span class="sf-spacer"></span>
+            <changelog-tag-details [entry]="entry"></changelog-tag-details>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p *ngFor="let paragraph of entry.longText">{{ paragraph }}</p>
+      </mat-expansion-panel>
+    </ng-container>
   </mat-accordion>
 </section>

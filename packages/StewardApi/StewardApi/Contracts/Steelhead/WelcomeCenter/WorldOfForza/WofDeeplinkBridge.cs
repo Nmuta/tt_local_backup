@@ -7,6 +7,9 @@ using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
+    /// <summary>
+    ///     The destination type
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum DestinationType
     {
@@ -18,6 +21,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Store,
     }
 
+    /// <summary>
+    ///     The Builder's Cup setting type
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum BuildersCupSettingType
     {
@@ -26,6 +32,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Ladder,
     }
 
+    /// <summary>
+    ///     The Rival's setting type
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RivalsSettingType
     {
@@ -34,6 +43,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Category,
     }
 
+    /// <summary>
+    ///     The showroom setting type
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum ShowroomSettingType
     {
@@ -42,6 +54,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         Car,
     }
 
+    /// <summary>
+    ///     The store setting type
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum StoreSettingType
     {

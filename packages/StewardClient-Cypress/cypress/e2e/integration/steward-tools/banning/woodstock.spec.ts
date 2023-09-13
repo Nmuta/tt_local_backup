@@ -24,6 +24,7 @@ context('Steward / Tools / Banning / Woodstock', () => {
       cy.visit(stewardUrls.tools.banning.woodstock);
       searchByGtag(woodstockUser.gtag);
     });
+
     context('With default user', () => {
       testVerifySearchForUser('All Requests');
       testFillOutBan('Testing', 'Woodstock');

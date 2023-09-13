@@ -16,10 +16,11 @@ import {
   contextSearchByXuidForPlayerDetails,
 } from '@support/steward/shared-functions/searching';
 import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
+import { withTags, Tag } from '@support/tags';
 
 const defaultApolloUser = 'jordan';
 
-context('Steward / Tools / Player Details / Apollo', () => {
+context('Steward / Tools / Player Details / Apollo', withTags(Tag.Flakey), () => {
   before(() => {
     resetToDefaultState();
     cy.visit(stewardUrls.tools.playerDetails.default);

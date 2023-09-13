@@ -5,7 +5,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitle } from '@models/enums';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { OldPermissionsService } from '@services/old-permissions';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
@@ -21,15 +21,15 @@ export class SunriseUserFlagsComponent
   public gameTitle = GameTitle.FH4;
 
   public formControls = {
-    isVip: new FormControl(false),
-    isUltimateVip: new FormControl(false),
-    isTurn10Employee: new FormControl(false),
-    isEarlyAccess: new FormControl(false),
-    needsStatisticsRepaired: new FormControl(false),
-    isUnderReview: new FormControl(false),
+    isVip: new UntypedFormControl(false),
+    isUltimateVip: new UntypedFormControl(false),
+    isTurn10Employee: new UntypedFormControl(false),
+    isEarlyAccess: new UntypedFormControl(false),
+    needsStatisticsRepaired: new UntypedFormControl(false),
+    isUnderReview: new UntypedFormControl(false),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   constructor(
     private readonly sunriseService: SunriseService,

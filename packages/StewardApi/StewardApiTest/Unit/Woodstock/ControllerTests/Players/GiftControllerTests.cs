@@ -27,7 +27,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Players
         private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GiftItemsToPlayersUseBackgroundProcessing_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Players
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GiftItemsToPlayersUseBackgroundProcessing_WithNullGroupGift_Throws()
         {
             // Arrange.
@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Players
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GiftItemsToPlayersUseBackgroundProcessing_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
         {
             // Arrange.
@@ -100,7 +100,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests.Players
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GiftItemsToPlayersUseBackgroundProcessing_WithNullGroupGift_UseBackgroundProcessing_Throws()
         {
             // Arrange.

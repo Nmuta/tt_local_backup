@@ -18,6 +18,7 @@ import { switchMap } from 'rxjs/operators';
 import { AugmentedCompositeIdentity } from '../player-selection-base.component';
 
 import { PlayerSelectionSingleComponent } from './player-selection-single.component';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 describe('PlayerSelectionSingleComponent', () => {
   let component: PlayerSelectionSingleComponent;
@@ -118,7 +119,7 @@ describe('PlayerSelectionSingleComponent', () => {
       const fakeGamertag = 'FakeGamertag';
 
       beforeEach(waitForAsync(() => {
-        component.add({ input: null, value: fakeGamertag });
+        component.add({ input: null, value: fakeGamertag, chipInput: null } as MatChipInputEvent);
       }));
 
       it('should have value in lookupList', waitForAsync(() => {

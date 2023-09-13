@@ -8,8 +8,14 @@ using static Turn10.Services.LiveOps.FH5_main.Generated.ConfigurationManagementS
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 {
+    /// <summary>
+    ///     Manages configurations. Proxy for Client object.
+    /// </summary>
     public interface IConfigurationManagementService
     {
+        /// <summary>
+        ///     Retrieves table configuration
+        /// </summary>
         Task<GetTableConfigurationOutput> GetTableConfiguration();
     }
 }

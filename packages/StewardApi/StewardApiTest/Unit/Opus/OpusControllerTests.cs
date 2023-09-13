@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -34,7 +34,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenOpusPlayerDetailsProviderNull_Throws()
         {
             // Arrange.
@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenOpusPlayerInventoryProviderNull_Throws()
         {
             // Arrange.
@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -82,7 +82,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -125,7 +125,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
         {
             // Arrange.
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -174,7 +174,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventoryProfiles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

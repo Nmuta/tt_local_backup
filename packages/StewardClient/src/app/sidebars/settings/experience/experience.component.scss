@@ -1,0 +1,26 @@
+@import '/src/styles/mixins/';
+
+/* Tasteful margin */
+:host {
+  display: block;
+  padding: 1rem 2rem;
+  min-width: 30vw;
+}
+
+:host ::ng-deep mat-card {
+  margin-bottom: $gap-medium;
+}
+
+.theme-card-content {
+  * {
+    margin-top: 1em;
+  }
+}
+
+mat-slide-toggle {
+  display: block;
+}
+
+mat-slide-toggle + mat-slide-toggle {
+  margin-top: 1em;
+}

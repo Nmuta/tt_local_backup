@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle, LocalizationCategory, LocalizationSubCategory } from '@models/enums';
 import { PullRequest } from '@models/git-operation';
@@ -32,16 +32,16 @@ export class CreateLocalizedStringComponent extends BaseComponent {
   public subCategoryTypes: string[] = Object.values(LocalizationSubCategory);
 
   public formControls = {
-    stringToLocalize: new FormControl('', [
+    stringToLocalize: new UntypedFormControl('', [
       Validators.required,
       Validators.maxLength(this.messageMaxLength),
     ]),
-    description: new FormControl('', [Validators.required]),
-    category: new FormControl(null, [Validators.required]),
-    subCategory: new FormControl(null, [Validators.required]),
+    description: new UntypedFormControl('', [Validators.required]),
+    category: new UntypedFormControl(null, [Validators.required]),
+    subCategory: new UntypedFormControl(null, [Validators.required]),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public readonly permAttribute = PermAttributeName.AddLocalizedString;
 

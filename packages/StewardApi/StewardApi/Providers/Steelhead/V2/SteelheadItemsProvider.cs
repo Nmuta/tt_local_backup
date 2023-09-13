@@ -68,6 +68,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             return masterInventory;
         }
 
+        /// <summary>
+        ///     Get vanity items from Pegasus.
+        /// </summary>
+        /// <remarks>Currently unused, no Interface definition</remarks>
         public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string slotId = SteelheadPegasusSlot.Daily)
         {
             IEnumerable<VanityItem> vanityItems;
@@ -89,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.V2
             IEnumerable<DataCar> cars;
             try
             {
-                cars = await this.pegasusService.GetCarsAsync(slotId).ConfigureAwait(false);
+                cars = await this.pegasusService.GetCarsAsync(slot: slotId).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

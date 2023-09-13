@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         private const ulong ValidXuid = 2535405314408422; // Testing 01001 (lugeiken)
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task BanPlayers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayers_WithNullBanParameters_Throws()
         {
             // Arrange.
@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayers_WithValidParameters_UseBackgroundProcessing_DoesNotThrow()
         {
             // Arrange.
@@ -77,7 +77,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void BanPlayers_WithNullBanParameters_UseBackgroundProcessing_Throws()
         {
             // Arrange.

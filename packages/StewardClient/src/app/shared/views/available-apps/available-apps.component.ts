@@ -1,13 +1,11 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
-import { environment } from '@environments/environment';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
-import { SetStagingApi } from '@shared/state/user-settings/user-settings.actions';
 import {
   UserSettingsState,
   UserSettingsStateModel,
@@ -34,9 +32,6 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
 
   public appAvailableTooltip = 'App is available to your role.';
   public appUnavailableTooltip = 'App is unavailable to your role.';
-
-  public enableStagingApi: boolean;
-  public showStagingApiToggle: boolean; // Only show on prod and if user is a live ops admin
 
   private shouldReloadData = false;
 
@@ -75,11 +70,6 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
     }
   }
 
-  /** Fired when any setting changes. */
-  public syncStagingApiSettings(): void {
-    this.store.dispatch(new SetStagingApi(this.enableStagingApi));
-  }
-
   /** Refresh the user role */
   public refreshLoginToken(): void {
     this.store
@@ -92,11 +82,5 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit, DoC
 
   private configure(userProfile: UserModel): void {
     this.userProfile = userProfile;
-    const location = this.windowService.location();
-    this.showStagingApiToggle = location?.origin === environment.stewardUiStagingUrl;
-
-    this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
-      this.enableStagingApi = latest.enableStagingApi;
-    });
   }
 }

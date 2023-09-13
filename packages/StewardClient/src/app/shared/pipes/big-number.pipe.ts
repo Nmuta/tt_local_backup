@@ -9,7 +9,7 @@ import BigNumber from 'bignumber.js';
 })
 export class BigNumberPipe implements PipeTransform {
   /** Transform hook. */
-  public transform(value: BigNumber | BigInt | number): string {
+  public transform(value: BigNumber | bigint | number): string {
     if (BigNumber.isBigNumber(value)) {
       return value.toFormat();
     }

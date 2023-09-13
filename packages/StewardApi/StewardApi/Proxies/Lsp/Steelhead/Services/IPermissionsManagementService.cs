@@ -9,6 +9,9 @@ using PermissionsManagementService = Turn10.Services.LiveOps.FM8.Generated.Permi
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages permissions. Proxy for Client object.
+    /// </summary>
     public interface IPermissionsManagementService
     {
         /// <summary>

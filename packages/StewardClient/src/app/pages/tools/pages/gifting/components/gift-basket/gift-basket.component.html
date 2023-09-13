@@ -81,7 +81,7 @@
                 <th id="quantity-table-header" mat-header-cell *matHeaderCellDef>Quantity</th>
                 <td mat-cell *matCellDef="let element; let i = index">
                   <span class="editable" *ngIf="!element.edit">
-                    {{ element.quantity | number: '1.0':'en-US' }}
+                    {{ element.quantity | number : '1.0' : 'en-US' }}
                     <button
                       mat-icon-button
                       (click)="element.edit = true"

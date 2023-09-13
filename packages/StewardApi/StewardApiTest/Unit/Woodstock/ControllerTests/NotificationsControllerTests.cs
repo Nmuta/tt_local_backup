@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         private const ulong InvalidXuid = 1234;
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeleteAllNotifications_InvalidXuid_Throws()
         {
             // Arrange.

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs';
 export class ApolloUserGroupManagementComponent extends BaseComponent implements OnInit {
   public preselectedGroupId: BigNumber;
   public formControls = {
-    userGroup: new FormControl('', Validators.required),
+    userGroup: new UntypedFormControl('', Validators.required),
   };
 
   /** Gets the selected user group from form controls. */

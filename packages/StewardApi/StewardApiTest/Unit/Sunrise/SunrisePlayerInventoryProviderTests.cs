@@ -29,7 +29,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenSunriseServiceNull_Throws()
         {
             // Arrange.
@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -71,7 +71,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenGiftHistoryProviderStoreNull_Throws()
         {
             // Arrange.
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenNotificationHistoryProviderNull_Throws()
         {
             // Arrange.
@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetPlayerInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetInventoryProfilesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -141,7 +141,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetAccountInventoryAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -158,7 +158,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoryAsync_WithNullPlayerInventory_Throws()
         {
             // Arrange.
@@ -211,7 +211,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullSunriseGift_Throws()
         {
             // Arrange.
@@ -234,7 +234,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdateGroupInventoriesAsync_WithNullPlayerInventory_Throws()
         {
             // Arrange.
@@ -258,7 +258,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullEmptyWhitespaceRequesterObjectId_Throws()
         {
             // Arrange.
@@ -292,7 +292,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void UpdatePlayerInventoriesAsync_WithNullXuids_Throws()
         {
             // Arrange.
@@ -311,7 +311,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendCarLiveryAsync_ToUserGroup_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -330,7 +330,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendCarLiveryAsync_ToUserGroup_WithNullRequesterId_Throws()
         {
             // Arrange.
@@ -348,7 +348,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendCarLiveryAsync_ToPlayers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -366,7 +366,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SendCarLiveryAsync_ToPlayers_WithNullRequesterId_Throws()
         {
             // Arrange.

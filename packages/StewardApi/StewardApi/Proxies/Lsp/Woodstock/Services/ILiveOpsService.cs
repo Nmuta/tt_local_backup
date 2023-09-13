@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FH5_main.Generated;
+using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
 using LiveOpsService = Forza.WebServices.FH5_main.Generated.LiveOpsService;
 
 #pragma warning disable VSTHRD200 // Use Async Suffix
@@ -30,6 +31,9 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock.Services
 
         /// <summary>Gets a specific community challenge.</summary>
         Task<LiveOpsService.GetUGCCommunityChallengeOutput> GetUGCCommunityChallenge(Guid id);
+
+        /// <summary>Gets specific prop prefabs.</summary>
+        Task<LiveOpsService.GetPropPrefabsOutput> GetPropPrefabs(Guid[] ids);
 
         /// <summary>
         ///     Gets player inventory by profile id.

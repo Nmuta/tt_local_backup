@@ -31,6 +31,7 @@ import { TitleMemoryModel } from './title-memory.model';
     showroomCalendar: GameTitleCodeName.FM8,
     acLogReader: GameTitleCodeName.FM8,
     lspTasks: GameTitleCodeName.FM8,
+    bounty: GameTitleCodeName.FM8,
   },
 })
 @Injectable()

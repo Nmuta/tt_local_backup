@@ -6,6 +6,9 @@ using Newtonsoft.Json.Converters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
+    /// <summary>
+    ///     PlayFav collection ID
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum PlayFabCollectionId
     {

@@ -8,7 +8,7 @@ import {
   ViewChild,
   EventEmitter,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -152,23 +152,23 @@ export class LeaderboardScoresComponent
 
   /** Paginator jump form controls. */
   public jumpFormControls = {
-    score: new FormControl(null, Validators.required),
+    score: new UntypedFormControl(null, Validators.required),
   };
-  public jumpFormGroup = new FormGroup(this.jumpFormControls);
+  public jumpFormGroup = new UntypedFormGroup(this.jumpFormControls);
 
   public dateRangeToggleOptions = DATE_TIME_TOGGLE_OPTIONS;
   public filterFormControls = {
-    dateRange: new FormControl({
+    dateRange: new UntypedFormControl({
       value: {
         start: DateTime.local().minus({ days: 7 }),
         end: DateTime.local(),
       } as DateRangePickerFormValue,
       disabled: true,
     }),
-    usedStmAssist: new FormControl(BooleanFilterToggle.Ignore),
-    usedAbsAssist: new FormControl(BooleanFilterToggle.Ignore),
-    usedTcsAssist: new FormControl(BooleanFilterToggle.Ignore),
-    usedAutoAssist: new FormControl(BooleanFilterToggle.Ignore),
+    usedStmAssist: new UntypedFormControl(BooleanFilterToggle.Ignore),
+    usedAbsAssist: new UntypedFormControl(BooleanFilterToggle.Ignore),
+    usedTcsAssist: new UntypedFormControl(BooleanFilterToggle.Ignore),
+    usedAutoAssist: new UntypedFormControl(BooleanFilterToggle.Ignore),
   };
 
   public readonly assistFilterContexts = {

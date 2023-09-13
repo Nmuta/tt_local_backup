@@ -11,6 +11,9 @@ using System.Xml.Serialization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfForza
 {
+    /// <summary>
+    ///     Collection of deeplink entries for World of Forza
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
@@ -21,6 +24,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public override List<WofDeeplinkEntry> Entries { get; set; }
     }
 
+    /// <summary>
+    ///     Deeplink entry for World of Forza tiles
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]

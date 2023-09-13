@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetails_ByXuid()
         {
             try
@@ -40,7 +40,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetails_ByXuid_InvalidXuid()
         {
             try
@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetails_ByXuid_InvalidAuth()
         {
             try
@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetails_ByGamertag()
         {
             try
@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetails_ByGamertag_InvalidGamertag()
         {
             try
@@ -100,7 +100,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerDetails_ByGamertag_InvalidAuth()
         {
             try
@@ -115,7 +115,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerGameDetails_ByXuid()
         {
             try
@@ -130,7 +130,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerGameDetails_ByXuid_InvalidXuid()
         {
             try
@@ -145,7 +145,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         }
 
         [TestMethod]
-        [TestCategory("Integration")]
+        [IntegrationTest]
         public async Task GetPlayerGameDetails_ByXuid_InvalidAuth()
         {
             try

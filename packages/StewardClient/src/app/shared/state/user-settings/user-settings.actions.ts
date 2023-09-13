@@ -6,12 +6,6 @@ export class SetFakeApi {
   constructor(public readonly enabled: boolean) {}
 }
 
-/** Sets the Staging API to on or off. */
-export class SetStagingApi {
-  public static readonly type = '[Settings] Toggle Staging API';
-  constructor(public readonly enabled: boolean) {}
-}
-
 /** Sets the current version of the Steward app the client is running. */
 export class SetAppVersion {
   public static readonly type = '[Settings] Set App Version';
@@ -71,6 +65,15 @@ export class SetSteelheadEndpointKey {
 /** Forces re-retrieval and sync of endpoint keys. */
 export class RefreshEndpointKeys {
   public static readonly type = '[Settings] Refresh Endpoint Keys';
+}
+
+/**
+ * Resets the current list of tools to show in the navbar.
+ * Applies default tools.
+ */
+export class ResetNavbarTools {
+  public static readonly type = '[Settings] Reset Navbar Tools';
+  constructor() {}
 }
 
 /** Sets the current list of tools to show in the navbar. */

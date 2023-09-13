@@ -3,6 +3,9 @@ using Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo.Services;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Apollo
 {
+    /// <summary>
+    ///     Bundle of LSP proxies for Apollo
+    /// </summary>
     public class ApolloProxyBundle
     {
         private string endpoint;

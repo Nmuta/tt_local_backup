@@ -6,6 +6,9 @@ using PlayFab.EconomyModels;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
 {
+    /// <summary>
+    ///     PlayFab transaction
+    /// </summary>
     public class PlayFabTransaction
     {
         public string ItemType { get; set; }

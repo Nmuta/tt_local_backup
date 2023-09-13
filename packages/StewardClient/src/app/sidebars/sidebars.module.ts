@@ -14,7 +14,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { LocationDetailsModule } from '@shared/views/location-details/location-details.module';
 import { MatCardModule } from '@angular/material/card';
-import { ChangelogModule } from '@views/old-changelog/old-changelog.module';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { HubsModule } from '@shared/hubs/hubs.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -37,35 +36,14 @@ import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HelpModule } from '@shared/modules/help/help.module';
-
-/** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
-export const sidebarRoutes = [
-  {
-    path: 'profile',
-    component: ProfileComponent,
-    outlet: 'sidebar',
-  },
-  {
-    path: 'settings',
-    component: SettingsComponent,
-    outlet: 'sidebar',
-  },
-  {
-    path: 'changelog',
-    component: ChangelogComponent,
-    outlet: 'sidebar',
-  },
-  {
-    path: 'notifications',
-    component: NotificationsComponent,
-    outlet: 'sidebar',
-  },
-  {
-    path: 'contactus',
-    component: ContactUsComponent,
-    outlet: 'sidebar',
-  },
-];
+import { SidebarsComponent } from './sidebars.component';
+import { SidebarsRouterModule } from './sidebars.routing';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatBadgeModule } from '@angular/material/badge';
+import { EndpointsComponent } from './settings/endpoints/endpoints.component';
+import { ExperienceComponent } from './settings/experience/experience.component';
+import { ToursComponent } from './settings/tours/tours.component';
 
 /** Module containing all routable sidebar components. */
 @NgModule({
@@ -77,9 +55,12 @@ export const sidebarRoutes = [
     ChangelogGroupComponent,
     ChangelogTagDetailsComponent,
     ContactUsComponent,
+    SidebarsComponent,
+    EndpointsComponent,
+    ExperienceComponent,
+    ToursComponent,
   ],
   imports: [
-    ChangelogModule,
     CommonModule,
     DataPrivacyNoticeModule,
     DirectivesModule,
@@ -102,7 +83,7 @@ export const sidebarRoutes = [
     MatTooltipModule,
     MatChipsModule,
     MatInputModule,
-    RouterModule.forChild(sidebarRoutes),
+    SidebarsRouterModule,
     ThemeModule,
     PipesModule,
     MonitorActionModule,
@@ -113,6 +94,9 @@ export const sidebarRoutes = [
     StandardCopyModule,
     MatButtonToggleModule,
     HelpModule,
+    MatSidenavModule,
+    MatListModule,
+    MatBadgeModule,
   ],
   exports: [RouterModule],
 })

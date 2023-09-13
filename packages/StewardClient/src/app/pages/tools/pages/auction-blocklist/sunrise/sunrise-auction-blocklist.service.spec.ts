@@ -6,6 +6,7 @@ import { SunriseAuctionBlocklistService } from './sunrise-auction-blocklist.serv
 
 describe('SunriseAuctionBlocklistService', () => {
   let service: SunriseAuctionBlocklistService;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockSunriseAuctionBlocklistService: SunriseAuctionBlocklistService;
 
   beforeEach(waitForAsync(() => {
@@ -17,7 +18,6 @@ describe('SunriseAuctionBlocklistService', () => {
 
     service = TestBed.inject(SunriseAuctionBlocklistService);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mockSunriseAuctionBlocklistService = TestBed.inject(SunriseAuctionBlocklistService);
   }));
 

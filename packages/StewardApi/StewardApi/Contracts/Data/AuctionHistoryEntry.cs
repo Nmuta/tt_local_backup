@@ -120,6 +120,9 @@ union
 ";
         }
 
+        /// <summary>
+        ///     Builds Kusto Query for given title and xuid
+        /// </summary>
         public static string MakeBaseQuery(KustoGameDbSupportedTitle title, ulong xuid)
         {
             switch (title)
@@ -155,6 +158,9 @@ union
 ";
         }
 
+        /// <summary>
+        ///     Builds AuctionHistoryEntry from kusto query result
+        /// </summary>
         public static AuctionHistoryEntry FromQueryResult(IDataReader reader)
         {
             return new AuctionHistoryEntry

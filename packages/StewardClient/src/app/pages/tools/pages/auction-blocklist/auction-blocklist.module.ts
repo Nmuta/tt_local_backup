@@ -31,6 +31,7 @@ import { SunriseAuctionBlocklistNewEntryComponent } from './components/auction-b
 import { WoodstockAuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/woodstock/woodstock-auction-blocklist-new-entry.component';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
+import { WoodstockAuctionBlocklistBaseComponent } from './components/auction-blocklist/woodstock/woodstock-auction-blocklist.component';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -42,6 +43,7 @@ import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module'
     AuctionBlocklistNewEntryComponent,
     SunriseAuctionBlocklistNewEntryComponent,
     WoodstockAuctionBlocklistNewEntryComponent,
+    WoodstockAuctionBlocklistBaseComponent,
   ],
   imports: [
     ...STANDARD_DATE_IMPORTS,

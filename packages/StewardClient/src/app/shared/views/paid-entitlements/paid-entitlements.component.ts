@@ -4,7 +4,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PaidEntitlement } from '@services/api-v2/steelhead/paid-entitlements/steelhead-paid-entitlements.service';
 import { Observable, takeUntil } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { GameTitle } from '@models/enums';
 import BigNumber from 'bignumber.js';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
@@ -42,9 +42,9 @@ export class PaidEntitlementsComponent extends BaseComponent implements OnInit {
   public readonly grantPaidEntitlementAttribute = PermAttributeName.GrantPaidEntitlements;
 
   public paidEntitlementFormControls = {
-    entitlement: new FormControl('', Validators.required),
+    entitlement: new UntypedFormControl('', Validators.required),
   };
-  public paidEntitlementFormGroup = new FormGroup(this.paidEntitlementFormControls);
+  public paidEntitlementFormGroup = new UntypedFormGroup(this.paidEntitlementFormControls);
 
   /** Gets game title from the service contract. */
   public get gameTitle(): GameTitle {

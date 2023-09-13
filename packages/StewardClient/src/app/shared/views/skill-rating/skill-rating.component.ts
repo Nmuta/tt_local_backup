@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -46,12 +46,12 @@ export class SkillRatingComponent extends BaseComponent implements OnChanges {
   public normalizedSkillRatingMax: BigNumber;
 
   public formControls = {
-    normalizedSkillRating: new FormControl({ value: null, disabled: true }),
-    rawSkillRating: new FormControl({ value: null, disabled: true }),
-    skillRatingOverride: new FormControl({ value: null, disabled: false }),
+    normalizedSkillRating: new UntypedFormControl({ value: null, disabled: true }),
+    rawSkillRating: new UntypedFormControl({ value: null, disabled: true }),
+    skillRatingOverride: new UntypedFormControl({ value: null, disabled: false }),
   };
 
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
 
   public getMonitor = new ActionMonitor('Get skill rating');
   public postMonitor = new ActionMonitor('Set skill rating override');

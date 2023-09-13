@@ -10,7 +10,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
     public sealed class EnumExtensionTests
     {
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Convert_ToGeoflags_VariousSamples()
         {
             (null as int[]).AsEnumList<WoodstockUgcGeoFlagOption>().Should().BeEmpty();

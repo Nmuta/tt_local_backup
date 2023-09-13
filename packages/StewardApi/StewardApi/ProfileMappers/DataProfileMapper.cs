@@ -36,22 +36,29 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<GetBuildResponse, PlayFabBuildSummary>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.BuildId))
                 .ForMember(des => des.Name, opt => opt.MapFrom(src => src.BuildName))
+                .ForMember(des => des.CreationDateUtc, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<BuildSummary, PlayFabBuildSummary>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.BuildId))
                 .ForMember(des => des.Name, opt => opt.MapFrom(src => src.BuildName))
+                .ForMember(des => des.CreationDateUtc, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<CatalogItem, PlayFabVoucher>().ReverseMap();
             this.CreateMap<Transaction, PlayFabTransaction>()
                 .ForMember(des => des.TimestampUtc, opt => opt.MapFrom(src => src.Timestamp))
                 .ReverseMap();
-            this.CreateMap<TransactionOperation, PlayFabTransactionOperation>().ReverseMap();
-            this.CreateMap<InventoryItem, PlayFabInventoryItem>().ReverseMap();
+            this.CreateMap<TransactionOperation, PlayFabTransactionOperation>()
+                .ForMember(des => des.ItemName, opt => opt.Ignore())
+                .ReverseMap();
+            this.CreateMap<InventoryItem, PlayFabInventoryItem>()
+                .ForMember(des => des.Name, opt => opt.Ignore())
+                .ReverseMap();
             this.CreateMap<StewardUserInternal, StewardUser>()
                 .ForMember(des => des.Attributes, opt =>
                     opt.MapFrom(src => src.AuthorizationAttributes()))
                 .ForMember(des => des.Team, opt =>
-                    opt.MapFrom(src => src.DeserializeTeam()));
+                    opt.MapFrom(src => src.DeserializeTeam()))
+                .ForMember(des => des.Error, opt => opt.Ignore());
         }
     }
 }

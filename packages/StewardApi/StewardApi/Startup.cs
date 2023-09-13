@@ -35,6 +35,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Forte;
 using Turn10.LiveOps.StewardApi.Contracts.PlayFab;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -46,6 +47,7 @@ using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Hubs;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Middleware;
+using Turn10.LiveOps.StewardApi.Middleware.ApiKeyAuth;
 using Turn10.LiveOps.StewardApi.Obligation;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -53,6 +55,7 @@ using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.BigCat;
 using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Providers.Forte.PlayFab;
 using Turn10.LiveOps.StewardApi.Providers.MsGraph;
 using Turn10.LiveOps.StewardApi.Providers.MsTeams;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
@@ -195,7 +198,12 @@ namespace Turn10.LiveOps.StewardApi
                 options.AddPolicy(ApplicationSettings.AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
 
                 // All policies get registered here
-                UserAttributeValues.AllAttributes().ToList().ForEach(attr => options.AddPolicy(attr, policy => policy.Requirements.Add(new AttributeRequirement(attr))));
+                UserAttributeValues.AllAttributes()
+                    .ToList()
+                    .ForEach(
+                        attr => options.AddPolicy(
+                            attr,
+                            policy => policy.Requirements.Add(new AttributeRequirement(attr))));
             });
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -256,6 +264,10 @@ namespace Turn10.LiveOps.StewardApi
             var keyVaultConfig = KeyVaultConfig.FromKeyVaultUrlAsync(this.configuration).GetAwaiter().GetResult();
             builder.Register(c => keyVaultConfig).As<KeyVaultConfig>().SingleInstance();
 
+            // Steward API Middleware
+            var acceptableApiKeys = AcceptableApiKeysFromKeyVaultConfig.FromConfigurationAsync(this.configuration).GetAwaiter().GetResult();
+            builder.Register(c => acceptableApiKeys).As<AcceptableApiKeysFromKeyVaultConfig>().SingleInstance();
+
             // Kusto
             var kustoClientSecret = keyVaultConfig.KustoClientSecret;
 
@@ -302,8 +314,8 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new SteelheadProfileMapper());
                 mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
+                mc.AddProfile(new ExternalProfileMapper());
                 mc.AllowNullCollections = true;
-                mc.IgnoreUnmapped(); // TODO: Should we remove this and correct all the mappings: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/1347837
             });
             mappingConfiguration.AssertConfigurationIsValid();
             var mapper = mappingConfiguration.CreateMapper();
@@ -322,6 +334,15 @@ namespace Turn10.LiveOps.StewardApi
                 Key = keyVaultConfig.WoodstockPlayFabProdKey,
             });
             builder.Register(c => new WoodstockPlayFabService(woodstockPlayFabConfig, mapper)).As<IWoodstockPlayFabService>().SingleInstance();
+
+            // Forte PlayFab Service
+            var fortePlayFabConfig = new FortePlayFabConfig();
+            fortePlayFabConfig.Environments.Add(FortePlayFabEnvironment.Dev, new PlayFabConfig()
+            {
+                TitleId = keyVaultConfig.FortePlayFabDevTitleId,
+                Key = keyVaultConfig.FortePlayFabDevKey,
+            });
+            builder.Register(c => new FortePlayFabService(fortePlayFabConfig, mapper)).As<IFortePlayFabService>().SingleInstance();
 
             builder.RegisterType<KeyVaultProvider>().As<IKeyVaultProvider>().SingleInstance();
             builder.RegisterType<StsClientWrapper>().As<IStsClient>().SingleInstance();
@@ -378,6 +399,7 @@ namespace Turn10.LiveOps.StewardApi
 
             applicationBuilder.UseCors("CorsPolicy");
             applicationBuilder.UseMiddleware<EasyAuthSwaggerMiddleware>();
+            applicationBuilder.UseApiKeyMiddleware();
             applicationBuilder.UseSwagger();
             applicationBuilder.UseSwaggerUI(c =>
             {
@@ -416,6 +438,18 @@ namespace Turn10.LiveOps.StewardApi
 
         private void RegisterForzaClients(ContainerBuilder builder)
         {
+            builder.RegisterType<Client>().Named<Client>("steelheadClientProdLive")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<SteelheadSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(SteelheadPegasusEnvironment.Prod, SteelheadPegasusSlot.Live));
+
+            builder.RegisterType<Client>().Named<Client>("steelheadClientDevLive")
+                .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
+                .WithParameter(Named("clientVersion"), (p, c) => c.Resolve<SteelheadSettings>().ClientVersion)
+                .WithParameter(Named("cmsInstance"), (p, c) => this.GenerateCmsOverrideString(SteelheadPegasusEnvironment.Dev, SteelheadPegasusSlot.Live));
+
             builder.RegisterType<Client>().Named<Client>("woodstockClientProdLiveSteward")
                 .WithParameter(Named("logonMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())
                 .WithParameter(Named("defaultMessageCryptoProvider"), (p, c) => new CleartextMessageCryptoProvider())

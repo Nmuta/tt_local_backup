@@ -2,12 +2,13 @@ import { Component, forwardRef } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
-  FormControl,
-  FormGroup,
+  UntypedFormControl,
+  UntypedFormGroup,
   AbstractControl,
   ValidationErrors,
   ControlValueAccessor,
   Validator,
+  Validators,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -42,10 +43,10 @@ export class DeeplinkRacersCupComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    racersCupSeries: new FormControl(null),
+    racersCupSeries: new UntypedFormControl(null, [Validators.required]),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor(steelheadRacersCupService: SteelheadRacersCupService) {
     super();
@@ -106,13 +107,5 @@ export class DeeplinkRacersCupComponent
     }
 
     return null;
-  }
-
-  /** Set the fields of a racers cup destination using the form values. */
-  public mapFormToDestination() {
-    return {
-      series: this.formControls.racersCupSeries.value,
-      destinationType: DestinationType.RacersCup,
-    } as RacersCupDestination;
   }
 }

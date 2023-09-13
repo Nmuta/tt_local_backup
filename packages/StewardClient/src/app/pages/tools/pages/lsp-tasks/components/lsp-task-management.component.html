@@ -43,7 +43,7 @@
               <tr>
                 <th>Lock Taken Until</th>
                 <td>
-                  {{ entry.lspTask.lockTakenUntilUtc | utcDate: 'short' }}
+                  {{ entry.lspTask.lockTakenUntilUtc | utcDate : 'short' }}
                 </td>
               </tr>
             </table>
@@ -57,7 +57,7 @@
               <tr>
                 <th>Last Event</th>
                 <td>
-                  {{ entry.lspTask.lastEventUtc | utcDate: 'short' }}
+                  {{ entry.lspTask.lastEventUtc | utcDate : 'short' }}
                 </td>
               </tr>
               <tr>
@@ -73,7 +73,7 @@
               <tr *ngIf="!entry.edit">
                 <th>Next Execution</th>
                 <td>
-                  {{ entry.formGroup.controls.nextExecutionUtc.value | utcDate: 'short' }}
+                  {{ entry.formGroup.controls.nextExecutionUtc.value | utcDate : 'short' }}
                 </td>
               </tr>
               <tr *ngIf="!entry.edit">

@@ -39,7 +39,7 @@ import { DateRangePickerComponent } from './datetime-range-picker/date-range-pic
     DirectivesModule,
     MatLuxonDateModule,
     PipesModule,
-    NgxMaterialTimepickerModule.setLocale('en-US'),
+    NgxMaterialTimepickerModule.setOpts('en-US'),
   ],
   exports: [
     DatetimePickerComponent,

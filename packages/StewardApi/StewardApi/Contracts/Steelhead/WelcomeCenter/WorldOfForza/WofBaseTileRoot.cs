@@ -54,6 +54,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         ShowroomListing,
     }
 
+    /// <summary>
+    ///     Base tile entry for World of Forza
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -93,6 +96,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid id { get; set; }
     }
 
+    /// <summary>
+    ///     Base timer for World of Forza
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -135,6 +141,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public WofBaseTimerReference TimerReference { get; set; }
     }
 
+    /// <summary>
+    ///     Text override for use in World of Forza
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     public class TextOverride
@@ -144,6 +153,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public Guid RefId { get; set; }
     }
 
+    /// <summary>
+    ///     Reference to base timer for World of Forza
+    /// </summary>
     [Serializable]
     public class WofBaseTimerReference
     {
@@ -155,16 +167,44 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public virtual TimerInstance TimerInstance { get; }
     }
 
+    /// <summary>
+    ///     Ladder for World of Forza
+    /// </summary>
     public class Ladder : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Ladder; }
+
+    /// <summary>
+    ///     Series for World of Forza
+    /// </summary>
     public class Series : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Series; }
+
+    /// <summary>
+    ///     Season for World of Forza
+    /// </summary>
     public class Season : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Season; }
+
+    /// <summary>
+    ///     Chapter for World of Forza
+    /// </summary>
     public class Chapter : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.Chapter; }
+
+    /// <summary>Challenge Data for World of Forza</summary>
     public class ChallengeData : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ChallengeData; }
+
+    /// <summary>Date Range for World of Forza</summary>
     public class DateRange : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.DateTimeRange; }
+
+    /// <summary>Featured Showcase for World of Forza</summary>
     public class FeaturedShowcase : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.FeaturedShowcase; }
+
+    /// <summary>Rivals Event for World of Forza</summary>
     public class RivalsEvent : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.RivalsEvent; }
+
+    /// <summary>Showroom Listing for World of Forza</summary>
     public class ShowroomListingCategory : WofBaseTimerReference { public override TimerInstance TimerInstance => TimerInstance.ShowroomListing; }
 
+    /// <summary>
+    ///     Time to begin display of World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -174,6 +214,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    /// <summary>
+    ///     Time to stop display of World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -183,6 +226,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public object @null { get; set; }
     }
 
+    /// <summary>
+    ///     Time Range for display of World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -201,6 +247,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string Name { get; set; }
     }
 
+    /// <summary>
+    ///     Range point for World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
@@ -219,6 +268,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string when { get; set; }
     }
 
+    /// <summary>
+    ///     Display conditions World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
@@ -230,6 +282,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public BaseItem[] item { get; set; }
     }
 
+    /// <summary>
+    ///     Item for display in World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:x")]
@@ -244,6 +299,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string when { get; set; }
     }
 
+    /// <summary>
+    ///     Localized text for World of Forza tile
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]

@@ -35,6 +35,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         Task<IEnumerable<RefundedEntitlement>> GetPlayerRefundedEntitlementsAsync(ulong xuid);
 
         /// <summary>
+        ///     Gets player purchased steam entitlements.
+        /// </summary>
+        Task<IEnumerable<PurchasedSteamEntitlement>> GetPlayerPurchasedSteamEntitlementsAsync(ulong xuid);
+
+        /// <summary>
         ///     Gets master inventory item list.
         /// </summary>
         Task<IList<MasterInventoryItem>> GetMasterInventoryListAsync(string kustoQuery);

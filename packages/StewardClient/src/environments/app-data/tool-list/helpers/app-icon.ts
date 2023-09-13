@@ -1,3 +1,7 @@
+// Duplicates are fine for this file, since it is icon aliases.
+// TODO: We may want to consider making these static classes instead.
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
+
 /**
  * Enum from apps to standard angular icons.
  * Select from here https://fonts.google.com/icons?selected=Material+Icons
@@ -26,7 +30,7 @@ export enum AppIcon {
   PowerBiTools = 'dashboard',
   RetailEnvironment = 'face',
   DevEnvironment = 'admin_panel_settings',
-  Endpoints = 'explore',
+  Endpoints = 'gps_fixed',
   CarDetails = 'minor_crash',
   PermissionManagement = 'admin_panel_settings',
   WelcomeCenterCalendar = 'calendar_today',
@@ -40,6 +44,7 @@ export enum AppIcon {
   AcLogReader = 'document_scanner',
   ProductPricing = 'sell',
   LspTasks = 'terminal',
+  Bounty = 'attach_money',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */

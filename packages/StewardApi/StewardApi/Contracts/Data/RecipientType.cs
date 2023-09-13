@@ -6,6 +6,9 @@ using Newtonsoft.Json.Converters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
+    /// <summary>
+    ///     The recipient type
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum RecipientType
     {

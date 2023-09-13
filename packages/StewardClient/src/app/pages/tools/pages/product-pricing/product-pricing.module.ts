@@ -23,7 +23,7 @@ import { ProductPricingComponent } from './product-pricing.component';
 import { ProductPricingRouterModule } from './product-pricing.routing';
 import { MatTableModule } from '@angular/material/table';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSelectModule } from '@angular/material/select';
+
 /** The feature module for the Product Pricing route. */
 @NgModule({
   declarations: [ProductPricingComponent],
@@ -55,7 +55,6 @@ import { MatSelectModule } from '@angular/material/select';
     ProductPricingRouterModule,
     MatTableModule,
     MatAutocompleteModule,
-    MatSelectModule,
   ],
   exports: [ProductPricingComponent],
 })

@@ -1,13 +1,13 @@
-import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, ValidationErrors } from '@angular/forms';
 import { isFormGroup, collectErrors } from './form-group-collect-errors';
 
 describe('Helper: form-group-collect-errors', () => {
   describe('Method: isFormGroup', () => {
-    const isAFormGroup = new FormGroup({
-      foo: new FormControl(false),
+    const isAFormGroup = new UntypedFormGroup({
+      foo: new UntypedFormControl(false),
     });
 
-    const isNotAFormGroup = new FormControl({});
+    const isNotAFormGroup = new UntypedFormControl({});
 
     it('should correctly identify FormGroups', () => {
       const shouldBeTrue = isFormGroup(isAFormGroup);
@@ -19,10 +19,10 @@ describe('Helper: form-group-collect-errors', () => {
   });
 
   describe('Method: collectErrors', () => {
-    const formControl = new FormControl(false);
+    const formControl = new UntypedFormControl(false);
     formControl.setErrors({ invalid: true });
 
-    const formGroup = new FormGroup({
+    const formGroup = new UntypedFormGroup({
       foo: formControl,
     });
 

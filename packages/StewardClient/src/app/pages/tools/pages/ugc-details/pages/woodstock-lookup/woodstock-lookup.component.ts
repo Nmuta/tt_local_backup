@@ -30,6 +30,7 @@ import {
   startWith,
   switchMap,
   takeUntil,
+  throwError,
 } from 'rxjs';
 import { GameTitle } from '@models/enums';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
@@ -296,7 +297,19 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
 
     this.ugcReportService
       .reportUgc$([this.ugcItem.id], this.selectedReason)
-      .pipe(this.reportMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(
+        switchMap(results => {
+          const item = results[0];
+
+          if (item.error) {
+            return throwError(() => item.error);
+          }
+
+          return of(results);
+        }),
+        this.reportMonitor.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe(() => {
         this.selectedReason = null;
       });

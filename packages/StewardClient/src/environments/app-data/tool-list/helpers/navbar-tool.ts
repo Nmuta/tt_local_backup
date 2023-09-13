@@ -20,6 +20,8 @@ export enum NavbarTool {
   Pegasus = 'pegasus',
   WelcomeCenterCalendar = 'welcome-center-calendar',
   PlayFab = 'playfab',
+  SearchBounty = 'search-bounty',
+  BountyDetails = 'bounty-details',
 
   AdminPagesSelector = 'admin-selector',
 
@@ -28,7 +30,6 @@ export enum NavbarTool {
   AuctionDetails = 'auction-details',
   Leaderboards = 'leaderboards',
   Theming = 'theming',
-  Endpoints = 'endpoints',
   UnifiedCalendar = 'unified-calendar',
   RacersCup = 'racers-cup',
   BuildersCupCalendar = 'builders-cup-calendar',

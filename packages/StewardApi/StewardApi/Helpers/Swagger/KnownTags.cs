@@ -47,6 +47,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             /// <summary>A meta-tag to enable ctrl+f on APIs.</summary>
             public const string All = "All";
 
+            /// <summary>A meta-tag to enable ctrl+f on external APIs.</summary>
+            public const string External = "External";
+
             /// <summary>A meta-tag to enable ctrl+f on Dangerous APIs.</summary>
             public static readonly string DangerousAll = MakeDangerous(All);
         }
@@ -89,6 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             /// <summary>Use for services that do not call LSP, or do not care which LSP/title they call.</summary>
             public const string Agnostic = "Title: Agnostic";
 
+            public const string Forte = "Title: Forte";
             public const string Steelhead = "Title: Steelhead";
             public const string Woodstock = "Title: Woodstock";
             public const string Sunrise = "Title: Sunrise";
@@ -161,6 +165,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers.Swagger
             public const string SafetyRating = "Topic: SafetyRating";
             public const string SkillRating = "Topic: SkillRating";
             public const string LspTask = "Topic: LSP Task";
+            public const string Automation = "Topic: Automation";
+            public const string UgcProfile = "Topic: UGC Profile";
         }
 
         /// <summary>

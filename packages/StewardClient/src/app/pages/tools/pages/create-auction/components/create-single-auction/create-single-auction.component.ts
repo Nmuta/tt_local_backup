@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { BaseComponent } from '@components/base-component/base.component';
 import { tryParseBigNumber } from '@helpers/bignumbers';
@@ -57,15 +57,15 @@ export class CreateSingleAuctionComponent extends BaseComponent implements OnIni
   public allCars: SimpleCar[] = [];
 
   public formControls = {
-    carId: new FormControl(null, [Validators.required, requireValidCarSelection.bind(this)]),
-    openingPrice: new FormControl(null, [Validators.required]),
-    buyoutPrice: new FormControl(null, [Validators.required]),
-    durationInMS: new FormControl(null, [Validators.required]),
-    durationOptions: new FormControl(null),
-    sellerId: new FormControl(null, [Validators.required]),
+    carId: new UntypedFormControl(null, [Validators.required, requireValidCarSelection.bind(this)]),
+    openingPrice: new UntypedFormControl(null, [Validators.required]),
+    buyoutPrice: new UntypedFormControl(null, [Validators.required]),
+    durationInMS: new UntypedFormControl(null, [Validators.required]),
+    durationOptions: new UntypedFormControl(null),
+    sellerId: new UntypedFormControl(null, [Validators.required]),
   };
 
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
   constructor() {
     super();

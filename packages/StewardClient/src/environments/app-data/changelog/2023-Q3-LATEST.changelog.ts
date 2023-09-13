@@ -8,6 +8,203 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: {
+        title: GameTitle.FH5,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'cdd66b5e-b3d5-49f6-8a73-bc02fdf3595b',
+      shortText: 'Add Prop Prefab UGC type',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '6bd26f9c-2af3-44f3-aba2-7f0c486ed5e8',
+      shortText: 'Add autocomplete feature and validation',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '317fabba-9068-4444-9fe7-4a2140d252e9',
+      shortText: 'Prepare Steward UI for new deployment model',
+      longText: [
+        'Update 1: Restructure static deploy config files. Add Favicon.',
+        'Update 2: Adjust build pipeline.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c59b7731-7ee8-4b34-a64f-0c0d47d484db',
+      shortText: 'Rework Endpoints navbar utility',
+      longText: [
+        'Utility is now capable of setting all environment endpoints.',
+        'Utility size has been reduced, and it may no longer be removed from the toolbar.',
+        'Quick-change-button color now matches the color in the summary grid.',
+        'Quick-change-button is replaced by a spinner while endpoint data is being retrieved.',
+        'Navbar theme-toggle button has been adjusted to match toolbar',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c898bf28-c7b4-4828-bf00-f338b5f0326b',
+      shortText: 'Adjust standard toolbar',
+      longText: [
+        'Toolbar now defaults to a set of standard tools for new users.',
+        'Reset Tools button on the homepage now sets tools to the standard set of tools.',
+        'Clear Tools button added. It removes all tools in the toolbar.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'aa928195-cd76-4db8-ac46-a4f43ac00704',
+      shortText: 'Rework Navbar Sidebars',
+      longText: [
+        'All previous navbar icon routes have been moved to a unified sidebar.\r\n' +
+          'Navbar icon padding has been replaced with separator bars.',
+
+        'Settings and Profile have been merged into a single button.\r\n' +
+          'Total Notification count is displayed over the new button.',
+
+        'The previous Settings page has been moved to Old Settings.\r\n' +
+          'Its contents have been split into Endpoints, Experience, Tours, and Profile.',
+
+        'The Profile panel no longer has a Location sub-panel.\r\n' +
+          'Some super-admin tools have been moved to this panel.',
+
+        'The Notifications panel is unchanged, aside from an increase in default width to avoid button shifting.',
+
+        'The Changelog panel now respects newlines in changelog entries.\r\n' +
+          'Very old changelog entries have been removed.\r\n' +
+          'The changelog will now only automatically open when there are new entries as well as a new version,\r\n' +
+          'and will not open automatically if you are already viewing it.',
+
+        'The Endpoints panel has been updated with some game titles.\r\n' +
+          'Show Help Icons is now in the Experience panel.',
+
+        'The Experience panel contains general user experience settings, some of which may appear in other panels.',
+
+        'The Tours panel now allows launching tours immediately, separately from enabling them to run.',
+
+        'The Old Settings panel is the unmodified version of the prior Settings panel. We plan to remove it later.',
+      ],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '736e71dd-630f-4960-984f-ad5c611e383c',
+      shortText: 'Add Steam purchases to entitlements',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'a58c3f63-61df-4718-9fa7-384a001776fd',
+      shortText: 'Add pegasus data to timer dropdowns',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '34637ef2-c305-4514-bc20-a849bb90ede4',
+      shortText: 'Add player and pegasus lookup inputs to all calendars',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '0d448404-57a3-437c-a057-8cb8ec246f40',
+      shortText:
+        'Safety rating minimum and maximum score values now based on Pegasus configuration',
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'b1f43ed5-5d78-4499-bba4-4711af3c04a4',
+      shortText: 'Add Replay UGC type',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'eebb7f54-e30b-47a8-9b6d-e1ef4addb8d0',
+      shortText: 'Update to Angular 14',
+      longText: ['Patch: Fix invalid routes.'],
+    },
+    {
+      tag: { title: [GameTitle.Forte], tool: NavbarTool.PlayFab },
+      uuid: 'a308d4fa-ef42-4fbf-b8b3-62e82bbcf16d',
+      shortText: 'Setup PlayFab build locks for Forte Dev environment',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UgcDetails },
+      uuid: '4503257d-09b6-42fc-a973-9cb389c2184b',
+      shortText: 'Add ability to select report reason for report UGC',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'a5450e39-f141-4fe3-89de-23c9e558e212',
+      shortText: 'Small fixes to home tour',
+      longText: [
+        'Only show home tour when app is in a valid state.',
+        'Allow buttons to be clickable under highlight buffer.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.BountyDetails },
+      uuid: '6eca390d-1d90-4b4a-8727-b65fff0503eb',
+      shortText: 'Add new tool to view bounty details',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '5041b54e-52f2-4f02-8c74-4d6c29550bc5',
+      shortText: 'Implemented new user tour guides',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e298bf3d-042c-429f-bc33-49de2bd3cfbb',
+      shortText: 'Fix Component Governance issues',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.SearchBounty },
+      uuid: '7a34748a-90a2-48f3-a620-d2aa6408a478',
+      shortText: 'Add new tool to search rivals bounties',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'f5a5ea45-1ea4-4a36-aed7-55140bc0aada',
+      shortText: 'Automatically select Staging API when using Staging UI',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.Leaderboards },
+      uuid: '069c7aa4-1424-4f15-ae7b-cf082cd5531f',
+      shortText: 'Add Time Attack leaderboards',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.ProductPricing },
+      uuid: 'c069381d-0e34-48f2-9384-04eb317b79cc',
+      shortText:
+        'Add ability to look up any product ID alongside dropdown to select Forza products',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.AuctionBlocklist },
+      uuid: 'a6e7f4a7-7345-4f27-9446-83680ae4e516',
+      shortText: 'Update auction blocklist to display new accurate data',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '3594283a-d0e7-4d79-bfd0-ebc0de4eafd8',
+      shortText: 'Add Layer Group & Game Options UGC types',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '0c6114ad-6e1b-46c7-a3ee-ebca53244f65',
+      shortText: 'Small fixes to Steward sidebars',
+      longText: [
+        'Add ability to filter internal changelog entries.',
+        'Only show team lead spinner when permission contact us is selected.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: 'aa341f06-663e-4e39-b54e-1fab661a54c9',
+      shortText: 'Add tool to download and upload UGC profiles',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.PlayFab },
+      uuid: 'ff41cada-62b2-4183-88ac-66f4a0c3a52a',
+      shortText: 'Display API key name when used to lock PlayFab build',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.UserDetails },
       uuid: '460ce787-24b6-4537-9fb9-43e61d625f68',
       shortText: 'Allow modifying PlayFab voucher amounts on each available inventory collection',
@@ -165,7 +362,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      tag: ChangelogTag.General,
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
     },

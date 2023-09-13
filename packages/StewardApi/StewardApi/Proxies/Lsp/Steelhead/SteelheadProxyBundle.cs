@@ -9,6 +9,9 @@ using Turn10.Services.LiveOps.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
 {
+    /// <summary>
+    ///     Bundle of LSP proxies for Steelhead
+    /// </summary>
     public class SteelheadProxyBundle
     {
         private string endpoint;

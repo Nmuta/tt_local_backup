@@ -3,13 +3,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment, NavbarTool } from '@environments/environment';
 import { InitEndpointKeysError } from '@models/enums';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { cloneDeep } from 'lodash';
+import { chain, cloneDeep } from 'lodash';
 import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 import { InitEndpointKeys } from '../endpoint-key-memory/endpoint-key-memory.actions';
 import { EndpointKeyMemoryState } from '../endpoint-key-memory/endpoint-key-memory.state';
 import {
   SetAppVersion,
-  SetStagingApi,
   SetFakeApi,
   SetNavbarTools,
   SetApolloEndpointKey,
@@ -25,12 +24,15 @@ import {
   RefreshEndpointKeys,
   SetForteEndpointKey,
   ConfigureShowVerifyCheckboxPopup,
+  ResetNavbarTools,
 } from './user-settings.actions';
+
+/** Configuration model for tools displayed in the navbar. */
+export type NavbarToolsConfig = Partial<Record<NavbarTool, number>>;
 
 /** Defines the user state model. */
 export class UserSettingsStateModel {
   public enableFakeApi: boolean;
-  public enableStagingApi: boolean;
   public appVersion: string;
   public showAppUpdatePopup: boolean;
   public showVerifyCheckboxPopup: boolean;
@@ -40,19 +42,25 @@ export class UserSettingsStateModel {
   public steelheadEndpointKey: string;
   public forteEndpointKey: string;
   public forumEndpointKey: string;
-  public navbarTools: Partial<Record<NavbarTool, number>>;
+  public navbarTools: NavbarToolsConfig;
   public themeOverride: ThemeOverrideOptions;
   public themeEnvironmentWarning: ThemeEnvironmentWarningOptions;
 }
+
+/** The default tools that appear in the navbar. */
+export const defaultToolsConfig: NavbarToolsConfig = chain(
+  [NavbarTool.Theming, NavbarTool.UserDetails].map((tool: NavbarTool, index) => [tool, index + 1]),
+)
+  .fromPairs()
+  .value();
 
 /** Defines the current users' settings. */
 @State<UserSettingsStateModel>({
   name: 'userSettings',
   defaults: {
     enableFakeApi: false,
-    enableStagingApi: false,
     appVersion: undefined,
-    navbarTools: {},
+    navbarTools: defaultToolsConfig,
     apolloEndpointKey: undefined,
     sunriseEndpointKey: undefined,
     woodstockEndpointKey: undefined,
@@ -77,15 +85,6 @@ export class UserSettingsState {
     action: SetFakeApi,
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ enableFakeApi: action.enabled }));
-  }
-
-  /** Sets the state of the current API. */
-  @Action(SetStagingApi, { cancelUncompleted: true })
-  public setStagingApi$(
-    ctx: StateContext<UserSettingsStateModel>,
-    action: SetStagingApi,
-  ): Observable<UserSettingsStateModel> {
-    return of(ctx.patchState({ enableStagingApi: action.enabled }));
   }
 
   /** Sets the state of the current app version. */
@@ -122,6 +121,15 @@ export class UserSettingsState {
     action: SetNavbarTools,
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ navbarTools: action.navbarTools }));
+  }
+
+  /** Resets the navbar tool list to a uniform default. */
+  @Action(ResetNavbarTools, { cancelUncompleted: true })
+  public resetNavbarTools$(
+    ctx: StateContext<UserSettingsStateModel>,
+    _action: ResetNavbarTools,
+  ): Observable<void> {
+    return ctx.dispatch(new SetNavbarTools(defaultToolsConfig));
   }
 
   /** Sets the theme override. */
@@ -299,12 +307,6 @@ export class UserSettingsState {
   @Selector()
   public static enableFakeApi(state: UserSettingsStateModel): boolean {
     return state.enableFakeApi;
-  }
-
-  /** Selector for whether the state has staging api enabled. */
-  @Selector()
-  public static enableStagingApi(state: UserSettingsStateModel): boolean {
-    return state.enableStagingApi;
   }
 
   /** Selector for state app version. */

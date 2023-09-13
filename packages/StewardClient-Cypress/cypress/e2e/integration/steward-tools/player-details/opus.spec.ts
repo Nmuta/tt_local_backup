@@ -5,8 +5,9 @@ import { searchByGtag, searchByXuid } from '@support/steward/shared-functions/se
 import { selectOpus } from '@support/steward/shared-functions/game-nav';
 import { stewardUrls } from '@support/steward/urls';
 import { RetailUsers } from '@support/steward/common/account-info';
+import { withTags, Tag } from '@support/tags';
 
-context('Steward / Tools / Player Details / Opus', () => {
+context('Steward / Tools / Player Details / Opus', withTags(Tag.UnitTestStyle, Tag.Broken), () => {
   beforeEach(() => {
     login();
 

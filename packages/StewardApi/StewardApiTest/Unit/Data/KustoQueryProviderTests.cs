@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         private static readonly Fixture Fixture = new Fixture();
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_DoesNotThrow()
         {
             // Arrange.
@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenTableStorageClientFactoryNull_Throws()
         {
             // Arrange.
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -78,7 +78,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void Ctor_WhenKeyVaultConfigNull_Throws()
         {
             // Arrange.
@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SaveKustoQueryAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -117,7 +117,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SaveKustoQueryAsync_WithNullKustoQuery_Throws()
         {
             // Arrange.
@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SaveKustoQueryAsync_WithNullEmptyWhitespaceName_Throws()
         {
             // Arrange.
@@ -155,7 +155,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SaveKustoQueryAsync_WithNullEmptyWhitespaceTitle_Throws()
         {
             // Arrange.
@@ -179,7 +179,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void SaveKustoQueryAsync_WithNullEmptyWhitespaceQuery_Throws()
         {
             // Arrange.
@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public async Task GetKustoQueriesAsync_ReturnsCorrectType()
         {
             // Arrange.
@@ -218,7 +218,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeleteKustoQueryAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
@@ -233,7 +233,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
         }
 
         [TestMethod]
-        [TestCategory("Unit")]
+        [UnitTest]
         public void DeleteKustoQueryAsync_WithNullEmptyWhitespaceQueryId_Throws()
         {
             // Arrange.

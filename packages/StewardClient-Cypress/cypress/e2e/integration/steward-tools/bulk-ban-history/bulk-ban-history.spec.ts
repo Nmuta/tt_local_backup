@@ -1,18 +1,15 @@
-import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { RetailUsers } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
 context('Steward / Tools / Ban Review', () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+  before(() => {
+    resetToDefaultState();
 
     cy.visit(stewardUrls.tools.bulkBanHistory);
-    waitForProgressSpinners(10000);
+    waitForProgressSpinners(10_000);
   });
 
   context('Initialization', () => {
@@ -58,7 +55,7 @@ context('Steward / Tools / Ban Review', () => {
 
   context('Search', () => {
     context('When XUIDs input is filled out', () => {
-      beforeEach(() => {
+      before(() => {
         cy.get('textarea')
           .click()
           .type(`${RetailUsers['jordan'].xuid}\n${RetailUsers['luke'].xuid}`);

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
@@ -40,7 +40,7 @@ export class DurationPickerComponent implements OnInit, ControlValueAccessor {
 
   public options: DurationOption[] = DurationPickerOptions;
 
-  public formControl = new FormControl(first(this.options).duration);
+  public formControl = new UntypedFormControl(first(this.options).duration);
 
   public targetDate: DateTime = null;
 

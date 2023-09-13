@@ -1,0 +1,86 @@
+# This file builds and packages a nuget package, as a preview.
+# Designed for use with Analyzer-Documentation.
+
+parameters:
+- name: 'workingDirectory'
+  displayName: "Path to a working directory where dotnet can be run. Like 'packages/Analyzer-Documentation'."
+  type: string
+- name: 'nugetName'
+  displayName: "Name of the resulting nuget. Like 'Analyzer_Documentation'"
+  type: string
+- name: 'prerelease'
+  displayName: "When true, publishes a pre-release version"
+  type: boolean
+
+jobs:
+- job: Nuget_Publish
+  displayName: Publish Nuget
+  steps:
+  - template: ../prepare-nuget-project.template.yml
+    parameters:
+      workingDirectory: ${{parameters.workingDirectory}}
+      
+  - task: Bash@3
+    displayName: Retrieve Version from .csproj
+    inputs:
+      workingDirectory: ${{parameters.workingDirectory}}
+      targetType: 'inline'
+      failOnStderr: true
+      script: |
+        MAJOR=$(grep -iPo "(?<=<version>).*?(?=\.)" **/*.Package.csproj)
+        MINOR=$(grep -iPo "<version>.*?\.\K.*?(?=\.)" **/*.Package.csproj)
+        PATCH=$(grep -iPo "<version>.*?\..*?\.\K.*?(?=<)" **/*.Package.csproj)
+        echo "Major: "$MAJOR
+        echo "Minor: "$MINOR
+        echo "Patch: "$PATCH
+        echo "##vso[task.setvariable variable=majorVersion]$MAJOR"
+        echo "##vso[task.setvariable variable=minorVersion]$MINOR"
+        echo "##vso[task.setvariable variable=patchVersion]$PATCH"
+
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: build
+      projects: >-
+        ${{parameters.workingDirectory}}/**/*.csproj
+      selectOrConfig: config
+      feedRestore: 'Turn10-LiveOps'
+
+  - task: DotNetCoreCLI@2
+    displayName: Pack Nugets (Pre-Release)
+    condition: eq(${{parameters.prerelease}}, true)
+    inputs:
+      command: pack
+      configuration: $(BuildConfiguration)
+      packagesToPack: '${{parameters.workingDirectory}}/**/*.Package.csproj'
+      versioningScheme: byPrereleaseNumber
+      majorVersion: $(majorVersion)
+      minorVersion: $(minorVersion)
+      patchVersion: $(patchVersion)
+      packDestination: '$(Build.ArtifactStagingDirectory)/'
+
+  - task: DotNetCoreCLI@2
+    displayName: Pack Nugets (Release)
+    condition: eq(${{parameters.prerelease}}, false)
+    inputs:
+      command: pack
+      configuration: $(BuildConfiguration)
+      packagesToPack: '${{parameters.workingDirectory}}/**/*.Package.csproj'
+      versioningScheme: off
+      packDestination: '$(Build.ArtifactStagingDirectory)/'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish artifact folder'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: ${{parameters.nugetName}}
+
+  
+  - task: NuGetAuthenticate@1
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Push nuget to feed'
+    inputs:
+      command: 'push'
+      packagesToPush: '$(build.artifactStagingDirectory)/${{parameters.nugetName}}*.nupkg'
+      publishVstsFeed: 'Turn10-LiveOps'

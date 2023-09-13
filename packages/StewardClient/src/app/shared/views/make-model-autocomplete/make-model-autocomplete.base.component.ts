@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormGroup } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SimpleCar } from '@models/cars';
 import { PegasusProjectionSlot } from '@models/enums';
@@ -35,11 +35,11 @@ export abstract class MakeModelAutocompleteBaseComponent
   @Output() public changes = new EventEmitter<SimpleCar>();
 
   public formControls = {
-    makeModelInput: new FormControl(null),
+    makeModelInput: new UntypedFormControl(null),
   };
 
   /** UGC filters form group. */
-  public formGroup: FormGroup = new FormGroup(this.formControls);
+  public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
   public stateGroupOptions$: Observable<MakeModelFilterGroup[]>;
   public makeModelFilterGroups: MakeModelFilterGroup[];
 

@@ -9,6 +9,9 @@ using LocalizationManagementService = Turn10.Services.LiveOps.FM8.Generated.Loca
 
 namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 {
+    /// <summary>
+    ///     Manages localization. Proxy for Client object.
+    /// </summary>
     public interface ILocalizationManagementService
     {
         /// <summary>

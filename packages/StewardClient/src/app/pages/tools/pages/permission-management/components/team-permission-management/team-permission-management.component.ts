@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
@@ -40,10 +40,10 @@ export class TeamPermissionManagementComponent
   public saveTeamMonitor = new ActionMonitor('POST save team changes');
   public deleteTeamMonitor = new ActionMonitor('DELETE team');
   public formControls = {
-    name: new FormControl('', Validators.required),
-    filterUser: new FormControl(''),
+    name: new UntypedFormControl('', Validators.required),
+    filterUser: new UntypedFormControl(''),
   };
-  public formGroup = new FormGroup(this.formControls);
+  public formGroup = new UntypedFormGroup(this.formControls);
   public filteredUsers$: Observable<UserModel[]>;
 
   public membersTable = new BetterMatTableDataSource<UserModel>();

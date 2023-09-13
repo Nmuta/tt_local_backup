@@ -63,13 +63,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.BigCat
         }
 
         /// <inheritdoc />
-        public async Task<List<BigCatProductPrice>> RetrievePriceCatalogAsync(string productId)
+        public async Task<BigCatProductInfo> RetrievePriceCatalogAsync(string productId)
         {
-            return this.refreshableCacheStore.GetItem<List<BigCatProductPrice>>(BigCatProductPrice.BuildCacheKey(productId))
+            return this.refreshableCacheStore.GetItem<BigCatProductInfo>(BigCatProductInfo.BuildCacheKey(productId))
                 ?? await this.GetPricesAsync(productId).ConfigureAwait(false);
         }
 
-        private async Task<List<BigCatProductPrice>> GetPricesAsync(string productId)
+        private async Task<BigCatProductInfo> GetPricesAsync(string productId)
         {
             var uri = $"https://frontdoor-displaycatalog.bigcatalog.microsoft.com/v8.0/products/{productId}?market=neutral&languages=neutral&catalogIds=1";
 
@@ -115,9 +115,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.BigCat
                 var equalityComparer = new BigCatProductPriceEqualityComparer();
                 prices = prices.Where(price => price.MSRP != 0).Distinct(equalityComparer).ToList();
 
-                this.refreshableCacheStore.PutItem(BigCatProductPrice.BuildCacheKey(productId), TimeSpan.FromHours(24), prices);
+                var productName = result["Product"]["LocalizedProperties"][0]["ProductTitle"];
 
-                return prices;
+                var productInfo = new BigCatProductInfo
+                {
+                    Name = (string)productName,
+                    Prices = prices,
+                };
+
+                this.refreshableCacheStore.PutItem(BigCatProductInfo.BuildCacheKey(productId), TimeSpan.FromHours(24), productInfo);
+
+                return productInfo;
             }
             else
             {

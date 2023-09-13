@@ -54,6 +54,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public string RequesterRole { get; set; }
 
         /// <summary>
+        ///     Gets or sets the requester API key name.
+        /// </summary>
+        public string RequesterApiKeyName { get; set; }
+
+        /// <summary>
         ///     Gets the request batch ID.
         /// </summary>
         public Guid RequestBatchId { get; } = Guid.NewGuid();

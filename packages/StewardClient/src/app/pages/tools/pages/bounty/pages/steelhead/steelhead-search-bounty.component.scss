@@ -1,0 +1,27 @@
+@import '/src/styles/mixins';
+
+@include flex-navbar-fill;
+
+table {
+  width: 100%;
+
+  td.mat-cell {
+    padding-top: $gap-medium;
+    padding-bottom: $gap-medium;
+  }
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+
+  > * {
+    margin: $gap-micro;
+  }
+}
+
+.mat-column-actions {
+  padding-left: $gap-medium;
+}

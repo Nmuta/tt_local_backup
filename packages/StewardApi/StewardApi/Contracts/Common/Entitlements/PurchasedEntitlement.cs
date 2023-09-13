@@ -2,8 +2,6 @@
 using System.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 
-#pragma warning disable CS1591
-#pragma warning disable SA1600
 namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
 {
     /// <summary>
@@ -46,6 +44,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
             return $"get_entitlements_purchaseorder_v2({xuid}) | project-rename PurchaseDateTimeUtc=PurchaseDateTime";
         }
 
+        /// <summary>
+        ///     Builds PurchasedEntitlement DTO from Kusto Query results
+        /// </summary>
         public static PurchasedEntitlement FromQueryResult(IDataReader reader)
         {
             return new PurchasedEntitlement
@@ -74,5 +75,3 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common.Entitlements
         }
     }
 }
-#pragma warning restore SA1600
-#pragma warning restore CS1591

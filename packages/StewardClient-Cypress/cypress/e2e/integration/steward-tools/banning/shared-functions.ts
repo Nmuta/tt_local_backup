@@ -15,7 +15,7 @@ export function testFillOutBan(reason: string, page: string): void {
   it('should fill out form for a ban', () => {
     cy.get('mat-form-field').contains('mat-label', 'Ban Reason').parents('mat-form-field').click();
     cy.get('mat-option').contains('span', reason).parents('mat-option').click();
-    if (page == 'Woodstock') {
+    if (page == 'Woodstock' || page == 'Steelhead') {
       waitForProgressSpinners();
       cy.get('[aria-disabled="true"]').should('exist');
       cy.get('mat-checkbox')
@@ -23,20 +23,6 @@ export function testFillOutBan(reason: string, page: string): void {
         .parents('mat-checkbox')
         .click('left');
       cy.get('button').contains('span', '1 day').parents('button').click();
-    } else if (page == 'Apollo' || page == 'Sunrise') {
-      cy.get('button').contains('span', '1 minute').parents('button').click();
-      cy.get('mat-checkbox')
-        .contains('span', 'Ban all Xboxes (No expiry)')
-        .parents('mat-checkbox')
-        .click('left');
-      cy.get('mat-checkbox')
-        .contains('span', 'Ban all PCs (No expiry)')
-        .parents('mat-checkbox')
-        .click('left');
-      cy.get('mat-checkbox')
-        .contains('span', 'Delete all leaderboard entries (Permanent)')
-        .parents('mat-checkbox')
-        .click('left');
     } else if (page == 'Apollo' || page == 'Sunrise') {
       cy.get('button').contains('span', '1 minute').parents('button').click();
       cy.get('mat-checkbox')

@@ -32,4 +32,5 @@ export class TitleMemoryModel {
   public showroomCalendar: GameTitleCodeName.FM8;
   public acLogReader: GameTitleCodeName.FM8;
   public lspTasks: GameTitleCodeName.FM8;
+  public bounty: GameTitleCodeName.FM8;
 }

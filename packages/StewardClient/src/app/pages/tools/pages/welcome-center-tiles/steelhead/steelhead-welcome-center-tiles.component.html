@@ -12,14 +12,22 @@
               <div class="sf-horizontal">
                 <mat-form-field class="sf-default-hint">
                   <mat-label>Select Welcome Center Tile</mat-label>
-                  <mat-select
+                  <input
+                    type="text"
+                    matInput
                     [formControl]="formControls.selectedWelcomeCenterTile"
-                    [disabled]="isInEditMode"
+                    [matAutocomplete]="tiles"
+                    spellcheck="false"
+                    autocomplete="off"
+                  />
+                  <mat-autocomplete
+                    #tiles="matAutocomplete"
+                    [displayWith]="displayWelcomeCenterTiles"
                   >
                     <mat-optgroup label="Image Text Tile">
                       <mat-option
-                        *ngFor="let friendlyName of friendlyNameImageTextList | keyvalue"
-                        [value]="friendlyName.key"
+                        *ngFor="let friendlyName of filterImageTextTiles | keyvalue"
+                        [value]="friendlyName"
                         (onSelectionChange)="welcomeCenterTileChanged($event, tileTypes.ImageText)"
                       >
                         {{ friendlyName.value }}
@@ -27,8 +35,8 @@
                     </mat-optgroup>
                     <mat-optgroup label="Generic Popup Tile">
                       <mat-option
-                        *ngFor="let friendlyName of friendlyNameGenericPopupList | keyvalue"
-                        [value]="friendlyName.key"
+                        *ngFor="let friendlyName of filterGenericPopupTiles | keyvalue"
+                        [value]="friendlyName"
                         (onSelectionChange)="
                           welcomeCenterTileChanged($event, tileTypes.GenericPopup)
                         "
@@ -38,14 +46,14 @@
                     </mat-optgroup>
                     <mat-optgroup label="Deeplink">
                       <mat-option
-                        *ngFor="let friendlyName of friendlyNameDeeplinkList | keyvalue"
-                        [value]="friendlyName.key"
+                        *ngFor="let friendlyName of filterDeeplinkTiles | keyvalue"
+                        [value]="friendlyName"
                         (onSelectionChange)="welcomeCenterTileChanged($event, tileTypes.Deeplink)"
                       >
                         {{ friendlyName.value }}
                       </mat-option>
                     </mat-optgroup>
-                  </mat-select>
+                  </mat-autocomplete>
                 </mat-form-field>
                 <button
                   *ngIf="!isInEditMode"

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
@@ -12,7 +12,7 @@ import { Observable, takeUntil } from 'rxjs';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupTaskEntry {
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   edit?: boolean;
   postMonitor: ActionMonitor;
   lspTask: LspTask;
@@ -123,12 +123,12 @@ export class LspTaskManagementComponent extends BaseComponent implements OnInit 
 
   private prepareLspTask(lspTask: LspTask): FormGroupTaskEntry {
     const formControls = {
-      nextExecutionUtc: new FormControl(lspTask.nextExecutionUtc, [Validators.required]),
-      periodInSeconds: new FormControl(lspTask.periodInSeconds, [Validators.required]),
-      periodType: new FormControl(lspTask.periodType, [Validators.required]),
+      nextExecutionUtc: new UntypedFormControl(lspTask.nextExecutionUtc, [Validators.required]),
+      periodInSeconds: new UntypedFormControl(lspTask.periodInSeconds, [Validators.required]),
+      periodType: new UntypedFormControl(lspTask.periodType, [Validators.required]),
     };
     const newControls = <FormGroupTaskEntry>{
-      formGroup: new FormGroup(formControls),
+      formGroup: new UntypedFormGroup(formControls),
       formControls: formControls,
       postMonitor: new ActionMonitor('Edit Task'),
       lspTask: lspTask,
