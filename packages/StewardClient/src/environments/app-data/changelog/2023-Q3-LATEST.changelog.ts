@@ -18,6 +18,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Display warning beside user flag when lookup provides conflicting data',
+    },
+    {
       tag: {
         title: GameTitle.FH5,
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
