@@ -1,7 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MsalService } from '@azure/msal-angular';
-import { environment } from '@environments/environment';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
@@ -53,7 +52,7 @@ describe('LogoutComponent:', () => {
     it('should redirect and open new window', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith([
-        new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank'),
+        new WindowOpen(`${window.origin}/auth/logout`, '_blank'),
         new Navigate(['/auth/logout-iframe']),
       ]);
       expect(store.dispatch).toHaveBeenCalledTimes(1);

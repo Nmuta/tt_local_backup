@@ -17,13 +17,31 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["hammerjs", "minimatch", "lodash", "json-bigint"],
+            "allowedCommonJsDependencies": [
+              "hammerjs",
+              "minimatch",
+              "lodash",
+              "json-bigint",
+              "rfdc",
+              "file-saver",
+              "jszip"
+            ],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "assets": ["src/assets", "src/translations", "src/manifest.json"],
+            "assets": [
+              "src/assets",
+              "src/translations",
+              "src/manifest.json",
+              "src/staticwebapp.config.json",
+              {
+                "glob": "**/*",
+                "input": "src/assets-root/",
+                "output": "/"
+              }
+            ],
             "styles": ["src/global.scss"],
             "scripts": [],
             "aot": false,
@@ -48,6 +66,71 @@
                   "with": "src/environments/environment.dev.ts"
                 }
               ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets-root-dev/",
+                  "output": "/"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "dev-static": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "32kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev-static.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets-root-dev/",
+                  "output": "/"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            },
+            "dev-static-pr": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "32kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev-static.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets-root-dev-pr/",
+                  "output": "/"
+                }
+              ],
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
@@ -68,6 +151,13 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets-root-prod/",
+                  "output": "/"
                 }
               ],
               "optimization": true,
@@ -92,6 +182,13 @@
                   "with": "src/environments/environment.localUiDevApi.ts"
                 }
               ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets-root-dev/",
+                  "output": "/"
+                }
+              ],
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,
@@ -112,6 +209,13 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.localUiProdApi.ts"
+                }
+              ],
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets-root-prod/",
+                  "output": "/"
                 }
               ],
               "optimization": false,

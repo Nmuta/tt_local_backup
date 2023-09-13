@@ -1,83 +1,40 @@
-import { login } from '@support/steward/auth/login';
+import { resetToDefaultState } from '@support/page-utility/reset-to-default-state';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { stewardUrls } from '@support/steward/urls';
-import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { withTags, Tag } from '@support/tags';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
-context('Steward / Support / Auction Blocklist / Woodstock', withTags(Tag.UnitTestStyle), () => {
-  beforeEach(() => {
-    login();
-
-    disableFakeApi();
+context('Steward / Support / Auction Blocklist / Woodstock', () => {
+  before(() => {
+    resetToDefaultState();
   });
 
   // Enable tests when Woodstock has testable content in Prod.
-  xcontext('Auction House Blocklist lookup', () => {
-    beforeEach(() => {
+  context('Auction House Blocklist lookup', () => {
+    before(() => {
       cy.visit(stewardUrls.tools.auctionBlocklist.woodstock);
       waitForProgressSpinners(10_000);
     });
 
     it('should create table in ready state', () => {
       cy.get('table').find('tr').should('have.length.greaterThan', 5);
-      cy.get('table').contains('tr', '1301').should('not.exist');
-      cy.contains('button', 'Submit').should('be.disabled');
+      cy.get('table').contains('tr', '1493').should('exist');
     });
 
-    xcontext('Creating, manipulating, and deleting an entry', () => {
-      beforeEach(() => {
-        cy.visit(stewardUrls.tools.auctionBlocklist.woodstock);
-        cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
-        cy.get('table').find('tr').should('have.length.greaterThan', 5);
-        cy.get('table').contains('tr', '1301').should('not.exist');
-        cy.contains('button', 'Submit').should('be.disabled');
-        cy.contains('mat-form-field', 'Search for make and model').click().type('1301\n');
-        cy.contains('.mat-option-text', 'Jaguar D-Type [1301]').click();
-        cy.contains('mat-form-field', 'Expire Date (mm/dd/yyyy)').click().type('12/12/3999');
-        cy.contains('button', 'Submit').should('be.enabled').click();
-        cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
+    context('filtering entries', () => {
+      it('should filter to existing data in table', () => {
+        cy.contains('mat-form-field', 'Series').type('{selectAll}{backspace}21');
+        cy.contains('mat-form-field', 'Keyword').type('{selectAll}{backspace}Volkswagen');
+        waitForProgressSpinners(10_000);
+        cy.get('table').contains('tr', '1493').should('not.exist');
+        cy.get('table').contains('tr', '3664').should('exist');
       });
 
-      it('should have added entry to table', () => {
-        cy.contains('td', '1301').siblings().contains('button', 'Delete').should('exist');
-      });
-
-      it('should be an editable entry', () => {
-        cy.contains('td', '1301').siblings().contains('td', 'Never').should('not.exist');
-        cy.contains('td', '1301').siblings().contains('button', 'Edit').click();
-        cy.contains('td', '1301').siblings().contains('button', 'Submit').should('exist');
-        cy.contains('td', '1301').siblings().contains('button', 'Undo').should('exist');
-        cy.contains('td', '1301').siblings().get('[type="checkbox"]').should('exist');
-        cy.contains('td', '1301').siblings().get('[type="checkbox"]').should('be.checked');
-        cy.contains('td', '1301').siblings().get('[type="checkbox"]').uncheck({ force: true });
-        cy.contains('td', '1301').siblings().contains('button', 'Submit').click();
-        cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
-        cy.contains('td', '1301').siblings().contains('td', 'Never').should('exist');
-        cy.contains('td', '1301').siblings().contains('button', 'Edit').should('exist');
-      });
-
-      afterEach(() => {
-        cy.contains('td', '1301')
-          .siblings()
-          .contains('button', 'Delete')
-          .should('exist')
-          .should('not.be.enabled');
-        cy.contains('td', '1301')
-          .siblings()
-          .contains('button', 'Delete')
-          .siblings()
-          .within(() => {
-            cy.get('[type="checkbox"]').should('exist');
-            cy.get('[type="checkbox"]').check({ force: true });
-          });
-        cy.contains('td', '1301')
-          .siblings()
-          .contains('button', 'Delete')
-          .should('exist')
-          .should('be.enabled')
-          .click();
-        cy.get('table').contains('tr', '1301').should('not.exist');
+      it('should filter with invalid fields', () => {
+        cy.contains('mat-form-field', 'Series').type('{selectAll}{backspace}10000');
+        cy.contains('mat-form-field', 'Keyword').type('{selectAll}{backspace}TotallyRealMake');
+        waitForProgressSpinners(10_000);
+        cy.get('table').contains('tr', '1493').should('not.exist');
+        cy.get('table').contains('tr', '3664').should('not.exist');
       });
     });
   });

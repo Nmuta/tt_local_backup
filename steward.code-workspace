@@ -8,6 +8,12 @@
     },
     {
       "path": "packages/StewardClient-Cypress"
+    },
+    {
+      "path": "infra"
+    },
+    {
+      "path": "."
     }
   ],
   "settings": {

@@ -179,7 +179,7 @@ export class UserState {
         forceRefresh: action.forceTokenRefresh,
         scopes: [environment.azureAppScope],
         redirectUri: `${
-          useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
+          useStaging ? environment.stewardUiStagingUrl : window.origin
         }/auth/aad-login`,
       }),
     ).pipe(

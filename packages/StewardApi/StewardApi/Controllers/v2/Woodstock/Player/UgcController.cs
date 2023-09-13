@@ -118,50 +118,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Player
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
 
-            var parseUgcType = ugcType.TryParseEnumElseThrow<UgcType>(nameof(ugcType));
-
-            if (parseUgcType == UgcType.Unknown)
+            var supportedContentTypes = new List<ForzaUGCContentType>()
             {
-                throw new InvalidArgumentsStewardException($"Invalid UGC item type to search: (type: {parseUgcType})");
-            }
+                ForzaUGCContentType.Livery,
+                ForzaUGCContentType.Layergroup,
+                ForzaUGCContentType.Photo,
+                ForzaUGCContentType.Tune,
+                ForzaUGCContentType.EventBlueprint,
+                ForzaUGCContentType.PropPrefab,
+            };
 
             var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
-            var results = new List<ForzaUGCDataLight>();
-
-            switch (mappedContentType)
+            if (!supportedContentTypes.Contains(mappedContentType))
             {
-                case ForzaUGCContentType.Livery:
-                    var liveries = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Livery, this.ugcMaxResults).ConfigureAwait(false);
-                    results.AddRange(liveries.result);
-                    break;
-
-                case ForzaUGCContentType.Layergroup:
-                    var layerGroups = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Layergroup, this.ugcMaxResults).ConfigureAwait(false);
-                    results.AddRange(layerGroups.result);
-                    break;
-
-                case ForzaUGCContentType.Photo:
-                    var photos = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Photo, this.ugcMaxResults).ConfigureAwait(false);
-                    results.AddRange(photos.result);
-                    break;
-
-                case ForzaUGCContentType.Tune:
-                    var tunes = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.Tune, this.ugcMaxResults).ConfigureAwait(false);
-                    results.AddRange(tunes.result);
-                    break;
-
-                case ForzaUGCContentType.EventBlueprint:
-                    var eventBlueprints = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, ForzaUGCContentType.EventBlueprint, this.ugcMaxResults).ConfigureAwait(false);
-                    results.AddRange(eventBlueprints.result);
-                    break;
-
-                default:
-                    throw new UnknownFailureStewardException($"Unsupported UGC type: {parseUgcType}");
+                throw new InvalidArgumentsStewardException($"Cannot get hidden UGC for unsupported content type. (ugcType: {ugcType})");
             }
 
-            var convertedResults = this.mapper.SafeMap<List<WoodstockUgcItem>>(results);
+            var response = await this.Services.StorefrontManagementService.GetHiddenUGCByUser(xuid, mappedContentType, this.ugcMaxResults).ConfigureAwait(false);
+            var hiddenUgc = this.mapper.SafeMap<List<WoodstockUgcItem>>(response.result);
 
-            return this.Ok(convertedResults);
+            return this.Ok(hiddenUgc);
         }
     }
 }

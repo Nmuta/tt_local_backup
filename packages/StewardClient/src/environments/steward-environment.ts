@@ -8,7 +8,6 @@ export interface StewardEnvironment {
   production: boolean;
   azureAppId: string;
   azureAppScope: string;
-  stewardUiUrl: string;
   stewardUiStagingUrl: string;
   stewardApiUrl: string;
   stewardApiStagingUrl: string;

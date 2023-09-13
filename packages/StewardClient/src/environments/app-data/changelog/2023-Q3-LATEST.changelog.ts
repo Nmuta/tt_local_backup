@@ -8,6 +8,89 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: {
+        title: GameTitle.FH5,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'cdd66b5e-b3d5-49f6-8a73-bc02fdf3595b',
+      shortText: 'Add Prop Prefab UGC type',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '6bd26f9c-2af3-44f3-aba2-7f0c486ed5e8',
+      shortText: 'Add autocomplete feature and validation',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '317fabba-9068-4444-9fe7-4a2140d252e9',
+      shortText: 'Prepare Steward UI for new deployment model',
+      longText: [
+        'Update 1: Restructure static deploy config files. Add Favicon.',
+        'Update 2: Adjust build pipeline.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c59b7731-7ee8-4b34-a64f-0c0d47d484db',
+      shortText: 'Rework Endpoints navbar utility',
+      longText: [
+        'Utility is now capable of setting all environment endpoints.',
+        'Utility size has been reduced, and it may no longer be removed from the toolbar.',
+        'Quick-change-button color now matches the color in the summary grid.',
+        'Quick-change-button is replaced by a spinner while endpoint data is being retrieved.',
+        'Navbar theme-toggle button has been adjusted to match toolbar',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c898bf28-c7b4-4828-bf00-f338b5f0326b',
+      shortText: 'Adjust standard toolbar',
+      longText: [
+        'Toolbar now defaults to a set of standard tools for new users.',
+        'Reset Tools button on the homepage now sets tools to the standard set of tools.',
+        'Clear Tools button added. It removes all tools in the toolbar.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'aa928195-cd76-4db8-ac46-a4f43ac00704',
+      shortText: 'Rework Navbar Sidebars',
+      longText: [
+        'All previous navbar icon routes have been moved to a unified sidebar.\r\n' +
+          'Navbar icon padding has been replaced with separator bars.',
+
+        'Settings and Profile have been merged into a single button.\r\n' +
+          'Total Notification count is displayed over the new button.',
+
+        'The previous Settings page has been moved to Old Settings.\r\n' +
+          'Its contents have been split into Endpoints, Experience, Tours, and Profile.',
+
+        'The Profile panel no longer has a Location sub-panel.\r\n' +
+          'Some super-admin tools have been moved to this panel.',
+
+        'The Notifications panel is unchanged, aside from an increase in default width to avoid button shifting.',
+
+        'The Changelog panel now respects newlines in changelog entries.\r\n' +
+          'Very old changelog entries have been removed.\r\n' +
+          'The changelog will now only automatically open when there are new entries as well as a new version,\r\n' +
+          'and will not open automatically if you are already viewing it.',
+
+        'The Endpoints panel has been updated with some game titles.\r\n' +
+          'Show Help Icons is now in the Experience panel.',
+
+        'The Experience panel contains general user experience settings, some of which may appear in other panels.',
+
+        'The Tours panel now allows launching tours immediately, separately from enabling them to run.',
+
+        'The Old Settings panel is the unmodified version of the prior Settings panel. We plan to remove it later.',
+      ],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '736e71dd-630f-4960-984f-ad5c611e383c',
+      shortText: 'Add Steam purchases to entitlements',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.WelcomeCenterTiles },
       uuid: 'a58c3f63-61df-4718-9fa7-384a001776fd',
       shortText: 'Add pegasus data to timer dropdowns',
@@ -279,7 +362,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      tag: ChangelogTag.General,
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
     },
