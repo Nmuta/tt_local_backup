@@ -12,7 +12,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         private static AuctionsControllerTestingClient stewardClient;
         private static AuctionsControllerTestingClient unauthedClient;
         private ulong xuid = 2675352635783107;
-        private string gamertag = "Plink";
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -41,7 +40,67 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
+        public async Task GetPlayerAuctions_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.GetPlayerAuctions(this.xuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetPlayerAuctions_InvalidXuid()
+        {
+            try
+            {
+                var response = await stewardClient.GetPlayerAuctions(TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task GetPlayerAuctionLog()
+        {
+            try
+            {
+                var response = await stewardClient.GetPlayerAuctionLog(this.xuid).ConfigureAwait(false);
+                Assert.IsNotNull(response);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetPlayerAuctionLog_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.GetPlayerAuctionLog(this.xuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetPlayerAuctionLog_InvalidXuid()
         {
             try
             {
