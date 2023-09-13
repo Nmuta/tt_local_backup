@@ -1,6 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { environment } from '@environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { Observable, takeUntil } from 'rxjs';

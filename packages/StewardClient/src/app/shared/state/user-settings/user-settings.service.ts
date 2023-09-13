@@ -18,7 +18,7 @@ export class UserSettingsService {
   /**
    * Produces the current app version.
    * As seen in environment.ts and configured by ADO build pipeline.
-   * 
+   *
    * When on localhost, produces hourly versions.
    */
   public get currentAppVersion(): string {
@@ -33,7 +33,7 @@ export class UserSettingsService {
 
   /** Produces the app version. */
   public get lastSeenAppVersion(): string {
-     return this.state.appVersion;
+    return this.state.appVersion;
   }
 
   /** Sets the app version. */
