@@ -20,7 +20,10 @@ import faker from '@faker-js/faker';
 import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
-describe('ReportWeightComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ReportWeightComponent', () => {
   let component: ReportWeightComponent;
   let fixture: ComponentFixture<ReportWeightComponent>;
   let mockStore: Store;
@@ -40,23 +43,25 @@ describe('ReportWeightComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        PipesModule,
-      ],
-      providers: [createMockMsalServices(), createMockLoggerService()],
-      declarations: [ReportWeightComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+          PipesModule,
+        ],
+        providers: [createMockMsalServices(), createMockLoggerService()],
+        declarations: [ReportWeightComponent],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ReportWeightComponent);
     component = fixture.componentInstance;

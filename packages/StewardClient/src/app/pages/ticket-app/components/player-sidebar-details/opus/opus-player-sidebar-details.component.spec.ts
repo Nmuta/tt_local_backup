@@ -13,28 +13,33 @@ import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/ti
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('OpusPlayerSidebarDetailsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'OpusPlayerSidebarDetailsComponent', () => {
   let mockOpusService: OpusService;
 
   let fixture: ComponentFixture<OpusPlayerSidebarDetailsComponent>;
   let component: OpusPlayerSidebarDetailsComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [OpusPlayerSidebarDetailsComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockOpusService(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [OpusPlayerSidebarDetailsComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWindowService(),
+          ...createMockMsalServices(),
+          createMockOpusService(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockOpusService = injector.inject(OpusService);

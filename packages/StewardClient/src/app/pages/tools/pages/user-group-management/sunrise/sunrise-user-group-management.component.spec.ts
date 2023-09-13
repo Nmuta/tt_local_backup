@@ -7,21 +7,26 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { SunriseUserGroupManagementComponent } from './sunrise-user-group-management.component';
 
-describe('SunriseUserGroupManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseUserGroupManagementComponent', () => {
   let component: SunriseUserGroupManagementComponent;
   let fixture: ComponentFixture<SunriseUserGroupManagementComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-      ],
-      declarations: [SunriseUserGroupManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        declarations: [SunriseUserGroupManagementComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseUserGroupManagementComponent);
     component = fixture.debugElement.componentInstance;

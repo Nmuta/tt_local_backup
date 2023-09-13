@@ -14,7 +14,10 @@ import { ApolloService } from './apollo.service';
 import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 
-describe('ApolloService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloService', () => {
   let injector: TestBed;
   let service: ApolloService;
   let apiServiceMock: ApiService;

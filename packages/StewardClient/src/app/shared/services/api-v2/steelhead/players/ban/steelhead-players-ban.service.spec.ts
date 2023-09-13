@@ -3,7 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import { SteelheadPlayersBanService } from './steelhead-players-ban.service';
 
-describe('SteelheadPlayersBanService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayersBanService', () => {
   let service: SteelheadPlayersBanService;
   const nextReturnValue: unknown = {};
 

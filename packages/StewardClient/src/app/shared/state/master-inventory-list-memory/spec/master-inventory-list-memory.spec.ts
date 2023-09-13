@@ -19,7 +19,10 @@ import { createMockSteelheadItemsService } from '@services/api-v2/steelhead/item
 import { WoodstockItemsService } from '@services/api-v2/woodstock/items/woodstock-items.service';
 import { createMockWoodstockItemsService } from '@services/api-v2/woodstock/items/woodstock-items.service.mock';
 
-describe('State: MasterInventoryListMemoryState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'State: MasterInventoryListMemoryState', () => {
   let service: MasterInventoryListMemoryState;
   let store: Store;
 
@@ -29,16 +32,18 @@ describe('State: MasterInventoryListMemoryState', () => {
   let mockWoodstockService: WoodstockItemsService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot([MasterInventoryListMemoryState])],
-      providers: [
-        createMockSunriseService(),
-        createMockApolloService(),
-        createMockSteelheadItemsService(),
-        createMockWoodstockItemsService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot([MasterInventoryListMemoryState])],
+        providers: [
+          createMockSunriseService(),
+          createMockApolloService(),
+          createMockSteelheadItemsService(),
+          createMockWoodstockItemsService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     service = TestBed.inject(MasterInventoryListMemoryState);
     store = TestBed.inject(Store);

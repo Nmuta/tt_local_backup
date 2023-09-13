@@ -3,15 +3,20 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import faker from '@faker-js/faker';
 import { PastableSingleInputComponent } from './pastable-single-input.component';
 
-describe('PastableSingleInputComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PastableSingleInputComponent', () => {
   let component: PastableSingleInputComponent;
   let fixture: ComponentFixture<PastableSingleInputComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [PastableSingleInputComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [PastableSingleInputComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PastableSingleInputComponent);
     component = fixture.componentInstance;

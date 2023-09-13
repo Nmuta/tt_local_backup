@@ -15,7 +15,10 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('WoodstockConsolesComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockConsolesComponent', () => {
   let component: WoodstockConsolesComponent;
   let fixture: ComponentFixture<WoodstockConsolesComponent>;
 
@@ -23,11 +26,13 @@ describe('WoodstockConsolesComponent', () => {
   let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockConsolesComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockWoodstockService(), createMockOldPermissionsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockConsolesComponent, BigJsonPipe, HumanizePipe],
+        providers: [createMockWoodstockService(), createMockOldPermissionsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

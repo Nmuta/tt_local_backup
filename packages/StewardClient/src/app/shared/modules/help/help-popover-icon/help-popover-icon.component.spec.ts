@@ -4,15 +4,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { HelpPopoverIconComponent } from './help-popover-icon.component';
 
-describe('HelpPopoverIconComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'HelpPopoverIconComponent', () => {
   let component: HelpPopoverIconComponent;
   let fixture: ComponentFixture<HelpPopoverIconComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [HelpPopoverIconComponent],
-      imports: [OverlayModule, RouterTestingModule.withRoutes([])],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [HelpPopoverIconComponent],
+        imports: [OverlayModule, RouterTestingModule.withRoutes([])],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

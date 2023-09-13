@@ -9,20 +9,25 @@ import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup
 import { createMockSteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service.mock';
 import { CalendarLookupInputs } from '../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 
-describe('RacersCupCalendarComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'RacersCupCalendarComponent', () => {
   let component: RacersCupCalendarComponent;
   let fixture: ComponentFixture<RacersCupCalendarComponent>;
   let mockSteelheadService: SteelheadRacersCupService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [RacersCupCalendarComponent],
-      imports: [
-        MatDialogModule,
-        CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
-      ],
-      providers: [createMockSteelheadRacersCupService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [RacersCupCalendarComponent],
+        imports: [
+          MatDialogModule,
+          CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+        ],
+        providers: [createMockSteelheadRacersCupService()],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockSteelheadService = injector.inject(SteelheadRacersCupService);

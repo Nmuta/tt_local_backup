@@ -13,17 +13,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockWoodstockService } from '@services/woodstock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('WoodstockPlayerAuctionsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayerAuctionsComponent', () => {
   let component: WoodstockPlayerAuctionsComponent;
   let fixture: ComponentFixture<WoodstockPlayerAuctionsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [WoodstockPlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [WoodstockPlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPlayerAuctionsComponent);
     component = fixture.componentInstance;

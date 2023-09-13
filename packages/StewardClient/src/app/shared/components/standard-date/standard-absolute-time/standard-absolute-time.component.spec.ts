@@ -6,15 +6,20 @@ import { LuxonModule } from 'luxon-angular';
 
 import { StandardAbsoluteTimeComponent } from './standard-absolute-time.component';
 
-describe('StandardAbsoluteTimeComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'StandardAbsoluteTimeComponent', () => {
   let component: StandardAbsoluteTimeComponent;
   let fixture: ComponentFixture<StandardAbsoluteTimeComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [StandardAbsoluteTimeComponent],
-      imports: [PipesModule, LuxonModule, StandardCopyModule],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [StandardAbsoluteTimeComponent],
+        imports: [PipesModule, LuxonModule, StandardCopyModule],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -5,16 +5,21 @@ import { NgxsModule } from '@ngxs/store';
 
 import { EndpointsNavToolComponent } from './endpoints-nav-tool.component';
 
-describe('EndpointsNavToolComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'EndpointsNavToolComponent', () => {
   let component: EndpointsNavToolComponent;
   let fixture: ComponentFixture<EndpointsNavToolComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      declarations: [EndpointsNavToolComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        declarations: [EndpointsNavToolComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

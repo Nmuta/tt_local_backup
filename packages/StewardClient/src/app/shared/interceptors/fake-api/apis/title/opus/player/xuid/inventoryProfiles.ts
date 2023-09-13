@@ -38,7 +38,7 @@ export class OpusPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
         };
       });
 
-    faker.random.arrayElement(items).isCurrent = true;
+    faker.helpers.arrayElement(items).isCurrent = true;
 
     return items;
   }

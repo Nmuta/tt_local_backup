@@ -2,14 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModelDumpHumanizeArrayTableComponent } from './model-dump-humanize-array-table.component';
 
-describe('ModelDumpHumanizeArrayTableComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ModelDumpHumanizeArrayTableComponent', () => {
   let component: ModelDumpHumanizeArrayTableComponent;
   let fixture: ComponentFixture<ModelDumpHumanizeArrayTableComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ModelDumpHumanizeArrayTableComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ModelDumpHumanizeArrayTableComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

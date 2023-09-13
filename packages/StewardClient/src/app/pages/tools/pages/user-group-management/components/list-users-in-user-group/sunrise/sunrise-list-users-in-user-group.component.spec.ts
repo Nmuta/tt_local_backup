@@ -6,17 +6,22 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { SunriseListUsersInGroupComponent } from './sunrise-list-users-in-user-group.component';
 
-describe('SunriseListUsersInGroupComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseListUsersInGroupComponent', () => {
   let component: SunriseListUsersInGroupComponent;
   let fixture: ComponentFixture<SunriseListUsersInGroupComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      declarations: [SunriseListUsersInGroupComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        declarations: [SunriseListUsersInGroupComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseListUsersInGroupComponent);
     component = fixture.debugElement.componentInstance;

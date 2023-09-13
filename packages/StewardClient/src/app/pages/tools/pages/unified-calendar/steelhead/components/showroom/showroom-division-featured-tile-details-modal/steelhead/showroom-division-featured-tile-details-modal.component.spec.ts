@@ -12,32 +12,37 @@ import { DivisionFeaturedShowcase } from '@services/api-v2/steelhead/showroom/st
 import { ShowroomDivisionFeaturedTileDetailsModalComponent } from './showroom-division-featured-tile-details-modal.component';
 import { DateTime } from 'luxon';
 
-describe('ShowroomDivisionFeaturedTileDetailsModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ShowroomDivisionFeaturedTileDetailsModalComponent', () => {
   let component: ShowroomDivisionFeaturedTileDetailsModalComponent;
   let fixture: ComponentFixture<ShowroomDivisionFeaturedTileDetailsModalComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ShowroomDivisionFeaturedTileDetailsModalComponent],
-      imports: [MatDialogModule, PipesModule, HttpClientTestingModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            title: faker.datatype.string(),
-            description: faker.datatype.string(),
-            startTimeUtc: DateTime.fromJSDate(faker.datatype.datetime()),
-            endTimeUtc: DateTime.fromJSDate(faker.datatype.datetime()),
-            divisionId: faker.datatype.number(),
-            divisionName: faker.datatype.string(),
-          } as DivisionFeaturedShowcase,
-        },
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ShowroomDivisionFeaturedTileDetailsModalComponent],
+        imports: [MatDialogModule, PipesModule, HttpClientTestingModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              title: faker.datatype.string(),
+              description: faker.datatype.string(),
+              startTimeUtc: DateTime.fromJSDate(faker.datatype.datetime()),
+              endTimeUtc: DateTime.fromJSDate(faker.datatype.datetime()),
+              divisionId: faker.datatype.number(),
+              divisionName: faker.datatype.string(),
+            } as DivisionFeaturedShowcase,
+          },
+        ],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

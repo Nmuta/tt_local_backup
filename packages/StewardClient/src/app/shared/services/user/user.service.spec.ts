@@ -7,7 +7,10 @@ import { ApiService, createMockApiService } from '@shared/services/api';
 import { UserService } from './user.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('service: UserService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'service: UserService', () => {
   let service: UserService;
   let apiMock: ApiService;
 

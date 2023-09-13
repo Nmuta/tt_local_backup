@@ -8,22 +8,27 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { WoodstockPlayerInventoryProfilePickerComponent } from './woodstock-player-inventory-profile-picker.component';
 
-describe('WoodstockPlayerInventoryProfilePickerComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayerInventoryProfilePickerComponent', () => {
   let component: WoodstockPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<WoodstockPlayerInventoryProfilePickerComponent>;
   let mockStore: Store;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [WoodstockPlayerInventoryProfilePickerComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [WoodstockPlayerInventoryProfilePickerComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPlayerInventoryProfilePickerComponent);
     component = fixture.debugElement.componentInstance;

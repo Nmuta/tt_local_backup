@@ -5,7 +5,10 @@ import { createMockZafClientService } from './zaf-client.service.mock';
 import { ZafClient } from '@shared/definitions/zaf-client';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('service: UserService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'service: UserService', () => {
   let service: ZendeskService;
   let mockZafClientService: ZafClientService;
   let mockZafClient: ZafClient;

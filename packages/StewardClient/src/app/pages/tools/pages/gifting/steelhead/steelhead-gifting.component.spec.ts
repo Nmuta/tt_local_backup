@@ -15,23 +15,28 @@ import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 
-describe('SteelheadGiftingComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadGiftingComponent', () => {
   let component: SteelheadGiftingComponent;
   let fixture: ComponentFixture<SteelheadGiftingComponent>;
 
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState, SteelheadGiftingState]),
-      ],
-      declarations: [SteelheadGiftingComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState, SteelheadGiftingState]),
+        ],
+        declarations: [SteelheadGiftingComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadGiftingComponent);
     component = fixture.debugElement.componentInstance;

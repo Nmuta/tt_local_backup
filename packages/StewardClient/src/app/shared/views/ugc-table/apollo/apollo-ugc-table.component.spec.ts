@@ -10,18 +10,23 @@ import { UgcType } from '@models/ugc-filters';
 import { ApolloService } from '@services/apollo';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
-describe('ApolloUgcTableComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloUgcTableComponent', () => {
   let component: ApolloUgcTableComponent;
   let fixture: ComponentFixture<ApolloUgcTableComponent>;
   let mockApolloService: ApolloService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
-      declarations: [ApolloUgcTableComponent, BigJsonPipe],
-      providers: [createMockApolloService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
+        declarations: [ApolloUgcTableComponent, BigJsonPipe],
+        providers: [createMockApolloService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ApolloUgcTableComponent);
     component = fixture.componentInstance;

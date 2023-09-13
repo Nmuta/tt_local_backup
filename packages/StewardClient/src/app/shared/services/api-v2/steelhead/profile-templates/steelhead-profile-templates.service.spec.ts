@@ -6,7 +6,10 @@ import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import { of } from 'rxjs';
 import { SteelheadProfileTemplatesService } from './steelhead-profile-templates.service';
 
-describe('SteelheadProfileTemplatesService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadProfileTemplatesService', () => {
   let service: SteelheadProfileTemplatesService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

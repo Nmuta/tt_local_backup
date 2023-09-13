@@ -15,7 +15,10 @@ import { DateTime, Duration } from 'luxon';
 import { of } from 'rxjs';
 import { WoodstockFeatureUgcModalComponent } from './woodstock-feature-ugc-modal.component';
 
-describe('WoodstockFeatureUgcModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<WoodstockFeatureUgcModalComponent>;
@@ -25,21 +28,23 @@ describe('WoodstockFeatureUgcModalComponent', () => {
   let mockWoodstockService: WoodstockService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [WoodstockFeatureUgcModalComponent],
-      imports: [MatButtonModule, MatDialogModule, PipesModule],
-      providers: [
-        createMockWoodstockService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockFeatureUgcModalComponent],
+        imports: [MatButtonModule, MatDialogModule, PipesModule],
+        providers: [
+          createMockWoodstockService(),
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockFeatureUgcModalComponent);
     component = fixture.componentInstance;

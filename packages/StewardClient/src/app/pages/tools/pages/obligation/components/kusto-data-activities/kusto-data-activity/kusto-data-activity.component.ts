@@ -62,7 +62,6 @@ const UTC_NOW = DateTime.utc();
   ],
 })
 export class KustoDataActivityComponent implements AfterViewInit, ControlValueAccessor, Validator {
-
   @ViewChild('kustoFunction') public kustoFunction: KustoFunctionComponent;
 
   // eslint-disable-next-line @typescript-eslint/member-ordering

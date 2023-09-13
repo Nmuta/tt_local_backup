@@ -8,7 +8,10 @@ import { NgxsModule } from '@ngxs/store';
 import { UserSettingsService } from './user-settings.service';
 import { UserSettingsState } from './user-settings.state';
 
-describe('UserSettingsServiceService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'UserSettingsServiceService', () => {
   let service: UserSettingsService;
 
   beforeEach(() => {

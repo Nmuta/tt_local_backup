@@ -9,7 +9,10 @@ import {
   SetSteelheadGiftHistorySelectedPlayerIdentities,
 } from './steelhead-gift-history.state.actions';
 
-describe('SteelheadGiftHistoryState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadGiftHistoryState', () => {
   let store: Store;
   let service: SteelheadGiftHistoryState;
 

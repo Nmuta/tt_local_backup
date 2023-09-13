@@ -19,7 +19,10 @@ import faker from '@faker-js/faker';
 import { SkillRatingComponent, SkillRatingServiceContract } from './skill-rating.component';
 import { SkillRatingSummary } from '@services/api-v2/steelhead/player/skill-rating/steelhead-player-skill-rating.service';
 
-describe('SkillRatingComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SkillRatingComponent', () => {
   let component: SkillRatingComponent;
   let fixture: ComponentFixture<SkillRatingComponent>;
 
@@ -46,23 +49,25 @@ describe('SkillRatingComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        PipesModule,
-      ],
-      providers: [createMockMsalServices(), createMockLoggerService()],
-      declarations: [SkillRatingComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+          PipesModule,
+        ],
+        providers: [createMockMsalServices(), createMockLoggerService()],
+        declarations: [SkillRatingComponent],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SkillRatingComponent);
     component = fixture.componentInstance;

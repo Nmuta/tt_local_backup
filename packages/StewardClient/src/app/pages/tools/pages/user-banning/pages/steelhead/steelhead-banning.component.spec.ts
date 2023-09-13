@@ -19,7 +19,10 @@ import { createMockSteelheadPlayersBanService } from '@services/api-v2/steelhead
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
 
-describe('SteelheadBanningComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadBanningComponent', () => {
   let component: SteelheadBanningComponent;
   let fixture: ComponentFixture<SteelheadBanningComponent>;
   let steelhead: SteelheadService;
@@ -27,16 +30,18 @@ describe('SteelheadBanningComponent', () => {
   let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SteelheadBanningComponent],
-      providers: [
-        createMockSteelheadService(),
-        createMockBackgroundJobService(),
-        createMockSteelheadPlayersBanService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SteelheadBanningComponent],
+        providers: [
+          createMockSteelheadService(),
+          createMockBackgroundJobService(),
+          createMockSteelheadPlayersBanService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     steelhead = TestBed.inject(SteelheadService);
   });

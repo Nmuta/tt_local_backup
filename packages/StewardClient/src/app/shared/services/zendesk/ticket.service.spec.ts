@@ -4,7 +4,10 @@ import { TestBed } from '@angular/core/testing';
 import { TicketService } from './ticket.service';
 import { createMockZendeskService } from './zendesk.service.mock';
 
-describe('TicketService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'TicketService', () => {
   let service: TicketService;
 
   beforeEach(() => {

@@ -12,7 +12,10 @@ import { createMockKustoService, KustoService } from '@services/kusto';
 
 import { LeaderboardValidationsComponent } from './leaderboard-validations.component';
 
-describe('LeaderboardValidationsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'LeaderboardValidationsComponent', () => {
   let component: LeaderboardValidationsComponent;
   let fixture: ComponentFixture<LeaderboardValidationsComponent>;
 
@@ -21,22 +24,27 @@ describe('LeaderboardValidationsComponent', () => {
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-      ],
-      declarations: [LeaderboardValidationsComponent],
-      providers: [createMockKustoService(), { provide: UntypedFormBuilder, useValue: formBuilder }],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+        ],
+        declarations: [LeaderboardValidationsComponent],
+        providers: [
+          createMockKustoService(),
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(LeaderboardValidationsComponent);
     component = fixture.componentInstance;

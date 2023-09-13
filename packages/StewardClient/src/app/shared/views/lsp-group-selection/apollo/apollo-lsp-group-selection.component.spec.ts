@@ -8,19 +8,28 @@ import { GetLspGroups } from '@shared/state/lsp-group-memory/lsp-group-memory.ac
 import { GameTitleCodeName } from '@models/enums';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
 
-describe('ApolloLspGroupSelectionComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloLspGroupSelectionComponent', () => {
   let fixture: ComponentFixture<ApolloLspGroupSelectionComponent>;
   let component: ApolloLspGroupSelectionComponent;
 
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [ApolloLspGroupSelectionComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        declarations: [ApolloLspGroupSelectionComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

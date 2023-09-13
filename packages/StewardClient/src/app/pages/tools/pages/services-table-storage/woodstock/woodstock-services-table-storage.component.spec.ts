@@ -7,22 +7,27 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { ServicesTableStorageComponent } from '../services-table-storage.component';
 import { WoodstockServicesTableStorageComponent } from './woodstock-services-table-storage.component';
 
-describe('WoodstockServicesTableStorageComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockServicesTableStorageComponent', () => {
   let component: WoodstockServicesTableStorageComponent;
   let fixture: ComponentFixture<WoodstockServicesTableStorageComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockServicesTableStorageComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [{ provide: ServicesTableStorageComponent, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockServicesTableStorageComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [{ provide: ServicesTableStorageComponent, useValue: {} }],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

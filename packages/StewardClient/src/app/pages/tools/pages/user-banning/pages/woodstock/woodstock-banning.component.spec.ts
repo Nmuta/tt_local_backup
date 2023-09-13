@@ -19,7 +19,10 @@ import { createMockWoodstockPlayersBanService } from '@services/api-v2/woodstock
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
 
-describe('WoodstockBanningComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockBanningComponent', () => {
   let component: WoodstockBanningComponent;
   let fixture: ComponentFixture<WoodstockBanningComponent>;
   let woodstock: WoodstockService;
@@ -27,16 +30,18 @@ describe('WoodstockBanningComponent', () => {
   let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockBanningComponent],
-      providers: [
-        createMockWoodstockService(),
-        createMockBackgroundJobService(),
-        createMockWoodstockPlayersBanService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockBanningComponent],
+        providers: [
+          createMockWoodstockService(),
+          createMockBackgroundJobService(),
+          createMockWoodstockPlayersBanService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     woodstock = TestBed.inject(WoodstockService);
   });

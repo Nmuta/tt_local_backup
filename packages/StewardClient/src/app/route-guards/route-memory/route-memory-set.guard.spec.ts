@@ -8,7 +8,10 @@ import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state'
 
 import { RouteMemorySetGuard } from './route-memory-set.guard';
 
-describe('RouteMemorySetGuard', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'RouteMemorySetGuard', () => {
   let guard: RouteMemorySetGuard;
   let store: Store;
   const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'ugcDetails' } };

@@ -10,17 +10,22 @@ import { StandardCopyComponent } from './standard-copy.component';
 })
 class TestHarnessComponent {}
 
-describe('StandardCopyComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'StandardCopyComponent', () => {
   let component: StandardCopyComponent;
   let fixture: ComponentFixture<StandardCopyComponent>;
   let harness: ComponentFixture<TestHarnessComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TestHarnessComponent, StandardCopyComponent],
-      imports: [MatTooltipModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [TestHarnessComponent, StandardCopyComponent],
+        imports: [MatTooltipModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

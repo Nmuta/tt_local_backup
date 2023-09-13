@@ -6,7 +6,10 @@ import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoi
 import { TourState } from '@shared/state/tours/tours.state';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 
-describe('ExperienceComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ExperienceComponent', () => {
   let component: ExperienceComponent;
   let fixture: ComponentFixture<ExperienceComponent>;
 

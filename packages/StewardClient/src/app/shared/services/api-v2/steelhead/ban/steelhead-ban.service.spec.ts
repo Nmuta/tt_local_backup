@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadBanService } from './steelhead-ban.service';
 
-describe('SteelheadBanService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadBanService', () => {
   let service: SteelheadBanService;
 
   beforeEach(() => {

@@ -8,22 +8,27 @@ import { UserDetailsComponent } from '../user-details.component';
 
 import { ForteUserDetailsComponent } from './forte-user-details.component';
 
-describe('ForteUserDetailsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ForteUserDetailsComponent', () => {
   let component: ForteUserDetailsComponent;
   let fixture: ComponentFixture<ForteUserDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ForteUserDetailsComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [{ provide: UserDetailsComponent, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ForteUserDetailsComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [{ provide: UserDetailsComponent, useValue: {} }],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

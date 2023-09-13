@@ -14,24 +14,29 @@ import faker from '@faker-js/faker';
 import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 import BigNumber from 'bignumber.js';
 
-describe('SteelheadBuildersCupCalendarViewComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadBuildersCupCalendarViewComponent', () => {
   let component: SteelheadBuildersCupCalendarViewComponent;
   let fixture: ComponentFixture<SteelheadBuildersCupCalendarViewComponent>;
   let mockSteelheadService: SteelheadBuildersCupService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule,
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
-      ],
-      declarations: [SteelheadBuildersCupCalendarViewComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadBuildersCupService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          MatDialogModule,
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+        ],
+        declarations: [SteelheadBuildersCupCalendarViewComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadBuildersCupService()],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockSteelheadService = injector.inject(SteelheadBuildersCupService);

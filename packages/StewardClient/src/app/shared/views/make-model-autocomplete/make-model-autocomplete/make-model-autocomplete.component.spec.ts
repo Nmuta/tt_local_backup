@@ -14,7 +14,10 @@ import { of } from 'rxjs';
 
 import { MakeModelAutocompleteComponent } from './make-model-autocomplete.component';
 
-describe('MakeModelAutocompleteComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'MakeModelAutocompleteComponent', () => {
   let component: MakeModelAutocompleteComponent;
   let fixture: ComponentFixture<MakeModelAutocompleteComponent>;
 
@@ -23,17 +26,19 @@ describe('MakeModelAutocompleteComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [MakeModelAutocompleteComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [MakeModelAutocompleteComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

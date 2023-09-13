@@ -3,7 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import { WoodstockPlayerBanService } from './woodstock-player-ban.service';
 
-describe('WoodstockPlayerBanService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayerBanService', () => {
   let service: WoodstockPlayerBanService;
   const nextReturnValue: unknown = {};
 

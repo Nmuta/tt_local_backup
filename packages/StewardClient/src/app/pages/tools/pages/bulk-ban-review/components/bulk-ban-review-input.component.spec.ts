@@ -7,22 +7,27 @@ import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/materia
 import { BulkBanReviewInputComponent } from './bulk-ban-review-input.component';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 
-describe('BulkBanReviewInputComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BulkBanReviewInputComponent', () => {
   let component: BulkBanReviewInputComponent;
   let fixture: ComponentFixture<BulkBanReviewInputComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        MatPaginatorModule,
-      ],
-      declarations: [BulkBanReviewInputComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          MatPaginatorModule,
+        ],
+        declarations: [BulkBanReviewInputComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(BulkBanReviewInputComponent);
     component = fixture.debugElement.componentInstance;

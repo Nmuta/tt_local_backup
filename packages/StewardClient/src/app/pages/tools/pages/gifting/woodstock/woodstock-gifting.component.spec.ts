@@ -15,23 +15,28 @@ import { WoodstockGiftingState } from './state/woodstock-gifting.state';
 import { SetWoodstockGiftingMatTabIndex } from './state/woodstock-gifting.state.actions';
 import { WoodstockGiftingComponent } from './woodstock-gifting.component';
 
-describe('WoodstockGiftingComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockGiftingComponent', () => {
   let component: WoodstockGiftingComponent;
   let fixture: ComponentFixture<WoodstockGiftingComponent>;
 
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState, WoodstockGiftingState]),
-      ],
-      declarations: [WoodstockGiftingComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState, WoodstockGiftingState]),
+        ],
+        declarations: [WoodstockGiftingComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockGiftingComponent);
     component = fixture.debugElement.componentInstance;

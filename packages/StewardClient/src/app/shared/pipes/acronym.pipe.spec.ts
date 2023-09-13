@@ -1,6 +1,9 @@
 import { AcronymPipe } from './acronym.pipe';
 
-describe('AcronymPipe', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'AcronymPipe', () => {
   it('create an instance', () => {
     const pipe = new AcronymPipe();
     expect(pipe).toBeTruthy();

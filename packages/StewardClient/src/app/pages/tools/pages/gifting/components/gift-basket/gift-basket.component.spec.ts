@@ -26,7 +26,10 @@ import { UserModel } from '@models/user.model';
 import { toDateTime } from '@helpers/luxon';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
-describe('GiftBasketBaseComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<
     GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
   >;
@@ -38,17 +41,19 @@ describe('GiftBasketBaseComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-      ],
-      declarations: [GiftBasketBaseComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockPermAttributesService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+        ],
+        declarations: [GiftBasketBaseComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockPermAttributesService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(
       GiftBasketBaseComponent as Type<

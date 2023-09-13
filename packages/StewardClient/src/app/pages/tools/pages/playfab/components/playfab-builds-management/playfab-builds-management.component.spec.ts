@@ -16,7 +16,10 @@ import {
   PlayFabBuildsManagementServiceContract,
 } from './playfab-builds-management.component';
 
-describe('PlayFabBuildsManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayFabBuildsManagementComponent', () => {
   let component: PlayFabBuildsManagementComponent;
   let fixture: ComponentFixture<PlayFabBuildsManagementComponent>;
 
@@ -37,22 +40,24 @@ describe('PlayFabBuildsManagementComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonToggleModule,
-      ],
-      declarations: [PlayFabBuildsManagementComponent],
-      providers: [],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatDialogModule,
+          MatButtonToggleModule,
+        ],
+        declarations: [PlayFabBuildsManagementComponent],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PlayFabBuildsManagementComponent);
     component = fixture.componentInstance;

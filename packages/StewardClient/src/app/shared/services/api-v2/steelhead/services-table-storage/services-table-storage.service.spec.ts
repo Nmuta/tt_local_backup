@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadServicesTableStorageService } from './services-table-storage.service';
 
-describe('SteelheadConsolesService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadConsolesService', () => {
   let service: SteelheadServicesTableStorageService;
 
   beforeEach(() => {

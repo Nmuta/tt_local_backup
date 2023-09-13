@@ -8,7 +8,10 @@ import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.servi
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 
-describe('SidebarsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SidebarsComponent', () => {
   let component: SidebarsComponent;
   let fixture: ComponentFixture<SidebarsComponent>;
 

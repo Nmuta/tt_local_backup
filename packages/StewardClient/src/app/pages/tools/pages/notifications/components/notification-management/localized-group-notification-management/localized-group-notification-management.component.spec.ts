@@ -49,7 +49,10 @@ class TestNotificationManagementService implements LocalizedGroupMessagingManage
   }
 }
 
-describe('LocalizedGroupNotificationManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'LocalizedGroupNotificationManagementComponent', () => {
   let component: LocalizedGroupNotificationManagementComponent;
   let fixture: ComponentFixture<LocalizedGroupNotificationManagementComponent>;
   let testGroupNotifications: LocalizedGroupNotification[];
@@ -57,12 +60,14 @@ describe('LocalizedGroupNotificationManagementComponent', () => {
   const mockService: TestNotificationManagementService = new TestNotificationManagementService();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [LocalizedGroupNotificationManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [TestNotificationManagementService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [LocalizedGroupNotificationManagementComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [TestNotificationManagementService],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(LocalizedGroupNotificationManagementComponent);
     component = fixture.debugElement.componentInstance;
@@ -78,7 +83,7 @@ describe('LocalizedGroupNotificationManagementComponent', () => {
             sentDateUtc: toDateTime(faker.date.soon()),
             expirationDateUtc: toDateTime(faker.date.soon()),
             hasDeviceType: faker.datatype.boolean(),
-            deviceType: faker.random.arrayElement(Object.getOwnPropertyNames(DeviceType)),
+            deviceType: faker.helpers.arrayElement(Object.getOwnPropertyNames(DeviceType)),
             notificationType: 'CommunityMessageNotification',
             groupId: fakeBigNumber(),
           },

@@ -2,7 +2,10 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatIconRegistryService } from './mat-icon-registry.service';
 
-describe('service: MatIconRegistryService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'service: MatIconRegistryService', () => {
   let injector: TestBed;
   let service: MatIconRegistryService;
 

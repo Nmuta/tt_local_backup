@@ -15,28 +15,33 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import faker from '@faker-js/faker';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('PlayerSidebarDetailsBaseComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayerSidebarDetailsBaseComponent', () => {
   let fixture: ComponentFixture<PlayerSidebarDetailsBaseComponent<never>>;
   let component: PlayerSidebarDetailsBaseComponent<never>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [PlayerSidebarDetailsBaseComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockSunriseService(),
-        createMockApolloService(),
-        createMockOpusService(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [PlayerSidebarDetailsBaseComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWindowService(),
+          ...createMockMsalServices(),
+          createMockSunriseService(),
+          createMockApolloService(),
+          createMockOpusService(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fixture = TestBed.createComponent(PlayerSidebarDetailsBaseComponent as any);

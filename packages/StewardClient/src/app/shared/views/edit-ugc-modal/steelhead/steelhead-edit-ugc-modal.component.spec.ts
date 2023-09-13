@@ -10,7 +10,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
 import { PlayerUgcItem, fakePlayerUgcItem } from '@models/player-ugc-item';
 
-describe('SteelheadEditUgcModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadEditUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<SteelheadEditUgcModalComponent>;
@@ -19,20 +22,22 @@ describe('SteelheadEditUgcModalComponent', () => {
   let mockMatDialogRef: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SteelheadEditUgcModalComponent],
-      imports: [HttpClientTestingModule, NgxsModule.forRoot(), MatDialogModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadEditUgcModalComponent],
+        imports: [HttpClientTestingModule, NgxsModule.forRoot(), MatDialogModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadEditUgcModalComponent);
     component = fixture.componentInstance;

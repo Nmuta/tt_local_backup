@@ -3,7 +3,10 @@ import { NgxsModule } from '@ngxs/store';
 
 import { ThemeService } from './theme.service';
 
-describe('ThemeService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ThemeService', () => {
   let service: ThemeService;
 
   beforeEach(() => {

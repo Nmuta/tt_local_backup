@@ -19,7 +19,10 @@ import { SteelheadPlayersGiftService } from '@services/api-v2/steelhead/players/
 import { SteelheadGroupGiftService } from '@services/api-v2/steelhead/group/gift/steelhead-group-gift.service';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
-describe('SteelheadGiftBasketComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadGiftBasketComponent', () => {
   let fixture: ComponentFixture<SteelheadGiftBasketComponent>;
   let component: SteelheadGiftBasketComponent;
 
@@ -29,23 +32,25 @@ describe('SteelheadGiftBasketComponent', () => {
   let mockSteelheadGroupGiftService: SteelheadGroupGiftService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        PipesModule,
-      ],
-      declarations: [SteelheadGiftBasketComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockSteelheadLocalizationService(),
-        createMockSteelheadPlayersGiftService(),
-        createMockSteelheadGroupGiftService(),
-        createMockPermAttributesService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          PipesModule,
+        ],
+        declarations: [SteelheadGiftBasketComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockSteelheadLocalizationService(),
+          createMockSteelheadPlayersGiftService(),
+          createMockSteelheadGroupGiftService(),
+          createMockPermAttributesService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

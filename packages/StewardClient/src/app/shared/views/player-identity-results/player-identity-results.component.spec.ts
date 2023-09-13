@@ -2,14 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PlayerIdentityResultsComponent } from './player-identity-results.component';
 
-describe('PlayerIdentityResultsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayerIdentityResultsComponent', () => {
   let component: PlayerIdentityResultsComponent;
   let fixture: ComponentFixture<PlayerIdentityResultsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [PlayerIdentityResultsComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [PlayerIdentityResultsComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

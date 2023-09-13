@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { WoodstockPlayerCreditUpdatesService } from './woodstock-credit-updates.service';
 
-describe('WoodstockLeaderboardTalentService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockLeaderboardTalentService', () => {
   let service: WoodstockPlayerCreditUpdatesService;
 
   beforeEach(() => {

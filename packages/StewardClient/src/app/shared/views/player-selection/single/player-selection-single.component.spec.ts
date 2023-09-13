@@ -20,7 +20,10 @@ import { AugmentedCompositeIdentity } from '../player-selection-base.component';
 import { PlayerSelectionSingleComponent } from './player-selection-single.component';
 import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
 
-describe('PlayerSelectionSingleComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayerSelectionSingleComponent', () => {
   let component: PlayerSelectionSingleComponent;
   let fixture: ComponentFixture<PlayerSelectionSingleComponent>;
   let sunrise: SunriseService;

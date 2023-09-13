@@ -7,22 +7,27 @@ import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/m
 import { SteelheadSearchBountyComponent } from './steelhead-search-bounty.component';
 import { createMockSteelheadBountiesService } from '@services/api-v2/steelhead/bounties/steelhead-bounties.service.mock';
 
-describe('SteelheadSearchBountyComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadSearchBountyComponent', () => {
   let fixture: ComponentFixture<SteelheadSearchBountyComponent>;
   let component: SteelheadSearchBountyComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [SteelheadSearchBountyComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadBountiesService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [SteelheadSearchBountyComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadBountiesService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadSearchBountyComponent);
     component = fixture.debugElement.componentInstance;

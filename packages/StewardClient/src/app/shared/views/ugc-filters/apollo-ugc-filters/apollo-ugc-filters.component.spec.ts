@@ -13,7 +13,10 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 import { ApolloSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/apollo/kusto/cars';
 
-describe('ApolloUgcFiltersComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloUgcFiltersComponent', () => {
   let fixture: ComponentFixture<ApolloUgcFiltersComponent>;
   let component: ApolloUgcFiltersComponent;
 
@@ -21,18 +24,20 @@ describe('ApolloUgcFiltersComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [ApolloUgcFiltersComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [ApolloUgcFiltersComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

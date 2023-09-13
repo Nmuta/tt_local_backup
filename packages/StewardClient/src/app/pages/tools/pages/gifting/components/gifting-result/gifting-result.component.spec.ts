@@ -8,17 +8,26 @@ import faker from '@faker-js/faker';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { StewardErrorCode } from '@models/enums';
 
-describe('GiftingResultComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'GiftingResultComponent', () => {
   let fixture: ComponentFixture<GiftingResultComponent>;
   let component: GiftingResultComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [GiftingResultComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        declarations: [GiftingResultComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(GiftingResultComponent);
     component = fixture.debugElement.componentInstance;

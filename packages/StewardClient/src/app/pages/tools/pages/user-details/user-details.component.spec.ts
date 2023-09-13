@@ -6,17 +6,22 @@ import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock
 
 import { UserDetailsComponent } from './user-details.component';
 
-describe('UserDetailsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'UserDetailsComponent', () => {
   let component: UserDetailsComponent;
   let fixture: ComponentFixture<UserDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
-      declarations: [UserDetailsComponent],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
+        declarations: [UserDetailsComponent],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -12,17 +12,22 @@ import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/materia
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockWoodstockService } from '@services/woodstock';
 
-describe('WoodstockPlayerUgcComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayerUgcComponent', () => {
   let component: WoodstockPlayerUgcComponent;
   let fixture: ComponentFixture<WoodstockPlayerUgcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [WoodstockPlayerUgcComponent, BigJsonPipe],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [WoodstockPlayerUgcComponent, BigJsonPipe],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPlayerUgcComponent);
     component = fixture.componentInstance;

@@ -1,7 +1,10 @@
 import { DeviceType } from '@models/enums';
 import { DomainEnumPrettyPrintPipe } from './domain-enum-pretty-print.pipe';
 
-describe('DomainEnumPrettyPrintPipe', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'DomainEnumPrettyPrintPipe', () => {
   it('create an instance', () => {
     const pipe = new DomainEnumPrettyPrintPipe();
     expect(pipe).toBeTruthy();

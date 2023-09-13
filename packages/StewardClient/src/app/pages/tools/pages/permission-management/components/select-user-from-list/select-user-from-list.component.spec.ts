@@ -15,30 +15,35 @@ import { createMockUserService } from '@services/user';
 import { UserState } from '@shared/state/user/user.state';
 import { SelectUserFromListComponent } from './select-user-from-list.component';
 
-describe('SelectUserFromListComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SelectUserFromListComponent', () => {
   let component: SelectUserFromListComponent;
   let fixture: ComponentFixture<SelectUserFromListComponent>;
 
   let mockStore: Store;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-        MatDialogModule,
-      ],
-      declarations: [SelectUserFromListComponent],
-      providers: [
-        createMockBackgroundJobService(),
-        createMockUserService(),
-        createMockOldPermissionsService(),
-        createMockMsalServices(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+          MatDialogModule,
+        ],
+        declarations: [SelectUserFromListComponent],
+        providers: [
+          createMockBackgroundJobService(),
+          createMockUserService(),
+          createMockOldPermissionsService(),
+          createMockMsalServices(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SelectUserFromListComponent);
     component = fixture.componentInstance;

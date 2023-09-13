@@ -12,17 +12,22 @@ import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/lega
 import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('ApolloPlayerUgcComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloPlayerUgcComponent', () => {
   let component: ApolloPlayerUgcComponent;
   let fixture: ComponentFixture<ApolloPlayerUgcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [ApolloPlayerUgcComponent, BigJsonPipe],
-      providers: [createMockApolloService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [ApolloPlayerUgcComponent, BigJsonPipe],
+        providers: [createMockApolloService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ApolloPlayerUgcComponent);
     component = fixture.componentInstance;

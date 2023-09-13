@@ -20,7 +20,10 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
-describe('SearchLeaderboardsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SearchLeaderboardsComponent', () => {
   let component: SearchLeaderboardsComponent;
   let fixture: ComponentFixture<SearchLeaderboardsComponent>;
 
@@ -61,26 +64,28 @@ describe('SearchLeaderboardsComponent', () => {
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        PipesModule,
-      ],
-      declarations: [SearchLeaderboardsComponent, HumanizePipe],
-      providers: [
-        createMockBlobStorageService(),
-        { provide: UntypedFormBuilder, useValue: formBuilder },
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+          PipesModule,
+        ],
+        declarations: [SearchLeaderboardsComponent, HumanizePipe],
+        providers: [
+          createMockBlobStorageService(),
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SearchLeaderboardsComponent);
     component = fixture.componentInstance;

@@ -14,23 +14,28 @@ import { UserRole } from '@models/enums';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { createMockWindowService, WindowService } from '@services/window';
 
-describe('State: User', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'State: User', () => {
   let store: Store;
   let actions$: Actions;
   let mockUserService: UserService;
   let mockWindowService: WindowService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-      providers: [
-        createMockUserService(),
-        ...createMockMsalServices(),
-        createMockLoggerService(),
-        createMockWindowService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
+        providers: [
+          createMockUserService(),
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+          createMockWindowService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     store = TestBed.inject(Store);
     actions$ = TestBed.inject(Actions);

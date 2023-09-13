@@ -5,21 +5,26 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { FortePlayFabSettingsComponent } from './forte-playfab-settings.component';
 
-describe('FortePlayFabSettingsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'FortePlayFabSettingsComponent', () => {
   let component: FortePlayFabSettingsComponent;
   let fixture: ComponentFixture<FortePlayFabSettingsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-      ],
-      declarations: [FortePlayFabSettingsComponent],
-      providers: [],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        declarations: [FortePlayFabSettingsComponent],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(FortePlayFabSettingsComponent);
     component = fixture.componentInstance;

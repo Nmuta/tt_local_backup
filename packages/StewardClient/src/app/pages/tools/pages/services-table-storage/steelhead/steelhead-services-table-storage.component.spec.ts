@@ -7,22 +7,27 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { ServicesTableStorageComponent } from '../services-table-storage.component';
 import { SteelheadServicesTableStorageComponent } from './steelhead-services-table-storage.component';
 
-describe('SteelheadServicesTableStorageComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadServicesTableStorageComponent', () => {
   let component: SteelheadServicesTableStorageComponent;
   let fixture: ComponentFixture<SteelheadServicesTableStorageComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadServicesTableStorageComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [{ provide: ServicesTableStorageComponent, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadServicesTableStorageComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [{ provide: ServicesTableStorageComponent, useValue: {} }],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -12,29 +12,34 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UntypedFormBuilder } from '@angular/forms';
 import { NewLocalizedMessageComponent } from './new-localized-message.component';
 
-describe('NewLocalizedMessageComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'NewLocalizedMessageComponent', () => {
   let fixture: ComponentFixture<NewLocalizedMessageComponent>;
   let component: NewLocalizedMessageComponent;
 
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [NewLocalizedMessageComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockZendeskService(),
-        createMockLoggerService(),
-        { provide: UntypedFormBuilder, useValue: formBuilder },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [NewLocalizedMessageComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWindowService(),
+          ...createMockMsalServices(),
+          createMockZendeskService(),
+          createMockLoggerService(),
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(NewLocalizedMessageComponent);
     component = fixture.debugElement.componentInstance;

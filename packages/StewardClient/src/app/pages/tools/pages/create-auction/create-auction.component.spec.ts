@@ -1,14 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateAuctionComponent } from './create-auction.component';
 
-describe('CreateAuctionComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'CreateAuctionComponent', () => {
   let component: CreateAuctionComponent;
   let fixture: ComponentFixture<CreateAuctionComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CreateAuctionComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [CreateAuctionComponent],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(CreateAuctionComponent);
     component = fixture.componentInstance;

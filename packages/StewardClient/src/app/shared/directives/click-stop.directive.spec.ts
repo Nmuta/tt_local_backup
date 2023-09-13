@@ -9,7 +9,10 @@ import { ClickStopDirective } from './click-stop.directive';
 })
 class ContainerComponent {}
 
-describe('ClickStopDirective', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ClickStopDirective', () => {
   let fixture: ComponentFixture<ContainerComponent>;
   let elementRef: ElementRef;
 

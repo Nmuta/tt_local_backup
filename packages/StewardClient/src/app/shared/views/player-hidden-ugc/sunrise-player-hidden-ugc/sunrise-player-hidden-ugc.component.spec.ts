@@ -3,15 +3,20 @@ import { createMockSunriseService } from '@services/sunrise';
 
 import { SunrisePlayerHiddenUgcComponent } from './sunrise-player-hidden-ugc.component';
 
-describe('SunrisePlayerHiddenUgcComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunrisePlayerHiddenUgcComponent', () => {
   let component: SunrisePlayerHiddenUgcComponent;
   let fixture: ComponentFixture<SunrisePlayerHiddenUgcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunrisePlayerHiddenUgcComponent],
-      providers: [createMockSunriseService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunrisePlayerHiddenUgcComponent],
+        providers: [createMockSunriseService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

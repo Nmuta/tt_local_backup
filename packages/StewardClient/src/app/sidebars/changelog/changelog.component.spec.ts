@@ -7,16 +7,21 @@ import { UserSettingsState } from '@shared/state/user-settings/user-settings.sta
 
 import { ChangelogComponent } from './changelog.component';
 
-describe('ChangelogComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ChangelogComponent', () => {
   let component: ChangelogComponent;
   let fixture: ComponentFixture<ChangelogComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ChangelogComponent],
-      imports: [NgxsModule.forRoot([UserSettingsState]), MatSnackBarModule],
-      providers: [createMockUserService(), createMockChangelogService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ChangelogComponent],
+        imports: [NgxsModule.forRoot([UserSettingsState]), MatSnackBarModule],
+        providers: [createMockUserService(), createMockChangelogService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

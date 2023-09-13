@@ -9,24 +9,29 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { WoodstockLookupComponent } from './woodstock-lookup.component';
 
-describe('WoodstockLookupComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockLookupComponent', () => {
   let component: WoodstockLookupComponent;
   let fixture: ComponentFixture<WoodstockLookupComponent>;
   let mockPermissionService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockLookupComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        MatDialogModule,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockOldPermissionsService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockLookupComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          MatDialogModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockOldPermissionsService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

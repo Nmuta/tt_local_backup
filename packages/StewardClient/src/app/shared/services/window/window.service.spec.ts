@@ -5,7 +5,10 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { WindowOpen } from './window.actions';
 import { WindowService } from './window.service';
 
-describe('service: WindowService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'service: WindowService', () => {
   let store: Store;
 
   beforeEach(() => {

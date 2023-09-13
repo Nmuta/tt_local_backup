@@ -8,19 +8,28 @@ import { GameTitleCodeName } from '@models/enums';
 import { WoodstockLspGroupSelectionComponent } from './woodstock-lsp-group-selection.component';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
 
-describe('WoodstockLspGroupSelectionComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockLspGroupSelectionComponent', () => {
   let fixture: ComponentFixture<WoodstockLspGroupSelectionComponent>;
   let component: WoodstockLspGroupSelectionComponent;
 
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockLspGroupSelectionComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        declarations: [WoodstockLspGroupSelectionComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

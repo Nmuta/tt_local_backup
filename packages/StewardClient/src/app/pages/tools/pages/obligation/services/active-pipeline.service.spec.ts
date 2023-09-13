@@ -2,7 +2,10 @@ import { TestBed } from '@angular/core/testing';
 
 import { ActivePipelineService } from './active-pipeline.service';
 
-describe('ActivePipelineServiceService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ActivePipelineServiceService', () => {
   let service: ActivePipelineService;
 
   beforeEach(() => {

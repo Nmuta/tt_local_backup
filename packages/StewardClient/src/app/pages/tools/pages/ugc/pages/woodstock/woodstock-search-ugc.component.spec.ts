@@ -13,7 +13,10 @@ import { createMockWoodstockUgcLookupService } from '@services/api-v2/woodstock/
 import { createMockWoodstockService } from '@services/woodstock';
 import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/search/woodstock-ugc-search.service';
 
-describe('WoodstockUgcSearchUgcComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockUgcSearchUgcComponent', () => {
   const testUgcSearchParameters = {
     ugcType: UgcType.Livery,
     carId: fakeBigNumber(),
@@ -26,17 +29,19 @@ describe('WoodstockUgcSearchUgcComponent', () => {
   let mockWoodstockUgcLookupService: WoodstockUgcSearchService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [WoodstockSearchUgcComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWoodstockUgcLookupService(), createMockWoodstockService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [WoodstockSearchUgcComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWoodstockUgcLookupService(), createMockWoodstockService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockSearchUgcComponent);
     component = fixture.debugElement.componentInstance;

@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadLoyaltyRewardsService } from './steelhead-loyalty-rewards.service';
 
-describe('SteelheadLoyaltyRewardsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadLoyaltyRewardsService', () => {
   let service: SteelheadLoyaltyRewardsService;
 
   beforeEach(() => {

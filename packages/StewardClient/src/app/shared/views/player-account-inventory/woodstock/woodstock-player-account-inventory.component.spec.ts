@@ -10,18 +10,23 @@ import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 
-describe('WoodstockPlayerAccountInventoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayerAccountInventoryComponent', () => {
   let injector: TestBed;
   let service: WoodstockService;
   let component: WoodstockPlayerAccountInventoryComponent;
   let fixture: ComponentFixture<WoodstockPlayerAccountInventoryComponent>;
 
   beforeEach(waitForAsync(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockPlayerAccountInventoryComponent],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockPlayerAccountInventoryComponent],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     injector = getTestBed();
     service = injector.inject(WoodstockService);

@@ -12,17 +12,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockSteelheadPlayerUgcService } from '@services/api-v2/steelhead/player/ugc/steelhead-player-ugc.service.mock';
 import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service.mock';
 
-describe('SteelheadPlayerUgcComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerUgcComponent', () => {
   let component: SteelheadPlayerUgcComponent;
   let fixture: ComponentFixture<SteelheadPlayerUgcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SteelheadPlayerUgcComponent, BigJsonPipe],
-      providers: [createMockSteelheadPlayerUgcService(), createMockSteelheadUgcLookupService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [SteelheadPlayerUgcComponent, BigJsonPipe],
+        providers: [createMockSteelheadPlayerUgcService(), createMockSteelheadUgcLookupService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadPlayerUgcComponent);
     component = fixture.componentInstance;

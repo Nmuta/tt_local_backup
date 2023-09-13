@@ -12,7 +12,10 @@ import { GameTitleCodeName } from '@models/enums';
 import { createMockKustoService, KustoService } from '@services/kusto';
 import { of, throwError } from 'rxjs';
 
-describe('KustoQuerySelectionComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'KustoQuerySelectionComponent', () => {
   let fixture: ComponentFixture<KustoQuerySelectionComponent>;
   let component: KustoQuerySelectionComponent;
 
@@ -20,18 +23,23 @@ describe('KustoQuerySelectionComponent', () => {
   let mockKustoService: KustoService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [KustoQuerySelectionComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }, createMockKustoService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [KustoQuerySelectionComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+          createMockKustoService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(KustoQuerySelectionComponent);
     component = fixture.debugElement.componentInstance;

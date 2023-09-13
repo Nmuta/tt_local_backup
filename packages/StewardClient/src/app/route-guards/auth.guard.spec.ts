@@ -11,7 +11,10 @@ import faker from '@faker-js/faker';
 import { AuthGuard } from './auth.guard';
 import { UserRole } from '@models/enums';
 
-describe('AuthGuard:', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'AuthGuard:', () => {
   let guard: AuthGuard;
   let store: Store;
   const testProfile: UserModel = {

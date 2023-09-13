@@ -2,14 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RestateOMaticComponent } from './restate-o-matic.component';
 
-describe('RestateOMaticComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'RestateOMaticComponent', () => {
   let component: RestateOMaticComponent;
   let fixture: ComponentFixture<RestateOMaticComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [RestateOMaticComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [RestateOMaticComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

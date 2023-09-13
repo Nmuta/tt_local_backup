@@ -13,7 +13,10 @@ import { createMockBlobStorageService, BlobStorageService } from '@services/blob
 
 import { ReleaseManagementComponent } from './release-management.component';
 
-describe('ReleaseManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ReleaseManagementComponent', () => {
   let component: ReleaseManagementComponent;
   let fixture: ComponentFixture<ReleaseManagementComponent>;
 
@@ -23,26 +26,28 @@ describe('ReleaseManagementComponent', () => {
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-      ],
-      declarations: [ReleaseManagementComponent],
-      providers: [
-        createMockBlobStorageService(),
-        createMockBackgroundJobService(),
-        { provide: UntypedFormBuilder, useValue: formBuilder },
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+        ],
+        declarations: [ReleaseManagementComponent],
+        providers: [
+          createMockBlobStorageService(),
+          createMockBackgroundJobService(),
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ReleaseManagementComponent);
     component = fixture.componentInstance;

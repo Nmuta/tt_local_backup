@@ -16,7 +16,10 @@ import { createMockSteelheadPlayerConsolesService } from '@services/api-v2/steel
 import { SteelheadConsolesService } from '@services/api-v2/steelhead/consoles/steelhead-consoles.service';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('SteelheadConsolesComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadConsolesComponent', () => {
   let component: SteelheadConsolesComponent;
   let fixture: ComponentFixture<SteelheadConsolesComponent>;
 
@@ -25,15 +28,17 @@ describe('SteelheadConsolesComponent', () => {
   let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadConsolesComponent, BigJsonPipe, HumanizePipe],
-      providers: [
-        createMockSteelheadPlayerConsolesService(),
-        createMockSteelheadConsolesService(),
-        createMockOldPermissionsService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadConsolesComponent, BigJsonPipe, HumanizePipe],
+        providers: [
+          createMockSteelheadPlayerConsolesService(),
+          createMockSteelheadConsolesService(),
+          createMockOldPermissionsService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

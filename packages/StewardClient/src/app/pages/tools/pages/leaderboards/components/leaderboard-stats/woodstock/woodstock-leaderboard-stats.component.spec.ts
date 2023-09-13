@@ -5,17 +5,22 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockWoodstockService } from '@services/woodstock';
 import { WoodstockLeaderboardStatsComponent } from './woodstock-leaderboard-stats.component';
 
-describe('WoodstockLeaderboardStatsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockLeaderboardStatsComponent', () => {
   let component: WoodstockLeaderboardStatsComponent;
   let fixture: ComponentFixture<WoodstockLeaderboardStatsComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockLeaderboardStatsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWoodstockService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockLeaderboardStatsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWoodstockService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockLeaderboardStatsComponent);
     component = fixture.debugElement.componentInstance;

@@ -7,16 +7,21 @@ import { LuxonModule } from 'luxon-angular';
 
 import { StandardRelativeTimeRangeComponent } from './standard-relative-time-range.component';
 
-describe('StandardRelativeTimeRangeComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'StandardRelativeTimeRangeComponent', () => {
   let component: StandardRelativeTimeRangeComponent;
   let fixture: ComponentFixture<StandardRelativeTimeRangeComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [StandardRelativeTimeRangeComponent],
-      imports: [PipesModule, LuxonModule, StandardCopyModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [StandardRelativeTimeRangeComponent],
+        imports: [PipesModule, LuxonModule, StandardCopyModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

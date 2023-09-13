@@ -5,7 +5,10 @@ import {
 } from '@angular/material/legacy-dialog';
 import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
 
-describe('ClickEnlargeImageDirective', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ClickEnlargeImageDirective', () => {
   let dialog: MatDialog;
   beforeEach(() => {
     TestBed.configureTestingModule({

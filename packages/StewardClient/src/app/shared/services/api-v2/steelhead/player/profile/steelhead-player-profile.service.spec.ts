@@ -10,7 +10,10 @@ import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import { of } from 'rxjs';
 import { SteelheadPlayerProfileService } from './steelhead-player-profile.service';
 
-describe('SteelheadPlayerProfileService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerProfileService', () => {
   let service: SteelheadPlayerProfileService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

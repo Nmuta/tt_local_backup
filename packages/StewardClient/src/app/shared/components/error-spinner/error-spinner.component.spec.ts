@@ -3,15 +3,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorSpinnerComponent } from './error-spinner.component';
 
-describe('ErrorSpinnerComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ErrorSpinnerComponent', () => {
   let component: ErrorSpinnerComponent;
   let fixture: ComponentFixture<ErrorSpinnerComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ErrorSpinnerComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ErrorSpinnerComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

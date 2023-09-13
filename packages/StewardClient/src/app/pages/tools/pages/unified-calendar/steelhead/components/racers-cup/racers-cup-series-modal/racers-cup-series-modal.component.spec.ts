@@ -11,25 +11,30 @@ import {
   RacersCupSeriesModalData,
 } from './racers-cup-series-modal.component';
 
-describe('RacersCupSeriesModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'RacersCupSeriesModalComponent', () => {
   let component: RacersCupSeriesModalComponent;
   let fixture: ComponentFixture<RacersCupSeriesModalComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [RacersCupSeriesModalComponent],
-      imports: [MatDialogModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: { name: faker.random.word(), events: [] } as RacersCupSeriesModalData,
-        },
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [RacersCupSeriesModalComponent],
+        imports: [MatDialogModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: { name: faker.random.word(), events: [] } as RacersCupSeriesModalData,
+          },
+        ],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

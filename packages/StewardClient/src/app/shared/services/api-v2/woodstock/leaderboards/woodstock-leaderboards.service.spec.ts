@@ -6,7 +6,10 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import { of } from 'rxjs';
 
-describe('WoodstockLeaderboardsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockLeaderboardsService', () => {
   let service: WoodstockLeaderboardsService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

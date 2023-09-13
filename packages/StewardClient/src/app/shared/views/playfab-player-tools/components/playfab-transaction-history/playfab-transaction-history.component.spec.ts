@@ -11,7 +11,10 @@ import {
 import { toDateTime } from '@helpers/luxon';
 import { PlayFabTransaction } from '@models/playfab';
 
-describe('PlayFabTransactionHistoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayFabTransactionHistoryComponent', () => {
   let component: PlayFabTransactionHistoryComponent;
   let fixture: ComponentFixture<PlayFabTransactionHistoryComponent>;
 
@@ -33,12 +36,14 @@ describe('PlayFabTransactionHistoryComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [PlayFabTransactionHistoryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [PipesModule],
+        declarations: [PlayFabTransactionHistoryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PlayFabTransactionHistoryComponent);
     component = fixture.debugElement.componentInstance;

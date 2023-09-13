@@ -17,7 +17,10 @@ import {
   ListUsersInGroupServiceContract,
 } from './list-users-in-user-group.component';
 
-describe('ListUsersInGroupComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ListUsersInGroupComponent', () => {
   let component: ListUsersInGroupComponent;
   let fixture: ComponentFixture<ListUsersInGroupComponent>;
   let mockStore: Store;
@@ -56,16 +59,18 @@ describe('ListUsersInGroupComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [ListUsersInGroupComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [ListUsersInGroupComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ListUsersInGroupComponent);
     component = fixture.debugElement.componentInstance;

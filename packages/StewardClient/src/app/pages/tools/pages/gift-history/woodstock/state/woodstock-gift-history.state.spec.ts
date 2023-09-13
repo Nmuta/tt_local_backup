@@ -9,7 +9,10 @@ import {
   SetWoodstockGiftHistorySelectedPlayerIdentities,
 } from './woodstock-gift-history.state.actions';
 
-describe('WoodstockGiftHistoryState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockGiftHistoryState', () => {
   let store: Store;
   let service: WoodstockGiftHistoryState;
 

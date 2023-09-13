@@ -3,15 +3,20 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { DateTimePickerDemoComponent } from './datetime-picker-demo.component';
 
-describe('IconsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'IconsComponent', () => {
   let component: DateTimePickerDemoComponent;
   let fixture: ComponentFixture<DateTimePickerDemoComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [DateTimePickerDemoComponent],
-      imports: [PipesModule],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [DateTimePickerDemoComponent],
+        imports: [PipesModule],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

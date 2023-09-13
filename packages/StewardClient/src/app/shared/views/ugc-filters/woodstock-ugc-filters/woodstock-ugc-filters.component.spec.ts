@@ -13,7 +13,10 @@ import { SimpleCar } from '@models/cars';
 import { WoodstockSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import faker from '@faker-js/faker';
 
-describe('WoodstockUgcFiltersComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockUgcFiltersComponent', () => {
   let fixture: ComponentFixture<WoodstockUgcFiltersComponent>;
   let component: WoodstockUgcFiltersComponent;
 
@@ -22,18 +25,20 @@ describe('WoodstockUgcFiltersComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [WoodstockUgcFiltersComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [WoodstockUgcFiltersComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

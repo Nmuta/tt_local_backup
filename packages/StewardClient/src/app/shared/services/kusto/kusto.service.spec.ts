@@ -8,7 +8,10 @@ import faker from '@faker-js/faker';
 import { GameTitleCodeName } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 
-describe('KustoService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'KustoService', () => {
   let injector: TestBed;
   let service: KustoService;
 

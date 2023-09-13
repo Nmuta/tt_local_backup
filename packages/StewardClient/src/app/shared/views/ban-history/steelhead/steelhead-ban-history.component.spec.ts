@@ -8,22 +8,27 @@ import { createMockSteelheadBanService } from '@services/api-v2/steelhead/ban/st
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service.mock';
 
-describe('SteelheadBanHistoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadBanHistoryComponent', () => {
   let component: SteelheadBanHistoryComponent;
   let fixture: ComponentFixture<SteelheadBanHistoryComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadBanHistoryComponent],
-      imports: [PipesModule],
-      providers: [
-        createMockSteelheadBanHistoryService(),
-        createMockSteelheadBanService(),
-        createMockOldPermissionsService(),
-        createMockMultipleBanHistoryService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadBanHistoryComponent],
+        imports: [PipesModule],
+        providers: [
+          createMockSteelheadBanHistoryService(),
+          createMockSteelheadBanService(),
+          createMockOldPermissionsService(),
+          createMockMultipleBanHistoryService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -2,14 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AuctionActionLogTableComponent } from './log-table.component';
 
-describe('AuctionActionLogTableComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'AuctionActionLogTableComponent', () => {
   let component: AuctionActionLogTableComponent;
   let fixture: ComponentFixture<AuctionActionLogTableComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AuctionActionLogTableComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [AuctionActionLogTableComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

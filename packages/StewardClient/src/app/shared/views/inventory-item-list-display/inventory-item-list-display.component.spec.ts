@@ -15,7 +15,10 @@ import { PlayerInventoryItemListEntry } from '@models/master-inventory-item-list
 import BigNumber from 'bignumber.js';
 import { of } from 'rxjs';
 
-describe('InventoryItemListDisplayComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'InventoryItemListDisplayComponent', () => {
   let component: InventoryItemListDisplayComponent;
   let fixture: ComponentFixture<InventoryItemListDisplayComponent>;
 
@@ -40,11 +43,13 @@ describe('InventoryItemListDisplayComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [InventoryItemListDisplayComponent],
-      imports: [PipesModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [InventoryItemListDisplayComponent],
+        imports: [PipesModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

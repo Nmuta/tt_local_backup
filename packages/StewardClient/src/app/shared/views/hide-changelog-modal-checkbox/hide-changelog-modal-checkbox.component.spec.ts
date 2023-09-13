@@ -5,7 +5,10 @@ import { ConfigureAppUpdatePopup } from '@shared/state/user-settings/user-settin
 import { of } from 'rxjs';
 import { HideChangelogModalCheckboxComponent } from './hide-changelog-modal-checkbox.component';
 
-describe('HideChangelogModalCheckboxComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'HideChangelogModalCheckboxComponent', () => {
   let fixture: ComponentFixture<HideChangelogModalCheckboxComponent>;
   let component: HideChangelogModalCheckboxComponent;
 

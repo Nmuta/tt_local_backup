@@ -12,17 +12,22 @@ import { createMockSteelheadPlayerUgcService } from '@services/api-v2/steelhead/
 import { SteelheadPlayerHiddenUgcComponent } from './steelhead-player-hidden-ugc.component';
 import { SteelheadPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/ugc';
 
-describe('SteelheadPlayerHiddenUgcComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerHiddenUgcComponent', () => {
   let component: SteelheadPlayerHiddenUgcComponent;
   let fixture: ComponentFixture<SteelheadPlayerHiddenUgcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SteelheadPlayerHiddenUgcComponent, BigJsonPipe],
-      providers: [createMockSteelheadPlayerUgcService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [SteelheadPlayerHiddenUgcComponent, BigJsonPipe],
+        providers: [createMockSteelheadPlayerUgcService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadPlayerHiddenUgcComponent);
     component = fixture.componentInstance;

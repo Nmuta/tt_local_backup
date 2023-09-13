@@ -2,7 +2,10 @@ import faker from '@faker-js/faker';
 import { HttpParams } from '@angular/common/http';
 import { addQueryParamArray } from './add-query-param-array';
 
-describe('Helper: add-query-param-array', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'Helper: add-query-param-array', () => {
   describe('Method: addQueryParamArray', () => {
     const params = new HttpParams().set('foo', 'bar');
     const paramName = faker.random.word();

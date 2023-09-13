@@ -18,7 +18,10 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { PlayerCmsOverride } from '@models/player-cms-override.model';
 import { CmsOverrideComponent, CmsOverrideServiceContract } from './cms-override.component';
 
-describe('CmsOverrideComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'CmsOverrideComponent', () => {
   let component: CmsOverrideComponent;
   let fixture: ComponentFixture<CmsOverrideComponent>;
 
@@ -42,23 +45,25 @@ describe('CmsOverrideComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        PipesModule,
-      ],
-      providers: [createMockMsalServices(), createMockLoggerService()],
-      declarations: [CmsOverrideComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+          PipesModule,
+        ],
+        providers: [createMockMsalServices(), createMockLoggerService()],
+        declarations: [CmsOverrideComponent],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(CmsOverrideComponent);
     component = fixture.componentInstance;

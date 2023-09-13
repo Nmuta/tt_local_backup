@@ -30,7 +30,10 @@ type TestResponse = {
 };
 
 // strategy based on https://dev.to/alisaduncan/intercepting-http-requests---using-and-testing-angulars-httpclient
-describe('UtcInterceptor', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'UtcInterceptor', () => {
   let httpMock: HttpTestingController;
   let http: HttpClient;
   let interceptor: UtcInterceptor;

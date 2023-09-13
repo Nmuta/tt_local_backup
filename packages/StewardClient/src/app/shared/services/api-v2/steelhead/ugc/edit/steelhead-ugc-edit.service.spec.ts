@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadUgcEditService } from './steelhead-ugc-edit.service';
 
-describe('SteelheadUgcEditService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadUgcEditService', () => {
   let service: SteelheadUgcEditService;
 
   beforeEach(() => {

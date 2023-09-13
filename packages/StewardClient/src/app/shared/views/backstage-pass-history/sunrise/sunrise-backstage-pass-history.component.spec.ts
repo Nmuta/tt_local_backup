@@ -7,18 +7,23 @@ import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/tit
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('SunriseBackstagePassHistoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseBackstagePassHistoryComponent', () => {
   let component: SunriseBackstagePassHistoryComponent;
   let fixture: ComponentFixture<SunriseBackstagePassHistoryComponent>;
 
   const testXuid = fakeXuid();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseBackstagePassHistoryComponent, HumanizePipe],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseBackstagePassHistoryComponent, HumanizePipe],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

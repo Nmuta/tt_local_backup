@@ -8,22 +8,27 @@ import { UserDetailsComponent } from '../user-details.component';
 
 import { GeneralUserDetailsComponent } from './general-user-details.component';
 
-describe('GeneralUserDetailsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'GeneralUserDetailsComponent', () => {
   let component: GeneralUserDetailsComponent;
   let fixture: ComponentFixture<GeneralUserDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [GeneralUserDetailsComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [{ provide: UserDetailsComponent, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [GeneralUserDetailsComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [{ provide: UserDetailsComponent, useValue: {} }],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

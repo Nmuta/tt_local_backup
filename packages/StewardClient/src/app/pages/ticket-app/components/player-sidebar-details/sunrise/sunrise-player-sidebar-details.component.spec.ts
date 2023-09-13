@@ -13,28 +13,33 @@ import { SunrisePlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('SunrisePlayerSidebarDetailsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunrisePlayerSidebarDetailsComponent', () => {
   let mockSunriseService: SunriseService;
 
   let fixture: ComponentFixture<SunrisePlayerSidebarDetailsComponent>;
   let component: SunrisePlayerSidebarDetailsComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [SunrisePlayerSidebarDetailsComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockSunriseService(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [SunrisePlayerSidebarDetailsComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWindowService(),
+          ...createMockMsalServices(),
+          createMockSunriseService(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockSunriseService = injector.inject(SunriseService);

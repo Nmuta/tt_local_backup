@@ -10,7 +10,10 @@ import BigNumber from 'bignumber.js';
 import { PlayerInventoryCarItem } from '@models/player-inventory-item';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
-describe('SteelheadPlayerInventoryService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerInventoryService', () => {
   let service: SteelheadPlayerInventoryService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

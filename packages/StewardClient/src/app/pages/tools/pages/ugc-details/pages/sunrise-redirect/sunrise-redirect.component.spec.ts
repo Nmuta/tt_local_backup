@@ -9,22 +9,27 @@ import { UgcDetailsComponent } from '../../ugc-details.component';
 
 import { SunriseRedirectComponent } from './sunrise-redirect.component';
 
-describe('SunriseRedirectComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseRedirectComponent', () => {
   let component: SunriseRedirectComponent;
   let fixture: ComponentFixture<SunriseRedirectComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseRedirectComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [ScopedSharedLookupService, UgcDetailsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseRedirectComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [ScopedSharedLookupService, UgcDetailsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

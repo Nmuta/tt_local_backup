@@ -8,7 +8,10 @@ import { AvailableAppsComponent } from './available-apps.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
-describe('AvailableAppsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'AvailableAppsComponent', () => {
   let component: AvailableAppsComponent;
   let fixture: ComponentFixture<AvailableAppsComponent>;
 

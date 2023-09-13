@@ -8,7 +8,10 @@ import { createMockSunriseService } from '@services/sunrise';
 import { createMockWoodstockService } from '@services/woodstock';
 import { NgxsModule } from '@ngxs/store';
 
-describe('MultiEnvironmentService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'MultiEnvironmentService', () => {
   let service: MultiEnvironmentService;
 
   beforeEach(() => {

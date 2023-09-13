@@ -13,19 +13,24 @@ import { Subject } from 'rxjs';
 
 import { SunriseOverviewComponent } from './sunrise-overview.component';
 
-describe('OverviewComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'OverviewComponent', () => {
   let injector: TestBed;
   let component: SunriseOverviewComponent;
   let fixture: ComponentFixture<SunriseOverviewComponent>;
   let service: SunriseService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [SunriseOverviewComponent],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [PipesModule],
+        declarations: [SunriseOverviewComponent],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     injector = getTestBed();
     service = injector.inject(SunriseService);

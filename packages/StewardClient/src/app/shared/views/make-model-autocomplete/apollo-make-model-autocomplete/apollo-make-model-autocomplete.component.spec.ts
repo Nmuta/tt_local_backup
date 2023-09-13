@@ -12,7 +12,10 @@ import { uniqBy } from 'lodash';
 import { SimpleCar } from '@models/cars';
 import faker from '@faker-js/faker';
 
-describe('ApolloMakeModelAutocompleteComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<ApolloMakeModelAutocompleteComponent>;
   let component: ApolloMakeModelAutocompleteComponent;
 
@@ -20,18 +23,20 @@ describe('ApolloMakeModelAutocompleteComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [ApolloMakeModelAutocompleteComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [ApolloMakeModelAutocompleteComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

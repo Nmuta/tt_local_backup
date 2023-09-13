@@ -8,7 +8,10 @@ import {
 import faker from '@faker-js/faker';
 import { ImageModalComponent, ImageModalData } from './image-modal.component';
 
-describe('ImageModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ImageModalComponent', () => {
   const model: ImageModalData = {
     title: faker.random.word(),
     url: faker.random.word(),
@@ -20,20 +23,22 @@ describe('ImageModalComponent', () => {
   let mockMatDialogRef: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ImageModalComponent],
-      imports: [MatButtonModule, MatDialogModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ImageModalComponent],
+        imports: [MatButtonModule, MatDialogModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ImageModalComponent);
     component = fixture.componentInstance;

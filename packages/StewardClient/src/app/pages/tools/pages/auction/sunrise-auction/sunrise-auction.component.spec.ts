@@ -5,16 +5,21 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { SunriseAuctionComponent } from './sunrise-auction.component';
 
-describe('SunriseAuctionComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseAuctionComponent', () => {
   let component: SunriseAuctionComponent;
   let fixture: ComponentFixture<SunriseAuctionComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseAuctionComponent],
-      imports: [RouterTestingModule, PipesModule],
-      providers: [createMockSunriseService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseAuctionComponent],
+        imports: [RouterTestingModule, PipesModule],
+        providers: [createMockSunriseService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

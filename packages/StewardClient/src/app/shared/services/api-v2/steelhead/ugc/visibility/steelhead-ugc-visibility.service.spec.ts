@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadUgcVisibilityService } from './steelhead-ugc-visibility.service';
 
-describe('SteelheadUgcVisibilityService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadUgcVisibilityService', () => {
   let service: SteelheadUgcVisibilityService;
 
   beforeEach(() => {

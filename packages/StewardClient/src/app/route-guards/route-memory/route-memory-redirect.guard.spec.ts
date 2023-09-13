@@ -7,7 +7,10 @@ import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state'
 
 import { RouteMemoryRedirectGuard } from './route-memory-redirect.guard';
 
-describe('RouteMemoryRedirectGuard', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'RouteMemoryRedirectGuard', () => {
   let guard: RouteMemoryRedirectGuard;
   let store: Store;
   const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'ugcDetails' } };

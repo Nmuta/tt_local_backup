@@ -9,22 +9,27 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { UserState } from '@shared/state/user/user.state';
 import { SteelheadLoyaltyRewardsComponent } from './steelhead-loyalty-rewards.component';
 
-describe('SteelheadLoyaltyRewardsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadLoyaltyRewardsComponent', () => {
   let component: SteelheadLoyaltyRewardsComponent;
   let fixture: ComponentFixture<SteelheadLoyaltyRewardsComponent>;
   let mockStore: Store;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [SteelheadLoyaltyRewardsComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [SteelheadLoyaltyRewardsComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadLoyaltyRewardsComponent);
     component = fixture.debugElement.componentInstance;

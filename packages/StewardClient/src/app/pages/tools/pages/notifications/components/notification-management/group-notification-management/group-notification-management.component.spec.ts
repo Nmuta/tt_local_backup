@@ -40,7 +40,10 @@ class TestNotificationManagementService implements GroupNotificationManagementCo
   }
 }
 
-describe('NotificationManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'NotificationManagementComponent', () => {
   let component: GroupNotificationManagementComponent;
   let fixture: ComponentFixture<GroupNotificationManagementComponent>;
   let testGroupNotifications: GroupNotification[];
@@ -48,12 +51,14 @@ describe('NotificationManagementComponent', () => {
   const mockService: TestNotificationManagementService = new TestNotificationManagementService();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [GroupNotificationManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [TestNotificationManagementService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [GroupNotificationManagementComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [TestNotificationManagementService],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(GroupNotificationManagementComponent);
     component = fixture.debugElement.componentInstance;

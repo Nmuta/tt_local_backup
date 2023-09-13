@@ -5,17 +5,22 @@ import { WoodstockCreateBulkAuctionComponent } from './woodstock-create-bulk-auc
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('WoodstockCreateBulkAuctionComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockCreateBulkAuctionComponent', () => {
   let component: WoodstockCreateBulkAuctionComponent;
   let fixture: ComponentFixture<WoodstockCreateBulkAuctionComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockCreateBulkAuctionComponent, HumanizePipe],
-      imports: [PipesModule, HttpClientTestingModule],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockCreateBulkAuctionComponent, HumanizePipe],
+        imports: [PipesModule, HttpClientTestingModule],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

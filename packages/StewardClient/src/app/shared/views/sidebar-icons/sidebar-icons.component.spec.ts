@@ -18,7 +18,10 @@ import { Subject } from 'rxjs';
 import { sidebarRoutes } from 'app/sidebars/sidebars.routing';
 import { Router } from '@angular/router';
 
-describe('SidebarIconsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SidebarIconsComponent', () => {
   let fixture: ComponentFixture<SidebarIconsComponent>;
   let component: SidebarIconsComponent;
   let router: Router;

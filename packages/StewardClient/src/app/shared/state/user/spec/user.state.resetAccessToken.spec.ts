@@ -10,7 +10,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { createMockWindowService, WindowService } from '@services/window';
 
-describe('State: User', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'State: User', () => {
   let store: Store;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let actions$: Actions;
@@ -18,15 +21,17 @@ describe('State: User', () => {
   let mockWindowService: WindowService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-      providers: [
-        ...createMockMsalServices(),
-        createMockLoggerService(),
-        createMockWindowService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
+        providers: [
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+          createMockWindowService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     store = TestBed.inject(Store);
     actions$ = TestBed.inject(Actions);

@@ -12,7 +12,10 @@ import { uniqBy } from 'lodash';
 import { SimpleCar } from '@models/cars';
 import faker from '@faker-js/faker';
 
-describe('SunriseMakeModelAutocompleteComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<SunriseMakeModelAutocompleteComponent>;
   let component: SunriseMakeModelAutocompleteComponent;
 
@@ -21,18 +24,20 @@ describe('SunriseMakeModelAutocompleteComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [SunriseMakeModelAutocompleteComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [SunriseMakeModelAutocompleteComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadGenericPopupTileService } from './steelhead-generic-popup-tiles.service';
 
-describe('SteelheadGenericPopupTileService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadGenericPopupTileService', () => {
   let service: SteelheadGenericPopupTileService;
 
   beforeEach(() => {

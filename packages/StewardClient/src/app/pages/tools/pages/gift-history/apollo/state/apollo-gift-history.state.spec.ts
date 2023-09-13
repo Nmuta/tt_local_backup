@@ -9,7 +9,10 @@ import {
   SetApolloGiftHistorySelectedPlayerIdentities,
 } from './apollo-gift-history.state.actions';
 
-describe('ApolloGiftHistoryState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloGiftHistoryState', () => {
   let store: Store;
   let service: ApolloGiftHistoryState;
 

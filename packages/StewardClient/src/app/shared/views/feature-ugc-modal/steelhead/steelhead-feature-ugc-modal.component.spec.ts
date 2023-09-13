@@ -18,7 +18,10 @@ import { createMockSteelheadUgcFeaturedStatusService } from '@services/api-v2/st
 import { SteelheadUgcFeaturedStatusService } from '@services/api-v2/steelhead/ugc/featured-status/steelhead-ugc-featured-status.service';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 
-describe('SteelheadFeatureUgcModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<SteelheadFeatureUgcModalComponent>;
@@ -29,22 +32,24 @@ describe('SteelheadFeatureUgcModalComponent', () => {
   let mockSteelheadUgcFeaturedStatusService: SteelheadUgcFeaturedStatusService = undefined;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SteelheadFeatureUgcModalComponent],
-      imports: [MatButtonModule, MatDialogModule, PipesModule],
-      providers: [
-        createMockSteelheadUgcLookupService(),
-        createMockSteelheadUgcFeaturedStatusService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadFeatureUgcModalComponent],
+        imports: [MatButtonModule, MatDialogModule, PipesModule],
+        providers: [
+          createMockSteelheadUgcLookupService(),
+          createMockSteelheadUgcFeaturedStatusService(),
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadFeatureUgcModalComponent);
     component = fixture.componentInstance;

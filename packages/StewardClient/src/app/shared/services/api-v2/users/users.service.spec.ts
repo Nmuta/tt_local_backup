@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { V2UsersService } from './users.service';
 
-describe('V2UsersService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'V2UsersService', () => {
   let service: V2UsersService;
 
   beforeEach(() => {

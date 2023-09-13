@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadPlayerDriverLevelService } from './steelhead-player-driver-level.service';
 
-describe('SteelheadPlayerDriverLevelService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerDriverLevelService', () => {
   let service: SteelheadPlayerDriverLevelService;
 
   beforeEach(() => {

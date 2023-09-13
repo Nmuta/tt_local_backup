@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadPlayerGameDetailsService } from './steelhead-player-game-details.service';
 
-describe('SteelheadPlayerGameDetailservice', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerGameDetailservice', () => {
   let service: SteelheadPlayerGameDetailsService;
 
   beforeEach(() => {

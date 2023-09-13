@@ -18,7 +18,10 @@ import faker from '@faker-js/faker';
 import { KustoComponent } from './kusto.component';
 import { JsonTableResult } from '@models/json-table-result';
 
-describe('KustoComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'KustoComponent', () => {
   let component: KustoComponent;
   let fixture: ComponentFixture<KustoComponent>;
 
@@ -27,17 +30,22 @@ describe('KustoComponent', () => {
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [KustoComponent],
-      providers: [createMockKustoService(), { provide: UntypedFormBuilder, useValue: formBuilder }],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [KustoComponent],
+        providers: [
+          createMockKustoService(),
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(KustoComponent);
     component = fixture.componentInstance;

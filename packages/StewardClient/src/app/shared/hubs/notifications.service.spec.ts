@@ -5,7 +5,10 @@ import { createMockReauthService } from '@shared/state/utilities/reauth.service.
 
 import { NotificationsService } from './notifications.service';
 
-describe('NotificationsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'NotificationsService', () => {
   let service: NotificationsService;
 
   beforeEach(() => {

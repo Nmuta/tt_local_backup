@@ -8,7 +8,10 @@ import BigNumber from 'bignumber.js';
 import { of } from 'rxjs';
 import { WoodstockPlayersGiftService } from './woodstock-players-gift.service';
 
-describe('WoodstockPlayersGiftService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayersGiftService', () => {
   const nextReturnValue: unknown = {};
   let mockService: WoodstockPlayersGiftService;
   let mockApiService: ApiV2Service;

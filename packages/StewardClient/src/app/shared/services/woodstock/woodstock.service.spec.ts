@@ -21,7 +21,10 @@ import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 import { PegasusProjectionSlot } from '@models/enums';
 
-describe('WoodstockService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockService', () => {
   let injector: TestBed;
   let service: WoodstockService;
   let apiServiceMock: ApiService;

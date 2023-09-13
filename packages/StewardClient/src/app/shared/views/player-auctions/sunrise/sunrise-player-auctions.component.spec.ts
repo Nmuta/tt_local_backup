@@ -13,17 +13,22 @@ import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/materia
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('SunrisePlayerAuctionsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunrisePlayerAuctionsComponent', () => {
   let component: SunrisePlayerAuctionsComponent;
   let fixture: ComponentFixture<SunrisePlayerAuctionsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SunrisePlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [SunrisePlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunrisePlayerAuctionsComponent);
     component = fixture.componentInstance;

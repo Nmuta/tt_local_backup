@@ -60,9 +60,7 @@ export class NewCommunityMessageComponent implements OnInit, OnChanges {
 
   public activePermAttribute = PermAttributeName.MessagePlayer;
 
-  constructor(private readonly formBuilder: UntypedFormBuilder) {
-    debugger;
-  }
+  constructor(private readonly formBuilder: UntypedFormBuilder) {}
 
   /** Lifecycle hook. */
   public ngOnInit(): void {

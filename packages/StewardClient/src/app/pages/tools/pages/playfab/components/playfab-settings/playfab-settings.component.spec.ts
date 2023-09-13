@@ -11,27 +11,32 @@ import { NgxsModule } from '@ngxs/store';
 import { PlayFabSettingsComponent } from './playfab-settings.component';
 import { GameTitle } from '@models/enums';
 
-describe('PlayFabSettingsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayFabSettingsComponent', () => {
   let component: PlayFabSettingsComponent;
   let fixture: ComponentFixture<PlayFabSettingsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatButtonToggleModule,
-      ],
-      declarations: [PlayFabSettingsComponent],
-      providers: [],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatDialogModule,
+          MatButtonToggleModule,
+        ],
+        declarations: [PlayFabSettingsComponent],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PlayFabSettingsComponent);
     component = fixture.componentInstance;

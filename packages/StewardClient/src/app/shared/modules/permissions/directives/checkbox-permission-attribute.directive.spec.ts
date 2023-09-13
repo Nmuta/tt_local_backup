@@ -9,42 +9,47 @@ import { PermAttributesService } from '@services/perm-attributes/perm-attributes
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 import { CheckboxPermissionAttributeDirective } from './checkbox-permission-attribute.directive';
 
-describe('CheckboxPermissionAttributeDirective', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'CheckboxPermissionAttributeDirective', () => {
   let button: MatButton;
   let directive: CheckboxPermissionAttributeDirective;
   let mockPermAttributesService: PermAttributesService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatButtonModule, MatCheckboxModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockPermAttributesService(),
-        {
-          provide: Renderer2,
-          useValue: {
-            listen: () => {
-              return;
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatButtonModule, MatCheckboxModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockPermAttributesService(),
+          {
+            provide: Renderer2,
+            useValue: {
+              listen: () => {
+                return;
+              },
             },
           },
-        },
-        {
-          provide: MatButton,
-          useValue: {
-            _elementRef: {
-              nativeElement: {
-                click: () => {
-                  return;
-                },
-                style: {
-                  display: 'block',
+          {
+            provide: MatButton,
+            useValue: {
+              _elementRef: {
+                nativeElement: {
+                  click: () => {
+                    return;
+                  },
+                  style: {
+                    display: 'block',
+                  },
                 },
               },
             },
           },
-        },
-      ],
-    }).compileComponents();
+        ],
+      }),
+    ).compileComponents();
 
     mockPermAttributesService = TestBed.inject(PermAttributesService);
     button = TestBed.inject(MatButton);

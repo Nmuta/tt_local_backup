@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FortePlayFabBuildsService } from './forte-playfab-builds.service';
 
-describe('FortePlayFabBuildsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'FortePlayFabBuildsService', () => {
   let service: FortePlayFabBuildsService;
 
   beforeEach(() => {

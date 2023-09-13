@@ -7,22 +7,27 @@ import { SteelheadMessageOfTheDayService } from '@services/api-v2/steelhead/mess
 import { createMockSteelheadMessageOfTheDayService } from '@services/api-v2/steelhead/message-of-the-day/steelhead-message-of-the-day.service.mock';
 import { SteelheadMessageOfTheDayComponent } from './steelhead-message-of-the-day.component';
 
-describe('SteelheadMessageOfTheDayComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadMessageOfTheDayComponent', () => {
   let component: SteelheadMessageOfTheDayComponent;
   let fixture: ComponentFixture<SteelheadMessageOfTheDayComponent>;
   let mockMotdService: SteelheadMessageOfTheDayService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-      ],
-      declarations: [SteelheadMessageOfTheDayComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadMessageOfTheDayService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+        ],
+        declarations: [SteelheadMessageOfTheDayComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadMessageOfTheDayService()],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockMotdService = injector.inject(SteelheadMessageOfTheDayService);

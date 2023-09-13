@@ -4,15 +4,20 @@ import { ActionMonitor } from '../action-monitor';
 
 import { ButtonSpinnerComponent } from './button-spinner.component';
 
-describe('ButtonSpinnerComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ButtonSpinnerComponent', () => {
   let component: ButtonSpinnerComponent;
   let fixture: ComponentFixture<ButtonSpinnerComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ButtonSpinnerComponent],
-      imports: [MatSnackBarModule],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ButtonSpinnerComponent],
+        imports: [MatSnackBarModule],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

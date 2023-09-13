@@ -3,7 +3,10 @@ import { createMockApiService } from '@services/api';
 
 import { WoodstockCarsCacheService } from './cars-cache.service';
 
-describe('CarsCacheService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'CarsCacheService', () => {
   let service: WoodstockCarsCacheService;
   const nextValue = [];
 

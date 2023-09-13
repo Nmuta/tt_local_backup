@@ -5,16 +5,21 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { WoodstockAuctionComponent } from './woodstock-auction.component';
 
-describe('WoodstockAuctionComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockAuctionComponent', () => {
   let component: WoodstockAuctionComponent;
   let fixture: ComponentFixture<WoodstockAuctionComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockAuctionComponent],
-      imports: [RouterTestingModule, PipesModule],
-      providers: [createMockWoodstockService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockAuctionComponent],
+        imports: [RouterTestingModule, PipesModule],
+        providers: [createMockWoodstockService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

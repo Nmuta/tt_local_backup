@@ -2,14 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StandardFlagComponent } from './standard-flag.component';
 
-describe('StandardFlagComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'StandardFlagComponent', () => {
   let component: StandardFlagComponent;
   let fixture: ComponentFixture<StandardFlagComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [StandardFlagComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [StandardFlagComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

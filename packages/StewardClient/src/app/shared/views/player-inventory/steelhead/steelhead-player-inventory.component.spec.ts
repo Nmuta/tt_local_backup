@@ -16,7 +16,10 @@ import faker from '@faker-js/faker';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { SteelheadMasterInventoryFakeApi } from '@interceptors/fake-api/apis/title/steelhead/masterInventory';
 
-describe('SteelheadPlayerInventoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerInventoryComponent', () => {
   let component: SteelheadPlayerInventoryComponent;
   let fixture: ComponentFixture<SteelheadPlayerInventoryComponent>;
   let mockSteelheadPlayerInventoryService: SteelheadPlayerInventoryService;
@@ -25,12 +28,14 @@ describe('SteelheadPlayerInventoryComponent', () => {
   const fakeMasterInventory = SteelheadMasterInventoryFakeApi.make();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([]), MatDialogModule],
-      declarations: [SteelheadPlayerInventoryComponent],
-      providers: [createMockSteelheadPlayerInventoryService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([]), MatDialogModule],
+        declarations: [SteelheadPlayerInventoryComponent],
+        providers: [createMockSteelheadPlayerInventoryService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     mockSteelheadPlayerInventoryService = TestBed.inject(SteelheadPlayerInventoryService);
     waitUntil$ = new Subject<void>();

@@ -29,13 +29,13 @@ export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
     return xuids.map(xuid => {
       return <ApolloBanSummary>{
         banCount: new BigNumber(faker.datatype.number()),
-        bannedAreas: faker.random.arrayElements(Object.values(ApolloBanArea)),
+        bannedAreas: faker.helpers.arrayElements(Object.values(ApolloBanArea)),
         gamertag: faker.random.word(),
         xuid: xuid,
         lastBanDescription: {
           countOfTimesExtended: new BigNumber(faker.datatype.number()),
           expireTimeUtc: toDateTime(faker.date.future()),
-          featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
+          featureArea: faker.helpers.arrayElement(Object.values(ApolloBanArea)),
           isActive: faker.datatype.boolean(),
           lastExtendedReason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
           lastExtendedTimeUtc: toDateTime(faker.date.past()),

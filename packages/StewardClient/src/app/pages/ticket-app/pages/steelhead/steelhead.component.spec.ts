@@ -9,7 +9,10 @@ import faker from '@faker-js/faker';
 
 import { SteelheadComponent } from './steelhead.component';
 
-describe('SteelheadComponent - Ticket App', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadComponent - Ticket App', () => {
   let component: SteelheadComponent;
   let fixture: ComponentFixture<SteelheadComponent>;
 
@@ -17,12 +20,14 @@ describe('SteelheadComponent - Ticket App', () => {
   let mockSteelheadService: SteelheadService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadComponent],
-      imports: [NgxsModule.forRoot([])],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadService(), createMockTicketService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadComponent],
+        imports: [NgxsModule.forRoot([])],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadService(), createMockTicketService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadComponent);
     component = fixture.componentInstance;

@@ -33,7 +33,10 @@ class TestAuctionBlocklistService implements AuctionBlocklistService {
   }
 }
 
-describe('AuctionBlocklistBaseComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'AuctionBlocklistBaseComponent', () => {
   let component: AuctionBlocklistBaseComponent;
   let fixture: ComponentFixture<AuctionBlocklistBaseComponent>;
   let auctionBlocklistEntries: AuctionBlocklistEntry[];
@@ -41,12 +44,14 @@ describe('AuctionBlocklistBaseComponent', () => {
   const mockService: TestAuctionBlocklistService = new TestAuctionBlocklistService();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [AuctionBlocklistBaseComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [TestAuctionBlocklistService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [AuctionBlocklistBaseComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [TestAuctionBlocklistService],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(AuctionBlocklistBaseComponent);
     component = fixture.debugElement.componentInstance;

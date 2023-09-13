@@ -5,15 +5,24 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { FullObligationInputComponent } from './full-obligation-input.component';
 
-describe('FullObligationInputComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'FullObligationInputComponent', () => {
   let component: FullObligationInputComponent;
   let fixture: ComponentFixture<FullObligationInputComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, MatAutocompleteModule],
-      declarations: [FullObligationInputComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [FullObligationInputComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

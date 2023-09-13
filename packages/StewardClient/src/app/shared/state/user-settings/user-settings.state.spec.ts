@@ -15,7 +15,10 @@ import faker from '@faker-js/faker';
 import { UserSettingsState } from './user-settings.state';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
-describe('UserSettingsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'UserSettingsService', () => {
   let store: Store;
   let service: UserSettingsState;
 

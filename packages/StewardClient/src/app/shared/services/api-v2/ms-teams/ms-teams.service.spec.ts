@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MsTeamsService } from './ms-teams.service';
 
-describe('MsTeamsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'MsTeamsService', () => {
   let service: MsTeamsService;
 
   beforeEach(() => {

@@ -5,17 +5,22 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockSteelheadPlayerReportWeightService } from '@services/api-v2/steelhead/player/report-weight/steelhead-report-weight.service.mock';
 import { SteelheadReportWeightComponent } from './steelhead-report-weight.component';
 
-describe('SteelheadReportWeightComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadReportWeightComponent', () => {
   let component: SteelheadReportWeightComponent;
   let fixture: ComponentFixture<SteelheadReportWeightComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SteelheadReportWeightComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadPlayerReportWeightService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SteelheadReportWeightComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadPlayerReportWeightService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadReportWeightComponent);
     component = fixture.debugElement.componentInstance;

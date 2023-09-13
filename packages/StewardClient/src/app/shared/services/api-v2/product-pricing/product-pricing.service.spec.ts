@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ProductPricingService } from './product-pricing.service';
 
-describe('ProductPricingService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ProductPricingService', () => {
   let service: ProductPricingService;
 
   beforeEach(() => {

@@ -8,7 +8,10 @@ import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/
 import { VerifyWithV2ButtonDirective } from './verify-with-v2.directive';
 import { VerifyButtonComponent } from './verify-button/verify-button.component';
 
-describe('VerifyWithV2ButtonDirective', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'VerifyWithV2ButtonDirective', () => {
   let button: MatButton;
   const verifyButton: Partial<VerifyButtonComponent> = {
     isVerifiedChange: new EventEmitter<boolean>(),
@@ -17,32 +20,34 @@ describe('VerifyWithV2ButtonDirective', () => {
   let mockRenderer2: Renderer2;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatButtonModule, MatCheckboxModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: Renderer2,
-          useValue: {
-            listen: () => {
-              return;
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatButtonModule, MatCheckboxModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: Renderer2,
+            useValue: {
+              listen: () => {
+                return;
+              },
             },
           },
-        },
-        {
-          provide: MatButton,
-          useValue: {
-            _elementRef: {
-              nativeElement: {
-                click: () => {
-                  return;
+          {
+            provide: MatButton,
+            useValue: {
+              _elementRef: {
+                nativeElement: {
+                  click: () => {
+                    return;
+                  },
                 },
               },
             },
           },
-        },
-      ],
-    }).compileComponents();
+        ],
+      }),
+    ).compileComponents();
 
     mockRenderer2 = TestBed.inject(Renderer2);
     button = TestBed.inject(MatButton);

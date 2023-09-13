@@ -6,21 +6,26 @@ import { NgxsModule } from '@ngxs/store';
 
 import { WoodstockPlayFabBuildsManagementComponent } from './woodstock-playfab-builds-management.component';
 
-describe('WoodstockPlayFabBuildsManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayFabBuildsManagementComponent', () => {
   let component: WoodstockPlayFabBuildsManagementComponent;
   let fixture: ComponentFixture<WoodstockPlayFabBuildsManagementComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-      ],
-      declarations: [WoodstockPlayFabBuildsManagementComponent],
-      providers: [],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        declarations: [WoodstockPlayFabBuildsManagementComponent],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPlayFabBuildsManagementComponent);
     component = fixture.componentInstance;

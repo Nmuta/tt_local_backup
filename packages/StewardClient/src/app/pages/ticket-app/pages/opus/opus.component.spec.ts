@@ -9,7 +9,10 @@ import faker from '@faker-js/faker';
 import { OpusComponent } from './opus.component';
 import { createMockOpusService, OpusService } from '@services/opus';
 
-describe('OpusComponent - Ticket App', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'OpusComponent - Ticket App', () => {
   let component: OpusComponent;
   let fixture: ComponentFixture<OpusComponent>;
 
@@ -17,12 +20,14 @@ describe('OpusComponent - Ticket App', () => {
   let mockOpusService: OpusService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [OpusComponent],
-      imports: [NgxsModule.forRoot([])],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockOpusService(), createMockTicketService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [OpusComponent],
+        imports: [NgxsModule.forRoot([])],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockOpusService(), createMockTicketService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(OpusComponent);
     component = fixture.componentInstance;

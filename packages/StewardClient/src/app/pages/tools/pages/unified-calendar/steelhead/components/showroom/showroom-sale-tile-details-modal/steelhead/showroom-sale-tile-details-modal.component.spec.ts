@@ -11,28 +11,33 @@ import faker from '@faker-js/faker';
 import { CarSale } from '@services/api-v2/steelhead/showroom/steelhead-showroom.service';
 import { toDateTime } from '@helpers/luxon';
 
-describe('ShowroomSaleTileDetailsModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ShowroomSaleTileDetailsModalComponent', () => {
   let component: ShowroomSaleTileDetailsModalComponent;
   let fixture: ComponentFixture<ShowroomSaleTileDetailsModalComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ShowroomSaleTileDetailsModalComponent],
-      imports: [MatDialogModule, PipesModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            startTimeUtc: toDateTime(faker.date.past()),
-            endTimeUtc: toDateTime(faker.date.future()),
-          } as CarSale,
-        },
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ShowroomSaleTileDetailsModalComponent],
+        imports: [MatDialogModule, PipesModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              startTimeUtc: toDateTime(faker.date.past()),
+              endTimeUtc: toDateTime(faker.date.future()),
+            } as CarSale,
+          },
+        ],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -27,7 +27,10 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 import { Router } from '@angular/router';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('LeaderboardScoresComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'LeaderboardScoresComponent', () => {
   let component: LeaderboardScoresComponent;
   let fixture: ComponentFixture<LeaderboardScoresComponent>;
 
@@ -90,25 +93,30 @@ describe('LeaderboardScoresComponent', () => {
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatPaginatorModule,
-        MatSnackBarModule,
-      ],
-      declarations: [LeaderboardScoresComponent, HumanizePipe],
-      providers: [createMockKustoService(), { provide: UntypedFormBuilder, useValue: formBuilder }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatPaginatorModule,
+          MatSnackBarModule,
+        ],
+        declarations: [LeaderboardScoresComponent, HumanizePipe],
+        providers: [
+          createMockKustoService(),
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(LeaderboardScoresComponent);
     component = fixture.componentInstance;

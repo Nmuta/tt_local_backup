@@ -3,16 +3,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { CreateLocalizedStringComponent } from './create-localized-string.component';
 
-describe('CreateLocalizedStringComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'CreateLocalizedStringComponent', () => {
   let component: CreateLocalizedStringComponent;
   let fixture: ComponentFixture<CreateLocalizedStringComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CreateLocalizedStringComponent],
-      imports: [PipesModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [CreateLocalizedStringComponent],
+        imports: [PipesModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

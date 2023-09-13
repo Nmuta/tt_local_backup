@@ -6,17 +6,22 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { ApolloListUsersInGroupComponent } from './apollo-list-users-in-user-group.component';
 
-describe('ApolloListUsersInGroupComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloListUsersInGroupComponent', () => {
   let component: ApolloListUsersInGroupComponent;
   let fixture: ComponentFixture<ApolloListUsersInGroupComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      declarations: [ApolloListUsersInGroupComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        declarations: [ApolloListUsersInGroupComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ApolloListUsersInGroupComponent);
     component = fixture.debugElement.componentInstance;

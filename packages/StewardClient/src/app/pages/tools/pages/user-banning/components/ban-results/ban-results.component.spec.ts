@@ -7,17 +7,26 @@ import { RouterTestingModule } from '@angular/router/testing';
 import faker from '@faker-js/faker';
 import { BanResultsComponent } from './ban-results.component';
 
-describe('BanResultsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BanResultsComponent', () => {
   let fixture: ComponentFixture<BanResultsComponent>;
   let component: BanResultsComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [BanResultsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        declarations: [BanResultsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(BanResultsComponent);
     component = fixture.debugElement.componentInstance;

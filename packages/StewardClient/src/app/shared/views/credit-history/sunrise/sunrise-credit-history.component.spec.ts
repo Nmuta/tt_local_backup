@@ -7,18 +7,26 @@ import { fakeXuid } from '@interceptors/fake-api/utility';
 import { createMockSunrisePlayerService } from '@services/api-v2/sunrise/sunrise-player.service.mock';
 import { createMockSunrisePlayerCreditUpdatesService } from '@services/api-v2/sunrise/player/credit-updates/sunrise-credit-updates.mock';
 
-describe('SunriseCreditHistoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseCreditHistoryComponent', () => {
   let component: SunriseCreditHistoryComponent;
   let fixture: ComponentFixture<SunriseCreditHistoryComponent>;
 
   const testXuid = fakeXuid();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseCreditHistoryComponent],
-      providers: [createMockSunrisePlayerCreditUpdatesService(), createMockSunrisePlayerService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseCreditHistoryComponent],
+        providers: [
+          createMockSunrisePlayerCreditUpdatesService(),
+          createMockSunrisePlayerService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

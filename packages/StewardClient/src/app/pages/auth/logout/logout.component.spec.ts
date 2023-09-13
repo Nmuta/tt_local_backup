@@ -13,7 +13,10 @@ import {
 
 import { LogoutComponent } from './logout.component';
 
-describe('LogoutComponent:', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'LogoutComponent:', () => {
   let component: LogoutComponent;
   let fixture: ComponentFixture<LogoutComponent>;
   let windowService: MockWindowService;
@@ -21,12 +24,14 @@ describe('LogoutComponent:', () => {
   let msal: MsalService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      declarations: [LogoutComponent],
-      providers: [...createMockMsalServices(), createMockWindowService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        declarations: [LogoutComponent],
+        providers: [...createMockMsalServices(), createMockWindowService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('store.dispatch');

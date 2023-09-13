@@ -12,7 +12,10 @@ import { createMockKustoService, KustoService } from '@services/kusto';
 
 import { ReportedScoresComponent } from './reported-scores.component';
 
-describe('ReportedScoresComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ReportedScoresComponent', () => {
   let component: ReportedScoresComponent;
   let fixture: ComponentFixture<ReportedScoresComponent>;
 
@@ -21,22 +24,27 @@ describe('ReportedScoresComponent', () => {
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-      ],
-      declarations: [ReportedScoresComponent],
-      providers: [createMockKustoService(), { provide: UntypedFormBuilder, useValue: formBuilder }],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+        ],
+        declarations: [ReportedScoresComponent],
+        providers: [
+          createMockKustoService(),
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ReportedScoresComponent);
     component = fixture.componentInstance;

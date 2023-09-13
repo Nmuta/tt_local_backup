@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadGitOperationService } from './steelhead-git-operation.service';
 
-describe('SteelheadGitOperationService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadGitOperationService', () => {
   let service: SteelheadGitOperationService;
 
   beforeEach(() => {

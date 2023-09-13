@@ -5,7 +5,10 @@ import { of } from 'rxjs';
 
 import { SettingsService } from './settings.service';
 
-describe('SettingsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SettingsService', () => {
   let injector: TestBed;
   let service: SettingsService;
   let apiServiceMock: ApiService;

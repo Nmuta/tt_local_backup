@@ -7,7 +7,10 @@ import { of } from 'rxjs';
 
 import { WoodstockPlayerNotificationsService } from './woodstock-player-notifications.service';
 
-describe('WoodstockPlayerNotificationsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayerNotificationsService', () => {
   let service: WoodstockPlayerNotificationsService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

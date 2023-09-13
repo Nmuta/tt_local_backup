@@ -1,14 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BuildersCupKeyComponent } from './builders-cup-key.component';
 
-describe('BuildersCupKeyComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BuildersCupKeyComponent', () => {
   let component: BuildersCupKeyComponent;
   let fixture: ComponentFixture<BuildersCupKeyComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [BuildersCupKeyComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [BuildersCupKeyComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

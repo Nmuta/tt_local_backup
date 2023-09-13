@@ -12,22 +12,27 @@ import { createMockSunriseUgcHideService } from '@services/api-v2/sunrise/ugc/hi
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
-describe('SunriseUgcTableComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseUgcTableComponent', () => {
   let component: SunriseUgcTableComponent;
   let fixture: ComponentFixture<SunriseUgcTableComponent>;
   let mockSunriseService: SunriseService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
-      declarations: [SunriseUgcTableComponent, BigJsonPipe],
-      providers: [
-        createMockSunriseService(),
-        createMockSunriseUgcHideService(),
-        createMockBackgroundJobService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
+        declarations: [SunriseUgcTableComponent, BigJsonPipe],
+        providers: [
+          createMockSunriseService(),
+          createMockSunriseUgcHideService(),
+          createMockBackgroundJobService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseUgcTableComponent);
     component = fixture.componentInstance;

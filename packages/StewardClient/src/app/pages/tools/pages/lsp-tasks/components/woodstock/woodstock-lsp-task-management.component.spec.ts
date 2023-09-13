@@ -4,16 +4,21 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 import { WoodstockLspTaskManagementComponent } from './woodstock-lsp-task-management.component';
 
-describe('WoodstockTaskManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockTaskManagementComponent', () => {
   let component: WoodstockLspTaskManagementComponent;
   let fixture: ComponentFixture<WoodstockLspTaskManagementComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockLspTaskManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockLspTaskManagementComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockLspTaskManagementComponent);
     component = fixture.debugElement.componentInstance;

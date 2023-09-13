@@ -9,26 +9,31 @@ import { createMockOldPermissionsService } from '@services/old-permissions';
 import { createMockUserService } from '@services/user';
 import { TeamPermissionManagementComponent } from './team-permission-management.component';
 
-describe('TeamPermissionManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'TeamPermissionManagementComponent', () => {
   let component: TeamPermissionManagementComponent;
   let fixture: ComponentFixture<TeamPermissionManagementComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        MatDialogModule,
-      ],
-      declarations: [TeamPermissionManagementComponent],
-      providers: [
-        createMockBackgroundJobService(),
-        createMockUserService(),
-        createMockOldPermissionsService(),
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          MatDialogModule,
+        ],
+        declarations: [TeamPermissionManagementComponent],
+        providers: [
+          createMockBackgroundJobService(),
+          createMockUserService(),
+          createMockOldPermissionsService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(TeamPermissionManagementComponent);
     component = fixture.componentInstance;

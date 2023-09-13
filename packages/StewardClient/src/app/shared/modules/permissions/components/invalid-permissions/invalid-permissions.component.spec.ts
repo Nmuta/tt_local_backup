@@ -5,15 +5,20 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { InvalidPermissionsComponent } from './invalid-permissions.component';
 import { GameTitle } from '@models/enums';
 
-describe('InvalidPermissionsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'InvalidPermissionsComponent', () => {
   let component: InvalidPermissionsComponent;
   let fixture: ComponentFixture<InvalidPermissionsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [InvalidPermissionsComponent, HumanizePipe],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [PipesModule],
+        declarations: [InvalidPermissionsComponent, HumanizePipe],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(InvalidPermissionsComponent);
     component = fixture.componentInstance;

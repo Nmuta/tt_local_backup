@@ -3,7 +3,10 @@ import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoi
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { ContactUsComponent } from './contact-us.component';
 
-describe('ContactUsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ContactUsComponent', () => {
   let component: ContactUsComponent;
   let fixture: ComponentFixture<ContactUsComponent>;
 

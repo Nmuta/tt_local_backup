@@ -26,7 +26,10 @@ const activatedRouteMock = {
   ] as ActivatedRoute[],
 };
 
-describe('BulkBanReviewComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BulkBanReviewComponent', () => {
   let component: BulkBanReviewComponent;
   let fixture: ComponentFixture<BulkBanReviewComponent>;
 
@@ -35,27 +38,29 @@ describe('BulkBanReviewComponent', () => {
   let mockApolloService: ApolloService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        MatPaginatorModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-      ],
-      declarations: [BulkBanReviewComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWoodstockService(),
-        createMockSunriseService(),
-        createMockApolloService(),
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          MatPaginatorModule,
+          BrowserModule,
+          BrowserAnimationsModule,
+        ],
+        declarations: [BulkBanReviewComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWoodstockService(),
+          createMockSunriseService(),
+          createMockApolloService(),
+          {
+            provide: ActivatedRoute,
+            useValue: activatedRouteMock,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(BulkBanReviewComponent);
     component = fixture.debugElement.componentInstance;

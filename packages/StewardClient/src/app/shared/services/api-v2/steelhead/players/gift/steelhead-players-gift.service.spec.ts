@@ -9,7 +9,10 @@ import { of } from 'rxjs';
 
 import { SteelheadPlayersGiftService } from './steelhead-players-gift.service';
 
-describe('SteelheadPlayersGiftService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayersGiftService', () => {
   let service: SteelheadPlayersGiftService;
   const nextReturnValue: unknown = {};
   let apiServiceMock: ApiV2Service;

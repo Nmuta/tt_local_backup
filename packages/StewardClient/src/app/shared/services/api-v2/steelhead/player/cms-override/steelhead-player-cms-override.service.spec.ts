@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadPlayerCmsOverrideService } from './steelhead-player-cms-override.service';
 
-describe('SteelheadPlayerCmsOverrideService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerCmsOverrideService', () => {
   let service: SteelheadPlayerCmsOverrideService;
 
   beforeEach(() => {

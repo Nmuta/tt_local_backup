@@ -11,7 +11,10 @@ import {
   SetWoodstockGiftingSelectedPlayerIdentities,
 } from './woodstock-gifting.state.actions';
 
-describe('WoodstockGiftingState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockGiftingState', () => {
   let service: WoodstockGiftingState;
   let store: Store;
   beforeEach(() => {

@@ -19,7 +19,10 @@ import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sha
 import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 import { createMockWoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service.mock';
 
-describe('WoodstockUgcTableComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
   let fixture: ComponentFixture<WoodstockUgcTableComponent>;
   let mockWoodstockService: WoodstockService;
@@ -29,19 +32,21 @@ describe('WoodstockUgcTableComponent', () => {
   let mockWoodstockUgcReportService: WoodstockUgcReportService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
-      declarations: [WoodstockUgcTableComponent, BigJsonPipe],
-      providers: [
-        createMockWoodstockService(),
-        createMockWoodstockUgcLookupService(),
-        createMockWoodstockUgcReportService(),
-        createMockWoodstockUgcVisibilityService(),
-        createMockWoodstockUgcSharecodeService(),
-        createMockBackgroundJobService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
+        declarations: [WoodstockUgcTableComponent, BigJsonPipe],
+        providers: [
+          createMockWoodstockService(),
+          createMockWoodstockUgcLookupService(),
+          createMockWoodstockUgcReportService(),
+          createMockWoodstockUgcVisibilityService(),
+          createMockWoodstockUgcSharecodeService(),
+          createMockBackgroundJobService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockUgcTableComponent);
     component = fixture.componentInstance;

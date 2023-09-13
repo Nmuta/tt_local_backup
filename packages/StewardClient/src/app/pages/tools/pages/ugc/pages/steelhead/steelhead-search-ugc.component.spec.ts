@@ -13,7 +13,10 @@ import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/
 import { createMockSteelheadItemsService } from '@services/api-v2/steelhead/items/steelhead-items.service.mock';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 
-describe('SteelheadUgcSearchUgcComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadUgcSearchUgcComponent', () => {
   const testUgcSearchParameters = {
     ugcType: UgcType.Livery,
     carId: fakeBigNumber(),
@@ -26,17 +29,19 @@ describe('SteelheadUgcSearchUgcComponent', () => {
   let mockSteelheadUgcLookupService: SteelheadUgcLookupService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [SteelheadSearchUgcComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadUgcLookupService(), createMockSteelheadItemsService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [SteelheadSearchUgcComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadUgcLookupService(), createMockSteelheadItemsService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadSearchUgcComponent);
     component = fixture.debugElement.componentInstance;

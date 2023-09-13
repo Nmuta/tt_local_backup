@@ -4,17 +4,22 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StewardAppBaseComponent } from './steward-app.base.component';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
-describe('StewardAppBaseComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'StewardAppBaseComponent', () => {
   let component: StewardAppBaseComponent;
   let fixture: ComponentFixture<StewardAppBaseComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [StewardAppBaseComponent],
-      providers: [createMockLoggerService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule],
+        declarations: [StewardAppBaseComponent],
+        providers: [createMockLoggerService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

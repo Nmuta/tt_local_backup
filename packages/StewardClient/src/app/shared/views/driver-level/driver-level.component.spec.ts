@@ -19,7 +19,10 @@ import BigNumber from 'bignumber.js';
 import faker from '@faker-js/faker';
 import { PlayerDriverLevel } from '@models/player-driver-level.model';
 
-describe('DriverLevelComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'DriverLevelComponent', () => {
   let component: DriverLevelComponent;
   let fixture: ComponentFixture<DriverLevelComponent>;
 
@@ -40,23 +43,25 @@ describe('DriverLevelComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        PipesModule,
-      ],
-      providers: [createMockMsalServices(), createMockLoggerService()],
-      declarations: [DriverLevelComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+          PipesModule,
+        ],
+        providers: [createMockMsalServices(), createMockLoggerService()],
+        declarations: [DriverLevelComponent],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(DriverLevelComponent);
     component = fixture.componentInstance;

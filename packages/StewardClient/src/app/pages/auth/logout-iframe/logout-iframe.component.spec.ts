@@ -10,7 +10,10 @@ import faker from '@faker-js/faker';
 
 import { LogoutIframeComponent } from './logout-iframe.component';
 
-describe('LogoutIframeComponent:', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'LogoutIframeComponent:', () => {
   let component: LogoutIframeComponent;
   let fixture: ComponentFixture<LogoutIframeComponent>;
   let store: Store;
@@ -22,11 +25,13 @@ describe('LogoutIframeComponent:', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      declarations: [LogoutIframeComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        declarations: [LogoutIframeComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('dispatch');

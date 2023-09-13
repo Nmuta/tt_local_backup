@@ -15,7 +15,10 @@ import {
   BuildLockChangeDialogData,
 } from './build-lock-change-dialog.component';
 
-describe('BuildLockChangeDialogComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BuildLockChangeDialogComponent', () => {
   const model: BuildLockChangeDialogData = {
     gameTitle: GameTitle.FH5,
     build: {
@@ -38,20 +41,22 @@ describe('BuildLockChangeDialogComponent', () => {
   let mockMatDialogRef: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [BuildLockChangeDialogComponent],
-      imports: [MatButtonModule, MatDialogModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [BuildLockChangeDialogComponent],
+        imports: [MatButtonModule, MatDialogModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(BuildLockChangeDialogComponent);
     component = fixture.componentInstance;

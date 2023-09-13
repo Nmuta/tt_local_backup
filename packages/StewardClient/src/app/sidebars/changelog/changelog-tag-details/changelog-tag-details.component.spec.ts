@@ -3,15 +3,20 @@ import { createMockChangelogService } from '@services/changelog/changelog.servic
 
 import { ChangelogTagDetailsComponent } from './changelog-tag-details.component';
 
-describe('ChangelogTagDetailsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ChangelogTagDetailsComponent', () => {
   let component: ChangelogTagDetailsComponent;
   let fixture: ComponentFixture<ChangelogTagDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ChangelogTagDetailsComponent],
-      providers: [createMockChangelogService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ChangelogTagDetailsComponent],
+        providers: [createMockChangelogService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ChangelogTagDetailsComponent);
     component = fixture.debugElement.componentInstance;

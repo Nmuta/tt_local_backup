@@ -12,7 +12,10 @@ import { createMockSteelheadImageTextTileService } from '@services/api-v2/steelh
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { SteelheadWelcomeCenterTilesComponent } from './steelhead-welcome-center-tiles.component';
 
-describe('SteelheadWelcomeCenterTilesComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadWelcomeCenterTilesComponent', () => {
   let component: SteelheadWelcomeCenterTilesComponent;
   let fixture: ComponentFixture<SteelheadWelcomeCenterTilesComponent>;
   let mockSteelheadImageTextTileService: SteelheadImageTextTileService;
@@ -20,21 +23,23 @@ describe('SteelheadWelcomeCenterTilesComponent', () => {
   let mockSteelheadDeeplinkTileService: SteelheadDeeplinkTileService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        PipesModule,
-      ],
-      declarations: [SteelheadWelcomeCenterTilesComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockSteelheadImageTextTileService(),
-        createMockSteelheadGenericPopupTileService(),
-        createMockSteelheadDeeplinkTileService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          PipesModule,
+        ],
+        declarations: [SteelheadWelcomeCenterTilesComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockSteelheadImageTextTileService(),
+          createMockSteelheadGenericPopupTileService(),
+          createMockSteelheadDeeplinkTileService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockSteelheadImageTextTileService = injector.inject(SteelheadImageTextTileService);

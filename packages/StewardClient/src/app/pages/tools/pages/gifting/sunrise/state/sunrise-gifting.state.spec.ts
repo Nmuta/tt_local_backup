@@ -11,7 +11,10 @@ import {
   SetSunriseGiftingSelectedPlayerIdentities,
 } from './sunrise-gifting.state.actions';
 
-describe('SunriseGiftingState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseGiftingState', () => {
   let service: SunriseGiftingState;
   let store: Store;
   beforeEach(() => {

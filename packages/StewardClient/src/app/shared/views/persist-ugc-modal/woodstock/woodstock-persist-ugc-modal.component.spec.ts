@@ -16,34 +16,39 @@ import { UserState } from '@shared/state/user/user.state';
 import { of } from 'rxjs';
 import { WoodstockPersistUgcModalComponent } from './woodstock-persist-ugc-modal.component';
 
-describe('WoodstockPersistUgcModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPersistUgcModalComponent', () => {
   let component: WoodstockPersistUgcModalComponent;
   let fixture: ComponentFixture<WoodstockPersistUgcModalComponent>;
   let mockStore: Store;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [WoodstockPersistUgcModalComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        ...createMockMsalServices(),
-        createMockLoggerService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: { id: faker.datatype.uuid() } as PlayerUgcItem,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          MatDialogModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [WoodstockPersistUgcModalComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: { id: faker.datatype.uuid() } as PlayerUgcItem,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPersistUgcModalComponent);
     component = fixture.debugElement.componentInstance;

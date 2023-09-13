@@ -14,7 +14,10 @@ import { MakeModelFilterGroup } from '@views/ugc-filters/ugc-filters.base.compon
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { AuctionFilters, AuctionSort, AuctionStatus } from '@models/auction-filters';
 
-describe('SunriseAuctionFiltersComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseAuctionFiltersComponent', () => {
   let fixture: ComponentFixture<SunriseAuctionFiltersComponent>;
   let component: SunriseAuctionFiltersComponent;
 
@@ -23,18 +26,20 @@ describe('SunriseAuctionFiltersComponent', () => {
   let mockSunriseService: SunriseService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [SunriseAuctionFiltersComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSunriseService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [SunriseAuctionFiltersComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSunriseService()],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

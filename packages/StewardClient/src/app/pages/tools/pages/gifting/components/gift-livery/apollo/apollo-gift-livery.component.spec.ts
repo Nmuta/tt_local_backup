@@ -25,7 +25,10 @@ import { ApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/ap
 import { createMockApolloGiftingService } from '@services/api-v2/apollo/apollo-gifiting/apollo-gifting.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('ApolloGiftLiveryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloGiftLiveryComponent', () => {
   let fixture: ComponentFixture<ApolloGiftLiveryComponent>;
   let component: ApolloGiftLiveryComponent;
 
@@ -35,21 +38,23 @@ describe('ApolloGiftLiveryComponent', () => {
   const liveryId = faker.datatype.uuid();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-      ],
-      declarations: [ApolloGiftLiveryComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockBackgroundJobService(),
-        createMockApolloService(),
-        createMockApolloGiftingService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+        ],
+        declarations: [ApolloGiftLiveryComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockBackgroundJobService(),
+          createMockApolloService(),
+          createMockApolloGiftingService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ApolloGiftLiveryComponent);
     component = fixture.debugElement.componentInstance;

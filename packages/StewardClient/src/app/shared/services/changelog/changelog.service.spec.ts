@@ -7,7 +7,10 @@ import { ChangelogState } from '@shared/state/changelog/changelog.state';
 
 import { ChangelogService } from './changelog.service';
 
-describe('ChangelogService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ChangelogService', () => {
   let service: ChangelogService;
 
   beforeEach(() => {

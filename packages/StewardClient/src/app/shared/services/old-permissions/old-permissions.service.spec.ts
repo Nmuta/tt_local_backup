@@ -6,7 +6,10 @@ import { NgxsModule } from '@ngxs/store';
 
 import { OldPermissionsService } from './old-permissions.service';
 
-describe('OldPermissionsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'OldPermissionsService', () => {
   let service: OldPermissionsService;
 
   beforeEach(() => {

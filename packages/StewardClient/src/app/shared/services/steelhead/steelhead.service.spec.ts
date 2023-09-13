@@ -14,7 +14,10 @@ import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 
-describe('SteelheadService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadService', () => {
   let injector: TestBed;
   let service: SteelheadService;
   let apiServiceMock: ApiService;

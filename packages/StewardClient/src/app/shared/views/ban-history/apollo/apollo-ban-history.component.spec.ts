@@ -7,21 +7,26 @@ import { createMockOldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service.mock';
 
-describe('ApolloBanHistoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloBanHistoryComponent', () => {
   let component: ApolloBanHistoryComponent;
   let fixture: ComponentFixture<ApolloBanHistoryComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ApolloBanHistoryComponent],
-      imports: [PipesModule],
-      providers: [
-        createMockApolloService(),
-        createMockOldPermissionsService(),
-        createMockMultipleBanHistoryService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ApolloBanHistoryComponent],
+        imports: [PipesModule],
+        providers: [
+          createMockApolloService(),
+          createMockOldPermissionsService(),
+          createMockMultipleBanHistoryService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

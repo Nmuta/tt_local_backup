@@ -12,33 +12,38 @@ import {
   WelcomeCenterTileDetailsModalData,
 } from './welcome-center-tile-details-modal.component';
 
-describe('WelcomeCenterTileDetailsModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WelcomeCenterTileDetailsModalComponent', () => {
   let component: WelcomeCenterTileDetailsModalComponent;
   let fixture: ComponentFixture<WelcomeCenterTileDetailsModalComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WelcomeCenterTileDetailsModalComponent],
-      imports: [MatDialogModule, PipesModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            columns: [
-              {
-                name: faker.random.word(),
-                events: [],
-                tileCount: 0,
-              },
-            ],
-          } as WelcomeCenterTileDetailsModalData,
-        },
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WelcomeCenterTileDetailsModalComponent],
+        imports: [MatDialogModule, PipesModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              columns: [
+                {
+                  name: faker.random.word(),
+                  events: [],
+                  tileCount: 0,
+                },
+              ],
+            } as WelcomeCenterTileDetailsModalData,
+          },
+        ],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

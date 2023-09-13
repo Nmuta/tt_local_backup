@@ -11,17 +11,22 @@ import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { createMockApolloService } from '@services/apollo';
 import { EMPTY } from 'rxjs';
 
-describe('State: LspGroupMemoryState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'State: LspGroupMemoryState', () => {
   let service: LspGroupMemoryState;
   let store: Store;
   let mockSunriseService: SunriseService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot([LspGroupMemoryState])],
-      providers: [createMockSunriseService(), createMockApolloService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot([LspGroupMemoryState])],
+        providers: [createMockSunriseService(), createMockApolloService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     service = TestBed.inject(LspGroupMemoryState);
     store = TestBed.inject(Store);

@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadUgcSharecodeService } from './steelhead-ugc-sharecode.service';
 
-describe('SteelheadUgcSharecodeService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadUgcSharecodeService', () => {
   let service: SteelheadUgcSharecodeService;
 
   beforeEach(() => {

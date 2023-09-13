@@ -5,17 +5,22 @@ import { UserDetailsComponent } from '../user-details.component';
 
 import { OpusUserDetailsComponent } from './opus-user-details.component';
 
-describe('OpusUserDetailsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'OpusUserDetailsComponent', () => {
   let component: OpusUserDetailsComponent;
   let fixture: ComponentFixture<OpusUserDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [OpusUserDetailsComponent],
-      imports: [PipesModule],
-      providers: [{ provide: UserDetailsComponent, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [OpusUserDetailsComponent],
+        imports: [PipesModule],
+        providers: [{ provide: UserDetailsComponent, useValue: {} }],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

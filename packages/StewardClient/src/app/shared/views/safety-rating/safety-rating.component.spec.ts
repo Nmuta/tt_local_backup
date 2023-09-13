@@ -19,7 +19,10 @@ import faker from '@faker-js/faker';
 import { SafetyRatingComponent, SafetyRatingServiceContract } from './safety-rating.component';
 import { SafetyRating } from '@models/player-safety-rating.model';
 
-describe('SafetyRatingComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SafetyRatingComponent', () => {
   let component: SafetyRatingComponent;
   let fixture: ComponentFixture<SafetyRatingComponent>;
 
@@ -41,23 +44,25 @@ describe('SafetyRatingComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-        PipesModule,
-      ],
-      providers: [createMockMsalServices(), createMockLoggerService()],
-      declarations: [SafetyRatingComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+          PipesModule,
+        ],
+        providers: [createMockMsalServices(), createMockLoggerService()],
+        declarations: [SafetyRatingComponent],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SafetyRatingComponent);
     component = fixture.componentInstance;

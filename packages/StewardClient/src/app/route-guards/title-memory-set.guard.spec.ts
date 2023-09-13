@@ -9,7 +9,10 @@ import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state'
 
 import { TitleMemorySetGuard } from './title-memory-set.guard';
 
-describe('TitleMemorySetGuard', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'TitleMemorySetGuard', () => {
   let guard: TitleMemorySetGuard;
   let store: Store;
   const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' } };

@@ -7,21 +7,26 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
-describe('VerifyButtonComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'VerifyButtonComponent', () => {
   let component: VerifyButtonComponent;
   let fixture: ComponentFixture<VerifyButtonComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [VerifyButtonComponent],
-      imports: [
-        MatTooltipModule,
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserSettingsState]),
-        MatSnackBarModule,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [VerifyButtonComponent],
+        imports: [
+          MatTooltipModule,
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserSettingsState]),
+          MatSnackBarModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

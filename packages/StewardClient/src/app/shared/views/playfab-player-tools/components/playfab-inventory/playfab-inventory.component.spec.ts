@@ -10,7 +10,10 @@ import {
 } from './playfab-inventory.component';
 import { PlayFabInventoryItem } from '@models/playfab';
 
-describe('PlayFabInventoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayFabInventoryComponent', () => {
   let component: PlayFabInventoryComponent;
   let fixture: ComponentFixture<PlayFabInventoryComponent>;
 
@@ -31,12 +34,14 @@ describe('PlayFabInventoryComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [PlayFabInventoryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [PipesModule],
+        declarations: [PlayFabInventoryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PlayFabInventoryComponent);
     component = fixture.debugElement.componentInstance;

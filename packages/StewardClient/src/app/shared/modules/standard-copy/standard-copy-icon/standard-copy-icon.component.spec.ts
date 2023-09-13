@@ -10,17 +10,22 @@ import { StandardCopyIconComponent } from './standard-copy-icon.component';
 })
 class TestHarnessComponent {}
 
-describe('StandardCopyIconComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'StandardCopyIconComponent', () => {
   let component: StandardCopyIconComponent;
   let fixture: ComponentFixture<StandardCopyIconComponent>;
   let harness: ComponentFixture<TestHarnessComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TestHarnessComponent, StandardCopyIconComponent],
-      imports: [MatTooltipModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [TestHarnessComponent, StandardCopyIconComponent],
+        imports: [MatTooltipModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

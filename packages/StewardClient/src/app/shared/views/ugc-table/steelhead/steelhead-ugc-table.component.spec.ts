@@ -15,23 +15,28 @@ import { createMockBackgroundJobService } from '@services/background-job/backgro
 import { createMockSteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service.mock';
 import { createMockSteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service.mock';
 
-describe('SteelheadUgcTableComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadUgcTableComponent', () => {
   let component: SteelheadUgcTableComponent;
   let fixture: ComponentFixture<SteelheadUgcTableComponent>;
   let mockSteelheadUgcLookupService: SteelheadUgcLookupService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
-      declarations: [SteelheadUgcTableComponent, BigJsonPipe],
-      providers: [
-        createMockSteelheadUgcLookupService(),
-        createMockBackgroundJobService(),
-        createMockSteelheadUgcVisibilityService(),
-        createMockSteelheadUgcSharecodeService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
+        declarations: [SteelheadUgcTableComponent, BigJsonPipe],
+        providers: [
+          createMockSteelheadUgcLookupService(),
+          createMockBackgroundJobService(),
+          createMockSteelheadUgcVisibilityService(),
+          createMockSteelheadUgcSharecodeService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadUgcTableComponent);
     component = fixture.componentInstance;

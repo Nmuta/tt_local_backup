@@ -10,7 +10,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApiV2Service } from '@shared/services/api-v2/api-v2.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('service: ApiV2Service', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'service: ApiV2Service', () => {
   let injector: TestBed;
   let apiService: ApiV2Service;
   let httpMock: HttpTestingController;

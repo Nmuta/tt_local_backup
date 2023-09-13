@@ -9,22 +9,27 @@ import { ActionMonitor } from '../action-monitor';
 
 import { ErrorSnackbarComponent } from './error-snackbar.component';
 
-describe('ErrorSnackbarComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ErrorSnackbarComponent', () => {
   let component: ErrorSnackbarComponent;
   let fixture: ComponentFixture<ErrorSnackbarComponent>;
   let snackBarRefSpy: jasmine.SpyObj<MatSnackBarRef<unknown>>;
 
   beforeEach(async () => {
     snackBarRefSpy = jasmine.createSpyObj('MatSnackBarRef', ['dismiss']);
-    await TestBed.configureTestingModule({
-      declarations: [ErrorSnackbarComponent],
-      imports: [MatSnackBarModule],
-      providers: [
-        { provide: MAT_SNACK_BAR_DATA, useValue: new ActionMonitor('GET') },
-        { provide: MatSnackBarRef, useValue: snackBarRefSpy },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ErrorSnackbarComponent],
+        imports: [MatSnackBarModule],
+        providers: [
+          { provide: MAT_SNACK_BAR_DATA, useValue: new ActionMonitor('GET') },
+          { provide: MatSnackBarRef, useValue: snackBarRefSpy },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

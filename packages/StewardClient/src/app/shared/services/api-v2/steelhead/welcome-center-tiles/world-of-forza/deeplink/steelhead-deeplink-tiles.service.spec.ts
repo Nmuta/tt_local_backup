@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadDeeplinkTileService } from './steelhead-deeplink-tiles.service';
 
-describe('SteelheadDeeplinkTileService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadDeeplinkTileService', () => {
   let service: SteelheadDeeplinkTileService;
 
   beforeEach(() => {

@@ -8,7 +8,10 @@ import faker from '@faker-js/faker';
 import { GroupGift, Gift } from '@models/gift';
 import { LspGroup } from '@models/lsp-group';
 
-describe('ApolloGiftingService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloGiftingService', () => {
   let injector: TestBed;
   let service: ApolloGiftingService;
   let apiServiceMock: ApiService;

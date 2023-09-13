@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadGroupMessagesService } from './steelhead-group-messages.service';
 
-describe('SteelheadGroupMessagesService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadGroupMessagesService', () => {
   let service: SteelheadGroupMessagesService;
 
   beforeEach(() => {

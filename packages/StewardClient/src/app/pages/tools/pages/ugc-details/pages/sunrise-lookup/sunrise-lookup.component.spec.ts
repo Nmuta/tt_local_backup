@@ -9,24 +9,29 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { SunriseLookupComponent } from './sunrise-lookup.component';
 
-describe('SunriseLookupComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseLookupComponent', () => {
   let component: SunriseLookupComponent;
   let fixture: ComponentFixture<SunriseLookupComponent>;
   let mockPermissionService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseLookupComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        MatDialogModule,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockOldPermissionsService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseLookupComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          MatDialogModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockOldPermissionsService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -5,7 +5,10 @@ import { ApiService, createMockApiService } from '@services/api';
 import { ObligationsService } from './obligations.service';
 import { PipelineGetFakeApi } from '@interceptors/fake-api/apis/pipeline/get';
 
-describe('ObligationsService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ObligationsService', () => {
   let injector: TestBed;
   let service: ObligationsService;
   let apiServiceMock: ApiService;

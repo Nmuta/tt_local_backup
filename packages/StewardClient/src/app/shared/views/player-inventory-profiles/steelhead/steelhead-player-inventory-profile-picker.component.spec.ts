@@ -8,22 +8,27 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead-player-inventory-profile-picker.component';
 
-describe('SteelheadPlayerInventoryProfilePickerComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerInventoryProfilePickerComponent', () => {
   let component: SteelheadPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<SteelheadPlayerInventoryProfilePickerComponent>;
   let mockStore: Store;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [SteelheadPlayerInventoryProfilePickerComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [SteelheadPlayerInventoryProfilePickerComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadPlayerInventoryProfilePickerComponent);
     component = fixture.debugElement.componentInstance;

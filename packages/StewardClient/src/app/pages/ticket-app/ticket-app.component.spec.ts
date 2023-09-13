@@ -31,28 +31,33 @@ import { delay } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
-describe('TicketAppComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
   let component: TicketAppComponent;
   let mockZendeskService: ZendeskService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [TicketAppComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockZendeskService(),
-        createMockScrutineerDataParser(),
-        createMockClipboard(),
-        ...createMockMsalServices(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [TicketAppComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockZendeskService(),
+          createMockScrutineerDataParser(),
+          createMockClipboard(),
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockZendeskService = injector.inject(ZendeskService);

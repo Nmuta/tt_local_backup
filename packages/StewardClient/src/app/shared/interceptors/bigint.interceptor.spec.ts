@@ -8,7 +8,10 @@ import BigNumber from 'bignumber.js';
 import { BigNumberInterceptor } from './bigint.interceptor';
 
 // strategy based on https://dev.to/alisaduncan/intercepting-http-requests---using-and-testing-angulars-httpclient
-describe('BigNumberInterceptor:', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BigNumberInterceptor:', () => {
   let interceptor: BigNumberInterceptor;
   let httpMock: HttpTestingController;
   let http: HttpClient;

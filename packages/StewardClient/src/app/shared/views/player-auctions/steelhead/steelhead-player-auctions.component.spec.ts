@@ -13,17 +13,22 @@ import { SteelheadPlayerAuctionsComponent } from './steelhead-player-auctions.co
 import { createMockSteelheadService } from '@services/steelhead';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('SteelheadPlayerAuctionsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadPlayerAuctionsComponent', () => {
   let component: SteelheadPlayerAuctionsComponent;
   let fixture: ComponentFixture<SteelheadPlayerAuctionsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SteelheadPlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockSteelheadService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [SteelheadPlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
+        providers: [createMockSteelheadService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadPlayerAuctionsComponent);
     component = fixture.componentInstance;

@@ -11,28 +11,33 @@ import {
   SteelheadBuildersCupLadderModalData,
 } from './steelhead-builders-cup-ladder-modal.component';
 
-describe('SteelheadBuildersCupLadderModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadBuildersCupLadderModalComponent', () => {
   let component: SteelheadBuildersCupLadderModalComponent;
   let fixture: ComponentFixture<SteelheadBuildersCupLadderModalComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadBuildersCupLadderModalComponent],
-      imports: [MatDialogModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            name: faker.random.word(),
-            events: [],
-          } as SteelheadBuildersCupLadderModalData,
-        },
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadBuildersCupLadderModalComponent],
+        imports: [MatDialogModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              name: faker.random.word(),
+              events: [],
+            } as SteelheadBuildersCupLadderModalData,
+          },
+        ],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

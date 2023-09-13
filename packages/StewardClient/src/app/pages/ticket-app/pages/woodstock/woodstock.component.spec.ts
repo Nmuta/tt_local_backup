@@ -9,7 +9,10 @@ import faker from '@faker-js/faker';
 import { WoodstockComponent } from './woodstock.component';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 
-describe('WoodstockComponent - Ticket App', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockComponent - Ticket App', () => {
   let component: WoodstockComponent;
   let fixture: ComponentFixture<WoodstockComponent>;
 
@@ -17,12 +20,14 @@ describe('WoodstockComponent - Ticket App', () => {
   let mockWoodstockService: WoodstockService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockComponent],
-      imports: [NgxsModule.forRoot([])],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWoodstockService(), createMockTicketService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockComponent],
+        imports: [NgxsModule.forRoot([])],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWoodstockService(), createMockTicketService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockComponent);
     component = fixture.componentInstance;

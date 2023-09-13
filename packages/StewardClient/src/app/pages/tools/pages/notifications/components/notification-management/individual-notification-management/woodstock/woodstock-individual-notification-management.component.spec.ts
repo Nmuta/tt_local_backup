@@ -4,16 +4,21 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 import { WoodstockIndividualNotificationManagementComponent } from './woodstock-individual-notification-management.component';
 
-describe('SunriseAuctionBlocklistComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseAuctionBlocklistComponent', () => {
   let component: WoodstockIndividualNotificationManagementComponent;
   let fixture: ComponentFixture<WoodstockIndividualNotificationManagementComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockIndividualNotificationManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockIndividualNotificationManagementComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockIndividualNotificationManagementComponent);
     component = fixture.debugElement.componentInstance;

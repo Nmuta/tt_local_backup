@@ -9,7 +9,10 @@ import {
   SetSunriseGiftHistorySelectedPlayerIdentities,
 } from './sunrise-gift-history.state.actions';
 
-describe('SunriseGiftHistoryState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseGiftHistoryState', () => {
   let store: Store;
   let service: SunriseGiftHistoryState;
 

@@ -2,14 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModelDumpDatetimeTableComponent } from './model-dump-datetime-table.component';
 
-describe('ModelDumpDatetimeTableComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ModelDumpDatetimeTableComponent', () => {
   let component: ModelDumpDatetimeTableComponent;
   let fixture: ComponentFixture<ModelDumpDatetimeTableComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ModelDumpDatetimeTableComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ModelDumpDatetimeTableComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

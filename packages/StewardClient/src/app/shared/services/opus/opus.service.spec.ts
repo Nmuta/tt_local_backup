@@ -6,7 +6,10 @@ import { of } from 'rxjs';
 
 import { OpusService } from './opus.service';
 
-describe('OpusService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'OpusService', () => {
   let injector: TestBed;
   let service: OpusService;
   let apiServiceMock: ApiService;

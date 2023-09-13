@@ -20,7 +20,10 @@ import { QueryList, SimpleChanges } from '@angular/core';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 
-describe('LeaderboardStatsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'LeaderboardStatsComponent', () => {
   let component: LeaderboardStatsComponent;
   let fixture: ComponentFixture<LeaderboardStatsComponent>;
 
@@ -77,22 +80,24 @@ describe('LeaderboardStatsComponent', () => {
   ];
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatInputModule,
-      ],
-      declarations: [LeaderboardStatsComponent, HumanizePipe],
-      providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+          MatSelectModule,
+          MatFormFieldModule,
+          MatInputModule,
+        ],
+        declarations: [LeaderboardStatsComponent, HumanizePipe],
+        providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(LeaderboardStatsComponent);
     component = fixture.componentInstance;

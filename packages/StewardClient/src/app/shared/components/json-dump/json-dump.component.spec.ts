@@ -4,16 +4,21 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { JsonDumpComponent } from './json-dump.component';
 
-describe('JsonDumpComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'JsonDumpComponent', () => {
   let component: JsonDumpComponent;
   let fixture: ComponentFixture<JsonDumpComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [JsonDumpComponent],
-      imports: [PipesModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [JsonDumpComponent],
+        imports: [PipesModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

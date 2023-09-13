@@ -12,17 +12,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WoodstockPlayerHiddenUgcComponent } from './woodstock-player-hidden-ugc.component';
 import { createMockWoodstockPlayerUgcService } from '@services/api-v2/woodstock/player/ugc/woodstock-player-ugc.service.mock';
 
-describe('WoodstockPlayerHiddenUgcComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockPlayerHiddenUgcComponent', () => {
   let component: WoodstockPlayerHiddenUgcComponent;
   let fixture: ComponentFixture<WoodstockPlayerHiddenUgcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [WoodstockPlayerHiddenUgcComponent, BigJsonPipe],
-      providers: [createMockWoodstockPlayerUgcService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [WoodstockPlayerHiddenUgcComponent, BigJsonPipe],
+        providers: [createMockWoodstockPlayerUgcService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPlayerHiddenUgcComponent);
     component = fixture.componentInstance;

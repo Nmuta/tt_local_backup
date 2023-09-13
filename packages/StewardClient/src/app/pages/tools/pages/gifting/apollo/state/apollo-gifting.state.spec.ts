@@ -12,7 +12,10 @@ import {
   SetApolloGiftingSelectedPlayerIdentities,
 } from './apollo-gifting.state.actions';
 
-describe('ApolloGiftingState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ApolloGiftingState', () => {
   let service: ApolloGiftingState;
   let store: Store;
 

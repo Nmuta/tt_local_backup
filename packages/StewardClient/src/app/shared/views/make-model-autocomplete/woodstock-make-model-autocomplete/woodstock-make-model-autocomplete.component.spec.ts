@@ -12,7 +12,10 @@ import { SimpleCar } from '@models/cars';
 import faker from '@faker-js/faker';
 import { uniqBy } from 'lodash';
 
-describe('WoodstockMakeModelAutocompleteComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<WoodstockMakeModelAutocompleteComponent>;
   let component: WoodstockMakeModelAutocompleteComponent;
 
@@ -21,18 +24,20 @@ describe('WoodstockMakeModelAutocompleteComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [WoodstockMakeModelAutocompleteComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [WoodstockMakeModelAutocompleteComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

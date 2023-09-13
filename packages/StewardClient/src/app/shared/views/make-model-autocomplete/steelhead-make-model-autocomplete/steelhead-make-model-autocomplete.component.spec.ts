@@ -12,7 +12,10 @@ import faker from '@faker-js/faker';
 import { uniqBy } from 'lodash';
 import { SteelheadSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/items/cars';
 
-describe('SteelheadMakeModelAutocompleteComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<SteelheadMakeModelAutocompleteComponent>;
   let component: SteelheadMakeModelAutocompleteComponent;
 
@@ -21,18 +24,20 @@ describe('SteelheadMakeModelAutocompleteComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [SteelheadMakeModelAutocompleteComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [SteelheadMakeModelAutocompleteComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

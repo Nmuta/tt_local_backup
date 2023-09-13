@@ -5,7 +5,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApiService, createMockApiService } from '@services/api';
 import { BlobStorageService } from '.';
 
-describe('BlobStorageService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BlobStorageService', () => {
   let injector: TestBed;
   let service: BlobStorageService;
 

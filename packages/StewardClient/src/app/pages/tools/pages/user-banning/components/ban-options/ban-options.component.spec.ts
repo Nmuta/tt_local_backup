@@ -4,16 +4,21 @@ import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/m
 
 import { BanOptions, BanOptionsComponent } from './ban-options.component';
 
-describe('BanOptionsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BanOptionsComponent', () => {
   let component: BanOptionsComponent;
   let fixture: ComponentFixture<BanOptionsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [BanOptionsComponent],
-      imports: [MatAutocompleteModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [BanOptionsComponent],
+        imports: [MatAutocompleteModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

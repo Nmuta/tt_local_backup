@@ -13,7 +13,10 @@ import { UserRole } from '@models/enums';
 import { NotificationsService } from '@shared/hubs/notifications.service';
 import { Subject } from 'rxjs';
 
-describe('NotificationsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'NotificationsComponent', () => {
   const urlPath = '/app/tools/foo/bar';
 
   let component: NotificationsComponent;
@@ -24,12 +27,14 @@ describe('NotificationsComponent', () => {
   let mockRouter: Router;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [NotificationsComponent],
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
-      providers: [createMockBackgroundJobService(), createMockNotificationsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [NotificationsComponent],
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
+        providers: [createMockBackgroundJobService(), createMockNotificationsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(NotificationsComponent);
     component = fixture.componentInstance;

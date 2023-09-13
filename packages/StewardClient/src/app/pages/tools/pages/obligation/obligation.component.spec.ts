@@ -19,6 +19,7 @@ import { FourOhFourModule } from '@views/four-oh-four/four-oh-four.module';
 import { SidebarIconsModule } from '@views/sidebar-icons/sidebar-icons.module';
 import { SidebarsModule } from 'app/sidebars/sidebars.module';
 import { By } from '@angular/platform-browser';
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 /** Test harness component. */
 @Component({
@@ -44,29 +45,31 @@ xdescribe('DataPipelineObligationComponent', () => {
   let rootComponent: DataPipelineObligationComponent;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        DataPipelineObligationModule,
-        NoopAnimationsModule,
-        DataPrivacyNoticeModule,
-        SidebarsModule,
-        FontAwesomeModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTooltipModule,
-        FontAwesomeModule,
-        FourOhFourModule,
-        MatCardModule,
-        SidebarIconsModule,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [TestHarnessComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          DataPipelineObligationModule,
+          NoopAnimationsModule,
+          DataPrivacyNoticeModule,
+          SidebarsModule,
+          FontAwesomeModule,
+          MatSidenavModule,
+          MatToolbarModule,
+          MatButtonModule,
+          MatIconModule,
+          MatTooltipModule,
+          FontAwesomeModule,
+          FourOhFourModule,
+          MatCardModule,
+          SidebarIconsModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [TestHarnessComponent],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(TestHarnessComponent);
     component = fixture.componentInstance;

@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SunrisePlayerCreditUpdatesService } from './sunrise-credit-updates.service';
 
-describe('SunrisePlayerCreditUpdatesService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunrisePlayerCreditUpdatesService', () => {
   let service: SunrisePlayerCreditUpdatesService;
 
   beforeEach(() => {

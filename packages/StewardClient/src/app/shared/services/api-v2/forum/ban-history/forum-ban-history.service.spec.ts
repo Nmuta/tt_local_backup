@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ForumBanHistoryService } from './forum-ban-history.service';
 
-describe('ForumBanHistoryService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ForumBanHistoryService', () => {
   let service: ForumBanHistoryService;
 
   beforeEach(() => {

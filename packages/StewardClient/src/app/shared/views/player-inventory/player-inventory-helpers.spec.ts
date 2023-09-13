@@ -5,7 +5,10 @@ import faker from '@faker-js/faker';
 import BigNumber from 'bignumber.js';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 
-describe('PlayerInventoryHelpers', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayerInventoryHelpers', () => {
   describe('Method: makeItemList', () => {
     const title = GameTitle.FH5;
     const items: MasterInventoryItem[] = [

@@ -5,17 +5,22 @@ import { NgxsModule } from '@ngxs/store';
 import { SunriseAuctionBlocklistComponent } from './sunrise-auction-blocklist.component';
 import { SunriseAuctionBlocklistService } from './sunrise-auction-blocklist.service';
 
-describe('SunriseAuctionBlocklistComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseAuctionBlocklistComponent', () => {
   let component: SunriseAuctionBlocklistComponent;
   let fixture: ComponentFixture<SunriseAuctionBlocklistComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SunriseAuctionBlocklistComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [SunriseAuctionBlocklistService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SunriseAuctionBlocklistComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [SunriseAuctionBlocklistService],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseAuctionBlocklistComponent);
     component = fixture.debugElement.componentInstance;

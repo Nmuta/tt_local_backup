@@ -13,34 +13,39 @@ import { EditCarItemModalData } from '../edit-car-item-modal.component';
 import faker from '@faker-js/faker';
 import BigNumber from 'bignumber.js';
 
-describe('SteelheadEditCarItemModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadEditCarItemModalComponent', () => {
   let fixture: ComponentFixture<SteelheadEditCarItemModalComponent>;
   let component: SteelheadEditCarItemModalComponent;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mockMatDialogRef: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SteelheadEditCarItemModalComponent],
-      imports: [MatButtonModule, MatDialogModule, PipesModule],
-      providers: [
-        createMockSteelheadPlayerInventoryService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            xuid: new BigNumber(faker.datatype.number()),
-            externalProfileId: faker.datatype.uuid(),
-            car: {
-              id: new BigNumber(faker.datatype.number()),
-            },
-          } as EditCarItemModalData,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadEditCarItemModalComponent],
+        imports: [MatButtonModule, MatDialogModule, PipesModule],
+        providers: [
+          createMockSteelheadPlayerInventoryService(),
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              xuid: new BigNumber(faker.datatype.number()),
+              externalProfileId: faker.datatype.uuid(),
+              car: {
+                id: new BigNumber(faker.datatype.number()),
+              },
+            } as EditCarItemModalData,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadEditCarItemModalComponent);
     component = fixture.componentInstance;

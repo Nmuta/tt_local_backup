@@ -8,7 +8,10 @@ import { of } from 'rxjs';
 import { createMockSettingsService, SettingsService } from '@services/settings/settings';
 import { LspEndpoints } from '@models/lsp-endpoints';
 
-describe('EndpointKeyMemoryState', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'EndpointKeyMemoryState', () => {
   let store: Store;
   let service: EndpointKeyMemoryState;
   let mockSettingsService: SettingsService;

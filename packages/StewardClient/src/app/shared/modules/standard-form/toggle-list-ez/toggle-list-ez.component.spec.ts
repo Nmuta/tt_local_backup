@@ -5,14 +5,19 @@ import { ToggleListComponent } from '../toggle-list/toggle-list.component';
 
 import { ToggleListEzComponent } from './toggle-list-ez.component';
 
-describe('ToggleListEzComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ToggleListEzComponent', () => {
   let component: ToggleListEzComponent;
   let fixture: ComponentFixture<ToggleListEzComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ToggleListEzComponent, ToggleListComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ToggleListEzComponent, ToggleListComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

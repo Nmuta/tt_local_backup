@@ -2,14 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InlineSpinnerComponent } from './inline-spinner.component';
 
-describe('InlineSpinnerComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'InlineSpinnerComponent', () => {
   let component: InlineSpinnerComponent;
   let fixture: ComponentFixture<InlineSpinnerComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [InlineSpinnerComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [InlineSpinnerComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

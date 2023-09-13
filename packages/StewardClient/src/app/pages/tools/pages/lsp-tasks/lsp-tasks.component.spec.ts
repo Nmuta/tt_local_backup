@@ -6,24 +6,29 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { LspTasksComponent } from './lsp-tasks.component';
 
-describe('TaskComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'TaskComponent', () => {
   let component: LspTasksComponent;
   let fixture: ComponentFixture<LspTasksComponent>;
 
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [LspTasksComponent],
-      providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [LspTasksComponent],
+        providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(LspTasksComponent);
     component = fixture.componentInstance;

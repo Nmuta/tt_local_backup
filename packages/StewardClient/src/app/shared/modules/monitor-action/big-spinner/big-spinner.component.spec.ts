@@ -3,15 +3,20 @@ import { ActionMonitor } from '../action-monitor';
 
 import { BigSpinnerComponent } from './big-spinner.component';
 
-describe('BigSpinnerComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'BigSpinnerComponent', () => {
   let component: BigSpinnerComponent;
   let fixture: ComponentFixture<BigSpinnerComponent>;
   const mockMonitor: ActionMonitor = new ActionMonitor();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [BigSpinnerComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [BigSpinnerComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

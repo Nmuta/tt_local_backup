@@ -7,16 +7,21 @@ import { LspGroup } from '@models/lsp-group';
 import { createMockSteelheadService } from '@services/steelhead/steelhead.service.mock';
 import { SteelheadGiftHistoryResultsCompactComponent } from './steelhead-gift-history-results-compact.component';
 
-describe('SteelheadGiftHistoryResultsCompactComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadGiftHistoryResultsCompactComponent', () => {
   let component: SteelheadGiftHistoryResultsCompactComponent;
   let fixture: ComponentFixture<SteelheadGiftHistoryResultsCompactComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadGiftHistoryResultsCompactComponent],
-      providers: [createMockSteelheadService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadGiftHistoryResultsCompactComponent],
+        providers: [createMockSteelheadService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

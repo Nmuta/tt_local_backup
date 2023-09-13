@@ -5,17 +5,22 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ToolsAppComponent } from './tools-app.component';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
-describe('ToolsAppComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ToolsAppComponent', () => {
   let component: ToolsAppComponent;
   let fixture: ComponentFixture<ToolsAppComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [ToolsAppComponent],
-      providers: [createMockLoggerService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule],
+        declarations: [ToolsAppComponent],
+        providers: [createMockLoggerService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -18,18 +18,23 @@ class TestSelectLocalizedStringContract implements SelectLocalizedStringContract
   }
 }
 
-describe('SelectLocalizedStringComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SelectLocalizedStringComponent', () => {
   let component: SelectLocalizedStringComponent;
   let fixture: ComponentFixture<SelectLocalizedStringComponent>;
 
   const mockService: TestSelectLocalizedStringContract = new TestSelectLocalizedStringContract();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SelectLocalizedStringComponent],
-      imports: [PipesModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SelectLocalizedStringComponent],
+        imports: [PipesModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

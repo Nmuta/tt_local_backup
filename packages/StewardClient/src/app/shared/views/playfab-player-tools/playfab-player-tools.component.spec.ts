@@ -13,7 +13,10 @@ import { PlayFabProfile } from '@services/api-v2/woodstock/players/playfab/woods
 import { PlayFabInventoryItem, PlayFabTransaction } from '@models/playfab';
 import { toDateTime } from '@helpers/luxon';
 
-describe('PlayFabPlayerToolsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayFabPlayerToolsComponent', () => {
   let component: PlayFabPlayerToolsComponent;
   let fixture: ComponentFixture<PlayFabPlayerToolsComponent>;
 
@@ -61,12 +64,14 @@ describe('PlayFabPlayerToolsComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [PlayFabPlayerToolsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [PipesModule],
+        declarations: [PlayFabPlayerToolsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PlayFabPlayerToolsComponent);
     component = fixture.debugElement.componentInstance;

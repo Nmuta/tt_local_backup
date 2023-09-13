@@ -9,18 +9,23 @@ import { createMockForumBanService } from '@services/api-v2/forum/ban/forum-ban.
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
 
-describe('ForumBanningComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ForumBanningComponent', () => {
   let component: ForumBanningComponent;
   let fixture: ComponentFixture<ForumBanningComponent>;
   let forumBanService: ForumBanService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [ForumBanningComponent],
-      providers: [createMockForumBanService(), createMockForumBanService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [ForumBanningComponent],
+        providers: [createMockForumBanService(), createMockForumBanService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     forumBanService = TestBed.inject(ForumBanService);
   });

@@ -5,17 +5,22 @@ import { NgxsModule } from '@ngxs/store';
 import { WoodstockAuctionBlocklistNewEntryComponent } from './woodstock-auction-blocklist-new-entry.component';
 import { WoodstockAuctionBlocklistNewEntryService } from './woodstock-auction-blocklist-new-entry.service';
 
-describe('WoodstockAuctionBlocklistNewEntryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockAuctionBlocklistNewEntryComponent', () => {
   let component: WoodstockAuctionBlocklistNewEntryComponent;
   let fixture: ComponentFixture<WoodstockAuctionBlocklistNewEntryComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockAuctionBlocklistNewEntryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [WoodstockAuctionBlocklistNewEntryService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockAuctionBlocklistNewEntryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [WoodstockAuctionBlocklistNewEntryService],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockAuctionBlocklistNewEntryComponent);
     component = fixture.debugElement.componentInstance;

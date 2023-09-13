@@ -21,7 +21,10 @@ import faker from '@faker-js/faker';
 import { Gift, GroupGift } from '@models/gift';
 import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
 
-describe('SunriseService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseService', () => {
   let injector: TestBed;
   let service: SunriseService;
   let apiServiceMock: ApiService;

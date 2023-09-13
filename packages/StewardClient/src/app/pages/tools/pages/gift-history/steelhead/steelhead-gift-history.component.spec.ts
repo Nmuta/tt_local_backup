@@ -13,23 +13,28 @@ import faker from '@faker-js/faker';
 import { of } from 'rxjs';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 
-describe('SteelheadGiftHistoryComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadGiftHistoryComponent', () => {
   let component: SteelheadGiftHistoryComponent;
   let fixture: ComponentFixture<SteelheadGiftHistoryComponent>;
 
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState, SteelheadGiftHistoryState]),
-      ],
-      declarations: [SteelheadGiftHistoryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState, SteelheadGiftHistoryState]),
+        ],
+        declarations: [SteelheadGiftHistoryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadGiftHistoryComponent);
     component = fixture.debugElement.componentInstance;

@@ -42,7 +42,7 @@ export class ApolloPlayerXuidBanHistoryFakeApi extends FakeApiBase {
           banParameters: faker.lorem.paragraph(),
           expireTimeUtc: toDateTime(faker.date.future()),
           startTimeUtc: toDateTime(faker.date.past()),
-          featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
+          featureArea: faker.helpers.arrayElement(Object.values(ApolloBanArea)),
           isActive: faker.datatype.boolean(),
           reason: faker.lorem.sentence(),
           requesterObjectId: faker.datatype.uuid(),

@@ -10,30 +10,35 @@ import { UserDetailsComponent } from '../user-details.component';
 
 import { WoodstockUserDetailsComponent } from './woodstock-user-details.component';
 
-describe('WoodstockUserDetailsComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockUserDetailsComponent', () => {
   let component: WoodstockUserDetailsComponent;
   let fixture: ComponentFixture<WoodstockUserDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockUserDetailsComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [
-        {
-          provide: UserDetailsComponent,
-          useValue: {
-            specialIdentitiesAllowed: [],
-            identity$: new Subject<AugmentedCompositeIdentity>(),
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockUserDetailsComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [
+          {
+            provide: UserDetailsComponent,
+            useValue: {
+              specialIdentitiesAllowed: [],
+              identity$: new Subject<AugmentedCompositeIdentity>(),
+            },
           },
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

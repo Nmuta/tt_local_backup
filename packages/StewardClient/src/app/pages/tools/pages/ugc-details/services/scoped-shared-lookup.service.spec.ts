@@ -3,7 +3,10 @@ import { TestBed } from '@angular/core/testing';
 
 import { ScopedSharedLookupService } from './scoped-shared-lookup.service';
 
-describe('ScopedSharedLookupService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ScopedSharedLookupService', () => {
   let service: ScopedSharedLookupService;
 
   beforeEach(() => {

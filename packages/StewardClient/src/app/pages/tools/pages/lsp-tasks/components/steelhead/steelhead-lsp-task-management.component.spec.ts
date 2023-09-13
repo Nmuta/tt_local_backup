@@ -4,16 +4,21 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 import { SteelheadLspTaskManagementComponent } from './steelhead-lsp-task-management.component';
 
-describe('SteelheadLspTaskManagementComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadLspTaskManagementComponent', () => {
   let component: SteelheadLspTaskManagementComponent;
   let fixture: ComponentFixture<SteelheadLspTaskManagementComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SteelheadLspTaskManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SteelheadLspTaskManagementComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadLspTaskManagementComponent);
     component = fixture.debugElement.componentInstance;

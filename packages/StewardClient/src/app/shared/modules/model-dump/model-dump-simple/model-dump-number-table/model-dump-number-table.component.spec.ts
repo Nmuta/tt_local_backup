@@ -2,14 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ModelDumpNumberTableComponent } from './model-dump-number-table.component';
 
-describe('ModelDumpNumberTableComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'ModelDumpNumberTableComponent', () => {
   let component: ModelDumpNumberTableComponent;
   let fixture: ComponentFixture<ModelDumpNumberTableComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ModelDumpNumberTableComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ModelDumpNumberTableComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

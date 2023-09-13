@@ -10,7 +10,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
 import { PlayerUgcItem, fakePlayerUgcItem } from '@models/player-ugc-item';
 
-describe('WoodstockEditUgcModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockEditUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<WoodstockEditUgcModalComponent>;
@@ -19,20 +22,22 @@ describe('WoodstockEditUgcModalComponent', () => {
   let mockMatDialogRef: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [WoodstockEditUgcModalComponent],
-      imports: [HttpClientTestingModule, NgxsModule.forRoot(), MatDialogModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockEditUgcModalComponent],
+        imports: [HttpClientTestingModule, NgxsModule.forRoot(), MatDialogModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockEditUgcModalComponent);
     component = fixture.componentInstance;

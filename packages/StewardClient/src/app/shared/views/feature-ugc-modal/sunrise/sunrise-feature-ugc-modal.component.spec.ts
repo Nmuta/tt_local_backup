@@ -15,7 +15,10 @@ import { DateTime, Duration } from 'luxon';
 import { of } from 'rxjs';
 import { SunriseFeatureUgcModalComponent } from './sunrise-feature-ugc-modal.component';
 
-describe('SunriseFeatureUgcModalComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SunriseFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<SunriseFeatureUgcModalComponent>;
@@ -25,21 +28,23 @@ describe('SunriseFeatureUgcModalComponent', () => {
   let mockSunriseService: SunriseService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SunriseFeatureUgcModalComponent],
-      imports: [MatButtonModule, MatDialogModule, PipesModule],
-      providers: [
-        createMockSunriseService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseFeatureUgcModalComponent],
+        imports: [MatButtonModule, MatDialogModule, PipesModule],
+        providers: [
+          createMockSunriseService(),
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseFeatureUgcModalComponent);
     component = fixture.componentInstance;

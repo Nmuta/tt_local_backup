@@ -1,6 +1,9 @@
 import { downloadJsonFile } from './file-download';
 
-describe('downloadJsonFile', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'downloadJsonFile', () => {
   it('should not throw', () => {
     downloadJsonFile('file name', 'file content');
   });

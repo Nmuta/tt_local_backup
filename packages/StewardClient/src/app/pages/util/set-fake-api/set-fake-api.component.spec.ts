@@ -5,16 +5,21 @@ import { NgxsModule } from '@ngxs/store';
 
 import { SetFakeApiComponent } from './set-fake-api.component';
 
-describe('SetFakeApiComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SetFakeApiComponent', () => {
   let component: SetFakeApiComponent;
   let fixture: ComponentFixture<SetFakeApiComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([]), RouterTestingModule.withRoutes([])],
-      declarations: [SetFakeApiComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([]), RouterTestingModule.withRoutes([])],
+        declarations: [SetFakeApiComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

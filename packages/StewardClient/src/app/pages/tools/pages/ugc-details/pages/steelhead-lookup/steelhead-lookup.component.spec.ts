@@ -9,24 +9,29 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { SteelheadLookupComponent } from './steelhead-lookup.component';
 
-describe('SteelheadLookupComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadLookupComponent', () => {
   let component: SteelheadLookupComponent;
   let fixture: ComponentFixture<SteelheadLookupComponent>;
   let mockPermissionService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadLookupComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        MatDialogModule,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockOldPermissionsService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadLookupComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          MatDialogModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockOldPermissionsService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

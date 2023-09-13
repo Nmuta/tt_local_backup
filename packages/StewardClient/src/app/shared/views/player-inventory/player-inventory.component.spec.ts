@@ -13,7 +13,10 @@ import { fakeXuid } from '@interceptors/fake-api/utility';
 import { first } from 'lodash';
 import { WoodstockPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/inventory';
 
-describe('PlayerInventoryBaseComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'PlayerInventoryBaseComponent', () => {
   let component: PlayerInventoryComponent;
   let fixture: ComponentFixture<PlayerInventoryComponent>;
 
@@ -29,12 +32,14 @@ describe('PlayerInventoryBaseComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [PlayerInventoryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        declarations: [PlayerInventoryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PlayerInventoryComponent);
     component = fixture.debugElement.componentInstance;

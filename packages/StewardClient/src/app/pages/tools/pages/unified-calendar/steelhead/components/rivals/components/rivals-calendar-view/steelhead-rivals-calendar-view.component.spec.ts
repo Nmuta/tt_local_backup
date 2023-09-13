@@ -6,21 +6,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SteelheadRivalsCalendarViewComponent } from './steelhead-rivals-calendar-view.component';
 
-describe('SteelheadRivalsCalendarViewComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadRivalsCalendarViewComponent', () => {
   let component: SteelheadRivalsCalendarViewComponent;
   let fixture: ComponentFixture<SteelheadRivalsCalendarViewComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule,
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-      ],
-      declarations: [SteelheadRivalsCalendarViewComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          MatDialogModule,
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+        ],
+        declarations: [SteelheadRivalsCalendarViewComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadRivalsCalendarViewComponent);
     component = fixture.debugElement.componentInstance;

@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { SteelheadLspTaskService } from './steelhead-lsp-tasks.service';
 
-describe('SteelheadLspTaskService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'SteelheadLspTaskService', () => {
   let service: SteelheadLspTaskService;
 
   beforeEach(() => {

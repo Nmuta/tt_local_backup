@@ -5,17 +5,22 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockWoodstockService } from '@services/woodstock';
 import { WoodstockReportWeightComponent } from './woodstock-report-weight.component';
 
-describe('WoodstockReportWeightComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockReportWeightComponent', () => {
   let component: WoodstockReportWeightComponent;
   let fixture: ComponentFixture<WoodstockReportWeightComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockReportWeightComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWoodstockService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockReportWeightComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWoodstockService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockReportWeightComponent);
     component = fixture.debugElement.componentInstance;

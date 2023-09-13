@@ -9,27 +9,32 @@ import { NgxsModule } from '@ngxs/store';
 
 import { CacheDeleteComponent } from './cache-delete.component';
 
-describe('CacheDeleteComponent', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'CacheDeleteComponent', () => {
   let component: CacheDeleteComponent;
   let fixture: ComponentFixture<CacheDeleteComponent>;
 
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-      ],
-      declarations: [CacheDeleteComponent],
-      providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          FormsModule,
+          ReactiveFormsModule,
+          MatFormFieldModule,
+          MatInputModule,
+        ],
+        declarations: [CacheDeleteComponent],
+        providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(CacheDeleteComponent);
     component = fixture.componentInstance;

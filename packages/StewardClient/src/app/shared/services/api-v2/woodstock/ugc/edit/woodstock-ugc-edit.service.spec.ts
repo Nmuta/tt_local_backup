@@ -2,7 +2,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { WoodstockUgcEditService } from './woodstock-ugc-edit.service';
 
-describe('WoodstockUgcEditService', () => {
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
+describe(
+'WoodstockUgcEditService', () => {
   let service: WoodstockUgcEditService;
 
   beforeEach(() => {
