@@ -51,7 +51,7 @@ describe('SidebarIconsComponent', () => {
     spyOnChangelogServicesDisablePopup.and.returnValue(false);
 
     mockUserSettingsService = TestBed.inject(UserSettingsService);
-    spyOnSettingsStateAppVersion = spyOnProperty(mockUserSettingsService, 'appVersion', 'get');
+    spyOnSettingsStateAppVersion = spyOnProperty(mockUserSettingsService, 'currentAppVersion', 'get');
     spyOnSettingsStateAppVersion.and.returnValue(undefined);
 
     mockNotificationsService = TestBed.inject(NotificationsService);
