@@ -77,7 +77,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Query, opt => opt.Ignore())
                 .ForMember(dest => dest.Error, opt => opt.Ignore())
                 .ReverseMap();
-            this.CreateMap<SteelheadUserFlagsInput, SteelheadUserFlags>().ReverseMap();
             this.CreateMap<SteelheadGroupGift, SteelheadGift>().ReverseMap();
             this.CreateMap<UserData, SteelheadPlayerDetails>()
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
