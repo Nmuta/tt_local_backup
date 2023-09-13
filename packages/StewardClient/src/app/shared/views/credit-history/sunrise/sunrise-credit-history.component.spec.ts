@@ -9,8 +9,7 @@ import { createMockSunrisePlayerCreditUpdatesService } from '@services/api-v2/su
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseCreditHistoryComponent', () => {
+describe('SunriseCreditHistoryComponent', () => {
   let component: SunriseCreditHistoryComponent;
   let fixture: ComponentFixture<SunriseCreditHistoryComponent>;
 

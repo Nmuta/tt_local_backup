@@ -4,8 +4,7 @@ import { WoodstockPlayFabVouchersService } from './woodstock-playfab-vouchers.se
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayFabVouchersService', () => {
+describe('WoodstockPlayFabVouchersService', () => {
   let service: WoodstockPlayFabVouchersService;
 
   beforeEach(() => {

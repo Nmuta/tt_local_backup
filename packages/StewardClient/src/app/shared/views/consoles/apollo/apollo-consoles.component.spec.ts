@@ -15,8 +15,7 @@ import { createMockOldPermissionsService, OldPermissionsService } from '@service
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloConsolesComponent', () => {
+describe('ApolloConsolesComponent', () => {
   let component: ApolloConsolesComponent;
   let fixture: ComponentFixture<ApolloConsolesComponent>;
 

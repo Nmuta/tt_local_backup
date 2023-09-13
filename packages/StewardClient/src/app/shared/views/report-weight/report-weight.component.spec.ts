@@ -22,8 +22,7 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ReportWeightComponent', () => {
+describe('ReportWeightComponent', () => {
   let component: ReportWeightComponent;
   let fixture: ComponentFixture<ReportWeightComponent>;
   let mockStore: Store;

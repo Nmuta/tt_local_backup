@@ -18,8 +18,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayFabBuildsManagementComponent', () => {
+describe('PlayFabBuildsManagementComponent', () => {
   let component: PlayFabBuildsManagementComponent;
   let fixture: ComponentFixture<PlayFabBuildsManagementComponent>;
 

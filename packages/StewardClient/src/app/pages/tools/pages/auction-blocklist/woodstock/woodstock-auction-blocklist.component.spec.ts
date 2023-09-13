@@ -7,8 +7,7 @@ import { WoodstockAuctionBlocklistService } from './woodstock-auction-blocklist.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockAuctionBlocklistComponent', () => {
+describe('WoodstockAuctionBlocklistComponent', () => {
   let component: WoodstockAuctionBlocklistComponent;
   let fixture: ComponentFixture<WoodstockAuctionBlocklistComponent>;
 

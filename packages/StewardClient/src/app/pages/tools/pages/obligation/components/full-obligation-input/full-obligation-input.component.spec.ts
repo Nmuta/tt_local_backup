@@ -7,8 +7,7 @@ import { FullObligationInputComponent } from './full-obligation-input.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FullObligationInputComponent', () => {
+describe('FullObligationInputComponent', () => {
   let component: FullObligationInputComponent;
   let fixture: ComponentFixture<FullObligationInputComponent>;
 

@@ -9,8 +9,7 @@ import { WoodstockGiftHistoryResultsComponent } from './woodstock-gift-history-r
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockGiftHistoryResultsComponent', () => {
+describe('WoodstockGiftHistoryResultsComponent', () => {
   let component: WoodstockGiftHistoryResultsComponent;
   let fixture: ComponentFixture<WoodstockGiftHistoryResultsComponent>;
 

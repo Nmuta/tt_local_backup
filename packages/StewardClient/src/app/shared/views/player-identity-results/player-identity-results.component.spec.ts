@@ -4,8 +4,7 @@ import { PlayerIdentityResultsComponent } from './player-identity-results.compon
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayerIdentityResultsComponent', () => {
+describe('PlayerIdentityResultsComponent', () => {
   let component: PlayerIdentityResultsComponent;
   let fixture: ComponentFixture<PlayerIdentityResultsComponent>;
 

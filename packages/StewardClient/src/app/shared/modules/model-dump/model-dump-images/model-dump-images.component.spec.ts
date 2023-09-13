@@ -7,8 +7,7 @@ import { ModelDumpImagesComponent } from './model-dump-images.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ModelDumpImagesComponent', () => {
+describe('ModelDumpImagesComponent', () => {
   let component: ModelDumpImagesComponent;
   let fixture: ComponentFixture<ModelDumpImagesComponent>;
   const processedModel$ = new BehaviorSubject<ExtractedModel>(undefined);

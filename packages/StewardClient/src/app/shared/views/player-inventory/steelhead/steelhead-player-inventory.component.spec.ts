@@ -18,8 +18,7 @@ import { SteelheadMasterInventoryFakeApi } from '@interceptors/fake-api/apis/tit
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerInventoryComponent', () => {
+describe('SteelheadPlayerInventoryComponent', () => {
   let component: SteelheadPlayerInventoryComponent;
   let fixture: ComponentFixture<SteelheadPlayerInventoryComponent>;
   let mockSteelheadPlayerInventoryService: SteelheadPlayerInventoryService;

@@ -7,8 +7,7 @@ import { ApolloPlayerInventoryComponent } from './apollo-player-inventory.compon
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloPlayerInventoryComponent', () => {
+describe('ApolloPlayerInventoryComponent', () => {
   let component: ApolloPlayerInventoryComponent;
   let fixture: ComponentFixture<ApolloPlayerInventoryComponent>;
   let service: ApolloService;

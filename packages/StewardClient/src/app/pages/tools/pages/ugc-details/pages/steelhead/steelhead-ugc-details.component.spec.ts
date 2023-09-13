@@ -10,8 +10,7 @@ import { SteelheadUgcDetailsComponent } from './steelhead-ugc-details.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUgcDetailsComponent', () => {
+describe('SteelheadUgcDetailsComponent', () => {
   let component: SteelheadUgcDetailsComponent;
   let fixture: ComponentFixture<SteelheadUgcDetailsComponent>;
 

@@ -7,8 +7,7 @@ import { AcLogReaderComponent } from './ac-log-reader.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AcLogReaderComponent', () => {
+describe('AcLogReaderComponent', () => {
   let component: AcLogReaderComponent;
   let fixture: ComponentFixture<AcLogReaderComponent>;
 

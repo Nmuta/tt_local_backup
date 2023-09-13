@@ -29,8 +29,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LeaderboardScoresComponent', () => {
+describe('LeaderboardScoresComponent', () => {
   let component: LeaderboardScoresComponent;
   let fixture: ComponentFixture<LeaderboardScoresComponent>;
 

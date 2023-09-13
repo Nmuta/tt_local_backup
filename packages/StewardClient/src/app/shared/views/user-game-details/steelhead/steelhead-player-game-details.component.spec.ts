@@ -10,8 +10,7 @@ import { createMockSteelheadPlayerGameDetailsService } from '@services/api-v2/st
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerGameDetailsComponent', () => {
+describe('SteelheadPlayerGameDetailsComponent', () => {
   let component: SteelheadPlayerGameDetailsComponent;
   let fixture: ComponentFixture<SteelheadPlayerGameDetailsComponent>;
 

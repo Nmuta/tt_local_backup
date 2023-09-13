@@ -4,8 +4,7 @@ import { SteelheadUgcSharecodeService } from './steelhead-ugc-sharecode.service'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUgcSharecodeService', () => {
+describe('SteelheadUgcSharecodeService', () => {
   let service: SteelheadUgcSharecodeService;
 
   beforeEach(() => {

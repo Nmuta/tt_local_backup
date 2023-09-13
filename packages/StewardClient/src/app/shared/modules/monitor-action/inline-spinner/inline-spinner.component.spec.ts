@@ -4,8 +4,7 @@ import { InlineSpinnerComponent } from './inline-spinner.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'InlineSpinnerComponent', () => {
+describe('InlineSpinnerComponent', () => {
   let component: InlineSpinnerComponent;
   let fixture: ComponentFixture<InlineSpinnerComponent>;
 

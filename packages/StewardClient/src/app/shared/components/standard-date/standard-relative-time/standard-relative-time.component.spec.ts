@@ -9,8 +9,7 @@ import { StandardRelativeTimeComponent } from './standard-relative-time.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StandardRelativeTimeComponent', () => {
+describe('StandardRelativeTimeComponent', () => {
   let component: StandardRelativeTimeComponent;
   let fixture: ComponentFixture<StandardRelativeTimeComponent>;
 

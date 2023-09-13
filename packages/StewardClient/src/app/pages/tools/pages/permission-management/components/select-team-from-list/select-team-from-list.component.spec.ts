@@ -11,8 +11,7 @@ import { SelectTeamFromListComponent } from './select-team-from-list.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SelectTeamFromListComponent', () => {
+describe('SelectTeamFromListComponent', () => {
   let component: SelectTeamFromListComponent;
   let fixture: ComponentFixture<SelectTeamFromListComponent>;
 

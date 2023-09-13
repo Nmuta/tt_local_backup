@@ -5,8 +5,7 @@ import { DatetimePickerComponent } from './datetime-picker.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DatetimePickerComponent', () => {
+describe('DatetimePickerComponent', () => {
   let component: DatetimePickerComponent;
   let fixture: ComponentFixture<DatetimePickerComponent>;
 

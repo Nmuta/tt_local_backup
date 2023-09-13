@@ -15,8 +15,7 @@ import { TourState } from '@shared/state/tours/tours.state';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ToolsAppHomeComponent', () => {
+describe('ToolsAppHomeComponent', () => {
   let component: ToolsAppHomeComponent;
   let fixture: ComponentFixture<ToolsAppHomeComponent>;
 

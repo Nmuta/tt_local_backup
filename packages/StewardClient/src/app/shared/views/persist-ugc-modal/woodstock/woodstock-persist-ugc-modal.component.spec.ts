@@ -18,8 +18,7 @@ import { WoodstockPersistUgcModalComponent } from './woodstock-persist-ugc-modal
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPersistUgcModalComponent', () => {
+describe('WoodstockPersistUgcModalComponent', () => {
   let component: WoodstockPersistUgcModalComponent;
   let fixture: ComponentFixture<WoodstockPersistUgcModalComponent>;
   let mockStore: Store;

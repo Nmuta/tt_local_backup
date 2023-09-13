@@ -9,8 +9,7 @@ import { EndpointSelectionComponent } from './endpoint-selection.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'EndpointSelectionComponent', () => {
+describe('EndpointSelectionComponent', () => {
   const endpoint = faker.random.word();
   const validGameTitle = GameTitleCodeName.FH5;
   const invalidGameTitle = GameTitleCodeName.FH3;

@@ -4,8 +4,7 @@ import { SteelheadPlayerDriverLevelService } from './steelhead-player-driver-lev
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerDriverLevelService', () => {
+describe('SteelheadPlayerDriverLevelService', () => {
   let service: SteelheadPlayerDriverLevelService;
 
   beforeEach(() => {

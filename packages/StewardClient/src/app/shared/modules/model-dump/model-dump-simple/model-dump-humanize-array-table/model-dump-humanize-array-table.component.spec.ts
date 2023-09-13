@@ -4,8 +4,7 @@ import { ModelDumpHumanizeArrayTableComponent } from './model-dump-humanize-arra
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ModelDumpHumanizeArrayTableComponent', () => {
+describe('ModelDumpHumanizeArrayTableComponent', () => {
   let component: ModelDumpHumanizeArrayTableComponent;
   let fixture: ComponentFixture<ModelDumpHumanizeArrayTableComponent>;
 

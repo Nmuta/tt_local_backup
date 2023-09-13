@@ -14,8 +14,7 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseUgcTableComponent', () => {
+describe('SunriseUgcTableComponent', () => {
   let component: SunriseUgcTableComponent;
   let fixture: ComponentFixture<SunriseUgcTableComponent>;
   let mockSunriseService: SunriseService;

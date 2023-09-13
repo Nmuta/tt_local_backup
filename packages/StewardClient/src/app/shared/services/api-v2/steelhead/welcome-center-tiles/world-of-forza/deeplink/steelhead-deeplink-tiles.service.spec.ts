@@ -4,8 +4,7 @@ import { SteelheadDeeplinkTileService } from './steelhead-deeplink-tiles.service
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadDeeplinkTileService', () => {
+describe('SteelheadDeeplinkTileService', () => {
   let service: SteelheadDeeplinkTileService;
 
   beforeEach(() => {

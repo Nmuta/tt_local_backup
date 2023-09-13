@@ -14,8 +14,7 @@ import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerUgcComponent', () => {
+describe('SteelheadPlayerUgcComponent', () => {
   let component: SteelheadPlayerUgcComponent;
   let fixture: ComponentFixture<SteelheadPlayerUgcComponent>;
 

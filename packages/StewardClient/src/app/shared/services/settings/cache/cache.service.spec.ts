@@ -8,8 +8,7 @@ import { CacheService } from './cache.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CacheService', () => {
+describe('CacheService', () => {
   let injector: TestBed;
   let service: CacheService;
   let apiServiceMock: ApiService;

@@ -10,8 +10,7 @@ import { CreateUserGroupComponent } from './create-user-group.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CreateUserGroupComponent', () => {
+describe('CreateUserGroupComponent', () => {
   let component: CreateUserGroupComponent;
   let fixture: ComponentFixture<CreateUserGroupComponent>;
   let mockStore: Store;

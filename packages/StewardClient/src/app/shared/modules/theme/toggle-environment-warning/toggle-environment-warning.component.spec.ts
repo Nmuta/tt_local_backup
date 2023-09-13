@@ -6,8 +6,7 @@ import { ToggleEnvironmentWarningComponent } from './toggle-environment-warning.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ToggleEnvironmentWarningComponent', () => {
+describe('ToggleEnvironmentWarningComponent', () => {
   let component: ToggleEnvironmentWarningComponent;
   let fixture: ComponentFixture<ToggleEnvironmentWarningComponent>;
 

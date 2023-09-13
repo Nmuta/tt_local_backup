@@ -15,8 +15,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerSidebarDetailsComponent', () => {
+describe('WoodstockPlayerSidebarDetailsComponent', () => {
   let mockWoodstockService: WoodstockService;
 
   let fixture: ComponentFixture<WoodstockPlayerSidebarDetailsComponent>;

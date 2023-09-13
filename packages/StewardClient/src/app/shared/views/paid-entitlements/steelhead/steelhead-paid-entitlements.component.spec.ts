@@ -6,8 +6,7 @@ import { SteelheadPaidEntitlementsComponent } from './steelhead-paid-entitlement
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPaidEntitlementsComponent', () => {
+describe('SteelheadPaidEntitlementsComponent', () => {
   let component: SteelheadPaidEntitlementsComponent;
   let fixture: ComponentFixture<SteelheadPaidEntitlementsComponent>;
 

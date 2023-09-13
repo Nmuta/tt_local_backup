@@ -4,8 +4,7 @@ import { SteelheadGroupMessagesService } from './steelhead-group-messages.servic
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadGroupMessagesService', () => {
+describe('SteelheadGroupMessagesService', () => {
   let service: SteelheadGroupMessagesService;
 
   beforeEach(() => {

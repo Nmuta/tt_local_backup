@@ -4,8 +4,7 @@ import { TitleMemoryRedirectLandingComponent } from './title-memory-redirect-lan
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TitleMemoryRedirectLandingComponent', () => {
+describe('TitleMemoryRedirectLandingComponent', () => {
   let component: TitleMemoryRedirectLandingComponent;
   let fixture: ComponentFixture<TitleMemoryRedirectLandingComponent>;
 

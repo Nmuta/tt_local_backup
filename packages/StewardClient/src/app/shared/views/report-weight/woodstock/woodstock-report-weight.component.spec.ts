@@ -7,8 +7,7 @@ import { WoodstockReportWeightComponent } from './woodstock-report-weight.compon
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockReportWeightComponent', () => {
+describe('WoodstockReportWeightComponent', () => {
   let component: WoodstockReportWeightComponent;
   let fixture: ComponentFixture<WoodstockReportWeightComponent>;
 

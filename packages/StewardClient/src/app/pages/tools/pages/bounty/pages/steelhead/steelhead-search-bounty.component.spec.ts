@@ -9,8 +9,7 @@ import { createMockSteelheadBountiesService } from '@services/api-v2/steelhead/b
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadSearchBountyComponent', () => {
+describe('SteelheadSearchBountyComponent', () => {
   let fixture: ComponentFixture<SteelheadSearchBountyComponent>;
   let component: SteelheadSearchBountyComponent;
 

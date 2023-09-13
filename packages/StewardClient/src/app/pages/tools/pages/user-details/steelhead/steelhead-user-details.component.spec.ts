@@ -10,8 +10,7 @@ import { SteelheadUserDetailsComponent } from './steelhead-user-details.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUserDetailsComponent', () => {
+describe('SteelheadUserDetailsComponent', () => {
   let component: SteelheadUserDetailsComponent;
   let fixture: ComponentFixture<SteelheadUserDetailsComponent>;
 

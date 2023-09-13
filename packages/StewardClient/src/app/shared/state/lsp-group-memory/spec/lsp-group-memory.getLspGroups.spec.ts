@@ -13,8 +13,7 @@ import { EMPTY } from 'rxjs';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'State: LspGroupMemoryState', () => {
+describe('State: LspGroupMemoryState', () => {
   let service: LspGroupMemoryState;
   let store: Store;
   let mockSunriseService: SunriseService;

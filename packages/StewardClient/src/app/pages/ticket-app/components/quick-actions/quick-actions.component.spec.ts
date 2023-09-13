@@ -5,8 +5,7 @@ import { QuickActionsComponent } from './quick-actions.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'QuickActionsComponent', () => {
+describe('QuickActionsComponent', () => {
   let component: QuickActionsComponent;
   let fixture: ComponentFixture<QuickActionsComponent>;
 

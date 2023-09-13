@@ -4,8 +4,7 @@ import { SteelheadPlayerFlagsService } from './steelhead-player-flags.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerFlagsService', () => {
+describe('SteelheadPlayerFlagsService', () => {
   let service: SteelheadPlayerFlagsService;
 
   beforeEach(() => {

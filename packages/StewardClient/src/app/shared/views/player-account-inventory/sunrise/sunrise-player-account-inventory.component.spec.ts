@@ -12,8 +12,7 @@ import { fakeXuid } from '@interceptors/fake-api/utility';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerAccountInventoryComponent', () => {
+describe('SunrisePlayerAccountInventoryComponent', () => {
   let injector: TestBed;
   let service: SunriseService;
   let component: SunrisePlayerAccountInventoryComponent;

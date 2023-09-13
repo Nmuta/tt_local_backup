@@ -6,8 +6,7 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StewardAppBaseComponent', () => {
+describe('StewardAppBaseComponent', () => {
   let component: StewardAppBaseComponent;
   let fixture: ComponentFixture<StewardAppBaseComponent>;
 

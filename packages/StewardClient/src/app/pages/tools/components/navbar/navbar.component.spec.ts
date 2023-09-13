@@ -15,8 +15,7 @@ import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.servi
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ToolsNavbarComponent', () => {
+describe('ToolsNavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
 

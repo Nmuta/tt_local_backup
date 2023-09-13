@@ -13,8 +13,7 @@ import { PlayFabTransaction } from '@models/playfab';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayFabTransactionHistoryComponent', () => {
+describe('PlayFabTransactionHistoryComponent', () => {
   let component: PlayFabTransactionHistoryComponent;
   let fixture: ComponentFixture<PlayFabTransactionHistoryComponent>;
 

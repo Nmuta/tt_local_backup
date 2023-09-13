@@ -14,8 +14,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerNotificationsComponent', () => {
+describe('SunrisePlayerNotificationsComponent', () => {
   let injector: TestBed;
   let service: SunriseService;
   let component: SunrisePlayerNotificationsComponent;

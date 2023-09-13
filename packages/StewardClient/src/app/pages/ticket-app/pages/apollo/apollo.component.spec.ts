@@ -11,8 +11,7 @@ import { ApolloComponent } from './apollo.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloComponent - Ticket App', () => {
+describe('ApolloComponent - Ticket App', () => {
   let component: ApolloComponent;
   let fixture: ComponentFixture<ApolloComponent>;
 

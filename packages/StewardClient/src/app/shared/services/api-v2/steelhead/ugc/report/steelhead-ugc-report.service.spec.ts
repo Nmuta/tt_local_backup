@@ -4,8 +4,7 @@ import { SteelheadUgcReportService } from './steelhead-ugc-report.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FindService', () => {
+describe('FindService', () => {
   let service: SteelheadUgcReportService;
 
   beforeEach(() => {

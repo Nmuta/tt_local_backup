@@ -5,8 +5,7 @@ import { CachedCarComponent } from './cached-car.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CachedCarComponent', () => {
+describe('CachedCarComponent', () => {
   let component: CachedCarComponent;
   let fixture: ComponentFixture<CachedCarComponent>;
 

@@ -21,8 +21,7 @@ import { UgcProfileInfo } from '@services/api-v2/steelhead/player/ugc-profile/st
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UgcProfileComponent', () => {
+describe('UgcProfileComponent', () => {
   let component: UgcProfileComponent;
   let fixture: ComponentFixture<UgcProfileComponent>;
 

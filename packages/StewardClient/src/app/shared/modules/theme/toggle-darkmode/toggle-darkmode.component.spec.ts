@@ -6,8 +6,7 @@ import { ToggleDarkmodeComponent } from './toggle-darkmode.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ToggleDarkmodeComponent', () => {
+describe('ToggleDarkmodeComponent', () => {
   let component: ToggleDarkmodeComponent;
   let fixture: ComponentFixture<ToggleDarkmodeComponent>;
 

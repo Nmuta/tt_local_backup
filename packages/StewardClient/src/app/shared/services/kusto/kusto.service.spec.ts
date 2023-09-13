@@ -10,8 +10,7 @@ import { GuidLikeString } from '@models/extended-types';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'KustoService', () => {
+describe('KustoService', () => {
   let injector: TestBed;
   let service: KustoService;
 

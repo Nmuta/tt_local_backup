@@ -5,8 +5,7 @@ import { UserBanningComponent } from './user-banning.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UserBanningComponent', () => {
+describe('UserBanningComponent', () => {
   let component: UserBanningComponent;
   let fixture: ComponentFixture<UserBanningComponent>;
 

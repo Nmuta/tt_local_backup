@@ -4,8 +4,7 @@ import { OptionalNumberComponent } from './optional-number.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OptionalNumberComponent', () => {
+describe('OptionalNumberComponent', () => {
   let component: OptionalNumberComponent;
   let fixture: ComponentFixture<OptionalNumberComponent>;
 

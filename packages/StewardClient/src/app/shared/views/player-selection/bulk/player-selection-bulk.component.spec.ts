@@ -22,8 +22,7 @@ import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayerSelectionBulkComponent', () => {
+describe('PlayerSelectionBulkComponent', () => {
   let component: PlayerSelectionBulkComponent;
   let fixture: ComponentFixture<PlayerSelectionBulkComponent>;
   let sunrise: SunriseService;

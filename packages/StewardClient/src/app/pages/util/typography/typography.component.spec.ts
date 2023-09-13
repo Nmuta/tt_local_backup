@@ -4,8 +4,7 @@ import { TypographyComponent } from './typography.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TypographyComponent', () => {
+describe('TypographyComponent', () => {
   let component: TypographyComponent;
   let fixture: ComponentFixture<TypographyComponent>;
 

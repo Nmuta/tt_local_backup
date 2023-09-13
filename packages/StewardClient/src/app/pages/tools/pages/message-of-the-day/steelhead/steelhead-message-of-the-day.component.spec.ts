@@ -9,8 +9,7 @@ import { SteelheadMessageOfTheDayComponent } from './steelhead-message-of-the-da
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadMessageOfTheDayComponent', () => {
+describe('SteelheadMessageOfTheDayComponent', () => {
   let component: SteelheadMessageOfTheDayComponent;
   let fixture: ComponentFixture<SteelheadMessageOfTheDayComponent>;
   let mockMotdService: SteelheadMessageOfTheDayService;

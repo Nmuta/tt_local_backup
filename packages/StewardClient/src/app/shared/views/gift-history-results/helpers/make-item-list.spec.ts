@@ -6,8 +6,7 @@ import { makeItemList } from './make-item-list';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'Gift History Results Helper: Apollo', () => {
+describe('Gift History Results Helper: Apollo', () => {
   describe('Method: makeItemList', () => {
     const title = 'test-title';
     const giftItems = [

@@ -7,8 +7,7 @@ import { OpusPlayerInventoryComponent } from './opus-player-inventory.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OpusPlayerInventoryComponent', () => {
+describe('OpusPlayerInventoryComponent', () => {
   let component: OpusPlayerInventoryComponent;
   let fixture: ComponentFixture<OpusPlayerInventoryComponent>;
   let service: OpusService;

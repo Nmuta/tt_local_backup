@@ -19,8 +19,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ListUsersInGroupComponent', () => {
+describe('ListUsersInGroupComponent', () => {
   let component: ListUsersInGroupComponent;
   let fixture: ComponentFixture<ListUsersInGroupComponent>;
   let mockStore: Store;

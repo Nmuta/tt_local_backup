@@ -7,8 +7,7 @@ import { SteelheadSkillRatingComponent } from './steelhead-skill-rating.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadSkillRatingComponent', () => {
+describe('SteelheadSkillRatingComponent', () => {
   let component: SteelheadSkillRatingComponent;
   let fixture: ComponentFixture<SteelheadSkillRatingComponent>;
 

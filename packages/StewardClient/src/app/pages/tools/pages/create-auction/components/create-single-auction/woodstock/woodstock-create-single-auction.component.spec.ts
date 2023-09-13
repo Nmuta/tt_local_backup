@@ -7,8 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockCreateSingleAuctionComponent', () => {
+describe('WoodstockCreateSingleAuctionComponent', () => {
   let component: WoodstockCreateSingleAuctionComponent;
   let fixture: ComponentFixture<WoodstockCreateSingleAuctionComponent>;
 

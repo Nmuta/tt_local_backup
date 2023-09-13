@@ -13,8 +13,7 @@ import { PermissionManagementComponent } from './permission-management.component
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PermissionManagementComponent', () => {
+describe('PermissionManagementComponent', () => {
   let component: PermissionManagementComponent;
   let fixture: ComponentFixture<PermissionManagementComponent>;
 

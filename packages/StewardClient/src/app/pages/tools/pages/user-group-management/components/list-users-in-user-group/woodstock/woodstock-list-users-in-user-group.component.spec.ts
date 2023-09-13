@@ -8,8 +8,7 @@ import { WoodstockListUsersInGroupComponent } from './woodstock-list-users-in-us
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockListUsersInGroupComponent', () => {
+describe('WoodstockListUsersInGroupComponent', () => {
   let component: WoodstockListUsersInGroupComponent;
   let fixture: ComponentFixture<WoodstockListUsersInGroupComponent>;
 

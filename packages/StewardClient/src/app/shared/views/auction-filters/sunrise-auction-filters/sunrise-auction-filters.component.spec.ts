@@ -16,8 +16,7 @@ import { AuctionFilters, AuctionSort, AuctionStatus } from '@models/auction-filt
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseAuctionFiltersComponent', () => {
+describe('SunriseAuctionFiltersComponent', () => {
   let fixture: ComponentFixture<SunriseAuctionFiltersComponent>;
   let component: SunriseAuctionFiltersComponent;
 

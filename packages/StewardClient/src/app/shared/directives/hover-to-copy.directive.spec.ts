@@ -29,8 +29,7 @@ const mouseEvents = {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'HoverToCopyDirective', () => {
+describe('HoverToCopyDirective', () => {
   let fixture: ComponentFixture<ContainerComponent>;
   let element: HTMLElement;
 

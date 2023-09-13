@@ -4,8 +4,7 @@ import { FortePlayFabBuildsService } from './forte-playfab-builds.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FortePlayFabBuildsService', () => {
+describe('FortePlayFabBuildsService', () => {
   let service: FortePlayFabBuildsService;
 
   beforeEach(() => {

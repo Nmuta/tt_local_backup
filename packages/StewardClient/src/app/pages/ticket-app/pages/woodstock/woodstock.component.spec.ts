@@ -11,8 +11,7 @@ import { createMockWoodstockService, WoodstockService } from '@services/woodstoc
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockComponent - Ticket App', () => {
+describe('WoodstockComponent - Ticket App', () => {
   let component: WoodstockComponent;
   let fixture: ComponentFixture<WoodstockComponent>;
 

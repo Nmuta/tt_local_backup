@@ -7,8 +7,7 @@ import { SunrisePlayerAuctionActionLogComponent } from './sunrise-player-auction
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerAuctionActionLogComponent', () => {
+describe('SunrisePlayerAuctionActionLogComponent', () => {
   let component: SunrisePlayerAuctionActionLogComponent;
   let fixture: ComponentFixture<SunrisePlayerAuctionActionLogComponent>;
 

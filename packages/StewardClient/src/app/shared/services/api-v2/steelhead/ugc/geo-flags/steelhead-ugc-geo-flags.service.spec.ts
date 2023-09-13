@@ -4,8 +4,7 @@ import { SteelheadUgcGeoFlagsService } from './steelhead-ugc-geo-flags.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FindService', () => {
+describe('FindService', () => {
   let service: SteelheadUgcGeoFlagsService;
 
   beforeEach(() => {

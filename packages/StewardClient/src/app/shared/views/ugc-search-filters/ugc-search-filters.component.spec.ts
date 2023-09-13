@@ -10,8 +10,7 @@ import { UgcSearchFiltersComponent } from './ugc-search-filters.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UgcSearchFiltersComponent', () => {
+describe('UgcSearchFiltersComponent', () => {
   let fixture: ComponentFixture<UgcSearchFiltersComponent>;
   let component: UgcSearchFiltersComponent;
   let mockStore: Store;

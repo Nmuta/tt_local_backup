@@ -4,8 +4,7 @@ import { SteelheadGitOperationService } from './steelhead-git-operation.service'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadGitOperationService', () => {
+describe('SteelheadGitOperationService', () => {
   let service: SteelheadGitOperationService;
 
   beforeEach(() => {

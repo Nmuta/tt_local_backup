@@ -17,8 +17,7 @@ import { of } from 'rxjs';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'InventoryItemListDisplayComponent', () => {
+describe('InventoryItemListDisplayComponent', () => {
   let component: InventoryItemListDisplayComponent;
   let fixture: ComponentFixture<InventoryItemListDisplayComponent>;
 

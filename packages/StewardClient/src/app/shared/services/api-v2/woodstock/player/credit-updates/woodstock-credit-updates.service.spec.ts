@@ -4,8 +4,7 @@ import { WoodstockPlayerCreditUpdatesService } from './woodstock-credit-updates.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLeaderboardTalentService', () => {
+describe('WoodstockLeaderboardTalentService', () => {
   let service: WoodstockPlayerCreditUpdatesService;
 
   beforeEach(() => {

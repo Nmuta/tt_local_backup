@@ -7,8 +7,7 @@ import { SunriseAuctionBlocklistService } from './sunrise-auction-blocklist.serv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseAuctionBlocklistComponent', () => {
+describe('SunriseAuctionBlocklistComponent', () => {
   let component: SunriseAuctionBlocklistComponent;
   let fixture: ComponentFixture<SunriseAuctionBlocklistComponent>;
 

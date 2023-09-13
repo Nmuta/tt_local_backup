@@ -10,8 +10,7 @@ import { ForteUserDetailsComponent } from './forte-user-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ForteUserDetailsComponent', () => {
+describe('ForteUserDetailsComponent', () => {
   let component: ForteUserDetailsComponent;
   let fixture: ComponentFixture<ForteUserDetailsComponent>;
 

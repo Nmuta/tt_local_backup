@@ -3,8 +3,7 @@ import { RacersCupEventCardComponent } from './racers-cup-event-card.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'RacersCupEventCardComponent', () => {
+describe('RacersCupEventCardComponent', () => {
   let component: RacersCupEventCardComponent;
   let fixture: ComponentFixture<RacersCupEventCardComponent>;
 

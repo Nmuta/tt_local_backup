@@ -10,8 +10,7 @@ import { ApolloUserDetailsComponent } from './apollo-user-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloUserDetailsComponent', () => {
+describe('ApolloUserDetailsComponent', () => {
   let component: ApolloUserDetailsComponent;
   let fixture: ComponentFixture<ApolloUserDetailsComponent>;
 

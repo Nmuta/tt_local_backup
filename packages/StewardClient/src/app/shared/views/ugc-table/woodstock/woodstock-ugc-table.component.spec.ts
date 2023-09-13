@@ -21,8 +21,7 @@ import { createMockWoodstockUgcReportService } from '@services/api-v2/woodstock/
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockUgcTableComponent', () => {
+describe('WoodstockUgcTableComponent', () => {
   let component: WoodstockUgcTableComponent;
   let fixture: ComponentFixture<WoodstockUgcTableComponent>;
   let mockWoodstockService: WoodstockService;

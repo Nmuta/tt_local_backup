@@ -7,8 +7,7 @@ import { BlobStorageService } from '.';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BlobStorageService', () => {
+describe('BlobStorageService', () => {
   let injector: TestBed;
   let service: BlobStorageService;
 

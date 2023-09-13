@@ -5,8 +5,7 @@ import { ContactUsComponent } from './contact-us.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ContactUsComponent', () => {
+describe('ContactUsComponent', () => {
   let component: ContactUsComponent;
   let fixture: ComponentFixture<ContactUsComponent>;
 

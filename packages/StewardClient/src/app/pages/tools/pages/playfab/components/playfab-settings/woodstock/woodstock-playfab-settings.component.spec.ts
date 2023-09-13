@@ -8,8 +8,7 @@ import { GameTitle } from '@models/enums';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayFabSettingsComponent', () => {
+describe('WoodstockPlayFabSettingsComponent', () => {
   let component: WoodstockPlayFabSettingsComponent;
   let fixture: ComponentFixture<WoodstockPlayFabSettingsComponent>;
 

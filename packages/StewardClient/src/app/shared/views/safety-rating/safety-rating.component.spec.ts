@@ -21,8 +21,7 @@ import { SafetyRating } from '@models/player-safety-rating.model';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SafetyRatingComponent', () => {
+describe('SafetyRatingComponent', () => {
   let component: SafetyRatingComponent;
   let fixture: ComponentFixture<SafetyRatingComponent>;
 

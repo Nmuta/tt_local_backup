@@ -7,8 +7,7 @@ import { SteelheadLeaderboardStatsComponent } from './steelhead-leaderboard-stat
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadLeaderboardStatsComponent', () => {
+describe('SteelheadLeaderboardStatsComponent', () => {
   let component: SteelheadLeaderboardStatsComponent;
   let fixture: ComponentFixture<SteelheadLeaderboardStatsComponent>;
 

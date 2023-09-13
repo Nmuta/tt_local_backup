@@ -9,8 +9,7 @@ import { TitleMemoryRedirectGuard } from './title-memory-redirect.guard';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TitleMemoryRedirectGuard', () => {
+describe('TitleMemoryRedirectGuard', () => {
   let guard: TitleMemoryRedirectGuard;
   let store: Store;
   const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' } };

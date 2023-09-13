@@ -22,8 +22,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SearchLeaderboardsComponent', () => {
+describe('SearchLeaderboardsComponent', () => {
   let component: SearchLeaderboardsComponent;
   let fixture: ComponentFixture<SearchLeaderboardsComponent>;
 

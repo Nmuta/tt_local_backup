@@ -20,8 +20,7 @@ const activatedRouteMock = {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockGamertagsComponent', () => {
+describe('WoodstockGamertagsComponent', () => {
   let component: WoodstockGamertagsComponent;
   let fixture: ComponentFixture<WoodstockGamertagsComponent>;
 

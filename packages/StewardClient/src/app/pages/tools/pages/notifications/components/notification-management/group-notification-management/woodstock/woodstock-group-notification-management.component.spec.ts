@@ -6,8 +6,7 @@ import { WoodstockGroupNotificationManagementComponent } from './woodstock-group
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseAuctionBlocklistComponent', () => {
+describe('SunriseAuctionBlocklistComponent', () => {
   let component: WoodstockGroupNotificationManagementComponent;
   let fixture: ComponentFixture<WoodstockGroupNotificationManagementComponent>;
 

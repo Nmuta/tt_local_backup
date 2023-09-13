@@ -7,8 +7,7 @@ import { PipelineGetFakeApi } from '@interceptors/fake-api/apis/pipeline/get';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ObligationsService', () => {
+describe('ObligationsService', () => {
   let injector: TestBed;
   let service: ObligationsService;
   let apiServiceMock: ApiService;

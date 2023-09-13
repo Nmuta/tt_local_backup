@@ -14,8 +14,7 @@ import { NewLocalizedMessageComponent } from './new-localized-message.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'NewLocalizedMessageComponent', () => {
+describe('NewLocalizedMessageComponent', () => {
   let fixture: ComponentFixture<NewLocalizedMessageComponent>;
   let component: NewLocalizedMessageComponent;
 

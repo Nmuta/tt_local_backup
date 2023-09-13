@@ -7,8 +7,7 @@ import { NotificationsService } from './notifications.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'NotificationsService', () => {
+describe('NotificationsService', () => {
   let service: NotificationsService;
 
   beforeEach(() => {

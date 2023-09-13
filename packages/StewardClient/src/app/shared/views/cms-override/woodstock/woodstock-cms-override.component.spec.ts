@@ -7,8 +7,7 @@ import { WoodstockCmsOverrideComponent } from './woodstock-cms-override.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockCmsOverrideComponent', () => {
+describe('WoodstockCmsOverrideComponent', () => {
   let component: WoodstockCmsOverrideComponent;
   let fixture: ComponentFixture<WoodstockCmsOverrideComponent>;
 

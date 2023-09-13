@@ -10,8 +10,7 @@ import { GeneralUserDetailsComponent } from './general-user-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GeneralUserDetailsComponent', () => {
+describe('GeneralUserDetailsComponent', () => {
   let component: GeneralUserDetailsComponent;
   let fixture: ComponentFixture<GeneralUserDetailsComponent>;
 

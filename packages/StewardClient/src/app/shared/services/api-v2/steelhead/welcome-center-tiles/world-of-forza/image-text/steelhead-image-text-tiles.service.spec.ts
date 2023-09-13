@@ -4,8 +4,7 @@ import { SteelheadImageTextTileService } from './steelhead-image-text-tiles.serv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadImageTextTileService', () => {
+describe('SteelheadImageTextTileService', () => {
   let service: SteelheadImageTextTileService;
 
   beforeEach(() => {

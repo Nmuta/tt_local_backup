@@ -12,8 +12,7 @@ import { fakeBigNumber } from '@interceptors/fake-api/utility';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LspGroupSelectionBaseComponent', () => {
+describe('LspGroupSelectionBaseComponent', () => {
   let fixture: ComponentFixture<LspGroupSelectionBaseComponent>;
   let component: LspGroupSelectionBaseComponent;
 

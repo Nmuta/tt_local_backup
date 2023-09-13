@@ -8,8 +8,7 @@ import { FortePlayFabBuildsManagementComponent } from './forte-playfab-builds-ma
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FortePlayFabBuildsManagementComponent', () => {
+describe('FortePlayFabBuildsManagementComponent', () => {
   let component: FortePlayFabBuildsManagementComponent;
   let fixture: ComponentFixture<FortePlayFabBuildsManagementComponent>;
 

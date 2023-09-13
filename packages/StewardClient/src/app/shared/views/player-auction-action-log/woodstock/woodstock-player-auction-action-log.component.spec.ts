@@ -7,8 +7,7 @@ import { WoodstockPlayerAuctionActionLogComponent } from './woodstock-player-auc
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerAuctionActionLogComponent', () => {
+describe('WoodstockPlayerAuctionActionLogComponent', () => {
   let component: WoodstockPlayerAuctionActionLogComponent;
   let fixture: ComponentFixture<WoodstockPlayerAuctionActionLogComponent>;
 

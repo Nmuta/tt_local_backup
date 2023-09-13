@@ -4,8 +4,7 @@ import { ThemeTileContentComponent } from './theme-tile-content.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ThemeTileContentComponent', () => {
+describe('ThemeTileContentComponent', () => {
   let component: ThemeTileContentComponent;
   let fixture: ComponentFixture<ThemeTileContentComponent>;
 

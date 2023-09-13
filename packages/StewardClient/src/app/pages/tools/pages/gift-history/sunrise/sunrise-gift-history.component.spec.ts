@@ -15,8 +15,7 @@ import { SunriseGiftHistoryComponent } from './sunrise-gift-history.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseGiftHistoryComponent', () => {
+describe('SunriseGiftHistoryComponent', () => {
   let component: SunriseGiftHistoryComponent;
   let fixture: ComponentFixture<SunriseGiftHistoryComponent>;
 

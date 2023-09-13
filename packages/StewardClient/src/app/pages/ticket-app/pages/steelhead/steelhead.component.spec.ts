@@ -11,8 +11,7 @@ import { SteelheadComponent } from './steelhead.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadComponent - Ticket App', () => {
+describe('SteelheadComponent - Ticket App', () => {
   let component: SteelheadComponent;
   let fixture: ComponentFixture<SteelheadComponent>;
 

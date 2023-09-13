@@ -5,8 +5,7 @@ import { DependencyListComponent } from './dependency-list.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DependencyListComponent', () => {
+describe('DependencyListComponent', () => {
   let component: DependencyListComponent;
   let fixture: ComponentFixture<DependencyListComponent>;
 

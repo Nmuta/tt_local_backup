@@ -10,8 +10,7 @@ import { CreditUpdateSortOptionsComponent } from './credit-update-sort-options.c
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CreditUpdateSortOptionsComponent', () => {
+describe('CreditUpdateSortOptionsComponent', () => {
   let fixture: ComponentFixture<CreditUpdateSortOptionsComponent>;
   let component: CreditUpdateSortOptionsComponent;
   let mockStore: Store;

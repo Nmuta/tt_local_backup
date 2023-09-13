@@ -9,8 +9,7 @@ import { SteelheadServicesTableStorageComponent } from './steelhead-services-tab
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadServicesTableStorageComponent', () => {
+describe('SteelheadServicesTableStorageComponent', () => {
   let component: SteelheadServicesTableStorageComponent;
   let fixture: ComponentFixture<SteelheadServicesTableStorageComponent>;
 

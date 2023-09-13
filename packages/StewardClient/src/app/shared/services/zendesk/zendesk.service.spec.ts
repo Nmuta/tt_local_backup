@@ -7,8 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'service: UserService', () => {
+describe('service: UserService', () => {
   let service: ZendeskService;
   let mockZafClientService: ZafClientService;
   let mockZafClient: ZafClient;

@@ -5,8 +5,7 @@ import { WoodstockCarsCacheService } from './cars-cache.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CarsCacheService', () => {
+describe('CarsCacheService', () => {
   let service: WoodstockCarsCacheService;
   const nextValue = [];
 

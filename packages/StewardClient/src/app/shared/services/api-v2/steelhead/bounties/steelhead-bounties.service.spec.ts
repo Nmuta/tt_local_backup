@@ -4,8 +4,7 @@ import { SteelheadBountiesService } from './steelhead-bounties.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBountiesService', () => {
+describe('SteelheadBountiesService', () => {
   let service: SteelheadBountiesService;
 
   beforeEach(() => {

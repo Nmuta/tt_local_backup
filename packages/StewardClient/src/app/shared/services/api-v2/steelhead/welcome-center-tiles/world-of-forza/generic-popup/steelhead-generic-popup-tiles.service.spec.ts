@@ -4,8 +4,7 @@ import { SteelheadGenericPopupTileService } from './steelhead-generic-popup-tile
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadGenericPopupTileService', () => {
+describe('SteelheadGenericPopupTileService', () => {
   let service: SteelheadGenericPopupTileService;
 
   beforeEach(() => {

@@ -7,8 +7,7 @@ import { LogTableLoaderComponent } from './log-table-loader.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LogTableLoaderComponent', () => {
+describe('LogTableLoaderComponent', () => {
   let component: LogTableLoaderComponent;
   let fixture: ComponentFixture<LogTableLoaderComponent>;
 

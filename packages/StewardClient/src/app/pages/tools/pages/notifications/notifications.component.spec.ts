@@ -3,8 +3,7 @@ import { NotificationsComponent } from './notifications.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'NotificationsComponent', () => {
+describe('NotificationsComponent', () => {
   let component: NotificationsComponent;
   let fixture: ComponentFixture<NotificationsComponent>;
 

@@ -14,8 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerUgcComponent', () => {
+describe('SunrisePlayerUgcComponent', () => {
   let component: SunrisePlayerUgcComponent;
   let fixture: ComponentFixture<SunrisePlayerUgcComponent>;
 

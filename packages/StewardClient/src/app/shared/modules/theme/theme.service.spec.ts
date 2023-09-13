@@ -5,8 +5,7 @@ import { ThemeService } from './theme.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ThemeService', () => {
+describe('ThemeService', () => {
   let service: ThemeService;
 
   beforeEach(() => {

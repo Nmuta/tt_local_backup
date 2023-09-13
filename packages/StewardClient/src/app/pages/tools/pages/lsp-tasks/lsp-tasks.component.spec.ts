@@ -8,8 +8,7 @@ import { LspTasksComponent } from './lsp-tasks.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TaskComponent', () => {
+describe('TaskComponent', () => {
   let component: LspTasksComponent;
   let fixture: ComponentFixture<LspTasksComponent>;
 

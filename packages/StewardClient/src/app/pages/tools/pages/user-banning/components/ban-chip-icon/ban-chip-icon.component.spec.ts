@@ -5,8 +5,7 @@ import { BanChipIconComponent } from './ban-chip-icon.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BanChipIconComponent', () => {
+describe('BanChipIconComponent', () => {
   let component: BanChipIconComponent;
   let fixture: ComponentFixture<BanChipIconComponent>;
 

@@ -5,8 +5,7 @@ import { ModelDumpComponent } from './model-dump.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ModelDumpComponent', () => {
+describe('ModelDumpComponent', () => {
   let component: ModelDumpComponent;
   let fixture: ComponentFixture<ModelDumpComponent>;
   const inputModel = {

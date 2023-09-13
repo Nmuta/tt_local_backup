@@ -4,8 +4,7 @@ import { SteelheadUgcVisibilityService } from './steelhead-ugc-visibility.servic
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUgcVisibilityService', () => {
+describe('SteelheadUgcVisibilityService', () => {
   let service: SteelheadUgcVisibilityService;
 
   beforeEach(() => {

@@ -2,8 +2,7 @@ import { BigJsonPipe } from './big-json.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BigJsonPipe', () => {
+describe('BigJsonPipe', () => {
   it('create an instance', () => {
     const pipe = new BigJsonPipe();
     expect(pipe).toBeTruthy();

@@ -4,8 +4,7 @@ import { MsTeamsService } from './ms-teams.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'MsTeamsService', () => {
+describe('MsTeamsService', () => {
   let service: MsTeamsService;
 
   beforeEach(() => {

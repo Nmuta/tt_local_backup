@@ -6,8 +6,7 @@ import { SunriseGroupNotificationManagementComponent } from './sunrise-group-not
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseAuctionBlocklistComponent', () => {
+describe('SunriseAuctionBlocklistComponent', () => {
   let component: SunriseGroupNotificationManagementComponent;
   let fixture: ComponentFixture<SunriseGroupNotificationManagementComponent>;
 

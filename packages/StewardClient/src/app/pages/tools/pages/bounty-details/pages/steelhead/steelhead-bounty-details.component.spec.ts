@@ -9,8 +9,7 @@ import { SteelheadBountyDetailsComponent } from './steelhead-bounty-details.comp
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBountyDetailsComponent', () => {
+describe('SteelheadBountyDetailsComponent', () => {
   let fixture: ComponentFixture<SteelheadBountyDetailsComponent>;
   let component: SteelheadBountyDetailsComponent;
 

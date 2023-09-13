@@ -4,8 +4,7 @@ import { ForumBanHistoryService } from './forum-ban-history.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ForumBanHistoryService', () => {
+describe('ForumBanHistoryService', () => {
   let service: ForumBanHistoryService;
 
   beforeEach(() => {

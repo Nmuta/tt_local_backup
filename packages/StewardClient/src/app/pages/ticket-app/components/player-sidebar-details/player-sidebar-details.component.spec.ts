@@ -17,8 +17,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayerSidebarDetailsBaseComponent', () => {
+describe('PlayerSidebarDetailsBaseComponent', () => {
   let fixture: ComponentFixture<PlayerSidebarDetailsBaseComponent<never>>;
   let component: PlayerSidebarDetailsBaseComponent<never>;
 

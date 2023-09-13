@@ -21,8 +21,7 @@ import { createMockWoodstockItemsService } from '@services/api-v2/woodstock/item
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'State: MasterInventoryListMemoryState', () => {
+describe('State: MasterInventoryListMemoryState', () => {
   let service: MasterInventoryListMemoryState;
   let store: Store;
 

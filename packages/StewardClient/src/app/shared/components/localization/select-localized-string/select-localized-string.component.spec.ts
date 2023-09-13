@@ -20,8 +20,7 @@ class TestSelectLocalizedStringContract implements SelectLocalizedStringContract
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SelectLocalizedStringComponent', () => {
+describe('SelectLocalizedStringComponent', () => {
   let component: SelectLocalizedStringComponent;
   let fixture: ComponentFixture<SelectLocalizedStringComponent>;
 

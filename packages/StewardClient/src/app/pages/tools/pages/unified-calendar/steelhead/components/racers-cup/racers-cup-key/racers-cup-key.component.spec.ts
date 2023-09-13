@@ -3,8 +3,7 @@ import { RacersCupKeyComponent } from './racers-cup-key.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'RacersCupKeyComponent', () => {
+describe('RacersCupKeyComponent', () => {
   let component: RacersCupKeyComponent;
   let fixture: ComponentFixture<RacersCupKeyComponent>;
 

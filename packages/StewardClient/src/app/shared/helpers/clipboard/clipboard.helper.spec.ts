@@ -4,8 +4,7 @@ import { Clipboard } from './clipboard.helper';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ClipboardHelper', () => {
+describe('ClipboardHelper', () => {
   let clipboard: Clipboard;
 
   beforeEach(async () => {

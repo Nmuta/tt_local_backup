@@ -6,8 +6,7 @@ import { ButtonSpinnerComponent } from './button-spinner.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ButtonSpinnerComponent', () => {
+describe('ButtonSpinnerComponent', () => {
   let component: ButtonSpinnerComponent;
   let fixture: ComponentFixture<ButtonSpinnerComponent>;
 

@@ -5,8 +5,7 @@ import { AuctionComponent } from './auction.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AuctionComponent', () => {
+describe('AuctionComponent', () => {
   let component: AuctionComponent;
   let fixture: ComponentFixture<AuctionComponent>;
 

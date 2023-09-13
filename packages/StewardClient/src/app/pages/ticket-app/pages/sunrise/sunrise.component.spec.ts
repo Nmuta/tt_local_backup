@@ -11,8 +11,7 @@ import { createMockSunriseService, SunriseService } from '@services/sunrise';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseComponent - Ticket App', () => {
+describe('SunriseComponent - Ticket App', () => {
   let component: SunriseComponent;
   let fixture: ComponentFixture<SunriseComponent>;
 

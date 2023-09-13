@@ -15,8 +15,7 @@ import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUgcSearchUgcComponent', () => {
+describe('SteelheadUgcSearchUgcComponent', () => {
   const testUgcSearchParameters = {
     ugcType: UgcType.Livery,
     carId: fakeBigNumber(),

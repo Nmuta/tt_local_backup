@@ -7,8 +7,7 @@ import { WindowService } from './window.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'service: WindowService', () => {
+describe('service: WindowService', () => {
   let store: Store;
 
   beforeEach(() => {

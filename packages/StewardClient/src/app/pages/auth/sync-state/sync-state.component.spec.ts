@@ -7,8 +7,7 @@ import { SyncStateComponent } from './sync-state.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SyncStateComponent', () => {
+describe('SyncStateComponent', () => {
   let component: SyncStateComponent;
   let fixture: ComponentFixture<SyncStateComponent>;
 

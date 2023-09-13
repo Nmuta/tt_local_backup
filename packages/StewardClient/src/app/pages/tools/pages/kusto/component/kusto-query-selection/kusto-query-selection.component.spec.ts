@@ -14,8 +14,7 @@ import { of, throwError } from 'rxjs';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'KustoQuerySelectionComponent', () => {
+describe('KustoQuerySelectionComponent', () => {
   let fixture: ComponentFixture<KustoQuerySelectionComponent>;
   let component: KustoQuerySelectionComponent;
 

@@ -5,8 +5,7 @@ import { WoodstockPlayersBanService } from './woodstock-players-ban.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayersBanService', () => {
+describe('WoodstockPlayersBanService', () => {
   let service: WoodstockPlayersBanService;
   const nextReturnValue: unknown = {};
 

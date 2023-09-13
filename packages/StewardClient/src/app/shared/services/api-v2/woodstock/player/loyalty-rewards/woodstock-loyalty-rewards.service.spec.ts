@@ -4,8 +4,7 @@ import { WoodstockLoyaltyRewardsService } from './woodstock-loyalty-rewards.serv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLoyaltyRewardsService', () => {
+describe('WoodstockLoyaltyRewardsService', () => {
   let service: WoodstockLoyaltyRewardsService;
 
   beforeEach(() => {

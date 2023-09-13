@@ -14,8 +14,7 @@ import { LeaderboardValidationsComponent } from './leaderboard-validations.compo
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LeaderboardValidationsComponent', () => {
+describe('LeaderboardValidationsComponent', () => {
   let component: LeaderboardValidationsComponent;
   let fixture: ComponentFixture<LeaderboardValidationsComponent>;
 

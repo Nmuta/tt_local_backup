@@ -4,8 +4,7 @@ import { MultipleBanHistoryService } from './ban-history.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'MultipleBanHistoryService', () => {
+describe('MultipleBanHistoryService', () => {
   let service: MultipleBanHistoryService;
 
   beforeEach(() => {

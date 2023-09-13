@@ -12,8 +12,7 @@ import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerInventoryService', () => {
+describe('SteelheadPlayerInventoryService', () => {
   let service: SteelheadPlayerInventoryService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

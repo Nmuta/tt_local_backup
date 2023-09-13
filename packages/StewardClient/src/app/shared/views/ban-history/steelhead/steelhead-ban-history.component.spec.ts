@@ -10,8 +10,7 @@ import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBanHistoryComponent', () => {
+describe('SteelheadBanHistoryComponent', () => {
   let component: SteelheadBanHistoryComponent;
   let fixture: ComponentFixture<SteelheadBanHistoryComponent>;
 

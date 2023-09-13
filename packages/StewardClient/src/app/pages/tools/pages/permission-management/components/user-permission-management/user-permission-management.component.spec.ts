@@ -11,8 +11,7 @@ import { UserPermissionManagementComponent } from './user-permission-management.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UserPermissionManagementComponent', () => {
+describe('UserPermissionManagementComponent', () => {
   let component: UserPermissionManagementComponent;
   let fixture: ComponentFixture<UserPermissionManagementComponent>;
 

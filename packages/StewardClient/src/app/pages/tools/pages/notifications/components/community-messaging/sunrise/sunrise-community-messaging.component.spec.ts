@@ -13,8 +13,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseCommunityMessagingComponent', () => {
+describe('SunriseCommunityMessagingComponent', () => {
   let component: SunriseCommunityMessagingComponent;
   let fixture: ComponentFixture<SunriseCommunityMessagingComponent>;
   let mockSunriseService: SunriseService;

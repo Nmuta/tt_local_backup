@@ -4,8 +4,7 @@ import { WoodstockPlayerUgcService } from './woodstock-player-ugc.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerUgcService', () => {
+describe('WoodstockPlayerUgcService', () => {
   let service: WoodstockPlayerUgcService;
 
   beforeEach(() => {

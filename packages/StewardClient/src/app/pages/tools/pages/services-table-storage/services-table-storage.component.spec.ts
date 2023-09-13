@@ -7,8 +7,7 @@ import { ServicesTableStorageComponent } from './services-table-storage.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ServicesTableStorageComponent', () => {
+describe('ServicesTableStorageComponent', () => {
   let component: ServicesTableStorageComponent;
   let fixture: ComponentFixture<ServicesTableStorageComponent>;
 

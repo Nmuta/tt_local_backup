@@ -8,8 +8,7 @@ import { of } from 'rxjs';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLeaderboardsService', () => {
+describe('WoodstockLeaderboardsService', () => {
   let service: WoodstockLeaderboardsService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

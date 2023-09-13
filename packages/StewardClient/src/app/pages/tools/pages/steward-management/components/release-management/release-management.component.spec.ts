@@ -15,8 +15,7 @@ import { ReleaseManagementComponent } from './release-management.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ReleaseManagementComponent', () => {
+describe('ReleaseManagementComponent', () => {
   let component: ReleaseManagementComponent;
   let fixture: ComponentFixture<ReleaseManagementComponent>;
 

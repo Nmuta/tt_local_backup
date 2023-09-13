@@ -5,8 +5,7 @@ import { BigSpinnerComponent } from './big-spinner.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BigSpinnerComponent', () => {
+describe('BigSpinnerComponent', () => {
   let component: BigSpinnerComponent;
   let fixture: ComponentFixture<BigSpinnerComponent>;
   const mockMonitor: ActionMonitor = new ActionMonitor();

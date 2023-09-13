@@ -7,8 +7,7 @@ import { SteelheadPlayerProfileManagementComponent } from './steelhead-player-pr
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerProfileManagementComponent', () => {
+describe('SteelheadPlayerProfileManagementComponent', () => {
   let component: SteelheadPlayerProfileManagementComponent;
   let fixture: ComponentFixture<SteelheadPlayerProfileManagementComponent>;
 

@@ -4,8 +4,7 @@ import { PlayFabComponent } from './playfab.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayFabComponent', () => {
+describe('PlayFabComponent', () => {
   let component: PlayFabComponent;
   let fixture: ComponentFixture<PlayFabComponent>;
 

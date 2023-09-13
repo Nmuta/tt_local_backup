@@ -10,8 +10,7 @@ import { UserSettingsState } from './user-settings.state';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UserSettingsServiceService', () => {
+describe('UserSettingsServiceService', () => {
   let service: UserSettingsService;
 
   beforeEach(() => {

@@ -12,8 +12,7 @@ class TestHarnessComponent {}
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StandardCopyIconComponent', () => {
+describe('StandardCopyIconComponent', () => {
   let component: StandardCopyIconComponent;
   let fixture: ComponentFixture<StandardCopyIconComponent>;
   let harness: ComponentFixture<TestHarnessComponent>;

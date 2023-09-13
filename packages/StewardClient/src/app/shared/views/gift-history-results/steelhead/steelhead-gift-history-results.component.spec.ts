@@ -9,8 +9,7 @@ import { SteelheadGiftHistoryResultsComponent } from './steelhead-gift-history-r
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadGiftHistoryComponent', () => {
+describe('SteelheadGiftHistoryComponent', () => {
   let component: SteelheadGiftHistoryResultsComponent;
   let fixture: ComponentFixture<SteelheadGiftHistoryResultsComponent>;
 

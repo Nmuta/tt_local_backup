@@ -11,8 +11,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadGiftHistoryState', () => {
+describe('SteelheadGiftHistoryState', () => {
   let store: Store;
   let service: SteelheadGiftHistoryState;
 

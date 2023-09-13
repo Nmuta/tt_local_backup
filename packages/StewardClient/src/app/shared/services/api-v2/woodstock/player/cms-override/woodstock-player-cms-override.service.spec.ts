@@ -4,8 +4,7 @@ import { WoodstockPlayerCmsOverrideService } from './woodstock-player-cms-overri
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerCmsOverrideService', () => {
+describe('WoodstockPlayerCmsOverrideService', () => {
   let service: WoodstockPlayerCmsOverrideService;
 
   beforeEach(() => {

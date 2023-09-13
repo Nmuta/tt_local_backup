@@ -6,8 +6,7 @@ import { ThemeNavContentComponent } from './theme-nav-content.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ThemeNavContentComponent', () => {
+describe('ThemeNavContentComponent', () => {
   let component: ThemeNavContentComponent;
   let fixture: ComponentFixture<ThemeNavContentComponent>;
 

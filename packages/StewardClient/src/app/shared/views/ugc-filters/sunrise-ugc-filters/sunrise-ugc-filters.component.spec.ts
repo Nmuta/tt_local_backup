@@ -15,8 +15,7 @@ import faker from '@faker-js/faker';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseUgcFiltersComponent', () => {
+describe('SunriseUgcFiltersComponent', () => {
   let fixture: ComponentFixture<SunriseUgcFiltersComponent>;
   let component: SunriseUgcFiltersComponent;
 

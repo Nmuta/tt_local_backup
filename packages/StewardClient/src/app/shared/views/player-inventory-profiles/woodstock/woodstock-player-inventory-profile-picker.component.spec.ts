@@ -10,8 +10,7 @@ import { WoodstockPlayerInventoryProfilePickerComponent } from './woodstock-play
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerInventoryProfilePickerComponent', () => {
+describe('WoodstockPlayerInventoryProfilePickerComponent', () => {
   let component: WoodstockPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<WoodstockPlayerInventoryProfilePickerComponent>;
   let mockStore: Store;

@@ -4,8 +4,7 @@ import { ModelDumpNumberTableComponent } from './model-dump-number-table.compone
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ModelDumpNumberTableComponent', () => {
+describe('ModelDumpNumberTableComponent', () => {
   let component: ModelDumpNumberTableComponent;
   let fixture: ComponentFixture<ModelDumpNumberTableComponent>;
 

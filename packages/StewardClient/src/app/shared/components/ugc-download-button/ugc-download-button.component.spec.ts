@@ -5,8 +5,7 @@ import { UgcDownloadButtonComponent } from './ugc-download-button.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UgcDownloadButtonComponent', () => {
+describe('UgcDownloadButtonComponent', () => {
   let component: UgcDownloadButtonComponent;
   let fixture: ComponentFixture<UgcDownloadButtonComponent>;
 

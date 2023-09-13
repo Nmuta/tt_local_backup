@@ -6,8 +6,7 @@ import { SunriseAuctionBlocklistService } from './sunrise-auction-blocklist.serv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseAuctionBlocklistService', () => {
+describe('SunriseAuctionBlocklistService', () => {
   let service: SunriseAuctionBlocklistService;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockSunriseAuctionBlocklistService: SunriseAuctionBlocklistService;

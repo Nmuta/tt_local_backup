@@ -13,8 +13,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ServicesFilterableTableComponent', () => {
+describe('ServicesFilterableTableComponent', () => {
   let component: ServicesFilterableTableComponent;
   let fixture: ComponentFixture<ServicesFilterableTableComponent>;
   const mockServicesTableStorage = [];

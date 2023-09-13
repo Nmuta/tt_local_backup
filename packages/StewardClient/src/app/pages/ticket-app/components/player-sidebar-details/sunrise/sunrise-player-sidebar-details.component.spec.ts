@@ -15,8 +15,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerSidebarDetailsComponent', () => {
+describe('SunrisePlayerSidebarDetailsComponent', () => {
   let mockSunriseService: SunriseService;
 
   let fixture: ComponentFixture<SunrisePlayerSidebarDetailsComponent>;

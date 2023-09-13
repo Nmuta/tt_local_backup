@@ -14,8 +14,7 @@ import { SteelheadWelcomeCenterTilesComponent } from './steelhead-welcome-center
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadWelcomeCenterTilesComponent', () => {
+describe('SteelheadWelcomeCenterTilesComponent', () => {
   let component: SteelheadWelcomeCenterTilesComponent;
   let fixture: ComponentFixture<SteelheadWelcomeCenterTilesComponent>;
   let mockSteelheadImageTextTileService: SteelheadImageTextTileService;

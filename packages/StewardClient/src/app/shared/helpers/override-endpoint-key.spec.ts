@@ -3,8 +3,7 @@ import { overrideApolloEndpointKey, overrideSunriseEndpointKey } from './overrid
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'Helper: override-endpoint-key', () => {
+describe('Helper: override-endpoint-key', () => {
   describe('Method: overrideSunriseEndpointKey', () => {
     const endpointKey = 'Retail';
 

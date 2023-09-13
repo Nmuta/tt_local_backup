@@ -10,8 +10,7 @@ import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead-play
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerInventoryProfilePickerComponent', () => {
+describe('SteelheadPlayerInventoryProfilePickerComponent', () => {
   let component: SteelheadPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<SteelheadPlayerInventoryProfilePickerComponent>;
   let mockStore: Store;

@@ -11,8 +11,7 @@ import { GiftingComponent } from './gifting.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GiftingComponent', () => {
+describe('GiftingComponent', () => {
   let component: GiftingComponent;
   let fixture: ComponentFixture<GiftingComponent>;
 

@@ -23,8 +23,7 @@ import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/titl
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseService', () => {
+describe('SunriseService', () => {
   let injector: TestBed;
   let service: SunriseService;
   let apiServiceMock: ApiService;

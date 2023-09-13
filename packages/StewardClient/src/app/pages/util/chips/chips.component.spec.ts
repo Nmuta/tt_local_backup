@@ -4,8 +4,7 @@ import { ChipsComponent } from './chips.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ChipsComponent', () => {
+describe('ChipsComponent', () => {
   let component: ChipsComponent;
   let fixture: ComponentFixture<ChipsComponent>;
 

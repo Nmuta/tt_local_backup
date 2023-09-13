@@ -16,8 +16,7 @@ import BigNumber from 'bignumber.js';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBuildersCupCalendarViewComponent', () => {
+describe('SteelheadBuildersCupCalendarViewComponent', () => {
   let component: SteelheadBuildersCupCalendarViewComponent;
   let fixture: ComponentFixture<SteelheadBuildersCupCalendarViewComponent>;
   let mockSteelheadService: SteelheadBuildersCupService;

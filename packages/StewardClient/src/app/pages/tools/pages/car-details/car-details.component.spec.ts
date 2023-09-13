@@ -3,8 +3,7 @@ import { CarDetailsComponent } from './car-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CarDetailsComponent', () => {
+describe('CarDetailsComponent', () => {
   let component: CarDetailsComponent;
   let fixture: ComponentFixture<CarDetailsComponent>;
 

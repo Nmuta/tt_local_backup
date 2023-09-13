@@ -28,8 +28,7 @@ const activatedRouteMock = {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BulkBanReviewComponent', () => {
+describe('BulkBanReviewComponent', () => {
   let component: BulkBanReviewComponent;
   let fixture: ComponentFixture<BulkBanReviewComponent>;
 

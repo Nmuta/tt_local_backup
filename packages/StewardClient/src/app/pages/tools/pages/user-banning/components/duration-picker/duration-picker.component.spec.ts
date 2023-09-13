@@ -16,8 +16,7 @@ import { last } from 'lodash';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DurationPickerComponent', () => {
+describe('DurationPickerComponent', () => {
   let component: DurationPickerComponent;
   let fixture: ComponentFixture<DurationPickerComponent>;
 

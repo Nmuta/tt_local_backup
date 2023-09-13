@@ -11,8 +11,7 @@ import { SteelheadLoyaltyRewardsComponent } from './steelhead-loyalty-rewards.co
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadLoyaltyRewardsComponent', () => {
+describe('SteelheadLoyaltyRewardsComponent', () => {
   let component: SteelheadLoyaltyRewardsComponent;
   let fixture: ComponentFixture<SteelheadLoyaltyRewardsComponent>;
   let mockStore: Store;

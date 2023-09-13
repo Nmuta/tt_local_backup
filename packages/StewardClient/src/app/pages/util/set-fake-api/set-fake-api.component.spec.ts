@@ -7,8 +7,7 @@ import { SetFakeApiComponent } from './set-fake-api.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SetFakeApiComponent', () => {
+describe('SetFakeApiComponent', () => {
   let component: SetFakeApiComponent;
   let fixture: ComponentFixture<SetFakeApiComponent>;
 

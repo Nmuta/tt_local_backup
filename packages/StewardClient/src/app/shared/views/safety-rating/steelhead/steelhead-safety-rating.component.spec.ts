@@ -7,8 +7,7 @@ import { SteelheadSafetyRatingComponent } from './steelhead-safety-rating.compon
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadSafetyRatingComponent', () => {
+describe('SteelheadSafetyRatingComponent', () => {
   let component: SteelheadSafetyRatingComponent;
   let fixture: ComponentFixture<SteelheadSafetyRatingComponent>;
 

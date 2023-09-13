@@ -7,8 +7,7 @@ import { GameTitle } from '@models/enums';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'InvalidPermissionsComponent', () => {
+describe('InvalidPermissionsComponent', () => {
   let component: InvalidPermissionsComponent;
   let fixture: ComponentFixture<InvalidPermissionsComponent>;
 

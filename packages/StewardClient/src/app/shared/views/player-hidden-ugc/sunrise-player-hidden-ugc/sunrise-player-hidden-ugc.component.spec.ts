@@ -5,8 +5,7 @@ import { SunrisePlayerHiddenUgcComponent } from './sunrise-player-hidden-ugc.com
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerHiddenUgcComponent', () => {
+describe('SunrisePlayerHiddenUgcComponent', () => {
   let component: SunrisePlayerHiddenUgcComponent;
   let fixture: ComponentFixture<SunrisePlayerHiddenUgcComponent>;
 

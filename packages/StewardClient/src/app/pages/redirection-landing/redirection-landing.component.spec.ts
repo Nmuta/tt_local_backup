@@ -4,8 +4,7 @@ import { RedirectionLandingComponent } from './redirection-landing.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'RedirectionLandingComponent', () => {
+describe('RedirectionLandingComponent', () => {
   let component: RedirectionLandingComponent;
   let fixture: ComponentFixture<RedirectionLandingComponent>;
 

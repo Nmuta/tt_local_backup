@@ -9,8 +9,7 @@ import { SteelheadSearchLeaderboardsComponent } from './steelhead-search-leaderb
 // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/958926
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadSearchLeaderboardsComponent', () => {
+describe('SteelheadSearchLeaderboardsComponent', () => {
   let component: SteelheadSearchLeaderboardsComponent;
   let fixture: ComponentFixture<SteelheadSearchLeaderboardsComponent>;
 

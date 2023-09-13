@@ -21,8 +21,7 @@ import { PlayerDriverLevel } from '@models/player-driver-level.model';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DriverLevelComponent', () => {
+describe('DriverLevelComponent', () => {
   let component: DriverLevelComponent;
   let fixture: ComponentFixture<DriverLevelComponent>;
 

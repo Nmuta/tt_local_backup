@@ -6,8 +6,7 @@ import { KustoDataActivitiesComponent } from './kusto-data-activities.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'KustoDataActivitiesComponent', () => {
+describe('KustoDataActivitiesComponent', () => {
   let component: KustoDataActivitiesComponent;
   let fixture: ComponentFixture<KustoDataActivitiesComponent>;
 

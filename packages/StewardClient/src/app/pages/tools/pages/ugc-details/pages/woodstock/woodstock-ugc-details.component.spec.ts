@@ -10,8 +10,7 @@ import { WoodstockUgcDetailsComponent } from './woodstock-ugc-details.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockUgcDetailsComponent', () => {
+describe('WoodstockUgcDetailsComponent', () => {
   let component: WoodstockUgcDetailsComponent;
   let fixture: ComponentFixture<WoodstockUgcDetailsComponent>;
 

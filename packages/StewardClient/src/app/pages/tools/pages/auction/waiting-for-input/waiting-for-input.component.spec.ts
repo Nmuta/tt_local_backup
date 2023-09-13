@@ -4,8 +4,7 @@ import { WaitingForInputComponent } from './waiting-for-input.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WaitingForInputComponent', () => {
+describe('WaitingForInputComponent', () => {
   let component: WaitingForInputComponent;
   let fixture: ComponentFixture<WaitingForInputComponent>;
 

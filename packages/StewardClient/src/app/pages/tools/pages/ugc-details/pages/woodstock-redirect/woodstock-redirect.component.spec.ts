@@ -11,8 +11,7 @@ import { WoodstockRedirectComponent } from './woodstock-redirect.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockRedirectComponent', () => {
+describe('WoodstockRedirectComponent', () => {
   let component: WoodstockRedirectComponent;
   let fixture: ComponentFixture<WoodstockRedirectComponent>;
 

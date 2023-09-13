@@ -11,8 +11,7 @@ import { CacheDeleteComponent } from './cache-delete.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CacheDeleteComponent', () => {
+describe('CacheDeleteComponent', () => {
   let component: CacheDeleteComponent;
   let fixture: ComponentFixture<CacheDeleteComponent>;
 

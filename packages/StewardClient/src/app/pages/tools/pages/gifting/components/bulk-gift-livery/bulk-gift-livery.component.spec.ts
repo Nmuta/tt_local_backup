@@ -34,8 +34,7 @@ import { GuidLikeString } from '@models/extended-types';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BulkGiftLiveryComponent', () => {
+describe('BulkGiftLiveryComponent', () => {
   let fixture: ComponentFixture<BulkGiftLiveryComponent<IdentityResultBeta>>;
   let component: BulkGiftLiveryComponent<IdentityResultAlpha>;
 

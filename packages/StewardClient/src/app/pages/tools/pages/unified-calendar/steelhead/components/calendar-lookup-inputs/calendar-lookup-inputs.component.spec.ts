@@ -3,8 +3,7 @@ import { CalendarLookupInputsComponent } from './calendar-lookup-inputs.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CalendarLookupInputsComponent', () => {
+describe('CalendarLookupInputsComponent', () => {
   let component: CalendarLookupInputsComponent;
   let fixture: ComponentFixture<CalendarLookupInputsComponent>;
 

@@ -11,8 +11,7 @@ import { ButtonPermissionAttributeDirective } from './button-permission-attribut
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ButtonPermissionAttributeDirective', () => {
+describe('ButtonPermissionAttributeDirective', () => {
   let button: MatButton;
   let directive: ButtonPermissionAttributeDirective;
   let mockPermAttributesService: PermAttributesService;

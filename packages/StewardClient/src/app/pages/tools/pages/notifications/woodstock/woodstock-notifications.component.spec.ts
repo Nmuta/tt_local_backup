@@ -6,8 +6,7 @@ import { WoodstockNotificationsComponent } from './woodstock-notifications.compo
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseNotificationsComponent', () => {
+describe('SunriseNotificationsComponent', () => {
   let component: WoodstockNotificationsComponent;
   let fixture: ComponentFixture<WoodstockNotificationsComponent>;
 

@@ -14,8 +14,7 @@ import { uniqBy } from 'lodash';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockMakeModelAutocompleteComponent', () => {
+describe('WoodstockMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<WoodstockMakeModelAutocompleteComponent>;
   let component: WoodstockMakeModelAutocompleteComponent;
 

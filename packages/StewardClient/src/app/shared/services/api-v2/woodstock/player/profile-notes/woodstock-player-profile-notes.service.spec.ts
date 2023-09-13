@@ -4,8 +4,7 @@ import { WoodstockPlayerProfileNotesService } from './woodstock-player-profile-n
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerProfileNotesService', () => {
+describe('WoodstockPlayerProfileNotesService', () => {
   let service: WoodstockPlayerProfileNotesService;
 
   beforeEach(() => {

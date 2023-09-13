@@ -10,8 +10,7 @@ import { UnknownTitleComponent } from './unknown-title.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UnknownTitleComponent', () => {
+describe('UnknownTitleComponent', () => {
   let fixture: ComponentFixture<UnknownTitleComponent>;
   let store: Store;
   let ticketService: MockTicketService;

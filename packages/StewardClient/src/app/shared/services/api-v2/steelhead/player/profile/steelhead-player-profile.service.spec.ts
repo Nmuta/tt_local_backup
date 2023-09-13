@@ -12,8 +12,7 @@ import { SteelheadPlayerProfileService } from './steelhead-player-profile.servic
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerProfileService', () => {
+describe('SteelheadPlayerProfileService', () => {
   let service: SteelheadPlayerProfileService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

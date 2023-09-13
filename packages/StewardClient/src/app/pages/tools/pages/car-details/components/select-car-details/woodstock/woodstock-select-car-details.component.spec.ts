@@ -7,8 +7,7 @@ import { WoodstockSelectCarDetailsComponent } from './woodstock-select-car-detai
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockSelectCarDetailsComponent', () => {
+describe('WoodstockSelectCarDetailsComponent', () => {
   let component: WoodstockSelectCarDetailsComponent;
   let fixture: ComponentFixture<WoodstockSelectCarDetailsComponent>;
 

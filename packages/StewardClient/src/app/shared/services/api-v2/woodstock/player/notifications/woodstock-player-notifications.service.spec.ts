@@ -9,8 +9,7 @@ import { WoodstockPlayerNotificationsService } from './woodstock-player-notifica
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerNotificationsService', () => {
+describe('WoodstockPlayerNotificationsService', () => {
   let service: WoodstockPlayerNotificationsService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

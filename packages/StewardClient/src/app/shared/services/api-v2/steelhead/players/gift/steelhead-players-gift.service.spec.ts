@@ -11,8 +11,7 @@ import { SteelheadPlayersGiftService } from './steelhead-players-gift.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayersGiftService', () => {
+describe('SteelheadPlayersGiftService', () => {
   let service: SteelheadPlayersGiftService;
   const nextReturnValue: unknown = {};
   let apiServiceMock: ApiV2Service;

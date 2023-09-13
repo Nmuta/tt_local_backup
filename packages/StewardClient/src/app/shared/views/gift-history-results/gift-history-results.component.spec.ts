@@ -17,8 +17,7 @@ import { GiftHistoryResultUnion, GiftHistoryView } from '@models/gift-history';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GiftHistoryResultsComponent', () => {
+describe('GiftHistoryResultsComponent', () => {
   let component: GiftHistoryResultsComponent;
   let fixture: ComponentFixture<GiftHistoryResultsComponent>;
 

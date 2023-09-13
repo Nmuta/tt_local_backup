@@ -11,8 +11,7 @@ import { SteelheadRedirectComponent } from './steelhead-redirect.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadRedirectComponent', () => {
+describe('SteelheadRedirectComponent', () => {
   let component: SteelheadRedirectComponent;
   let fixture: ComponentFixture<SteelheadRedirectComponent>;
 

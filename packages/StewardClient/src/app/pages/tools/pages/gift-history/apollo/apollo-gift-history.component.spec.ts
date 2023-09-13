@@ -15,8 +15,7 @@ import { SetApolloGiftHistoryMatTabIndex } from './state/apollo-gift-history.sta
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloGiftHistoryComponent', () => {
+describe('ApolloGiftHistoryComponent', () => {
   let component: ApolloGiftHistoryComponent;
   let fixture: ComponentFixture<ApolloGiftHistoryComponent>;
 

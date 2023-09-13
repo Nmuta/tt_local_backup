@@ -4,8 +4,7 @@ import { SunrisePlayerCreditUpdatesService } from './sunrise-credit-updates.serv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerCreditUpdatesService', () => {
+describe('SunrisePlayerCreditUpdatesService', () => {
   let service: SunrisePlayerCreditUpdatesService;
 
   beforeEach(() => {

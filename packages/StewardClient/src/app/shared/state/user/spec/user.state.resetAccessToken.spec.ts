@@ -12,8 +12,7 @@ import { createMockWindowService, WindowService } from '@services/window';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'State: User', () => {
+describe('State: User', () => {
   let store: Store;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let actions$: Actions;

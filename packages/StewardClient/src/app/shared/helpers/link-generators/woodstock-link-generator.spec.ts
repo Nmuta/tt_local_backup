@@ -2,8 +2,7 @@ import { WOODSTOCK_LINK_GENERATOR } from './woodstock-link-generator';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLinkGenerator', () => {
+describe('WoodstockLinkGenerator', () => {
   const generator = WOODSTOCK_LINK_GENERATOR;
 
   it('should exist', () => {

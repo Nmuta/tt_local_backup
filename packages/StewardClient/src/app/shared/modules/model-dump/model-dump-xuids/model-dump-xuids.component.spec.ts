@@ -7,8 +7,7 @@ import { ModelDumpXuidsComponent } from './model-dump-xuids.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ModelDumpXuidsComponent', () => {
+describe('ModelDumpXuidsComponent', () => {
   let component: ModelDumpXuidsComponent;
   let fixture: ComponentFixture<ModelDumpXuidsComponent>;
   const processedModel$ = new BehaviorSubject<ExtractedModel>(undefined);

@@ -4,8 +4,7 @@ import { IconsComponent } from './icons.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'IconsComponent', () => {
+describe('IconsComponent', () => {
   let component: IconsComponent;
   let fixture: ComponentFixture<IconsComponent>;
 

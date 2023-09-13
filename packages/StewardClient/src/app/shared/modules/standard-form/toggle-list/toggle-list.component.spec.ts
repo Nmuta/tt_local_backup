@@ -4,8 +4,7 @@ import { ToggleListComponent } from './toggle-list.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ToggleListComponent', () => {
+describe('ToggleListComponent', () => {
   let component: ToggleListComponent;
   let fixture: ComponentFixture<ToggleListComponent>;
 

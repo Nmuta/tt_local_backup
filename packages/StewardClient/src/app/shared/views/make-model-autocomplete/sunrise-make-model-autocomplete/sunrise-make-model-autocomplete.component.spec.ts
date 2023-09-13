@@ -14,8 +14,7 @@ import faker from '@faker-js/faker';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseMakeModelAutocompleteComponent', () => {
+describe('SunriseMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<SunriseMakeModelAutocompleteComponent>;
   let component: SunriseMakeModelAutocompleteComponent;
 

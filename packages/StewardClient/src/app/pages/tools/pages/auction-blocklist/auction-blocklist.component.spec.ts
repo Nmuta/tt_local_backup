@@ -8,8 +8,7 @@ import { AuctionBlocklistComponent } from './auction-blocklist.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AuctionBlocklistComponent', () => {
+describe('AuctionBlocklistComponent', () => {
   let component: AuctionBlocklistComponent;
   let fixture: ComponentFixture<AuctionBlocklistComponent>;
 

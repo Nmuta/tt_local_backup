@@ -4,8 +4,7 @@ import { SteelheadServicesTableStorageService } from './services-table-storage.s
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadConsolesService', () => {
+describe('SteelheadConsolesService', () => {
   let service: SteelheadServicesTableStorageService;
 
   beforeEach(() => {

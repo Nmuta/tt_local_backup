@@ -9,8 +9,7 @@ import { UgcDetailsComponent } from './ugc-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UgcDetailsComponent', () => {
+describe('UgcDetailsComponent', () => {
   let component: UgcDetailsComponent;
   let fixture: ComponentFixture<UgcDetailsComponent>;
 

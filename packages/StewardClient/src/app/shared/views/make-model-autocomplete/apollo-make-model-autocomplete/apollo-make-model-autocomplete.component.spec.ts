@@ -14,8 +14,7 @@ import faker from '@faker-js/faker';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloMakeModelAutocompleteComponent', () => {
+describe('ApolloMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<ApolloMakeModelAutocompleteComponent>;
   let component: ApolloMakeModelAutocompleteComponent;
 

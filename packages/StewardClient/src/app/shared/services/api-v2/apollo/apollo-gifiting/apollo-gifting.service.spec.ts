@@ -10,8 +10,7 @@ import { LspGroup } from '@models/lsp-group';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloGiftingService', () => {
+describe('ApolloGiftingService', () => {
   let injector: TestBed;
   let service: ApolloGiftingService;
   let apiServiceMock: ApiService;

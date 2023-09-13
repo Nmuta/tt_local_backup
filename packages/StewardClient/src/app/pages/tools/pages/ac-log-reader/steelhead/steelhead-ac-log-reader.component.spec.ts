@@ -9,8 +9,7 @@ import { SteelheadAcLogReaderComponent } from './steelhead-ac-log-reader.compone
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadAcLogReaderComponent', () => {
+describe('SteelheadAcLogReaderComponent', () => {
   let component: SteelheadAcLogReaderComponent;
   let fixture: ComponentFixture<SteelheadAcLogReaderComponent>;
 

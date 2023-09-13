@@ -7,8 +7,7 @@ import { OpusUserDetailsComponent } from './opus-user-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OpusUserDetailsComponent', () => {
+describe('OpusUserDetailsComponent', () => {
   let component: OpusUserDetailsComponent;
   let fixture: ComponentFixture<OpusUserDetailsComponent>;
 

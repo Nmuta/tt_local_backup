@@ -2,8 +2,7 @@ import { DomainEnumPrettyPrintOrHumanizePipe } from './domain-enum-pretty-print-
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DomainEnumPrettyPrintOrHumanizePipe', () => {
+describe('DomainEnumPrettyPrintOrHumanizePipe', () => {
   it('create an instance', () => {
     const pipe = new DomainEnumPrettyPrintOrHumanizePipe();
     expect(pipe).toBeTruthy();

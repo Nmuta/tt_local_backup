@@ -50,8 +50,7 @@ class TestNotificationManagementService implements LocalizedIndividualMessagingM
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LocalizedIndividualNotificationManagementComponent', () => {
+describe('LocalizedIndividualNotificationManagementComponent', () => {
   let component: LocalizedIndividualNotificationManagementComponent;
   let fixture: ComponentFixture<LocalizedIndividualNotificationManagementComponent>;
   let testGroupNotifications: GroupNotification[];

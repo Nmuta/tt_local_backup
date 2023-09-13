@@ -4,8 +4,7 @@ import { SteelheadPlayerCmsOverrideService } from './steelhead-player-cms-overri
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerCmsOverrideService', () => {
+describe('SteelheadPlayerCmsOverrideService', () => {
   let service: SteelheadPlayerCmsOverrideService;
 
   beforeEach(() => {

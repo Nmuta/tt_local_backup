@@ -21,8 +21,7 @@ import { NgxsModule } from '@ngxs/store';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBanningComponent', () => {
+describe('SteelheadBanningComponent', () => {
   let component: SteelheadBanningComponent;
   let fixture: ComponentFixture<SteelheadBanningComponent>;
   let steelhead: SteelheadService;

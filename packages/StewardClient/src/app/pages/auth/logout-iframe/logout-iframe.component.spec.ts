@@ -12,8 +12,7 @@ import { LogoutIframeComponent } from './logout-iframe.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LogoutIframeComponent:', () => {
+describe('LogoutIframeComponent:', () => {
   let component: LogoutIframeComponent;
   let fixture: ComponentFixture<LogoutIframeComponent>;
   let store: Store;

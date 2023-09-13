@@ -7,8 +7,7 @@ import { EntitlementsComponent } from './entitlements.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'EntitlementsComponent', () => {
+describe('EntitlementsComponent', () => {
   let component: EntitlementsComponent;
   let fixture: ComponentFixture<EntitlementsComponent>;
 

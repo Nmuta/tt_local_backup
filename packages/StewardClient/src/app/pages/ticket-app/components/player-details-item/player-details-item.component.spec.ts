@@ -12,8 +12,7 @@ import { createMockClipboard, Clipboard } from '@shared/helpers/clipboard';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayerDetailsItemComponent', () => {
+describe('PlayerDetailsItemComponent', () => {
   let fixture: ComponentFixture<PlayerDetailsItemComponent>;
   let component: PlayerDetailsItemComponent;
 

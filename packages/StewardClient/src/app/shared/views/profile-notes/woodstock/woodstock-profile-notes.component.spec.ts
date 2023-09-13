@@ -7,8 +7,7 @@ import { createMockWoodstockPlayerProfileNotesService } from '@services/api-v2/w
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockProfileNotesComponent', () => {
+describe('WoodstockProfileNotesComponent', () => {
   let component: WoodstockProfileNotesComponent;
   let fixture: ComponentFixture<WoodstockProfileNotesComponent>;
 

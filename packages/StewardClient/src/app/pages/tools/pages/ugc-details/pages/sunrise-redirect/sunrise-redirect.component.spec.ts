@@ -11,8 +11,7 @@ import { SunriseRedirectComponent } from './sunrise-redirect.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseRedirectComponent', () => {
+describe('SunriseRedirectComponent', () => {
   let component: SunriseRedirectComponent;
   let fixture: ComponentFixture<SunriseRedirectComponent>;
 

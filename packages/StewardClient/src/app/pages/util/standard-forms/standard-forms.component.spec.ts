@@ -4,8 +4,7 @@ import { StandardFormsComponent } from './standard-forms.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StandardFormsComponent', () => {
+describe('StandardFormsComponent', () => {
   let component: StandardFormsComponent;
   let fixture: ComponentFixture<StandardFormsComponent>;
 

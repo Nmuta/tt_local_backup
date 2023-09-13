@@ -51,8 +51,7 @@ class TestNotificationManagementService implements LocalizedGroupMessagingManage
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LocalizedGroupNotificationManagementComponent', () => {
+describe('LocalizedGroupNotificationManagementComponent', () => {
   let component: LocalizedGroupNotificationManagementComponent;
   let fixture: ComponentFixture<LocalizedGroupNotificationManagementComponent>;
   let testGroupNotifications: LocalizedGroupNotification[];

@@ -5,8 +5,7 @@ import { WoodstockUgcSearchService } from './woodstock-ugc-search.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FindService', () => {
+describe('FindService', () => {
   let service: WoodstockUgcSearchService;
 
   beforeEach(() => {

@@ -11,8 +11,7 @@ import { SunriseLookupComponent } from './sunrise-lookup.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseLookupComponent', () => {
+describe('SunriseLookupComponent', () => {
   let component: SunriseLookupComponent;
   let fixture: ComponentFixture<SunriseLookupComponent>;
   let mockPermissionService: OldPermissionsService;

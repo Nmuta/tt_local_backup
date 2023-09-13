@@ -15,8 +15,7 @@ import BigNumber from 'bignumber.js';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadEditCarItemModalComponent', () => {
+describe('SteelheadEditCarItemModalComponent', () => {
   let fixture: ComponentFixture<SteelheadEditCarItemModalComponent>;
   let component: SteelheadEditCarItemModalComponent;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

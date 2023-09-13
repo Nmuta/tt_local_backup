@@ -8,8 +8,7 @@ import { WoodstockPlayFabBuildsManagementComponent } from './woodstock-playfab-b
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayFabBuildsManagementComponent', () => {
+describe('WoodstockPlayFabBuildsManagementComponent', () => {
   let component: WoodstockPlayFabBuildsManagementComponent;
   let fixture: ComponentFixture<WoodstockPlayFabBuildsManagementComponent>;
 

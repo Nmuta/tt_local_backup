@@ -4,8 +4,7 @@ import { SteelheadBanHistoryService } from './steelhead-ban-history.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBanHistoryService', () => {
+describe('SteelheadBanHistoryService', () => {
   let service: SteelheadBanHistoryService;
 
   beforeEach(() => {

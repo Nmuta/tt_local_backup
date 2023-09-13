@@ -4,8 +4,7 @@ import { SteelheadLspTaskService } from './steelhead-lsp-tasks.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadLspTaskService', () => {
+describe('SteelheadLspTaskService', () => {
   let service: SteelheadLspTaskService;
 
   beforeEach(() => {

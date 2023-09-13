@@ -16,8 +16,7 @@ import { toDateTime } from '@helpers/luxon';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StewardUserHistoryComponent', () => {
+describe('StewardUserHistoryComponent', () => {
   let component: StewardUserHistoryComponent;
   let fixture: ComponentFixture<StewardUserHistoryComponent>;
 

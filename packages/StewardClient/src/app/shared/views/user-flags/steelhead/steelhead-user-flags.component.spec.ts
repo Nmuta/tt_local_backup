@@ -12,8 +12,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUserFlagsComponent', () => {
+describe('SteelheadUserFlagsComponent', () => {
   let component: SteelheadUserFlagsComponent;
   let fixture: ComponentFixture<SteelheadUserFlagsComponent>;
 

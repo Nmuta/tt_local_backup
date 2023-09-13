@@ -7,8 +7,7 @@ import { SteelheadDriverLevelComponent } from './steelhead-driver-level.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadDriverLevelComponent', () => {
+describe('SteelheadDriverLevelComponent', () => {
   let component: SteelheadDriverLevelComponent;
   let fixture: ComponentFixture<SteelheadDriverLevelComponent>;
 

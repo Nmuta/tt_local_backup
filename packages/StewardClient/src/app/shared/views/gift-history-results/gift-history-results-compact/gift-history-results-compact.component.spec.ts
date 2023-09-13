@@ -4,8 +4,7 @@ import { GiftHistoryResultsCompactComponent } from './gift-history-results-compa
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GiftHistoryResultsCompactComponent', () => {
+describe('GiftHistoryResultsCompactComponent', () => {
   let component: GiftHistoryResultsCompactComponent;
   let fixture: ComponentFixture<GiftHistoryResultsCompactComponent>;
 

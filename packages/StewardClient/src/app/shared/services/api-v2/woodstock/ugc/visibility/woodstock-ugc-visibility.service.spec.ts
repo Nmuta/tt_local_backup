@@ -4,8 +4,7 @@ import { WoodstockUgcVisibilityService } from './woodstock-ugc-visibility.servic
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockUgcVisibilityService', () => {
+describe('WoodstockUgcVisibilityService', () => {
   let service: WoodstockUgcVisibilityService;
 
   beforeEach(() => {

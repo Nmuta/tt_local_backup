@@ -35,8 +35,7 @@ class TestAuctionBlocklistService implements AuctionBlocklistService {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AuctionBlocklistBaseComponent', () => {
+describe('AuctionBlocklistBaseComponent', () => {
   let component: AuctionBlocklistBaseComponent;
   let fixture: ComponentFixture<AuctionBlocklistBaseComponent>;
   let auctionBlocklistEntries: AuctionBlocklistEntry[];

@@ -17,8 +17,7 @@ import { SetApolloGiftingMatTabIndex } from './state/apollo-gifting.state.action
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloGiftingComponent', () => {
+describe('ApolloGiftingComponent', () => {
   let component: ApolloGiftingComponent;
   let fixture: ComponentFixture<ApolloGiftingComponent>;
 

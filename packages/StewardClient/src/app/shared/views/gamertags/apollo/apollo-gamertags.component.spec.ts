@@ -19,8 +19,7 @@ const activatedRouteMock = {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloGamertagsComponent', () => {
+describe('ApolloGamertagsComponent', () => {
   let component: ApolloGamertagsComponent;
   let fixture: ComponentFixture<ApolloGamertagsComponent>;
 

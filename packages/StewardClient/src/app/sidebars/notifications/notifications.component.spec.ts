@@ -15,8 +15,7 @@ import { Subject } from 'rxjs';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'NotificationsComponent', () => {
+describe('NotificationsComponent', () => {
   const urlPath = '/app/tools/foo/bar';
 
   let component: NotificationsComponent;

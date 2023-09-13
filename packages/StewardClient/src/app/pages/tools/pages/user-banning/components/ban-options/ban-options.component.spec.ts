@@ -6,8 +6,7 @@ import { BanOptions, BanOptionsComponent } from './ban-options.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BanOptionsComponent', () => {
+describe('BanOptionsComponent', () => {
   let component: BanOptionsComponent;
   let fixture: ComponentFixture<BanOptionsComponent>;
 

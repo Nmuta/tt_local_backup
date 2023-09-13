@@ -7,8 +7,7 @@ import { createMockSunrisePlayerProfileNotesService } from '@services/api-v2/sun
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseProfileNotesComponent', () => {
+describe('SunriseProfileNotesComponent', () => {
   let component: SunriseProfileNotesComponent;
   let fixture: ComponentFixture<SunriseProfileNotesComponent>;
 

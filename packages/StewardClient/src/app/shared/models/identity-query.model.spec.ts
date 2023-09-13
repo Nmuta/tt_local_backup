@@ -13,8 +13,7 @@ function expectTypes(
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'identity query models', () => {
+describe('identity query models', () => {
   describe('gamertag query', () => {
     const query = { gamertag: 'gamertag' };
     it('should detect type properly', () => {

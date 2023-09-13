@@ -4,8 +4,7 @@ import { SteelheadPlayerSafetyRatingService } from './steelhead-player-safety-ra
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerSafetyRatingService', () => {
+describe('SteelheadPlayerSafetyRatingService', () => {
   let service: SteelheadPlayerSafetyRatingService;
 
   beforeEach(() => {

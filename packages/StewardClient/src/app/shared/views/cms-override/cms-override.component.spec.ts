@@ -20,8 +20,7 @@ import { CmsOverrideComponent, CmsOverrideServiceContract } from './cms-override
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CmsOverrideComponent', () => {
+describe('CmsOverrideComponent', () => {
   let component: CmsOverrideComponent;
   let fixture: ComponentFixture<CmsOverrideComponent>;
 

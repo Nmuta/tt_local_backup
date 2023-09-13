@@ -7,8 +7,7 @@ import { createMockSteelheadPlayerProfileNotesService } from '@services/api-v2/s
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadProfileNotesComponent', () => {
+describe('SteelheadProfileNotesComponent', () => {
   let component: SteelheadProfileNotesComponent;
   let fixture: ComponentFixture<SteelheadProfileNotesComponent>;
 

@@ -10,8 +10,7 @@ import { SunrisePlayerInventoryProfilePickerComponent } from './sunrise-player-i
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerInventoryProfilePickerComponent', () => {
+describe('SunrisePlayerInventoryProfilePickerComponent', () => {
   let component: SunrisePlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<SunrisePlayerInventoryProfilePickerComponent>;
   let mockStore: Store;

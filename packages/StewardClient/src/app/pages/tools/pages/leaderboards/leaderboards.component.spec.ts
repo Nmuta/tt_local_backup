@@ -3,8 +3,7 @@ import { LeaderboardsComponent } from './leaderboards.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LeaderboardsComponent', () => {
+describe('LeaderboardsComponent', () => {
   let component: LeaderboardsComponent;
   let fixture: ComponentFixture<LeaderboardsComponent>;
 

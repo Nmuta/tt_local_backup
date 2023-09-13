@@ -8,8 +8,7 @@ import { SteelheadCreateUserGroupComponent } from './steelhead-create-user-group
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadCreateUserGroupComponent', () => {
+describe('SteelheadCreateUserGroupComponent', () => {
   let component: SteelheadCreateUserGroupComponent;
   let fixture: ComponentFixture<SteelheadCreateUserGroupComponent>;
 

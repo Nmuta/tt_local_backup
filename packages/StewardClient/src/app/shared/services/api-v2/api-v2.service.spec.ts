@@ -12,8 +12,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'service: ApiV2Service', () => {
+describe('service: ApiV2Service', () => {
   let injector: TestBed;
   let apiService: ApiV2Service;
   let httpMock: HttpTestingController;

@@ -4,8 +4,7 @@ import { KustoFunctionComponent } from './kusto-function.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'KustoFunctionComponent', () => {
+describe('KustoFunctionComponent', () => {
   let component: KustoFunctionComponent;
   let fixture: ComponentFixture<KustoFunctionComponent>;
 

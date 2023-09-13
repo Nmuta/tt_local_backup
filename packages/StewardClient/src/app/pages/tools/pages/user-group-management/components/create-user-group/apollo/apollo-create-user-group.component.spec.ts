@@ -8,8 +8,7 @@ import { ApolloCreateUserGroupComponent } from './apollo-create-user-group.compo
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloCreateUserGroupComponent', () => {
+describe('ApolloCreateUserGroupComponent', () => {
   let component: ApolloCreateUserGroupComponent;
   let fixture: ComponentFixture<ApolloCreateUserGroupComponent>;
 

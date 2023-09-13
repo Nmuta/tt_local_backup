@@ -4,8 +4,7 @@ import { WoodstockPlayFabPlayerInventoryService } from './woodstock-playfab-play
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayFabPlayerInventoryService', () => {
+describe('WoodstockPlayFabPlayerInventoryService', () => {
   let service: WoodstockPlayFabPlayerInventoryService;
 
   beforeEach(() => {

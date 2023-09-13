@@ -10,8 +10,7 @@ import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-me
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadLspGroupSelectionComponent', () => {
+describe('SteelheadLspGroupSelectionComponent', () => {
   let fixture: ComponentFixture<SteelheadLspGroupSelectionComponent>;
   let component: SteelheadLspGroupSelectionComponent;
 

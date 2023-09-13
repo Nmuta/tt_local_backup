@@ -13,8 +13,7 @@ import { UserRole } from '@models/enums';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AuthGuard:', () => {
+describe('AuthGuard:', () => {
   let guard: AuthGuard;
   let store: Store;
   const testProfile: UserModel = {

@@ -5,8 +5,7 @@ import { DataPrivacyNoticeComponent } from './data-privacy-notice.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DataPrivacyNoticeComponent', () => {
+describe('DataPrivacyNoticeComponent', () => {
   let component: DataPrivacyNoticeComponent;
   let fixture: ComponentFixture<DataPrivacyNoticeComponent>;
 

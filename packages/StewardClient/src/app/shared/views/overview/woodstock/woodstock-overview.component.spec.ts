@@ -15,8 +15,7 @@ import { WoodstockOverviewComponent } from './woodstock-overview.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OverviewComponent', () => {
+describe('OverviewComponent', () => {
   let injector: TestBed;
   let component: WoodstockOverviewComponent;
   let fixture: ComponentFixture<WoodstockOverviewComponent>;

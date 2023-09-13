@@ -5,8 +5,7 @@ import { ScopedSharedLookupService } from './scoped-shared-lookup.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ScopedSharedLookupService', () => {
+describe('ScopedSharedLookupService', () => {
   let service: ScopedSharedLookupService;
 
   beforeEach(() => {

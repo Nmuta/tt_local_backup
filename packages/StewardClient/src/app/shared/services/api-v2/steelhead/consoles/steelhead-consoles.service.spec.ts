@@ -4,8 +4,7 @@ import { SteelheadConsolesService } from './steelhead-consoles.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadConsolesService', () => {
+describe('SteelheadConsolesService', () => {
   let service: SteelheadConsolesService;
 
   beforeEach(() => {

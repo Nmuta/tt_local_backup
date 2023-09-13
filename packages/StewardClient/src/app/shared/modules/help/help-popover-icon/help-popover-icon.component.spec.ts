@@ -6,8 +6,7 @@ import { HelpPopoverIconComponent } from './help-popover-icon.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'HelpPopoverIconComponent', () => {
+describe('HelpPopoverIconComponent', () => {
   let component: HelpPopoverIconComponent;
   let fixture: ComponentFixture<HelpPopoverIconComponent>;
 

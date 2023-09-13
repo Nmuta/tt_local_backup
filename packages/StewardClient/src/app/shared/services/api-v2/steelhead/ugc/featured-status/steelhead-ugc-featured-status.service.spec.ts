@@ -4,8 +4,7 @@ import { SteelheadUgcFeaturedStatusService } from './steelhead-ugc-featured-stat
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FindService', () => {
+describe('FindService', () => {
   let service: SteelheadUgcFeaturedStatusService;
 
   beforeEach(() => {

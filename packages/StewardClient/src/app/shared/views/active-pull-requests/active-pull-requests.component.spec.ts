@@ -14,8 +14,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ActivePullRequestsComponent', () => {
+describe('ActivePullRequestsComponent', () => {
   let component: ActivePullRequestsComponent;
   let fixture: ComponentFixture<ActivePullRequestsComponent>;
 

@@ -7,8 +7,7 @@ import { ProductPricingComponent } from './product-pricing.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ProductPricingComponent', () => {
+describe('ProductPricingComponent', () => {
   let component: ProductPricingComponent;
   let fixture: ComponentFixture<ProductPricingComponent>;
 

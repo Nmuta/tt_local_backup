@@ -18,8 +18,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadConsolesComponent', () => {
+describe('SteelheadConsolesComponent', () => {
   let component: SteelheadConsolesComponent;
   let fixture: ComponentFixture<SteelheadConsolesComponent>;
 

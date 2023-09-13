@@ -28,8 +28,7 @@ import { createMockPermAttributesService } from '@services/perm-attributes/perm-
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GiftBasketBaseComponent', () => {
+describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<
     GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
   >;

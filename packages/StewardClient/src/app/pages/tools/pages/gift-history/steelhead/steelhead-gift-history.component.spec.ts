@@ -15,8 +15,7 @@ import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadGiftHistoryComponent', () => {
+describe('SteelheadGiftHistoryComponent', () => {
   let component: SteelheadGiftHistoryComponent;
   let fixture: ComponentFixture<SteelheadGiftHistoryComponent>;
 

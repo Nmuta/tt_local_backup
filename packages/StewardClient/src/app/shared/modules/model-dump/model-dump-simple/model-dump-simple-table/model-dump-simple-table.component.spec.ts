@@ -4,8 +4,7 @@ import { ModelDumpSimpleTableComponent } from './model-dump-simple-table.compone
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ModelDumpSimpleTableComponent', () => {
+describe('ModelDumpSimpleTableComponent', () => {
   let component: ModelDumpSimpleTableComponent;
   let fixture: ComponentFixture<ModelDumpSimpleTableComponent>;
 

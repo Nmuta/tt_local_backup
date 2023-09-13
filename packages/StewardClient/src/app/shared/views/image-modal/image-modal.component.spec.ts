@@ -10,8 +10,7 @@ import { ImageModalComponent, ImageModalData } from './image-modal.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ImageModalComponent', () => {
+describe('ImageModalComponent', () => {
   const model: ImageModalData = {
     title: faker.random.word(),
     url: faker.random.word(),

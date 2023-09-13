@@ -5,8 +5,7 @@ import { TimepickerComponent } from './timepicker.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TimepickerComponent', () => {
+describe('TimepickerComponent', () => {
   let component: TimepickerComponent;
   let fixture: ComponentFixture<TimepickerComponent>;
 

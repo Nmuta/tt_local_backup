@@ -9,8 +9,7 @@ import { BanResultsComponent } from './ban-results.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BanResultsComponent', () => {
+describe('BanResultsComponent', () => {
   let fixture: ComponentFixture<BanResultsComponent>;
   let component: BanResultsComponent;
 

@@ -7,8 +7,7 @@ import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayerInventoryHelpers', () => {
+describe('PlayerInventoryHelpers', () => {
   describe('Method: makeItemList', () => {
     const title = GameTitle.FH5;
     const items: MasterInventoryItem[] = [

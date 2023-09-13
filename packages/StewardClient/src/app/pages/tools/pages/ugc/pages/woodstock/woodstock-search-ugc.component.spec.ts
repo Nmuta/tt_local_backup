@@ -15,8 +15,7 @@ import { WoodstockUgcSearchService } from '@services/api-v2/woodstock/ugc/search
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockUgcSearchUgcComponent', () => {
+describe('WoodstockUgcSearchUgcComponent', () => {
   const testUgcSearchParameters = {
     ugcType: UgcType.Livery,
     carId: fakeBigNumber(),

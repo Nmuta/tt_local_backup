@@ -9,8 +9,7 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'VerifyButtonComponent', () => {
+describe('VerifyButtonComponent', () => {
   let component: VerifyButtonComponent;
   let fixture: ComponentFixture<VerifyButtonComponent>;
 

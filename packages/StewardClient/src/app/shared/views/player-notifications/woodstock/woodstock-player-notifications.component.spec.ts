@@ -14,8 +14,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerNotificationsComponent', () => {
+describe('WoodstockPlayerNotificationsComponent', () => {
   let injector: TestBed;
   let service: WoodstockService;
   let component: WoodstockPlayerNotificationsComponent;

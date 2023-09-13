@@ -11,8 +11,7 @@ import { MasterInventoryItem } from '@models/master-inventory-item';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ItemSelectionComponent', () => {
+describe('ItemSelectionComponent', () => {
   let fixture: ComponentFixture<ItemSelectionComponent>;
   let component: ItemSelectionComponent;
 

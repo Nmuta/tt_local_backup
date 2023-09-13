@@ -18,8 +18,7 @@ import { createMockWindowService, WindowService } from '@services/window';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LoginComponent', () => {
+describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let activatedRoute: ActivatedRoute;

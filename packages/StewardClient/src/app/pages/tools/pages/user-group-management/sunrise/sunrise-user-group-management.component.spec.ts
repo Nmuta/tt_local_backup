@@ -9,8 +9,7 @@ import { SunriseUserGroupManagementComponent } from './sunrise-user-group-manage
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseUserGroupManagementComponent', () => {
+describe('SunriseUserGroupManagementComponent', () => {
   let component: SunriseUserGroupManagementComponent;
   let fixture: ComponentFixture<SunriseUserGroupManagementComponent>;
 

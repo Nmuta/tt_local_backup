@@ -15,8 +15,7 @@ import { ApolloSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/apoll
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloUgcFiltersComponent', () => {
+describe('ApolloUgcFiltersComponent', () => {
   let fixture: ComponentFixture<ApolloUgcFiltersComponent>;
   let component: ApolloUgcFiltersComponent;
 

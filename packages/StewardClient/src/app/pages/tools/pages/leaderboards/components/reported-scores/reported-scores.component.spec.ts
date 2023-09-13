@@ -14,8 +14,7 @@ import { ReportedScoresComponent } from './reported-scores.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ReportedScoresComponent', () => {
+describe('ReportedScoresComponent', () => {
   let component: ReportedScoresComponent;
   let fixture: ComponentFixture<ReportedScoresComponent>;
 

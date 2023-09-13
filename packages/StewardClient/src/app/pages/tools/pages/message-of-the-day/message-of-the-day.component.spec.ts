@@ -3,8 +3,7 @@ import { MessageOfTheDayComponent } from './message-of-the-day.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'MessageOfTheDayComponent', () => {
+describe('MessageOfTheDayComponent', () => {
   let component: MessageOfTheDayComponent;
   let fixture: ComponentFixture<MessageOfTheDayComponent>;
 

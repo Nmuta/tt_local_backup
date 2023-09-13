@@ -4,8 +4,7 @@ import { RestateOMaticComponent } from './restate-o-matic.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'RestateOMaticComponent', () => {
+describe('RestateOMaticComponent', () => {
   let component: RestateOMaticComponent;
   let fixture: ComponentFixture<RestateOMaticComponent>;
 

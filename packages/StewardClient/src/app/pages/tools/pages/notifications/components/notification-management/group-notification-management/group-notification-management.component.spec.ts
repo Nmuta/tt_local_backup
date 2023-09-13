@@ -42,8 +42,7 @@ class TestNotificationManagementService implements GroupNotificationManagementCo
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'NotificationManagementComponent', () => {
+describe('NotificationManagementComponent', () => {
   let component: GroupNotificationManagementComponent;
   let fixture: ComponentFixture<GroupNotificationManagementComponent>;
   let testGroupNotifications: GroupNotification[];

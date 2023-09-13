@@ -4,8 +4,7 @@ import { ShowroomEventType } from '../showroom-calendar-view/steelhead/steelhead
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ShowroomKeyComponent', () => {
+describe('ShowroomKeyComponent', () => {
   let component: ShowroomKeyComponent;
   let fixture: ComponentFixture<ShowroomKeyComponent>;
 

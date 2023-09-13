@@ -4,8 +4,7 @@ import { WoodstockPlayFabBuildsService } from './woodstock-playfab-builds.servic
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayFabBuildsService', () => {
+describe('WoodstockPlayFabBuildsService', () => {
   let service: WoodstockPlayFabBuildsService;
 
   beforeEach(() => {

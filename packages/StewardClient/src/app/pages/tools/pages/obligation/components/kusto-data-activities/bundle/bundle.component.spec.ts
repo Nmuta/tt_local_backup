@@ -4,8 +4,7 @@ import { BundleComponent } from './bundle.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BundleComponent', () => {
+describe('BundleComponent', () => {
   let component: BundleComponent;
   let fixture: ComponentFixture<BundleComponent>;
 

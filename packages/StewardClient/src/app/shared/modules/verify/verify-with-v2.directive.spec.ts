@@ -10,8 +10,7 @@ import { VerifyButtonComponent } from './verify-button/verify-button.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'VerifyWithV2ButtonDirective', () => {
+describe('VerifyWithV2ButtonDirective', () => {
   let button: MatButton;
   const verifyButton: Partial<VerifyButtonComponent> = {
     isVerifiedChange: new EventEmitter<boolean>(),

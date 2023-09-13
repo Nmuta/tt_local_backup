@@ -5,8 +5,7 @@ import { ignorePaginatorQueryParams, PaginatorQueryParams } from './paginator';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'Helper: paginator', () => {
+describe('Helper: paginator', () => {
   describe('Method: ignorePaginatorQueryParams', () => {
     const queryParams1 = {
       foo: 'bar',

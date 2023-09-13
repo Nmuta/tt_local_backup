@@ -9,8 +9,7 @@ import { GoToInventoryButtonComponent } from './go-to-inventory-button.component
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GoToInventoryButtonComponent', () => {
+describe('GoToInventoryButtonComponent', () => {
   let component: GoToInventoryButtonComponent;
   let fixture: ComponentFixture<GoToInventoryButtonComponent>;
   beforeEach(async () => {

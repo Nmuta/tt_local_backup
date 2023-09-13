@@ -4,8 +4,7 @@ import { StandardFlagComponent } from './standard-flag.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StandardFlagComponent', () => {
+describe('StandardFlagComponent', () => {
   let component: StandardFlagComponent;
   let fixture: ComponentFixture<StandardFlagComponent>;
 

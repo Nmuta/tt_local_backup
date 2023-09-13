@@ -9,8 +9,7 @@ import { WoodstockServicesTableStorageComponent } from './woodstock-services-tab
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockServicesTableStorageComponent', () => {
+describe('WoodstockServicesTableStorageComponent', () => {
   let component: WoodstockServicesTableStorageComponent;
   let fixture: ComponentFixture<WoodstockServicesTableStorageComponent>;
 

@@ -16,8 +16,7 @@ import faker from '@faker-js/faker';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadService', () => {
+describe('SteelheadService', () => {
   let injector: TestBed;
   let service: SteelheadService;
   let apiServiceMock: ApiService;

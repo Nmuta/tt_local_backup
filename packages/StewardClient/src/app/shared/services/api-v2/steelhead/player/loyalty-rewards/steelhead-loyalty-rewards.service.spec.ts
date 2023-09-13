@@ -4,8 +4,7 @@ import { SteelheadLoyaltyRewardsService } from './steelhead-loyalty-rewards.serv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadLoyaltyRewardsService', () => {
+describe('SteelheadLoyaltyRewardsService', () => {
   let service: SteelheadLoyaltyRewardsService;
 
   beforeEach(() => {

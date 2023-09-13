@@ -6,8 +6,7 @@ import { WoodstockAuctionBlocklistService } from './woodstock-auction-blocklist.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockAuctionBlocklistService', () => {
+describe('WoodstockAuctionBlocklistService', () => {
   let service: WoodstockAuctionBlocklistService;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockWoodstockAuctionBlocklistService: WoodstockAuctionBlocklistService;

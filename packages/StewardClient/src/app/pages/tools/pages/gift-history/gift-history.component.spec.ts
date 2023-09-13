@@ -11,8 +11,7 @@ import { GiftHistoryComponent } from './gift-history.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GiftHistoryComponent', () => {
+describe('GiftHistoryComponent', () => {
   let component: GiftHistoryComponent;
   let fixture: ComponentFixture<GiftHistoryComponent>;
 

@@ -9,8 +9,7 @@ import { ApolloUserGroupManagementComponent } from './apollo-user-group-manageme
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloUserGroupManagementComponent', () => {
+describe('ApolloUserGroupManagementComponent', () => {
   let component: ApolloUserGroupManagementComponent;
   let fixture: ComponentFixture<ApolloUserGroupManagementComponent>;
 

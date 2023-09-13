@@ -4,8 +4,7 @@ import { ActivePipelineService } from './active-pipeline.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ActivePipelineServiceService', () => {
+describe('ActivePipelineServiceService', () => {
   let service: ActivePipelineService;
 
   beforeEach(() => {

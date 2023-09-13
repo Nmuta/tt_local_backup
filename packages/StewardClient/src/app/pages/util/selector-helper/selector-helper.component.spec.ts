@@ -7,8 +7,7 @@ import { SelectorHelperComponent } from './selector-helper.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SelectorHelperComponent', () => {
+describe('SelectorHelperComponent', () => {
   let component: SelectorHelperComponent;
   let fixture: ComponentFixture<SelectorHelperComponent>;
 

@@ -8,8 +8,7 @@ import { ApolloListUsersInGroupComponent } from './apollo-list-users-in-user-gro
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloListUsersInGroupComponent', () => {
+describe('ApolloListUsersInGroupComponent', () => {
   let component: ApolloListUsersInGroupComponent;
   let fixture: ComponentFixture<ApolloListUsersInGroupComponent>;
 

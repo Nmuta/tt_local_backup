@@ -6,8 +6,7 @@ import { ChangelogGroupComponent } from './changelog-group.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ChangelogGroupComponent', () => {
+describe('ChangelogGroupComponent', () => {
   let component: ChangelogGroupComponent;
   let fixture: ComponentFixture<ChangelogGroupComponent>;
 

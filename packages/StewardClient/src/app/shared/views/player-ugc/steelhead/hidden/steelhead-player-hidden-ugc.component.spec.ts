@@ -14,8 +14,7 @@ import { SteelheadPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerHiddenUgcComponent', () => {
+describe('SteelheadPlayerHiddenUgcComponent', () => {
   let component: SteelheadPlayerHiddenUgcComponent;
   let fixture: ComponentFixture<SteelheadPlayerHiddenUgcComponent>;
 

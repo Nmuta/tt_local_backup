@@ -13,8 +13,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBuildersCupLadderModalComponent', () => {
+describe('SteelheadBuildersCupLadderModalComponent', () => {
   let component: SteelheadBuildersCupLadderModalComponent;
   let fixture: ComponentFixture<SteelheadBuildersCupLadderModalComponent>;
 

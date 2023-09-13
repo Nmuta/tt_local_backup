@@ -7,8 +7,7 @@ import { EndpointsNavToolComponent } from './endpoints-nav-tool.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'EndpointsNavToolComponent', () => {
+describe('EndpointsNavToolComponent', () => {
   let component: EndpointsNavToolComponent;
   let fixture: ComponentFixture<EndpointsNavToolComponent>;
 

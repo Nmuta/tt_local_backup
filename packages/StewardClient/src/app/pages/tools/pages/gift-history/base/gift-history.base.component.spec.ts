@@ -12,8 +12,7 @@ import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GiftHistoryBaseComponent', () => {
+describe('GiftHistoryBaseComponent', () => {
   let component: GiftHistoryBaseComponent<PlayerInventoryProfile>;
   let fixture: ComponentFixture<GiftHistoryBaseComponent<PlayerInventoryProfile>>;
 

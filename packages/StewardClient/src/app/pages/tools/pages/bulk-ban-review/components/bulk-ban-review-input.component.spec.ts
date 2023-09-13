@@ -9,8 +9,7 @@ import { fakeXuid } from '@interceptors/fake-api/utility';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BulkBanReviewInputComponent', () => {
+describe('BulkBanReviewInputComponent', () => {
   let component: BulkBanReviewInputComponent;
   let fixture: ComponentFixture<BulkBanReviewInputComponent>;
 

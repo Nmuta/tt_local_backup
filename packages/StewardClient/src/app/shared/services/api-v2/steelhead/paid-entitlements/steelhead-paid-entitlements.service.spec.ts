@@ -4,8 +4,7 @@ import { SteelheadPaidEntitlementsService } from './steelhead-paid-entitlements.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPaidEntitlementsService', () => {
+describe('SteelheadPaidEntitlementsService', () => {
   let service: SteelheadPaidEntitlementsService;
 
   beforeEach(() => {

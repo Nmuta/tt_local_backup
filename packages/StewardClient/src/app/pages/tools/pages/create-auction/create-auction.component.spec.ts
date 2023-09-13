@@ -3,8 +3,7 @@ import { CreateAuctionComponent } from './create-auction.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CreateAuctionComponent', () => {
+describe('CreateAuctionComponent', () => {
   let component: CreateAuctionComponent;
   let fixture: ComponentFixture<CreateAuctionComponent>;
 

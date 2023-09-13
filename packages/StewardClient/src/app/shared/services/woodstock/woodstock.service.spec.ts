@@ -23,8 +23,7 @@ import { PegasusProjectionSlot } from '@models/enums';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockService', () => {
+describe('WoodstockService', () => {
   let injector: TestBed;
   let service: WoodstockService;
   let apiServiceMock: ApiService;

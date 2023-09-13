@@ -15,8 +15,7 @@ import { toDateTime } from '@helpers/luxon';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayFabPlayerToolsComponent', () => {
+describe('PlayFabPlayerToolsComponent', () => {
   let component: PlayFabPlayerToolsComponent;
   let fixture: ComponentFixture<PlayFabPlayerToolsComponent>;
 

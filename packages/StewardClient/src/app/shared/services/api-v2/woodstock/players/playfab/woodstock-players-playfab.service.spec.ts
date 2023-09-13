@@ -5,8 +5,7 @@ import { WoodstockPlayersPlayFabService } from './woodstock-players-playfab.serv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayersPlayFabService', () => {
+describe('WoodstockPlayersPlayFabService', () => {
   let service: WoodstockPlayersPlayFabService;
   const nextReturnValue: unknown = {};
 

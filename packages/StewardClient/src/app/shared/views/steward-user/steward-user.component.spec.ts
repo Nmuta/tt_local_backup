@@ -12,8 +12,7 @@ import { StewardUserComponent } from './steward-user.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StewardUserComponent', () => {
+describe('StewardUserComponent', () => {
   let component: StewardUserComponent;
   let fixture: ComponentFixture<StewardUserComponent>;
 

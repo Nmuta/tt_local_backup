@@ -7,8 +7,7 @@ import { StandardAbsoluteTimeUtcComponent } from './standard-absolute-time-utc.c
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StandardAbsoluteTimeUtcComponent', () => {
+describe('StandardAbsoluteTimeUtcComponent', () => {
   let component: StandardAbsoluteTimeUtcComponent;
   let fixture: ComponentFixture<StandardAbsoluteTimeUtcComponent>;
 

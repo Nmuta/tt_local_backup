@@ -14,8 +14,7 @@ import { createMockWoodstockService } from '@services/woodstock';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerUgcComponent', () => {
+describe('WoodstockPlayerUgcComponent', () => {
   let component: WoodstockPlayerUgcComponent;
   let fixture: ComponentFixture<WoodstockPlayerUgcComponent>;
 

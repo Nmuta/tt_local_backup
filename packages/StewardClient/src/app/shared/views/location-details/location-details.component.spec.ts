@@ -8,8 +8,7 @@ import { LocationDetailsComponent } from './location-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LocationDetailsComponent', () => {
+describe('LocationDetailsComponent', () => {
   let component: LocationDetailsComponent;
   let fixture: ComponentFixture<LocationDetailsComponent>;
 

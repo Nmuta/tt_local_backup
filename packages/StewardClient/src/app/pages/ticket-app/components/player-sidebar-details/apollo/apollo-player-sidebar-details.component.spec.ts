@@ -15,8 +15,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloPlayerSidebarDetailsComponent', () => {
+describe('ApolloPlayerSidebarDetailsComponent', () => {
   let mockApolloService: ApolloService;
 
   let fixture: ComponentFixture<ApolloPlayerSidebarDetailsComponent>;

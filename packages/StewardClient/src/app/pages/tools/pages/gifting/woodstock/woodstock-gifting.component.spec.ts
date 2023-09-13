@@ -17,8 +17,7 @@ import { WoodstockGiftingComponent } from './woodstock-gifting.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockGiftingComponent', () => {
+describe('WoodstockGiftingComponent', () => {
   let component: WoodstockGiftingComponent;
   let fixture: ComponentFixture<WoodstockGiftingComponent>;
 

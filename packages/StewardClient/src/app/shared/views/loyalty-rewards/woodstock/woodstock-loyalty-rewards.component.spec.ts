@@ -10,8 +10,7 @@ import { WoodstockLoyaltyRewardsComponent } from './woodstock-loyalty-rewards.co
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLoyaltyRewardsComponent', () => {
+describe('WoodstockLoyaltyRewardsComponent', () => {
   let component: WoodstockLoyaltyRewardsComponent;
   let fixture: ComponentFixture<WoodstockLoyaltyRewardsComponent>;
   let mockStore: Store;

@@ -8,8 +8,7 @@ import { GiftSpecialLiveriesComponent } from './gift-special-liveries.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GiftSpecialLiveryComponent', () => {
+describe('GiftSpecialLiveryComponent', () => {
   let component: GiftSpecialLiveriesComponent;
   let fixture: ComponentFixture<GiftSpecialLiveriesComponent>;
 

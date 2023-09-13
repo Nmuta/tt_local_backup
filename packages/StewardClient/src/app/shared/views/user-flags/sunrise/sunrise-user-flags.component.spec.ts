@@ -13,8 +13,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseUserFlagsComponent', () => {
+describe('SunriseUserFlagsComponent', () => {
   let component: SunriseUserFlagsComponent;
   let fixture: ComponentFixture<SunriseUserFlagsComponent>;
 

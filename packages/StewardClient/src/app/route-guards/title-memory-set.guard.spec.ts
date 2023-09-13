@@ -11,8 +11,7 @@ import { TitleMemorySetGuard } from './title-memory-set.guard';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TitleMemorySetGuard', () => {
+describe('TitleMemorySetGuard', () => {
   let guard: TitleMemorySetGuard;
   let store: Store;
   const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' } };

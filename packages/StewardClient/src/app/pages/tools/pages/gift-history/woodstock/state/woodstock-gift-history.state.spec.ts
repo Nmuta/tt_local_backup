@@ -11,8 +11,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockGiftHistoryState', () => {
+describe('WoodstockGiftHistoryState', () => {
   let store: Store;
   let service: WoodstockGiftHistoryState;
 

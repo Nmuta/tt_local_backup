@@ -17,8 +17,7 @@ import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-me
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UserSettingsService', () => {
+describe('UserSettingsService', () => {
   let store: Store;
   let service: UserSettingsState;
 

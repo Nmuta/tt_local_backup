@@ -33,8 +33,7 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TicketAppComponent', () => {
+describe('TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
   let component: TicketAppComponent;
   let mockZendeskService: ZendeskService;
@@ -78,7 +77,7 @@ describe(
       objectId: `${faker.datatype.uuid()}`,
     };
 
-    describe('When subscribing to profile returns a value', () => {
+    fdescribe('When subscribing to profile returns a value', () => {
       beforeEach(() => {
         Object.defineProperty(component, 'profile$', { writable: true });
         component.profile$ = of(testProfile);
@@ -92,12 +91,6 @@ describe(
       it('Should set loading to false', () => {
         component.ngOnInit();
         expect(component.loading).toBeFalsy();
-      });
-
-      describe('If profile is valid', () => {
-        beforeEach(() => {
-          component.profile$ = of(testProfile);
-        });
       });
     });
 

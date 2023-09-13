@@ -8,8 +8,7 @@ import { WoodstockBulkGiftLiveryComponent } from './woodstock-bulk-gift-livery.c
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockBulkGiftLiveryComponent', () => {
+describe('WoodstockBulkGiftLiveryComponent', () => {
   let component: WoodstockBulkGiftLiveryComponent;
   let fixture: ComponentFixture<WoodstockBulkGiftLiveryComponent>;
 

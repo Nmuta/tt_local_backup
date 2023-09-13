@@ -7,8 +7,7 @@ import { ServicesTableResultsComponent } from './services-table-results.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ServicesTableResultsComponent', () => {
+describe('ServicesTableResultsComponent', () => {
   let fixture: ComponentFixture<ServicesTableResultsComponent>;
   let component: ServicesTableResultsComponent;
 

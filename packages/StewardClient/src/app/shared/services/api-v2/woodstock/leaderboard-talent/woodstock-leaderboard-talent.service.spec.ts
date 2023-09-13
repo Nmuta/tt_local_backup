@@ -4,8 +4,7 @@ import { WoodstockLeaderboardTalentService } from './woodstock-leaderboard-talen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLeaderboardTalentService', () => {
+describe('WoodstockLeaderboardTalentService', () => {
   let service: WoodstockLeaderboardTalentService;
 
   beforeEach(() => {

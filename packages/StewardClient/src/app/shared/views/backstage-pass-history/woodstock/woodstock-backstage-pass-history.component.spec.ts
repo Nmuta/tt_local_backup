@@ -9,8 +9,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockBackstagePassHistoryComponent', () => {
+describe('WoodstockBackstagePassHistoryComponent', () => {
   let component: WoodstockBackstagePassHistoryComponent;
   let fixture: ComponentFixture<WoodstockBackstagePassHistoryComponent>;
 

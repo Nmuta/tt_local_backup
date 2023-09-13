@@ -8,8 +8,7 @@ import { SteelheadProfileTemplatesService } from './steelhead-profile-templates.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadProfileTemplatesService', () => {
+describe('SteelheadProfileTemplatesService', () => {
   let service: SteelheadProfileTemplatesService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};

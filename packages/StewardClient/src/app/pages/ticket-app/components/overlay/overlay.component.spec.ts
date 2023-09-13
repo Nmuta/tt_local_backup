@@ -5,8 +5,7 @@ import { OverlayComponent } from './overlay.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OverlayComponent', () => {
+describe('OverlayComponent', () => {
   let component: OverlayComponent;
   let fixture: ComponentFixture<OverlayComponent>;
 

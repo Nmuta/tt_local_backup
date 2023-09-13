@@ -3,8 +3,7 @@ import { WelcomeCenterTilesComponent } from './welcome-center-tiles.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'MessageOfTheDayComponent', () => {
+describe('MessageOfTheDayComponent', () => {
   let component: WelcomeCenterTilesComponent;
   let fixture: ComponentFixture<WelcomeCenterTilesComponent>;
 

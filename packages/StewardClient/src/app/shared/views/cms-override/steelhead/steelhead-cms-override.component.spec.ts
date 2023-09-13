@@ -7,8 +7,7 @@ import { SteelheadCmsOverrideComponent } from './steelhead-cms-override.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadCmsOverrideComponent', () => {
+describe('SteelheadCmsOverrideComponent', () => {
   let component: SteelheadCmsOverrideComponent;
   let fixture: ComponentFixture<SteelheadCmsOverrideComponent>;
 

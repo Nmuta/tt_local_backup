@@ -17,8 +17,7 @@ import { WoodstockFeatureUgcModalComponent } from './woodstock-feature-ugc-modal
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockFeatureUgcModalComponent', () => {
+describe('WoodstockFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<WoodstockFeatureUgcModalComponent>;

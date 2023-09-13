@@ -4,8 +4,7 @@ import { SteelheadPlayerMessagesService } from './steelhead-player-messages.serv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerMessagesService', () => {
+describe('SteelheadPlayerMessagesService', () => {
   let service: SteelheadPlayerMessagesService;
 
   beforeEach(() => {

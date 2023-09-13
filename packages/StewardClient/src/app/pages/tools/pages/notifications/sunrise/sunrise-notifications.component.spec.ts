@@ -6,8 +6,7 @@ import { SunriseNotificationsComponent } from './sunrise-notifications.component
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseNotificationsComponent', () => {
+describe('SunriseNotificationsComponent', () => {
   let component: SunriseNotificationsComponent;
   let fixture: ComponentFixture<SunriseNotificationsComponent>;
 

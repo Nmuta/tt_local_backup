@@ -11,8 +11,7 @@ import { CheckboxPermissionAttributeDirective } from './checkbox-permission-attr
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CheckboxPermissionAttributeDirective', () => {
+describe('CheckboxPermissionAttributeDirective', () => {
   let button: MatButton;
   let directive: CheckboxPermissionAttributeDirective;
   let mockPermAttributesService: PermAttributesService;

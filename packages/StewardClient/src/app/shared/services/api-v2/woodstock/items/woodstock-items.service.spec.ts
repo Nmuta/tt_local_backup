@@ -4,8 +4,7 @@ import { WoodstockItemsService } from './woodstock-items.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockItemsService', () => {
+describe('WoodstockItemsService', () => {
   let service: WoodstockItemsService;
 
   beforeEach(() => {

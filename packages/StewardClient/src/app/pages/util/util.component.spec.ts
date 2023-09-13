@@ -4,8 +4,7 @@ import { UtilComponent } from './util.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UtilComponent', () => {
+describe('UtilComponent', () => {
   let component: UtilComponent;
   let fixture: ComponentFixture<UtilComponent>;
 

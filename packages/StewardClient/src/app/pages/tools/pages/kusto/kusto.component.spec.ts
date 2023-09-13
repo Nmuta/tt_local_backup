@@ -20,8 +20,7 @@ import { JsonTableResult } from '@models/json-table-result';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'KustoComponent', () => {
+describe('KustoComponent', () => {
   let component: KustoComponent;
   let fixture: ComponentFixture<KustoComponent>;
 

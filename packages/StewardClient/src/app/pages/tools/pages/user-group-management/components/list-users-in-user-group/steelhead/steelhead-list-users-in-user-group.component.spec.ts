@@ -8,8 +8,7 @@ import { SteelheadListUsersInGroupComponent } from './steelhead-list-users-in-us
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadListUsersInGroupComponent', () => {
+describe('SteelheadListUsersInGroupComponent', () => {
   let component: SteelheadListUsersInGroupComponent;
   let fixture: ComponentFixture<SteelheadListUsersInGroupComponent>;
 

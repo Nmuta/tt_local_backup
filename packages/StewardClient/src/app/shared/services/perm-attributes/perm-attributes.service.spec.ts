@@ -14,8 +14,7 @@ import { PermAttributesService } from './perm-attributes.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PermAttributesService', () => {
+describe('PermAttributesService', () => {
   let service: PermAttributesService;
 
   beforeEach(() => {

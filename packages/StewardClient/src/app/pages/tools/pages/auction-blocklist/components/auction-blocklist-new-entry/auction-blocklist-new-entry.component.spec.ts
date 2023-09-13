@@ -24,8 +24,7 @@ class TestAuctionBlocklistNewEntryService implements AuctionBlocklistNewEntrySer
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AuctionBlocklistNewEntryComponent', () => {
+describe('AuctionBlocklistNewEntryComponent', () => {
   let component: AuctionBlocklistNewEntryComponent;
   let fixture: ComponentFixture<AuctionBlocklistNewEntryComponent>;
 

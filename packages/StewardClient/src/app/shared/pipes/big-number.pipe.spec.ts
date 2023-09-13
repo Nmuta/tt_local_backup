@@ -3,8 +3,7 @@ import { BigNumberPipe } from './big-number.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BigNumbersPipe', () => {
+describe('BigNumbersPipe', () => {
   it('create an instance', () => {
     const pipe = new BigNumberPipe();
     expect(pipe).toBeTruthy();

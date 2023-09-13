@@ -3,8 +3,7 @@ import { DomainEnumPrettyPrintPipe } from './domain-enum-pretty-print.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DomainEnumPrettyPrintPipe', () => {
+describe('DomainEnumPrettyPrintPipe', () => {
   it('create an instance', () => {
     const pipe = new DomainEnumPrettyPrintPipe();
     expect(pipe).toBeTruthy();

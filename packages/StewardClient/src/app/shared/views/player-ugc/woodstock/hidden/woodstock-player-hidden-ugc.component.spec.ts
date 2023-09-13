@@ -14,8 +14,7 @@ import { createMockWoodstockPlayerUgcService } from '@services/api-v2/woodstock/
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerHiddenUgcComponent', () => {
+describe('WoodstockPlayerHiddenUgcComponent', () => {
   let component: WoodstockPlayerHiddenUgcComponent;
   let fixture: ComponentFixture<WoodstockPlayerHiddenUgcComponent>;
 

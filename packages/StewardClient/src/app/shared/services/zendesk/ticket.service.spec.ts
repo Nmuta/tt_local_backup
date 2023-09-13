@@ -6,8 +6,7 @@ import { createMockZendeskService } from './zendesk.service.mock';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TicketService', () => {
+describe('TicketService', () => {
   let service: TicketService;
 
   beforeEach(() => {

@@ -4,8 +4,7 @@ import { SteelheadPlayerReportWeightService } from './steelhead-report-weight.se
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerReportWeightService', () => {
+describe('SteelheadPlayerReportWeightService', () => {
   let service: SteelheadPlayerReportWeightService;
 
   beforeEach(() => {

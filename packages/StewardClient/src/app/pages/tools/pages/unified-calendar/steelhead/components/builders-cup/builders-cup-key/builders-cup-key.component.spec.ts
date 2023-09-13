@@ -3,8 +3,7 @@ import { BuildersCupKeyComponent } from './builders-cup-key.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BuildersCupKeyComponent', () => {
+describe('BuildersCupKeyComponent', () => {
   let component: BuildersCupKeyComponent;
   let fixture: ComponentFixture<BuildersCupKeyComponent>;
 

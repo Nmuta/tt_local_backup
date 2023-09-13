@@ -12,8 +12,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockCommunityMessagingComponent', () => {
+describe('WoodstockCommunityMessagingComponent', () => {
   let component: WoodstockCommunityMessagingComponent;
   let fixture: ComponentFixture<WoodstockCommunityMessagingComponent>;
   let mockWoodstockService: WoodstockService;

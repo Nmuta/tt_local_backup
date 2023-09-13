@@ -4,8 +4,7 @@ import { AuctionActionLogTableComponent } from './log-table.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AuctionActionLogTableComponent', () => {
+describe('AuctionActionLogTableComponent', () => {
   let component: AuctionActionLogTableComponent;
   let fixture: ComponentFixture<AuctionActionLogTableComponent>;
 

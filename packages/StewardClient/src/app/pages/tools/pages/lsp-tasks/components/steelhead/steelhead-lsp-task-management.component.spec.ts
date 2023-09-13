@@ -6,8 +6,7 @@ import { SteelheadLspTaskManagementComponent } from './steelhead-lsp-task-manage
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadLspTaskManagementComponent', () => {
+describe('SteelheadLspTaskManagementComponent', () => {
   let component: SteelheadLspTaskManagementComponent;
   let fixture: ComponentFixture<SteelheadLspTaskManagementComponent>;
 

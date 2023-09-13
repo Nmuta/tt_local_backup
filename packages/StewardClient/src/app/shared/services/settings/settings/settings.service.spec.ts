@@ -7,8 +7,7 @@ import { SettingsService } from './settings.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SettingsService', () => {
+describe('SettingsService', () => {
   let injector: TestBed;
   let service: SettingsService;
   let apiServiceMock: ApiService;

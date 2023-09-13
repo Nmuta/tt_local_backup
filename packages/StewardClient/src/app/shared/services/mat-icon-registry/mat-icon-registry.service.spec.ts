@@ -4,8 +4,7 @@ import { MatIconRegistryService } from './mat-icon-registry.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'service: MatIconRegistryService', () => {
+describe('service: MatIconRegistryService', () => {
   let injector: TestBed;
   let service: MatIconRegistryService;
 

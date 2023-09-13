@@ -6,8 +6,7 @@ import { createMockWoodstockPlayFabPlayerInventoryService } from '@services/api-
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayFabPlayerToolsComponent', () => {
+describe('WoodstockPlayFabPlayerToolsComponent', () => {
   let component: WoodstockPlayFabPlayerToolsComponent;
   let fixture: ComponentFixture<WoodstockPlayFabPlayerToolsComponent>;
 

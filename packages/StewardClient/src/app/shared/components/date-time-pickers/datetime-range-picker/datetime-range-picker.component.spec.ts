@@ -4,8 +4,7 @@ import { DatetimeRangePickerComponent } from './datetime-range-picker.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DatetimeRangePickerComponent', () => {
+describe('DatetimeRangePickerComponent', () => {
   let component: DatetimeRangePickerComponent;
   let fixture: ComponentFixture<DatetimeRangePickerComponent>;
 

@@ -6,8 +6,7 @@ import { AnchorPermissionAttributeDirective } from './anchor-permission-attribut
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AnchorPermissionAttributeDirective', () => {
+describe('AnchorPermissionAttributeDirective', () => {
   let anchor: ElementRef;
   let directive: AnchorPermissionAttributeDirective;
   let mockPermAttributesService: PermAttributesService;

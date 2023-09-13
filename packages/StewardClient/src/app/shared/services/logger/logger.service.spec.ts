@@ -9,8 +9,7 @@ import { LoggerService } from './logger.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LoggerService', () => {
+describe('LoggerService', () => {
   let service: LoggerService;
   let mockConsole: MockConsole;
   let mockAppInsights: ApplicationInsights;

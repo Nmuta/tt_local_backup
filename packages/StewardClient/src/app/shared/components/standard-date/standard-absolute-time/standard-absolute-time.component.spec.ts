@@ -8,8 +8,7 @@ import { StandardAbsoluteTimeComponent } from './standard-absolute-time.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StandardAbsoluteTimeComponent', () => {
+describe('StandardAbsoluteTimeComponent', () => {
   let component: StandardAbsoluteTimeComponent;
   let fixture: ComponentFixture<StandardAbsoluteTimeComponent>;
 

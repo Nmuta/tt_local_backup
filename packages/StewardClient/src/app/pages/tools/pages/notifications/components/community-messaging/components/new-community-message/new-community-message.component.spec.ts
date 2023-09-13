@@ -14,8 +14,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'NewCommunityMessageComponent', () => {
+describe('NewCommunityMessageComponent', () => {
   let fixture: ComponentFixture<NewCommunityMessageComponent>;
   let component: NewCommunityMessageComponent;
 

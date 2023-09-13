@@ -12,8 +12,7 @@ import { WoodstockGroupGiftService } from './woodstock-group-gift.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockGroupGiftService', () => {
+describe('WoodstockGroupGiftService', () => {
   const nextReturnValue: unknown = {};
   let mockService: WoodstockGroupGiftService;
   let mockApiService: ApiV2Service;

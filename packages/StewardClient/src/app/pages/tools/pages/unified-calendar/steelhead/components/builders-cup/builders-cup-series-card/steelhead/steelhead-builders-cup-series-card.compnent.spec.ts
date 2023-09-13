@@ -3,8 +3,7 @@ import { SteelheadBuildersCupSeriesCardComponent } from './steelhead-builders-cu
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBuildersCupSeriesCardComponent', () => {
+describe('SteelheadBuildersCupSeriesCardComponent', () => {
   let component: SteelheadBuildersCupSeriesCardComponent;
   let fixture: ComponentFixture<SteelheadBuildersCupSeriesCardComponent>;
 

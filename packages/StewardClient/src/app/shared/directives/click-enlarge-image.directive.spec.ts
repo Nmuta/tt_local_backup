@@ -7,8 +7,7 @@ import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ClickEnlargeImageDirective', () => {
+describe('ClickEnlargeImageDirective', () => {
   let dialog: MatDialog;
   beforeEach(() => {
     TestBed.configureTestingModule({

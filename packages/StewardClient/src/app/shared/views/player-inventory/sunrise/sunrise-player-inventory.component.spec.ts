@@ -7,8 +7,7 @@ import { SunrisePlayerInventoryComponent } from './sunrise-player-inventory.comp
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerInventoryComponent', () => {
+describe('SunrisePlayerInventoryComponent', () => {
   let component: SunrisePlayerInventoryComponent;
   let fixture: ComponentFixture<SunrisePlayerInventoryComponent>;
   let service: SunriseService;

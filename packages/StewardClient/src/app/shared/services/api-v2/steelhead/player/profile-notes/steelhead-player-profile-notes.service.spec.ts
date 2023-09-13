@@ -4,8 +4,7 @@ import { SteelheadPlayerProfileNotesService } from './steelhead-player-profile-n
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerProfileNotesService', () => {
+describe('SteelheadPlayerProfileNotesService', () => {
   let service: SteelheadPlayerProfileNotesService;
 
   beforeEach(() => {

@@ -9,8 +9,7 @@ import { ApolloGiftHistoryResultsComponent } from './apollo-gift-history-results
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloGiftHistoryComponent', () => {
+describe('ApolloGiftHistoryComponent', () => {
   let component: ApolloGiftHistoryResultsComponent;
   let fixture: ComponentFixture<ApolloGiftHistoryResultsComponent>;
 

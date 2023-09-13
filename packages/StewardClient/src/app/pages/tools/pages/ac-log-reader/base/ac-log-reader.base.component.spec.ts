@@ -20,8 +20,7 @@ const mockServiceContract: AcLogReaderServiceContract = {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AcLogReaderBaseComponent', () => {
+describe('AcLogReaderBaseComponent', () => {
   let component: AcLogReaderBaseComponent;
   let fixture: ComponentFixture<AcLogReaderBaseComponent>;
 

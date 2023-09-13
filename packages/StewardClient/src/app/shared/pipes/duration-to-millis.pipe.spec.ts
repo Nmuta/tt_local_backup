@@ -3,8 +3,7 @@ import { DurationToMillisPipe } from './duration-to-millis.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'DurationToMillisPipe', () => {
+describe('DurationToMillisPipe', () => {
   it('create an instance', () => {
     const pipe = new DurationToMillisPipe();
     expect(pipe).toBeTruthy();

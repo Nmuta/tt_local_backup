@@ -5,8 +5,7 @@ import { createMockSteelheadGitOperationService } from '@services/api-v2/steelhe
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadActivePullRequestsComponent', () => {
+describe('SteelheadActivePullRequestsComponent', () => {
   let component: SteelheadActivePullRequestsComponent;
   let fixture: ComponentFixture<SteelheadActivePullRequestsComponent>;
 

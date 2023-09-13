@@ -17,8 +17,7 @@ import { SelectUserFromListComponent } from './select-user-from-list.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SelectUserFromListComponent', () => {
+describe('SelectUserFromListComponent', () => {
   let component: SelectUserFromListComponent;
   let fixture: ComponentFixture<SelectUserFromListComponent>;
 

@@ -8,8 +8,7 @@ import { SteelheadBulkGiftLiveryComponent } from './steelhead-bulk-gift-livery.c
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadBulkGiftLiveryComponent', () => {
+describe('SteelheadBulkGiftLiveryComponent', () => {
   let component: SteelheadBulkGiftLiveryComponent;
   let fixture: ComponentFixture<SteelheadBulkGiftLiveryComponent>;
 

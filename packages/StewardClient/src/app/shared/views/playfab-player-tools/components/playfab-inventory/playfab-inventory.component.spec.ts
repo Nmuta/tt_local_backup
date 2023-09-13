@@ -12,8 +12,7 @@ import { PlayFabInventoryItem } from '@models/playfab';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayFabInventoryComponent', () => {
+describe('PlayFabInventoryComponent', () => {
   let component: PlayFabInventoryComponent;
   let fixture: ComponentFixture<PlayFabInventoryComponent>;
 

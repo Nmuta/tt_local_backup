@@ -7,8 +7,7 @@ import { SteelheadLeaderboardsComponent } from './steelhead-leaderboards.compone
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLeaderboardsComponent', () => {
+describe('WoodstockLeaderboardsComponent', () => {
   let component: SteelheadLeaderboardsComponent;
   let fixture: ComponentFixture<SteelheadLeaderboardsComponent>;
 

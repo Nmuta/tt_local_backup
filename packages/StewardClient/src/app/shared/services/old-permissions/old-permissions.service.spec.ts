@@ -8,8 +8,7 @@ import { OldPermissionsService } from './old-permissions.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OldPermissionsService', () => {
+describe('OldPermissionsService', () => {
   let service: OldPermissionsService;
 
   beforeEach(() => {

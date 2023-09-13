@@ -7,8 +7,7 @@ import { SteelheadReportWeightComponent } from './steelhead-report-weight.compon
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadReportWeightComponent', () => {
+describe('SteelheadReportWeightComponent', () => {
   let component: SteelheadReportWeightComponent;
   let fixture: ComponentFixture<SteelheadReportWeightComponent>;
 

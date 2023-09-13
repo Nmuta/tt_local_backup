@@ -14,8 +14,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerNotificationsComponent', () => {
+describe('SteelheadPlayerNotificationsComponent', () => {
   let injector: TestBed;
   let steelheadPlayerMessagesService: SteelheadPlayerMessagesService;
   let component: SteelheadPlayerNotificationsComponent;

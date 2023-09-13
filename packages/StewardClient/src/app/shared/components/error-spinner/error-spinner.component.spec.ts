@@ -5,8 +5,7 @@ import { ErrorSpinnerComponent } from './error-spinner.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ErrorSpinnerComponent', () => {
+describe('ErrorSpinnerComponent', () => {
   let component: ErrorSpinnerComponent;
   let fixture: ComponentFixture<ErrorSpinnerComponent>;
 

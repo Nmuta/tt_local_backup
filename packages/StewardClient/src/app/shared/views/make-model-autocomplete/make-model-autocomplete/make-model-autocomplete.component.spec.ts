@@ -16,8 +16,7 @@ import { MakeModelAutocompleteComponent } from './make-model-autocomplete.compon
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'MakeModelAutocompleteComponent', () => {
+describe('MakeModelAutocompleteComponent', () => {
   let component: MakeModelAutocompleteComponent;
   let fixture: ComponentFixture<MakeModelAutocompleteComponent>;
 

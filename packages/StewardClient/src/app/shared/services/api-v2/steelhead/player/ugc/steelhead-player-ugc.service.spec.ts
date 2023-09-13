@@ -4,8 +4,7 @@ import { SteelheadPlayerUgcService } from './steelhead-player-ugc.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayerUgcService', () => {
+describe('SteelheadPlayerUgcService', () => {
   let service: SteelheadPlayerUgcService;
 
   beforeEach(() => {

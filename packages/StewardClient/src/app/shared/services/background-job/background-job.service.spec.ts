@@ -9,8 +9,7 @@ import { BackgroundJobService } from './background-job.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'service: BackgroundJobService', () => {
+describe('service: BackgroundJobService', () => {
   let service: BackgroundJobService;
   let apiMock: ApiService;
 

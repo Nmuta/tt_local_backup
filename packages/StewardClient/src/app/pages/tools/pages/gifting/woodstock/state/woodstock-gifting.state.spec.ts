@@ -13,8 +13,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockGiftingState', () => {
+describe('WoodstockGiftingState', () => {
   let service: WoodstockGiftingState;
   let store: Store;
   beforeEach(() => {

@@ -21,8 +21,7 @@ import { NgxsModule } from '@ngxs/store';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockBanningComponent', () => {
+describe('WoodstockBanningComponent', () => {
   let component: WoodstockBanningComponent;
   let fixture: ComponentFixture<WoodstockBanningComponent>;
   let woodstock: WoodstockService;

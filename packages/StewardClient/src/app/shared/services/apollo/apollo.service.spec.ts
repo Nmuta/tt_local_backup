@@ -16,8 +16,7 @@ import { UgcType } from '@models/ugc-filters';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloService', () => {
+describe('ApolloService', () => {
   let injector: TestBed;
   let service: ApolloService;
   let apiServiceMock: ApiService;

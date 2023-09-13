@@ -17,8 +17,7 @@ import { SunriseFeatureUgcModalComponent } from './sunrise-feature-ugc-modal.com
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseFeatureUgcModalComponent', () => {
+describe('SunriseFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<SunriseFeatureUgcModalComponent>;

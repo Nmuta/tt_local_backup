@@ -11,8 +11,7 @@ import { UserGroupManagementComponent } from './user-group-management.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UserGroupManagementComponent', () => {
+describe('UserGroupManagementComponent', () => {
   let component: UserGroupManagementComponent;
   let fixture: ComponentFixture<UserGroupManagementComponent>;
 

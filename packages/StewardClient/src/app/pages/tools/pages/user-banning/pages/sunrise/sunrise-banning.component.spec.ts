@@ -18,8 +18,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseBanningComponent', () => {
+describe('SunriseBanningComponent', () => {
   let component: SunriseBanningComponent;
   let fixture: ComponentFixture<SunriseBanningComponent>;
   let sunrise: SunriseService;

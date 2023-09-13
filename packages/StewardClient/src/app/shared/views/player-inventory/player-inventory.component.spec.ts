@@ -15,8 +15,7 @@ import { WoodstockPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayerInventoryBaseComponent', () => {
+describe('PlayerInventoryBaseComponent', () => {
   let component: PlayerInventoryComponent;
   let fixture: ComponentFixture<PlayerInventoryComponent>;
 

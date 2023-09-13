@@ -7,8 +7,7 @@ import { FortePlayFabSettingsComponent } from './forte-playfab-settings.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FortePlayFabSettingsComponent', () => {
+describe('FortePlayFabSettingsComponent', () => {
   let component: FortePlayFabSettingsComponent;
   let fixture: ComponentFixture<FortePlayFabSettingsComponent>;
 

@@ -2,8 +2,7 @@ import { SUNRISE_LINK_GENERATOR } from './sunrise-link-generator';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseLinkGenerator', () => {
+describe('SunriseLinkGenerator', () => {
   const generator = SUNRISE_LINK_GENERATOR;
 
   it('should exist', () => {

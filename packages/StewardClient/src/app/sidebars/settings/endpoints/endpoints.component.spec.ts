@@ -9,8 +9,7 @@ import { setUserProfile } from '@mocks/standard-test-module-helpers';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'EndpointsComponent', () => {
+describe('EndpointsComponent', () => {
   let component: EndpointsComponent;
   let fixture: ComponentFixture<EndpointsComponent>;
 

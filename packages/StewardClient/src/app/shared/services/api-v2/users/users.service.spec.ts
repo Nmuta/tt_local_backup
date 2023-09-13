@@ -4,8 +4,7 @@ import { V2UsersService } from './users.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'V2UsersService', () => {
+describe('V2UsersService', () => {
   let service: V2UsersService;
 
   beforeEach(() => {

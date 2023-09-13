@@ -10,8 +10,7 @@ import { ApolloPlayerInventoryProfilePickerComponent } from './apollo-player-inv
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloPlayerInventoryProfilePickerComponent', () => {
+describe('ApolloPlayerInventoryProfilePickerComponent', () => {
   let component: ApolloPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<ApolloPlayerInventoryProfilePickerComponent>;
   let mockStore: Store;

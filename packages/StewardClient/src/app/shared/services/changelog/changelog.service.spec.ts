@@ -9,8 +9,7 @@ import { ChangelogService } from './changelog.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ChangelogService', () => {
+describe('ChangelogService', () => {
   let service: ChangelogService;
 
   beforeEach(() => {

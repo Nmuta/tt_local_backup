@@ -5,8 +5,7 @@ import { CenterContentsComponent } from './center-contents.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CenterContentsComponent', () => {
+describe('CenterContentsComponent', () => {
   let component: CenterContentsComponent;
   let fixture: ComponentFixture<CenterContentsComponent>;
 

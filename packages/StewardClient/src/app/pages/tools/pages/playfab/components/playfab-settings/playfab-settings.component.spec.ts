@@ -13,8 +13,7 @@ import { GameTitle } from '@models/enums';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayFabSettingsComponent', () => {
+describe('PlayFabSettingsComponent', () => {
   let component: PlayFabSettingsComponent;
   let fixture: ComponentFixture<PlayFabSettingsComponent>;
 

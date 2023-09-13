@@ -11,8 +11,7 @@ import { NgxsModule } from '@ngxs/store';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ForumBanningComponent', () => {
+describe('ForumBanningComponent', () => {
   let component: ForumBanningComponent;
   let fixture: ComponentFixture<ForumBanningComponent>;
   let forumBanService: ForumBanService;

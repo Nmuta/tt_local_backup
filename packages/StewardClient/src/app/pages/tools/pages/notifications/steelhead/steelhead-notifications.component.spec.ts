@@ -6,8 +6,7 @@ import { SteelheadNotificationsComponent } from './steelhead-notifications.compo
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseNotificationsComponent', () => {
+describe('SunriseNotificationsComponent', () => {
   let component: SteelheadNotificationsComponent;
   let fixture: ComponentFixture<SteelheadNotificationsComponent>;
 

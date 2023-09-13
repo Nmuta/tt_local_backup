@@ -13,8 +13,7 @@ import { RivalsEvent } from '@services/api-v2/steelhead/rivals/steelhead-rivals.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'RivalsTileDetailsModalComponent', () => {
+describe('RivalsTileDetailsModalComponent', () => {
   let component: RivalsTileDetailsModalComponent;
   let fixture: ComponentFixture<RivalsTileDetailsModalComponent>;
 

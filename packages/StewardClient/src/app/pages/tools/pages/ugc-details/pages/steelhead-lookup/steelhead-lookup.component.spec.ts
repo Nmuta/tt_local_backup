@@ -11,8 +11,7 @@ import { SteelheadLookupComponent } from './steelhead-lookup.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadLookupComponent', () => {
+describe('SteelheadLookupComponent', () => {
   let component: SteelheadLookupComponent;
   let fixture: ComponentFixture<SteelheadLookupComponent>;
   let mockPermissionService: OldPermissionsService;

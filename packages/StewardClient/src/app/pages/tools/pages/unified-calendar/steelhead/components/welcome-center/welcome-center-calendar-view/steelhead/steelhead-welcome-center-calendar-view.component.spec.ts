@@ -8,8 +8,7 @@ import { SteelheadWelcomeCenterCalendarViewComponent } from './steelhead-welcome
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadWelcomeCenterCalendarViewComponent', () => {
+describe('SteelheadWelcomeCenterCalendarViewComponent', () => {
   let component: SteelheadWelcomeCenterCalendarViewComponent;
   let fixture: ComponentFixture<SteelheadWelcomeCenterCalendarViewComponent>;
 

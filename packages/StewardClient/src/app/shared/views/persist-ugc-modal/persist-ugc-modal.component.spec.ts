@@ -18,8 +18,7 @@ import { PersistUgcModalComponent } from './persist-ugc-modal.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PersistUgcModalComponent', () => {
+describe('PersistUgcModalComponent', () => {
   let component: PersistUgcModalComponent;
   let fixture: ComponentFixture<PersistUgcModalComponent>;
   let mockStore: Store;

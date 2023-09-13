@@ -7,8 +7,7 @@ import { WoodstockCreateAuctionComponent } from './woodstock-create-auction.comp
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockCreateAuctionComponent', () => {
+describe('WoodstockCreateAuctionComponent', () => {
   let component: WoodstockCreateAuctionComponent;
   let fixture: ComponentFixture<WoodstockCreateAuctionComponent>;
 

@@ -17,8 +17,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BuildLockChangeDialogComponent', () => {
+describe('BuildLockChangeDialogComponent', () => {
   const model: BuildLockChangeDialogData = {
     gameTitle: GameTitle.FH5,
     build: {

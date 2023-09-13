@@ -7,8 +7,7 @@ import { WoodstockLeaderboardStatsComponent } from './woodstock-leaderboard-stat
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLeaderboardStatsComponent', () => {
+describe('WoodstockLeaderboardStatsComponent', () => {
   let component: WoodstockLeaderboardStatsComponent;
   let fixture: ComponentFixture<WoodstockLeaderboardStatsComponent>;
 

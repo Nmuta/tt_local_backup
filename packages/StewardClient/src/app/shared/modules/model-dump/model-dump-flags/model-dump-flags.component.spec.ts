@@ -7,8 +7,7 @@ import { ModelDumpFlagsComponent } from './model-dump-flags.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ModelDumpFlagsComponent', () => {
+describe('ModelDumpFlagsComponent', () => {
   let component: ModelDumpFlagsComponent;
   let fixture: ComponentFixture<ModelDumpFlagsComponent>;
   const processedModel$ = new BehaviorSubject<ExtractedModel>(undefined);

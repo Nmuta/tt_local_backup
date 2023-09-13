@@ -22,8 +22,7 @@ import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LeaderboardStatsComponent', () => {
+describe('LeaderboardStatsComponent', () => {
   let component: LeaderboardStatsComponent;
   let fixture: ComponentFixture<LeaderboardStatsComponent>;
 

@@ -6,8 +6,7 @@ import { WoodstockLspTaskManagementComponent } from './woodstock-lsp-task-manage
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockTaskManagementComponent', () => {
+describe('WoodstockTaskManagementComponent', () => {
   let component: WoodstockLspTaskManagementComponent;
   let fixture: ComponentFixture<WoodstockLspTaskManagementComponent>;
 

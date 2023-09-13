@@ -15,8 +15,7 @@ import { LogoutComponent } from './logout.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'LogoutComponent:', () => {
+describe('LogoutComponent:', () => {
   let component: LogoutComponent;
   let fixture: ComponentFixture<LogoutComponent>;
   let windowService: MockWindowService;

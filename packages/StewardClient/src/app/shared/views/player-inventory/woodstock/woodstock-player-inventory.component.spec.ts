@@ -11,8 +11,7 @@ import { WoodstockPlayerInventoryComponent } from './woodstock-player-inventory.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerInventoryComponent', () => {
+describe('WoodstockPlayerInventoryComponent', () => {
   let component: WoodstockPlayerInventoryComponent;
   let fixture: ComponentFixture<WoodstockPlayerInventoryComponent>;
   let service: WoodstockService;

@@ -4,8 +4,7 @@ import { WoodstockUgcSharecodeService } from './woodstock-ugc-sharecode.service'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockUgcSharecodeService', () => {
+describe('WoodstockUgcSharecodeService', () => {
   let service: WoodstockUgcSharecodeService;
 
   beforeEach(() => {

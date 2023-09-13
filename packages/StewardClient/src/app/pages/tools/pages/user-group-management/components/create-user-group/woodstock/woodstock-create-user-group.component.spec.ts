@@ -8,8 +8,7 @@ import { WoodstockCreateUserGroupComponent } from './woodstock-create-user-group
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockCreateUserGroupComponent', () => {
+describe('WoodstockCreateUserGroupComponent', () => {
   let component: WoodstockCreateUserGroupComponent;
   let fixture: ComponentFixture<WoodstockCreateUserGroupComponent>;
 

@@ -10,8 +10,7 @@ import { LspEndpoints } from '@models/lsp-endpoints';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'EndpointKeyMemoryState', () => {
+describe('EndpointKeyMemoryState', () => {
   let store: Store;
   let service: EndpointKeyMemoryState;
   let mockSettingsService: SettingsService;

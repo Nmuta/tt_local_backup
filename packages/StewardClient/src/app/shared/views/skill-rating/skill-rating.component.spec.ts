@@ -21,8 +21,7 @@ import { SkillRatingSummary } from '@services/api-v2/steelhead/player/skill-rati
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SkillRatingComponent', () => {
+describe('SkillRatingComponent', () => {
   let component: SkillRatingComponent;
   let fixture: ComponentFixture<SkillRatingComponent>;
 

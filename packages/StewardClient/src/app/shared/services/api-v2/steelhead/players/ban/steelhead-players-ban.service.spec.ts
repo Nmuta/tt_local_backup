@@ -5,8 +5,7 @@ import { SteelheadPlayersBanService } from './steelhead-players-ban.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadPlayersBanService', () => {
+describe('SteelheadPlayersBanService', () => {
   let service: SteelheadPlayersBanService;
   const nextReturnValue: unknown = {};
 

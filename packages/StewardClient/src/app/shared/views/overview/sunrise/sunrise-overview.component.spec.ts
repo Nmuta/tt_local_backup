@@ -15,8 +15,7 @@ import { SunriseOverviewComponent } from './sunrise-overview.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OverviewComponent', () => {
+describe('OverviewComponent', () => {
   let injector: TestBed;
   let component: SunriseOverviewComponent;
   let fixture: ComponentFixture<SunriseOverviewComponent>;

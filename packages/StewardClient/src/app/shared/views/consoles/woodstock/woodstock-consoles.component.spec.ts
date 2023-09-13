@@ -17,8 +17,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockConsolesComponent', () => {
+describe('WoodstockConsolesComponent', () => {
   let component: WoodstockConsolesComponent;
   let fixture: ComponentFixture<WoodstockConsolesComponent>;
 

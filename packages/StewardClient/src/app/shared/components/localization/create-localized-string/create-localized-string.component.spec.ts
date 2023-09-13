@@ -5,8 +5,7 @@ import { CreateLocalizedStringComponent } from './create-localized-string.compon
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CreateLocalizedStringComponent', () => {
+describe('CreateLocalizedStringComponent', () => {
   let component: CreateLocalizedStringComponent;
   let fixture: ComponentFixture<CreateLocalizedStringComponent>;
 

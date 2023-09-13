@@ -5,8 +5,7 @@ import { StuckComponent } from './stuck.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'StuckComponent', () => {
+describe('StuckComponent', () => {
   let component: StuckComponent;
   let fixture: ComponentFixture<StuckComponent>;
 

@@ -25,8 +25,7 @@ class TestHiddenUgcService implements HiddenUgcServiceContract {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'HiddenUgcTableComponent', () => {
+describe('HiddenUgcTableComponent', () => {
   let component: HiddenUgcTableComponent;
   let fixture: ComponentFixture<HiddenUgcTableComponent>;
   let mockPermissionsService: OldPermissionsService;

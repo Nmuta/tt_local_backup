@@ -15,8 +15,7 @@ import { SteelheadSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/st
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUgcFiltersComponent', () => {
+describe('SteelheadUgcFiltersComponent', () => {
   let fixture: ComponentFixture<SteelheadUgcFiltersComponent>;
   let component: SteelheadUgcFiltersComponent;
 

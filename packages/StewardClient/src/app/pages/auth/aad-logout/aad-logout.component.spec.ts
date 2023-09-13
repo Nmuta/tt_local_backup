@@ -7,8 +7,7 @@ import { AadLogoutComponent } from './aad-logout.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AadLogoutComponent', () => {
+describe('AadLogoutComponent', () => {
   let component: AadLogoutComponent;
   let fixture: ComponentFixture<AadLogoutComponent>;
   let store: Store;

@@ -11,8 +11,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloUserFlagsComponent', () => {
+describe('ApolloUserFlagsComponent', () => {
   let component: ApolloUserFlagsComponent;
   let fixture: ComponentFixture<ApolloUserFlagsComponent>;
 

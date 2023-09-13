@@ -5,8 +5,7 @@ import { ChangelogTagDetailsComponent } from './changelog-tag-details.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ChangelogTagDetailsComponent', () => {
+describe('ChangelogTagDetailsComponent', () => {
   let component: ChangelogTagDetailsComponent;
   let fixture: ComponentFixture<ChangelogTagDetailsComponent>;
 

@@ -14,8 +14,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WelcomeCenterTileDetailsModalComponent', () => {
+describe('WelcomeCenterTileDetailsModalComponent', () => {
   let component: WelcomeCenterTileDetailsModalComponent;
   let fixture: ComponentFixture<WelcomeCenterTileDetailsModalComponent>;
 

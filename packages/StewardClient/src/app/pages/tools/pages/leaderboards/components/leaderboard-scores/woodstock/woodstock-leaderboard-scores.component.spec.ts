@@ -9,8 +9,7 @@ import { WoodstockLeaderboardScoresComponent } from './woodstock-leaderboard-sco
 // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/958926
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLeaderboardScoresComponent', () => {
+describe('WoodstockLeaderboardScoresComponent', () => {
   let component: WoodstockLeaderboardScoresComponent;
   let fixture: ComponentFixture<WoodstockLeaderboardScoresComponent>;
 

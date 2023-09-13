@@ -9,8 +9,7 @@ import { SteelheadLeaderboardScoresComponent } from './steelhead-leaderboard-sco
 // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/958926
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadLeaderboardScoresComponent', () => {
+describe('SteelheadLeaderboardScoresComponent', () => {
   let component: SteelheadLeaderboardScoresComponent;
   let fixture: ComponentFixture<SteelheadLeaderboardScoresComponent>;
 

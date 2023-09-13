@@ -7,8 +7,7 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ToolsAppComponent', () => {
+describe('ToolsAppComponent', () => {
   let component: ToolsAppComponent;
   let fixture: ComponentFixture<ToolsAppComponent>;
 

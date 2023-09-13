@@ -14,8 +14,7 @@ import { KustoManagementComponent } from './kusto-management.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'KustoManagementComponent', () => {
+describe('KustoManagementComponent', () => {
   let component: KustoManagementComponent;
   let fixture: ComponentFixture<KustoManagementComponent>;
 

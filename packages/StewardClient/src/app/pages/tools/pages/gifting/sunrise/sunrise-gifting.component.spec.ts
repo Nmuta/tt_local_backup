@@ -17,8 +17,7 @@ import { SunriseGiftingComponent } from './sunrise-gifting.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseGiftingComponent', () => {
+describe('SunriseGiftingComponent', () => {
   let component: SunriseGiftingComponent;
   let fixture: ComponentFixture<SunriseGiftingComponent>;
 

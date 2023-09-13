@@ -7,8 +7,7 @@ import { SteelheadUnifiedCalendarComponent } from './steelhead-unified-calendar.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUnifiedCalendarComponent', () => {
+describe('SteelheadUnifiedCalendarComponent', () => {
   let component: SteelheadUnifiedCalendarComponent;
   let fixture: ComponentFixture<SteelheadUnifiedCalendarComponent>;
 

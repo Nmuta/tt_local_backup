@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ObligationPrincipalsComponent } from './obligation-principals.component';
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-fdescribe('ObligationPrincipalsComponent', () => {
+describe('ObligationPrincipalsComponent', () => {
   let component: ObligationPrincipalsComponent;
   let fixture: ComponentFixture<ObligationPrincipalsComponent>;
 

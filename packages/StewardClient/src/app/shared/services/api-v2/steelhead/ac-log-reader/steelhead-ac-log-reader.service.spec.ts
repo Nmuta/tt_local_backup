@@ -4,8 +4,7 @@ import { SteelheadAcLogReaderService } from './steelhead-ac-log-reader.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadAcLogReaderService', () => {
+describe('SteelheadAcLogReaderService', () => {
   let service: SteelheadAcLogReaderService;
 
   beforeEach(() => {

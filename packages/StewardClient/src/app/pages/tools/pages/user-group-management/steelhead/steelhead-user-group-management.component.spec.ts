@@ -9,8 +9,7 @@ import { SteelheadUserGroupManagementComponent } from './steelhead-user-group-ma
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUserGroupManagementComponent', () => {
+describe('SteelheadUserGroupManagementComponent', () => {
   let component: SteelheadUserGroupManagementComponent;
   let fixture: ComponentFixture<SteelheadUserGroupManagementComponent>;
 

@@ -8,8 +8,7 @@ import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'CreateBulkAuctionComponent', () => {
+describe('CreateBulkAuctionComponent', () => {
   let component: CreateBulkAuctionComponent;
   let fixture: ComponentFixture<CreateBulkAuctionComponent>;
 

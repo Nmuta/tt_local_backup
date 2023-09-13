@@ -10,8 +10,7 @@ import { OpusPlayerInventoryProfilePickerComponent } from './opus-player-invento
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OpusPlayerInventoryProfilePickerComponent', () => {
+describe('OpusPlayerInventoryProfilePickerComponent', () => {
   let component: OpusPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<OpusPlayerInventoryProfilePickerComponent>;
   let mockStore: Store;

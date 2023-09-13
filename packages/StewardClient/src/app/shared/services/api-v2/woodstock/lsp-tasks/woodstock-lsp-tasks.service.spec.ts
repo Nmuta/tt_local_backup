@@ -4,8 +4,7 @@ import { WoodstockLspTaskService } from './woodstock-lsp-tasks.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLspTaskService', () => {
+describe('WoodstockLspTaskService', () => {
   let service: WoodstockLspTaskService;
 
   beforeEach(() => {

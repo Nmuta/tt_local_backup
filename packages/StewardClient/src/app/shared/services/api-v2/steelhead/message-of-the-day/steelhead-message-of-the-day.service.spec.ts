@@ -4,8 +4,7 @@ import { SteelheadMessageOfTheDayService } from './steelhead-message-of-the-day.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadMessageOfTheDayService', () => {
+describe('SteelheadMessageOfTheDayService', () => {
   let service: SteelheadMessageOfTheDayService;
 
   beforeEach(() => {

@@ -13,8 +13,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockUserFlagsComponent', () => {
+describe('WoodstockUserFlagsComponent', () => {
   let component: WoodstockUserFlagsComponent;
   let fixture: ComponentFixture<WoodstockUserFlagsComponent>;
 

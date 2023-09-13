@@ -11,8 +11,7 @@ import { createMockOpusService, OpusService } from '@services/opus';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'OpusComponent - Ticket App', () => {
+describe('OpusComponent - Ticket App', () => {
   let component: OpusComponent;
   let fixture: ComponentFixture<OpusComponent>;
 

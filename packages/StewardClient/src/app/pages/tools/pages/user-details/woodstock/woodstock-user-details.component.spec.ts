@@ -12,8 +12,7 @@ import { WoodstockUserDetailsComponent } from './woodstock-user-details.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockUserDetailsComponent', () => {
+describe('WoodstockUserDetailsComponent', () => {
   let component: WoodstockUserDetailsComponent;
   let fixture: ComponentFixture<WoodstockUserDetailsComponent>;
 

@@ -9,8 +9,7 @@ import { createMockWoodstockPlayerCreditUpdatesService } from '@services/api-v2/
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockCreditHistoryComponent', () => {
+describe('WoodstockCreditHistoryComponent', () => {
   let component: WoodstockCreditHistoryComponent;
   let fixture: ComponentFixture<WoodstockCreditHistoryComponent>;
 

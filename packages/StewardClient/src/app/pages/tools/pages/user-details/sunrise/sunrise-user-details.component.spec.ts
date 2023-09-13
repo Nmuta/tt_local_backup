@@ -10,8 +10,7 @@ import { SunriseUserDetailsComponent } from './sunrise-user-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseUserDetailsComponent', () => {
+describe('SunriseUserDetailsComponent', () => {
   let component: SunriseUserDetailsComponent;
   let fixture: ComponentFixture<SunriseUserDetailsComponent>;
 

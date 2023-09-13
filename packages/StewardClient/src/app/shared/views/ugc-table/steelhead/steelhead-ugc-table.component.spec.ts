@@ -17,8 +17,7 @@ import { createMockSteelheadUgcSharecodeService } from '@services/api-v2/steelhe
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUgcTableComponent', () => {
+describe('SteelheadUgcTableComponent', () => {
   let component: SteelheadUgcTableComponent;
   let fixture: ComponentFixture<SteelheadUgcTableComponent>;
   let mockSteelheadUgcLookupService: SteelheadUgcLookupService;

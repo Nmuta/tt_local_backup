@@ -9,8 +9,7 @@ import { SunriseGiftHistoryResultsCompactComponent } from './sunrise-gift-histor
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseGiftHistoryResultsCompactComponent', () => {
+describe('SunriseGiftHistoryResultsCompactComponent', () => {
   let component: SunriseGiftHistoryResultsCompactComponent;
   let fixture: ComponentFixture<SunriseGiftHistoryResultsCompactComponent>;
 

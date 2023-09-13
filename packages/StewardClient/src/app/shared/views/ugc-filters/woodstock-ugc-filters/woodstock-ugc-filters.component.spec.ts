@@ -15,8 +15,7 @@ import faker from '@faker-js/faker';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockUgcFiltersComponent', () => {
+describe('WoodstockUgcFiltersComponent', () => {
   let fixture: ComponentFixture<WoodstockUgcFiltersComponent>;
   let component: WoodstockUgcFiltersComponent;
 

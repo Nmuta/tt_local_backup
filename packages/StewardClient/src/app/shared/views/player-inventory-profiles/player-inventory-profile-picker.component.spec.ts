@@ -10,8 +10,7 @@ import { PlayerInventoryProfilePickerComponent } from './player-inventory-profil
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayerInventoryProfilePickerComponent', () => {
+describe('PlayerInventoryProfilePickerComponent', () => {
   let component: PlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<PlayerInventoryProfilePickerComponent>;
   let mockStore: Store;

@@ -7,8 +7,7 @@ import { FakeApiInterceptor } from './fake-api.interceptor';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'FakeApiInterceptor', () => {
+describe('FakeApiInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([])],

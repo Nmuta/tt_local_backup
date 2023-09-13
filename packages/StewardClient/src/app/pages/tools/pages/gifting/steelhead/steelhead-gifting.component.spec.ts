@@ -17,8 +17,7 @@ import { UserModel } from '@models/user.model';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadGiftingComponent', () => {
+describe('SteelheadGiftingComponent', () => {
   let component: SteelheadGiftingComponent;
   let fixture: ComponentFixture<SteelheadGiftingComponent>;
 

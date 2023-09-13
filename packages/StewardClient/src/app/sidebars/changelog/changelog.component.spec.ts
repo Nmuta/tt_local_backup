@@ -9,8 +9,7 @@ import { ChangelogComponent } from './changelog.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ChangelogComponent', () => {
+describe('ChangelogComponent', () => {
   let component: ChangelogComponent;
   let fixture: ComponentFixture<ChangelogComponent>;
 

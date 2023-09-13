@@ -4,8 +4,7 @@ import { BountyDetailsComponent } from './bounty-details.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'BountyDetailsComponent', () => {
+describe('BountyDetailsComponent', () => {
   let component: BountyDetailsComponent;
   let fixture: ComponentFixture<BountyDetailsComponent>;
 

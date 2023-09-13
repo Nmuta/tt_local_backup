@@ -10,8 +10,7 @@ import { WoodstockPlayerService } from '@services/api-v2/woodstock/player/woodst
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockPlayerGameDetailsComponent', () => {
+describe('WoodstockPlayerGameDetailsComponent', () => {
   let component: WoodstockPlayerGameDetailsComponent;
   let fixture: ComponentFixture<WoodstockPlayerGameDetailsComponent>;
 

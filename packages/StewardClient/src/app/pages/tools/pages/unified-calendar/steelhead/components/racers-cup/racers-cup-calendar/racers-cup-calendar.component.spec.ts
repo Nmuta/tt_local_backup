@@ -11,8 +11,7 @@ import { CalendarLookupInputs } from '../../calendar-lookup-inputs/calendar-look
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'RacersCupCalendarComponent', () => {
+describe('RacersCupCalendarComponent', () => {
   let component: RacersCupCalendarComponent;
   let fixture: ComponentFixture<RacersCupCalendarComponent>;
   let mockSteelheadService: SteelheadRacersCupService;

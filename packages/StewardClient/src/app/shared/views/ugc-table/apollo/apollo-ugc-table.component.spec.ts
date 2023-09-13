@@ -12,8 +12,7 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloUgcTableComponent', () => {
+describe('ApolloUgcTableComponent', () => {
   let component: ApolloUgcTableComponent;
   let fixture: ComponentFixture<ApolloUgcTableComponent>;
   let mockApolloService: ApolloService;

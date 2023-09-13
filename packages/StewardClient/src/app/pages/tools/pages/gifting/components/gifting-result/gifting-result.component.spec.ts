@@ -10,8 +10,7 @@ import { StewardErrorCode } from '@models/enums';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GiftingResultComponent', () => {
+describe('GiftingResultComponent', () => {
   let fixture: ComponentFixture<GiftingResultComponent>;
   let component: GiftingResultComponent;
 

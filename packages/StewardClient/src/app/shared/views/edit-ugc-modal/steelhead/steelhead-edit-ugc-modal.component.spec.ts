@@ -12,8 +12,7 @@ import { PlayerUgcItem, fakePlayerUgcItem } from '@models/player-ugc-item';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadEditUgcModalComponent', () => {
+describe('SteelheadEditUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<SteelheadEditUgcModalComponent>;

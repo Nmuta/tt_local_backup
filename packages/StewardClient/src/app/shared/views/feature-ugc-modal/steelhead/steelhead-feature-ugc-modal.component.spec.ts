@@ -20,8 +20,7 @@ import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadFeatureUgcModalComponent', () => {
+describe('SteelheadFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
   let fixture: ComponentFixture<SteelheadFeatureUgcModalComponent>;

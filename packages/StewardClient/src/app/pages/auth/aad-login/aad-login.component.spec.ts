@@ -6,8 +6,7 @@ import { AadLoginComponent } from './aad-login.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'AadLoginComponent', () => {
+describe('AadLoginComponent', () => {
   let component: AadLoginComponent;
   let fixture: ComponentFixture<AadLoginComponent>;
 

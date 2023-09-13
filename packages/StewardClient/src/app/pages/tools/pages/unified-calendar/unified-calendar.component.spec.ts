@@ -4,8 +4,7 @@ import { UnifiedCalendarComponent } from './unified-calendar.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'UnifiedCalendarComponent', () => {
+describe('UnifiedCalendarComponent', () => {
   let component: UnifiedCalendarComponent;
   let fixture: ComponentFixture<UnifiedCalendarComponent>;
 

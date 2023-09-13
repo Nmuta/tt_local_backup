@@ -17,8 +17,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PlayerProfileManagementComponent', () => {
+describe('PlayerProfileManagementComponent', () => {
   let component: PlayerProfileManagementComponent;
   let fixture: ComponentFixture<PlayerProfileManagementComponent>;
   let mockStore: Store;

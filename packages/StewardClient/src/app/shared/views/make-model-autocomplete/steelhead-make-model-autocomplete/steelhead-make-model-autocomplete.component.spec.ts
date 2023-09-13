@@ -14,8 +14,7 @@ import { SteelheadSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/st
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadMakeModelAutocompleteComponent', () => {
+describe('SteelheadMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<SteelheadMakeModelAutocompleteComponent>;
   let component: SteelheadMakeModelAutocompleteComponent;
 

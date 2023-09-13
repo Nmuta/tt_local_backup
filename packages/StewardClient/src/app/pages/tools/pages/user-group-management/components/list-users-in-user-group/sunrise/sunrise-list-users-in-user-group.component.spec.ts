@@ -8,8 +8,7 @@ import { SunriseListUsersInGroupComponent } from './sunrise-list-users-in-user-g
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseListUsersInGroupComponent', () => {
+describe('SunriseListUsersInGroupComponent', () => {
   let component: SunriseListUsersInGroupComponent;
   let fixture: ComponentFixture<SunriseListUsersInGroupComponent>;
 

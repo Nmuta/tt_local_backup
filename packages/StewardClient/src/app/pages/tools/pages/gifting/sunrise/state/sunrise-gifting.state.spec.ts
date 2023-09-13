@@ -13,8 +13,7 @@ import {
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunriseGiftingState', () => {
+describe('SunriseGiftingState', () => {
   let service: SunriseGiftingState;
   let store: Store;
   beforeEach(() => {

@@ -4,8 +4,7 @@ import { ModelDumpDurationTableComponent } from './model-dump-duration-table.com
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ModelDumpDurationTableComponent', () => {
+describe('ModelDumpDurationTableComponent', () => {
   let component: ModelDumpDurationTableComponent;
   let fixture: ComponentFixture<ModelDumpDurationTableComponent>;
 

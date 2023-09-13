@@ -7,8 +7,7 @@ import { HideChangelogModalCheckboxComponent } from './hide-changelog-modal-chec
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'HideChangelogModalCheckboxComponent', () => {
+describe('HideChangelogModalCheckboxComponent', () => {
   let fixture: ComponentFixture<HideChangelogModalCheckboxComponent>;
   let component: HideChangelogModalCheckboxComponent;
 

@@ -11,8 +11,7 @@ import { TeamPermissionManagementComponent } from './team-permission-management.
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TeamPermissionManagementComponent', () => {
+describe('TeamPermissionManagementComponent', () => {
   let component: TeamPermissionManagementComponent;
   let fixture: ComponentFixture<TeamPermissionManagementComponent>;
 

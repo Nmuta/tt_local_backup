@@ -4,8 +4,7 @@ import { SunrisePlayerProfileNotesService } from './sunrise-player-profile-notes
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SunrisePlayerProfileNotesService', () => {
+describe('SunrisePlayerProfileNotesService', () => {
   let service: SunrisePlayerProfileNotesService;
 
   beforeEach(() => {

@@ -11,8 +11,7 @@ import { ErrorSnackbarComponent } from './error-snackbar.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ErrorSnackbarComponent', () => {
+describe('ErrorSnackbarComponent', () => {
   let component: ErrorSnackbarComponent;
   let fixture: ComponentFixture<ErrorSnackbarComponent>;
   let snackBarRefSpy: jasmine.SpyObj<MatSnackBarRef<unknown>>;

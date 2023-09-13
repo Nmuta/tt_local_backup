@@ -4,8 +4,7 @@ import { SteelheadUgcEditService } from './steelhead-ugc-edit.service';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'SteelheadUgcEditService', () => {
+describe('SteelheadUgcEditService', () => {
   let service: SteelheadUgcEditService;
 
   beforeEach(() => {

@@ -13,8 +13,7 @@ import { toDateTime } from '@helpers/luxon';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ShowroomSaleTileDetailsModalComponent', () => {
+describe('ShowroomSaleTileDetailsModalComponent', () => {
   let component: ShowroomSaleTileDetailsModalComponent;
   let fixture: ComponentFixture<ShowroomSaleTileDetailsModalComponent>;
 

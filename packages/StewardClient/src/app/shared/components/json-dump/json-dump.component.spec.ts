@@ -6,8 +6,7 @@ import { JsonDumpComponent } from './json-dump.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'JsonDumpComponent', () => {
+describe('JsonDumpComponent', () => {
   let component: JsonDumpComponent;
   let fixture: ComponentFixture<JsonDumpComponent>;
 

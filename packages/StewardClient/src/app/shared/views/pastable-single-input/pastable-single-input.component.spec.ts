@@ -5,8 +5,7 @@ import { PastableSingleInputComponent } from './pastable-single-input.component'
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'PastableSingleInputComponent', () => {
+describe('PastableSingleInputComponent', () => {
   let component: PastableSingleInputComponent;
   let fixture: ComponentFixture<PastableSingleInputComponent>;
 

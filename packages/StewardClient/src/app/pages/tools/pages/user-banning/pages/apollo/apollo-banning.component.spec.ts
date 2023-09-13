@@ -19,8 +19,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ApolloBanningComponent', () => {
+describe('ApolloBanningComponent', () => {
   let component: ApolloBanningComponent;
   let fixture: ComponentFixture<ApolloBanningComponent>;
   let apollo: ApolloService;

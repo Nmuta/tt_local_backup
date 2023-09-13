@@ -27,8 +27,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'TicketAppBaseComponent', () => {
+describe('TicketAppBaseComponent', () => {
   let fixture: ComponentFixture<TicketAppBaseComponent<IdentityResultAlpha>>;
   let component: TicketAppBaseComponent<IdentityResultAlpha>;
 

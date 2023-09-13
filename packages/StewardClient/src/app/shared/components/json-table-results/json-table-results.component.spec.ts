@@ -8,8 +8,7 @@ import { JsonTableResult } from '@models/json-table-result';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'JsonTableResultsComponent', () => {
+describe('JsonTableResultsComponent', () => {
   let fixture: ComponentFixture<JsonTableResultsComponent>;
   let component: JsonTableResultsComponent;
 

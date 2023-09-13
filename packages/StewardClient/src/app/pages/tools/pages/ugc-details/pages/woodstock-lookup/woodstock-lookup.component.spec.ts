@@ -11,8 +11,7 @@ import { WoodstockLookupComponent } from './woodstock-lookup.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'WoodstockLookupComponent', () => {
+describe('WoodstockLookupComponent', () => {
   let component: WoodstockLookupComponent;
   let fixture: ComponentFixture<WoodstockLookupComponent>;
   let mockPermissionService: OldPermissionsService;

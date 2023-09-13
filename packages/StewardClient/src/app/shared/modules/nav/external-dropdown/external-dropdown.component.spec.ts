@@ -11,8 +11,7 @@ import { ExternalDropdownComponent } from './external-dropdown.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ExternalDropdownComponent', () => {
+describe('ExternalDropdownComponent', () => {
   let component: ExternalDropdownComponent;
   let fixture: ComponentFixture<ExternalDropdownComponent>;
 

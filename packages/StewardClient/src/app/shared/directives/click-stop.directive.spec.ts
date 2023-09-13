@@ -11,8 +11,7 @@ class ContainerComponent {}
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ClickStopDirective', () => {
+describe('ClickStopDirective', () => {
   let fixture: ComponentFixture<ContainerComponent>;
   let elementRef: ElementRef;
 

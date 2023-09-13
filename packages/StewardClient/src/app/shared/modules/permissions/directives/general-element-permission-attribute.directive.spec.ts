@@ -6,8 +6,7 @@ import { GeneralElementPermissionAttributeDirective } from './general-element-pe
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'GeneralElementPermissionAttributeDirective', () => {
+describe('GeneralElementPermissionAttributeDirective', () => {
   let anchor: ElementRef;
   let directive: GeneralElementPermissionAttributeDirective;
   let mockPermAttributesService: PermAttributesService;

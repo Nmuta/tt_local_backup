@@ -14,8 +14,7 @@ import { DateTime } from 'luxon';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ShowroomCarFeaturedTileDetailsModalComponent', () => {
+describe('ShowroomCarFeaturedTileDetailsModalComponent', () => {
   let component: ShowroomCarFeaturedTileDetailsModalComponent;
   let fixture: ComponentFixture<ShowroomCarFeaturedTileDetailsModalComponent>;
 

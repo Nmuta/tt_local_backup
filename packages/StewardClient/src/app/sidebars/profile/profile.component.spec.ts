@@ -26,8 +26,7 @@ import { setUserProfile } from '@mocks/standard-test-module-helpers';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
-describe(
-'ProfileComponent', () => {
+describe('ProfileComponent', () => {
   let mockRouter: Router;
   let mockStore: Store;
 
