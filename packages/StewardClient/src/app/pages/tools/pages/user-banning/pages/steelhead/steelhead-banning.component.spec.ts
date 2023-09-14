@@ -92,6 +92,7 @@ describe('SteelheadBanningComponent', () => {
       rawResult: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -122,6 +123,7 @@ describe('SteelheadBanningComponent', () => {
           },
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {
