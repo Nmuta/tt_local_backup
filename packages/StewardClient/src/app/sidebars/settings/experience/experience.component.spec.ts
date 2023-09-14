@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExperienceComponent } from './experience.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { TourState } from '@shared/state/tours/tours.state';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
-
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import { ExperienceComponent } from './experience.component';
 
 describe('ExperienceComponent', () => {
   let component: ExperienceComponent;

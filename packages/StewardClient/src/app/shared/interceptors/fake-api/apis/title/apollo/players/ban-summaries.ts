@@ -1,9 +1,9 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
-import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloBanArea, ApolloBanSummary } from '@models/apollo';
 import faker from '@faker-js/faker';
 import { toDateTime } from '@helpers/luxon';
+import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { ApolloBanArea, ApolloBanSummary } from '@models/apollo';
+import BigNumber from 'bignumber.js';
 
 /** Fake API for banning players. */
 export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {

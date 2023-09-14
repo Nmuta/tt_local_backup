@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestModuleMetadata } from '@angular/core/testing';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { StateClass } from '@ngxs/store/internals';
@@ -15,13 +16,12 @@ import { createMockWoodstockService } from '@services/woodstock';
 import { createMockZendeskService } from '@services/zendesk';
 import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { uniq } from 'lodash';
 import { MatSnackBarMock } from './mat-snack-bar.mock';
 import { createMockMsalServices } from './msal.service.mock';
-import { ChangelogState } from '@shared/state/changelog/changelog.state';
-import { Routes } from '@angular/router';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 

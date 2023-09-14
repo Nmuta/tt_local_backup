@@ -1,10 +1,10 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
-import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloBanArea, ApolloBanHistoryEntry } from '@models/apollo';
 import faker from '@faker-js/faker';
-import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { toDateTime } from '@helpers/luxon';
+import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { ApolloBanArea, ApolloBanHistoryEntry } from '@models/apollo';
+import BigNumber from 'bignumber.js';
 
 /** Fake API for finding User Flags. */
 export class ApolloPlayerXuidBanHistoryFakeApi extends FakeApiBase {

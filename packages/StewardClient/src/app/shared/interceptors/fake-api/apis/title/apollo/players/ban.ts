@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
-import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloBanArea, ApolloBanResult } from '@models/apollo';
-import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { toDateTime } from '@helpers/luxon';
+import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
+import { ApolloBanArea, ApolloBanResult } from '@models/apollo';
 
 /** Fake API for banning players. */
 export class ApolloPlayersBanFakeApi extends FakeApiBase {

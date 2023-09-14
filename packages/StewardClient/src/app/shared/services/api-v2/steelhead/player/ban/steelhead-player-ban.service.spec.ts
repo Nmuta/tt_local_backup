@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import { SteelheadPlayerBanService } from './steelhead-player-ban.service';
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('SteelheadPlayerBanService', () => {
   let service: SteelheadPlayerBanService;

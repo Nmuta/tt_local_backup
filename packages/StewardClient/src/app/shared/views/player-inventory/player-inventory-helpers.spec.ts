@@ -1,11 +1,9 @@
-import { GameTitle } from '@models/enums';
-import { addWarnings, makeItemList } from './player-inventory-helpers';
-import { MasterInventoryItem } from '@models/master-inventory-item';
 import faker from '@faker-js/faker';
-import BigNumber from 'bignumber.js';
+import { GameTitle } from '@models/enums';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
-
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import BigNumber from 'bignumber.js';
+import { addWarnings, makeItemList } from './player-inventory-helpers';
 
 describe('PlayerInventoryHelpers', () => {
   describe('Method: makeItemList', () => {

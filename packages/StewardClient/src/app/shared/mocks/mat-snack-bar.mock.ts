@@ -1,5 +1,5 @@
 import { ComponentType } from '@angular/cdk/portal';
-import { TemplateRef, EmbeddedViewRef, Injectable, OnDestroy } from '@angular/core';
+import { EmbeddedViewRef, Injectable, OnDestroy, TemplateRef } from '@angular/core';
 import {
   MatLegacySnackBar as MatSnackBar,
   MatLegacySnackBarConfig as MatSnackBarConfig,

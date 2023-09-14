@@ -1,7 +1,7 @@
 import { environment } from '@environments/environment';
+import faker from '@faker-js/faker';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import faker from '@faker-js/faker';
 import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Fake API for apollo player inventory profiles. */

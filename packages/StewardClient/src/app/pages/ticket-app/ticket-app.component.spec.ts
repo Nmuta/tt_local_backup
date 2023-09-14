@@ -1,17 +1,17 @@
 // General
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
-  TestBed,
-  getTestBed,
-  tick,
   fakeAsync,
+  getTestBed,
+  TestBed,
+  tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { NgxsModule } from '@ngxs/store';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import faker from '@faker-js/faker';
+import { NgxsModule } from '@ngxs/store';
 
 // Helpers
 import { createMockClipboard } from '@shared/helpers/clipboard';
@@ -23,13 +23,13 @@ import { TicketAppComponent } from './ticket-app.component';
 import { createMockZendeskService, ZendeskService } from '@shared/services/zendesk';
 
 // State
-import { UserState } from '@shared/state/user/user.state';
-import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
-import { UserModel } from '@shared/models/user.model';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
+import { UserModel } from '@shared/models/user.model';
+import { UserState } from '@shared/state/user/user.state';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
