@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
 using Forza.Scoreboard.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -255,7 +257,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
             var leaderboard = await this.GetLeaderboardMetadataAsync(scoreboardType, scoreType, trackId, pivotId, environment).ConfigureAwait(true);
 
-            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{leaderboard.GameScoreboardId}";
+            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{leaderboard.TrackId}_{leaderboard.GameScoreboardId}";
 
             var jobs = await this.jobTracker.GetInProgressJobsAsync().ConfigureAwait(true);
 
@@ -348,6 +350,36 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
                 new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
         }
+
+
+
+        /// <summary>
+        ///     Creates or Replaces leaderboard scores files.
+        /// </summary>
+        [HttpPost("scores/file")]
+        [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
+        [Authorize(Policy = UserAttributeValues.GenerateLeaderboardScoresFile)]
+        public async Task<IActionResult> RetrieveLeaderboardScoresFile(
+            [FromQuery] ScoreboardType scoreboardType,
+            [FromQuery] ScoreType scoreType,
+            [FromQuery] int trackId,
+            [FromQuery] string pivotId,
+            [FromQuery] string pegasusEnvironment = null)
+        {
+            var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
+            var leaderboard = await this.GetLeaderboardMetadataAsync(scoreboardType, scoreType, trackId, pivotId, environment).ConfigureAwait(true);
+
+            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{leaderboard.TrackId}_{leaderboard.GameScoreboardId}";
+
+            var leaderboardFileUri = await this.blobStorageProvider.GetLeaderboardDataLinkAsync(leaderboardIdentifier); //TODO pass in IP of requester, use it to set IP range of SAS token.
+
+            return this.Ok(leaderboardFileUri);
+        }
+
+
+
 
         /// <summary>
         ///     Gets leaderboard metadata.
