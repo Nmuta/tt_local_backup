@@ -1,12 +1,15 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { environment } from '@environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { Observable, takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ChangelogService } from '@services/changelog/changelog.service';
 import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
+import { NotificationsService } from '@shared/hubs/notifications.service';
+import { ThemePalette } from '@angular/material/core';
+import { BackgroundJobStatus } from '@models/background-job';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /** A menu dropdown with links to all Steward Apps. */
 @Component({
@@ -15,14 +18,20 @@ import { UserSettingsService } from '@shared/state/user-settings/user-settings.s
   styleUrls: ['./sidebar-icons.component.scss'],
 })
 export class SidebarIconsComponent extends BaseComponent implements AfterViewInit {
-  @ViewChild('changelogLink', { read: ElementRef }) changelogLink: ElementRef;
   @Select(ChangelogState.allPendingIds) public allPendingIds$: Observable<string[]>;
   public changelogNotificationCount = 0;
   public settingsNotificationCount = 0;
 
+  public notificationCount = null;
+  public notificationColor: ThemePalette = undefined;
+  public profileTooltip: string = 'Profile & Settings';
+
   constructor(
     private readonly userSettingsService: UserSettingsService,
     private readonly changelogService: ChangelogService,
+    private readonly notificationsService: NotificationsService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     protected dialog: MatDialog,
   ) {
     super();
@@ -30,20 +39,72 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
 
   /** Lifecycle hook. */
   public ngAfterViewInit(): void {
-    if (!!this.userSettingsService.appVersion) {
-      const currentVersion = environment.adoVersion;
-      const isNewAppVersion = currentVersion !== this.userSettingsService.appVersion;
-      if (isNewAppVersion) {
-        if (!this.changelogService.disableAutomaticPopup) {
-          this.changelogLink?.nativeElement?.click();
-        }
-      }
-    } else {
-      this.userSettingsService.appVersion = environment.adoVersion;
-    }
+    this.notificationsService.initialize();
+    this.handleNewVersion();
 
     this.allPendingIds$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
       this.changelogNotificationCount = v?.length ?? 0;
+      this.updateProfileTooltip();
+    });
+
+    this.notificationsService.notifications$.subscribe(notifications => {
+      const unreadNotifications = notifications.filter(n => !n.isRead);
+      this.notificationCount = unreadNotifications.length ? unreadNotifications.length : null;
+      this.notificationColor = unreadNotifications.some(
+        n => n.status === BackgroundJobStatus.Failed,
+      )
+        ? 'accent'
+        : undefined;
+      this.updateProfileTooltip();
+    });
+  }
+
+  private updateProfileTooltip(): void {
+    let newTooltip = 'Profile & Settings';
+
+    if (!!this.notificationCount) {
+      newTooltip += `\r\nNotifications: ${this.notificationCount}`;
+    }
+
+    if (!!this.changelogNotificationCount) {
+      newTooltip += `\r\nNew Changelog Entries: ${this.changelogNotificationCount}`;
+    }
+
+    this.profileTooltip = newTooltip;
+  }
+
+  // TODO: I think this is not really where this belongs, but moving it elsewhere seems beyond the scope of this PR.
+  private handleNewVersion() {
+    // if there's no app version, we need to update it.
+    if (!this.userSettingsService.lastSeenAppVersion) {
+      this.userSettingsService.lastSeenAppVersion = this.userSettingsService.currentAppVersion;
+      return;
+    }
+
+    // otherwise, guard against unwanted popups and then produce the popup
+    if (this.changelogService.disableAutomaticPopup) {
+      return;
+    }
+    if (this.changelogService.allAreAcknowledged) {
+      return;
+    }
+
+    const currentVersion = this.userSettingsService.currentAppVersion;
+    const lastSeenVersion = this.userSettingsService.lastSeenAppVersion;
+    const isNewAppVersion = currentVersion !== lastSeenVersion;
+    if (!isNewAppVersion) {
+      return;
+    }
+
+    this.userSettingsService.lastSeenAppVersion = this.userSettingsService.currentAppVersion;
+    const isAlreadyOnChangelog = this.router.url.includes('sidebar:unified/changelog');
+    if (isAlreadyOnChangelog) {
+      return;
+    }
+    this.router.navigate([{ outlets: { sidebar: 'unified/changelog' } }], {
+      relativeTo: this.activatedRoute,
+      preserveFragment: true,
+      queryParamsHandling: 'preserve',
     });
   }
 }

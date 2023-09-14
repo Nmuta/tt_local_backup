@@ -9,7 +9,7 @@ export class MockSteelheadGenericPopupTileService {
 
   public getGenericPopupTiles$ = jasmine
     .createSpy('getGenericPopupTiles$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(null))));
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   public getGenericPopupTile$ = jasmine
     .createSpy('getGenericPopupTile$')

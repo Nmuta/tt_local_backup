@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { CustomTileComponent, HomeTileInfo } from '@environments/environment';
 import { renderGuard } from '@helpers/rxjs';
 import { Select, Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -45,6 +44,11 @@ interface EndpointStateEntry {
   isRetail: boolean;
 }
 
+interface EndpointButtonOption {
+  classes: Record<string, boolean>;
+  endpoint: string;
+}
+
 interface EndpointStateEntrySpacer {
   isSpacer: true;
   classes: Record<string, boolean>;
@@ -87,20 +91,16 @@ const QUICK_ENDPOINT_OPTIONS: EndpointOptionSet[] = [
  * View and adjust current endpoint settings in the navbar.
  */
 @Component({
+  selector: 'endpoints-nav-tool',
   templateUrl: './endpoints-nav-tool.component.html',
   styleUrls: ['./endpoints-nav-tool.component.scss'],
 })
-export class EndpointsNavToolComponent
-  extends BaseComponent
-  implements OnInit, CustomTileComponent
-{
-  /** Set to true when this component should be disabled. */
-  @Input() public disabled: boolean;
-  /** The nav item we are working with. */
-  @Input() public item: HomeTileInfo;
-
+export class EndpointsNavToolComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
+
+  /** True once all endpoints have been loaded and the component is ready for display. */
+  public isLoaded: boolean = false;
 
   public apolloEndpointKey: string;
   public sunriseEndpointKey: string;
@@ -116,6 +116,11 @@ export class EndpointsNavToolComponent
 
   public quickEndpointOptions = QUICK_ENDPOINT_OPTIONS;
   public allUpTooltip = '';
+
+  public steelheadButtonOptions: EndpointButtonOption[];
+  public woodstockButtonOptions: EndpointButtonOption[];
+  public sunriseButtonOptions: EndpointButtonOption[];
+  public apolloButtonOptions: EndpointButtonOption[];
 
   constructor(private readonly store: Store, private readonly windowService: WindowService) {
     super();
@@ -161,10 +166,25 @@ export class EndpointsNavToolComponent
     return `${title} ${endpoint}`;
   }
 
+  /** Produces a summary for an entry that may be used to display buttons. */
+  public summarizeEndpointButton(endpoint: string, selectedEndpoint: string): EndpointButtonOption {
+    const classes = this.determineTileClasses(endpoint, selectedEndpoint);
+
+    // flip around the classes for a button
+    classes.entry = false;
+    classes.button = true;
+
+    return {
+      endpoint,
+      classes,
+    };
+  }
+
   /** Produces a set of classes for the entry. */
-  public determineClasses(endpoint: string, selectedEndpoint: string) {
+  public determineTileClasses(endpoint: string, selectedEndpoint: string) {
     return {
       entry: true,
+      button: false,
       active: endpoint === selectedEndpoint,
       retail: endpoint === 'Retail',
       flight: endpoint === 'Flight',
@@ -185,21 +205,44 @@ export class EndpointsNavToolComponent
       });
   }
 
-  /** Sets all endpoints and reloads the page. */
+  /** Sets steelhead endpoint and reloads the page. */
   public setSteelheadEndpoint(newEndpoint: string): void {
     this.store.dispatch([new SetSteelheadEndpointKey(newEndpoint)]).subscribe(() => {
       this.windowService.location().reload();
     });
   }
 
-  /** Sets all endpoints and reloads the page. */
+  /** Sets woodstock endpoint and reloads the page. */
   public setWoodstockEndpoint(newEndpoint: string): void {
     this.store.dispatch([new SetWoodstockEndpointKey(newEndpoint)]).subscribe(() => {
       this.windowService.location().reload();
     });
   }
 
+  /** Sets apollo endpoint and reloads the page. */
+  public setApolloEndpoint(newEndpoint: string): void {
+    this.store.dispatch([new SetApolloEndpointKey(newEndpoint)]).subscribe(() => {
+      this.windowService.location().reload();
+    });
+  }
+
+  /** Sets sunrise endpoint and reloads the page. */
+  public setSunriseEndpoint(newEndpoint: string): void {
+    this.store.dispatch([new SetSunriseEndpointKey(newEndpoint)]).subscribe(() => {
+      this.windowService.location().reload();
+    });
+  }
+
   private refreshState(): void {
+    const hasAllLists =
+      this.steelheadEndpointKeyList &&
+      this.woodstockEndpointKeyList &&
+      this.sunriseEndpointKeyList &&
+      this.apolloEndpointKeyList;
+
+    if (!hasAllLists) {
+      return;
+    }
     renderGuard(() => {
       const optionSets = QUICK_ENDPOINT_OPTIONS;
       const withPossibilityState = this.markEndpointPossibilities(optionSets);
@@ -209,11 +252,29 @@ export class EndpointsNavToolComponent
       this.endpointStateGrid = this.makeGrid();
 
       this.allUpTooltip = [
+        'Options for changing current endpoint settings.',
+        'Rows represent titles, with each column being a specific environment',
+        'Row-order summary:',
         `FM: ${this.steelheadEndpointKey}`,
         `FH5: ${this.woodstockEndpointKey}`,
         `FH4: ${this.sunriseEndpointKey}`,
         `FM7: ${this.apolloEndpointKey}`,
       ].join('\n');
+
+      this.steelheadButtonOptions = this.steelheadEndpointKeyList.map(endpoint =>
+        this.summarizeEndpointButton(endpoint, this.steelheadEndpointKey),
+      );
+      this.woodstockButtonOptions = this.woodstockEndpointKeyList.map(endpoint =>
+        this.summarizeEndpointButton(endpoint, this.woodstockEndpointKey),
+      );
+      this.sunriseButtonOptions = this.sunriseEndpointKeyList.map(endpoint =>
+        this.summarizeEndpointButton(endpoint, this.sunriseEndpointKey),
+      );
+      this.apolloButtonOptions = this.apolloEndpointKeyList.map(endpoint =>
+        this.summarizeEndpointButton(endpoint, this.apolloEndpointKey),
+      );
+
+      this.isLoaded = true;
     });
   }
 
@@ -275,7 +336,7 @@ export class EndpointsNavToolComponent
     const line: EndpointStateEntry[] = [];
     for (const endpointKey of endpointKeyList) {
       line.push({
-        classes: this.determineClasses(endpointKey, selectedEndpointKey),
+        classes: this.determineTileClasses(endpointKey, selectedEndpointKey),
         isFlight: endpointKey.toLowerCase().includes('flight'),
         isRetail: endpointKey.toLowerCase().includes('retail'),
       });

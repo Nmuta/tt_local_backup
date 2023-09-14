@@ -99,7 +99,7 @@ export class TimepickerComponent
 
   /** Gets or sets the value of the input. MatFormFieldControl hook. */
   public set value(input: DateTime) {
-    this._valueInternal = input.toFormat('HH:mm', { timeZone: 'utc' });
+    this._valueInternal = input.toFormat('HH:mm', { locale: 'utc' });
     this._value = DateTime.fromFormat(this._valueInternal, 'HH:mm', { zone: 'utc' });
     this.stateChanges.next();
   }

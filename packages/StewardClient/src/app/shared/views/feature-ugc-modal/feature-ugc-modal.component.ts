@@ -43,6 +43,7 @@ export abstract class FeatureUgcModalBaseComponent extends BaseComponent {
     UgcType.EventBlueprint,
     UgcType.CommunityChallenge,
     UgcType.Replay,
+    UgcType.PropPrefab,
   ];
 
   public featureUgcPermAttribute = PermAttributeName.FeatureUgc;

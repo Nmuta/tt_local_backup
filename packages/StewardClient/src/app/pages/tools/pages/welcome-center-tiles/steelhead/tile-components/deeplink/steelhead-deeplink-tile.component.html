@@ -10,36 +10,40 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <!-- Racers Cup Destination -->
-    <ng-container *ngIf="formControls.destinationType.value === destinationTypes.RacersCup">
-      <steelhead-deeplink-racers-cup
-        [formControl]="formControls.baseDestination"
-      ></steelhead-deeplink-racers-cup>
-    </ng-container>
-    <!-- Builders Cup Destination -->
-    <ng-container *ngIf="formControls.destinationType.value === destinationTypes.BuildersCup">
-      <steelhead-deeplink-builders-cup
-        [formControl]="formControls.baseDestination"
-      ></steelhead-deeplink-builders-cup>
-    </ng-container>
-    <!-- Rivals Destination -->
-    <ng-container *ngIf="formControls.destinationType.value === destinationTypes.Rivals">
-      <steelhead-deeplink-rivals
-        [formControl]="formControls.baseDestination"
-      ></steelhead-deeplink-rivals>
-    </ng-container>
-    <!-- Showroom Destination -->
-    <ng-container *ngIf="formControls.destinationType.value === destinationTypes.Showroom">
-      <steelhead-deeplink-showroom
-        [formControl]="formControls.baseDestination"
-      ></steelhead-deeplink-showroom>
-    </ng-container>
-    <!-- Store Destination -->
-    <ng-container *ngIf="formControls.destinationType.value === destinationTypes.Store">
-      <steelhead-deeplink-store
-        [formControl]="formControls.baseDestination"
-      ></steelhead-deeplink-store>
-    </ng-container>
+    <div [ngSwitch]="formControls.destinationType.value">
+      <!-- Racers Cup Destination -->
+      <ng-container *ngSwitchCase="destinationTypes.RacersCup">
+        <steelhead-deeplink-racers-cup
+          [formControl]="formControls.baseDestination"
+        ></steelhead-deeplink-racers-cup>
+      </ng-container>
+      <!-- Builders Cup Destination -->
+      <ng-container *ngSwitchCase="destinationTypes.BuildersCup">
+        <steelhead-deeplink-builders-cup
+          [formControl]="formControls.baseDestination"
+        ></steelhead-deeplink-builders-cup>
+      </ng-container>
+      <!-- Rivals Destination -->
+      <ng-container *ngSwitchCase="destinationTypes.Rivals">
+        <steelhead-deeplink-rivals
+          [formControl]="formControls.baseDestination"
+        ></steelhead-deeplink-rivals>
+      </ng-container>
+      <!-- Showroom Destination -->
+      <ng-container *ngSwitchCase="destinationTypes.Showroom">
+        <steelhead-deeplink-showroom
+          [formControl]="formControls.baseDestination"
+        ></steelhead-deeplink-showroom>
+      </ng-container>
+      <!-- Store Destination -->
+      <ng-container *ngSwitchCase="destinationTypes.Store">
+        <steelhead-deeplink-store
+          [formControl]="formControls.baseDestination"
+        ></steelhead-deeplink-store>
+      </ng-container>
+      <!-- Default -->
+      <ng-container *ngSwitchDefault> This type of deeplink tile is not supported. </ng-container>
+    </div>
     <div>
       <verify-button
         #verifyBtn
