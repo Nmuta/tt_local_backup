@@ -8,7 +8,7 @@
   "scripts": {
     "auth": "vsts-npm-auth -config .npmrc",
     "auth:force": "vsts-npm-auth -config .npmrc -F",
-    "build": "docker build -t zat .",
+    "build": "docker build -t zat - < ./must-use-2-6-9",
     "start:bash": "cross-env-shell docker run -p 4567:4567 -v $PWD:/data -it zat bash",
     "start:zat:local": "cross-env-shell docker run -p 4567:4567 -v $PWD:/data -it zat zat server --path /data/app-local",
     "start:zat:dev": "cross-env-shell docker run -p 4567:4567 -v $PWD:/data -it zat zat server --path /data/app-dev",

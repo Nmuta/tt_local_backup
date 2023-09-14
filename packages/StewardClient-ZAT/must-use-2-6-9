@@ -4,6 +4,7 @@ FROM ruby:2.6.9
 # - https://github.com/Pindar/docker-zat/blob/master/Dockerfile
 # - https://developer.zendesk.com/documentation/apps/zendesk-app-tools-zat/installing-and-using-zat/#installing-zat
 # - https://developer.zendesk.com/documentation/apps/zendesk-app-tools-zat/installing-and-using-zat/#testing-your-app-locally-in-a-browser
+# - https://eng.ms/docs/more/containers-secure-supply-chain/approved-images
 
 ENV LC_CTYPE en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
