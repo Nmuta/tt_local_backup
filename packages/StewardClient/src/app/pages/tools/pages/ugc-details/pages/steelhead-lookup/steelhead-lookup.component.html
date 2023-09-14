@@ -123,7 +123,7 @@
                   #verifyHideBtn
                   [permissionAttribute]="hidePermAttribute"
                   [permissionTitle]="gameTitle"
-                  [disabled]="!ugcItem?.isPublic || !canHideUgc"
+                  [disabled]="!ugcItem?.isHidden || !canHideUgc"
                 ></verify-button>
                 <button
                   class="sf-action-list-margins"
@@ -139,9 +139,6 @@
                   monitorCompleteSnackbar
                 >
                   Hide UGC
-                  <help-popover-icon cardTitle="Hide UGC"
-                    >Private UGC cannot be hidden.</help-popover-icon
-                  >
                 </button>
               </div>
               <mat-error *ngIf="!canHideUgc">Cannot hide Replay UGC item</mat-error>
