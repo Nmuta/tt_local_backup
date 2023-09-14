@@ -1,7 +1,5 @@
 import { DownloadCsvDirective } from './download-csv.directive';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('DownloadCsvDirective', () => {
   it('should create an instance', () => {
     const directive = new DownloadCsvDirective();

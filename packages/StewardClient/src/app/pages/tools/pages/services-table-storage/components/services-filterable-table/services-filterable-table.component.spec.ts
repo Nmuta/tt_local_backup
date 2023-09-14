@@ -11,8 +11,6 @@ import {
   ServicesTableStorageContract,
 } from './services-filterable-table.component';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('ServicesFilterableTableComponent', () => {
   let component: ServicesFilterableTableComponent;
   let fixture: ComponentFixture<ServicesFilterableTableComponent>;

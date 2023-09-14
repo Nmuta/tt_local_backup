@@ -5,8 +5,6 @@ import { Store } from '@ngxs/store';
 import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
 import { OldChangelogComponent } from './old-changelog.component';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('OldChangelogComponent', () => {
   let fixture: ComponentFixture<OldChangelogComponent>;
   let component: OldChangelogComponent;

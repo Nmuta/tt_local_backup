@@ -15,8 +15,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('SunriseGiftBasketComponent', () => {
   let fixture: ComponentFixture<SunriseGiftBasketComponent>;
   let component: SunriseGiftBasketComponent;

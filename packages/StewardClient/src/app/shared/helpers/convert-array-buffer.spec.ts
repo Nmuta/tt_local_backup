@@ -1,8 +1,6 @@
 import { arrayBufferToBase64, base64ToArrayBuffer } from './convert-array-buffer';
 const base64String = 'SGVsbG8gV29ybGQh';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('Helper: convert-array-buffer', () => {
   describe('Method: arrayBufferToBase64', () => {
     it('should convert an empty buffer to an empty string', () => {

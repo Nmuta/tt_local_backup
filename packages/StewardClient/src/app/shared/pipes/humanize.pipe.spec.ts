@@ -1,7 +1,5 @@
 import { HumanizePipe } from './humanize.pipe';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('HumanizePipe', () => {
   it('create an instance', () => {
     const pipe = new HumanizePipe();

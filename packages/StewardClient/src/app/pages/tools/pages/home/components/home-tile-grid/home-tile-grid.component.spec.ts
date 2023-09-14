@@ -4,8 +4,6 @@ import { ZendeskService } from '@services/zendesk';
 import { of } from 'rxjs';
 import { ToolsAppHomeTileGridComponent } from './home-tile-grid.component';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('ToolsAppHomeTileGridComponent', () => {
   let component: ToolsAppHomeTileGridComponent;
   let fixture: ComponentFixture<ToolsAppHomeTileGridComponent>;

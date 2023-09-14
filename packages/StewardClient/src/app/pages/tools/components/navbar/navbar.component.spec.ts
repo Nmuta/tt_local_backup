@@ -13,8 +13,6 @@ import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-me
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('ToolsNavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;

@@ -1,8 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { BigNumberPipe } from './big-number.pipe';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('BigNumbersPipe', () => {
   it('create an instance', () => {
     const pipe = new BigNumberPipe();

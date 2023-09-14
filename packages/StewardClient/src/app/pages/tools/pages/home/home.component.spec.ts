@@ -13,8 +13,6 @@ import { UserTourService } from './tour/tour.service';
 import { createMockUserTourService } from './tour/tour.service.mock';
 import { TourState } from '@shared/state/tours/tours.state';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('ToolsAppHomeComponent', () => {
   let component: ToolsAppHomeComponent;
   let fixture: ComponentFixture<ToolsAppHomeComponent>;

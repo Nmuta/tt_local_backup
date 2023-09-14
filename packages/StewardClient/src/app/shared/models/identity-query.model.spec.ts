@@ -11,8 +11,6 @@ function expectTypes(
   expect(isT10IdQuery(query)).toBe(t10IdState);
 }
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('identity query models', () => {
   describe('gamertag query', () => {
     const query = { gamertag: 'gamertag' };
