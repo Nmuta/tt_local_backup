@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '4a899681-244c-45c2-a02c-4d1801366057',
+      shortText: 'Track "test" Background Jobs separately.',
+    },
+    {
       tag: { title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7], tool: NavbarTool.Zendesk },
       uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
       shortText: 'Avoid User Flags error when loading Zendesk sidebar',
