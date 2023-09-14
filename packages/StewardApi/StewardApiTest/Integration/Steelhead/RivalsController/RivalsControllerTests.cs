@@ -7,10 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
-namespace Turn10.LiveOps.StewardTest.Integration.Steelhead.RivalsController
+namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
     [TestClass]
-    public sealed class RivalsControllerTest : SteelheadControllerTestsBase
+    public sealed class RivalsControllerTests : SteelheadControllerTestsBase
     {
         private static RivalsControllerTestingClient stewardClient;
         private static RivalsControllerTestingClient unauthedClient;
