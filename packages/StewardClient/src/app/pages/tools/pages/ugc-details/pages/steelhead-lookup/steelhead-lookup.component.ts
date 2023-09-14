@@ -25,7 +25,6 @@ import {
   EMPTY,
   throwError,
 } from 'rxjs';
-import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
 import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
 import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
@@ -33,6 +32,7 @@ import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-
 import { SteelheadEditUgcModalComponent } from '@views/edit-ugc-modal/steelhead/steelhead-edit-ugc-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SteelheadFeatureUgcModalComponent } from '@views/feature-ugc-modal/steelhead/steelhead-feature-ugc-modal.component';
+import { SteelheadUgcHideStatusService } from '@services/api-v2/steelhead/ugc/hide-status/steelhead-ugc-hide-status.service';
 import { UgcReportReason } from '@models/ugc-report-reason';
 
 const GEO_FLAGS_ORDER = chain(SteelheadGeoFlags).sortBy().value();
@@ -88,7 +88,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: SteelheadUgcReportService,
     private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
-    private readonly ugcVisibilityService: SteelheadUgcVisibilityService,
+    private readonly ugcHideStatusService: SteelheadUgcHideStatusService,
     private readonly ugcGeoFlagsService: SteelheadUgcGeoFlagsService,
     private readonly dialog: MatDialog,
   ) {
@@ -237,7 +237,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     }
     this.hideMonitor = this.hideMonitor.repeat();
 
-    this.ugcVisibilityService
+    this.ugcHideStatusService
       .hideUgcItems$([this.ugcItem.id])
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
@@ -254,7 +254,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     }
     this.unhideMonitor = this.unhideMonitor.repeat();
 
-    this.ugcVisibilityService
+    this.ugcHideStatusService
       .unhideUgcItems$([this.ugcItem.id])
       .pipe(this.unhideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
