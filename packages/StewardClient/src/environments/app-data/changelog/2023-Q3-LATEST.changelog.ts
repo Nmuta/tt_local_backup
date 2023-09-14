@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '3fceecf9-9020-4044-9857-d49978fc6e8f',
+      shortText: 'Add UGC Title and Description length validation',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: 'e2450ffa-7ebc-47ec-a05b-4fba09be9d4d',
       shortText: 'Leaderboard updates',
