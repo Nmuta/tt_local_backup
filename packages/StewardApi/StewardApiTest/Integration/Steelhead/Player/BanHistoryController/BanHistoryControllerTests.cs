@@ -13,14 +13,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         private static BanHistoryControllerTestingClient stewardClient;
         private static BanHistoryControllerTestingClient unauthedClient;
 
-        // This xuid refers to gamertag - "Plink"
-        private ulong xuid = 2675352635783107;
-
-        // Suggest pulling BanReasonGroup out of Players/BanHistoryController class.
-        // This Guid refers to the BanReasonGroup - "Developer" 
-        private Guid banconfig = new Guid("c8ec2fac-6132-4c87-85dc-1b799e08aca4");
-        private Guid invalidBanconfig = new Guid("55555555-5555-5555-5555-555555555555");
-
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
         {
@@ -37,7 +29,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetBanHistory(this.xuid).ConfigureAwait(false);
+                var response = await stewardClient.GetBanHistory(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -67,7 +59,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetBanHistory(this.xuid).ConfigureAwait(false);
+                var response = await unauthedClient.GetBanHistory(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
