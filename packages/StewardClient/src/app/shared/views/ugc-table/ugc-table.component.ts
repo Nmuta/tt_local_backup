@@ -210,6 +210,7 @@ export abstract class UgcTableBaseComponent
         dataSource[i].thumbnailOneImageBase64 = fullUgcItem.thumbnailOneImageBase64;
         dataSource[i].thumbnailTwoImageBase64 = fullUgcItem.thumbnailTwoImageBase64;
         dataSource[i].liveryDownloadDataBase64 = fullUgcItem.liveryDownloadDataBase64;
+        dataSource[i].propPrefabDownloadDataBase64 = fullUgcItem.propPrefabDownloadDataBase64;
       }
       if (this.shouldLookupTuneBlobData(ugcItem)) {
         const tuneBlobData = await this.getUgcItem(ugcItem.id, ugcItem.type).toPromise();
@@ -444,7 +445,12 @@ export abstract class UgcTableBaseComponent
   }
 
   private shouldLookupThumbnails(item: PlayerUgcItem): boolean {
-    const typesWithThumbnails = [UgcType.Livery, UgcType.Photo, UgcType.LayerGroup];
+    const typesWithThumbnails = [
+      UgcType.Livery,
+      UgcType.Photo,
+      UgcType.LayerGroup,
+      UgcType.PropPrefab,
+    ];
     const shouldLookupThumbnails = !!typesWithThumbnails.find(type => type === item?.type);
     return !!item && !item.thumbnailOneImageBase64 && shouldLookupThumbnails;
   }

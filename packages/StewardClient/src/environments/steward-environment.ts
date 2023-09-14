@@ -8,14 +8,16 @@ export interface StewardEnvironment {
   production: boolean;
   azureAppId: string;
   azureAppScope: string;
-  stewardUiUrl: string;
   stewardUiStagingUrl: string;
   stewardApiUrl: string;
   stewardApiStagingUrl: string;
   stewardBlobStorageUrl: string;
   oldScrutineerApiUrl: string;
 
-  /** Placeholder value replaced in ADO pipeline. */
+  /**
+   * Placeholder value replaced in ADO pipeline.
+   * @deprecated Do not use this directly. Use UserSettingsService.currentAppVersion, which does some operations on it.
+   */
   adoVersion: string;
 
   /** When true, FakeAPI will be lazy-loaded at launch time. */

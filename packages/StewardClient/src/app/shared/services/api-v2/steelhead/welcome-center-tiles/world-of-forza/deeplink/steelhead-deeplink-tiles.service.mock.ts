@@ -9,7 +9,7 @@ export class MockSteelheadDeeplinkTileService {
 
   public getDeeplinkTiles$ = jasmine
     .createSpy('getDeeplinkTiles$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(null))));
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   public getDeeplinkTile$ = jasmine
     .createSpy('getDeeplinkTile$')

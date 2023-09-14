@@ -55,6 +55,17 @@ export class UgcDownloadButtonComponent extends BaseComponent implements OnChang
       });
     }
 
+    if (!!this.item?.propPrefabDownloadDataBase64) {
+      this.downloadOptions.push({
+        label: 'Prop Prefab blob data',
+        clickFn: () =>
+          this.downloadData(
+            this.item.propPrefabDownloadDataBase64,
+            `${this.item.id}_PropPrefab_Data`,
+          ),
+      });
+    }
+
     if (!!this.item?.tuneBlobDownloadDataBase64) {
       this.downloadOptions.push({
         label: 'Tune blob data',

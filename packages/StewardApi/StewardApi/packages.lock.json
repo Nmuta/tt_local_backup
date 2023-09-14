@@ -369,9 +369,9 @@
       },
       "SteelheadLiveOpsContent": {
         "type": "Direct",
-        "requested": "[1.7.39, )",
-        "resolved": "1.7.39",
-        "contentHash": "3tye6vKyi2itvxSzUJIcLm4WJVMqr7t+AEwgStfoby4EfJ209wuL7Exfy9aEbuBur2PmlXM+2aQxM2gMvq8dTQ==",
+        "requested": "[1.7.41, )",
+        "resolved": "1.7.41",
+        "contentHash": "/r38RWz5HdqYcE90WGPTK4mtWJHOC2Ain188+xaKo7ZSp4rHwcbwzRFA4WtC13Sw1ExGji++twzBaLUvcQG+eA==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.1"
         }
@@ -526,9 +526,9 @@
       },
       "Turn10.Services.ForzaClient.FH5_main": {
         "type": "Direct",
-        "requested": "[5.4.22, )",
-        "resolved": "5.4.22",
-        "contentHash": "N+SmsM3SGRbKTduYunjWkn6p8Cl1x0gUAOflpQdmR1Lu3zEiLzjXkMFv3tQU3VHEZRShqnn1hBxwo4PiIhp9qw==",
+        "requested": "[5.4.25, )",
+        "resolved": "5.4.25",
+        "contentHash": "zJoL4Jq4+BpS7uCJ6GHWxGA1792FWTlvWWhTCjejIxQDYJhbPi8N6N6mbE4j5P3kZNrX3ZZbuezC36VOtPqT+Q==",
         "dependencies": {
           "Turn10.Services.ForzaClient": "3.0.0",
           "Turn10.Services.Serialization": "1.1.0"
@@ -546,9 +546,9 @@
       },
       "Turn10.Services.ForzaClient.FM8": {
         "type": "Direct",
-        "requested": "[2.22.4, )",
-        "resolved": "2.22.4",
-        "contentHash": "XgiCYjLAsbdZIBO2l0pS6acu8E2q+zDwSg+YYiPjsGYBAfKrb+peJbFhZ0kZf/3JPuNRinIM7USQ48Uef3BGHg==",
+        "requested": "[2.22.6, )",
+        "resolved": "2.22.6",
+        "contentHash": "4bqOfiVC2zVUwsnFFRn11t/de5pKSs9oxnV9woDxC17iioGcnchiTYyBYQQhSA2we38mabsjhMlt8+gzsAmWxg==",
         "dependencies": {
           "Turn10.Services.ForzaClient": "3.0.0",
           "Turn10.Services.Serialization": "1.1.0"

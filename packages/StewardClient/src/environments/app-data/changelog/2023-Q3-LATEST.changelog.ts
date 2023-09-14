@@ -13,6 +13,129 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Fixed bug preventing hide and unhide of UGC',
     },
     {
+      tag: { title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7], tool: NavbarTool.Zendesk },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Avoid User Flags error when loading Zendesk sidebar',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '3fceecf9-9020-4044-9857-d49978fc6e8f',
+      shortText: 'Add UGC Title and Description length validation',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'e2450ffa-7ebc-47ec-a05b-4fba09be9d4d',
+      shortText: 'Leaderboard updates',
+      longText: [
+        'Add scoreboard type as a filter when searching leaderboards.',
+        'Use more specific track name for attack time leaderboards.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd9513283-4f67-4286-99fb-18a1f6952b3c',
+      shortText: 'Misc Fixes',
+      longText: [
+        'Correct automatic changelog-opening behavior.',
+        'Reduce console errors.',
+        'Correct missing icon font.',
+        'Mimic hourly releases when running localhost development environment.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Display warning beside user flag when lookup provides conflicting data',
+    },
+    {
+      tag: {
+        title: GameTitle.FH5,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'cdd66b5e-b3d5-49f6-8a73-bc02fdf3595b',
+      shortText: 'Add Prop Prefab UGC type',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '6bd26f9c-2af3-44f3-aba2-7f0c486ed5e8',
+      shortText: 'Add autocomplete feature and validation',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '317fabba-9068-4444-9fe7-4a2140d252e9',
+      shortText: 'Prepare Steward UI for new deployment model',
+      longText: [
+        'Update 1: Restructure static deploy config files. Add Favicon.',
+        'Update 2: Adjust build pipeline.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c59b7731-7ee8-4b34-a64f-0c0d47d484db',
+      shortText: 'Rework Endpoints navbar utility',
+      longText: [
+        'Utility is now capable of setting all environment endpoints.',
+        'Utility size has been reduced, and it may no longer be removed from the toolbar.',
+        'Quick-change-button color now matches the color in the summary grid.',
+        'Quick-change-button is replaced by a spinner while endpoint data is being retrieved.',
+        'Navbar theme-toggle button has been adjusted to match toolbar',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c898bf28-c7b4-4828-bf00-f338b5f0326b',
+      shortText: 'Adjust standard toolbar',
+      longText: [
+        'Toolbar now defaults to a set of standard tools for new users.',
+        'Reset Tools button on the homepage now sets tools to the standard set of tools.',
+        'Clear Tools button added. It removes all tools in the toolbar.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'aa928195-cd76-4db8-ac46-a4f43ac00704',
+      shortText: 'Rework Navbar Sidebars',
+      longText: [
+        'All previous navbar icon routes have been moved to a unified sidebar.\r\n' +
+          'Navbar icon padding has been replaced with separator bars.',
+
+        'Settings and Profile have been merged into a single button.\r\n' +
+          'Total Notification count is displayed over the new button.',
+
+        'The previous Settings page has been moved to Old Settings.\r\n' +
+          'Its contents have been split into Endpoints, Experience, Tours, and Profile.',
+
+        'The Profile panel no longer has a Location sub-panel.\r\n' +
+          'Some super-admin tools have been moved to this panel.',
+
+        'The Notifications panel is unchanged, aside from an increase in default width to avoid button shifting.',
+
+        'The Changelog panel now respects newlines in changelog entries.\r\n' +
+          'Very old changelog entries have been removed.\r\n' +
+          'The changelog will now only automatically open when there are new entries as well as a new version,\r\n' +
+          'and will not open automatically if you are already viewing it.',
+
+        'The Endpoints panel has been updated with some game titles.\r\n' +
+          'Show Help Icons is now in the Experience panel.',
+
+        'The Experience panel contains general user experience settings, some of which may appear in other panels.',
+
+        'The Tours panel now allows launching tours immediately, separately from enabling them to run.',
+
+        'The Old Settings panel is the unmodified version of the prior Settings panel. We plan to remove it later.',
+      ],
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.UserDetails },
+      uuid: '736e71dd-630f-4960-984f-ad5c611e383c',
+      shortText: 'Add Steam purchases to entitlements',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.WelcomeCenterTiles },
+      uuid: 'a58c3f63-61df-4718-9fa7-384a001776fd',
+      shortText: 'Add pegasus data to timer dropdowns',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
       uuid: '34637ef2-c305-4514-bc20-a849bb90ede4',
       shortText: 'Add player and pegasus lookup inputs to all calendars',
@@ -279,7 +402,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      tag: ChangelogTag.General,
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
     },

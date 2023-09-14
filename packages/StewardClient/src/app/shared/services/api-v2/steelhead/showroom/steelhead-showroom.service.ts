@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
+import { FriendlyNameMap } from '@models/message-of-the-day';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
@@ -192,5 +193,10 @@ export class SteelheadShowroomService {
   /** Gets Showroom Car Sales. */
   public getCarSalesByUser$(xuid: BigNumber): Observable<CarSale[]> {
     return this.api.getRequest$<CarSale[]>(`${this.basePath}/player/${xuid}/carSales`);
+  }
+
+  /** Gets featured showcases mapped to Guid. */
+  public getFeaturedShowcases$(): Observable<FriendlyNameMap> {
+    return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/featuredShowcases`);
   }
 }

@@ -35,7 +35,7 @@ export class ChangelogComponent {
 
   /** Produces the app version. */
   public get appVersion(): string {
-    return this.userSettingsService.appVersion;
+    return this.userSettingsService.lastSeenAppVersion;
   }
 
   constructor(

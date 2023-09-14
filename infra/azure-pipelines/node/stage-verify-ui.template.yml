@@ -11,15 +11,27 @@ jobs:
 - template: job-ui-test-lint.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}
+
 - template: job-ui-test-prettier.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}
+
 - template: job-ui-test-build.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}
+    distDirectory: ${{parameters.workingDirectory}}/dist
+    distArtifactName: ui-drop-dev
+
+- template: job-ui-static-pr.template.yml
+  parameters:
+    workingDirectory: ${{parameters.workingDirectory}}
+    distDirectory: ${{parameters.workingDirectory}}/dist
+    distArtifactName: ui-drop-dev-static
+
 - template: job-ui-test-unit.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}
+
 - template: job-ui-test-changelog.template.yml
   parameters:
     workingDirectory: ${{parameters.workingDirectory}}

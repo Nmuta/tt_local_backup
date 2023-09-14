@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
 import { createMockZendeskService } from '@services/zendesk';
 import faker from '@faker-js/faker';
@@ -45,7 +44,7 @@ describe('GoToInventoryButtonComponent', () => {
       component.goToInventory();
 
       const expectedUrl = `${
-        environment.stewardUiUrl
+        window.origin
       }/app/tools/user-details/${gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${xuid}`;
 
       expect(window.open).toHaveBeenCalledWith(expectedUrl, '_blank');

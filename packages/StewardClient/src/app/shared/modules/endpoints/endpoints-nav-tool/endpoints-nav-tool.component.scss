@@ -5,20 +5,49 @@ $tile-gap-size: 1px;
 
 :host {
   display: flex;
+  min-width: 3em; // chosen to reserve space for the tool as it pops into view
+  padding: 0 0.25em;
+}
+
+error-spinner {
+  font-size: 1.8em;
+}
+
+:host ::ng-deep error-spinner {
+  mat-progress-spinner {
+    circle {
+      color: app-color-default-contrast($app-primary) !important;
+      stroke: app-color-default-contrast($app-primary) !important;
+    }
+  }
+}
+
+.menu-button {
+  padding: 0.25em 0.5em;
+  min-width: 0;
 }
 
 .container {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  position: relative;
+  z-index: 0;
 }
 
 .label {
-  padding-left: 0.5em;
+  margin-left: -0.4em;
+  color: app-color-default-contrast($app-primary, 0.3);
+  z-index: -1;
 }
 
 .summary,
 .inline-summary {
+  &.summary {
+    // setting this so the icon overlap looks better.
+    background-color: app-color-default($app-primary);
+  }
+
   .row {
     display: flex;
     flex-flow: row nowrap;
@@ -28,6 +57,11 @@ $tile-gap-size: 1px;
   &.inline-summary {
     display: inline-flex;
     align-items: center;
+    gap: 0.25em;
+
+    .entry {
+      margin-right: 0.25em;
+    }
   }
 
   .entry {
@@ -45,7 +79,7 @@ $tile-gap-size: 1px;
       background-color: app-color-default-contrast($app-primary);
 
       &.retail {
-        background-color: app-color-default($app-success);
+        background-color: app-color-passthru($app-success, 'A700');
       }
 
       &.flight {
@@ -55,15 +89,132 @@ $tile-gap-size: 1px;
   }
 }
 
+:host ::ng-deep .mat-button-toggle-label-content {
+  line-height: 24px;
+}
+
+::ng-deep .mat-menu-topnav {
+  border-top-left-radius: 0;
+}
+
+button.menu-opened {
+  background-color: app-color($app-background, 'card');
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 1001;
+
+  .label {
+    color: app-color-default-contrast($app-background);
+  }
+  .summary {
+    &.summary {
+      background-color: app-color($app-background, 'card');
+    }
+
+    .row {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+    }
+
+    &.inline-summary {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .entry {
+      background-color: app-color-default-contrast($app-background, 0.2);
+
+      &.spacer {
+        background-color: transparent;
+      }
+
+      &.active {
+        background-color: app-color-default($app-primary);
+
+        &.retail {
+          background-color: app-color-passthru($app-success, 'A700');
+        }
+
+        &.flight {
+          background-color: app-color-default($app-accent);
+        }
+      }
+    }
+  }
+}
+
+mat-button-toggle {
+  &:not(.active) {
+    background-color: app-color-darker($app-background, 0.4);
+    color: app-color-darker-contrast($app-background, 0.4);
+  }
+
+  &.spacer {
+    background-color: transparent;
+  }
+
+  &.active.active {
+    background-color: app-color-default($app-primary);
+    color: app-color-default-contrast($app-primary);
+
+    &.retail {
+      background-color: app-color-passthru($app-success, 'A700', 0.7);
+      color: app-color-default-contrast($app-background);
+    }
+
+    &.flight {
+      background-color: app-color-default($app-accent, 0.3);
+      color: app-color-default-contrast($app-accent);
+    }
+  }
+}
+
 .menu-header {
   display: flex;
   flex-flow: column wrap;
-  align-items: center;
-  padding: 0 0.5em;
-  > .toggle-group {
+  padding: 0.5em;
+  gap: 0.5em;
+
+  > .menu-header-title {
+    font-weight: bolder;
+    font-size: 1.25em;
+    padding-left: 1em;
+  }
+
+  .menu-header-column {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .menu-header-row {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
     padding: 0.5em;
+    gap: 1em;
+  }
+
+  .toggle-group {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 0.5em;
     label {
       display: block;
     }
+  }
+}
+
+.explanation-background {
+  background-color: app-color-default($app-primary);
+  color: app-color-default-contrast($app-primary);
+  border-radius: 0.5em;
+  padding: 0.5em;
+
+  ul {
+    margin: 0;
   }
 }
