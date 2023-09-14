@@ -1,7 +1,5 @@
 import { UntypedFormControl, UntypedFormGroup, ValidationErrors } from '@angular/forms';
-import { isFormGroup, collectErrors } from './form-group-collect-errors';
-
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import { collectErrors, isFormGroup } from './form-group-collect-errors';
 
 describe('Helper: form-group-collect-errors', () => {
   describe('Method: isFormGroup', () => {

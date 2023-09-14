@@ -1,9 +1,9 @@
 import { environment } from '@environments/environment';
+import faker from '@faker-js/faker';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import faker from '@faker-js/faker';
-import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { DeviceType } from '@models/enums';
+import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 /** Fake API for woodstock player inventory profiles. */
 export class SteelheadPlayerInventoryProfilesFakeApi extends FakeApiBase {

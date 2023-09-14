@@ -1,8 +1,6 @@
 import { GameTitleCodeName } from '@models/enums';
 import { overrideApolloEndpointKey, overrideSunriseEndpointKey } from './override-endpoint-key';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('Helper: override-endpoint-key', () => {
   describe('Method: overrideSunriseEndpointKey', () => {
     const endpointKey = 'Retail';

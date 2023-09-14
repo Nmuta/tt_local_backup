@@ -1,12 +1,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { of } from 'rxjs';
 import { delay, startWith } from 'rxjs/operators';
-import faker from '@faker-js/faker';
 
 import { LogoutIframeComponent } from './logout-iframe.component';
 

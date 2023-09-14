@@ -3,7 +3,6 @@ import { pluralize, PluralizeConfig } from './pluralize';
 
 // prettier made this basically unreadable so i disabled it
 // prettier-ignore
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('pluralize', () => {
   const configWithNumbers: PluralizeConfig = {

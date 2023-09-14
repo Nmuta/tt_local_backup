@@ -5,10 +5,10 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import {
-  createMockWindowService,
   MockWindowService,
   WindowOpen,
   WindowService,
+  createMockWindowService,
 } from '@services/window';
 
 import { LogoutComponent } from './logout.component';

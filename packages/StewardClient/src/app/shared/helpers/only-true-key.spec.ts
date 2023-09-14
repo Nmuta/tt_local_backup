@@ -1,7 +1,5 @@
 import { onlyTrueKey, onlyTrueKeyBy } from './only-true-key';
 
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-
 describe('Helper: only-true-key', () => {
   describe('Method: onlyTrueKey works properly', () => {
     it('on FTF object', () => {
