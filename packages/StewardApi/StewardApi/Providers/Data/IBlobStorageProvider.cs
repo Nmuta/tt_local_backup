@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
@@ -38,6 +39,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Generate a SAS uri to download the leaderboard file.
         /// </summary>
-        Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier);
+        Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier, IPAddress userIP);
     }
 }

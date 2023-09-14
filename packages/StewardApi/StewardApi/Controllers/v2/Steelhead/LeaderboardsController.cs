@@ -370,10 +370,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
             var leaderboard = await this.GetLeaderboardMetadataAsync(scoreboardType, scoreType, trackId, pivotId, environment).ConfigureAwait(true);
-
+            var ipAddress = this.HttpContext.Connection.RemoteIpAddress;
             var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{leaderboard.TrackId}_{leaderboard.GameScoreboardId}";
 
-            var leaderboardFileUri = await this.blobStorageProvider.GetLeaderboardDataLinkAsync(leaderboardIdentifier); //TODO pass in IP of requester, use it to set IP range of SAS token.
+            var leaderboardFileUri = await this.blobStorageProvider.GetLeaderboardDataLinkAsync(leaderboardIdentifier, ipAddress);
 
             return this.Ok(leaderboardFileUri);
         }

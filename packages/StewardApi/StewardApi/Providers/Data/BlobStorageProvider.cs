@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage;
@@ -179,7 +180,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier)
+        public async Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier, IPAddress userIP)
         {
             var blobFileName = leaderboardIdentifier + ".csv";
 
@@ -194,13 +195,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     ExpiresOn = DateTime.UtcNow.AddMinutes(2),
                     BlobContainerName = leaderboardClient.GetParentBlobContainerClient().Name,
                     BlobName = leaderboardClient.Name,
-                    Resource = "b", //b = blob, c = container
+                    Resource = "b", // b = blob, c = container
+                    IPRange = new SasIPRange(userIP, userIP),
                 };
 
                 sasBuilder.SetPermissions(BlobSasPermissions.Read);
 
-
-                Uri sasURI = leaderboardClient.GenerateSasUri(sasBuilder);
+                var sasURI = leaderboardClient.GenerateSasUri(sasBuilder);
 
                 return sasURI;
             }
