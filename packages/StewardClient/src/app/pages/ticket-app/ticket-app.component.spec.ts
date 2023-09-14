@@ -77,7 +77,7 @@ describe('TicketAppComponent', () => {
       objectId: `${faker.datatype.uuid()}`,
     };
 
-    fdescribe('When subscribing to profile returns a value', () => {
+    describe('When subscribing to profile returns a value', () => {
       beforeEach(() => {
         Object.defineProperty(component, 'profile$', { writable: true });
         component.profile$ = of(testProfile);
