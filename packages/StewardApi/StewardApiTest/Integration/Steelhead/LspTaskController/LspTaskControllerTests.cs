@@ -54,5 +54,20 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
                 Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
             }
         }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task SetLspTask_InvalidAuth()
+        {
+            try
+            {
+                await unauthedClient.SetLspTask().ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
     }
 }

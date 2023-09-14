@@ -23,5 +23,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
             return await ServiceClient.SendRequestAsync<IEnumerable<LspTask>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
+
+        public async Task SetLspTask()
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}/lsp-task/update-single");
+
+            await ServiceClient.SendRequestAsync<object>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+        }
     }
 }
