@@ -73,6 +73,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead.RivalsController
 
         [TestMethod]
         [IntegrationTest]
+        public async Task GetRivalEvents_NoParam_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.GetRivalsEvents().ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task GetRivalEvents_ByXuid_InvalidAuth()
         {
             try
@@ -103,6 +118,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead.RivalsController
 
         [TestMethod]
         [IntegrationTest]
+        public async Task GetRivalEvents_Reference_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.GetRivalsEventsReference().ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task GetRivalEvents_Categories()
         {
             try
@@ -113,6 +143,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead.RivalsController
             catch (ServiceException ex)
             {
                 Assert.Fail(ex.ResponseBody);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetRivalEvents_Categories_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.GetRivalsEventsCategories().ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
             }
         }
     }

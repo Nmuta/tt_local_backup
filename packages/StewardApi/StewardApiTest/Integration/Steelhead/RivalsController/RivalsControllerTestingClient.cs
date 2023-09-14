@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         public async Task<Dictionary<Guid, string>> GetRivalsEventsReference()
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}/rivals/Reference");
+            var path = new Uri(this.baseUri, $"{TitlePath}/rivals/reference");
 
             return await ServiceClient.SendRequestAsync<Dictionary<Guid, string>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
