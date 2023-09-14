@@ -14,7 +14,6 @@ import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/le
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { LocationDetailsModule } from '@shared/views/location-details/location-details.module';
 import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { ChangelogModule } from '@views/old-changelog/old-changelog.module';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { HubsModule } from '@shared/hubs/hubs.module';
 import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
@@ -62,7 +61,6 @@ import { ToursComponent } from './settings/tours/tours.component';
     ToursComponent,
   ],
   imports: [
-    ChangelogModule,
     CommonModule,
     DataPrivacyNoticeModule,
     DirectivesModule,

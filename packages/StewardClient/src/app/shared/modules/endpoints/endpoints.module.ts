@@ -10,12 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { HelpModule } from '../help/help.module';
 import { RouterModule } from '@angular/router';
+import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 
 /**
  * Contains utility modules for interacting with currently selected endpoints.
  */
 @NgModule({
   declarations: [EndpointsNavToolComponent],
+  exports: [EndpointsNavToolComponent],
   imports: [
     CommonModule,
     MatTooltipModule,
@@ -24,6 +26,7 @@ import { RouterModule } from '@angular/router';
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+    ErrorSpinnerModule,
     RouterModule.forChild([]),
     MatButtonToggleModule,
     HelpModule,

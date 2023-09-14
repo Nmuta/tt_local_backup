@@ -39,6 +39,7 @@ import { DeeplinkShowroomComponent } from './steelhead/tile-components/deeplink/
 import { DeeplinkRivalsComponent } from './steelhead/tile-components/deeplink/components/rivals/steelhead-deeplink-rivals.component';
 import { DeeplinkBuildersCupComponent } from './steelhead/tile-components/deeplink/components/builders-cup/steelhead-deeplink-builders-cup.component';
 import { DeeplinkRacersCupComponent } from './steelhead/tile-components/deeplink/components/racers-cup/steelhead-deeplink-racers-cup.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 /** Module for displaying welcome center tiles tool. */
 @NgModule({
@@ -86,6 +87,7 @@ import { DeeplinkRacersCupComponent } from './steelhead/tile-components/deeplink
     LuxonModule,
     VerifyButtonModule,
     ActivePullRequestsModule,
+    MatAutocompleteModule,
   ],
   exports: [],
 })

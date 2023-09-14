@@ -1,6 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { environment } from '@environments/environment';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { Observable, takeUntil } from 'rxjs';
@@ -77,8 +76,8 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
   // TODO: I think this is not really where this belongs, but moving it elsewhere seems beyond the scope of this PR.
   private handleNewVersion() {
     // if there's no app version, we need to update it.
-    if (!this.userSettingsService.appVersion) {
-      this.userSettingsService.appVersion = environment.adoVersion;
+    if (!this.userSettingsService.lastSeenAppVersion) {
+      this.userSettingsService.lastSeenAppVersion = this.userSettingsService.currentAppVersion;
       return;
     }
 
@@ -90,18 +89,22 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
       return;
     }
 
-    const currentVersion = environment.adoVersion;
-    const isNewAppVersion = currentVersion !== this.userSettingsService.appVersion;
+    const currentVersion = this.userSettingsService.currentAppVersion;
+    const lastSeenVersion = this.userSettingsService.lastSeenAppVersion;
+    const isNewAppVersion = currentVersion !== lastSeenVersion;
     if (!isNewAppVersion) {
       return;
     }
 
+    this.userSettingsService.lastSeenAppVersion = this.userSettingsService.currentAppVersion;
     const isAlreadyOnChangelog = this.router.url.includes('sidebar:unified/changelog');
     if (isAlreadyOnChangelog) {
       return;
     }
     this.router.navigate([{ outlets: { sidebar: 'unified/changelog' } }], {
       relativeTo: this.activatedRoute,
+      preserveFragment: true,
+      queryParamsHandling: 'preserve',
     });
   }
 }

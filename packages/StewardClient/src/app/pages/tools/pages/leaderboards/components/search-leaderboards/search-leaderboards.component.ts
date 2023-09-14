@@ -21,6 +21,7 @@ import { map, startWith, takeUntil, debounceTime, tap } from 'rxjs/operators';
 
 /** Available filter types for leaderboards. */
 enum LeaderboardFilterType {
+  ScoreboardType = 'ScoreboardType',
   ScoreType = 'ScoreType',
   CarClass = 'CarClass',
 }
@@ -133,6 +134,9 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     const scoreFilters = allFilters.filter(
       filter => filter.type === LeaderboardFilterType.ScoreType,
     );
+    const scoreboardFilters = allFilters.filter(
+      filter => filter.type === LeaderboardFilterType.ScoreboardType,
+    );
     const carClassFilters = allFilters.filter(
       filter => filter.type === LeaderboardFilterType.CarClass,
     );
@@ -145,6 +149,13 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         );
       }
 
+      let inScoreboardFilters = true;
+      if (scoreboardFilters.length > 0) {
+        inScoreboardFilters = !!scoreboardFilters.find(filter =>
+          filter.id.isEqualTo(leaderboard.scoreboardTypeId),
+        );
+      }
+
       let inCarClassFilters = true;
       if (carClassFilters.length > 0) {
         inCarClassFilters = !!carClassFilters.find(filter =>
@@ -152,7 +163,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         );
       }
 
-      return inScoreFilters && inCarClassFilters;
+      return inScoreFilters && inScoreboardFilters && inCarClassFilters;
     });
 
     this.autocompleteLeadeboards = this.filterLeaderboards(this.formControls.leaderboard.value);
@@ -274,7 +285,8 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     return this.filteredLeaderboards.filter(
       option =>
         option.name.toLowerCase().includes(filterValue) ||
-        option.scoreType.toLowerCase().includes(filterValue),
+        option.scoreType.toLowerCase().includes(filterValue) ||
+        option.scoreboardType.toLowerCase().includes(filterValue),
     );
   }
 
@@ -351,6 +363,22 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
       },
     );
 
+    const scoreboardTypeGroup = this.leaderboardFilterGroups.find(
+      group => group.name === LeaderboardFilterType.ScoreboardType,
+    );
+    const scoreboardTypeFilter = unionBy(
+      this.filteredLeaderboards.map(board => {
+        return {
+          type: LeaderboardFilterType.ScoreboardType,
+          id: board.scoreboardTypeId,
+          name: board.scoreboardType,
+        } as LeaderboardFilter;
+      }),
+      filter => {
+        return filter.id.toString();
+      },
+    );
+
     const carClasseGroup = this.leaderboardFilterGroups.find(
       group => group.name === LeaderboardFilterType.CarClass,
     );
@@ -370,6 +398,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     ).reverse();
 
     scoreTypeGroup.items = scoreTypeFilter;
+    scoreboardTypeGroup.items = scoreboardTypeFilter;
     carClasseGroup.items = carClassFilter;
   }
 

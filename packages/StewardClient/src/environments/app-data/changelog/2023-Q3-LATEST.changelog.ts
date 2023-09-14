@@ -8,9 +8,63 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'e2450ffa-7ebc-47ec-a05b-4fba09be9d4d',
+      shortText: 'Leaderboard updates',
+      longText: [
+        'Add scoreboard type as a filter when searching leaderboards.',
+        'Use more specific track name for attack time leaderboards.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd9513283-4f67-4286-99fb-18a1f6952b3c',
+      shortText: 'Misc Fixes',
+      longText: [
+        'Correct automatic changelog-opening behavior.',
+        'Reduce console errors.',
+        'Correct missing icon font.',
+        'Mimic hourly releases when running localhost development environment.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Display warning beside user flag when lookup provides conflicting data',
+    },
+    {
+      tag: {
+        title: GameTitle.FH5,
+        tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],
+      },
+      uuid: 'cdd66b5e-b3d5-49f6-8a73-bc02fdf3595b',
+      shortText: 'Add Prop Prefab UGC type',
+    },
+    {
+      tag: { title: 'all', tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '6bd26f9c-2af3-44f3-aba2-7f0c486ed5e8',
+      shortText: 'Add autocomplete feature and validation',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '317fabba-9068-4444-9fe7-4a2140d252e9',
       shortText: 'Prepare Steward UI for new deployment model',
+      longText: [
+        'Update 1: Restructure static deploy config files. Add Favicon.',
+        'Update 2: Adjust build pipeline.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'c59b7731-7ee8-4b34-a64f-0c0d47d484db',
+      shortText: 'Rework Endpoints navbar utility',
+      longText: [
+        'Utility is now capable of setting all environment endpoints.',
+        'Utility size has been reduced, and it may no longer be removed from the toolbar.',
+        'Quick-change-button color now matches the color in the summary grid.',
+        'Quick-change-button is replaced by a spinner while endpoint data is being retrieved.',
+        'Navbar theme-toggle button has been adjusted to match toolbar',
+      ],
     },
     {
       tag: ChangelogTag.General,
@@ -333,7 +387,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       ],
     },
     {
-      tag: { title: [GameTitle.FM8], tool: NavbarTool.Endpoints },
+      tag: ChangelogTag.General,
       uuid: '4e991b31-5a72-41ba-ba46-58341f8cf52b',
       shortText: 'Add Retail endpoint for Steelhead',
     },

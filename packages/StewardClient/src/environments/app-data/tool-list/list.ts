@@ -7,7 +7,6 @@ import {
   banHistoryTile,
   banningTile,
   carDetailsTile,
-  endpointsWidgetTile,
   giftHistoryTile,
   giftingTile,
   kustoTile,
@@ -88,7 +87,6 @@ export const unprocessedToolList: HomeTileInfo[] = [
   powerBIExternalDropdownTile,
 
   themeingWidgetTile,
-  endpointsWidgetTile,
 
   permissionManagementInternalTile,
   metaToolsInternalTile,
