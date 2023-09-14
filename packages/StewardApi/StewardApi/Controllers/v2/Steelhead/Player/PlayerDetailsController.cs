@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Castle.Core.Internal;
@@ -59,6 +60,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
 
+            if (result.Region < 0)
+            {
+                throw new NotFoundStewardException($"Game details not found. (GTag: {gamertag})");
+            }
+
             return this.Ok(result);
         }
 
@@ -77,14 +83,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
 
-            if (result.Xuid == default(ulong))
-            {
-                throw new NotFoundStewardException($"Player details not found. (XUID: {xuid})");
-            }
-
             if (result.Region < 0)
             {
-                throw new Services.ServiceClient.ServiceException(HttpStatusCode.InternalServerError, $"Player details not found. (XUID: {xuid})");
+                throw new NotFoundStewardException($"Game details not found. (XUID: {xuid})");
             }
 
             return this.Ok(result);
@@ -103,16 +104,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             response = await this.Services.UserManagementService.GetUserDetails(xuid)
                 .ConfigureAwait(false);
 
-            if (response.forzaUser.Xuid == default(ulong))
-            {
-                throw new NotFoundStewardException($"Game details not found. (XUID: {xuid})");
-            }
-
             var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
 
             if (result.Gamertag.IsNullOrEmpty())
             {
-                throw new Services.ServiceClient.ServiceException(HttpStatusCode.InternalServerError, $"Game details not found. (XUID: {xuid})");
+                throw new NotFoundStewardException($"Game details not found. (XUID: {xuid})");
             }
 
             return this.Ok(result);
