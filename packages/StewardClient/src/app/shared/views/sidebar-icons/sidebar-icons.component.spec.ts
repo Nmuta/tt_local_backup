@@ -51,7 +51,11 @@ describe('SidebarIconsComponent', () => {
     spyOnChangelogServicesDisablePopup.and.returnValue(false);
 
     mockUserSettingsService = TestBed.inject(UserSettingsService);
-    spyOnSettingsStateAppVersion = spyOnProperty(mockUserSettingsService, 'appVersion', 'get');
+    spyOnSettingsStateAppVersion = spyOnProperty(
+      mockUserSettingsService,
+      'currentAppVersion',
+      'get',
+    );
     spyOnSettingsStateAppVersion.and.returnValue(undefined);
 
     mockNotificationsService = TestBed.inject(NotificationsService);
@@ -89,17 +93,17 @@ describe('SidebarIconsComponent', () => {
 
     describe('When the app version is defined', () => {
       const testAdoVerion: string = 'test-ado-verion';
-      const oldtAdoVerion: string = 'old-ado-verion';
+      const oldAdoVerion: string = 'old-ado-verion';
       const defaultSettingsNotificationCount = 0;
 
       beforeEach(() => {
-        spyOnSettingsStateAppVersion.and.returnValue(oldtAdoVerion);
+        spyOnSettingsStateAppVersion.and.returnValue(oldAdoVerion);
         component.settingsNotificationCount = defaultSettingsNotificationCount;
       });
 
       describe('And it matches the environment version', () => {
         beforeEach(() => {
-          environment.adoVersion = oldtAdoVerion;
+          environment.adoVersion = oldAdoVerion;
         });
 
         it('should not open the changelog sidebar', fakeAsync(() => {

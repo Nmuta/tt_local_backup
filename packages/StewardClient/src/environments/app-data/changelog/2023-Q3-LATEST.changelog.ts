@@ -13,6 +13,26 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add UGC Title and Description length validation',
     },
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'e2450ffa-7ebc-47ec-a05b-4fba09be9d4d',
+      shortText: 'Leaderboard updates',
+      longText: [
+        'Add scoreboard type as a filter when searching leaderboards.',
+        'Use more specific track name for attack time leaderboards.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd9513283-4f67-4286-99fb-18a1f6952b3c',
+      shortText: 'Misc Fixes',
+      longText: [
+        'Correct automatic changelog-opening behavior.',
+        'Reduce console errors.',
+        'Correct missing icon font.',
+        'Mimic hourly releases when running localhost development environment.',
+      ],
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
       uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
       shortText: 'Display warning beside user flag when lookup provides conflicting data',

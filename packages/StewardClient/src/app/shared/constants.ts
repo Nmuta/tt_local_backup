@@ -1,4 +1,4 @@
-import { DateTime, DurationObject } from 'luxon';
+import { DateTime } from 'luxon';
 
 /**
  * Gift history antecedent used to provide type of player identifier.
@@ -16,7 +16,7 @@ export enum EmailAddresses {
 }
 
 /** Minimum calendar datetime when data contains null. */
-export const MIN_CALENDAR_DATETIME = DateTime.utc().minus({ years: 2 } as DurationObject);
+export const MIN_CALENDAR_DATETIME = DateTime.utc().minus({ years: 2 });
 
 /** Maximum calendar datetime when data contains null. */
-export const MAX_CALENDAR_DATETIME = DateTime.utc().plus({ years: 2 } as DurationObject);
+export const MAX_CALENDAR_DATETIME = DateTime.utc().plus({ years: 2 });

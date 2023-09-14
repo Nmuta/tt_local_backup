@@ -395,7 +395,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     {
                         leaderboards.Add(new Leaderboard()
                         {
-                            Name = $"{track.DisplayName} Time Attack - {carClass.DisplayName} Class",
+                            Name = $"{track.ShortDisplayName} Time Attack - {carClass.DisplayName} Class",
                             GameScoreboardId = (int)carClass.Id,
                             TrackId = track.id,
                             ScoreboardTypeId = (int)ScoreboardType.TimeAttack,
