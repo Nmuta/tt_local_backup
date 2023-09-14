@@ -10,7 +10,12 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: '4a899681-244c-45c2-a02c-4d1801366057',
-      shortText: 'Track "test" Background Jobs separately.',
+      shortText: 'Track "test" Background Jobs separately',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '26e5ce44-0472-4b85-b1f9-cc2629b0e8b9',
+      shortText: 'Fixed bug preventing hide and unhide of UGC',
     },
     {
       tag: { title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7], tool: NavbarTool.Zendesk },
