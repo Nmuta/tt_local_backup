@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Git;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
 using SteelheadLiveOpsContent;
@@ -23,6 +24,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             var path = new Uri(this.baseUri, $"{TitlePath}/localization");
 
             return await ServiceClient.SendRequestAsync<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+        }
+
+        public async Task<PullRequest> SetLocalizedString()
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}/localization");
+
+            return await ServiceClient.SendRequestAsync<PullRequest>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<SupportedLocale>> GetSupportedLocales()

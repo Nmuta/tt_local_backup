@@ -57,6 +57,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
+        public async Task SetLocalizedStringData_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.SetLocalizedString().ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task GetSupportedLocales()
         {
             try
