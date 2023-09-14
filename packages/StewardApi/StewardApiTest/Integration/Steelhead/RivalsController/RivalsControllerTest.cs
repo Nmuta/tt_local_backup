@@ -14,7 +14,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead.RivalsController
     {
         private static RivalsControllerTestingClient stewardClient;
         private static RivalsControllerTestingClient unauthedClient;
-        private ulong xuid = 2675352635783107;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -47,7 +46,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead.RivalsController
         {
             try
             {
-                var response = await stewardClient.GetRivalsEvents(this.xuid).ConfigureAwait(false);
+                var response = await stewardClient.GetRivalsEvents(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -92,7 +91,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead.RivalsController
         {
             try
             {
-                var response = await unauthedClient.GetRivalsEvents(this.xuid).ConfigureAwait(false);
+                var response = await unauthedClient.GetRivalsEvents(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
