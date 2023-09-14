@@ -11,7 +11,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
     {
         private static AuctionsControllerTestingClient stewardClient;
         private static AuctionsControllerTestingClient unauthedClient;
-        private ulong xuid = 2675352635783107;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -29,7 +28,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetPlayerAuctions(this.xuid).ConfigureAwait(false);
+                var response = await stewardClient.GetPlayerAuctions(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -44,7 +43,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetPlayerAuctions(this.xuid).ConfigureAwait(false);
+                var response = await unauthedClient.GetPlayerAuctions(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -74,7 +73,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetPlayerAuctionLog(this.xuid).ConfigureAwait(false);
+                var response = await stewardClient.GetPlayerAuctionLog(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -89,7 +88,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetPlayerAuctionLog(this.xuid).ConfigureAwait(false);
+                var response = await unauthedClient.GetPlayerAuctionLog(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
