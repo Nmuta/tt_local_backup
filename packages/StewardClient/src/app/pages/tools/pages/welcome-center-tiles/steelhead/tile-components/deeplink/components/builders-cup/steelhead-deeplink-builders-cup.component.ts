@@ -8,6 +8,7 @@ import {
   ValidationErrors,
   ControlValueAccessor,
   Validator,
+  Validators,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -55,7 +56,7 @@ export class DeeplinkBuildersCupComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    buildersCupSettingType: new UntypedFormControl(null),
+    buildersCupSettingType: new UntypedFormControl(null, [Validators.required]),
     buildersCupChampionship: new UntypedFormControl(null),
     buildersCupLadder: new UntypedFormControl(null),
     buildersCupSeries: new UntypedFormControl(null),
@@ -81,12 +82,38 @@ export class DeeplinkBuildersCupComponent
           this.buildersCupSeries = series;
         });
     }
+
+    this.formControls.buildersCupSettingType.valueChanges.subscribe(
+      (value: BuildersCupSettingType) => {
+        this.formControls.buildersCupChampionship.removeValidators([Validators.required]);
+        this.formControls.buildersCupLadder.removeValidators([Validators.required]);
+        this.formControls.buildersCupSeries.removeValidators([Validators.required]);
+
+        if (value == BuildersCupSettingType.Series) {
+          this.formControls.buildersCupChampionship.addValidators([Validators.required]);
+          this.formControls.buildersCupSeries.addValidators([Validators.required]);
+        } else if (value == BuildersCupSettingType.Ladder) {
+          this.formControls.buildersCupChampionship.addValidators([Validators.required]);
+          this.formControls.buildersCupLadder.addValidators([Validators.required]);
+        }
+
+        this.formControls.buildersCupChampionship.updateValueAndValidity();
+        this.formControls.buildersCupLadder.updateValueAndValidity();
+        this.formControls.buildersCupSeries.updateValueAndValidity();
+      },
+    );
   }
 
   /** Form control hook. */
   public writeValue(data: DeeplinkDestination): void {
     const buildersCupDestination = data as BuildersCupDestination;
-    this.formControls.buildersCupSettingType.setValue(buildersCupDestination.settingType);
+    if (
+      Object.values(BuildersCupDestination).includes(
+        buildersCupDestination.settingType as BuildersCupSettingType,
+      )
+    ) {
+      this.formControls.buildersCupSettingType.setValue(buildersCupDestination.settingType);
+    }
 
     if (buildersCupDestination.settingType == BuildersCupSettingType.Ladder) {
       this.formControls.buildersCupChampionship.setValue(buildersCupDestination.championship);
@@ -150,24 +177,5 @@ export class DeeplinkBuildersCupComponent
     }
 
     return null;
-  }
-
-  /** Set the fields of a builders cup destination using the form values. */
-  public mapFormToDestination() {
-    const buildersCupDestination = {
-      settingType: this.formControls.buildersCupSettingType.value,
-      destinationType: DestinationType.BuildersCup,
-    } as BuildersCupDestination;
-
-    if (buildersCupDestination.settingType == BuildersCupSettingType.Ladder) {
-      buildersCupDestination.championship = this.formControls.buildersCupChampionship.value;
-      buildersCupDestination.ladder = this.formControls.buildersCupLadder.value;
-    }
-    if (buildersCupDestination.settingType == BuildersCupSettingType.Series) {
-      buildersCupDestination.championship = this.formControls.buildersCupChampionship.value;
-      buildersCupDestination.series = this.formControls.buildersCupSeries.value;
-    }
-
-    return buildersCupDestination;
   }
 }

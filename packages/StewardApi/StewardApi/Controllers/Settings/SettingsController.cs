@@ -49,15 +49,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var validEndpoints = new TitleEndpoints
             {
                 Apollo = typeof(ApolloEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
+                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
                 Sunrise = typeof(SunriseEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
+                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
                 Woodstock = typeof(WoodstockEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
+                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
                 Steelhead = typeof(SteelheadEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
+                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
                 Forte = typeof(ForteEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)),
+                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
                 Forum = new List<LspEndpoint>() { new LspEndpoint("Retail") },
             };
 
@@ -95,6 +95,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var results = await this.blobStorageProvider.SetStewardPlayFabSettingsAsync(updatedPlayfabSettings).ConfigureAwait(true);
 
             return this.Ok(results);
+        }
+
+        private int MapEndpointPriority(string priority)
+        {
+            switch (priority.ToUpperInvariant())
+            {
+                case "RETAIL":
+                    return 1;
+                case "STUDIO":
+                    return 2;
+                case "FLIGHT":
+                    return 3;
+                default:
+                    return 4;
+            }
         }
     }
 }

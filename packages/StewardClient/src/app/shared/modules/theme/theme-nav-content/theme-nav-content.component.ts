@@ -9,9 +9,9 @@ import { ThemeService } from '../theme.service';
   styleUrls: ['./theme-nav-content.component.scss'],
 })
 export class ThemeNavContentComponent implements CustomTileComponent {
-  /** REVIEW-COMMENT: Is nav content disabled. */
+  /** Is nav content disabled. */
   @Input() public disabled: boolean;
-  /** REVIEW-COMMENT: Nav item. */
+  /** Nav item. */
   @Input() public item: HomeTileInfo;
 
   /** The theme override setting. */

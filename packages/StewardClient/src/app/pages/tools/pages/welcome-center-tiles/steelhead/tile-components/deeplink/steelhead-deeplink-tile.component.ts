@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -72,6 +73,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
     private readonly steelheadDeeplinkTileService: SteelheadDeeplinkTileService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     super();
 
@@ -86,6 +88,11 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
   /** Lifecycle hook. */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.deeplinkTile) {
+      // Force reset destination type so the subcomponent is destroyed before replacing baseDestination in the setFields method
+      // If this is not done, when switching from Destination A to Destination B, the Destination A component would receive the new baseDestination
+      // instead of the Destination B component because of how Angular deals with formControls observable and template ngIf.
+      this.formControls.destinationType.setValue(null);
+      this.changeDetectorRef.detectChanges();
       this.setFields(this.deeplinkTile);
     }
 
