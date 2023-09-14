@@ -26,6 +26,12 @@
           <td mat-cell *matCellDef="let element">{{ element.createdDateUtc | date : 'short' }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="icon">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element"><mat-icon *ngIf="element.isTestJob"
+              matTooltip="This job is a test job. It was created in a local environment.">bug_report</mat-icon></td>
+        </ng-container>
+
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef>Job Status</th>
           <td mat-cell *matCellDef="let element">{{ element.status }}</td>
