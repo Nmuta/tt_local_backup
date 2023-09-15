@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'ef93bf86-0143-4460-9770-42e5490b11f9',
+      shortText: 'Target correct LSP group for Steelhead Talented Players',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
       uuid: '26e5ce44-0472-4b85-b1f9-cc2629b0e8b9',
       shortText: 'Fixed bug preventing hide and unhide of UGC',
