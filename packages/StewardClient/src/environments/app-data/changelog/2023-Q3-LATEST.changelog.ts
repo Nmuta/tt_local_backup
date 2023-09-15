@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '361fff59-388c-4612-9471-36116fb1e3d6',
+      shortText: 'Add ability to search leaderboard scores by gamertag',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
       uuid: '3fceecf9-9020-4044-9857-d49978fc6e8f',
       shortText: 'Add UGC Title and Description length validation',

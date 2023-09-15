@@ -109,29 +109,19 @@
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Player XUID</mat-label>
-            <input
-              matInput
-              [formControl]="formControls.xuid"
-              spellcheck="false"
-              autocomplete="off"
-            />
-
-            <button
-              mat-button
-              matSuffix
-              mat-icon-button
-              matTooltip="Clear XUID input"
-              (click)="formControls.xuid.setValue('')"
-              clickStop
+          <div class="player-selection-container">
+            <player-selection-single
+              [disableLookupTypes]="['t10Id']"
+              [allowSelection]="false"
+              [rejectionFn]="service.rejectionFn"
+              (found)="playerIdentityFound($event)"
+            ></player-selection-single>
+            <span *ngIf="playerNotFound" class="sf-text-warn player-not-found"
+              >{{ service.gameTitle | gameTitleFullName }} account not found, identity filter
+              ignored. Ensure you are entering a valid XUID or Gamertag.</span
             >
-              <mat-icon>close</mat-icon>
-            </button>
             <mat-hint>(Optional) Searches scores above and below player</mat-hint>
-            <mat-error *ngIf="formControls.xuid.hasError('isNan')">Not a valid XUID</mat-error>
-          </mat-form-field>
+          </div>
 
           <mat-form-field appearance="fill">
             <mat-label>Device Types</mat-label>

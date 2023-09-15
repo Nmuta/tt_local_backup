@@ -14,7 +14,9 @@
     </ng-template>
 
     <!-- Tab Content -->
-    <steelhead-search-leaderboards></steelhead-search-leaderboards>
+    <steelhead-search-leaderboards
+      (selectedIdentity)="onIdentitySelected($event)"
+    ></steelhead-search-leaderboards>
     <steelhead-leaderboard-stats
       [leaderboard]="activeLeaderboard"
       [scoresDeleted]="scoresDeleted"
@@ -24,6 +26,7 @@
     <steelhead-leaderboard-scores
       [leaderboard]="activeLeaderboard"
       [externalSelectedScore]="statsSelectedScore"
+      [externalSelectedIdentity]="selectedIdentity"
       (scoresDeleted)="onScoresDeleted($event)"
     ></steelhead-leaderboard-scores>
   </mat-tab>

@@ -19,6 +19,8 @@ import faker from '@faker-js/faker';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { GameTitle } from '@models/enums';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 
 describe('SearchLeaderboardsComponent', () => {
   let component: SearchLeaderboardsComponent;
@@ -27,8 +29,15 @@ describe('SearchLeaderboardsComponent', () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockBlobStorageService: BlobStorageService;
   const mockService: SearchLeaderboardsContract = {
+    gameTitle: GameTitle.FM8,
     getLeaderboards$: () => {
       return of([]);
+    },
+    foundFn: (_identity: AugmentedCompositeIdentity) => {
+      return null;
+    },
+    rejectionFn: (_identity: AugmentedCompositeIdentity) => {
+      return null;
     },
   };
 

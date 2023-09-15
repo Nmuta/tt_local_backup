@@ -1,1 +1,2 @@
-<search-leaderboards [service]="leaderboardsService"> </search-leaderboards>
+<search-leaderboards [service]="service" (selectedIdentity)="selectedIdentity.emit($event)">
+</search-leaderboards>
