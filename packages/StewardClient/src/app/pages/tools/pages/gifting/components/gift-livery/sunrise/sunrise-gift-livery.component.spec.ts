@@ -322,6 +322,7 @@ describe('SunriseGiftLiveryComponent', () => {
       result: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -381,6 +382,7 @@ describe('SunriseGiftLiveryComponent', () => {
           ],
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

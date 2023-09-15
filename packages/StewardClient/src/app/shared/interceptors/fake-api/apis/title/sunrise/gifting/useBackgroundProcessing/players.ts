@@ -36,6 +36,7 @@ export class SunriseGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBas
       result: undefined,
       isMarkingRead: undefined,
       isRead: false,
+      isTestJob: false,
       reason: faker.lorem.sentence(),
     };
   }
