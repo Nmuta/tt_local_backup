@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
@@ -32,6 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
         private readonly INotificationHistoryProvider notificationHistoryProvider;
+        private readonly ILoggingService loggingService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayerInventoryProvider"/> class.
@@ -41,19 +43,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             IMapper mapper,
             IRefreshableCacheStore refreshableCacheStore,
             IWoodstockGiftHistoryProvider giftHistoryProvider,
-            INotificationHistoryProvider notificationHistoryProvider)
+            INotificationHistoryProvider notificationHistoryProvider,
+            ILoggingService loggingService)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             mapper.ShouldNotBeNull(nameof(mapper));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
 
             this.woodstockService = woodstockService;
             this.mapper = mapper;
             this.refreshableCacheStore = refreshableCacheStore;
             this.giftHistoryProvider = giftHistoryProvider;
             this.notificationHistoryProvider = notificationHistoryProvider;
+            this.loggingService = loggingService;
         }
 
         /// <inheritdoc />
@@ -418,8 +423,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                             await serviceCall(key, item.Id).ConfigureAwait(false);
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        this.loggingService.LogException(new AppInsightsException($"Failed to gift item to player. (type: {key}) (itemId: {item.Id})", ex));
                         var error = new FailedToSendStewardError($"Failed to send item of type: {key} with ID: {item.Id}");
                         item.Error = error;
                         errors.Add(error);

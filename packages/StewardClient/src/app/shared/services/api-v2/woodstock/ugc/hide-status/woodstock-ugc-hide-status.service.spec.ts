@@ -1,15 +1,15 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { WoodstockUgcVisibilityService } from './woodstock-ugc-visibility.service';
+import { WoodstockUgcHideStatusService } from './woodstock-ugc-hide-status.service';
 
-describe('WoodstockUgcVisibilityService', () => {
-  let service: WoodstockUgcVisibilityService;
+describe('WoodstockUgcHideStatusService', () => {
+  let service: WoodstockUgcHideStatusService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(WoodstockUgcVisibilityService);
+    service = TestBed.inject(WoodstockUgcHideStatusService);
   });
 
   it('should be created', () => {
