@@ -378,9 +378,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             return this.Ok(leaderboardFileUri);
         }
 
-
-
-
         /// <summary>
         ///     Gets leaderboard metadata.
         /// </summary>
