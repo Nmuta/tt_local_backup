@@ -48,8 +48,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('Post Hide UGC');
   public unhideMonitor = new ActionMonitor('POST Unhide UGC');
-  public privateMonitor = new ActionMonitor('POST Mark UGC Private');
-  public publicMonitor = new ActionMonitor('POST Mark UGC Public');
+  public visibilityMonitor = new ActionMonitor('POST Update UGC Visibility');
   public reportMonitor = new ActionMonitor('Post Report UGC');
   public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
   public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
@@ -269,15 +268,15 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   }
 
   /** Mark a UGC item private in Steelhead */
-  public privateUgcItem(): void {
+  public markUgcItemPrivate(): void {
     if (!this.ugcItem) {
       return;
     }
-    this.privateMonitor = this.privateMonitor.repeat();
+    this.visibilityMonitor = this.visibilityMonitor.repeat();
 
     this.ugcVisibilityStatusService
       .privateUgcItems$([this.ugcItem.id])
-      .pipe(this.privateMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(this.visibilityMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;
         this.ugcItem.isPublic = false;
@@ -285,15 +284,15 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   }
 
   /** Mark a UGC item public in Steelhead */
-  public publicUgcItem(): void {
+  public markUgcItemPublic(): void {
     if (!this.ugcItem) {
       return;
     }
-    this.publicMonitor = this.publicMonitor.repeat();
+    this.visibilityMonitor = this.visibilityMonitor.repeat();
 
     this.ugcVisibilityStatusService
       .publicUgcItems$([this.ugcItem.id])
-      .pipe(this.publicMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .pipe(this.visibilityMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.ugcItem.isPublic = true;
         this.canFeatureUgc = this.ugcItem.isPublic && !this.ugcItem.isHidden;

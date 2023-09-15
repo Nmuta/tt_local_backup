@@ -139,9 +139,6 @@
                 monitorCompleteSnackbar
               >
                 Hide UGC
-                <help-popover-icon cardTitle="Hide UGC"
-                  >Private UGC cannot be hidden.</help-popover-icon
-                >
               </button>
             </div>
 
@@ -168,53 +165,30 @@
               </button>
             </div>
 
-            <div *ngIf="!ugcItem?.isPublic" class="sf-horizontal do-not-manipulate-margin">
+            <div class="sf-horizontal do-not-manipulate-margin">
               <verify-button
-                #verifyPublicBtn
+                #verifyVisibilityBtn
                 [permissionAttribute]="visibilityPermAttribute"
                 [permissionTitle]="gameTitle"
-                [disabled]="ugcItem?.isHidden"
+                [disabled]="!ugcItem?.isPublic ? ugcItem?.isHidden : false"
               ></verify-button>
               <button
                 class="sf-action-list-margins"
                 mat-raised-button
                 color="warn"
-                [verifyWithV2]="verifyPublicBtn"
-                (click)="publicUgcItem()"
+                [verifyWithV2]="verifyVisibilityBtn"
+                (click)="ugcItem?.isPublic ? markUgcItemPrivate() : markUgcItemPublic()"
                 stateManager
-                [monitor]="publicMonitor"
+                [monitor]="visibilityMonitor"
                 monitorDisable
                 monitorWarn
                 monitorWarnSnackbar
                 monitorCompleteSnackbar
               >
-                Mark UGC Public
-                <help-popover-icon cardTitle="Mark UGC Public"
+              {{ ugcItem.isPublic ? 'Mark UGC Private' : 'Mark UGC Public' }}
+                <help-popover-icon *ngIf="!ugcItem?.isPublic" cardTitle="Mark UGC Public"
                   >Hidden UGC cannot be made public.</help-popover-icon
                 >
-              </button>
-            </div>
-
-            <div *ngIf="ugcItem.isPublic" class="sf-horizontal do-not-manipulate-margin">
-              <verify-button
-                #verifyPrivateBtn
-                [permissionAttribute]="visibilityPermAttribute"
-                [permissionTitle]="gameTitle"
-              ></verify-button>
-              <button
-                class="sf-action-list-margins"
-                mat-raised-button
-                color="warn"
-                [verifyWithV2]="verifyPrivateBtn"
-                (click)="privateUgcItem()"
-                stateManager
-                [monitor]="privateMonitor"
-                monitorDisable
-                monitorWarn
-                monitorWarnSnackbar
-                monitorCompleteSnackbar
-              >
-                Mark UGC Private
               </button>
             </div>
 
