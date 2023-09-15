@@ -1,0 +1,5 @@
+/** Apply as <mat-menu class="mat-menu-wide"> to allow a double-width menu. */
+.mat-menu-panel.mat-menu-wide {
+  max-width: calc(280px * 2);
+  overflow-x: hidden;
+}

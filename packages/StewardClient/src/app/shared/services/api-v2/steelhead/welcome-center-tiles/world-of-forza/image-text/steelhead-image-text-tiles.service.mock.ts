@@ -9,7 +9,7 @@ export class MockSteelheadImageTextTileService {
 
   public getImageTextTiles$ = jasmine
     .createSpy('getImageTextTiles$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(null))));
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
   public getImageTextTile$ = jasmine
     .createSpy('getImageTextTile$')

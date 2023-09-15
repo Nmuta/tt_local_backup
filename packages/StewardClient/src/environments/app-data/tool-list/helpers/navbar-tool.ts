@@ -30,7 +30,6 @@ export enum NavbarTool {
   AuctionDetails = 'auction-details',
   Leaderboards = 'leaderboards',
   Theming = 'theming',
-  Endpoints = 'endpoints',
   UnifiedCalendar = 'unified-calendar',
   RacersCup = 'racers-cup',
   BuildersCupCalendar = 'builders-cup-calendar',

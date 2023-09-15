@@ -1,0 +1,162 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
+using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
+using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
+
+namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
+{
+    /// <summary>
+    ///     Controller for Steelhead Ugc hiding/unhiding.
+    /// </summary>
+    [Route("api/v{version:apiVersion}/title/steelhead/ugc")]
+    [LogTagTitle(TitleLogTags.Steelhead)]
+    [ApiController]
+    [ApiVersion("2.0")]
+    [Tags(Title.Steelhead, Topic.Ugc, Target.Details)]
+    public class UgcHideStatusController : V2SteelheadControllerBase
+    {
+        private const TitleCodeName CodeName = TitleCodeName.Steelhead;
+
+        private readonly IJobTracker jobTracker;
+        private readonly ILoggingService loggingService;
+        private readonly IScheduler scheduler;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="UgcHideStatusController"/> class.
+        /// </summary>
+        public UgcHideStatusController(
+            IJobTracker jobTracker,
+            ILoggingService loggingService,
+            IScheduler scheduler)
+        {
+            jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
+            scheduler.ShouldNotBeNull(nameof(scheduler));
+
+            this.jobTracker = jobTracker;
+            this.loggingService = loggingService;
+            this.scheduler = scheduler;
+        }
+
+        /// <summary>
+        ///    Unhide a ugc item.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.GeneralUser,
+            UserRole.LiveOpsAdmin)]
+        [HttpPost("unhide")]
+        [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Ugc)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
+        [Authorize(Policy = UserAttributeValues.UnhideUgc)]
+        public async Task<IActionResult> UnhideUgc([FromQuery] bool useBackgroundProcessing, [FromBody] Guid[] ugcIds)
+        {
+            if (useBackgroundProcessing)
+            {
+                var response = await this.SetUgcItemsHiddenStatusUseBackgroundProcessing(ugcIds, false).ConfigureAwait(false);
+                return response;
+            }
+            else
+            {
+                var response = await this.SetUgcItemsHiddenStatusAsync(this.Services.StorefrontManagementService, ugcIds, false).ConfigureAwait(false);
+                return this.Ok(response);
+            }
+        }
+
+        /// <summary>
+        ///    Hide a list of ugc item.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.GeneralUser,
+            UserRole.LiveOpsAdmin)]
+        [HttpPost("hide")]
+        [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Ugc)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Ugc)]
+        [AutoActionLogging(CodeName, StewardAction.Update, StewardSubject.UserGeneratedContent)]
+        [Authorize(Policy = UserAttributeValues.HideUgc)]
+        public async Task<IActionResult> HideUgc([FromQuery] bool useBackgroundProcessing, [FromBody] Guid[] ugcIds)
+        {
+            if (useBackgroundProcessing)
+            {
+                var response = await this.SetUgcItemsHiddenStatusUseBackgroundProcessing(ugcIds, true).ConfigureAwait(false);
+                return response;
+            }
+            else
+            {
+                var response = await this.SetUgcItemsHiddenStatusAsync(this.Services.StorefrontManagementService, ugcIds, true).ConfigureAwait(false);
+                return this.Ok(response);
+            }
+        }
+
+        // Hide list of UgcIds
+        private async Task<List<Guid>> SetUgcItemsHiddenStatusAsync(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds, bool isHidden)
+        {
+            var failedUgc = new List<Guid>();
+
+            foreach (var ugcId in ugcIds)
+            {
+                try
+                {
+                    await storefrontManagementService.HideUGC(ugcId, isHidden).ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    failedUgc.Add(ugcId);
+                }
+            }
+
+            return failedUgc;
+        }
+
+        // Hide list of UfcIds using background processing
+        private async Task<CreatedResult> SetUgcItemsHiddenStatusUseBackgroundProcessing(Guid[] ugcIds, bool isHidden)
+        {
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            var jobId = await this.jobTracker.CreateNewJobAsync(ugcIds.ToJson(), requesterObjectId, $"Woodstock Hide Multiple Ugc.", this.Response).ConfigureAwait(true);
+            var storefrontManagementService = this.Services.StorefrontManagementService;
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    var failedUgc = await this.SetUgcItemsHiddenStatusAsync(storefrontManagementService, ugcIds, isHidden).ConfigureAwait(false);
+
+                    var foundErrors = failedUgc.Count > 0;
+                    var jobStatus = foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, failedUgc).ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    this.loggingService.LogException(new AppInsightsException($"Background job failed {jobId}", ex));
+
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                }
+            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return BackgroundJobHelpers.GetCreatedResult(this.Created, this.Request.Scheme, this.Request.Host, jobId);
+        }
+    }
+}

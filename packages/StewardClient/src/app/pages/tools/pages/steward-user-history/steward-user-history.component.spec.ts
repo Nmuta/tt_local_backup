@@ -91,6 +91,7 @@ describe('StewardUserHistoryComponent', () => {
           rawResult: { foo: 'bar' } as Record<string, unknown>,
           result: [{ foo: 'bar' }, { cat: 'dog' }],
           isRead: true,
+          isTestJob: false,
           reason: faker.random.words(10),
           isMarkingRead: true,
         };
@@ -116,6 +117,7 @@ describe('StewardUserHistoryComponent', () => {
           rawResult: { foo: 'bar' },
           result: { foo: 'bar' },
           isRead: true,
+          isTestJob: false,
           reason: faker.random.words(10),
           isMarkingRead: true,
         };
@@ -141,6 +143,7 @@ describe('StewardUserHistoryComponent', () => {
         rawResult: { foo: 'bar' },
         result: { foo: 'bar' },
         isRead: true,
+        isTestJob: false,
         reason: faker.random.words(10),
         isMarkingRead: true,
         jsonTableResults: [],

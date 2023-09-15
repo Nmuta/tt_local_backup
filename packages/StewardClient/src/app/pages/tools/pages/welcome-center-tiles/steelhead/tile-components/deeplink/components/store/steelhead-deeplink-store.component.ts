@@ -8,6 +8,7 @@ import {
   ValidationErrors,
   ControlValueAccessor,
   Validator,
+  Validators,
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
@@ -49,7 +50,7 @@ export class DeeplinkStoreComponent
   public referenceDataMonitor = new ActionMonitor('GET Reference Data');
 
   public formControls = {
-    storeSettingType: new UntypedFormControl(null),
+    storeSettingType: new UntypedFormControl(null, [Validators.required]),
     storeProduct: new UntypedFormControl(null),
   };
 
@@ -66,12 +67,26 @@ export class DeeplinkStoreComponent
       .subscribe(entitlements => {
         this.storeProducts = entitlements;
       });
+
+    this.formControls.storeSettingType.valueChanges.subscribe((value: StoreSettingType) => {
+      this.formControls.storeProduct.removeValidators([Validators.required]);
+
+      if (value == StoreSettingType.Product) {
+        this.formControls.storeProduct.addValidators([Validators.required]);
+      }
+
+      this.formControls.storeProduct.updateValueAndValidity();
+    });
   }
 
   /** Form control hook. */
   public writeValue(data: DeeplinkDestination): void {
     const storeDestination = data as StoreDestination;
-    this.formControls.storeSettingType.setValue(storeDestination.settingType);
+    if (
+      Object.values(StoreSettingType).includes(storeDestination.settingType as StoreSettingType)
+    ) {
+      this.formControls.storeSettingType.setValue(storeDestination.settingType);
+    }
 
     if (storeDestination.settingType == StoreSettingType.Product) {
       this.formControls.storeProduct.setValue(storeDestination.product);

@@ -11,6 +11,12 @@
     },
     {
       "path": "infra"
+    },
+    {
+      "path": "."
+    },
+    {
+      "path": "packages/StewardClient-ZAT"
     }
   ],
   "settings": {
@@ -18,8 +24,8 @@
     "files.exclude": {
       "**/node_modules/**": true
     },
-    
-    "coverage-gutters.showLineCoverage": false,
+
+    "coverage-gutters.showLineCoverage": false
   },
   "extensions": {
     "recommendations": [
@@ -28,5 +34,5 @@
       "angular.ng-template",
       "maptz.camelcasenavigation"
     ]
-  },
+  }
 }

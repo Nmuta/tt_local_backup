@@ -9,12 +9,22 @@ export class MockUserSettingsService {
   public waitUntil$: Observable<unknown> = of(true);
 
   /** Mocking property. */
-  public get appVersion(): string {
-    return 'fake-app-version';
+  public get lastSeenAppVersion(): string {
+    return 'fake-app-version-1';
   }
 
   /** Mocking property. */
-  public set appVersion(value: string) {
+  public set lastSeenAppVersion(value: string) {
+    return;
+  }
+
+  /** Mocking property. */
+  public get currentAppVersion(): string {
+    return 'fake-app-version-2';
+  }
+
+  /** Mocking property. */
+  public set currentAppVersion(value: string) {
     return;
   }
 }

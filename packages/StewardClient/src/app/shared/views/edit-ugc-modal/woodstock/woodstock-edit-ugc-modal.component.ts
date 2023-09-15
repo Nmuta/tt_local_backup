@@ -25,6 +25,8 @@ export class WoodstockEditUgcModalComponent extends BaseComponent {
 
     this.service = {
       gameTitle: GameTitle.FH5,
+      titleMaxLength: 64,
+      descriptionMaxLength: 256,
       getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem> {
         return woodstockService.getPlayerUgcItem$(itemId, type);
       },
