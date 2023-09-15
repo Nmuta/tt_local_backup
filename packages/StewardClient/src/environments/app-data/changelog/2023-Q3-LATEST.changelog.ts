@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'ef93bf86-0143-4460-9770-42e5490b11f9',
+      shortText: 'Target correct LSP group for Steelhead Talented Players',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '4a899681-244c-45c2-a02c-4d1801366057',
       shortText: 'Track "test" Background Jobs separately',
     },
