@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
 using Forza.Scoreboard.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -73,7 +75,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             IActionLogger actionLogger,
             IJobTracker jobTracker,
             IScheduler scheduler,
-            IBlobStorageProvider blobStorageProvider)
+            IBlobStorageProvider blobStorageProvider,
+            IHttpContextAccessor httpContextAccessor)
         {
             pegasusService.ShouldNotBeNull(nameof(pegasusService));
             loggingService.ShouldNotBeNull(nameof(loggingService));
@@ -370,10 +373,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
             var leaderboard = await this.GetLeaderboardMetadataAsync(scoreboardType, scoreType, trackId, pivotId, environment).ConfigureAwait(true);
-            var ipAddress = this.HttpContext.Connection.RemoteIpAddress;
+
             var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{leaderboard.TrackId}_{leaderboard.GameScoreboardId}";
 
-            var leaderboardFileUri = await this.blobStorageProvider.GetLeaderboardDataLinkAsync(leaderboardIdentifier, ipAddress);
+            var leaderboardFileUri = await this.blobStorageProvider.GetLeaderboardDataLinkAsync(leaderboardIdentifier);
 
             return this.Ok(leaderboardFileUri);
         }

@@ -180,7 +180,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier, IPAddress userIP)
+        public async Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier)
         {
             var blobFileName = leaderboardIdentifier + ".csv";
 
@@ -196,7 +196,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     BlobContainerName = leaderboardClient.GetParentBlobContainerClient().Name,
                     BlobName = leaderboardClient.Name,
                     Resource = "b", // b = blob, c = container
-                    IPRange = new SasIPRange(userIP, userIP),
                 };
 
                 sasBuilder.SetPermissions(BlobSasPermissions.Read);

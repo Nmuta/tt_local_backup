@@ -39,6 +39,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Generate a SAS uri to download the leaderboard file.
         /// </summary>
-        Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier, IPAddress userIP);
+        Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier);
     }
 }
