@@ -24,7 +24,7 @@ export default defineConfig({
   reporterOptions: {
     reporterEnabled: 'spec, mocha-junit-reporter',
     mochaJunitReporterReporterOptions: {
-      mochaFile: 'reports/mocha-junit/dev/junit-[hash].xml',
+      mochaFile: 'reports/mocha-junit/dev-staging/junit-[hash].xml',
       toConsole: true,
       attachments: true,
     },

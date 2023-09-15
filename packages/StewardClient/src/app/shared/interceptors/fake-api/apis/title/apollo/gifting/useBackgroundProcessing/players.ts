@@ -35,6 +35,7 @@ export class ApolloGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBase
       },
       result: undefined,
       isRead: false,
+      isTestJob: false,
       isMarkingRead: undefined,
       reason: faker.lorem.words(3),
     };

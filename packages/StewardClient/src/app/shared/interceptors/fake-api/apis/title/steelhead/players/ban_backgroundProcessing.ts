@@ -33,6 +33,7 @@ export class SteelheadPlayersBanWithBackgroundProcessingFakeApi extends FakeApiB
       rawResult: undefined,
       result: undefined,
       isRead: faker.datatype.boolean(),
+      isTestJob: false,
       reason: '',
       isMarkingRead: faker.datatype.boolean(),
     };
