@@ -4,7 +4,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
-using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
@@ -13,7 +12,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
     {
         private static BanSummariesControllerTestingClient stewardClient;
         private static BanSummariesControllerTestingClient unauthedClient;
-        private static List<ulong> xuids;
+        private static IList<ulong> xuidList;
+        private static IList<ulong> invalidXuidList;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -23,10 +23,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             stewardClient = new BanSummariesControllerTestingClient(new Uri(endpoint), authKey);
             unauthedClient = new BanSummariesControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
 
-            // private static xuids = new List<ulong> {TestConstants.TestAccountXuid};
-            // private static invalidXuids = 
-
-           // private static xuids = new List<ulong> {2675352635783107};
+            xuidList = new List<ulong> { TestConstants.TestAccountXuid };
+            invalidXuidList = new List<ulong> { TestConstants.InvalidXuid };
 
         }
 
@@ -36,7 +34,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetBanSummaries(TestConstants., this.banconfig).ConfigureAwait(false);
+                var response = await stewardClient.GetBanSummaries(xuidList).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -51,7 +49,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetBanSummaries(new listTestConstants.InvalidXuid, this.banconfig).ConfigureAwait(false);
+                var response = await stewardClient.GetBanSummaries(invalidXuidList).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -66,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetBanSummaries(TestConstants., this.banconfig).ConfigureAwait(false);
+                var response = await unauthedClient.GetBanSummaries(xuidList).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
