@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetRivalsEvents(TestConstants.InvalidXuid).ConfigureAwait(false);
+                var response = await stewardClient.GetRivalsEvents(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetRivalsEvents(TestConstants.InvalidXuid).ConfigureAwait(false);
+                var response = await unauthedClient.GetRivalsEvents(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
