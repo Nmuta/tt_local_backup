@@ -36,6 +36,7 @@ export class SunriseGiftLiveryToPlayersFakeApi extends FakeApiBase {
       },
       result: undefined,
       isMarkingRead: undefined,
+      isTestJob: false,
       isRead: false,
       reason: faker.lorem.sentence(),
     };
