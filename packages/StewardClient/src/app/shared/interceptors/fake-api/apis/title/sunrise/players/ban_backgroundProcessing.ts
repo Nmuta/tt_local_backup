@@ -33,6 +33,7 @@ export class SunrisePlayersBanWithBackgroundProcessingFakeApi extends FakeApiBas
       result: undefined,
       isMarkingRead: undefined,
       isRead: false,
+      isTestJob: false,
       rawResult: undefined,
       reason: faker.lorem.sentence(),
     };

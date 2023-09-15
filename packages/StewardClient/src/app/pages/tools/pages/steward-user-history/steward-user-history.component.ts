@@ -46,7 +46,7 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
   public getBackgroundJobs$ = new Subject<void>();
   public selectedBackgroundJob: JsonTableAndBackgroundJob = null;
 
-  public displayedColumns: string[] = ['createdDateUtc', 'status', 'description', 'jobId'];
+  public displayedColumns: string[] = ['icon', 'createdDateUtc', 'status', 'description', 'jobId'];
 
   /** True while waiting on a request. */
   public isLoading = false;
