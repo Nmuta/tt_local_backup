@@ -21,7 +21,7 @@ import {
   EndpointKeyMemoryState,
   EndpointKeyMemoryModel,
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
-import { cloneDeep, find, keys, sortBy } from 'lodash';
+import { cloneDeep, find, includes, keys, sortBy } from 'lodash';
 import { filter, map, Observable, switchMap, takeUntil, tap } from 'rxjs';
 import {
   VerifyUserPermissionChangeDialogComponent,
@@ -138,10 +138,21 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
   public savePermissionChanges(): void {
     if (!this.selectedUser) return;
 
+    // Before saving, filter out invalid perm attributes for removed titles/environments from current permissions.
+    const permAttributes = this.selectedUser.attributes;
+    const validPermAttributes = permAttributes.filter(attribute => {
+      if (!attribute.title || attribute.title === '') {
+        return true;
+      }
+
+      const environments = this.titleEnvironments[attribute.title] ?? [];
+      return includes(environments, attribute.environment);
+    });
+
     const updatedPerms = this.getSelectedPermsFromFlatTree();
     const dialogRef = this.dialog.open(VerifyUserPermissionChangeDialogComponent, {
       data: {
-        currentPerms: this.selectedUser.attributes,
+        currentPerms: validPermAttributes,
         updatedPerms: updatedPerms,
         user: this.selectedUser,
       } as VerifyUserPermissionChangeDialogData,
