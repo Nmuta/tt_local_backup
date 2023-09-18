@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from './pages/error/error.component';
 import { AuthGuard } from './route-guards/auth.guard';
 import { ZendeskGuard } from './route-guards/zendesk.guard';
-import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 const routes: Routes = [
   {
@@ -90,7 +89,6 @@ const routes: Routes = [
 /** Defines the app router. */
 @NgModule({
   imports: [
-    TourMatMenuModule, // loaded to ensure tours run properly
     RouterModule.forRoot(routes, {
       useHash: false,
       onSameUrlNavigation: 'reload',

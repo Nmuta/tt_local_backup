@@ -24,22 +24,17 @@ export class SidebarService extends BaseService {
     return !this.isVisible;
   }
 
+  public readonly _isClosed$ = new ReplaySubject<boolean>(1);
+  public readonly _isOpen$ = new ReplaySubject<boolean>(1);
+
   /** Observable that fires anytime a sidebar is opened. */
-  public get isOpen$(): Observable<void> {
-    return this.changes$.pipe(
-      filter(isVisible => isVisible),
-      switchMap(() => of(null)), // Force  Observable<void>
-      takeUntil(this.onDestroy$),
-    );
+  public get isOpen$(): Observable<boolean> {
+    return this._isOpen$;
   }
 
   /** Observable that fires anytime a sidebar is closed. */
-  public get isClosed$(): Observable<void> {
-    return this.changes$.pipe(
-      filter(isVisible => !isVisible),
-      switchMap(() => of(null)), // Force  Observable<void>
-      takeUntil(this.onDestroy$),
-    );
+  public get isClosed$(): Observable<boolean> {
+    return this._isClosed$;
   }
 
   constructor(router: Router) {
@@ -61,5 +56,15 @@ export class SidebarService extends BaseService {
     this.changes$.pipe(takeUntil(this.onDestroy$)).subscribe(isVisible => {
       this.isVisible = isVisible;
     });
+
+    this.changes$.pipe(takeUntil(this.onDestroy$)).subscribe(isVisible => {
+      this._isClosed$.next(!isVisible);
+    });
+
+    this.changes$.pipe(takeUntil(this.onDestroy$)).subscribe(isVisible => {
+      this._isOpen$.next(isVisible);
+    });
+
+    this.changes$.next(this.isVisible);
   }
 }

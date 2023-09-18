@@ -79,6 +79,8 @@ import { TourState } from '@shared/state/tours/tours.state';
 import { RedirectionLandingComponent } from './pages/redirection-landing/redirection-landing.component';
 import { TitleMemoryRedirectLandingComponent } from './route-guards/title-memory-redirect-landing/title-memory-redirect-landing.component';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { TourStepComponent } from './shared/components/tour-step/tour-step.component';
+import { MatIconModule } from '@angular/material/icon';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -152,6 +154,8 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     HttpClientModule,
     FourOhFourModule,
     MatCardModule,
+    MatIconModule,
+    TourStepComponent,
     MatSnackBarModule, // App component uses this to display init errors.
     ToolsAvailabilityModalModule, // Used within tools availability interceptor
     MatLuxonDateModule,
@@ -190,7 +194,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule,
-    TourMatMenuModule, // loaded to ensure tours run properly
+    TourMatMenuModule,
   ],
   providers: [
     TourService,

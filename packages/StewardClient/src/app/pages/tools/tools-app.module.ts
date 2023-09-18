@@ -79,7 +79,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatTabsModule,
     ReactiveFormsModule,
     MonitorActionModule,
-    TourMatMenuModule, // loaded to ensure tours run properly
+    TourMatMenuModule,
   ],
 })
 export class ToolsAppModule {}

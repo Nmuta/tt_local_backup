@@ -12,7 +12,6 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { AvailableAppsModule } from '@shared/views/available-apps/available-apps.module';
-import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 /** Defines the auth module. */
 @NgModule({
@@ -28,7 +27,6 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatTooltipModule,
     FontAwesomeModule,
     AvailableAppsModule,
-    TourMatMenuModule, // loaded to ensure tours run properly
   ],
   declarations: [HomeComponent],
 })

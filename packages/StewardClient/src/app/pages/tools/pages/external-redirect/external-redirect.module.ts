@@ -5,7 +5,6 @@ import { ExternalRedirectComponent } from './external-redirect.component';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { MatIconModule } from '@angular/material/icon';
-import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 /** Module for external redirects. */
 @NgModule({
@@ -16,7 +15,6 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatProgressSpinnerModule,
     MonitorActionModule,
     MatIconModule,
-    TourMatMenuModule, // loaded to ensure tours run properly
   ],
   exports: [ExternalRedirectComponent],
 })

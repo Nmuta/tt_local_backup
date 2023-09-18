@@ -1,0 +1,63 @@
+// based on contents from here https://github.com/hakimio/ngx-ui-tour/issues/91
+// slightly modified to follow theme
+
+@use '@angular/material' as mat;
+@import '/src/styles/mixins';
+
+:host {
+  @include mat.icon-button-density(-2);
+}
+
+::ng-deep .tour-step .mat-mdc-menu-content {
+  padding: 0 !important;
+}
+
+mat-card {
+  min-width: 200px;
+}
+
+mat-card-content {
+  margin: 8px 0;
+}
+
+mat-card-actions {
+  justify-content: space-between;
+
+  button.prev {
+    padding-left: 4px;
+  }
+
+  button.next {
+    padding-right: 4px;
+  }
+}
+
+mat-card-header {
+  .header-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -8px;
+    width: 100%;
+
+    mat-card-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    button {
+      margin-right: -8px;
+    }
+  }
+}
+
+
+// customizations:
+mat-card {
+  background-color: app-color($app-background, 'card');
+
+  button[disabled] {
+    color: app-color-default-contrast($app-background, 0.38)
+  }
+}
