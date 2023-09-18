@@ -72,7 +72,67 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task GetRivalEvents_NoParam_InvalidAuth()
+        public async Task GetRacersCupSchedule_ByEnv()
+        {
+            try
+            {
+                var response = await stewardClient.GetRacersCupSchedule("environment", "prod").ConfigureAwait(false);
+                Assert.IsNotNull(response);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.Fail(ex.ResponseBody);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetRacersCupSchedule_ByEnv_InvalidEnv()
+        {
+            try
+            {
+                var response = await stewardClient.GetRacersCupSchedule("environment", "notProd").ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetRacersCupSchedule_BySlot()
+        {
+            try
+            {
+                var response = await stewardClient.GetRacersCupSchedule("slot", "live").ConfigureAwait(false);
+                Assert.IsNotNull(response);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.Fail(ex.ResponseBody);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetRacersCupSchedule_BySlot_InvalidEnv()
+        {
+            try
+            {
+                var response = await stewardClient.GetRacersCupSchedule("slot", "fakeSlot").ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetRacersCupSchedule_NoParam_InvalidAuth()
         {
             try
             {
@@ -87,11 +147,41 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task GetRivalEvents_ByXuid_InvalidAuth()
+        public async Task GetRacersCupSchedule_ByXuid_InvalidAuth()
         {
             try
             {
                 var response = await unauthedClient.GetRacersCupSchedule(TestConstants.TestAccountXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetRacersCupSchedule_ByEnv_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.GetRacersCupSchedule("environment", "prod").ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetRacersCupSchedule_BySlot_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.GetRacersCupSchedule("slot", "live").ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
