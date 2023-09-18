@@ -10,7 +10,6 @@ import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { WoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service';
 import {
   BulkGenerateSharecodeResponse,
   WoodstockUgcSharecodeService,
