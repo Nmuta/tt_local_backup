@@ -9,7 +9,8 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
-    internal class StoreControllerTests : SteelheadControllerTestsBase
+    [TestClass]
+    public sealed class StoreControllerTests : SteelheadControllerTestsBase
     {
         private static StoreControllerTestingClient stewardClient;
         private static StoreControllerTestingClient unauthedClient;
