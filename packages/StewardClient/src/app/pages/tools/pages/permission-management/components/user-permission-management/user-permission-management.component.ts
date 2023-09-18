@@ -139,8 +139,8 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     if (!this.selectedUser) return;
 
     // Before saving, filter out invalid perm attributes for removed titles/environments from current permissions.
-    const permAttributes = this.selectedUser.attributes;
-    const validPermAttributes = permAttributes.filter(attribute => {
+    const currentPerms = this.selectedUser.attributes;
+    const validCurrentPerms = currentPerms.filter(attribute => {
       if (!attribute.title || attribute.title === '') {
         return true;
       }
@@ -152,7 +152,7 @@ export class UserPermissionManagementComponent extends BaseComponent implements 
     const updatedPerms = this.getSelectedPermsFromFlatTree();
     const dialogRef = this.dialog.open(VerifyUserPermissionChangeDialogComponent, {
       data: {
-        currentPerms: validPermAttributes,
+        currentPerms: validCurrentPerms,
         updatedPerms: updatedPerms,
         user: this.selectedUser,
       } as VerifyUserPermissionChangeDialogData,
