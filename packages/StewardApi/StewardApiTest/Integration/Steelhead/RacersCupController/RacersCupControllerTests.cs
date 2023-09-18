@@ -76,7 +76,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetRacersCupSchedule("environment", "prod").ConfigureAwait(false);
+                var response = await stewardClient.GetRacersCupSchedule(new Dictionary<string, string>{
+                    { "environment", "prod" }
+                }).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -91,7 +93,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetRacersCupSchedule("environment", "notProd").ConfigureAwait(false);
+                var response = await stewardClient.GetRacersCupSchedule(new Dictionary<string, string>{
+                    { "environment", "notProd" }
+                }).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -102,11 +106,14 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task GetRacersCupSchedule_BySlot()
+        public async Task GetRacersCupSchedule_ManyParams()
         {
             try
             {
-                var response = await stewardClient.GetRacersCupSchedule("slot", "live").ConfigureAwait(false);
+                var response = await stewardClient.GetRacersCupSchedule(new Dictionary<string, string> {
+                    { "environment", "prod" },
+                    { "slot", "live" }
+                }).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -117,11 +124,14 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task GetRacersCupSchedule_BySlot_InvalidEnv()
+        public async Task GetRacersCupSchedule_ManyParams_InvalidSlot()
         {
             try
             {
-                var response = await stewardClient.GetRacersCupSchedule("slot", "fakeSlot").ConfigureAwait(false);
+                var response = await stewardClient.GetRacersCupSchedule(new Dictionary<string, string>{
+                    { "environment", "prod" },
+                    {"slot", "fakeLive" }
+                }).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -166,7 +176,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetRacersCupSchedule("environment", "prod").ConfigureAwait(false);
+                var response = await unauthedClient.GetRacersCupSchedule(new Dictionary<string, string>{
+                    { "environment", "prod" }
+                }).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -177,11 +189,14 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task GetRacersCupSchedule_BySlot_InvalidAuth()
+        public async Task GetRacersCupSchedule_ManyParams_InvalidAuth()
         {
             try
             {
-                var response = await unauthedClient.GetRacersCupSchedule("slot", "live").ConfigureAwait(false);
+                var response = await unauthedClient.GetRacersCupSchedule(new Dictionary<string, string>{
+                    { "environment", "prod" },
+                    { "slot", "live" }
+                }).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)

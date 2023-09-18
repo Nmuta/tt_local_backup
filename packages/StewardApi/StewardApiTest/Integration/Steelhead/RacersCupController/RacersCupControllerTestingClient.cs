@@ -23,9 +23,16 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             return await ServiceClient.SendRequestAsync<RacersCupSchedule>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<RacersCupSchedule> GetRacersCupSchedule(string paramName, string paramValue)
+        public async Task<RacersCupSchedule> GetRacersCupSchedule(Dictionary<string, string> addressVars)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}/racerscup/schedule?{paramName}={paramValue}");
+            string pathWithParams = $"{TitlePath}/racerscup/schedule?";
+            foreach(var addressVar in addressVars)
+            {
+                pathWithParams += $"{addressVar.Key}={addressVar.Value}&";
+            }
+            pathWithParams = pathWithParams.Substring(0, pathWithParams.Length - 1);
+
+            var path = new Uri(this.baseUri, pathWithParams);
 
             return await ServiceClient.SendRequestAsync<RacersCupSchedule>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
