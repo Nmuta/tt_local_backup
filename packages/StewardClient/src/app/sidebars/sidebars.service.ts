@@ -27,12 +27,12 @@ export class SidebarService extends BaseService {
   public readonly _isClosed$ = new ReplaySubject<boolean>(1);
   public readonly _isOpen$ = new ReplaySubject<boolean>(1);
 
-  /** Observable that fires anytime a sidebar is opened. */
+  /** Observable that fires anytime a sidebar state is changed. True when opened. */
   public get isOpen$(): Observable<boolean> {
     return this._isOpen$;
   }
 
-  /** Observable that fires anytime a sidebar is closed. */
+  /** Observable that fires anytime a sidebar state is changed. True when closed. */
   public get isClosed$(): Observable<boolean> {
     return this._isClosed$;
   }
