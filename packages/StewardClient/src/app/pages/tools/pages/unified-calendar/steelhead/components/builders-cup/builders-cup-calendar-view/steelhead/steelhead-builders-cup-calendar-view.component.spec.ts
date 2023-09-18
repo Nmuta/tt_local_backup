@@ -71,14 +71,15 @@ describe('SteelheadBuildersCupCalendarViewComponent', () => {
   });
 
   describe('When tourCount is referenced', () => {
-    beforeEach(waitForAsync(() => {
-      const testArray = ['Decades', 'Touring'];
-      component.uniqueTours = testArray;
+    const testArray = ['Decades', 'Touring'];
 
-      it('should return length', () => {
-        expect(component.tourCount).toEqual(max([testArray.length, 5]));
-      });
+    beforeEach(waitForAsync(() => {
+      component.uniqueTours = testArray;
     }));
+
+    it('should return length', () => {
+      expect(component.tourCount).toEqual(max([testArray.length, 5]));
+    });
   });
 
   describe('When a view is clicked', () => {
