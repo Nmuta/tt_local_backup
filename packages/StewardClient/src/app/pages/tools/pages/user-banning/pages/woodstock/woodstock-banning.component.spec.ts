@@ -96,6 +96,7 @@ describe('WoodstockBanningComponent', () => {
       rawResult: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -126,6 +127,7 @@ describe('WoodstockBanningComponent', () => {
           },
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

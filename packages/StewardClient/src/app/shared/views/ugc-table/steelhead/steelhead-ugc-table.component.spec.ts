@@ -12,10 +12,10 @@ import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
-import { createMockSteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service.mock';
 import { createMockSteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service.mock';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import { createMockSteelheadUgcHideStatusService } from '@services/api-v2/steelhead/ugc/hide-status/steelhead-ugc-hide-status.service.mock';
 
 describe('SteelheadUgcTableComponent', () => {
   let component: SteelheadUgcTableComponent;
@@ -30,7 +30,7 @@ describe('SteelheadUgcTableComponent', () => {
         providers: [
           createMockSteelheadUgcLookupService(),
           createMockBackgroundJobService(),
-          createMockSteelheadUgcVisibilityService(),
+          createMockSteelheadUgcHideStatusService(),
           createMockSteelheadUgcSharecodeService(),
         ],
         schemas: [NO_ERRORS_SCHEMA],

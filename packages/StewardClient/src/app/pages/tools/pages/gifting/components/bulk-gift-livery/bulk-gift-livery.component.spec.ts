@@ -429,6 +429,7 @@ describe('BulkGiftLiveryComponent', () => {
       result: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -492,6 +493,7 @@ describe('BulkGiftLiveryComponent', () => {
           ],
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

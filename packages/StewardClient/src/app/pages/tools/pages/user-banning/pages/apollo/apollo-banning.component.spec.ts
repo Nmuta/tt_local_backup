@@ -89,6 +89,7 @@ describe('ApolloBanningComponent', () => {
       rawResult: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -119,6 +120,7 @@ describe('ApolloBanningComponent', () => {
           },
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

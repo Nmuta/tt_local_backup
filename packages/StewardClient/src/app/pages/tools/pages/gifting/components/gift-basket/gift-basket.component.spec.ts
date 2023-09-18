@@ -614,6 +614,7 @@ describe('GiftBasketBaseComponent', () => {
       result: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -666,6 +667,7 @@ describe('GiftBasketBaseComponent', () => {
           ],
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

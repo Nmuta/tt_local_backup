@@ -40,6 +40,8 @@
     "report:delete": "rm -r reports/ || true",
     "report:combine:dev": "jrm reports/mocha-junit/dev.xml \"reports/mocha-junit/dev/junit-*.xml\"",
     "report:combine:prod": "jrm reports/mocha-junit/prod.xml \"reports/mocha-junit/prod/junit-*.xml\"",
+    "report:combine:dev-staging": "jrm reports/mocha-junit/dev-staging.xml \"reports/mocha-junit/dev-staging/junit-*.xml\"",
+    "report:combine:prod-staging": "jrm reports/mocha-junit/prod-staging.xml \"reports/mocha-junit/prod-staging/junit-*.xml\"",
     "_old-commands-below": "echo Try another command.",
     "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
     "prettier:fix": "yarn run lint:fix:prettier"

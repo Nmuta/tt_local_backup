@@ -33,6 +33,7 @@ export class ApolloPlayersBanWithBackgroundProcessingFakeApi extends FakeApiBase
       result: undefined,
       isMarkingRead: undefined,
       isRead: false,
+      isTestJob: false,
       rawResult: undefined,
       reason: faker.lorem.sentence(),
     };

@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   MatLegacyDialogRef as MatDialogRef,
@@ -21,6 +21,10 @@ import { UgcEditInput } from '@models/ugc-edit-input';
 export interface EditUgcContract {
   /** Get game title. */
   gameTitle: GameTitle;
+  /** Ugc Title Max Length. */
+  titleMaxLength: number;
+  /** Ugc Description Max Length. */
+  descriptionMaxLength: number;
   /** Get ugc item. */
   getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem>;
   /** Edit ugc item. */
@@ -38,7 +42,7 @@ export type EditUgcModalComponentUnion =
   styleUrls: ['./edit-ugc-modal.component.scss'],
   providers: [],
 })
-export class EditUgcModalBaseComponent extends BaseComponent {
+export class EditUgcModalBaseComponent extends BaseComponent implements OnInit {
   /** The edit ugc service. */
   @Input() public service: EditUgcContract;
 
@@ -89,6 +93,14 @@ export class EditUgcModalBaseComponent extends BaseComponent {
 
     this.formControls.title.setValue(data.title);
     this.formControls.description.setValue(data.description);
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    this.formControls.title.addValidators(Validators.maxLength(this.service.titleMaxLength));
+    this.formControls.description.addValidators(
+      Validators.maxLength(this.service.descriptionMaxLength),
+    );
   }
 
   /** Gets the service contract game title. */

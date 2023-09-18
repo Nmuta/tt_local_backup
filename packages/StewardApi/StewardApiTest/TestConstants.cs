@@ -1,4 +1,6 @@
-﻿namespace Turn10.LiveOps.StewardTest
+﻿using System.Collections.Generic;
+
+namespace Turn10.LiveOps.StewardTest
 {
     public static class TestConstants
     {
@@ -31,5 +33,10 @@
         public const int MaxLoopTimeInMilliseconds = 120000;
         public const int DefaultStartIndex = 0;
         public const int DefaultMaxResults = 100;
+
+        // Test account Plink
+        public const ulong TestAccountXuid = 2675352635783107;
+        public const string TestAccountGamertag = "Plink";
+        public const string TestAccountExternalProfileId = "941a0a72-8a47-4149-8df9-304fcd927a05";
     }
 }

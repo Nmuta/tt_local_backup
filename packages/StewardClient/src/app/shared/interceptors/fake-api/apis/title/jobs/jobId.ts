@@ -35,6 +35,7 @@ export class JobsGetJobFakeApi extends FakeApiBase {
       },
       result: undefined,
       isMarkingRead: undefined,
+      isTestJob: false,
       isRead: false,
       reason: faker.lorem.sentence(),
     };

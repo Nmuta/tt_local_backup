@@ -18,6 +18,7 @@ import { createMockWoodstockUgcSharecodeService } from '@services/api-v2/woodsto
 import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 import { WoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service';
 import { createMockWoodstockUgcReportService } from '@services/api-v2/woodstock/ugc/report/woodstock-ugc-report.service.mock';
+import { createMockWoodstockUgcHideStatusService } from '@services/api-v2/woodstock/ugc/hide-status/woodstock-ugc-hide-status.service.mock';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
@@ -39,7 +40,7 @@ describe('WoodstockUgcTableComponent', () => {
           createMockWoodstockService(),
           createMockWoodstockUgcLookupService(),
           createMockWoodstockUgcReportService(),
-          createMockWoodstockUgcVisibilityService(),
+          createMockWoodstockUgcHideStatusService(),
           createMockWoodstockUgcSharecodeService(),
           createMockBackgroundJobService(),
         ],

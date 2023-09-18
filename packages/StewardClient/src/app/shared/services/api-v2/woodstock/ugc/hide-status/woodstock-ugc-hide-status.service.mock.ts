@@ -1,9 +1,9 @@
 import { ValueProvider } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
-import { WoodstockUgcVisibilityService } from './woodstock-ugc-visibility.service';
+import { WoodstockUgcHideStatusService } from './woodstock-ugc-hide-status.service';
 
 /** Defines the mock for the API Service. */
-export class MockWoodstockUgcVisibilityService {
+export class MockWoodstockUgcHideStatusService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
@@ -19,11 +19,11 @@ export class MockWoodstockUgcVisibilityService {
 }
 
 /** Creates an injectable mock for Woodstock Ugc Hide Service. */
-export function createMockWoodstockUgcVisibilityService(
+export function createMockWoodstockUgcHideStatusService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): ValueProvider {
   return {
-    provide: WoodstockUgcVisibilityService,
-    useValue: new MockWoodstockUgcVisibilityService(returnValueGenerator),
+    provide: WoodstockUgcHideStatusService,
+    useValue: new MockWoodstockUgcHideStatusService(returnValueGenerator),
   };
 }

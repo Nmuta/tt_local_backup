@@ -338,6 +338,7 @@ describe('WoodstockGiftLiveryComponent', () => {
       result: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -397,6 +398,7 @@ describe('WoodstockGiftLiveryComponent', () => {
           ],
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

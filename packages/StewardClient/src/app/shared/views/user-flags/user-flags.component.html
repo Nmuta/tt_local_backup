@@ -63,7 +63,7 @@
               {{ control.key | humanize }}
             </ng-container>
             <mat-icon
-              *ngIf="this.currentFlags[control.key].hasConflict"
+              *ngIf="this.currentFlags && this.currentFlags[control.key].hasConflict"
               [matTooltip]="tooltipText"
               color="warn"
               >warning</mat-icon
