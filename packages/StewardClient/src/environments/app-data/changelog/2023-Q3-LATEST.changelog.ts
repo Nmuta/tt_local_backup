@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: 'all', tool: [NavbarTool.PermissionManagement] },
+      uuid: '2aef3516-547f-4232-8a96-2cd7e0eb6a93',
+      shortText: 'Ignore permissions from removed titles & environments',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '4a899681-244c-45c2-a02c-4d1801366057',
       shortText: 'Track "test" Background Jobs separately',
