@@ -94,7 +94,7 @@
         <verify-button
           #verifyMultiDeleteScoresBtn
           [disabled]="selectedScores?.length <= 0"
-          [permissionAttribute]="permAttribute"
+          [permissionAttribute]="deleteScoresPermAttribute"
           [permissionTitle]="gameTitle"
         ></verify-button>
         <button
@@ -126,6 +126,48 @@
         >
           Export
         </button>
+        <div *ngIf="allowFileGeneration">
+
+          <verify-button
+            #verifyScoresFileGenerationBtn
+            [permissionAttribute]="generateScoresFilePermAttribute"
+            [permissionTitle]="gameTitle"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="primary"
+            [verifyWithV2]="verifyScoresFileGenerationBtn"
+            (click)="generateLeaderboardScoresFile()"
+            stateManager
+            [monitor]="generateLeaderboardScoresMonitor"
+            monitorSuccess
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+          >
+            Generate Leaderboard Scores
+          </button>
+
+          <verify-button
+            #verifyScoresFileRetrieveBtn
+            [permissionAttribute]="generateScoresFilePermAttribute"
+            [permissionTitle]="gameTitle"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="primary"
+            [verifyWithV2]="verifyScoresFileRetrieveBtn"
+            (click)="retrieveLeaderboardScoresFile()"
+            stateManager
+            [monitor]="retrieveLeaderboardScoresMonitor"
+            monitorSuccess
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+          >
+            Retrieve Leaderboard Scores
+          </button>
+        </div>
       </div>
     </div>
     <div class="paginator-actions">
@@ -240,7 +282,7 @@
                 <verify-button
                   #verifyDeleteScoresBtn
                   [disabled]="selectedScores?.length > 0"
-                  [permissionAttribute]="permAttribute"
+                  [permissionAttribute]="deleteScoresPermAttribute"
                   [permissionTitle]="gameTitle"
                 ></verify-button>
                 <button

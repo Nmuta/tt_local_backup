@@ -20,6 +20,7 @@ import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
+import { BackgroundJob, BackgroundJobRetryStatus, BackgroundJobStatus } from '@models/background-job';
 import { DeviceType, GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import {
@@ -34,14 +35,15 @@ import {
   getLspEndpointFromLeaderboardEnvironment,
   LeaderboardScoreType,
 } from '@models/leaderboards';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import BigNumber from 'bignumber.js';
 import { cloneDeep, first, last } from 'lodash';
 import { DateTime } from 'luxon';
-import { EMPTY, merge, Observable, Subject } from 'rxjs';
-import { switchMap, takeUntil, tap, catchError, filter, debounceTime } from 'rxjs/operators';
+import { EMPTY, merge, Observable, of, Subject, throwError, timer } from 'rxjs';
+import { switchMap, takeUntil, tap, catchError, filter, debounceTime, take, retryWhen, delayWhen } from 'rxjs/operators';
 
 export interface LeaderboardScoresContract {
   /** Gets leaderboard metadata. */
@@ -82,6 +84,22 @@ export interface LeaderboardScoresContract {
     scoreIds: GuidLikeString[],
     endpointKeyOverride?: string,
   ): Observable<void>;
+
+  generateLeaderboardScoresFile$(
+    scoreboardTypeId: BigNumber,
+    scoreTypeId: BigNumber,
+    trackId: BigNumber,
+    pivotId: BigNumber,
+    pegasusEnvironment: string,
+  ): Observable<BackgroundJob<void>>
+
+  retrieveLeaderboardScoresFile$(
+    scoreboardTypeId: BigNumber,
+    scoreTypeId: BigNumber,
+    trackId: BigNumber,
+    pivotId: BigNumber,
+    pegasusEnvironment: string,
+  ): Observable<string>;
 }
 
 enum LeaderboardView {
@@ -116,6 +134,8 @@ export class LeaderboardScoresComponent
   @Input() externalSelectedScore: LeaderboardScore;
   /** The game title. */
   @Input() gameTitle: GameTitle;
+  /** Determines if component supports generating and downloading leaderboard score files. */
+  @Input() allowFileGeneration: boolean = false;
   /** REVIEW-COMMENT: Output when leaderboard scores are deleted. */
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
@@ -123,6 +143,8 @@ export class LeaderboardScoresComponent
   public leaderboardScores = new BetterMatTableDataSource<LeaderboardScore>([]);
   public getLeaderboardScoresMonitor = new ActionMonitor('GET Leaderboard Scores');
   public deleteLeaderboardScoresMonitor = new ActionMonitor('DELETE Leaderboard Score(s)');
+  public generateLeaderboardScoresMonitor = new ActionMonitor('GENERATE leaderboard Scores File');
+  public retrieveLeaderboardScoresMonitor = new ActionMonitor('RETRIEVE leaderboard Scores File');
   public leaderboardDisplayColumns: string[] = [
     'position',
     'score',
@@ -144,6 +166,7 @@ export class LeaderboardScoresComponent
   public exportFileName: string;
   public disableExport: boolean = true;
   public paginatorSizes: number[] = LEADERBOARD_PAGINATOR_SIZES;
+  public sasLink: string;
   private scoresAscendWithPosition: boolean;
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
@@ -200,7 +223,8 @@ export class LeaderboardScoresComponent
     },
   };
 
-  public readonly permAttribute = PermAttributeName.DeleteLeaderboardScores;
+  public readonly deleteScoresPermAttribute = PermAttributeName.DeleteLeaderboardScores;
+  public readonly generateScoresFilePermAttribute = PermAttributeName.GenerateLeaderboardScoresFile;
 
   public BooleanFilterToggle = BooleanFilterToggle;
 
@@ -209,6 +233,7 @@ export class LeaderboardScoresComponent
     private readonly route: ActivatedRoute,
     private readonly snackbar: MatSnackBar,
     private readonly humanizePipe: HumanizePipe,
+    private readonly backgroundJobService: BackgroundJobService,
   ) {
     super();
   }
@@ -320,11 +345,63 @@ export class LeaderboardScoresComponent
         scoreIds,
         getLspEndpointFromLeaderboardEnvironment(this.leaderboard.query.leaderboardEnvironment),
       )
-
       .pipe(this.deleteLeaderboardScoresMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.getLeaderboardScores$.next(this.leaderboard.query);
         this.scoresDeleted.emit(scores);
+      });
+  }
+
+  /** Generate scores file for entire leaderboard. */
+  public generateLeaderboardScoresFile(): void {
+    if(!this.service.generateLeaderboardScoresFile$)
+    {
+      throw new Error('Generate Leaderboard Scores File is not supported for this title');
+    }
+
+    this.generateLeaderboardScoresMonitor = this.generateLeaderboardScoresMonitor.repeat();
+
+    this.service
+      .generateLeaderboardScoresFile$(
+        this.leaderboard.metadata.scoreboardTypeId,
+        this.leaderboard.metadata.scoreTypeId,
+        this.leaderboard.metadata.trackId,
+        this.leaderboard.metadata.gameScoreboardId,
+        this.leaderboard.query.leaderboardEnvironment,
+      )
+      .pipe(
+        take(1),
+        switchMap((backgroundJob: BackgroundJob<void>) =>
+          this.waitForBackgroundJobToComplete$(backgroundJob),
+        ),
+        this.generateLeaderboardScoresMonitor.monitorSingleFire(),
+        catchError(() => EMPTY),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe();
+  }
+
+  /** Retrieve scores file for entire leaderboard. */
+  public retrieveLeaderboardScoresFile(): void {
+    if(!this.service.generateLeaderboardScoresFile$)
+    {
+      throw new Error('Retrieve Leaderboard Scores File is not supported for this title');
+    }
+
+    this.retrieveLeaderboardScoresMonitor = this.retrieveLeaderboardScoresMonitor.repeat();
+
+    this.service
+      .retrieveLeaderboardScoresFile$(
+        this.leaderboard.metadata.scoreboardTypeId,
+        this.leaderboard.metadata.scoreTypeId,
+        this.leaderboard.metadata.trackId,
+        this.leaderboard.metadata.gameScoreboardId,
+        this.leaderboard.query.leaderboardEnvironment,
+      )
+      .pipe(this.retrieveLeaderboardScoresMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(sasLink => {
+        this.sasLink = sasLink;
+        window.open(this.sasLink);
       });
   }
 
@@ -615,5 +692,38 @@ export class LeaderboardScoresComponent
       default:
         return true;
     }
+  }
+
+  /** Waits for a background job to complete. */
+  private waitForBackgroundJobToComplete$(
+    job: BackgroundJob<void>,
+  ): Observable<void | BackgroundJob<void>> {
+    return this.backgroundJobService.getBackgroundJob$<void>(job.jobId).pipe(
+      take(1),
+      tap(job => {
+        switch (job.status) {
+          case BackgroundJobStatus.Completed:
+          case BackgroundJobStatus.CompletedWithErrors:
+            break;
+          case BackgroundJobStatus.InProgress:
+            throw new Error(BackgroundJobRetryStatus.InProgress);
+          default:
+            throw new Error(BackgroundJobRetryStatus.UnexpectedError);
+        }
+      }),
+      retryWhen(errors$ =>
+        errors$.pipe(
+          switchMap((error: Error) => {
+            if (error.message !== BackgroundJobRetryStatus.InProgress) {
+              return throwError(() => error);
+            }
+
+            return of(error);
+          }),
+          delayWhen(() => timer(HCI.AutoRetryMillis)),
+        ),
+      ),
+      takeUntil(this.onDestroy$),
+    );
   }
 }

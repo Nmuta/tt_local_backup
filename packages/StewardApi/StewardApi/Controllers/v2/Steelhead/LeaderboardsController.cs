@@ -240,7 +240,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Creates or Replaces leaderboard scores files.
         /// </summary>
-        [HttpPost("scores/generate")]
+        [HttpPost("scores/file/generate")]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
@@ -359,7 +359,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Creates or Replaces leaderboard scores files.
         /// </summary>
-        [HttpPost("scores/file")]
+        [HttpGet("scores/file/retrieve")]
         [SwaggerResponse(200)]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
