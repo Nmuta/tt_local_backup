@@ -27,7 +27,11 @@
 
   <endpoints-nav-tool></endpoints-nav-tool>
 
-  <div *ngIf="!inEditMode" class="link-list-wrapper tour-element-highlighted" tourAnchor="home-tour.step.seven">
+  <div
+    *ngIf="!inEditMode"
+    class="link-list-wrapper tour-element-highlighted"
+    tourAnchor="home-tour.step.seven"
+  >
     <ng-container *ngFor="let item of listedTools">
       <a
         *ngIf="!item.navComponent"

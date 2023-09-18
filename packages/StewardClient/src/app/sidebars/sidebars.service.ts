@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BaseService } from '@components/base-component/base.service';
 import { includes } from 'lodash';
-import { Observable, ReplaySubject, filter, map, of, switchMap, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
 
 /**
  *  Service to track the visible state of sidebars in the app.

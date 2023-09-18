@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { Select, Store } from '@ngxs/store';
 import { SetUserTours, SetHomeTour } from '@shared/state/tours/tours.actions';
 import { TourState, TourStateModel } from '@shared/state/tours/tours.state';
 import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
-import { Observable, filter, take, takeUntil } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 
 /** Configuration page for Tours. */
 @Component({

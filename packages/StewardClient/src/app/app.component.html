@@ -1,11 +1,10 @@
 <div class="cover">
-  <router-outlet></router-outlet><!-- ... -->
+  <router-outlet></router-outlet
+  ><!-- ... -->
   <tour-step-template>
-      <ng-template let-step="step">
-          <app-tour-step
-              [step]="step"
-          ></app-tour-step>
-      </ng-template>
+    <ng-template let-step="step">
+      <app-tour-step [step]="step"></app-tour-step>
+    </ng-template>
   </tour-step-template>
   <div class="centered-tour" tourAnchor="shared-tour.centered"></div>
 </div>

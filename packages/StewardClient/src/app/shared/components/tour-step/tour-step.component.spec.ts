@@ -8,9 +8,8 @@ describe('TourStepComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TourStepComponent ]
-    })
-    .compileComponents();
+      declarations: [TourStepComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TourStepComponent);
     component = fixture.componentInstance;

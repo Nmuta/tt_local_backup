@@ -46,9 +46,7 @@ export class UserTourService {
 
   /** Starts the Home tour */
   public startHomeTour(forced: boolean = false): void {
-    // TODO: This does not look quite right
     if (forced || this.shouldShowHomeTour()) {
-      debugger;
       this.tourService.initialize(homeTourSteps, {
         enableBackdrop: true,
       });

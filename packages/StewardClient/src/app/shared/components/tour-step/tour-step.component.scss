@@ -52,12 +52,11 @@ mat-card-header {
   }
 }
 
-
 // customizations:
 mat-card {
   background-color: app-color($app-background, 'card');
 
   button[disabled] {
-    color: app-color-default-contrast($app-background, 0.38)
+    color: app-color-default-contrast($app-background, 0.38);
   }
 }
