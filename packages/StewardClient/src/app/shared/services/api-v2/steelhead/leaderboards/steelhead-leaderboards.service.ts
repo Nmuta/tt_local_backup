@@ -108,8 +108,14 @@ export class SteelheadLeaderboardsService {
   }
 
   /** Gets leaderboard talent identities. */
-  public getLeaderboardTalentIdentities$(): Observable<IdentityResultAlphaBatch> {
-    return this.api.getRequest$<IdentityResultAlphaBatch>(`${this.basePath}/talent`);
+  public getRetailLeaderboardTalentIdentities$(): Observable<IdentityResultAlphaBatch> {
+    let headers = new HttpHeaders();
+    headers = overrideSteelheadEndpointKey('Retail', headers);
+    return this.api.getRequest$<IdentityResultAlphaBatch>(
+      `${this.basePath}/talent`,
+      undefined,
+      headers,
+    );
   }
 
   /** Deletes leaderboard scores. */
