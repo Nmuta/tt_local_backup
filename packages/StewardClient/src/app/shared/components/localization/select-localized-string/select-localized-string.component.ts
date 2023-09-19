@@ -72,6 +72,8 @@ export class SelectLocalizedStringComponent
   @Input() label: string = 'Select localized message';
   /** The dropdown mat hint label. (Optional) */
   @Input() hintMessage: string;
+  /** The dropdown mat hint label. (Optional) */
+  @Input() readonlyValue: string;
   /** Determines if the language preview display should never show. */
   @Input() disableLanguagePreview: boolean = false;
 
@@ -161,6 +163,7 @@ export class SelectLocalizedStringComponent
         takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
+        this.readonlyValue = undefined;
         const chipList =
           this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value?.id];
         this.selectedLocalizedStringCollection = orderBy(chipList, x => !x.isTranslated);
@@ -176,6 +179,7 @@ export class SelectLocalizedStringComponent
   /** Form control hook. */
   public writeValue(data: LocalizationOptions): void {
     if (!!data?.id) {
+      this.readonlyValue = undefined;
       this.formControls.selectedLocalizedStringInfo.patchValue(data, { emitEvent: false });
       this.selectedLocalizedStringCollection = orderBy(
         this.localizedStringLookup[this.formControls.selectedLocalizedStringInfo.value.id],
@@ -239,5 +243,12 @@ export class SelectLocalizedStringComponent
     } else {
       this.selectedLanguageLocalizedString = null;
     }
+  }
+
+  /** Removes the selected localized string. */
+  public removeSelectedString(): void {
+    this.readonlyValue = undefined;
+    this.selectedLocalizedStringCollection = [];
+    this.formControls.selectedLocalizedStringInfo.patchValue(null, { emitEvent: true });
   }
 }

@@ -59,6 +59,11 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
+  public popupTitleValue: string;
+  public popupHeaderValue: string;
+  public popupSubHeaderValue: string;
+  public popupDescriptionValue: string;
+
   public readonly permAttribute = PermAttributeName.UpdateWelcomeCenterTiles;
 
   constructor(
@@ -116,7 +121,7 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
     this.generalTileComponent.mapFormToWelcomeCenterTile(this.imageTextTile);
 
     this.steelheadImageTextTileService
-      .submitImageTextTileModification$(this.tileId, this.imageTextTile)
+      .submitImageTextTileModification$(this.tileId.key, this.imageTextTile)
       .pipe(this.submitWelcomeCenterTileMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(pullrequest => {
         this.pullRequestUrl = pullrequest.webUrl;
@@ -140,6 +145,11 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
     this.formControls.localizedPopupDescription.setValue({
       id: imageTextTile.popupDescription.locref,
     });
+
+    this.popupTitleValue = imageTextTile.popupTitle.base;
+    this.popupHeaderValue = imageTextTile.popupHeader.base;
+    this.popupSubHeaderValue = imageTextTile.popupSubHeader.base;
+    this.popupDescriptionValue = imageTextTile.popupDescription.base;
 
     const baseTile = {
       tileImagePath: imageTextTile.tileImagePath,

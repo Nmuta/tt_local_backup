@@ -27,7 +27,7 @@ export class CreateLocalizedStringComponent extends BaseComponent {
   @Output() newActivePr = new EventEmitter<PullRequest>();
 
   public postMonitor = new ActionMonitor('POST String Localization');
-  public readonly messageMaxLength: number = 512;
+  public readonly messageMaxLength: number = 2000;
   public categoryTypes: string[] = Object.values(LocalizationCategory);
   public subCategoryTypes: string[] = Object.values(LocalizationSubCategory);
 

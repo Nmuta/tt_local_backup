@@ -121,7 +121,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
     this.generalTileComponent.mapFormToWelcomeCenterTile(this.deeplinkTile);
 
     this.steelheadDeeplinkTileService
-      .submitDeeplinkTileModification$(this.tileId, this.deeplinkTile)
+      .submitDeeplinkTileModification$(this.tileId.key, this.deeplinkTile)
       .pipe(this.submitWelcomeCenterTileMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(pullrequest => {
         this.pullRequestUrl = pullrequest.webUrl;

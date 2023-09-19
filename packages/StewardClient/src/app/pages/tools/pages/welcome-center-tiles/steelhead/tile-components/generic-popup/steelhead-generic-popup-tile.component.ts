@@ -60,6 +60,9 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
+  public popupTitleValue: string;
+  public popupDescriptionValue: string;
+
   public readonly permAttribute = PermAttributeName.UpdateWelcomeCenterTiles;
 
   constructor(
@@ -109,7 +112,7 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
     this.generalTileComponent.mapFormToWelcomeCenterTile(this.genericPopupTile);
 
     this.steelheadGenericPopupTileService
-      .submitGenericPopupTileModification$(this.tileId, this.genericPopupTile)
+      .submitGenericPopupTileModification$(this.tileId.key, this.genericPopupTile)
       .pipe(this.submitWelcomeCenterTileMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(pullrequest => {
         this.pullRequestUrl = pullrequest.webUrl;
@@ -130,6 +133,9 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
         id: genericPopupTile.popupDescription.locref,
       });
     }
+
+    this.popupTitleValue = genericPopupTile.popupTitle.base;
+    this.popupDescriptionValue = genericPopupTile.popupDescription.base;
 
     const baseTile = {
       tileImagePath: genericPopupTile.tileImagePath,

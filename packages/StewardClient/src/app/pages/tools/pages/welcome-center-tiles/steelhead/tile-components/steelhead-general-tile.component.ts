@@ -129,6 +129,10 @@ export class GeneralTileComponent extends BaseComponent {
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
+  public tileDescriptionValue: string;
+  public tileTitleValue: string;
+  public tileTypeValue: string;
+
   constructor(
     steelheadLocalizationService: SteelheadLocalizationService,
     steelheadWorldOfForzaService: SteelheadWorldOfForzaService,
@@ -348,6 +352,10 @@ export class GeneralTileComponent extends BaseComponent {
           id: data.tileType.locref,
         });
       }
+
+      this.tileDescriptionValue = data.tileDescription.base;
+      this.tileTitleValue = data.tileTitle.base;
+      this.tileTypeValue = data.tileType.base;
 
       // Timer
       this.formControls.timerInstance.setValue(data.timer.typeName);

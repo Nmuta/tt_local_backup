@@ -11,6 +11,19 @@
           {{ stringDetails.englishText | deppoh }}
         </mat-option>
       </mat-select>
+      <button
+        matSuffix
+        mat-icon-button
+        clickStop
+        (click)="removeSelectedString()"
+        matTooltip="Clear localized string"
+        [disabled]="formControls.selectedLocalizedStringInfo.disabled"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-select-trigger *ngIf="readonlyValue">
+        {{ readonlyValue }}
+      </mat-select-trigger>
       <mat-hint *ngIf="hintMessage">{{ hintMessage }}</mat-hint>
       <mat-error *ngIf="formControls.selectedLocalizedStringInfo.hasError('required')"
         >Required</mat-error

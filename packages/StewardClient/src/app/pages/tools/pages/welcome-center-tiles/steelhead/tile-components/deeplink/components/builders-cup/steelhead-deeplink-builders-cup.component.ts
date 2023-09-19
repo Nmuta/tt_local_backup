@@ -108,7 +108,7 @@ export class DeeplinkBuildersCupComponent
   public writeValue(data: DeeplinkDestination): void {
     const buildersCupDestination = data as BuildersCupDestination;
     if (
-      Object.values(BuildersCupDestination).includes(
+      Object.values(BuildersCupSettingType).includes(
         buildersCupDestination.settingType as BuildersCupSettingType,
       )
     ) {

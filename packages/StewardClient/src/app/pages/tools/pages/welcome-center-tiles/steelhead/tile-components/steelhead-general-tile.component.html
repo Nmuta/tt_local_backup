@@ -3,18 +3,21 @@
     <select-localized-string
       [service]="localizationSelectServiceContract"
       [formControl]="formControls.localizedTileTitle"
+      [readonlyValue]="tileTitleValue"
       label="Tile Title"
       formControlName="localizedTileTitle"
     ></select-localized-string>
     <select-localized-string
       [service]="localizationSelectServiceContract"
       [formControl]="formControls.localizedTileDescription"
+      [readonlyValue]="tileDescriptionValue"
       label="Tile Description"
       formControlName="localizedTileDescription"
     ></select-localized-string>
     <select-localized-string
       [service]="localizationSelectServiceContract"
       [formControl]="formControls.localizedTileType"
+      [readonlyValue]="tileTypeValue"
       label="Tile Type"
       hintMessage="Optional"
       formControlName="localizedTileType"
