@@ -8,6 +8,10 @@ model-dump {
   }
 }
 
+model-dump-flags {
+  margin-bottom: 20px;
+}
+
 :host ::ng-deep .images {
   flex-grow: 0;
 
