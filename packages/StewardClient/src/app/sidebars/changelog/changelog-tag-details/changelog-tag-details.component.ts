@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { ChangelogArea, ChangelogEntry, ChangelogTag } from '@environments/app-data/changelog';
+import { ChangelogArea, ChangelogTag, ChangelogEntry } from '@environments/app-data/changelog';
 import { NavbarTool } from '@environments/environment';
 import { GameTitle } from '@models/enums';
 import { GameTitleAbbreviationPipe } from '@shared/pipes/game-title-abbreviation.pipe';

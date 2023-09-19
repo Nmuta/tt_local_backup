@@ -9,6 +9,27 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
+      shortMarkdown: 'Add **markdown** support',
+      longMarkdown: `
+        ### Markdown is now supported in changelogs.
+
+        This includes support for Mermaid JS
+        \`\`\`mermaid
+        flowchart LR
+          a --> b & c--> d
+        \`\`\`
+
+        - bullets!
+          - indented
+
+        1. one
+        2. two
+        3. three
+      `,
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'ef93bf86-0143-4460-9770-42e5490b11f9',
       shortText: 'Target correct LSP group for Steelhead Talented Players',
     },
