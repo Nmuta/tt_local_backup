@@ -26,6 +26,16 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
   public notificationColor: ThemePalette = undefined;
   public profileTooltip: string = 'Profile & Settings';
 
+  /** Produces the total notifications visible in the sidebar nav. */
+  public get mergedNotificationCount(): number | undefined {
+    const totalNotifications = this.changelogNotificationCount + this.notificationCount;
+    if (totalNotifications > 0) {
+      return totalNotifications;
+    }
+
+    return undefined;
+  }
+
   constructor(
     private readonly userSettingsService: UserSettingsService,
     private readonly changelogService: ChangelogService,
