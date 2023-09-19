@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         public async Task<Dictionary<Guid, string>> GetStoreEntitlements()
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}/rivals/events");
+            var path = new Uri(this.baseUri, $"{TitlePath}/store/entitlements");
 
             return await ServiceClient.SendRequestAsync<Dictionary<Guid, string>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
