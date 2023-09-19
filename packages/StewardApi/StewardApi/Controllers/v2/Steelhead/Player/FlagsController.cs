@@ -74,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             try
             {
                 var results = await this.BuildUserFlags(xuid, service).ConfigureAwait(true);
-                results.IsCommunityManager.HasConflict = true;
+
                 return this.Ok(results);
             }
             catch (Exception ex)
