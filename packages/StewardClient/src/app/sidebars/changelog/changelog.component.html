@@ -43,8 +43,5 @@
       <mat-icon>expand_less</mat-icon>
     </button>
   </h2>
-  <changelog-group
-    *ngFor="let group of changelog.active"
-    [group]="group"
-  ></changelog-group>
+  <changelog-group *ngFor="let group of changelog.active" [group]="group"></changelog-group>
 </section>

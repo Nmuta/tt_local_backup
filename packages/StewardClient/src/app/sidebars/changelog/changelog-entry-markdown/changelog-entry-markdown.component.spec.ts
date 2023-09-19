@@ -8,9 +8,8 @@ describe('ChangelogEntryMarkdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChangelogEntryMarkdownComponent ]
-    })
-    .compileComponents();
+      declarations: [ChangelogEntryMarkdownComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ChangelogEntryMarkdownComponent);
     component = fixture.componentInstance;

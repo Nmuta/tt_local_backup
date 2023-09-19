@@ -8,9 +8,8 @@ describe('ChangelogEntryOldComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChangelogEntryOldComponent ]
-    })
-    .compileComponents();
+      declarations: [ChangelogEntryOldComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ChangelogEntryOldComponent);
     component = fixture.componentInstance;

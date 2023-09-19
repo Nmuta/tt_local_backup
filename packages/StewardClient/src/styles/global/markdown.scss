@@ -4,12 +4,14 @@ markdown {
   table {
     border-collapse: collapse;
 
-    td, th {
-      padding: .25em .75em;
+    td,
+    th {
+      padding: 0.25em 0.75em;
     }
 
     thead {
-      tr, th {
+      tr,
+      th {
         background-color: app-color-darker($app-background);
         color: app-color-darker-contrast($app-background);
       }
@@ -20,7 +22,8 @@ markdown {
       color: app-color-darker-contrast($app-background);
     }
 
-    td, th {
+    td,
+    th {
       &:not(:last-child) {
         border-right: 1px solid app-color-darker($app-background);
       }

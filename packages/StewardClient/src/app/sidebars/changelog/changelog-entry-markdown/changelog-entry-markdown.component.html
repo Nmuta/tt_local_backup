@@ -11,12 +11,17 @@
         [ngModel]="isAcknowledgedEntry(entry)"
         (change)="updateEntry(entry, $event)"
       >
-        <span [innerHtml]="entry.shortMarkdown | markdown: { inline: true }"></span>
+        <span [innerHtml]="entry.shortMarkdown | markdown : { inline: true }"></span>
       </mat-checkbox>
       <span class="sf-spacer"></span>
       <changelog-tag-details [entry]="entry"></changelog-tag-details>
     </mat-panel-title>
   </mat-expansion-panel-header>
-  
-  <markdown *ngIf="entry.longMarkdown?.length ?? false" [data]="entry.longMarkdown" mermaid [mermaidOptions]="mermaidOptions"></markdown>
+
+  <markdown
+    *ngIf="entry.longMarkdown?.length ?? false"
+    [data]="entry.longMarkdown"
+    mermaid
+    [mermaidOptions]="mermaidOptions"
+  ></markdown>
 </mat-expansion-panel>
