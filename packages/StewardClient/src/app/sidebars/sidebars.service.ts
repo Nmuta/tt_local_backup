@@ -40,13 +40,15 @@ export class SidebarService extends BaseService {
   constructor(router: Router) {
     super();
 
+    function isOnSidebarUrl(url: string): boolean {
+      return includes(url, '//sidebar:');
+    }
+
     router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         map(event => event as NavigationEnd),
-        map(event => {
-          return includes(event.url, '//sidebar:');
-        }),
+        map(event => isOnSidebarUrl(event.url)),
         takeUntil(this.onDestroy$),
       )
       .subscribe(isVisible => {
@@ -65,6 +67,7 @@ export class SidebarService extends BaseService {
       this._isOpen$.next(isVisible);
     });
 
+    this.isVisible = isOnSidebarUrl(router.url);
     this.changes$.next(this.isVisible);
   }
 }
