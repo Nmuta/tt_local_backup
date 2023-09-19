@@ -12,20 +12,33 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
       shortMarkdown: 'Add **markdown** support',
       longMarkdown: `
-        ### Markdown is now supported in changelogs.
+        ## Markdown is now supported in changelogs.
 
-        This includes support for Mermaid JS
+        This includes support for Mermaid JS  
+        
         \`\`\`mermaid
         flowchart LR
           a --> b & c--> d
         \`\`\`
 
-        - bullets!
-          - indented
+        Paragraphs!  
+        Newlines!
 
-        1. one
-        2. two
-        3. three
+        ---
+
+        Lines!
+
+        - bullets!
+          1. indented
+          2. lists!
+
+        | tables! | a | b | c | d | e |
+        |---------|---|---|---|---|---|
+        | one     | 1 |   |   |   | ? |
+        | two     |   | 2 |   |   |   |
+        | three   |   |   | 3 |   | ? |
+        | four    |   |   |   | 4 |   |
+        | five    |   |   |   |   | 5 |
       `,
     },
     {

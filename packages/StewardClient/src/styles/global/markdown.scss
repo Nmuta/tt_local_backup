@@ -1,0 +1,29 @@
+@import '/src/styles/mixins';
+
+markdown {
+  table {
+    border-collapse: collapse;
+
+    td, th {
+      padding: .25em .75em;
+    }
+
+    thead {
+      tr, th {
+        background-color: app-color-darker($app-background);
+        color: app-color-darker-contrast($app-background);
+      }
+    }
+
+    tbody > tr:nth-child(2n) {
+      background-color: app-color-darker($app-background, 0.5);
+      color: app-color-darker-contrast($app-background);
+    }
+
+    td, th {
+      &:not(:last-child) {
+        border-right: 1px solid app-color-darker($app-background);
+      }
+    }
+  }
+}
