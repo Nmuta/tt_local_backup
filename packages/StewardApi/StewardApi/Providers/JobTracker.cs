@@ -68,8 +68,8 @@ namespace Turn10.LiveOps.StewardApi.Providers
 
             try
             {
-                var isTestJob = System.Diagnostics.Debugger.IsAttached || isTestJob;
-                var backgroundJob = new BackgroundJobInternal(jobId, userObjectId, reason, isTestJob, BackgroundJobStatus.InProgress);
+                var markAsTestJob = System.Diagnostics.Debugger.IsAttached || isTestJob;
+                var backgroundJob = new BackgroundJobInternal(jobId, userObjectId, reason, markAsTestJob, BackgroundJobStatus.InProgress);
                 await this.hubManager.ForwardJobChange(backgroundJob).ConfigureAwait(false);
 
                 await this.blobRepository
