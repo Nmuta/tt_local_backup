@@ -273,14 +273,6 @@ export class LeaderboardScoresComponent
   public switchToTopOfListView(): void {
     this.externalSelectedIdentity = undefined;
     this.getLeaderboardScores$.next(this.leaderboard.query);
-    // const params = cloneDeep(this.route.snapshot.queryParams);
-    // params['xuid'] = null;
-
-    // this.router.navigate([], {
-    //   relativeTo: this.route,
-    //   queryParams: params,
-    //   queryParamsHandling: 'merge',
-    // });
   }
 
   /** Logic when row is clicked on. */
