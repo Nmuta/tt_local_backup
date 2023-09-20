@@ -43,6 +43,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: 'e3f27c4f-0a80-4949-a7ed-b92e68e597c2',
+      shortText: 'Upgrade to Angular 15',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'ef93bf86-0143-4460-9770-42e5490b11f9',
       shortText: 'Target correct LSP group for Steelhead Talented Players',
     },
