@@ -275,7 +275,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     this.visibilityMonitor = this.visibilityMonitor.repeat();
 
     this.ugcVisibilityStatusService
-      .privateUgcItems$([this.ugcItem.id])
+      .markUgcItemsPrivate$([this.ugcItem.id])
       .pipe(this.visibilityMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;
@@ -291,7 +291,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     this.visibilityMonitor = this.visibilityMonitor.repeat();
 
     this.ugcVisibilityStatusService
-      .publicUgcItems$([this.ugcItem.id])
+      .markUgcItemsPublic$([this.ugcItem.id])
       .pipe(this.visibilityMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.ugcItem.isPublic = true;

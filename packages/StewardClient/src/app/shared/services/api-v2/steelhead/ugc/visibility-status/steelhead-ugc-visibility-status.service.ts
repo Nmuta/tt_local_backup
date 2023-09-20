@@ -13,25 +13,25 @@ export class SteelheadUgcVisibilityStatusService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Mark Ugc items public using background processing. */
-  public publicUgcItemsUsingBackgroundJob$(ugcIds: string[]): Observable<BackgroundJob<void>> {
+  public markUgcItemsPublicUsingBackgroundJob$(ugcIds: string[]): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBackgroundProcessing', true);
     return this.api.postRequest$<BackgroundJob<void>>(`${this.basePath}/public`, ugcIds, params);
   }
 
   /** Mark Ugc items public. */
-  public publicUgcItems$(ugcIds: string[]): Observable<string[]> {
+  public markUgcItemsPublic$(ugcIds: string[]): Observable<string[]> {
     const params = new HttpParams().set('useBackgroundProcessing', false);
     return this.api.postRequest$<string[]>(`${this.basePath}/public`, ugcIds, params);
   }
 
   /** Mark Ugc items private using background processing. */
-  public privateUgcItemsUsingBackgroundJob$(ugcIds: string[]): Observable<BackgroundJob<void>> {
+  public markUgcItemsPrivateUsingBackgroundJob$(ugcIds: string[]): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBackgroundProcessing', true);
     return this.api.postRequest$<BackgroundJob<void>>(`${this.basePath}/private`, ugcIds, params);
   }
 
   /** Mark Ugc private item. */
-  public privateUgcItems$(ugcIds: string[]): Observable<string[]> {
+  public markUgcItemsPrivate$(ugcIds: string[]): Observable<string[]> {
     const params = new HttpParams().set('useBackgroundProcessing', false);
     return this.api.postRequest$<string[]>(`${this.basePath}/private`, ugcIds, params);
   }
