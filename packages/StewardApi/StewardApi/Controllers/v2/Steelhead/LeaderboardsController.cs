@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using Azure.Storage.Blobs;
-using Azure.Storage.Sas;
 using Forza.Scoreboard.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -336,6 +333,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     }
 
                     await this.blobStorageProvider.SetLeaderboardDataAsync(leaderboardIdentifier, csv.ToString()).ConfigureAwait(true);
+
+                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////REMOVE
+                    await Task.Delay(30_000);
+                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////REMOVE
 
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, null).ConfigureAwait(true);
                 }
