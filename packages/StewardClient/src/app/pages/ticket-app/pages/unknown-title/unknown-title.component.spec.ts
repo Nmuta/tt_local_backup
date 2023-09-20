@@ -8,18 +8,22 @@ import { of } from 'rxjs';
 
 import { UnknownTitleComponent } from './unknown-title.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('UnknownTitleComponent', () => {
   let fixture: ComponentFixture<UnknownTitleComponent>;
   let store: Store;
   let ticketService: MockTicketService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [UnknownTitleComponent],
-      imports: [NgxsModule.forRoot([])],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockTicketService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [UnknownTitleComponent],
+        imports: [NgxsModule.forRoot([])],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockTicketService()],
+      }),
+    ).compileComponents();
 
     ticketService = TestBed.inject(TicketService) as unknown as MockTicketService;
 

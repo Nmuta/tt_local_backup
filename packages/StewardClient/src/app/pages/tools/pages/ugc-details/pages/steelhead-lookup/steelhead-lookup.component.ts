@@ -30,7 +30,7 @@ import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-look
 import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
 import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-flags/steelhead-ugc-geo-flags.service';
 import { SteelheadEditUgcModalComponent } from '@views/edit-ugc-modal/steelhead/steelhead-edit-ugc-modal.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SteelheadFeatureUgcModalComponent } from '@views/feature-ugc-modal/steelhead/steelhead-feature-ugc-modal.component';
 import { SteelheadUgcHideStatusService } from '@services/api-v2/steelhead/ugc/hide-status/steelhead-ugc-hide-status.service';
 import { UgcReportReason } from '@models/ugc-report-reason';

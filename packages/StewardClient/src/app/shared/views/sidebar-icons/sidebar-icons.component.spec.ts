@@ -1,19 +1,22 @@
 import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
-import { SidebarIconsComponent } from './sidebar-icons.component';
-import { environment } from '@environments/environment';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogModule as MatDialogModule,
+} from '@angular/material/legacy-dialog';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
-import { createMockUserSettingsService } from '@shared/state/user-settings/use-settings.service.mock';
-import { createMockChangelogService } from '@services/changelog/changelog.service.mock';
-import { ChangelogService } from '@services/changelog/changelog.service';
-import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
-import { NotificationsService } from '@shared/hubs/notifications.service';
-import { BackgroundJob } from '@models/background-job';
-import { Subject } from 'rxjs';
-import { sidebarRoutes } from 'app/sidebars/sidebars.routing';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
+import { BackgroundJob } from '@models/background-job';
+import { ChangelogService } from '@services/changelog/changelog.service';
+import { createMockChangelogService } from '@services/changelog/changelog.service.mock';
+import { NotificationsService } from '@shared/hubs/notifications.service';
+import { createMockUserSettingsService } from '@shared/state/user-settings/use-settings.service.mock';
+import { UserSettingsService } from '@shared/state/user-settings/user-settings.service';
+import { sidebarRoutes } from 'app/sidebars/sidebars.routing';
+import { Subject } from 'rxjs';
+import { SidebarIconsComponent } from './sidebar-icons.component';
 
 describe('SidebarIconsComponent', () => {
   let fixture: ComponentFixture<SidebarIconsComponent>;

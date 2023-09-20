@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PlayerSidebarDetailsModule } from './components/player-sidebar-details/player-sidebar-details.module';
 
@@ -15,7 +15,7 @@ import { QuickActionsComponent } from './components/quick-actions/quick-actions.
 import { UnknownTitleComponent } from './pages/unknown-title/unknown-title.component';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { OverlayComponent } from './components/overlay/overlay.component';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
@@ -23,7 +23,6 @@ import { SteelheadComponent } from './pages/steelhead/steelhead.component';
 import { WoodstockComponent } from './pages/woodstock/woodstock.component';
 import { MatIconModule } from '@angular/material/icon';
 import { GiftHistoryResultsModule } from '@views/gift-history-results/gift-history-results.module';
-import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -41,7 +40,6 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatIconModule,
     JsonDumpModule,
     GiftHistoryResultsModule,
-    TourMatMenuModule, // loaded to ensure tours run properly
   ],
   providers: [],
   declarations: [

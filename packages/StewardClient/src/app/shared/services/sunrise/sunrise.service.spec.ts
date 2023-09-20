@@ -21,6 +21,8 @@ import faker from '@faker-js/faker';
 import { Gift, GroupGift } from '@models/gift';
 import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseService', () => {
   let injector: TestBed;
   let service: SunriseService;
@@ -28,11 +30,13 @@ describe('SunriseService', () => {
   let nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiService(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiService(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     service = injector.inject(SunriseService);
     apiServiceMock = injector.inject(ApiService);

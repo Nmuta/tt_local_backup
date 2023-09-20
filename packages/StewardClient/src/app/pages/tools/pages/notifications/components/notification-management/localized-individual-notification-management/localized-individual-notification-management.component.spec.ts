@@ -48,6 +48,8 @@ class TestNotificationManagementService implements LocalizedIndividualMessagingM
   }
 }
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('LocalizedIndividualNotificationManagementComponent', () => {
   let component: LocalizedIndividualNotificationManagementComponent;
   let fixture: ComponentFixture<LocalizedIndividualNotificationManagementComponent>;
@@ -56,12 +58,14 @@ describe('LocalizedIndividualNotificationManagementComponent', () => {
   const mockService: TestNotificationManagementService = new TestNotificationManagementService();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [LocalizedIndividualNotificationManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [TestNotificationManagementService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [LocalizedIndividualNotificationManagementComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [TestNotificationManagementService],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(LocalizedIndividualNotificationManagementComponent);
     component = fixture.debugElement.componentInstance;

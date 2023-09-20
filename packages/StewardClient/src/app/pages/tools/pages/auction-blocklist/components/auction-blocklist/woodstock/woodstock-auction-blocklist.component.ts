@@ -4,7 +4,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { GameTitle } from '@models/enums';
 import { takeUntil } from 'rxjs/operators';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { orderBy } from 'lodash';
 import { WoodstockAuctionsService } from '@services/api-v2/woodstock/auctions/woodstock-auctions.service';

@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
 
 import { ApolloPlayerInventoryComponent } from './apollo-player-inventory.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloPlayerInventoryComponent', () => {
   let component: ApolloPlayerInventoryComponent;
   let fixture: ComponentFixture<ApolloPlayerInventoryComponent>;
@@ -12,11 +14,13 @@ describe('ApolloPlayerInventoryComponent', () => {
   let waitUntil$: Subject<void>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ApolloPlayerInventoryComponent],
-      providers: [createMockApolloService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ApolloPlayerInventoryComponent],
+        providers: [createMockApolloService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     service = TestBed.inject(ApolloService);
     waitUntil$ = new Subject<void>();

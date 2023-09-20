@@ -5,13 +5,15 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import {
-  createMockWindowService,
   MockWindowService,
   WindowOpen,
   WindowService,
+  createMockWindowService,
 } from '@services/window';
 
 import { LogoutComponent } from './logout.component';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('LogoutComponent:', () => {
   let component: LogoutComponent;
@@ -21,12 +23,14 @@ describe('LogoutComponent:', () => {
   let msal: MsalService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      declarations: [LogoutComponent],
-      providers: [...createMockMsalServices(), createMockWindowService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        declarations: [LogoutComponent],
+        providers: [...createMockMsalServices(), createMockWindowService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('store.dispatch');

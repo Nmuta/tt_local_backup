@@ -5,20 +5,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { WoodstockCarDetailsComponent } from './woodstock-car-details.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockCarDetailsComponent', () => {
   let component: WoodstockCarDetailsComponent;
   let fixture: ComponentFixture<WoodstockCarDetailsComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-      ],
-      declarations: [WoodstockCarDetailsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+        ],
+        declarations: [WoodstockCarDetailsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockCarDetailsComponent);
     component = fixture.debugElement.componentInstance;

@@ -6,17 +6,21 @@ import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import { of } from 'rxjs';
 import { SteelheadProfileTemplatesService } from './steelhead-profile-templates.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadProfileTemplatesService', () => {
   let service: SteelheadProfileTemplatesService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     const injector = getTestBed();
     service = injector.inject(SteelheadProfileTemplatesService);
     apiServiceMock = injector.inject(ApiV2Service);

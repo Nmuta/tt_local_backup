@@ -13,7 +13,7 @@ import {
   tap,
 } from 'rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
-import { MatChipListChange } from '@angular/material/chips';
+import { MatLegacyChipListChange as MatChipListChange } from '@angular/material/legacy-chips';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { sortBy } from 'lodash';
 import { GameTitle } from '@models/enums';

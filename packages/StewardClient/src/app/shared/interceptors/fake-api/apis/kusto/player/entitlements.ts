@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
+import faker from '@faker-js/faker';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { Entitlement, EntitlementType } from '@models/entitlement';
-import faker from '@faker-js/faker';
 
 /** Fake API for getting kusto player entitlements. */
 export class KustoGetPlayerEntitlements extends FakeApiBase {

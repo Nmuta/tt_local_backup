@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
@@ -14,8 +14,8 @@ import { WoodstockConsolesComponent } from './woodstock/woodstock-consoles.compo
 import { MatIconModule } from '@angular/material/icon';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 

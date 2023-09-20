@@ -8,7 +8,7 @@ import { HasPlayedRecord, WoodstockLoyaltyRewardsTitle } from '@models/loyalty-r
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { of, Subject } from 'rxjs';
 import { filter, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 import { chain, keys } from 'lodash';
 import { Store } from '@ngxs/store';
 import { hasV1AccessToV1RestrictedFeature, V1RestrictedFeature } from '@environments/environment';

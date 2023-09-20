@@ -1,9 +1,9 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
-import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloBanArea, ApolloBanSummary } from '@models/apollo';
 import faker from '@faker-js/faker';
 import { toDateTime } from '@helpers/luxon';
+import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { ApolloBanArea, ApolloBanSummary } from '@models/apollo';
+import BigNumber from 'bignumber.js';
 
 /** Fake API for banning players. */
 export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
@@ -29,13 +29,13 @@ export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
     return xuids.map(xuid => {
       return <ApolloBanSummary>{
         banCount: new BigNumber(faker.datatype.number()),
-        bannedAreas: faker.random.arrayElements(Object.values(ApolloBanArea)),
+        bannedAreas: faker.helpers.arrayElements(Object.values(ApolloBanArea)),
         gamertag: faker.random.word(),
         xuid: xuid,
         lastBanDescription: {
           countOfTimesExtended: new BigNumber(faker.datatype.number()),
           expireTimeUtc: toDateTime(faker.date.future()),
-          featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
+          featureArea: faker.helpers.arrayElement(Object.values(ApolloBanArea)),
           isActive: faker.datatype.boolean(),
           lastExtendedReason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
           lastExtendedTimeUtc: toDateTime(faker.date.past()),

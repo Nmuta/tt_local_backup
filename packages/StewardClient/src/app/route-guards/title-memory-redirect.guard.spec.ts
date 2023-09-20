@@ -7,6 +7,8 @@ import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state'
 
 import { TitleMemoryRedirectGuard } from './title-memory-redirect.guard';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('TitleMemoryRedirectGuard', () => {
   let guard: TitleMemoryRedirectGuard;
   let store: Store;
@@ -25,10 +27,12 @@ describe('TitleMemoryRedirectGuard', () => {
   const testSnapshot: Partial<RouterStateSnapshot> = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([TitleMemoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([TitleMemoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     guard = TestBed.inject(TitleMemoryRedirectGuard);
     store = TestBed.inject(Store);
 

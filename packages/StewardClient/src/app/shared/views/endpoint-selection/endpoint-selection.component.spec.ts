@@ -7,6 +7,8 @@ import { UserSettingsStateModel } from '@shared/state/user-settings/user-setting
 import { of } from 'rxjs';
 import { EndpointSelectionComponent } from './endpoint-selection.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('EndpointSelectionComponent', () => {
   const endpoint = faker.random.word();
   const validGameTitle = GameTitleCodeName.FH5;
@@ -15,11 +17,13 @@ describe('EndpointSelectionComponent', () => {
   let fixture: ComponentFixture<EndpointSelectionComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [EndpointSelectionComponent],
-      imports: [NgxsModule.forRoot([])],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [EndpointSelectionComponent],
+        imports: [NgxsModule.forRoot([])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

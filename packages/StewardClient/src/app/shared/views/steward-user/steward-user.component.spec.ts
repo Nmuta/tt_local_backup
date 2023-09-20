@@ -10,20 +10,24 @@ import { of } from 'rxjs';
 
 import { StewardUserComponent } from './steward-user.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('StewardUserComponent', () => {
   let component: StewardUserComponent;
   let fixture: ComponentFixture<StewardUserComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [StewardUserComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [StewardUserComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

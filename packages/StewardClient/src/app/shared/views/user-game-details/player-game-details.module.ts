@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { WoodstockPlayerGameDetailsComponent } from './woodstock/woodstock-player-game-details.component';
 import { SteelheadPlayerGameDetailsComponent } from './steelhead/steelhead-player-game-details.component';
 import { PlayerGameDetailsBaseComponent } from './player-game-details.base.component';

@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason, HttpResponse httpResponse)
+        public async Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason, HttpResponse httpResponse, bool isTestJob = false)
         {
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
             reason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(reason));
@@ -68,7 +68,8 @@ namespace Turn10.LiveOps.StewardApi.Providers
 
             try
             {
-                var backgroundJob = new BackgroundJobInternal(jobId, userObjectId, reason, BackgroundJobStatus.InProgress);
+                var markAsTestJob = System.Diagnostics.Debugger.IsAttached || isTestJob;
+                var backgroundJob = new BackgroundJobInternal(jobId, userObjectId, reason, markAsTestJob, BackgroundJobStatus.InProgress);
                 await this.hubManager.ForwardJobChange(backgroundJob).ConfigureAwait(false);
 
                 await this.blobRepository

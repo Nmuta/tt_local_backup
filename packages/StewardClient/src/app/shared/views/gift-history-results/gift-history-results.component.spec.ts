@@ -15,6 +15,8 @@ import { WoodstockGift, WoodstockGiftHistory, WoodstockMasterInventory } from '@
 import { GameTitle } from '@models/enums';
 import { GiftHistoryResultUnion, GiftHistoryView } from '@models/gift-history';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('GiftHistoryResultsComponent', () => {
   let component: GiftHistoryResultsComponent;
   let fixture: ComponentFixture<GiftHistoryResultsComponent>;
@@ -47,12 +49,14 @@ describe('GiftHistoryResultsComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [GiftHistoryResultsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        declarations: [GiftHistoryResultsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(GiftHistoryResultsComponent);
     component = fixture.debugElement.componentInstance;

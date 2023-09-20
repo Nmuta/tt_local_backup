@@ -15,6 +15,8 @@ import { ApolloGiftingComponent } from './apollo-gifting.component';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
 import { SetApolloGiftingMatTabIndex } from './state/apollo-gifting.state.actions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloGiftingComponent', () => {
   let component: ApolloGiftingComponent;
   let fixture: ComponentFixture<ApolloGiftingComponent>;
@@ -22,16 +24,18 @@ describe('ApolloGiftingComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState, ApolloGiftingState]),
-      ],
-      declarations: [ApolloGiftingComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState, ApolloGiftingState]),
+        ],
+        declarations: [ApolloGiftingComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ApolloGiftingComponent);
     component = fixture.debugElement.componentInstance;

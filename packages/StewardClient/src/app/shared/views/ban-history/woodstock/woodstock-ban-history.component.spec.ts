@@ -7,21 +7,25 @@ import { createMockOldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockBanHistoryComponent', () => {
   let component: WoodstockBanHistoryComponent;
   let fixture: ComponentFixture<WoodstockBanHistoryComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockBanHistoryComponent],
-      imports: [PipesModule],
-      providers: [
-        createMockWoodstockService(),
-        createMockOldPermissionsService(),
-        createMockMultipleBanHistoryService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockBanHistoryComponent],
+        imports: [PipesModule],
+        providers: [
+          createMockWoodstockService(),
+          createMockOldPermissionsService(),
+          createMockMultipleBanHistoryService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {
