@@ -10,7 +10,7 @@ import {
   ValidationErrors,
   Validator,
 } from '@angular/forms';
-import { MatChipListChange } from '@angular/material/chips';
+import { MatLegacyChipListChange as MatChipListChange } from '@angular/material/legacy-chips';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { GameTitle, SupportedLocalizationLanguageCodes } from '@models/enums';

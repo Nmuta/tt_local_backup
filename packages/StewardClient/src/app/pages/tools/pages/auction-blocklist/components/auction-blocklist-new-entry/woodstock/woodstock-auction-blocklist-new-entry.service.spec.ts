@@ -4,17 +4,21 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 import { WoodstockAuctionBlocklistNewEntryService } from './woodstock-auction-blocklist-new-entry.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockAuctionBlocklistNewEntryService', () => {
   let service: WoodstockAuctionBlocklistNewEntryService;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockSunriseAuctionBlocklistService: WoodstockAuctionBlocklistNewEntryService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [WoodstockAuctionBlocklistNewEntryService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [WoodstockAuctionBlocklistNewEntryService],
+      }),
+    ).compileComponents();
 
     service = TestBed.inject(WoodstockAuctionBlocklistNewEntryService);
 

@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using AutoMapper;
+using Castle.Core.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -57,6 +60,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
 
+            if (result.Region < 0)
+            {
+                throw new NotFoundStewardException($"Game details not found. (GTag: {gamertag})");
+            }
+
             return this.Ok(result);
         }
 
@@ -75,6 +83,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
 
+            if (result.Region < 0)
+            {
+                throw new NotFoundStewardException($"Game details not found. (XUID: {xuid})");
+            }
+
             return this.Ok(result);
         }
 
@@ -91,12 +104,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             response = await this.Services.UserManagementService.GetUserDetails(xuid)
                 .ConfigureAwait(false);
 
-            if (response.forzaUser.Xuid == default(ulong))
+            var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
+
+            if (result.Gamertag.IsNullOrEmpty())
             {
                 throw new NotFoundStewardException($"Game details not found. (XUID: {xuid})");
             }
-
-            var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
 
             return this.Ok(result);
         }

@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 import { isEqual } from 'lodash';
-import { MonoTypeOperatorFunction, Observable, startWith, pairwise, filter, map } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, filter, map, pairwise, startWith } from 'rxjs';
 
 type EqualsPredicate<T> = (prev: T | null, cur: T) => boolean;
 const DefaultEqualsPredicate: EqualsPredicate<unknown> = (prev, cur) => prev === cur;

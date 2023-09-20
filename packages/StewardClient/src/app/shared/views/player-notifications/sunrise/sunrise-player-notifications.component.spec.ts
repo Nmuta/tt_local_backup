@@ -12,6 +12,8 @@ import { fakeXuid } from '@interceptors/fake-api/utility';
 import { PlayerNotification } from '@models/notifications.model';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunrisePlayerNotificationsComponent', () => {
   let injector: TestBed;
   let service: SunriseService;
@@ -19,12 +21,14 @@ describe('SunrisePlayerNotificationsComponent', () => {
   let fixture: ComponentFixture<SunrisePlayerNotificationsComponent>;
 
   beforeEach(waitForAsync(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunrisePlayerNotificationsComponent],
-      imports: [PipesModule],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunrisePlayerNotificationsComponent],
+        imports: [PipesModule],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     injector = getTestBed();
     service = injector.inject(SunriseService);

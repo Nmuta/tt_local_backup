@@ -5,20 +5,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { WoodstockLeaderboardsComponent } from './woodstock-leaderboards.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockLeaderboardsComponent', () => {
   let component: WoodstockLeaderboardsComponent;
   let fixture: ComponentFixture<WoodstockLeaderboardsComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-      ],
-      declarations: [WoodstockLeaderboardsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+        ],
+        declarations: [WoodstockLeaderboardsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockLeaderboardsComponent);
     component = fixture.debugElement.componentInstance;

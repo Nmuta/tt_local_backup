@@ -8,6 +8,61 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'e3f27c4f-0a80-4949-a7ed-b92e68e597c2',
+      shortText: 'Upgrade to Angular 15',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ef93bf86-0143-4460-9770-42e5490b11f9',
+      shortText: 'Target correct LSP group for Steelhead Talented Players',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '4a899681-244c-45c2-a02c-4d1801366057',
+      shortText: 'Track "test" Background Jobs separately',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '26e5ce44-0472-4b85-b1f9-cc2629b0e8b9',
+      shortText: 'Fixed bug preventing hide and unhide of UGC',
+    },
+    {
+      tag: { title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7], tool: NavbarTool.Zendesk },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Avoid User Flags error when loading Zendesk sidebar',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '3fceecf9-9020-4044-9857-d49978fc6e8f',
+      shortText: 'Add UGC Title and Description length validation',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'e2450ffa-7ebc-47ec-a05b-4fba09be9d4d',
+      shortText: 'Leaderboard updates',
+      longText: [
+        'Add scoreboard type as a filter when searching leaderboards.',
+        'Use more specific track name for attack time leaderboards.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd9513283-4f67-4286-99fb-18a1f6952b3c',
+      shortText: 'Misc Fixes',
+      longText: [
+        'Correct automatic changelog-opening behavior.',
+        'Reduce console errors.',
+        'Correct missing icon font.',
+        'Mimic hourly releases when running localhost development environment.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Display warning beside user flag when lookup provides conflicting data',
+    },
+    {
       tag: {
         title: GameTitle.FH5,
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],

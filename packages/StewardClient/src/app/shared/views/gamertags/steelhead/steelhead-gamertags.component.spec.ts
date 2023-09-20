@@ -18,6 +18,8 @@ const activatedRouteMock = {
   ] as ActivatedRoute[],
 };
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadGamertagsComponent', () => {
   let component: SteelheadGamertagsComponent;
   let fixture: ComponentFixture<SteelheadGamertagsComponent>;
@@ -25,17 +27,19 @@ describe('SteelheadGamertagsComponent', () => {
   let mockSteelheadService: SteelheadPlayerConsolesService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadGamertagsComponent, HumanizePipe],
-      providers: [
-        createMockSteelheadPlayerConsolesService(),
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadGamertagsComponent, HumanizePipe],
+        providers: [
+          createMockSteelheadPlayerConsolesService(),
+          {
+            provide: ActivatedRoute,
+            useValue: activatedRouteMock,
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -8,22 +8,26 @@ import { UserDetailsComponent } from '../user-details.component';
 
 import { SteelheadUserDetailsComponent } from './steelhead-user-details.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadUserDetailsComponent', () => {
   let component: SteelheadUserDetailsComponent;
   let fixture: ComponentFixture<SteelheadUserDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadUserDetailsComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [{ provide: UserDetailsComponent, useValue: {} }],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadUserDetailsComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [{ provide: UserDetailsComponent, useValue: {} }],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

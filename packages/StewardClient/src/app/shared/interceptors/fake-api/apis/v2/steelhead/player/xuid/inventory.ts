@@ -1,11 +1,11 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
-import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SteelheadPlayerInventory } from '@models/steelhead';
-import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
 import { toDateTime } from '@helpers/luxon';
+import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
+import { SteelheadPlayerInventory } from '@models/steelhead';
+import BigNumber from 'bignumber.js';
 
 /** Fake API for steelhead player inventory. */
 export class SteelheadPlayerInventoryFakeApi extends FakeApiBase {

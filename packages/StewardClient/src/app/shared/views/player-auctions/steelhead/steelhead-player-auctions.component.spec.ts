@@ -6,24 +6,28 @@ import { of, throwError } from 'rxjs';
 
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { SunrisePlayerXuidAuctionsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/auctions';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SteelheadPlayerAuctionsComponent } from './steelhead-player-auctions.component';
 import { createMockSteelheadService } from '@services/steelhead';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('SteelheadPlayerAuctionsComponent', () => {
   let component: SteelheadPlayerAuctionsComponent;
   let fixture: ComponentFixture<SteelheadPlayerAuctionsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SteelheadPlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockSteelheadService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [SteelheadPlayerAuctionsComponent, BigJsonPipe, HumanizePipe],
+        providers: [createMockSteelheadService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadPlayerAuctionsComponent);
     component = fixture.componentInstance;

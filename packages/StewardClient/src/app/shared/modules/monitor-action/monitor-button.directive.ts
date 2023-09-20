@@ -1,7 +1,7 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Directive, forwardRef, Input } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacyButton as MatButton } from '@angular/material/legacy-button';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { HCI } from '@environments/environment';
 import { isBoolean, isNumber, isObject } from 'lodash';
 import { STEWARD_DISABLE_STATE_PROVIDER } from '../state-managers/injection-tokens';

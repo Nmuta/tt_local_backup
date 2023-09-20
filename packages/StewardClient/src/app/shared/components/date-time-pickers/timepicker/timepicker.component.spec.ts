@@ -3,15 +3,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TimepickerComponent } from './timepicker.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('TimepickerComponent', () => {
   let component: TimepickerComponent;
   let fixture: ComponentFixture<TimepickerComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TimepickerComponent],
-      imports: [FormsModule, ReactiveFormsModule],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [TimepickerComponent],
+        imports: [FormsModule, ReactiveFormsModule],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

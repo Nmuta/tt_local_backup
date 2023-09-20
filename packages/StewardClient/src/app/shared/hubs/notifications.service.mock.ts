@@ -1,7 +1,7 @@
 import { Injectable, Provider } from '@angular/core';
+import { BackgroundJob } from '@models/background-job';
 import { Subject, of } from 'rxjs';
 import { NotificationsService } from './notifications.service';
-import { BackgroundJob } from '@models/background-job';
 
 /** Defines the mock for the Background Job Service. */
 @Injectable()

@@ -16,7 +16,7 @@ import {
   RacersCupChampionship,
 } from '@models/racers-cup.model';
 import { indexOf, sortBy, uniq } from 'lodash';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import {
   RacersCupSeriesModalComponent,
   RacersCupSeriesModalData,

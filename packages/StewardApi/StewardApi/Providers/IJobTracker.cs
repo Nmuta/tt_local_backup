@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Adds a job into the tracker.
         /// </summary>
-        Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason, HttpResponse httpResponse);
+        Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason, HttpResponse httpResponse, bool isTestJob = false);
 
         /// <summary>
         ///     Gets the job status.

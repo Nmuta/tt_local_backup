@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class SteelheadUgcVisibilityService {
+export class SteelheadUgcHideStatusService {
   private basePath: string = 'title/steelhead/ugc';
   constructor(private readonly api: ApiV2Service) {}
 

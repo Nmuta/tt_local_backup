@@ -3,15 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CenterContentsComponent } from './center-contents.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('CenterContentsComponent', () => {
   let component: CenterContentsComponent;
   let fixture: ComponentFixture<CenterContentsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [CenterContentsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [CenterContentsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

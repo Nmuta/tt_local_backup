@@ -15,6 +15,8 @@ import faker from '@faker-js/faker';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloGiftBasketComponent', () => {
   let fixture: ComponentFixture<ApolloGiftBasketComponent>;
   let component: ApolloGiftBasketComponent;
@@ -24,18 +26,20 @@ describe('ApolloGiftBasketComponent', () => {
   let mockApolloService: ApolloService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        PipesModule,
-      ],
-      declarations: [ApolloGiftBasketComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockPermAttributesService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          PipesModule,
+        ],
+        declarations: [ApolloGiftBasketComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockPermAttributesService()],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

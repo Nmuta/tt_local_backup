@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { JsonTableResult } from '@models/json-table-result';
-import { MatColumnDef } from '@angular/material/table';
+import { MatLegacyColumnDef as MatColumnDef } from '@angular/material/legacy-table';
 import { state, style, trigger } from '@angular/animations';
 
 export const SERVICES_TABLE_COLUMNS = ['expandButton', 'rowKey', 'partitionKey', 'timestampUtc'];

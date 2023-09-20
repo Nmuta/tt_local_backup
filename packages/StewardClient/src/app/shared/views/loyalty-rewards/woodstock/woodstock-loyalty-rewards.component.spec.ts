@@ -8,22 +8,26 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { WoodstockLoyaltyRewardsComponent } from './woodstock-loyalty-rewards.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockLoyaltyRewardsComponent', () => {
   let component: WoodstockLoyaltyRewardsComponent;
   let fixture: ComponentFixture<WoodstockLoyaltyRewardsComponent>;
   let mockStore: Store;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [WoodstockLoyaltyRewardsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [WoodstockLoyaltyRewardsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockLoyaltyRewardsComponent);
     component = fixture.debugElement.componentInstance;

@@ -5,10 +5,10 @@ import { ThemeTileContentComponent } from './theme-tile-content/theme-tile-conte
 import { ThemeNavContentComponent } from './theme-nav-content/theme-nav-content.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { ToggleEnvironmentWarningComponent } from './toggle-environment-warning/toggle-environment-warning.component';
 
 /** Components and services related to theming. */

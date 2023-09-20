@@ -10,17 +10,21 @@ import { of } from 'rxjs';
 
 import { SteelheadGroupGiftService } from './steelhead-group-gift.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadGroupGiftService', () => {
   let service: SteelheadGroupGiftService;
   const nextReturnValue: unknown = {};
   let apiServiceMock: ApiV2Service;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
 
     service = TestBed.inject(SteelheadGroupGiftService);
     apiServiceMock = TestBed.inject(ApiV2Service);

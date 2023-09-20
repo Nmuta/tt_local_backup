@@ -3,13 +3,17 @@ import { NgxsModule } from '@ngxs/store';
 
 import { ThemeService } from './theme.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ThemeService', () => {
   let service: ThemeService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot()],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot()],
+      }),
+    );
     service = TestBed.inject(ThemeService);
   });
 

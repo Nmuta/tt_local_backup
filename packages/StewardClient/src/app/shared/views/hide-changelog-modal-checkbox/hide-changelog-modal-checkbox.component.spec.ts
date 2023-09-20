@@ -4,7 +4,6 @@ import { Store } from '@ngxs/store';
 import { ConfigureAppUpdatePopup } from '@shared/state/user-settings/user-settings.actions';
 import { of } from 'rxjs';
 import { HideChangelogModalCheckboxComponent } from './hide-changelog-modal-checkbox.component';
-
 describe('HideChangelogModalCheckboxComponent', () => {
   let fixture: ComponentFixture<HideChangelogModalCheckboxComponent>;
   let component: HideChangelogModalCheckboxComponent;

@@ -6,21 +6,25 @@ import { NgxsModule } from '@ngxs/store';
 
 import { FortePlayFabBuildsManagementComponent } from './forte-playfab-builds-management.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('FortePlayFabBuildsManagementComponent', () => {
   let component: FortePlayFabBuildsManagementComponent;
   let fixture: ComponentFixture<FortePlayFabBuildsManagementComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-      ],
-      declarations: [FortePlayFabBuildsManagementComponent],
-      providers: [],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        declarations: [FortePlayFabBuildsManagementComponent],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(FortePlayFabBuildsManagementComponent);
     component = fixture.componentInstance;

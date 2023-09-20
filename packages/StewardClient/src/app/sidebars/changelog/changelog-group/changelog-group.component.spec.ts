@@ -4,15 +4,19 @@ import { createMockChangelogService } from '@services/changelog/changelog.servic
 
 import { ChangelogGroupComponent } from './changelog-group.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ChangelogGroupComponent', () => {
   let component: ChangelogGroupComponent;
   let fixture: ComponentFixture<ChangelogGroupComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ChangelogGroupComponent],
-      providers: [createMockChangelogService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ChangelogGroupComponent],
+        providers: [createMockChangelogService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ChangelogGroupComponent);
     component = fixture.debugElement.componentInstance;

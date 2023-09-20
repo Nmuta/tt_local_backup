@@ -4,20 +4,24 @@ import { WoodstockPlayFabPlayerToolsComponent } from './woodstock-playfab-player
 import { createMockWoodstockPlayersPlayFabService } from '@services/api-v2/woodstock/players/playfab/woodstock-players-playfab.service.mock';
 import { createMockWoodstockPlayFabPlayerInventoryService } from '@services/api-v2/woodstock/playfab/player/inventory/woodstock-playfab-player-inventory.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockPlayFabPlayerToolsComponent', () => {
   let component: WoodstockPlayFabPlayerToolsComponent;
   let fixture: ComponentFixture<WoodstockPlayFabPlayerToolsComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [WoodstockPlayFabPlayerToolsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWoodstockPlayersPlayFabService(),
-        createMockWoodstockPlayFabPlayerInventoryService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        declarations: [WoodstockPlayFabPlayerToolsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWoodstockPlayersPlayFabService(),
+          createMockWoodstockPlayFabPlayerInventoryService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPlayFabPlayerToolsComponent);
     component = fixture.debugElement.componentInstance;

@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
 
 import { OpusPlayerInventoryComponent } from './opus-player-inventory.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('OpusPlayerInventoryComponent', () => {
   let component: OpusPlayerInventoryComponent;
   let fixture: ComponentFixture<OpusPlayerInventoryComponent>;
@@ -12,11 +14,13 @@ describe('OpusPlayerInventoryComponent', () => {
   let waitUntil$: Subject<void>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [OpusPlayerInventoryComponent],
-      providers: [createMockOpusService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [OpusPlayerInventoryComponent],
+        providers: [createMockOpusService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     service = TestBed.inject(OpusService);
     waitUntil$ = new Subject<void>();

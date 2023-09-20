@@ -1,4 +1,4 @@
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
@@ -8,6 +8,8 @@ import BigNumber from 'bignumber.js';
 import { BigNumberInterceptor } from './bigint.interceptor';
 
 // strategy based on https://dev.to/alisaduncan/intercepting-http-requests---using-and-testing-angulars-httpclient
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('BigNumberInterceptor:', () => {
   let interceptor: BigNumberInterceptor;
   let httpMock: HttpTestingController;
@@ -19,17 +21,19 @@ describe('BigNumberInterceptor:', () => {
   beforeEach(() => {
     interceptor = new BigNumberInterceptor();
     interceptor.handle = jasmine.createSpy('handle', interceptor.handle).and.callThrough();
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useValue: interceptor,
-          multi: true,
-        },
-      ],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: HTTP_INTERCEPTORS,
+            useValue: interceptor,
+            multi: true,
+          },
+        ],
+      }),
+    );
 
     http = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);

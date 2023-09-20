@@ -13,6 +13,8 @@ import { ApolloPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloPlayerSidebarDetailsComponent', () => {
   let mockApolloService: ApolloService;
 
@@ -20,21 +22,23 @@ describe('ApolloPlayerSidebarDetailsComponent', () => {
   let component: ApolloPlayerSidebarDetailsComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [ApolloPlayerSidebarDetailsComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockApolloService(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [ApolloPlayerSidebarDetailsComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWindowService(),
+          ...createMockMsalServices(),
+          createMockApolloService(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockApolloService = injector.inject(ApolloService);

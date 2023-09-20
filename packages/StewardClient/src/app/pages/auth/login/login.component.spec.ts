@@ -16,6 +16,8 @@ import faker from '@faker-js/faker';
 import { LoginComponent } from './login.component';
 import { createMockWindowService, WindowService } from '@services/window';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
@@ -32,16 +34,18 @@ describe('LoginComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([]), RouterTestingModule.withRoutes([])],
-      declarations: [LoginComponent],
-      providers: [
-        ...createMockMsalServices(),
-        createMockLoggerService(),
-        createMockWindowService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([]), RouterTestingModule.withRoutes([])],
+        declarations: [LoginComponent],
+        providers: [
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+          createMockWindowService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     store = TestBed.inject(Store);
     mockWindowService = TestBed.inject(WindowService);

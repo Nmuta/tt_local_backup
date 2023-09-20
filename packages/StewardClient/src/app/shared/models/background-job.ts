@@ -9,6 +9,7 @@ export interface BackgroundJob<T> {
   rawResult: Record<string, unknown>;
   result: T;
   isRead: boolean;
+  isTestJob: boolean;
   reason: string;
   userId: GuidLikeString;
   /** Client-side-only value. True while a "marking read" request is in flight. */

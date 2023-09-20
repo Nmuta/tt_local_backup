@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BaseService } from '@components/base-component/base.service';
 import { includes } from 'lodash';
-import { Observable, ReplaySubject, filter, map, of, switchMap, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
 
 /**
  *  Service to track the visible state of sidebars in the app.
@@ -24,34 +24,31 @@ export class SidebarService extends BaseService {
     return !this.isVisible;
   }
 
-  /** Observable that fires anytime a sidebar is opened. */
-  public get isOpen$(): Observable<void> {
-    return this.changes$.pipe(
-      filter(isVisible => isVisible),
-      switchMap(() => of(null)), // Force  Observable<void>
-      takeUntil(this.onDestroy$),
-    );
+  public readonly _isClosed$ = new ReplaySubject<boolean>(1);
+  public readonly _isOpen$ = new ReplaySubject<boolean>(1);
+
+  /** Observable that fires anytime a sidebar state is changed. True when opened. */
+  public get isOpen$(): Observable<boolean> {
+    return this._isOpen$;
   }
 
-  /** Observable that fires anytime a sidebar is closed. */
-  public get isClosed$(): Observable<void> {
-    return this.changes$.pipe(
-      filter(isVisible => !isVisible),
-      switchMap(() => of(null)), // Force  Observable<void>
-      takeUntil(this.onDestroy$),
-    );
+  /** Observable that fires anytime a sidebar state is changed. True when closed. */
+  public get isClosed$(): Observable<boolean> {
+    return this._isClosed$;
   }
 
   constructor(router: Router) {
     super();
 
+    function isOnSidebarUrl(url: string): boolean {
+      return includes(url, '//sidebar:');
+    }
+
     router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         map(event => event as NavigationEnd),
-        map(event => {
-          return includes(event.url, '//sidebar:');
-        }),
+        map(event => isOnSidebarUrl(event.url)),
         takeUntil(this.onDestroy$),
       )
       .subscribe(isVisible => {
@@ -61,5 +58,16 @@ export class SidebarService extends BaseService {
     this.changes$.pipe(takeUntil(this.onDestroy$)).subscribe(isVisible => {
       this.isVisible = isVisible;
     });
+
+    this.changes$.pipe(takeUntil(this.onDestroy$)).subscribe(isVisible => {
+      this._isClosed$.next(!isVisible);
+    });
+
+    this.changes$.pipe(takeUntil(this.onDestroy$)).subscribe(isVisible => {
+      this._isOpen$.next(isVisible);
+    });
+
+    this.isVisible = isOnSidebarUrl(router.url);
+    this.changes$.next(this.isVisible);
   }
 }

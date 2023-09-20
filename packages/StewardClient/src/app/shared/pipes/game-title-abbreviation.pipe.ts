@@ -28,6 +28,10 @@ export class GameTitleAbbreviationPipe implements PipeTransform {
         return GameTitleAbbreviation.FM7;
       case GameTitle.FH3:
         return GameTitleAbbreviation.FH3;
+      case GameTitle.Forte:
+        return GameTitleAbbreviation.Forte;
+      case GameTitle.Forum:
+        return GameTitleAbbreviation.Forum;
       default:
         if (shouldPassthruUnknownValues) {
           return title;

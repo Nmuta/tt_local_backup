@@ -6,17 +6,25 @@ import { NgxsModule } from '@ngxs/store';
 
 import { AuctionBlocklistComponent } from './auction-blocklist.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('AuctionBlocklistComponent', () => {
   let component: AuctionBlocklistComponent;
   let fixture: ComponentFixture<AuctionBlocklistComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [AuctionBlocklistComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        declarations: [AuctionBlocklistComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(AuctionBlocklistComponent);
     component = fixture.debugElement.componentInstance;

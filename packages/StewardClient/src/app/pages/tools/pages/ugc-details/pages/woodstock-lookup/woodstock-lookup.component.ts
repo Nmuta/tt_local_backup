@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { mergedParamMap$ } from '@helpers/param-map';
@@ -37,8 +37,8 @@ import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { UgcOperationSnackbarComponent } from '../../components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { WoodstockPersistUgcModalComponent } from '@views/persist-ugc-modal/woodstock/woodstock-persist-ugc-modal.component';
 import { WoodstockUgcSharecodeService } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
-import { WoodstockUgcVisibilityService } from '@services/api-v2/woodstock/ugc/visibility/woodstock-ugc-visibility.service';
 import { WoodstockEditUgcModalComponent } from '@views/edit-ugc-modal/woodstock/woodstock-edit-ugc-modal.component';
+import { WoodstockUgcHideStatusService } from '@services/api-v2/woodstock/ugc/hide-status/woodstock-ugc-hide-status.service';
 
 const GEO_FLAGS_ORDER = chain(WoodstockGeoFlags).sortBy().value();
 
@@ -98,7 +98,7 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     private readonly service: WoodstockService,
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: WoodstockUgcReportService,
-    private readonly ugcVisibilityService: WoodstockUgcVisibilityService,
+    private readonly ugcHideStatusService: WoodstockUgcHideStatusService,
     private readonly ugcSharecodeService: WoodstockUgcSharecodeService,
     private readonly dialog: MatDialog,
   ) {
@@ -254,13 +254,12 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     }
     this.hideMonitor = this.hideMonitor.repeat();
 
-    this.ugcVisibilityService
+    this.ugcHideStatusService
       .hideUgcItems$([this.ugcItem.id])
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = false;
         this.ugcItem.isHidden = true;
-        this.ugcItem.isPublic = false;
       });
   }
 
@@ -271,13 +270,12 @@ export class WoodstockLookupComponent extends BaseComponent implements OnInit {
     }
     this.unhideMonitor = this.unhideMonitor.repeat();
 
-    this.ugcVisibilityService
+    this.ugcHideStatusService
       .unhideUgcItems$([this.ugcItem.id])
       .pipe(this.unhideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.canFeatureUgc = true;
         this.ugcItem.isHidden = false;
-        this.ugcItem.isPublic = true;
       });
   }
 

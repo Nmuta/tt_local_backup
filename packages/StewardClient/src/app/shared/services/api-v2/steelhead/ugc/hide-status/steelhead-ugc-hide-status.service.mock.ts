@@ -1,9 +1,9 @@
 import { ValueProvider } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
-import { SteelheadUgcVisibilityService } from './steelhead-ugc-visibility.service';
+import { SteelheadUgcHideStatusService } from './steelhead-ugc-hide-status.service';
 
 /** Defines the mock for the API Service. */
-export class MockSteelheadUgcVisibilityService {
+export class MockSteelheadUgcHideStatusService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
@@ -21,9 +21,9 @@ export class MockSteelheadUgcVisibilityService {
 }
 
 /** Creates an injectable mock for Steelhead Ugc Visibility Service. */
-export function createMockSteelheadUgcVisibilityService(): ValueProvider {
+export function createMockSteelheadUgcHideStatusService(): ValueProvider {
   return {
-    provide: SteelheadUgcVisibilityService,
-    useValue: new MockSteelheadUgcVisibilityService(),
+    provide: SteelheadUgcHideStatusService,
+    useValue: new MockSteelheadUgcHideStatusService(),
   };
 }

@@ -13,9 +13,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         private static BanControllerTestingClient stewardClient;
         private static BanControllerTestingClient unauthedClient;
 
-        // This xuid refers to gamertag - "Plink"
-        private ulong xuid = 2675352635783107;
-
         // Suggest pulling BanReasonGroup out of Players/BanController class.
         // This Guid refers to the BanReasonGroup - "Developer" 
         private Guid banconfig = new Guid("c8ec2fac-6132-4c87-85dc-1b799e08aca4");
@@ -37,7 +34,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetNextBanDuration(this.xuid, this.banconfig).ConfigureAwait(false);
+                var response = await stewardClient.GetNextBanDuration(TestConstants.TestAccountXuid, this.banconfig).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -67,7 +64,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetNextBanDuration(this.xuid, this.invalidBanconfig).ConfigureAwait(false);
+                var response = await stewardClient.GetNextBanDuration(TestConstants.TestAccountXuid, this.invalidBanconfig).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -82,7 +79,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetNextBanDuration(this.xuid, this.banconfig).ConfigureAwait(false);
+                var response = await unauthedClient.GetNextBanDuration(TestConstants.TestAccountXuid, this.banconfig).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
