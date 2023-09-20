@@ -152,6 +152,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [IntegrationTest]
         public async Task SendGroupLiveryGift_InvalidGroupId()
         {
+            var bulkgift = this.CreateBulkLiveryGift(TestConstants.InvalidXuid);
+
             try
             {
                 var response = await stewardClient.GiftLiveryToUserGroup(-1, bulkgift).ConfigureAwait(false);
