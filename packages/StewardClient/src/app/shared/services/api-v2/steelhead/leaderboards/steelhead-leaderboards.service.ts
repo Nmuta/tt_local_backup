@@ -14,7 +14,12 @@ import {
 } from '@models/leaderboards';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
+import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
+
+export interface BlobFileVerification {
+  lastModifiedUtc: DateTime;
+}
 
 /** The /v2/title/steelhead/leaderboards endpoints. */
 @Injectable({
@@ -146,16 +151,20 @@ export class SteelheadLeaderboardsService {
     pegasusEnvironment: string,
   ): Observable<BackgroundJob<void>> {
     const params = new HttpParams()
-        .set('scoreboardType', scoreboardTypeId.toString())
-        .set('scoreType', scoreTypeId.toString())
-        .set('trackId', trackId.toString())
-        .set('pivotId', pivotId.toString())
-        .set('pegasusEnvironment', pegasusEnvironment);
+      .set('scoreboardType', scoreboardTypeId.toString())
+      .set('scoreType', scoreTypeId.toString())
+      .set('trackId', trackId.toString())
+      .set('pivotId', pivotId.toString())
+      .set('pegasusEnvironment', pegasusEnvironment);
 
-    return this.api.postRequest$<BackgroundJob<void>>(`${this.basePath}/scores/file/generate`, null ,params);
+    return this.api.postRequest$<BackgroundJob<void>>(
+      `${this.basePath}/scores/file/generate`,
+      null,
+      params,
+    );
   }
 
-  /** Generates leaderboard scores file. */
+  /** Retrieve leaderboard scores file. */
   public retrieveLeaderboardScoresFile$(
     scoreboardTypeId: BigNumber,
     scoreTypeId: BigNumber,
@@ -171,5 +180,25 @@ export class SteelheadLeaderboardsService {
       .set('pegasusEnvironment', pegasusEnvironment);
 
     return this.api.getRequest$<string>(`${this.basePath}/scores/file/retrieve`, params);
+  }
+
+
+
+  /** Verify leaderboard scores file. */
+  public verifyLeaderboardScoresFile$(
+    scoreboardTypeId: BigNumber,
+    scoreTypeId: BigNumber,
+    trackId: BigNumber,
+    pivotId: BigNumber,
+    pegasusEnvironment: string,
+  ): Observable<BlobFileVerification> {
+    const params = new HttpParams()
+      .set('scoreboardType', scoreboardTypeId.toString())
+      .set('scoreType', scoreTypeId.toString())
+      .set('trackId', trackId.toString())
+      .set('pivotId', pivotId.toString())
+      .set('pegasusEnvironment', pegasusEnvironment);
+
+    return this.api.getRequest$<BlobFileVerification>(`${this.basePath}/scores/file/verify`, params);
   }
 }

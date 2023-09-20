@@ -23,7 +23,11 @@ import { HCI } from '@environments/environment';
 import { BetterMatTableDataSource } from '@helpers/better-mat-table-data-source';
 import { renderGuard } from '@helpers/rxjs';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
-import { BackgroundJob, BackgroundJobRetryStatus, BackgroundJobStatus } from '@models/background-job';
+import {
+  BackgroundJob,
+  BackgroundJobRetryStatus,
+  BackgroundJobStatus,
+} from '@models/background-job';
 import { DeviceType, GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import {
@@ -38,6 +42,7 @@ import {
   getLspEndpointFromLeaderboardEnvironment,
   LeaderboardScoreType,
 } from '@models/leaderboards';
+import { BlobFileVerification } from '@services/api-v2/steelhead/leaderboards/steelhead-leaderboards.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -46,7 +51,17 @@ import BigNumber from 'bignumber.js';
 import { cloneDeep, first, last } from 'lodash';
 import { DateTime } from 'luxon';
 import { EMPTY, merge, Observable, of, Subject, throwError, timer } from 'rxjs';
-import { switchMap, takeUntil, tap, catchError, filter, debounceTime, take, retryWhen, delayWhen } from 'rxjs/operators';
+import {
+  switchMap,
+  takeUntil,
+  tap,
+  catchError,
+  filter,
+  debounceTime,
+  take,
+  retryWhen,
+  delayWhen,
+} from 'rxjs/operators';
 
 export interface LeaderboardScoresContract {
   /** Gets leaderboard metadata. */
@@ -94,7 +109,7 @@ export interface LeaderboardScoresContract {
     trackId: BigNumber,
     pivotId: BigNumber,
     pegasusEnvironment: string,
-  ): Observable<BackgroundJob<void>>
+  ): Observable<BackgroundJob<void>>;
 
   retrieveLeaderboardScoresFile$(
     scoreboardTypeId: BigNumber,
@@ -103,6 +118,14 @@ export interface LeaderboardScoresContract {
     pivotId: BigNumber,
     pegasusEnvironment: string,
   ): Observable<string>;
+
+  verifyLeaderboardScoresFile$(
+    scoreboardTypeId: BigNumber,
+    scoreTypeId: BigNumber,
+    trackId: BigNumber,
+    pivotId: BigNumber,
+    pegasusEnvironment: string,
+  ):Observable<BlobFileVerification>
 }
 
 enum LeaderboardView {
@@ -146,8 +169,9 @@ export class LeaderboardScoresComponent
   public leaderboardScores = new BetterMatTableDataSource<LeaderboardScore>([]);
   public getLeaderboardScoresMonitor = new ActionMonitor('GET Leaderboard Scores');
   public deleteLeaderboardScoresMonitor = new ActionMonitor('DELETE Leaderboard Score(s)');
-  public generateLeaderboardScoresMonitor = new ActionMonitor('GENERATE leaderboard Scores File');
-  public retrieveLeaderboardScoresMonitor = new ActionMonitor('RETRIEVE leaderboard Scores File');
+  public generateLeaderboardScoresMonitor = new ActionMonitor('GENERATE Leaderboard Scores File');
+  public retrieveLeaderboardScoresMonitor = new ActionMonitor('RETRIEVE Leaderboard Scores File');
+  public verifyLeaderboardScoresMonitor = new ActionMonitor('VERIFY Leaderboard Scores File');
   public leaderboardDisplayColumns: string[] = [
     'position',
     'score',
@@ -164,12 +188,14 @@ export class LeaderboardScoresComponent
 
   public selectedScores: LeaderboardScore[] = [];
   public allScores: LeaderboardScore[] = [];
+  public hasScores: boolean = false;
   public filteredScores: LeaderboardScore[] = [];
   public exportableScores: string[][];
   public exportFileName: string;
   public disableExport: boolean = true;
   public paginatorSizes: number[] = LEADERBOARD_PAGINATOR_SIZES;
-  public sasLink: string;
+  public scoresFileExists: boolean = false;
+  public scoresFileLastModified: DateTime;
   private scoresAscendWithPosition: boolean;
 
   private readonly matCardSubtitleDefault = 'Select a leaderboard to show its scores';
@@ -357,8 +383,7 @@ export class LeaderboardScoresComponent
 
   /** Generate scores file for entire leaderboard. */
   public generateLeaderboardScoresFile(): void {
-    if(!this.service.generateLeaderboardScoresFile$)
-    {
+    if (!this.service.generateLeaderboardScoresFile$) {
       throw new Error('Generate Leaderboard Scores File is not supported for this title');
     }
 
@@ -381,13 +406,12 @@ export class LeaderboardScoresComponent
         catchError(() => EMPTY),
         takeUntil(this.onDestroy$),
       )
-      .subscribe();
+      .subscribe(() => this.verifyLeaderboardScoresFile());
   }
 
   /** Retrieve scores file for entire leaderboard. */
   public retrieveLeaderboardScoresFile(): void {
-    if(!this.service.generateLeaderboardScoresFile$)
-    {
+    if (!this.service.retrieveLeaderboardScoresFile$) {
       throw new Error('Retrieve Leaderboard Scores File is not supported for this title');
     }
 
@@ -403,8 +427,43 @@ export class LeaderboardScoresComponent
       )
       .pipe(this.retrieveLeaderboardScoresMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(sasLink => {
-        this.sasLink = sasLink;
-        window.open(this.sasLink);
+        window.open(sasLink);
+      });
+  }
+
+  /** Verify scores file for entire leaderboard. */
+  public verifyLeaderboardScoresFile(): void {
+    if (!this.allowFileGeneration)
+    {
+      return;
+    }
+
+    if (!this.service.verifyLeaderboardScoresFile$) {
+      throw new Error('Verify Leaderboard Scores File is not supported for this title');
+    }
+
+    this.verifyLeaderboardScoresMonitor = this.verifyLeaderboardScoresMonitor.repeat();
+
+    this.service
+      .verifyLeaderboardScoresFile$(
+        this.leaderboard.metadata.scoreboardTypeId,
+        this.leaderboard.metadata.scoreTypeId,
+        this.leaderboard.metadata.trackId,
+        this.leaderboard.metadata.gameScoreboardId,
+        this.leaderboard.query.leaderboardEnvironment,
+      )
+      .pipe(
+        this.verifyLeaderboardScoresMonitor.monitorSingleFire(),
+        catchError(() => {
+          this.scoresFileExists = false;
+          this.scoresFileLastModified = undefined;
+          return EMPTY;
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(lastModified => {
+        this.scoresFileExists = true;
+        this.scoresFileLastModified = lastModified.lastModifiedUtc;
       });
   }
 
@@ -491,6 +550,8 @@ export class LeaderboardScoresComponent
           this.selectedScores = [];
           this.isMultiDeleteActive = false;
           this.activeXuid = null;
+          this.scoresFileExists = false;
+          this.scoresFileLastModified = undefined;
           this.getLeaderboardScoresMonitor = this.getLeaderboardScoresMonitor.repeat();
         }),
         filter(q => !!q),
@@ -516,6 +577,7 @@ export class LeaderboardScoresComponent
       )
       .subscribe(scores => {
         this.allScores = scores;
+        this.hasScores = this.allScores.length > 0;
         this.filteredScores = this.filterScores(this.allScores);
         this.scoreTypeQualifier = determineScoreTypeQualifier(this.leaderboard.query.scoreTypeId);
 
@@ -529,6 +591,7 @@ export class LeaderboardScoresComponent
 
         this.prepareAlternateScoreValues(this.allScores);
         this.setLeaderboardScoresData(this.allScores);
+        this.verifyLeaderboardScoresFile();
       });
   }
 

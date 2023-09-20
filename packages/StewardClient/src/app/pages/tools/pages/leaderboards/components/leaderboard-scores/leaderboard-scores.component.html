@@ -120,18 +120,18 @@
           mat-raised-button
           color="primary"
           [disabled]="disableExport"
-          matTooltip="Export Scores"
+          matTooltip="Export Currently Loaded Scores (max 5000)"
           [downloadCsv]="exportableScores"
           [filename]="exportFileName"
         >
-          Export
+          Export Currently Loaded Scores
         </button>
         <div *ngIf="allowFileGeneration">
-
           <verify-button
             #verifyScoresFileGenerationBtn
             [permissionAttribute]="generateScoresFilePermAttribute"
             [permissionTitle]="gameTitle"
+            [disabled]="!this.hasScores"
           ></verify-button>
           <button
             mat-raised-button
@@ -146,13 +146,22 @@
             monitorWarnSnackbar
           >
             Generate Leaderboard Scores
-            <button-spinner [monitor]="generateLeaderboardScoresMonitor" defaultIcon="post_add"></button-spinner>
+            <button-spinner
+              [monitor]="generateLeaderboardScoresMonitor"
+              defaultIcon="post_add"
+            ></button-spinner>
           </button>
+          <div *ngIf="this.scoresFileExists">Last updated on
+            <standard-absolute-time class="last-modified" [timeUtc]="this.scoresFileLastModified">
+            </standard-absolute-time>
+          </div>
+          <div *ngIf="!this.scoresFileExists">{{'No Scores file exists'}}</div>
 
           <verify-button
             #verifyScoresFileRetrieveBtn
             [permissionAttribute]="generateScoresFilePermAttribute"
             [permissionTitle]="gameTitle"
+            [disabled]="!this.scoresFileExists"
           ></verify-button>
           <button
             mat-raised-button

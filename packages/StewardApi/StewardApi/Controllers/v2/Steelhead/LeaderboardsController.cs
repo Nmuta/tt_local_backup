@@ -238,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Creates or Replaces leaderboard scores files.
         /// </summary>
         [HttpPost("scores/file/generate")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(BackgroundJob))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
         [Authorize(Policy = UserAttributeValues.GenerateLeaderboardScoresFile)]
@@ -334,10 +334,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
 
                     await this.blobStorageProvider.SetLeaderboardDataAsync(leaderboardIdentifier, csv.ToString()).ConfigureAwait(true);
 
-                    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////REMOVE
-                    await Task.Delay(30_000);
-                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////REMOVE
-
                     await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, null).ConfigureAwait(true);
                 }
                 catch (Exception ex)
@@ -358,8 +354,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///     Verify a leaderboard scores file exists, and returns it's last modified time.
         /// </summary>
-        [HttpGet("scores/file/lastModified")]
-        [SwaggerResponse(200)]
+        [HttpGet("scores/file/verify")]
+        [SwaggerResponse(200, type: typeof(DateTimeOffset))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
         [Authorize(Policy = UserAttributeValues.GenerateLeaderboardScoresFile)]
@@ -374,14 +370,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{trackId}_{pivotId}";
             var lastModified = await this.blobStorageProvider.VerifyLeaderboardScoresFileAsync(leaderboardIdentifier).ConfigureAwait(true);
 
-            return this.Ok(lastModified);
+            return this.Ok(new { lastModifiedUtc = lastModified });
         }
 
         /// <summary>
         ///     Retrieve leaderboard scores file from blob storage.
         /// </summary>
         [HttpGet("scores/file/retrieve")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(Uri))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
         [Authorize(Policy = UserAttributeValues.GenerateLeaderboardScoresFile)]
