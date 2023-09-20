@@ -4,16 +4,20 @@ import { ThemeService } from '../theme.service';
 
 import { ThemeNavContentComponent } from './theme-nav-content.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ThemeNavContentComponent', () => {
   let component: ThemeNavContentComponent;
   let fixture: ComponentFixture<ThemeNavContentComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ThemeNavContentComponent],
-      imports: [NgxsModule.forRoot()],
-      providers: [ThemeService],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ThemeNavContentComponent],
+        imports: [NgxsModule.forRoot()],
+        providers: [ThemeService],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

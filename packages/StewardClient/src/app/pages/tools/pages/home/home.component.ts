@@ -2,10 +2,10 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import {
-  MatAutocompleteSelectedEvent,
-  MatAutocompleteTrigger,
-} from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
+  MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent,
+  MatLegacyAutocompleteTrigger as MatAutocompleteTrigger,
+} from '@angular/material/legacy-autocomplete';
+import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import {
@@ -33,9 +33,8 @@ import {
 } from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
 import { cloneDeep, intersection } from 'lodash';
-import { Observable, combineLatest, of } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
-import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { Observable, of } from 'rxjs';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { UserTourService } from './tour/tour.service';
 import { SidebarService } from 'app/sidebars/sidebars.service';
 
@@ -62,7 +61,7 @@ type FilteredTiles = {
 @Component({
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [GameTitleAbbreviationPipe, TourMatMenuModule], // tour module loaded to ensure tours run without errors
+  providers: [GameTitleAbbreviationPipe], // tour module loaded to ensure tours run without errors
 })
 export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
@@ -114,7 +113,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     private readonly router: Router,
     private readonly permAttributesService: PermAttributesService,
     private readonly sidebarService: SidebarService,
-    private readonly userTourService: UserTourService, // loaded here so tours will run without errors
+    private readonly userTourService: UserTourService,
   ) {
     super();
     this.titleFilterOptions = of(this.preparedTitleFilters.slice());
@@ -183,8 +182,12 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
     });
 
     // Wait on perms and no sidebar before trying to start the home tour
-    combineLatest([this.permAttributesService.initializationGuard$, this.sidebarService.isClosed$])
-      .pipe(takeUntil(this.onDestroy$))
+    this.permAttributesService.initializationGuard$
+      .pipe(
+        switchMap(_guard => this.sidebarService.isClosed$),
+        filter(isClosed => isClosed),
+        takeUntil(this.onDestroy$),
+      )
       .subscribe(() => {
         this.userTourService.startHomeTour();
       });

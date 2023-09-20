@@ -8,17 +8,21 @@ import BigNumber from 'bignumber.js';
 import { of } from 'rxjs';
 import { WoodstockPlayersGiftService } from './woodstock-players-gift.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockPlayersGiftService', () => {
   const nextReturnValue: unknown = {};
   let mockService: WoodstockPlayersGiftService;
   let mockApiService: ApiV2Service;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     mockService = TestBed.inject(WoodstockPlayersGiftService);
     mockApiService = TestBed.inject(ApiV2Service);
   });

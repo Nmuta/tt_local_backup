@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import {
+  MatLegacyDialogModule as MatDialogModule,
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
 import faker from '@faker-js/faker';
 import { fakePlayerUgcItem, PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcFeaturedStatus } from '@models/ugc-featured-status';
@@ -14,6 +18,8 @@ import { createMockSteelheadUgcFeaturedStatusService } from '@services/api-v2/st
 import { SteelheadUgcFeaturedStatusService } from '@services/api-v2/steelhead/ugc/featured-status/steelhead-ugc-featured-status.service';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
 
@@ -25,22 +31,24 @@ describe('SteelheadFeatureUgcModalComponent', () => {
   let mockSteelheadUgcFeaturedStatusService: SteelheadUgcFeaturedStatusService = undefined;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SteelheadFeatureUgcModalComponent],
-      imports: [MatButtonModule, MatDialogModule, PipesModule],
-      providers: [
-        createMockSteelheadUgcLookupService(),
-        createMockSteelheadUgcFeaturedStatusService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadFeatureUgcModalComponent],
+        imports: [MatButtonModule, MatDialogModule, PipesModule],
+        providers: [
+          createMockSteelheadUgcLookupService(),
+          createMockSteelheadUgcFeaturedStatusService(),
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadFeatureUgcModalComponent);
     component = fixture.componentInstance;

@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { ActivePullRequestsComponent } from './active-pull-requests.component';
 import { SteelheadActivePullRequestsComponent } from './steelhead/steelhead-active-pull-requests.component';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 
 /** Module for getting and setting a player's cms override. */
 @NgModule({

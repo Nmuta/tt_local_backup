@@ -9,15 +9,19 @@ import {
   SetWoodstockGiftHistorySelectedPlayerIdentities,
 } from './woodstock-gift-history.state.actions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockGiftHistoryState', () => {
   let store: Store;
   let service: WoodstockGiftHistoryState;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([WoodstockGiftHistoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([WoodstockGiftHistoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(WoodstockGiftHistoryState);
     store = TestBed.inject(Store);
   });

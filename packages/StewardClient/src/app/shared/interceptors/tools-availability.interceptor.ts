@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { environment } from '@environments/environment';
 import { BlobStorageService } from '@services/blob-storage';
 import { LoggerService, LogTopic } from '@services/logger';

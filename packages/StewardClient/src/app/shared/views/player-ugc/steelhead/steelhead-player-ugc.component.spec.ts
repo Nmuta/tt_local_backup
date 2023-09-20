@@ -6,23 +6,27 @@ import { of, throwError } from 'rxjs';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { SteelheadPlayerUgcComponent } from './steelhead-player-ugc.component';
 import { SteelheadPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/ugc';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockSteelheadPlayerUgcService } from '@services/api-v2/steelhead/player/ugc/steelhead-player-ugc.service.mock';
 import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service.mock';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('SteelheadPlayerUgcComponent', () => {
   let component: SteelheadPlayerUgcComponent;
   let fixture: ComponentFixture<SteelheadPlayerUgcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [SteelheadPlayerUgcComponent, BigJsonPipe],
-      providers: [createMockSteelheadPlayerUgcService(), createMockSteelheadUgcLookupService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [SteelheadPlayerUgcComponent, BigJsonPipe],
+        providers: [createMockSteelheadPlayerUgcService(), createMockSteelheadUgcLookupService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadPlayerUgcComponent);
     component = fixture.componentInstance;

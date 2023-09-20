@@ -1,13 +1,20 @@
 import { TestBed } from '@angular/core/testing';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogModule as MatDialogModule,
+} from '@angular/material/legacy-dialog';
 import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('ClickEnlargeImageDirective', () => {
   let dialog: MatDialog;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [MatDialogModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule],
+      }),
+    );
 
     dialog = TestBed.inject(MatDialog);
     dialog.open = jasmine.createSpy('open');

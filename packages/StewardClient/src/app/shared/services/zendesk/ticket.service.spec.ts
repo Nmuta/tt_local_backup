@@ -4,14 +4,18 @@ import { TestBed } from '@angular/core/testing';
 import { TicketService } from './ticket.service';
 import { createMockZendeskService } from './zendesk.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('TicketService', () => {
   let service: TicketService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [createMockZendeskService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        providers: [createMockZendeskService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(TicketService);
   });
 

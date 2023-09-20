@@ -8,16 +8,20 @@ import { of } from 'rxjs';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockLeaderboardService', () => {
   let service: WoodstockLeaderboardService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+      }),
+    );
 
     service = TestBed.inject(WoodstockLeaderboardService);
     apiServiceMock = TestBed.inject(ApiV2Service);

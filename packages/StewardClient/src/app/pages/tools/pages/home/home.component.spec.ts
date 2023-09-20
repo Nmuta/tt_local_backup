@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';

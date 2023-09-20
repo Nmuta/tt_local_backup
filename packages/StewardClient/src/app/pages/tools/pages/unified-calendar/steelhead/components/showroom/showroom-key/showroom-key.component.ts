@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import {
-  MatCheckboxDefaultOptions,
-  MAT_CHECKBOX_DEFAULT_OPTIONS,
-} from '@angular/material/checkbox';
+  MatLegacyCheckboxDefaultOptions as MatCheckboxDefaultOptions,
+  MAT_LEGACY_CHECKBOX_DEFAULT_OPTIONS as MAT_CHECKBOX_DEFAULT_OPTIONS,
+} from '@angular/material/legacy-checkbox';
 import { ShowroomEventType } from '../showroom-calendar-view/steelhead/steelhead-showroom-calendar-view.component';
 
 /**

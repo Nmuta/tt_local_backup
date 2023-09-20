@@ -5,17 +5,21 @@ import { of } from 'rxjs';
 
 import { SettingsService } from './settings.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SettingsService', () => {
   let injector: TestBed;
   let service: SettingsService;
   let apiServiceMock: ApiService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     service = injector.inject(SettingsService);
     apiServiceMock = injector.inject(ApiService);

@@ -17,6 +17,8 @@ const activatedRouteMock = {
   ] as ActivatedRoute[],
 };
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloGamertagsComponent', () => {
   let component: ApolloGamertagsComponent;
   let fixture: ComponentFixture<ApolloGamertagsComponent>;
@@ -24,17 +26,19 @@ describe('ApolloGamertagsComponent', () => {
   let mockApolloService: ApolloService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ApolloGamertagsComponent, HumanizePipe],
-      providers: [
-        createMockApolloService(),
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ApolloGamertagsComponent, HumanizePipe],
+        providers: [
+          createMockApolloService(),
+          {
+            provide: ActivatedRoute,
+            useValue: activatedRouteMock,
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

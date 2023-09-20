@@ -10,6 +10,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApiService } from '@shared/services/api/api.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('service: ApiService', () => {
   let injector: TestBed;
   let apiService: ApiService;
@@ -17,11 +19,13 @@ describe('service: ApiService', () => {
   let mockRouter: Router;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      providers: [ApiService],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        providers: [ApiService],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     apiService = injector.inject(ApiService);
     httpMock = injector.inject(HttpTestingController);

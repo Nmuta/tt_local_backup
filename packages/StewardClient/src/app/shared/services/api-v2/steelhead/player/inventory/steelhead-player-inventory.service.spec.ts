@@ -10,16 +10,20 @@ import BigNumber from 'bignumber.js';
 import { PlayerInventoryCarItem } from '@models/player-inventory-item';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadPlayerInventoryService', () => {
   let service: SteelheadPlayerInventoryService;
   let apiServiceMock: ApiV2Service;
   const nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+      }),
+    );
 
     service = TestBed.inject(SteelheadPlayerInventoryService);
     apiServiceMock = TestBed.inject(ApiV2Service);

@@ -23,6 +23,8 @@ class TestHiddenUgcService implements HiddenUgcServiceContract {
   }
 }
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('HiddenUgcTableComponent', () => {
   let component: HiddenUgcTableComponent;
   let fixture: ComponentFixture<HiddenUgcTableComponent>;
@@ -31,10 +33,12 @@ describe('HiddenUgcTableComponent', () => {
   const mockService: TestHiddenUgcService = new TestHiddenUgcService();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [HiddenUgcTableComponent],
-      providers: [createMockOldPermissionsService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [HiddenUgcTableComponent],
+        providers: [createMockOldPermissionsService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

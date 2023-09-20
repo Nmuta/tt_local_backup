@@ -3,17 +3,21 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SteelheadActivePullRequestsComponent } from './steelhead-active-pull-requests.component';
 import { createMockSteelheadGitOperationService } from '@services/api-v2/steelhead/git-operation/steelhead-git-operation.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadActivePullRequestsComponent', () => {
   let component: SteelheadActivePullRequestsComponent;
   let fixture: ComponentFixture<SteelheadActivePullRequestsComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [SteelheadActivePullRequestsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadGitOperationService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        declarations: [SteelheadActivePullRequestsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadGitOperationService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadActivePullRequestsComponent);
     component = fixture.debugElement.componentInstance;

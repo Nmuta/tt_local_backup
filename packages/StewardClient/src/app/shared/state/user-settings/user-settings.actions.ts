@@ -27,9 +27,6 @@ export class ConfigureShowVerifyCheckboxPopup {
 /** Sets endpoint key defaults if none are present in local storage.. */
 export class VerifyEndpointKeyDefaults {
   public static readonly type = '[Settings] Verify Endpoint Key Defaults';
-  constructor() {
-    //EMPTY
-  }
 }
 
 /** Sets the current Apollo endpoint key of the Steward app the client is running. */
@@ -73,7 +70,6 @@ export class RefreshEndpointKeys {
  */
 export class ResetNavbarTools {
   public static readonly type = '[Settings] Reset Navbar Tools';
-  constructor() {}
 }
 
 /** Sets the current list of tools to show in the navbar. */

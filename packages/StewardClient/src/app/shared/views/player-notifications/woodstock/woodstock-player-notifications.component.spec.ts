@@ -12,6 +12,8 @@ import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/t
 import { PlayerNotification } from '@models/notifications.model';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockPlayerNotificationsComponent', () => {
   let injector: TestBed;
   let service: WoodstockService;
@@ -19,12 +21,14 @@ describe('WoodstockPlayerNotificationsComponent', () => {
   let fixture: ComponentFixture<WoodstockPlayerNotificationsComponent>;
 
   beforeEach(waitForAsync(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockPlayerNotificationsComponent],
-      imports: [PipesModule],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockPlayerNotificationsComponent],
+        imports: [PipesModule],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     injector = getTestBed();
     service = injector.inject(WoodstockService);

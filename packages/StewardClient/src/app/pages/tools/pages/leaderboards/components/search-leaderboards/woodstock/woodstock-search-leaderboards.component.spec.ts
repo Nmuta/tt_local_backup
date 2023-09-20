@@ -7,17 +7,21 @@ import { WoodstockSearchLeaderboardsComponent } from './woodstock-search-leaderb
 
 // TODO: Doing these later when I am not on vacation (lugeiken)
 // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/958926
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockSearchLeaderboardsComponent', () => {
   let component: WoodstockSearchLeaderboardsComponent;
   let fixture: ComponentFixture<WoodstockSearchLeaderboardsComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockSearchLeaderboardsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWoodstockService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockSearchLeaderboardsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWoodstockService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockSearchLeaderboardsComponent);
     component = fixture.debugElement.componentInstance;

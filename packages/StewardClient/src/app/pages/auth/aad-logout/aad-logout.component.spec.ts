@@ -5,17 +5,21 @@ import { NgxsModule, Store } from '@ngxs/store';
 
 import { AadLogoutComponent } from './aad-logout.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('AadLogoutComponent', () => {
   let component: AadLogoutComponent;
   let fixture: ComponentFixture<AadLogoutComponent>;
   let store: Store;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      declarations: [AadLogoutComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        declarations: [AadLogoutComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('dispatch');

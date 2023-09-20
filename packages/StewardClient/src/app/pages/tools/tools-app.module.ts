@@ -7,14 +7,14 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DataPrivacyNoticeModule } from '@views/data-privacy-notice/data-privacy-notice.module';
 import { FourOhFourModule } from '@views/four-oh-four/four-oh-four.module';
@@ -24,14 +24,14 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ThemeModule } from '@shared/modules/theme/theme.module';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { NavModule } from '@shared/modules/nav/nav.module';
 import { EndpointsModule } from '@shared/modules/endpoints/endpoints.module';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatInputModule } from '@angular/material/input';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { ToolsAppHomeTileGridComponent } from './pages/home/components/home-tile-grid/home-tile-grid.component';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
@@ -79,7 +79,7 @@ import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
     MatTabsModule,
     ReactiveFormsModule,
     MonitorActionModule,
-    TourMatMenuModule, // loaded to ensure tours run properly
+    TourMatMenuModule,
   ],
 })
 export class ToolsAppModule {}

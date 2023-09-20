@@ -1,10 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule as MatDialogModule,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 import { of } from 'rxjs';
 import { WoodstockEditUgcModalComponent } from './woodstock-edit-ugc-modal.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
 import { PlayerUgcItem, fakePlayerUgcItem } from '@models/player-ugc-item';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('WoodstockEditUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
@@ -15,20 +21,22 @@ describe('WoodstockEditUgcModalComponent', () => {
   let mockMatDialogRef: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [WoodstockEditUgcModalComponent],
-      imports: [HttpClientTestingModule, NgxsModule.forRoot(), MatDialogModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockEditUgcModalComponent],
+        imports: [HttpClientTestingModule, NgxsModule.forRoot(), MatDialogModule],
+        providers: [
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockEditUgcModalComponent);
     component = fixture.componentInstance;

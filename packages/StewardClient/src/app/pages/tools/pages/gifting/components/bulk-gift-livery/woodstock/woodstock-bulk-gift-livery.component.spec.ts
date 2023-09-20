@@ -6,17 +6,21 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { WoodstockBulkGiftLiveryComponent } from './woodstock-bulk-gift-livery.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockBulkGiftLiveryComponent', () => {
   let component: WoodstockBulkGiftLiveryComponent;
   let fixture: ComponentFixture<WoodstockBulkGiftLiveryComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      declarations: [WoodstockBulkGiftLiveryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        declarations: [WoodstockBulkGiftLiveryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockBulkGiftLiveryComponent);
     component = fixture.debugElement.componentInstance;

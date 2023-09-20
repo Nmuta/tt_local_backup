@@ -1,11 +1,11 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
-  MAT_CHECKBOX_DEFAULT_OPTIONS,
-  MatCheckboxDefaultOptions,
-} from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
+  MAT_LEGACY_CHECKBOX_DEFAULT_OPTIONS as MAT_CHECKBOX_DEFAULT_OPTIONS,
+  MatLegacyCheckboxDefaultOptions as MatCheckboxDefaultOptions,
+} from '@angular/material/legacy-checkbox';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';

@@ -8,6 +8,8 @@ import faker from '@faker-js/faker';
 import { GameTitleCodeName } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('KustoService', () => {
   let injector: TestBed;
   let service: KustoService;
@@ -16,11 +18,13 @@ describe('KustoService', () => {
   const nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiService(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiService(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
 
     injector = getTestBed();
     service = injector.inject(KustoService);
