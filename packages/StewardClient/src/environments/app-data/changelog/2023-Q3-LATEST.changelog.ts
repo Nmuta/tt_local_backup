@@ -24,6 +24,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     },
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '01d14c44-c274-4329-9708-2e66c7307a70',
+      shortText: 'Add ability to mark UGC items as public or private',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
       uuid: '26e5ce44-0472-4b85-b1f9-cc2629b0e8b9',
       shortText: 'Fixed bug preventing hide and unhide of UGC',
     },
