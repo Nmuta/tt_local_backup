@@ -65,8 +65,8 @@ export class DeeplinkRivalsComponent
   constructor(steelheadRivalsService: SteelheadRivalsService) {
     super();
 
-    const getRivalsCategories$ = steelheadRivalsService.getRivalsEventCategories$();
-    const getRivalsEvents$ = steelheadRivalsService.getRivalsEventReference$();
+    const getRivalsCategories$ = steelheadRivalsService.getRivalsEventCategories$('dev', 'daily');
+    const getRivalsEvents$ = steelheadRivalsService.getRivalsEventReference$('dev', 'daily');
 
     this.referenceDataMonitor = this.referenceDataMonitor.repeat();
     combineLatest([getRivalsCategories$, getRivalsEvents$])

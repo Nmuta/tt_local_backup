@@ -188,9 +188,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetFeaturedShowcases()
+        public async Task<IActionResult> GetFeaturedShowcases(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var featuredShowcases = await this.steelheadPegasusService.GetFeaturedShowcasesAsync();
+            var featuredShowcases = await this.steelheadPegasusService.GetFeaturedShowcasesAsync(environment, slot);
 
             return this.Ok(featuredShowcases);
         }

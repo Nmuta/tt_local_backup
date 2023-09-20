@@ -264,9 +264,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetRacersCupSeries()
+        public async Task<IActionResult> GetRacersCupSeries(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var racersCupSeries = await this.pegasusService.GetRacersCupSeriesAsync();
+            var racersCupSeries = await this.pegasusService.GetRacersCupSeriesAsync(environment, slot);
 
             return this.Ok(racersCupSeries);
         }

@@ -1005,6 +1005,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var subset = this.mapper.SafeMap<MotdBridge>(entry);
 
+            await this.MapLocalizedString(subset);
+
             return subset;
         }
 

@@ -145,7 +145,7 @@ export class GeneralTileComponent extends BaseComponent {
     super();
 
     steelheadWorldOfForzaService
-      .getDisplayConditions$()
+      .getDisplayConditions$('dev', 'daily')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
         this.displayConditionReferences = data;
@@ -154,7 +154,7 @@ export class GeneralTileComponent extends BaseComponent {
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(true, 'dev', 'daily');
       },
     };
 
@@ -179,7 +179,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadBuildersCupService
-                .getBuildersCupLadders$()
+                .getBuildersCupLadders$('dev', 'daily')
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(ladderReferences => {
                   this.ladderReferences = ladderReferences;
@@ -202,8 +202,8 @@ export class GeneralTileComponent extends BaseComponent {
               this.timerReferenceOptions = this.seriesReferences;
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
-              const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$();
-              const getRacersCupSeries$ = steelheadRacersCupService.getRacersCupSeries$();
+              const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$('dev', 'daily');
+              const getRacersCupSeries$ = steelheadRacersCupService.getRacersCupSeries$('dev', 'daily');
 
               combineLatest([getBuildersCupSeries$, getRacersCupSeries$])
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
@@ -227,7 +227,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadPegasusService
-                .getDatetimeRanges$()
+                .getDatetimeRanges$('dev', 'daily')
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(dateRangeReferences => {
                   this.datetimeRangeReferences = dateRangeReferences;
@@ -243,7 +243,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadPegasusService
-                .getChallenges$()
+                .getChallenges$('dev', 'daily')
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(challengeReferences => {
                   this.challengeReferences = challengeReferences;
@@ -259,7 +259,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadShowroomService
-                .getFeaturedShowcases$()
+                .getFeaturedShowcases$('dev', 'daily')
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(featuredShowcaseReferences => {
                   this.featuredShowcaseReferences = featuredShowcaseReferences;
@@ -275,7 +275,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadRivalsService
-                .getRivalsEventReference$()
+                .getRivalsEventReference$('dev', 'daily')
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(rivalsReference => {
                   this.rivalsEventReferences = rivalsReference;
@@ -291,7 +291,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadShowroomService
-                .getCarSales$()
+                .getCarSales$('dev', 'daily')
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(showroomListings => {
                   // Process the list of car sales object into a dictionnary with date added to the listing name to differentiate car sales with the same name

@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
@@ -12,7 +13,8 @@ export class SteelheadStoreService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the Store Entitlements. */
-  public getStoreEntitlements$(): Observable<Map<GuidLikeString, string>> {
-    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/entitlements`);
+  public getStoreEntitlements$(environment: string = null, slot: string = null): Observable<Map<GuidLikeString, string>> {
+    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/entitlements`, params);
   }
 }

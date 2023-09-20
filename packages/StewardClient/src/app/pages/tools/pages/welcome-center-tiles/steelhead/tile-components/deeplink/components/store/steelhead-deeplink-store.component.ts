@@ -62,7 +62,7 @@ export class DeeplinkStoreComponent
     this.referenceDataMonitor = this.referenceDataMonitor.repeat();
 
     steelheadStoreService
-      .getStoreEntitlements$()
+      .getStoreEntitlements$('dev', 'daily')
       .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(entitlements => {
         this.storeProducts = entitlements;

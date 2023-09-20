@@ -14,8 +14,8 @@ export class SteelheadLocalizationService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets localized strings for Steelhead. */
-  public getLocalizedStrings$(useInternalIds: boolean = true): Observable<LocalizedStringsMap> {
-    const params = new HttpParams().set('useInternalIds', useInternalIds);
+  public getLocalizedStrings$(useInternalIds: boolean = true, environment: string = null, slot: string = null): Observable<LocalizedStringsMap> {
+    const params = new HttpParams().set('useInternalIds', useInternalIds).set('environment', environment).set('slot', slot);
     return this.api.getRequest$<LocalizedStringsMap>(this.basePath, params);
   }
 

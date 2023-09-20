@@ -75,7 +75,7 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(true, 'dev', 'daily');
       },
     };
   }

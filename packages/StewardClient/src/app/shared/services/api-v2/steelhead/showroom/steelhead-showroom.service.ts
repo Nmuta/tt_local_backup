@@ -167,8 +167,9 @@ export class SteelheadShowroomService {
   }
 
   /** Gets Showroom Car Sales. */
-  public getCarSales$(): Observable<CarSale[]> {
-    return this.api.getRequest$<CarSale[]>(`${this.basePath}/carSales`);
+  public getCarSales$(environment: string = null, slot: string = null): Observable<CarSale[]> {
+    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    return this.api.getRequest$<CarSale[]>(`${this.basePath}/carSales`, params);
   }
 
   /** Gets Showroom Car Sales. */
@@ -196,7 +197,8 @@ export class SteelheadShowroomService {
   }
 
   /** Gets featured showcases mapped to Guid. */
-  public getFeaturedShowcases$(): Observable<FriendlyNameMap> {
-    return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/featuredShowcases`);
+  public getFeaturedShowcases$(environment: string = null, slot: string = null): Observable<FriendlyNameMap> {
+    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/featuredShowcases`, params);
   }
 }

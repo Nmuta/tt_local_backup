@@ -74,7 +74,7 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(true, 'dev', 'daily');
       },
     };
   }

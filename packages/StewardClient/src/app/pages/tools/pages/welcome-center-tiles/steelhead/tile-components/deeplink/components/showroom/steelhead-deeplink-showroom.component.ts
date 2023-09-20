@@ -65,8 +65,8 @@ export class DeeplinkShowroomComponent
   constructor(steelheadCarsService: SteelheadCarsService) {
     super();
 
-    const getShowroomCars$ = steelheadCarsService.getCarsReference$();
-    const getShowroomManufacturers$ = steelheadCarsService.getCarManufacturers$();
+    const getShowroomCars$ = steelheadCarsService.getCarsReference$('dev', 'daily');
+    const getShowroomManufacturers$ = steelheadCarsService.getCarManufacturers$('dev', 'daily');
 
     this.referenceDataMonitor = this.referenceDataMonitor.repeat();
     combineLatest([getShowroomCars$, getShowroomManufacturers$])

@@ -69,9 +69,9 @@ export class DeeplinkBuildersCupComponent
 
     if (!this.buildersCupChampionships || !this.buildersCupLadders || !this.buildersCupSeries) {
       const getBuildersCupChampionships$ =
-        steelheadBuildersCupService.getBuildersCupChampionships$();
-      const getBuildersCupLadders$ = steelheadBuildersCupService.getBuildersCupLadders$();
-      const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$();
+        steelheadBuildersCupService.getBuildersCupChampionships$('dev', 'daily');
+      const getBuildersCupLadders$ = steelheadBuildersCupService.getBuildersCupLadders$('dev', 'daily');
+      const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$('dev', 'daily');
 
       this.referenceDataMonitor = this.referenceDataMonitor.repeat();
       combineLatest([getBuildersCupChampionships$, getBuildersCupLadders$, getBuildersCupSeries$])

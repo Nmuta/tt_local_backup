@@ -56,6 +56,10 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
+  public titleValue: string;
+  public headerValue: string;
+  public bodyValue: string;
+
   public readonly permAttribute = PermAttributeName.UpdateMessageOfTheDay;
   public readonly permAttributeLocString = PermAttributeName.AddLocalizedString;
 
@@ -77,7 +81,7 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(true, 'dev', 'daily');
       },
     };
   }
@@ -191,5 +195,9 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
         id: messageOfTheDayDetail.contentBody.locref,
       });
     }
+
+    this.titleValue = messageOfTheDayDetail.titleHeader.base;
+    this.headerValue = messageOfTheDayDetail.contentHeader.base;
+    this.bodyValue =messageOfTheDayDetail.contentBody.base;
   }
 }

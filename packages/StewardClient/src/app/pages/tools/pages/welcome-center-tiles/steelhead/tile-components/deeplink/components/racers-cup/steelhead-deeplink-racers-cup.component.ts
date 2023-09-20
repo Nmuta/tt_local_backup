@@ -54,7 +54,7 @@ export class DeeplinkRacersCupComponent
     this.referenceDataMonitor = this.referenceDataMonitor.repeat();
 
     steelheadRacersCupService
-      .getRacersCupSeries$()
+      .getRacersCupSeries$('dev', 'daily')
       .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(series => {
         this.racersCupSeries = series;

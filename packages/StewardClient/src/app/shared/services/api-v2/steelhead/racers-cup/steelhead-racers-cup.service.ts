@@ -70,7 +70,8 @@ export class SteelheadRacersCupService {
   }
 
   /** Gets the Racer's Cup series. */
-  public getRacersCupSeries$(): Observable<Map<GuidLikeString, string>> {
-    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/series`);
+  public getRacersCupSeries$(environment: string = null, slot: string = null): Observable<Map<GuidLikeString, string>> {
+    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/series`, params);
   }
 }
