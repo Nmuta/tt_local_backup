@@ -202,8 +202,14 @@ export class GeneralTileComponent extends BaseComponent {
               this.timerReferenceOptions = this.seriesReferences;
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
-              const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$('dev', 'daily');
-              const getRacersCupSeries$ = steelheadRacersCupService.getRacersCupSeries$('dev', 'daily');
+              const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$(
+                'dev',
+                'daily',
+              );
+              const getRacersCupSeries$ = steelheadRacersCupService.getRacersCupSeries$(
+                'dev',
+                'daily',
+              );
 
               combineLatest([getBuildersCupSeries$, getRacersCupSeries$])
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))

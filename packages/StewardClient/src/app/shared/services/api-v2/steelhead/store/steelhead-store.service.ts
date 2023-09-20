@@ -13,8 +13,14 @@ export class SteelheadStoreService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the Store Entitlements. */
-  public getStoreEntitlements$(environment: string = null, slot: string = null): Observable<Map<GuidLikeString, string>> {
+  public getStoreEntitlements$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
-    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/entitlements`, params);
+    return this.api.getRequest$<Map<GuidLikeString, string>>(
+      `${this.basePath}/entitlements`,
+      params,
+    );
   }
 }

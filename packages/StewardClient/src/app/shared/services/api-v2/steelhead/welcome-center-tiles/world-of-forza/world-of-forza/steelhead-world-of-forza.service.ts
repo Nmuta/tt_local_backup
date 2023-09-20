@@ -13,7 +13,10 @@ export class SteelheadWorldOfForzaService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets Image Text Tile Friendly Name list mapped to Guid. */
-  public getDisplayConditions$(environment: string = null, slot: string = null): Observable<FriendlyNameMap> {
+  public getDisplayConditions$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<FriendlyNameMap> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
     return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/displayconditions`, params);
   }

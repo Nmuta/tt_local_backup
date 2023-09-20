@@ -197,7 +197,10 @@ export class SteelheadShowroomService {
   }
 
   /** Gets featured showcases mapped to Guid. */
-  public getFeaturedShowcases$(environment: string = null, slot: string = null): Observable<FriendlyNameMap> {
+  public getFeaturedShowcases$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<FriendlyNameMap> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
     return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/featuredShowcases`, params);
   }

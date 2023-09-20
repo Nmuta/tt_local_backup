@@ -13,13 +13,22 @@ export class SteelheadCarsService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets the Cars Manufacturers. */
-  public getCarManufacturers$(environment: string = null, slot: string = null): Observable<Map<GuidLikeString, string>> {
+  public getCarManufacturers$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
-    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/manufacturers`, params);
+    return this.api.getRequest$<Map<GuidLikeString, string>>(
+      `${this.basePath}/manufacturers`,
+      params,
+    );
   }
 
   /** Gets the Cars reference. */
-  public getCarsReference$(environment: string = null, slot: string = null): Observable<Map<GuidLikeString, string>> {
+  public getCarsReference$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
     return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/reference`, params);
   }

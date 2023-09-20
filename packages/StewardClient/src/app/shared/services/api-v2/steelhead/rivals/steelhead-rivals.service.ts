@@ -53,13 +53,19 @@ export class SteelheadRivalsService {
   }
 
   /** Gets the Rivals Event reference. */
-  public getRivalsEventReference$(environment: string = null, slot: string = null): Observable<Map<GuidLikeString, string>> {
+  public getRivalsEventReference$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
     return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/reference`, params);
   }
 
   /** Gets the Rivals Categories. */
-  public getRivalsEventCategories$(environment: string = null, slot: string = null): Observable<Map<GuidLikeString, string>> {
+  public getRivalsEventCategories$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
     return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/categories`, params);
   }

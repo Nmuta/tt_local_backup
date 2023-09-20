@@ -198,6 +198,6 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
 
     this.titleValue = messageOfTheDayDetail.titleHeader.base;
     this.headerValue = messageOfTheDayDetail.contentHeader.base;
-    this.bodyValue =messageOfTheDayDetail.contentBody.base;
+    this.bodyValue = messageOfTheDayDetail.contentBody.base;
   }
 }

@@ -13,13 +13,19 @@ export class SteelheadPegasusService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets Datetime ranges mapped to Guid. */
-  public getDatetimeRanges$(environment: string = null, slot: string = null): Observable<FriendlyNameMap> {
+  public getDatetimeRanges$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<FriendlyNameMap> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
     return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/datetimeRanges`, params);
   }
 
   /** Gets challenges mapped to Guid. */
-  public getChallenges$(environment: string = null, slot: string = null): Observable<FriendlyNameMap> {
+  public getChallenges$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<FriendlyNameMap> {
     const params = new HttpParams().set('environment', environment).set('slot', slot);
     return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/challenges`, params);
   }
