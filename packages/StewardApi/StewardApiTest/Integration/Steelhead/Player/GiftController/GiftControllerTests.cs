@@ -16,8 +16,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
     {
         private static GiftControllerTestingClient stewardClient;
         private static GiftControllerTestingClient unauthedClient;
-        //private static SteelheadGroupGift validGift;
-        //private static SteelheadGroupGift invalidGift;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -154,10 +152,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [IntegrationTest]
         public async Task SendGroupLiveryGift_InvalidGroupId()
         {
-            var bulkgift = this.CreateBulkLiveryGift(TestConstants.InvalidXuid);
-            //bulkgift.LiveryIds = new List<string>();
-            //bulkgift.LiveryIds.Append("a9ffcef7-dac6-4364-8e0a-08017ae204f9");
-
             try
             {
                 var response = await stewardClient.GiftLiveryToUserGroup(-1, bulkgift).ConfigureAwait(false);

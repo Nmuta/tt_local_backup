@@ -20,8 +20,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        // Player gift tests
-
         public async Task<BackgroundJobInternal> UpdateGroupInventoriesUseBackgroundProcessing(SteelheadGroupGift groupGift)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/players/gift/useBackgroundProcessing");
@@ -35,8 +33,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
             return await ServiceClient.SendRequestAsync<BackgroundJobInternal>(HttpMethod.Post, path, this.authKey, Version, gift, headers: this.headers).ConfigureAwait(false);
         }
-
-        // Group gift tests
 
         public async Task<GiftResponse<int>> UpdateGroupInventory(int groupId, SteelheadGift gift)
         {
