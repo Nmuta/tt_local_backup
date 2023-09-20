@@ -355,10 +355,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
         }
 
+        /// <summary>
+        ///     Verify a leaderboard scores file exists, and returns it's last modified time.
+        /// </summary>
+        [HttpGet("scores/file/lastModified")]
+        [SwaggerResponse(200)]
+        [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
+        [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
+        [Authorize(Policy = UserAttributeValues.GenerateLeaderboardScoresFile)]
+        public async Task<IActionResult> VerifyLeaderboardScoresFile(
+            [FromQuery] ScoreboardType scoreboardType,
+            [FromQuery] ScoreType scoreType,
+            [FromQuery] int trackId,
+            [FromQuery] string pivotId,
+            [FromQuery] string pegasusEnvironment = null)
+        {
+            var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
+            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{trackId}_{pivotId}";
+            var lastModified = await this.blobStorageProvider.VerifyLeaderboardScoresFileAsync(leaderboardIdentifier).ConfigureAwait(true);
 
+            return this.Ok(lastModified);
+        }
 
         /// <summary>
-        ///     Creates or Replaces leaderboard scores files.
+        ///     Retrieve leaderboard scores file from blob storage.
         /// </summary>
         [HttpGet("scores/file/retrieve")]
         [SwaggerResponse(200)]

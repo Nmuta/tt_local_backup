@@ -180,6 +180,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
+        public async Task<DateTimeOffset> VerifyLeaderboardScoresFileAsync(string leaderboardIdentifier)
+        {
+            var blobFileName = leaderboardIdentifier + ".csv";
+            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(blobFileName);
+
+            var exists = await leaderboardClient.ExistsAsync();
+            if (!exists.Value)
+            {
+                throw new NotFoundStewardException($"Leaderboard score file with name {blobFileName} does not exist.");
+            }
+
+            var metadata = await leaderboardClient.GetPropertiesAsync();
+
+            return metadata.Value.LastModified;
+        }
+
+        /// <inheritdoc />
         public async Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier)
         {
             var blobFileName = leaderboardIdentifier + ".csv";

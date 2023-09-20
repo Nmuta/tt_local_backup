@@ -37,6 +37,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         Task SetLeaderboardDataAsync(string leaderboardIdentifier, string csv);
 
         /// <summary>
+        ///     Verifies leaderboard file exists and returns last modified time.
+        /// </summary>
+        Task<DateTimeOffset> VerifyLeaderboardScoresFileAsync(string leaderboardIdentifier);
+
+        /// <summary>
         ///     Generate a SAS uri to download the leaderboard file.
         /// </summary>
         Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier);
