@@ -151,11 +151,12 @@
               defaultIcon="post_add"
             ></button-spinner>
           </button>
-          <div *ngIf="this.scoresFileExists">Last updated on
+          <div *ngIf="this.scoresFileExists">
+            Last updated on
             <standard-absolute-time class="last-modified" [timeUtc]="this.scoresFileLastModified">
             </standard-absolute-time>
           </div>
-          <div *ngIf="!this.scoresFileExists">{{'No Scores file exists'}}</div>
+          <div *ngIf="!this.scoresFileExists">{{ 'No Scores file exists' }}</div>
 
           <verify-button
             #verifyScoresFileRetrieveBtn

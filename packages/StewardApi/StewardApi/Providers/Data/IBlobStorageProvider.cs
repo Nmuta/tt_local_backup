@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Verifies leaderboard file exists and returns last modified time.
         /// </summary>
-        Task<DateTimeOffset> VerifyLeaderboardScoresFileAsync(string leaderboardIdentifier);
+        Task<BlobFileInfo> VerifyLeaderboardScoresFileAsync(string leaderboardIdentifier);
 
         /// <summary>
         ///     Generate a SAS uri to download the leaderboard file.

@@ -355,7 +355,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verify a leaderboard scores file exists, and returns it's last modified time.
         /// </summary>
         [HttpGet("scores/file/verify")]
-        [SwaggerResponse(200, type: typeof(DateTimeOffset))]
+        [SwaggerResponse(200, type: typeof(BlobFileInfo))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
         [Authorize(Policy = UserAttributeValues.GenerateLeaderboardScoresFile)]
@@ -368,9 +368,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         {
             var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
             var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{trackId}_{pivotId}";
-            var lastModified = await this.blobStorageProvider.VerifyLeaderboardScoresFileAsync(leaderboardIdentifier).ConfigureAwait(true);
+            var blobInfo = await this.blobStorageProvider.VerifyLeaderboardScoresFileAsync(leaderboardIdentifier).ConfigureAwait(true);
 
-            return this.Ok(new { lastModifiedUtc = lastModified });
+            return this.Ok(blobInfo);
         }
 
         /// <summary>

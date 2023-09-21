@@ -17,8 +17,9 @@ import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 
-export interface BlobFileVerification {
+export interface BlobFileInfo {
   lastModifiedUtc: DateTime;
+  exists: boolean;
 }
 
 /** The /v2/title/steelhead/leaderboards endpoints. */
@@ -182,8 +183,6 @@ export class SteelheadLeaderboardsService {
     return this.api.getRequest$<string>(`${this.basePath}/scores/file/retrieve`, params);
   }
 
-
-
   /** Verify leaderboard scores file. */
   public verifyLeaderboardScoresFile$(
     scoreboardTypeId: BigNumber,
@@ -191,7 +190,7 @@ export class SteelheadLeaderboardsService {
     trackId: BigNumber,
     pivotId: BigNumber,
     pegasusEnvironment: string,
-  ): Observable<BlobFileVerification> {
+  ): Observable<BlobFileInfo> {
     const params = new HttpParams()
       .set('scoreboardType', scoreboardTypeId.toString())
       .set('scoreType', scoreTypeId.toString())
@@ -199,6 +198,6 @@ export class SteelheadLeaderboardsService {
       .set('pivotId', pivotId.toString())
       .set('pegasusEnvironment', pegasusEnvironment);
 
-    return this.api.getRequest$<BlobFileVerification>(`${this.basePath}/scores/file/verify`, params);
+    return this.api.getRequest$<BlobFileInfo>(`${this.basePath}/scores/file/verify`, params);
   }
 }

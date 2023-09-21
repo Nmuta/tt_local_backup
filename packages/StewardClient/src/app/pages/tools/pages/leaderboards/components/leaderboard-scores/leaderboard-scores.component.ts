@@ -42,7 +42,7 @@ import {
   getLspEndpointFromLeaderboardEnvironment,
   LeaderboardScoreType,
 } from '@models/leaderboards';
-import { BlobFileVerification } from '@services/api-v2/steelhead/leaderboards/steelhead-leaderboards.service';
+import { BlobFileInfo } from '@services/api-v2/steelhead/leaderboards/steelhead-leaderboards.service';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -125,7 +125,7 @@ export interface LeaderboardScoresContract {
     trackId: BigNumber,
     pivotId: BigNumber,
     pegasusEnvironment: string,
-  ):Observable<BlobFileVerification>
+  ): Observable<BlobFileInfo>;
 }
 
 enum LeaderboardView {
@@ -433,8 +433,7 @@ export class LeaderboardScoresComponent
 
   /** Verify scores file for entire leaderboard. */
   public verifyLeaderboardScoresFile(): void {
-    if (!this.allowFileGeneration)
-    {
+    if (!this.allowFileGeneration) {
       return;
     }
 
@@ -452,18 +451,10 @@ export class LeaderboardScoresComponent
         this.leaderboard.metadata.gameScoreboardId,
         this.leaderboard.query.leaderboardEnvironment,
       )
-      .pipe(
-        this.verifyLeaderboardScoresMonitor.monitorSingleFire(),
-        catchError(() => {
-          this.scoresFileExists = false;
-          this.scoresFileLastModified = undefined;
-          return EMPTY;
-        }),
-        takeUntil(this.onDestroy$),
-      )
-      .subscribe(lastModified => {
-        this.scoresFileExists = true;
-        this.scoresFileLastModified = lastModified.lastModifiedUtc;
+      .pipe(this.verifyLeaderboardScoresMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(blobInfo => {
+        this.scoresFileExists = blobInfo.exists;
+        this.scoresFileLastModified = blobInfo.lastModifiedUtc;
       });
   }
 
