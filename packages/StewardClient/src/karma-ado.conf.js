@@ -91,12 +91,14 @@ module.exports = function (config) {
       HeadlessChrome: {
         base: 'ChromeHeadless',
         flags: ['--no-sandbox'],
+        
       },
     },
     singleRun: true,
     // Timeouts
     processKillTimeout: 5000,
     browserDisconnectTimeout: 5000,
+    browserNoActivityTimeout: 400000,
     browserDisconnectTolerance: 3,
   });
 };
