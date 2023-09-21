@@ -210,7 +210,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             if (leaderboardClient.CanGenerateSasUri)
             {
-                // Create a SAS token that's valid for one day
+                // Create a SAS token that's valid for a short time
                 var sasBuilder = new BlobSasBuilder()
                 {
                     StartsOn = DateTime.UtcNow.AddMinutes(-2),
