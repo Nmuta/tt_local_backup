@@ -38,5 +38,7 @@ namespace Turn10.LiveOps.StewardTest
         public const ulong TestAccountXuid = 2675352635783107;
         public const string TestAccountGamertag = "Plink";
         public const string TestAccountExternalProfileId = "941a0a72-8a47-4149-8df9-304fcd927a05";
+        public const ulong TestAccountProfileId = 1442;
+        public const string TestAccountKnownVin = "05c5e205-f139-4504-91d3-9c451c1a992f";
     }
 }
