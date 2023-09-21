@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetUserIsInGroup(31, TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await stewardClient.GetUserIsInGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -60,7 +60,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetUserIsInGroup(31, TestConstants.InvalidXuid).ConfigureAwait(false);
+                var response = await stewardClient.GetUserIsInGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, TestConstants.InvalidXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetBulkOperationStatus(31, 1).ConfigureAwait(false);
+                var response = await stewardClient.GetBulkOperationStatus(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, 1).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -90,7 +90,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetBulkOperationStatus(31, 1).ConfigureAwait(false);
+                var response = await stewardClient.GetBulkOperationStatus(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, 1).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -105,7 +105,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetUsersInGroup(31).ConfigureAwait(false);
+                var response = await stewardClient.GetUsersInGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -120,7 +120,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetUsersInGroup(41).ConfigureAwait(false);
+                var response = await stewardClient.GetUsersInGroup(TestConstants.InvalidGrouId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -150,7 +150,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetUserIsInGroup(31, TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await unauthedClient.GetUserIsInGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -165,7 +165,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetBulkOperationStatus(31, 1).ConfigureAwait(false);
+                var response = await unauthedClient.GetBulkOperationStatus(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, 1).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -180,7 +180,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetUsersInGroup(31).ConfigureAwait(false);
+                var response = await unauthedClient.GetUsersInGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -210,7 +210,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostAddUsersToGroup(31).ConfigureAwait(false);
+                var response = await unauthedClient.PostAddUsersToGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -225,7 +225,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostRemoveUsersFromGroup(31).ConfigureAwait(false);
+                var response = await unauthedClient.PostRemoveUsersFromGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -240,7 +240,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostRemoveAllUsersFromGroup(31).ConfigureAwait(false);
+                var response = await unauthedClient.PostRemoveAllUsersFromGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
