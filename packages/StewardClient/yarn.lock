@@ -4808,7 +4808,7 @@ colorette@^2.0.10, colorette@^2.0.14, colorette@^2.0.16:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/colorette/-/colorette-2.0.20.tgz"
   integrity sha1-nreT5oMwZ/cjWQL807CZF6AAqVo=
 
-colors@1.4.0, colors@^1.1.2:
+colors@1.4.0:
   version "1.4.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/colors/-/colors-1.4.0.tgz"
   integrity sha1-xQSRR51MG9rtLJztMs98fcI2D3g=
@@ -8064,12 +8064,12 @@ karma-source-map-support@1.4.0:
   dependencies:
     source-map-support "^0.5.5"
 
-karma-spec-reporter@^0.0.32:
-  version "0.0.32"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/karma-spec-reporter/-/karma-spec-reporter-0.0.32.tgz"
-  integrity sha1-LpxyB+pyZ3EmAln4K+y1QyCeRAo=
+karma-spec-reporter@^0.0.36:
+  version "0.0.36"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/karma-spec-reporter/-/karma-spec-reporter-0.0.36.tgz#c54dc155dec2ded1f92ea68dbbdd67fcedbef350"
+  integrity sha1-xU3BVd7C3tH5LqaNu91n/O2+81A=
   dependencies:
-    colors "^1.1.2"
+    colors "1.4.0"
 
 karma@^6.3.9:
   version "6.4.2"

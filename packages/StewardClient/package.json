@@ -151,7 +151,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-junit-reporter": "^2.0.1",
     "karma-nightmare": "^0.4.15",
-    "karma-spec-reporter": "^0.0.32",
+    "karma-spec-reporter": "^0.0.36",
     "logops": "^2.1.1",
     "make-runnable": "^1.3.10",
     "prettier": "^2.5.1",
