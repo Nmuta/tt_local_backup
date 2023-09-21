@@ -33,6 +33,8 @@ namespace Turn10.LiveOps.StewardTest
         public const int MaxLoopTimeInMilliseconds = 120000;
         public const int DefaultStartIndex = 0;
         public const int DefaultMaxResults = 100;
+        public const int LiveOpsLeaderboardTalentedPlayersGroupId = 31;
+        public const int InvalidGrouId = 99999;
 
         // Test account Plink
         public const ulong TestAccountXuid = 2675352635783107;
