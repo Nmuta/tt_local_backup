@@ -16,6 +16,22 @@
         Description must be {{ service.descriptionMaxLength }} characters or less.
       </mat-error>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label> Times Disliked </mat-label>
+      <input matInput type="number" [formControl]="formControls.disliked" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label> Times Downloaded </mat-label>
+      <input matInput type="number" [formControl]="formControls.downloaded" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label> Times Liked </mat-label>
+      <input matInput type="number" [formControl]="formControls.liked" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label> Times Used </mat-label>
+      <input matInput type="number" [formControl]="formControls.used" />
+    </mat-form-field>
   </form>
 </mat-dialog-content>
 

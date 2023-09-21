@@ -92,5 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
 
         /// <summary>Hide or Unhide UGC by id.</summary>
         Task HideUGC(Guid fileId, bool shouldHide);
+
+        Task IncrementUGCStats(Guid fileId, ForzaIncrementUGCStatsParameters[] updateParameters);
     }
 }
