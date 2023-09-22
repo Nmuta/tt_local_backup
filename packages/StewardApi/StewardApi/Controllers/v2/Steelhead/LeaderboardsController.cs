@@ -72,8 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             IActionLogger actionLogger,
             IJobTracker jobTracker,
             IScheduler scheduler,
-            IBlobStorageProvider blobStorageProvider,
-            IHttpContextAccessor httpContextAccessor)
+            IBlobStorageProvider blobStorageProvider)
         {
             pegasusService.ShouldNotBeNull(nameof(pegasusService));
             loggingService.ShouldNotBeNull(nameof(loggingService));
