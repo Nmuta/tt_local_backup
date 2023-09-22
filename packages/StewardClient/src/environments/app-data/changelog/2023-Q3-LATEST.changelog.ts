@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   entries: [
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '636cbaf0-6230-4c32-ae27-34fd5109f174',
+      shortText: 'Adjust layout of leaderboards search component for clarity',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '361fff59-388c-4612-9471-36116fb1e3d6',
       shortText: 'Add ability to search leaderboard scores by gamertag',
     },

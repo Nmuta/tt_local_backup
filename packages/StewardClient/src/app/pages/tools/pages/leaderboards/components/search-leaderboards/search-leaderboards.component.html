@@ -26,112 +26,140 @@
   <ng-container *waitForMonitor="getLeaderboards">
     <ng-container *ngIf="expanded; else collapsedTemplate">
       <mat-card-content>
-        <form [formGroup]="formGroup">
-          <div class="line-break">
-            <mat-form-field appearance="fill">
-              <mat-label>Leaderboard Environment</mat-label>
-              <mat-select [formControl]="formControls.leaderboardEnvironment">
-                <mat-option *ngFor="let type of LeaderboardEnvironments" [value]="type">{{
-                  type | deppoh
-                }}</mat-option>
-              </mat-select>
-              <mat-hint>Select an Environment</mat-hint>
-            </mat-form-field>
-          </div>
+        <form [formGroup]="formGroup" class="sf-wrapper sf-default-hint">
+          <div class="sf-horizontal do-not-align-items">
+            <div class="sf-vertical sf-no-grow">
+              <mat-form-field appearance="fill" class="sf-default-hint">
+                <mat-label>Leaderboard Environment</mat-label>
+                <mat-select [formControl]="formControls.leaderboardEnvironment">
+                  <mat-option *ngFor="let type of LeaderboardEnvironments" [value]="type">{{
+                    type | deppoh
+                  }}</mat-option>
+                </mat-select>
+                <mat-hint>Select an Environment</mat-hint>
+              </mat-form-field>
 
-          <div class="line-break">
-            <mat-form-field appearance="fill">
-              <mat-label>Leaderboard Filters</mat-label>
-              <mat-select
-                [formControl]="formControls.filters"
-                multiple
-                (selectionChange)="selectedFiltersChange()"
+              <mat-icon
+                class="sf-icon-between"
+                matTooltip="The options above influence the options below"
+                matTooltipPosition="right"
+                >arrow_downward</mat-icon
               >
-                <mat-optgroup *ngFor="let group of leaderboardFilterGroups" [label]="group.name">
-                  <mat-option *ngFor="let item of group.items" [value]="item">
-                    {{ item.name }}
+
+              <div>
+                <mat-form-field appearance="fill" class="sf-full-width sf-default-hint">
+                  <mat-label>Leaderboard Filters</mat-label>
+                  <mat-select
+                    [formControl]="formControls.filters"
+                    multiple
+                    (selectionChange)="selectedFiltersChange()"
+                  >
+                    <mat-optgroup
+                      *ngFor="let group of leaderboardFilterGroups"
+                      [label]="group.name"
+                    >
+                      <mat-option *ngFor="let item of group.items" [value]="item">
+                        {{ item.name }}
+                      </mat-option>
+                    </mat-optgroup>
+                  </mat-select>
+
+                  <button
+                    matSuffix
+                    mat-icon-button
+                    clickStop
+                    (click)="removeAllFilters()"
+                    matTooltip="Clear all filters"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <mat-hint>Filters leaderboad options below</mat-hint>
+                </mat-form-field>
+
+                <mat-chip-list aria-label="Selected leaderboard filters">
+                  <mat-chip
+                    *ngFor="let selectedFilter of formControls.filters.value"
+                    color="accent"
+                    [removable]="true"
+                    [value]="selectedFilter"
+                    (removed)="removeFilter(selectedFilter)"
+                  >
+                    {{ selectedFilter.name }}
+                    <mat-icon matTooltip="Remove filter" matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+
+              <mat-icon
+                class="sf-icon-between"
+                matTooltip="The options above influence the options below"
+                matTooltipPosition="right"
+                >arrow_downward</mat-icon
+              >
+
+              <mat-form-field appearance="fill">
+                <mat-label>Leaderboards ({{ autocompleteLeadeboards?.length }} results)</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [formControl]="formControls.leaderboard"
+                  [matAutocomplete]="leaderboards"
+                  spellcheck="false"
+                  autocomplete="off"
+                />
+                <mat-autocomplete
+                  #leaderboards="matAutocomplete"
+                  [displayWith]="displayLeaderboards"
+                >
+                  <mat-option
+                    *ngFor="let leaderboard of autocompleteLeadeboards"
+                    [value]="leaderboard"
+                  >
+                    {{ leaderboard.name }} {{ leaderboard.scoreType | humanize }}
                   </mat-option>
-                </mat-optgroup>
-              </mat-select>
+                </mat-autocomplete>
 
-              <button
-                matSuffix
-                mat-icon-button
-                clickStop
-                (click)="removeAllFilters()"
-                matTooltip="Clear all filters"
-              >
-                <mat-icon>close</mat-icon>
-              </button>
-              <mat-hint>Filters leaderboad options below</mat-hint>
-            </mat-form-field>
+                <button
+                  mat-button
+                  matSuffix
+                  mat-icon-button
+                  matTooltip="Clear leaderboard input"
+                  (click)="formControls.leaderboard.setValue('')"
+                  clickStop
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+
+            <div class="sf-vertical sf-aside sf-no-grow">
+              <div class="player-selection-container">
+                <player-selection-single
+                  [disableLookupTypes]="['t10Id']"
+                  [allowSelection]="false"
+                  [rejectionFn]="service.rejectionFn"
+                  (found)="playerIdentityFound($event)"
+                  [extraHint]="'\n(Optional) Searches scores above and below player'"
+                ></player-selection-single>
+                <mat-error *ngIf="playerNotFound"
+                  >{{ service.gameTitle | gameTitleFullName }} account not found, identity filter
+                  ignored. Ensure you are entering a valid XUID or Gamertag.</mat-error
+                >
+              </div>
+
+              <div class="sf-spacer"></div>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Device Types</mat-label>
+                <mat-select [formControl]="formControls.deviceTypes" multiple>
+                  <mat-option *ngFor="let type of DeviceTypes" [value]="type">{{
+                    type | deppoh
+                  }}</mat-option>
+                </mat-select>
+                <mat-hint>(Optional) Filters scores by device types</mat-hint>
+              </mat-form-field>
+            </div>
           </div>
-
-          <div class="line-break selected-filters">
-            <mat-chip-list aria-label="Selected leaderboard filters">
-              <mat-chip
-                *ngFor="let selectedFilter of formControls.filters.value"
-                color="accent"
-                [removable]="true"
-                [value]="selectedFilter"
-                (removed)="removeFilter(selectedFilter)"
-              >
-                {{ selectedFilter.name }}
-                <mat-icon matTooltip="Remove filter" matChipRemove>cancel</mat-icon>
-              </mat-chip>
-            </mat-chip-list>
-          </div>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Leaderboards ({{ autocompleteLeadeboards?.length }} results)</mat-label>
-            <input
-              type="text"
-              matInput
-              [formControl]="formControls.leaderboard"
-              [matAutocomplete]="leaderboards"
-              spellcheck="false"
-              autocomplete="off"
-            />
-            <mat-autocomplete #leaderboards="matAutocomplete" [displayWith]="displayLeaderboards">
-              <mat-option *ngFor="let leaderboard of autocompleteLeadeboards" [value]="leaderboard">
-                {{ leaderboard.name }} {{ leaderboard.scoreType | humanize }}
-              </mat-option>
-            </mat-autocomplete>
-
-            <button
-              mat-button
-              matSuffix
-              mat-icon-button
-              matTooltip="Clear leaderboard input"
-              (click)="formControls.leaderboard.setValue('')"
-              clickStop
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <div class="player-selection-container">
-            <player-selection-single
-              [disableLookupTypes]="['t10Id']"
-              [allowSelection]="false"
-              [rejectionFn]="service.rejectionFn"
-              (found)="playerIdentityFound($event)"
-            ></player-selection-single>
-            <mat-error *ngIf="playerNotFound"
-              >{{ service.gameTitle | gameTitleFullName }} account not found, identity filter
-              ignored. Ensure you are entering a valid XUID or Gamertag.</mat-error
-            >
-            <mat-hint>(Optional) Searches scores above and below player</mat-hint>
-          </div>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Device Types</mat-label>
-            <mat-select [formControl]="formControls.deviceTypes" multiple>
-              <mat-option *ngFor="let type of DeviceTypes" [value]="type">{{
-                type | deppoh
-              }}</mat-option>
-            </mat-select>
-            <mat-hint>(Optional) Filters scores by device types</mat-hint>
-          </mat-form-field>
         </form>
       </mat-card-content>
     </ng-container>

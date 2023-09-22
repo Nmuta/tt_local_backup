@@ -50,7 +50,7 @@
     }
 
     // fill items; override later per-control
-    > * {
+    > *:not(.sf-no-grow) {
       flex-grow: 1;
     }
 
@@ -255,6 +255,10 @@ textarea.sf-standard-height {
 }
 
 .sf-tooltip-multiline {
+  white-space: pre-line;
+}
+
+.sf-mat-hint-multiline {
   white-space: pre-line;
 }
 
