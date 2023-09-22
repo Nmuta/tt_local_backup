@@ -15,7 +15,7 @@
 
     <!-- Tab Content -->
     <steelhead-search-leaderboards
-      (selectedIdentity)="onIdentitySelected($event)"
+      (selectedIdentityChange)="onIdentitySelected($event)"
     ></steelhead-search-leaderboards>
     <steelhead-leaderboard-stats
       [leaderboard]="activeLeaderboard"

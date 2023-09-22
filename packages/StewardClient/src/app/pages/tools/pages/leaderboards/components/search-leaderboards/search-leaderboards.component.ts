@@ -59,7 +59,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
   /** The search leaderboard service contract. */
   @Input() public service: SearchLeaderboardsContract;
   /** Output when an identity is selected. */
-  @Output() selectedIdentity = new EventEmitter<AugmentedCompositeIdentity>();
+  @Output() selectedIdentityChange = new EventEmitter<AugmentedCompositeIdentity>();
 
   /** The object to build leaderboard filters multi-select. */
   public leaderboardFilterGroups: LeaderboardFilterGroup[] = keys(LeaderboardFilterType).map(
@@ -225,7 +225,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
 
     this.playerNotFound = !!newIdentity?.result && !titleSpecificIdentity;
     this.formControls.identity.setValue(titleSpecificIdentity);
-    this.selectedIdentity.emit(newIdentity);
+    this.selectedIdentityChange.emit(newIdentity);
   }
 
   private setupLeaderboards(prefillParams: boolean): void {

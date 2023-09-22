@@ -14,7 +14,7 @@ import { GameTitle } from '@models/enums';
 })
 export class SteelheadSearchLeaderboardsComponent {
   /** Output when an identity is selected. */
-  @Output() selectedIdentity = new EventEmitter<AugmentedCompositeIdentity>();
+  @Output() selectedIdentityChange = new EventEmitter<AugmentedCompositeIdentity>();
 
   public service: SearchLeaderboardsContract;
 
