@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetPlayerMessage(TestConstants.InvalidXuid, "VeryRealMessageId").ConfigureAwait(false);
+                var response = await stewardClient.GetPlayerMessage(TestConstants.TestAccountXuid, "VeryRealMessageId").ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
