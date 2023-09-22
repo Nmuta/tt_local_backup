@@ -53,6 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
             string externalProfileId)
         {
             var externalProfileGuid = externalProfileId.TryParseGuidElseThrow(nameof(externalProfileId));
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var response = await this.Services.LiveOpsService.DownloadUGCProfile(xuid, externalProfileGuid).ConfigureAwait(true);
@@ -74,6 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.Steelhead.Player
         public async Task<IActionResult> UpdateUgcProfile(ulong xuid, string externalProfileId, [FromBody] string profileData)
         {
             var externalProfileGuid = externalProfileId.TryParseGuidElseThrow(nameof(externalProfileId));
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             await this.Services.LiveOpsService.UploadUGCProfile(xuid, externalProfileGuid, profileData).ConfigureAwait(true);

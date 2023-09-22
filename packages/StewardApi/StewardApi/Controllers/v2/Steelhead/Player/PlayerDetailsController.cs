@@ -74,6 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetPlayerDetails(
             ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var response = await this.Services.LiveOpsService.GetLiveOpsUserDataByXuid(xuid)
@@ -97,6 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetPlayerGameDetails(
             ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var response = await this.Services.UserManagementService.GetUserDetails(xuid)

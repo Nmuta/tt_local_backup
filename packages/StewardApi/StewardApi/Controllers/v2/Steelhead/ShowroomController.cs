@@ -7,6 +7,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -63,6 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarFeaturedShowcases(ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
@@ -100,6 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetDivisionFeaturedShowcases(ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
@@ -137,6 +140,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetManufacturerFeaturedShowcases(ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
@@ -174,6 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarSales(ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 

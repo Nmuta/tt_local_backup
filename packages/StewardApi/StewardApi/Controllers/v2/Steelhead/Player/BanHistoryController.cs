@@ -64,6 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetBanHistory(
             ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
             var endpoint = this.SteelheadEndpoint.Value;
             var result = await this.GetBanHistoryAsync(xuid, endpoint).ConfigureAwait(true);

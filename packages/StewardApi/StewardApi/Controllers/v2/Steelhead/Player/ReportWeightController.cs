@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetReportWeightAsync(ulong xuid)
         {
-            ////xuid.IsValidXuid();
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             UserManagementService.GetUserReportWeightOutput response = null;
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.SetReportWeight)]
         public async Task<IActionResult> SetUserReportWeight(ulong xuid, [FromBody] UserReportWeightType reportWeightType)
         {
-            ////xuid.IsValidXuid();
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var mappedReportWeightType = this.mapper.SafeMap<ForzaUserReportWeightType>(reportWeightType);

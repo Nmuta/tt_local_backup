@@ -117,6 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] int daysForward)
         {
             daysForward.ShouldBeGreaterThanValue(-1);
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
             var cutoffTime = DateTimeOffset.UtcNow.AddSeconds(1);
 

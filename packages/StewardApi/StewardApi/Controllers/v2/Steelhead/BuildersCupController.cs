@@ -68,6 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(IList<BuildersCupFeaturedTour>))]
         public async Task<IActionResult> GetCmsBuildersCupSchedule(ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 

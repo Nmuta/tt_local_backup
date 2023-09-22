@@ -50,6 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var response = await this.Services.UserManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(true);
@@ -71,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var response = await this.Services.UserManagementService.GetSharedConsoleUsers(
