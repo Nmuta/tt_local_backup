@@ -12,6 +12,8 @@ import { faker } from '@interceptors/fake-api/utility';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ActivePullRequestsComponent', () => {
   let component: ActivePullRequestsComponent;
   let fixture: ComponentFixture<ActivePullRequestsComponent>;
@@ -32,12 +34,14 @@ describe('ActivePullRequestsComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [ActivePullRequestsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [PipesModule],
+        declarations: [ActivePullRequestsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ActivePullRequestsComponent);
     component = fixture.debugElement.componentInstance;

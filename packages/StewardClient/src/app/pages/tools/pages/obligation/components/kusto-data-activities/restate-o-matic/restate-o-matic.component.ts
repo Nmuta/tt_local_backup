@@ -42,6 +42,8 @@ export interface KustoRestateOMaticDataActivityOptions {
   fromApi: boolean;
 }
 
+const UTC_NOW = DateTime.utc();
+
 /** A form component for a single kusto restate-o-matic pipeline activity. */
 @Component({
   selector: 'restate-o-matic',
@@ -65,7 +67,6 @@ export class RestateOMaticComponent
   implements ControlValueAccessor, Validator, AfterViewInit
 {
   public static readonly NAME_PREFIX = 'ROM_';
-  private static readonly UTC_NOW = DateTime.utc();
   private readonly attachedToFormControl$ = new ReplaySubject<UntypedFormControl>(1);
   private readonly attachedToFormControlValue$: Observable<KustoDataActivityOptions> =
     this.attachedToFormControl$.pipe(
@@ -85,8 +86,8 @@ export class RestateOMaticComponent
     database: 'T10Analytics',
     query: KustoFunctionComponent.defaults,
     dateRange: {
-      start: RestateOMaticComponent.UTC_NOW,
-      end: RestateOMaticComponent.UTC_NOW.plus({ days: 7 }),
+      start: UTC_NOW,
+      end: UTC_NOW.plus({ days: 7 }),
     },
     maximumExecutionTimeInMinutes: 1440,
     executionIntervalInMinutes: 1440,

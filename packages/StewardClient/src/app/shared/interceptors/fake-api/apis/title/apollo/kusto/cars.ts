@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
+import faker from '@faker-js/faker';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { SimpleCar } from '@models/cars';
-import faker from '@faker-js/faker';
 
 /** Fake API for getting kusto cars. */
 export class ApolloSimpleCarsFakeApi extends FakeApiBase {

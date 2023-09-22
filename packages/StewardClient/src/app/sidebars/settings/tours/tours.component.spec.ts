@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToursComponent } from './tours.component';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { TourState } from '@shared/state/tours/tours.state';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
+import { ToursComponent } from './tours.component';
 
 describe('ToursComponent', () => {
   let component: ToursComponent;

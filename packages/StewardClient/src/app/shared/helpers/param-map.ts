@@ -1,6 +1,6 @@
 import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap } from '@angular/router';
 import { merge, reverse } from 'lodash';
-import { combineLatest, map, Observable, startWith, throwError } from 'rxjs';
+import { Observable, combineLatest, map, startWith, throwError } from 'rxjs';
 
 /**
  * Merges all params from root to the current route.

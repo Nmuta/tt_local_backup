@@ -9,15 +9,19 @@ import {
   SetSunriseGiftHistorySelectedPlayerIdentities,
 } from './sunrise-gift-history.state.actions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseGiftHistoryState', () => {
   let store: Store;
   let service: SunriseGiftHistoryState;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([SunriseGiftHistoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([SunriseGiftHistoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(SunriseGiftHistoryState);
     store = TestBed.inject(Store);
   });

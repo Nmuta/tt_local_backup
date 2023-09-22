@@ -3,15 +3,19 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { AuctionDataComponent } from './auction-data.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('AuctionDataComponent (page)', () => {
   let component: AuctionDataComponent;
   let fixture: ComponentFixture<AuctionDataComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AuctionDataComponent],
-      imports: [RouterTestingModule],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [AuctionDataComponent],
+        imports: [RouterTestingModule],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

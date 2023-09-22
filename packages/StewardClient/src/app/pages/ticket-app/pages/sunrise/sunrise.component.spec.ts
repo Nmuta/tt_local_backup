@@ -9,6 +9,8 @@ import faker from '@faker-js/faker';
 import { SunriseComponent } from './sunrise.component';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseComponent - Ticket App', () => {
   let component: SunriseComponent;
   let fixture: ComponentFixture<SunriseComponent>;
@@ -17,12 +19,14 @@ describe('SunriseComponent - Ticket App', () => {
   let mockSunriseService: SunriseService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseComponent],
-      imports: [NgxsModule.forRoot([])],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSunriseService(), createMockTicketService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseComponent],
+        imports: [NgxsModule.forRoot([])],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSunriseService(), createMockTicketService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseComponent);
     component = fixture.componentInstance;

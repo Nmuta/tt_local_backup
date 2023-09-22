@@ -7,21 +7,25 @@ import { createMockOldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { createMockMultipleBanHistoryService } from '@services/api-v2/all/player/ban-history.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseBanHistoryComponent', () => {
   let component: SunriseBanHistoryComponent;
   let fixture: ComponentFixture<SunriseBanHistoryComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseBanHistoryComponent],
-      imports: [PipesModule],
-      providers: [
-        createMockSunriseService(),
-        createMockOldPermissionsService(),
-        createMockMultipleBanHistoryService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseBanHistoryComponent],
+        imports: [PipesModule],
+        providers: [
+          createMockSunriseService(),
+          createMockOldPermissionsService(),
+          createMockMultipleBanHistoryService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

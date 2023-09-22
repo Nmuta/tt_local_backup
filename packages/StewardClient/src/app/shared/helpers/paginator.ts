@@ -1,5 +1,5 @@
 import { isEqual, keys, uniq } from 'lodash';
-import { filter, map, MonoTypeOperatorFunction, Observable, pairwise, startWith } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, filter, map, pairwise, startWith } from 'rxjs';
 
 export enum PaginatorQueryParams {
   Index = 'pi',

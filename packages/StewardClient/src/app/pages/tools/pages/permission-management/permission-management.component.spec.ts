@@ -11,6 +11,8 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { PermissionManagementComponent } from './permission-management.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('PermissionManagementComponent', () => {
   let component: PermissionManagementComponent;
   let fixture: ComponentFixture<PermissionManagementComponent>;
@@ -18,15 +20,17 @@ describe('PermissionManagementComponent', () => {
   let mockStore: Store;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NgxsModule.forRoot([UserState]), HttpClientTestingModule],
-      declarations: [PermissionManagementComponent],
-      providers: [
-        createMockBackgroundJobService(),
-        createMockMsalServices(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule, NgxsModule.forRoot([UserState]), HttpClientTestingModule],
+        declarations: [PermissionManagementComponent],
+        providers: [
+          createMockBackgroundJobService(),
+          createMockMsalServices(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PermissionManagementComponent);
     component = fixture.componentInstance;

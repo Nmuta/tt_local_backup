@@ -7,17 +7,21 @@ import { SteelheadLeaderboardScoresComponent } from './steelhead-leaderboard-sco
 
 // TODO: Doing these later when I am not on vacation (lugeiken)
 // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/958926
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadLeaderboardScoresComponent', () => {
   let component: SteelheadLeaderboardScoresComponent;
   let fixture: ComponentFixture<SteelheadLeaderboardScoresComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SteelheadLeaderboardScoresComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadLeaderboardsService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SteelheadLeaderboardScoresComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadLeaderboardsService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadLeaderboardScoresComponent);
     component = fixture.debugElement.componentInstance;

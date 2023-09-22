@@ -5,21 +5,25 @@ import { MODEL_DUMP_PROCESSED_MODEL$ } from '../model-dump.component';
 
 import { ModelDumpFlagsComponent } from './model-dump-flags.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ModelDumpFlagsComponent', () => {
   let component: ModelDumpFlagsComponent;
   let fixture: ComponentFixture<ModelDumpFlagsComponent>;
   const processedModel$ = new BehaviorSubject<ExtractedModel>(undefined);
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ModelDumpFlagsComponent],
-      providers: [
-        {
-          provide: MODEL_DUMP_PROCESSED_MODEL$,
-          useValue: processedModel$,
-        },
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ModelDumpFlagsComponent],
+        providers: [
+          {
+            provide: MODEL_DUMP_PROCESSED_MODEL$,
+            useValue: processedModel$,
+          },
+        ],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

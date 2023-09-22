@@ -2,14 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TypographyComponent } from './typography.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('TypographyComponent', () => {
   let component: TypographyComponent;
   let fixture: ComponentFixture<TypographyComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TypographyComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [TypographyComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

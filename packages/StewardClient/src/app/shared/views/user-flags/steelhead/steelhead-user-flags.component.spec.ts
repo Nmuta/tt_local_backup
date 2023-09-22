@@ -10,6 +10,8 @@ import { SteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/f
 import { createMockSteelheadPlayerFlagsService } from '@services/api-v2/steelhead/player/flags/steelhead-player-flags.service.mock';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadUserFlagsComponent', () => {
   let component: SteelheadUserFlagsComponent;
   let fixture: ComponentFixture<SteelheadUserFlagsComponent>;
@@ -18,12 +20,14 @@ describe('SteelheadUserFlagsComponent', () => {
   let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadUserFlagsComponent],
-      imports: [PipesModule],
-      providers: [createMockSteelheadPlayerFlagsService(), createMockOldPermissionsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadUserFlagsComponent],
+        imports: [PipesModule],
+        providers: [createMockSteelheadPlayerFlagsService(), createMockOldPermissionsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

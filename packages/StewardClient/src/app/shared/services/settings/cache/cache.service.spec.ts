@@ -6,6 +6,8 @@ import faker from '@faker-js/faker';
 
 import { CacheService } from './cache.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('CacheService', () => {
   let injector: TestBed;
   let service: CacheService;
@@ -14,11 +16,13 @@ describe('CacheService', () => {
   const basePath = 'v1/settings/cache';
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     service = injector.inject(CacheService);
     apiServiceMock = injector.inject(ApiService);

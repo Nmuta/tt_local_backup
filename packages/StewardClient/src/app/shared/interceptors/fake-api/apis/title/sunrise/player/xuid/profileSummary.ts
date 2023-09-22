@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseProfileSummary } from '@models/sunrise';
+import BigNumber from 'bignumber.js';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidProfileSummaryFakeApi extends FakeApiBase {

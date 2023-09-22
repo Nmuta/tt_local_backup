@@ -11,18 +11,22 @@ import { of, throwError } from 'rxjs';
 import { SunriseCommunityMessagingComponent } from './sunrise-community-messaging.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseCommunityMessagingComponent', () => {
   let component: SunriseCommunityMessagingComponent;
   let fixture: ComponentFixture<SunriseCommunityMessagingComponent>;
   let mockSunriseService: SunriseService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseCommunityMessagingComponent],
-      imports: [PipesModule],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseCommunityMessagingComponent],
+        imports: [PipesModule],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

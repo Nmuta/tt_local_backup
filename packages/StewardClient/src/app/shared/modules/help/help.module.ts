@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { HelpPopoverIconComponent } from './help-popover-icon/help-popover-icon.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { DirectivesModule } from '@shared/directives/directives.module';
 

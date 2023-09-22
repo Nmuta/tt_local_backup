@@ -5,14 +5,18 @@ import { createMockSunriseService } from '@services/sunrise';
 
 import { LogTableLoaderComponent } from './log-table-loader.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('LogTableLoaderComponent', () => {
   let component: LogTableLoaderComponent;
   let fixture: ComponentFixture<LogTableLoaderComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [LogTableLoaderComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [LogTableLoaderComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

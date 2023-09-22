@@ -11,6 +11,8 @@ import { SunriseUserFlagsComponent } from './sunrise-user-flags.component';
 import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseUserFlagsComponent', () => {
   let component: SunriseUserFlagsComponent;
   let fixture: ComponentFixture<SunriseUserFlagsComponent>;
@@ -19,12 +21,14 @@ describe('SunriseUserFlagsComponent', () => {
   let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseUserFlagsComponent],
-      imports: [PipesModule],
-      providers: [createMockSunriseService(), createMockOldPermissionsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseUserFlagsComponent],
+        imports: [PipesModule],
+        providers: [createMockSunriseService(), createMockOldPermissionsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -6,6 +6,8 @@ import { of } from 'rxjs';
 
 import { OpusService } from './opus.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('OpusService', () => {
   let injector: TestBed;
   let service: OpusService;
@@ -13,11 +15,13 @@ describe('OpusService', () => {
   let nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiService(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiService(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     service = injector.inject(OpusService);
     apiServiceMock = injector.inject(ApiService);

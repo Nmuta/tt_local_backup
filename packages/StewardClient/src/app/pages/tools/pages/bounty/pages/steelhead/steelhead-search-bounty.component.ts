@@ -9,7 +9,7 @@ import {
   SteelheadBountiesService,
 } from '@services/api-v2/steelhead/bounties/steelhead-bounties.service';
 import { orderBy, filter } from 'lodash';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { getBountyDetailsRoute } from '@helpers/route-links';
 
 /** Extended type from BountySummary. */

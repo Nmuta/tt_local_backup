@@ -7,7 +7,7 @@ import { SetHomeTour, SetUserTours } from '@shared/state/tours/tours.actions';
 import { TourState, TourStateModel } from '@shared/state/tours/tours.state';
 import { homeTourSteps } from './config';
 
-/** will run ngx */
+/** Manages User Tours/Tutorials/Guides via ngx-ui-tour-md-menu. */
 @Injectable({
   providedIn: 'root',
 })
@@ -47,7 +47,9 @@ export class UserTourService {
   /** Starts the Home tour */
   public startHomeTour(forced: boolean = false): void {
     if (forced || this.shouldShowHomeTour()) {
-      this.tourService.initialize(homeTourSteps);
+      this.tourService.initialize(homeTourSteps, {
+        enableBackdrop: true,
+      });
 
       this.tourService.end$.subscribe(() => {
         this.store.dispatch(new SetHomeTour(false));

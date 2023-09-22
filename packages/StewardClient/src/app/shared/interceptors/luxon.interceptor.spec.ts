@@ -30,6 +30,8 @@ type TestResponse = {
 };
 
 // strategy based on https://dev.to/alisaduncan/intercepting-http-requests---using-and-testing-angulars-httpclient
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('UtcInterceptor', () => {
   let httpMock: HttpTestingController;
   let http: HttpClient;
@@ -68,16 +70,18 @@ describe('UtcInterceptor', () => {
     interceptor = new UtcInterceptor();
     interceptor.handle = jasmine.createSpy('handle', interceptor.handle).and.callThrough();
 
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useValue: interceptor,
-          multi: true,
-        },
-      ],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        providers: [
+          {
+            provide: HTTP_INTERCEPTORS,
+            useValue: interceptor,
+            multi: true,
+          },
+        ],
+      }),
+    );
 
     http = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);

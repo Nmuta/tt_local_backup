@@ -5,17 +5,21 @@ import { WoodstockCreateSingleAuctionComponent } from './woodstock-create-single
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockCreateSingleAuctionComponent', () => {
   let component: WoodstockCreateSingleAuctionComponent;
   let fixture: ComponentFixture<WoodstockCreateSingleAuctionComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockCreateSingleAuctionComponent, HumanizePipe],
-      imports: [PipesModule, HttpClientTestingModule],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockCreateSingleAuctionComponent, HumanizePipe],
+        imports: [PipesModule, HttpClientTestingModule],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

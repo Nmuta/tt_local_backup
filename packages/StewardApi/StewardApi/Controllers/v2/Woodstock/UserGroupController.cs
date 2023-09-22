@@ -80,6 +80,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.UserGroup
         /// <summary>
         ///    Get a user group users.
         /// </summary>
+        /// <remarks>
+        /// Will not return users if the user group contains more than 20,000 users
+        /// </remarks>
         [HttpGet("{userGroupId}")]
         [SwaggerResponse(200, type: typeof(GetUserGroupUsersResponse))]
         [LogTagDependency(DependencyLogTags.Lsp)]
