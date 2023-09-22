@@ -160,6 +160,27 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
+        public async Task GetLeaderboardScoresAroundXuid_InvalidXuid()
+        {
+            try
+            {
+                var response = await stewardClient.GetLeaderboardScoresAroundXuid(
+                    TestConstants.InvalidXuid,
+                    scoreboardType,
+                    scoreType,
+                    trackId,
+                    pivotId,
+                    deviceTypes).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task GetLeaderboardScoresAroundXuid_InvalidAuth()
         {
             try
