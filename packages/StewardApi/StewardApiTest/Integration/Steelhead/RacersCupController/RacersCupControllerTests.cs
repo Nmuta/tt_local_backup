@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task GetRivalsEvents_ByXuid_InvalidXuid()
+        public async Task GetRacersCup_ByXuid_InvalidXuid()
         {
             try
             {
