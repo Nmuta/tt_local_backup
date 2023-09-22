@@ -51,7 +51,7 @@ describe('LeaderboardScoresComponent', () => {
     generateLeaderboardScoresFile$: () => {
       return of();
     },
-    verifyLeaderboardScoresFile$: () => {
+    getLeaderboardScoresFileMetadata$: () => {
       return of();
     },
     retrieveLeaderboardScoresFile$: () => {

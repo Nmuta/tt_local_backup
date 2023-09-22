@@ -351,14 +351,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         }
 
         /// <summary>
-        ///     Verify a leaderboard scores file exists, and returns it's last modified time.
+        ///     Gets metadata for a leaderboard scores file.
         /// </summary>
-        [HttpGet("scores/file/verify")]
+        [HttpGet("scores/file/metadata")]
         [SwaggerResponse(200, type: typeof(BlobFileInfo))]
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Leaderboards)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Create | ActionAreaLogTags.Leaderboards)]
         [Authorize(Policy = UserAttributeValues.GenerateLeaderboardScoresFile)]
-        public async Task<IActionResult> VerifyLeaderboardScoresFile(
+        public async Task<IActionResult> GetLeaderboardScoresFileMetadata(
             [FromQuery] ScoreboardType scoreboardType,
             [FromQuery] ScoreType scoreType,
             [FromQuery] int trackId,

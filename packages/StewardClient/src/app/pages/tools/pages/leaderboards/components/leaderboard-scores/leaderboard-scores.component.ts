@@ -119,7 +119,7 @@ export interface LeaderboardScoresContract {
     pegasusEnvironment: string,
   ): Observable<string>;
 
-  verifyLeaderboardScoresFile$(
+  getLeaderboardScoresFileMetadata$(
     scoreboardTypeId: BigNumber,
     scoreTypeId: BigNumber,
     trackId: BigNumber,
@@ -406,7 +406,7 @@ export class LeaderboardScoresComponent
         catchError(() => EMPTY),
         takeUntil(this.onDestroy$),
       )
-      .subscribe(() => this.verifyLeaderboardScoresFile());
+      .subscribe(() => this.getLeaderboardScoresFileMetadata());
   }
 
   /** Retrieve scores file for entire leaderboard. */
@@ -432,19 +432,19 @@ export class LeaderboardScoresComponent
   }
 
   /** Verify scores file for entire leaderboard. */
-  public verifyLeaderboardScoresFile(): void {
+  public getLeaderboardScoresFileMetadata(): void {
     if (!this.allowFileGeneration) {
       return;
     }
 
-    if (!this.service.verifyLeaderboardScoresFile$) {
+    if (!this.service.getLeaderboardScoresFileMetadata$) {
       throw new Error('Verify Leaderboard Scores File is not supported for this title');
     }
 
     this.verifyLeaderboardScoresMonitor = this.verifyLeaderboardScoresMonitor.repeat();
 
     this.service
-      .verifyLeaderboardScoresFile$(
+      .getLeaderboardScoresFileMetadata$(
         this.leaderboard.metadata.scoreboardTypeId,
         this.leaderboard.metadata.scoreTypeId,
         this.leaderboard.metadata.trackId,
@@ -582,7 +582,7 @@ export class LeaderboardScoresComponent
 
         this.prepareAlternateScoreValues(this.allScores);
         this.setLeaderboardScoresData(this.allScores);
-        this.verifyLeaderboardScoresFile();
+        this.getLeaderboardScoresFileMetadata();
       });
   }
 

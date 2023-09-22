@@ -183,8 +183,8 @@ export class SteelheadLeaderboardsService {
     return this.api.getRequest$<string>(`${this.basePath}/scores/file/retrieve`, params);
   }
 
-  /** Verify leaderboard scores file. */
-  public verifyLeaderboardScoresFile$(
+  /** Get leaderboard scores file metadata. */
+  public getLeaderboardScoresFileMetadata$(
     scoreboardTypeId: BigNumber,
     scoreTypeId: BigNumber,
     trackId: BigNumber,
@@ -198,6 +198,6 @@ export class SteelheadLeaderboardsService {
       .set('pivotId', pivotId.toString())
       .set('pegasusEnvironment', pegasusEnvironment);
 
-    return this.api.getRequest$<BlobFileInfo>(`${this.basePath}/scores/file/verify`, params);
+    return this.api.getRequest$<BlobFileInfo>(`${this.basePath}/scores/file/metadata`, params);
   }
 }
