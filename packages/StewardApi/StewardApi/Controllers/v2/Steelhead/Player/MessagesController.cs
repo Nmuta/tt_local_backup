@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             ////xuid.EnsureValidXuid();
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             var notifications = new List<Notification>();
 
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> DeleteAllPlayerMessages(ulong xuid)
         {
             ////xuid.EnsureValidXuid();
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             await this.Services.NotificationManagementService.DeleteNotificationsForUser(xuid).ConfigureAwait(true);
 
@@ -109,15 +109,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             }
 
             ////xuid.EnsureValidXuid();
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
-            Notification message = null;
+            var response = await this.Services.NotificationManagementService.GetNotification(xuid, messageIdAsGuid).ConfigureAwait(true);
 
-            NotificationsManagementService.GetNotificationOutput response = null;
-
-            response = await this.Services.NotificationManagementService.GetNotification(xuid, messageIdAsGuid).ConfigureAwait(true);
-
-            message = this.mapper.SafeMap<Notification>(response.notification);
+            var message = this.mapper.SafeMap<Notification>(response.notification);
 
             return this.Ok(message);
         }
@@ -153,7 +149,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             var localizedMessageIdAsGuid = editParameters.LocalizedMessageID.TryParseGuidElseThrow("Message could not be parsed as GUID.");
 
             ////xuid.EnsureValidXuid();
-            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             /* TODO: Verify notification exists and is a CommunityMessageNotification before allowing edit.
             // Tracked by: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903790
@@ -191,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> DeletePlayerMessage(Guid messageId, ulong xuid)
         {
             ////xuid.EnsureValidXuid();
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;

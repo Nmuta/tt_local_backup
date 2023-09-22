@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetPaidEntitlementsAsync(ulong xuid)
         {
-            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             AdminForzaProfile currentProfile = null;
             var userProfiles = await this.Services.UserInventoryManagementService.GetAdminUserProfiles(xuid, uint.MaxValue).ConfigureAwait(true);

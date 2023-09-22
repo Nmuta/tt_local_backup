@@ -63,6 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarFeaturedShowcases(ulong xuid)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var carFeaturedShowcases = await this.GetCarFeaturedShowcasesAsync(
@@ -99,6 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetDivisionFeaturedShowcases(ulong xuid)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var divisionFeaturedShowcases = await this.GetDivisionFeaturedShowcasesAsync(
@@ -135,6 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetManufacturerFeaturedShowcases(ulong xuid)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var manufacturerFeaturedShowcases = await this.GetManufacturerFeaturedShowcasesAsync(
@@ -171,6 +174,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetCarSales(ulong xuid)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var carSales = await this.GetCarSalesAsync(

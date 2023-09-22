@@ -65,6 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
         public async Task<IActionResult> GetRivalsEvents(ulong xuid)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var rivalsEvents = await this.GetRivalsEventsAsync(

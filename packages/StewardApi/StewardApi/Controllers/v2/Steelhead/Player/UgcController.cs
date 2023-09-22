@@ -70,6 +70,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new InvalidArgumentsStewardException($"Invalid UGC item type to search: (type: {parseUgcType})");
             }
 
+            await this.Services.EnsurePlayerExistAsync(xuid);
+
             async Task<IList<SteelheadUgcItem>> GetPlayerUgcAsync(ulong xuid, UgcType ugcType)
             {
                 var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
@@ -117,6 +119,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             {
                 throw new InvalidArgumentsStewardException($"Invalid UGC item type to search: (type: {parseUgcType})");
             }
+
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             var mappedContentType = this.mapper.SafeMap<ForzaUGCContentType>(ugcType);
             var results = new List<ForzaUGCDataLight>();

@@ -30,6 +30,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [SwaggerResponse(200, type: typeof(ForzaBanDuration))]
         public async Task<IActionResult> GetNextBanDuration(ulong xuid, Guid banconfig)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid);
+
             GetNextBanPeriodOutput nextBanPeriod;
             try
             {

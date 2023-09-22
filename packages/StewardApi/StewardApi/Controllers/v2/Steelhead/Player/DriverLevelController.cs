@@ -94,9 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         /// </summary>
         private async Task<SteelheadDriverLevel> RetrieveDriverLevel(ulong xuid)
         {
-            LiveOpsService.GetDriverLevelOutput response = null;
-
-            response = await this.Services.LiveOpsService.GetDriverLevel(xuid).ConfigureAwait(true);
+            var response = await this.Services.LiveOpsService.GetDriverLevel(xuid).ConfigureAwait(true);
 
             var mappedResponse = this.mapper.SafeMap<SteelheadDriverLevel>(response);
 

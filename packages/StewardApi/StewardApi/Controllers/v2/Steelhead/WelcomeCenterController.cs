@@ -60,6 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(WelcomeCenterOutput))]
         public async Task<IActionResult> GetWelcomeCenterConfiguration(ulong xuid)
         {
+            await this.Services.EnsurePlayerExistAsync(xuid);
             var gameDetails = await this.Services.UserManagementService.GetUserDetails(xuid);
 
             var response = await this.GetWelcomeCenterConfigurationAsync(
