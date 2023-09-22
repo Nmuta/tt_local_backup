@@ -13,25 +13,11 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
-    public sealed class GiftControllerTestingClient : SteelheadStewardBaseTestingClient
+    public sealed class GroupGiftControllerTestingClient : SteelheadStewardBaseTestingClient
     {
-        public GiftControllerTestingClient(Uri baseUri, string authKey) : base(baseUri, authKey)
+        public GroupGiftControllerTestingClient(Uri baseUri, string authKey) : base(baseUri, authKey)
         {
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
-        }
-
-        public async Task<BackgroundJobInternal> UpdateGroupInventoriesUseBackgroundProcessing(SteelheadGroupGift groupGift)
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}/players/gift/useBackgroundProcessing");
-
-         return await ServiceClient.SendRequestAsync<BackgroundJobInternal>(HttpMethod.Post, path, this.authKey, Version, groupGift, headers: this.headers).ConfigureAwait(false);
-    }
-
-        public async Task<BackgroundJobInternal> GiftLiveryToPlayersUseBackgroundProcessing(BulkLiveryGift<LocalizedMessageExpirableGroupGift> gift)
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}/players/gift/useBackgroundProcessing");
-
-            return await ServiceClient.SendRequestAsync<BackgroundJobInternal>(HttpMethod.Post, path, this.authKey, Version, gift, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<GiftResponse<int>> UpdateGroupInventory(int groupId, SteelheadGift gift)

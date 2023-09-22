@@ -12,18 +12,18 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
     [TestClass]
-    public sealed class GiftControllerTests : SteelheadControllerTestsBase
+    public sealed class PlayerGiftControllerTests : SteelheadControllerTestsBase
     {
-        private static GiftControllerTestingClient stewardClient;
-        private static GiftControllerTestingClient unauthedClient;
+        private static PlayerGiftControllerTestingClient stewardClient;
+        private static PlayerGiftControllerTestingClient unauthedClient;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
         {
             await PrepareAuthAsync(testContext);
 
-            stewardClient = new GiftControllerTestingClient(new Uri(endpoint), authKey);
-            unauthedClient = new GiftControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
+            stewardClient = new PlayerGiftControllerTestingClient(new Uri(endpoint), authKey);
+            unauthedClient = new PlayerGiftControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
 
 
         }
@@ -33,7 +33,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [IntegrationTest]
         public async Task SendPlayerGift_InvalidAuth()
         {
-            var gift = this.CreateGroupGift(TestConstants.TestAccountXuid);
+            var gift = this.CreatePlayersGift(TestConstants.TestAccountXuid);
 
             try
             {
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [IntegrationTest]
         public async Task SendPlayerGift_InvalidXuid()
         {
-            var gift = this.CreateGroupGift(TestConstants.InvalidXuid);
+            var gift = this.CreatePlayersGift(TestConstants.InvalidXuid);
 
             try
             {
@@ -97,75 +97,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
         }
 
-        [TestMethod]
-        [IntegrationTest]
-        public async Task SendGrouoGift_InvalidAuth()
-        {
-            var gift = this.CreateGift(TestConstants.TestAccountXuid);
-
-            try
-            {
-                var response = await unauthedClient.UpdateGroupInventory(31, gift).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException ex)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [IntegrationTest]
-        public async Task SendGroupGift_InvalidGroupId()
-        {
-            var gift = this.CreateGift(TestConstants.InvalidXuid);
-
-            try
-            {
-                var response = await stewardClient.UpdateGroupInventory(-1, gift).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException ex)
-            {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [IntegrationTest]
-        public async Task SendGroupLiveryGift_InvalidAuth()
-        {
-            var bulkgift = this.CreateBulkLiveryGift(TestConstants.TestAccountXuid);
-
-            try
-            {
-                var response = await unauthedClient.GiftLiveryToUserGroup(31,bulkgift).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException ex)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [IntegrationTest]
-        public async Task SendGroupLiveryGift_InvalidGroupId()
-        {
-            var bulkgift = this.CreateBulkLiveryGift(TestConstants.InvalidXuid);
-
-            try
-            {
-                var response = await stewardClient.GiftLiveryToUserGroup(-1, bulkgift).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException ex)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
-            }
-        }
-
-        private SteelheadGroupGift CreateGroupGift(ulong xuid)
+        private SteelheadGroupGift CreatePlayersGift(ulong xuid)
         {
             return new SteelheadGroupGift
             {
@@ -212,24 +144,5 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
                 GiftReason = "Integration Test",
             };
         }
-
-        private SteelheadGift CreateGift(ulong xuid)
-        {
-            return new SteelheadGift
-            {
-                GiftReason = "Integration Test",
-                Inventory = this.CreateGiftInventory(),
-            };
-
-        }
-
-        private BulkLiveryGift<LocalizedMessageExpirableGift> CreateBulkLiveryGift(ulong xuid)
-        {
-            return new BulkLiveryGift<LocalizedMessageExpirableGift>
-            {
-                Target = this.CreateLiveryGift(xuid),
-            };
-        }
-
     }
 }
