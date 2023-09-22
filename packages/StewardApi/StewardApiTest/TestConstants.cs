@@ -35,6 +35,7 @@ namespace Turn10.LiveOps.StewardTest
         public const int DefaultMaxResults = 100;
         public const int LiveOpsLeaderboardTalentedPlayersGroupId = 31;
         public const int InvalidGrouId = 99999;
+        public const string ValidProductId = "9P2LBL48Q0LS";
 
         // Test account Plink
         public const ulong TestAccountXuid = 2675352635783107;
