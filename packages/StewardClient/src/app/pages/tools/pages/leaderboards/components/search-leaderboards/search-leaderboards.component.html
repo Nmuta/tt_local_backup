@@ -116,7 +116,7 @@
               [rejectionFn]="service.rejectionFn"
               (found)="playerIdentityFound($event)"
             ></player-selection-single>
-            <mat-error *ngIf="playerNotFound" 
+            <mat-error *ngIf="playerNotFound"
               >{{ service.gameTitle | gameTitleFullName }} account not found, identity filter
               ignored. Ensure you are entering a valid XUID or Gamertag.</mat-error
             >
