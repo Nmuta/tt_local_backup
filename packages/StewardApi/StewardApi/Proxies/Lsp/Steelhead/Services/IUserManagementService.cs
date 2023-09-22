@@ -229,5 +229,10 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services
         ///     Removes the CMS Override on a player by xuid.
         /// </summary>
         Task DeleteCMSOverride(ulong xuid);
+
+        /// <summary>
+        ///     Gets user group user count.
+        /// </summary>
+        Task<GetUserGroupMemberCountOutput> GetUserGroupMemberCount(int groupId);
     }
 }

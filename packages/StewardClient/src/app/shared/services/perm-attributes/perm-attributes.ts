@@ -49,6 +49,7 @@ export enum PermAttributeName {
   ManagePlayFabInventory = 'ManagePlayFabInventory',
   GenerateLeaderboardScoresFile = 'GenerateLeaderboardScoresFile',
   UpdateUgcProfile = 'UpdateUgcProfile',
+  UpdateUgcVisibility = 'UpdateUgcVisibility',
 }
 
 /** Full perm attribute details. */
