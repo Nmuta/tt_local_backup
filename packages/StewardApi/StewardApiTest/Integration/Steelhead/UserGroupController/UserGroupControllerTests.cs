@@ -1,10 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Forza.WebServices.MixerObjects.FH4.Generated;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
@@ -14,6 +16,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
     {
         private static UserGroupControllerTestingClient stewardClient;
         private static UserGroupControllerTestingClient unauthedClient;
+        private static UpdateUserGroupInput testUpdateUserGroupInput;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -22,6 +25,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
             stewardClient = new UserGroupControllerTestingClient(new Uri(endpoint), authKey);
             unauthedClient = new UserGroupControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
+            testUpdateUserGroupInput = new UpdateUserGroupInput { Xuids = new[] { TestConstants.TestAccountXuid } };
         }
 
         [TestMethod]
@@ -65,7 +69,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -210,7 +214,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostAddUsersToGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId).ConfigureAwait(false);
+                var response = await unauthedClient.PostAddUsersToGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, testUpdateUserGroupInput).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -225,7 +229,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostRemoveUsersFromGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId).ConfigureAwait(false);
+                var response = await unauthedClient.PostRemoveUsersFromGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, testUpdateUserGroupInput).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
