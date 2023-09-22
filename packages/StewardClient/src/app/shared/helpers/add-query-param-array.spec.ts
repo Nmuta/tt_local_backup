@@ -1,5 +1,5 @@
-import faker from '@faker-js/faker';
 import { HttpParams } from '@angular/common/http';
+import faker from '@faker-js/faker';
 import { addQueryParamArray } from './add-query-param-array';
 
 describe('Helper: add-query-param-array', () => {

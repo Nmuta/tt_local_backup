@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EndpointsComponent } from './endpoints.component';
+import { setUserProfile } from '@mocks/standard-test-module-helpers';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { TourState } from '@shared/state/tours/tours.state';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
-import { setUserProfile } from '@mocks/standard-test-module-helpers';
+import { EndpointsComponent } from './endpoints.component';
 
 describe('EndpointsComponent', () => {
   let component: EndpointsComponent;

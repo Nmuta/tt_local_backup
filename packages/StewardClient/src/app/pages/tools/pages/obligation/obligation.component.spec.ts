@@ -7,18 +7,19 @@ import { NgxsModule } from '@ngxs/store';
 import { DataPipelineObligationComponent } from './obligation.component';
 import { DataPipelineObligationModule } from './obligation.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DataPrivacyNoticeModule } from '@views/data-privacy-notice/data-privacy-notice.module';
 import { FourOhFourModule } from '@views/four-oh-four/four-oh-four.module';
 import { SidebarIconsModule } from '@views/sidebar-icons/sidebar-icons.module';
 import { SidebarsModule } from 'app/sidebars/sidebars.module';
 import { By } from '@angular/platform-browser';
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 /** Test harness component. */
 @Component({
@@ -44,29 +45,31 @@ xdescribe('DataPipelineObligationComponent', () => {
   let rootComponent: DataPipelineObligationComponent;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        DataPipelineObligationModule,
-        NoopAnimationsModule,
-        DataPrivacyNoticeModule,
-        SidebarsModule,
-        FontAwesomeModule,
-        MatSidenavModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTooltipModule,
-        FontAwesomeModule,
-        FourOhFourModule,
-        MatCardModule,
-        SidebarIconsModule,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [TestHarnessComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          DataPipelineObligationModule,
+          NoopAnimationsModule,
+          DataPrivacyNoticeModule,
+          SidebarsModule,
+          FontAwesomeModule,
+          MatSidenavModule,
+          MatToolbarModule,
+          MatButtonModule,
+          MatIconModule,
+          MatTooltipModule,
+          FontAwesomeModule,
+          FourOhFourModule,
+          MatCardModule,
+          SidebarIconsModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [TestHarnessComponent],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(TestHarnessComponent);
     component = fixture.componentInstance;

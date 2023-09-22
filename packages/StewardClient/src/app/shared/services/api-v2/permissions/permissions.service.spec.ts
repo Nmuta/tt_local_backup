@@ -3,14 +3,18 @@ import { TestBed } from '@angular/core/testing';
 import { PermissionsService } from './permissions.service';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('PermissionsService', () => {
   let service: PermissionsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [createMockPermAttributesService()],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+        providers: [createMockPermAttributesService()],
+      }),
+    );
     service = TestBed.inject(PermissionsService);
   });
 

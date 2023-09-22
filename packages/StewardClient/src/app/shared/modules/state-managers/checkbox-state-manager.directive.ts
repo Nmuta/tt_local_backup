@@ -1,5 +1,5 @@
 import { Directive, Inject, Input } from '@angular/core';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 import { BaseDirective } from '@components/base-component/base.directive';
 import { isBoolean } from 'lodash';
 import { combineLatest } from 'rxjs';

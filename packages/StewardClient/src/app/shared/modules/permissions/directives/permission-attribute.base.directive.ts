@@ -8,7 +8,7 @@ import {
   Output,
   ViewContainerRef,
 } from '@angular/core';
-import { MatTooltip } from '@angular/material/tooltip';
+import { MatLegacyTooltip as MatTooltip } from '@angular/material/legacy-tooltip';
 import { BaseDirective } from '@components/base-component/base.directive';
 import { HCI } from '@environments/environment';
 import { GameTitle } from '@models/enums';

@@ -15,6 +15,8 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseConsolesComponent', () => {
   let component: SunriseConsolesComponent;
   let fixture: ComponentFixture<SunriseConsolesComponent>;
@@ -23,11 +25,13 @@ describe('SunriseConsolesComponent', () => {
   let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseConsolesComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockSunriseService(), createMockOldPermissionsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseConsolesComponent, BigJsonPipe, HumanizePipe],
+        providers: [createMockSunriseService(), createMockOldPermissionsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

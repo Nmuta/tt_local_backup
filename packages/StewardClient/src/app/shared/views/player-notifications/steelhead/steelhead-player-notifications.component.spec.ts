@@ -12,6 +12,8 @@ import { createMockSteelheadPlayerMessagesService } from '@services/api-v2/steel
 import { SteelheadPlayerXuidNotificationsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/notifications';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadPlayerNotificationsComponent', () => {
   let injector: TestBed;
   let steelheadPlayerMessagesService: SteelheadPlayerMessagesService;
@@ -19,12 +21,14 @@ describe('SteelheadPlayerNotificationsComponent', () => {
   let fixture: ComponentFixture<SteelheadPlayerNotificationsComponent>;
 
   beforeEach(waitForAsync(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadPlayerNotificationsComponent],
-      imports: [PipesModule],
-      providers: [createMockSteelheadPlayerMessagesService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadPlayerNotificationsComponent],
+        imports: [PipesModule],
+        providers: [createMockSteelheadPlayerMessagesService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     injector = getTestBed();
     steelheadPlayerMessagesService = injector.inject(SteelheadPlayerMessagesService);

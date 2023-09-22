@@ -46,7 +46,6 @@ export class ToursComponent extends BaseComponent implements OnInit {
 
   /** Enables and immediately begins the home tour. */
   public beginHomeTour(): void {
-    this.router.navigate(['app', 'tools', 'home']);
     this.userTourService.startHomeTour(true);
   }
 

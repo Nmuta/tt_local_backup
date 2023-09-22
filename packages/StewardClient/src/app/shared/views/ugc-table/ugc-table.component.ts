@@ -9,8 +9,12 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatColumnDef, MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import {
+  MatLegacyColumnDef as MatColumnDef,
+  MatLegacyTable as MatTable,
+  MatLegacyTableDataSource as MatTableDataSource,
+} from '@angular/material/legacy-table';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { state, style, trigger } from '@angular/animations';
 import { EMPTY, from, fromEvent, Observable, of, throwError } from 'rxjs';
@@ -34,7 +38,7 @@ import { saveAs } from 'file-saver';
 import { chunk, cloneDeep, flatten } from 'lodash';
 import { getGiftRoute, getUgcDetailsRoute } from '@helpers/route-links';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { BulkGenerateSharecodeResponse } from '@services/api-v2/woodstock/ugc/sharecode/woodstock-ugc-sharecode.service';
 import { UgcReportReason } from '@models/ugc-report-reason';

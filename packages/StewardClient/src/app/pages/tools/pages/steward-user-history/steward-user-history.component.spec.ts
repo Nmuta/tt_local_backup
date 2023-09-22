@@ -10,9 +10,11 @@ import {
 } from './steward-user-history.component';
 import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { toDateTime } from '@helpers/luxon';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('StewardUserHistoryComponent', () => {
   let component: StewardUserHistoryComponent;
@@ -21,17 +23,19 @@ describe('StewardUserHistoryComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        MatPaginatorModule,
-      ],
-      declarations: [StewardUserHistoryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          MatPaginatorModule,
+        ],
+        declarations: [StewardUserHistoryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(StewardUserHistoryComponent);
     component = fixture.debugElement.componentInstance;

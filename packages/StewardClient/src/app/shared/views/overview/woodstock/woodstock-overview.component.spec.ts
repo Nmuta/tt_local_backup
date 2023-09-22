@@ -13,6 +13,8 @@ import { Subject } from 'rxjs';
 
 import { WoodstockOverviewComponent } from './woodstock-overview.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('OverviewComponent', () => {
   let injector: TestBed;
   let component: WoodstockOverviewComponent;
@@ -20,12 +22,14 @@ describe('OverviewComponent', () => {
   let service: WoodstockService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PipesModule],
-      declarations: [WoodstockOverviewComponent],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [PipesModule],
+        declarations: [WoodstockOverviewComponent],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     injector = getTestBed();
     service = injector.inject(WoodstockService);

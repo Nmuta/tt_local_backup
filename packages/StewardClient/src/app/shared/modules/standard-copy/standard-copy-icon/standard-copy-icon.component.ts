@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { MatTooltip } from '@angular/material/tooltip';
+import { MatLegacyTooltip as MatTooltip } from '@angular/material/legacy-tooltip';
 import { BaseComponent } from '@components/base-component/base.component';
 import { renderDelay, renderGuard } from '@helpers/rxjs';
 import { Subject } from 'rxjs';

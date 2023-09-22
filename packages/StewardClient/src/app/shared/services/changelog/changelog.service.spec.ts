@@ -7,19 +7,23 @@ import { ChangelogState } from '@shared/state/changelog/changelog.state';
 
 import { ChangelogService } from './changelog.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ChangelogService', () => {
   let service: ChangelogService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([ChangelogState]),
-      ],
-      providers: [],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([ChangelogState]),
+        ],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
 
     const injector = getTestBed();
     service = injector.inject(ChangelogService);

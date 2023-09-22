@@ -1,18 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { ActionMonitor } from '../action-monitor';
 
 import { ButtonSpinnerComponent } from './button-spinner.component';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('ButtonSpinnerComponent', () => {
   let component: ButtonSpinnerComponent;
   let fixture: ComponentFixture<ButtonSpinnerComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ButtonSpinnerComponent],
-      imports: [MatSnackBarModule],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ButtonSpinnerComponent],
+        imports: [MatSnackBarModule],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

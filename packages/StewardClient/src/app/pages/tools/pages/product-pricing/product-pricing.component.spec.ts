@@ -5,17 +5,21 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockProductPricingService } from '@services/api-v2/product-pricing/ms-teams.service.mock';
 import { ProductPricingComponent } from './product-pricing.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ProductPricingComponent', () => {
   let component: ProductPricingComponent;
   let fixture: ComponentFixture<ProductPricingComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
-      declarations: [ProductPricingComponent],
-      providers: [createMockProductPricingService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
+        declarations: [ProductPricingComponent],
+        providers: [createMockProductPricingService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

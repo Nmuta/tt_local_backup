@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { Observable, takeUntil } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -25,6 +25,16 @@ export class SidebarIconsComponent extends BaseComponent implements AfterViewIni
   public notificationCount = null;
   public notificationColor: ThemePalette = undefined;
   public profileTooltip: string = 'Profile & Settings';
+
+  /** Produces the total notifications visible in the sidebar nav. */
+  public get mergedNotificationCount(): number | undefined {
+    const totalNotifications = this.changelogNotificationCount + this.notificationCount;
+    if (totalNotifications > 0) {
+      return totalNotifications;
+    }
+
+    return undefined;
+  }
 
   constructor(
     private readonly userSettingsService: UserSettingsService,

@@ -9,6 +9,8 @@ import faker from '@faker-js/faker';
 
 import { ApolloComponent } from './apollo.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloComponent - Ticket App', () => {
   let component: ApolloComponent;
   let fixture: ComponentFixture<ApolloComponent>;
@@ -17,12 +19,14 @@ describe('ApolloComponent - Ticket App', () => {
   let mockApolloService: ApolloService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ApolloComponent],
-      imports: [NgxsModule.forRoot([])],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockApolloService(), createMockTicketService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ApolloComponent],
+        imports: [NgxsModule.forRoot([])],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockApolloService(), createMockTicketService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ApolloComponent);
     component = fixture.componentInstance;

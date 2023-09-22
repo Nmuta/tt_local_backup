@@ -18,6 +18,8 @@ const activatedRouteMock = {
   ] as ActivatedRoute[],
 };
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockGamertagsComponent', () => {
   let component: WoodstockGamertagsComponent;
   let fixture: ComponentFixture<WoodstockGamertagsComponent>;
@@ -25,17 +27,19 @@ describe('WoodstockGamertagsComponent', () => {
   let mockWoodstockService: WoodstockService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockGamertagsComponent, HumanizePipe],
-      providers: [
-        createMockWoodstockService(),
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockGamertagsComponent, HumanizePipe],
+        providers: [
+          createMockWoodstockService(),
+          {
+            provide: ActivatedRoute,
+            useValue: activatedRouteMock,
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

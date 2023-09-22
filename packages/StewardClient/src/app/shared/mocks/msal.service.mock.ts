@@ -1,5 +1,5 @@
 import { Provider } from '@angular/core';
-import { MsalBroadcastService, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MSAL_INSTANCE, MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { AccountInfo, EventMessage, IPublicClientApplication } from '@azure/msal-browser';
 import { EMPTY, NEVER, Observable } from 'rxjs';
 

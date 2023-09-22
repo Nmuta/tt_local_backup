@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: 'e3f27c4f-0a80-4949-a7ed-b92e68e597c2',
+      shortText: 'Upgrade to Angular 15',
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'ef93bf86-0143-4460-9770-42e5490b11f9',
       shortText: 'Target correct LSP group for Steelhead Talented Players',
     },
@@ -16,6 +21,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       tag: ChangelogTag.Internal,
       uuid: '4a899681-244c-45c2-a02c-4d1801366057',
       shortText: 'Track "test" Background Jobs separately',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '01d14c44-c274-4329-9708-2e66c7307a70',
+      shortText: 'Add ability to mark UGC items as public or private',
     },
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },

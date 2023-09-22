@@ -7,15 +7,19 @@ import faker from '@faker-js/faker';
 
 import { GoToInventoryButtonComponent } from './go-to-inventory-button.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('GoToInventoryButtonComponent', () => {
   let component: GoToInventoryButtonComponent;
   let fixture: ComponentFixture<GoToInventoryButtonComponent>;
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [GoToInventoryButtonComponent],
-      providers: [createMockZendeskService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [GoToInventoryButtonComponent],
+        providers: [createMockZendeskService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

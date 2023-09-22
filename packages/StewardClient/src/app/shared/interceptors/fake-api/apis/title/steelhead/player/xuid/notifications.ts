@@ -32,7 +32,7 @@ export class SteelheadPlayerXuidNotificationsFakeApi extends FakeApiBase {
         sentDateUtc: toDateTime(faker.date.past()),
         isRead: faker.datatype.boolean(),
         notificationId: faker.datatype.uuid(),
-        notificationType: faker.random.arrayElement([
+        notificationType: faker.helpers.arrayElement([
           'AuctionHouseFailed',
           'AuctionHouseOutbid',
           'CurationPayout',
