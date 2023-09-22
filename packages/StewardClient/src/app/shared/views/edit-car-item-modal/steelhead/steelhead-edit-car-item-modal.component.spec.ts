@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import {
+  MatLegacyDialogModule as MatDialogModule,
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { of } from 'rxjs';
 import { SteelheadEditCarItemModalComponent } from './steelhead-edit-car-item-modal.component';
@@ -9,6 +13,8 @@ import { EditCarItemModalData } from '../edit-car-item-modal.component';
 import faker from '@faker-js/faker';
 import BigNumber from 'bignumber.js';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadEditCarItemModalComponent', () => {
   let fixture: ComponentFixture<SteelheadEditCarItemModalComponent>;
   let component: SteelheadEditCarItemModalComponent;
@@ -16,27 +22,29 @@ describe('SteelheadEditCarItemModalComponent', () => {
   let mockMatDialogRef: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SteelheadEditCarItemModalComponent],
-      imports: [MatButtonModule, MatDialogModule, PipesModule],
-      providers: [
-        createMockSteelheadPlayerInventoryService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {
-            xuid: new BigNumber(faker.datatype.number()),
-            externalProfileId: faker.datatype.uuid(),
-            car: {
-              id: new BigNumber(faker.datatype.number()),
-            },
-          } as EditCarItemModalData,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadEditCarItemModalComponent],
+        imports: [MatButtonModule, MatDialogModule, PipesModule],
+        providers: [
+          createMockSteelheadPlayerInventoryService(),
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              xuid: new BigNumber(faker.datatype.number()),
+              externalProfileId: faker.datatype.uuid(),
+              car: {
+                id: new BigNumber(faker.datatype.number()),
+              },
+            } as EditCarItemModalData,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadEditCarItemModalComponent);
     component = fixture.componentInstance;

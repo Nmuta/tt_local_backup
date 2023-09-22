@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GameTitleCodeName } from '@models/enums';
 import { KustoQuery } from '@models/kusto';
@@ -18,6 +18,8 @@ import faker from '@faker-js/faker';
 import { KustoComponent } from './kusto.component';
 import { JsonTableResult } from '@models/json-table-result';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('KustoComponent', () => {
   let component: KustoComponent;
   let fixture: ComponentFixture<KustoComponent>;
@@ -27,17 +29,22 @@ describe('KustoComponent', () => {
   const formBuilder: UntypedFormBuilder = new UntypedFormBuilder();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [KustoComponent],
-      providers: [createMockKustoService(), { provide: UntypedFormBuilder, useValue: formBuilder }],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [KustoComponent],
+        providers: [
+          createMockKustoService(),
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(KustoComponent);
     component = fixture.componentInstance;

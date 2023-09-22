@@ -7,16 +7,20 @@ import { ApiService, createMockApiService } from '@shared/services/api';
 import { UserService } from './user.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('service: UserService', () => {
   let service: UserService;
   let apiMock: ApiService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [UserService, createMockApiService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [UserService, createMockApiService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.get(UserService);
     apiMock = TestBed.get(ApiService);
   });

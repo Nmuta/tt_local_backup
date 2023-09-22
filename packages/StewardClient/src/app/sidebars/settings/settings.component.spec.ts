@@ -2,20 +2,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store } from '@ngxs/store';
 import { of } from 'rxjs';
 
-import { SettingsComponent } from './settings.component';
-import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
-import { UserModel } from '@models/user.model';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { UserRole } from '@models/enums';
+import { UserModel } from '@models/user.model';
 import { WindowService } from '@services/window';
-import { SetFakeApi } from '@shared/state/user-settings/user-settings.actions';
 import {
   EndpointKeyMemoryModel,
   EndpointKeyMemoryState,
 } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
-import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
-import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 import { TourState } from '@shared/state/tours/tours.state';
+import { SetFakeApi } from '@shared/state/user-settings/user-settings.actions';
+import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
+import { SettingsComponent } from './settings.component';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -29,7 +29,7 @@ describe('SettingsComponent', () => {
       createStandardTestModuleMetadata({
         declarations: [SettingsComponent],
         ngxsModules: [EndpointKeyMemoryState, TourState],
-        imports: [TourMatMenuModule.forRoot()],
+        imports: [TourMatMenuModule],
         providers: [createMockUserTourService()],
       }),
     ).compileComponents();

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
 import { GameTitle, UserRole } from '@models/enums';
@@ -76,7 +76,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
     private readonly store: Store,
     private readonly windowService: WindowService,
     private readonly router: Router,
-    private readonly userTourService: UserTourService, // loaded here so tours will run
+    private readonly userTourService: UserTourService,
   ) {
     super();
   }
@@ -171,7 +171,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
     });
   }
 
-  /** Fired when any setting changes. */
+  /** Fired when Home Tour setting changes. */
   public syncHomeTour(): void {
     this.store.dispatch(new SetHomeTour(this.enableHomeTour));
     this.router.navigate(['app', 'tools', 'home']).then(() => {
@@ -179,7 +179,7 @@ export class SettingsComponent extends BaseComponent implements OnInit {
     });
   }
 
-  /** Fired when any setting changes. */
+  /** Fired when any tour setting changes. */
   public syncUserTours(): void {
     this.store.dispatch(new SetUserTours(this.enableUserTours));
   }

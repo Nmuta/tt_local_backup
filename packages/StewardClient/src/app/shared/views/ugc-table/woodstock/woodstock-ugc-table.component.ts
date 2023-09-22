@@ -9,7 +9,7 @@ import { WoodstockUgcLookupService } from '@services/api-v2/woodstock/ugc/lookup
 import { GuidLikeString } from '@models/extended-types';
 import { LookupThumbnailsResult } from '@models/ugc-thumbnail-lookup';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import {
   BulkGenerateSharecodeResponse,
   WoodstockUgcSharecodeService,

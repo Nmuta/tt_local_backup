@@ -10,7 +10,7 @@ export class MockSteelheadUgcSharecodeService {
 
   public reportUgc$ = jasmine
     .createSpy('ugcGenerateSharecode$')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(faker.random.number()))));
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(faker.datatype.number()))));
 
   constructor(private readonly generator$: () => unknown) {}
 }

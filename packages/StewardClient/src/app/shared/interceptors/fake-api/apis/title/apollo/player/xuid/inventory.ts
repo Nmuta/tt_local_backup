@@ -1,11 +1,11 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
-import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloPlayerInventory } from '@models/apollo';
-import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { PlayerInventoryItem } from '@models/player-inventory-item';
 import { toDateTime } from '@helpers/luxon';
+import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { ApolloPlayerInventory } from '@models/apollo';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
+import BigNumber from 'bignumber.js';
 
 /** Fake API for apollo player inventory. */
 export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {

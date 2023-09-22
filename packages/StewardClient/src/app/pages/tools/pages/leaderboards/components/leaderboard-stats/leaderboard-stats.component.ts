@@ -8,8 +8,8 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatChipListChange } from '@angular/material/chips';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatLegacyChipListChange as MatChipListChange } from '@angular/material/legacy-chips';
+import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ZERO } from '@helpers/bignumbers';

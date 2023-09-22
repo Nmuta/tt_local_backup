@@ -57,6 +57,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public bool IsRead { get; set; }
 
         /// <summary>
+        ///     True when this job was created for testing.
+        ///     Typically determined by whether it was created on a locally-running IDE.
+        /// </summary>
+        public bool IsTestJob { get; set; }
+
+        /// <summary>
         ///     Gets or sets the raw result.
         /// </summary>
         public object RawResult { get; set; }

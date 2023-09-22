@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { BackgroundJobStatus } from '@models/background-job';
 import { Select } from '@ngxs/store';

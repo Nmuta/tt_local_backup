@@ -4,7 +4,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
 import { PlayerAuctionsBaseComponent } from '../player-auctions.base.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AuctionFilters } from '@models/auction-filters';
 import { PlayerAuction } from '@models/player-auction';
 

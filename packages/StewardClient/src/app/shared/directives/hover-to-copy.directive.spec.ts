@@ -27,15 +27,19 @@ const mouseEvents = {
   },
 };
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('HoverToCopyDirective', () => {
   let fixture: ComponentFixture<ContainerComponent>;
   let element: HTMLElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [ContainerComponent, HoverToCopyDirective],
-      providers: [{ provide: ComponentFixtureAutoDetect, useValue: true }],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ContainerComponent, HoverToCopyDirective],
+        providers: [{ provide: ComponentFixtureAutoDetect, useValue: true }],
+      }),
+    );
 
     fixture = TestBed.createComponent(ContainerComponent);
     element = fixture.nativeElement;

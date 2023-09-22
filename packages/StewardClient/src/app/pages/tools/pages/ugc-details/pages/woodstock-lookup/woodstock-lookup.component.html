@@ -139,9 +139,6 @@
                 monitorCompleteSnackbar
               >
                 Hide UGC
-                <help-popover-icon cardTitle="Hide UGC"
-                  >Private UGC cannot be hidden.</help-popover-icon
-                >
               </button>
             </div>
 
@@ -165,6 +162,33 @@
                 monitorCompleteSnackbar
               >
                 Unhide UGC
+              </button>
+            </div>
+
+            <div class="sf-horizontal do-not-manipulate-margin">
+              <verify-button
+                #verifyVisibilityBtn
+                [permissionAttribute]="visibilityPermAttribute"
+                [permissionTitle]="gameTitle"
+                [disabled]="!ugcItem?.isPublic ? ugcItem?.isHidden : false"
+              ></verify-button>
+              <button
+                class="sf-action-list-margins"
+                mat-raised-button
+                color="warn"
+                [verifyWithV2]="verifyVisibilityBtn"
+                (click)="ugcItem?.isPublic ? markUgcItemPrivate() : markUgcItemPublic()"
+                stateManager
+                [monitor]="visibilityMonitor"
+                monitorDisable
+                monitorWarn
+                monitorWarnSnackbar
+                monitorCompleteSnackbar
+              >
+                {{ ugcItem.isPublic ? 'Mark UGC Private' : 'Mark UGC Public' }}
+                <help-popover-icon *ngIf="!ugcItem?.isPublic" cardTitle="Mark UGC Public"
+                  >Hidden UGC cannot be made public.</help-popover-icon
+                >
               </button>
             </div>
 

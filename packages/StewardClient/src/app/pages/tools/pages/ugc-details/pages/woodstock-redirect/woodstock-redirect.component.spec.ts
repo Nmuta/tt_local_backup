@@ -9,22 +9,26 @@ import { UgcDetailsComponent } from '../../ugc-details.component';
 
 import { WoodstockRedirectComponent } from './woodstock-redirect.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockRedirectComponent', () => {
   let component: WoodstockRedirectComponent;
   let fixture: ComponentFixture<WoodstockRedirectComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockRedirectComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [ScopedSharedLookupService, UgcDetailsComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockRedirectComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [ScopedSharedLookupService, UgcDetailsComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

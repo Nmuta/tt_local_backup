@@ -10,6 +10,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApiV2Service } from '@shared/services/api-v2/api-v2.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('service: ApiV2Service', () => {
   let injector: TestBed;
   let apiService: ApiV2Service;
@@ -17,11 +19,13 @@ describe('service: ApiV2Service', () => {
   let mockRouter: Router;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      providers: [ApiV2Service],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        providers: [ApiV2Service],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     apiService = injector.inject(ApiV2Service);
     httpMock = injector.inject(HttpTestingController);

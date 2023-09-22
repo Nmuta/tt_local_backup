@@ -5,15 +5,19 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { WindowOpen } from './window.actions';
 import { WindowService } from './window.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('service: WindowService', () => {
   let store: Store;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([WindowService])],
-      providers: [WindowService],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([WindowService])],
+        providers: [WindowService],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
 
     store = TestBed.inject(Store);
   });

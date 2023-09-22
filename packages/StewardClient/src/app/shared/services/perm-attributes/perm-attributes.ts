@@ -48,6 +48,7 @@ export enum PermAttributeName {
   UpdateLspTask = 'UpdateLspTask',
   ManagePlayFabInventory = 'ManagePlayFabInventory',
   UpdateUgcProfile = 'UpdateUgcProfile',
+  UpdateUgcVisibility = 'UpdateUgcVisibility',
 }
 
 /** Full perm attribute details. */
