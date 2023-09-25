@@ -21,6 +21,7 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { combineLatest, filter, map, pairwise, startWith, takeUntil } from 'rxjs';
 import { SteelheadCarsService } from '@services/api-v2/steelhead/cars/steelhead-cars.service';
+import { PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 
 /** The deeplink showroom component. */
 @Component({
@@ -65,8 +66,14 @@ export class DeeplinkShowroomComponent
   constructor(steelheadCarsService: SteelheadCarsService) {
     super();
 
-    const getShowroomCars$ = steelheadCarsService.getCarsReference$('dev', 'daily');
-    const getShowroomManufacturers$ = steelheadCarsService.getCarManufacturers$('dev', 'daily');
+    const getShowroomCars$ = steelheadCarsService.getCarsReference$(
+      PegasusEnvironment.Dev,
+      PegasusProjectionSlot.Daily,
+    );
+    const getShowroomManufacturers$ = steelheadCarsService.getCarManufacturers$(
+      PegasusEnvironment.Dev,
+      PegasusProjectionSlot.Daily,
+    );
 
     this.referenceDataMonitor = this.referenceDataMonitor.repeat();
     combineLatest([getShowroomCars$, getShowroomManufacturers$])

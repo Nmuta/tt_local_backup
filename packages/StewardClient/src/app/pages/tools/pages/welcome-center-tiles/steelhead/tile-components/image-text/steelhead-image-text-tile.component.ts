@@ -10,7 +10,7 @@ import {
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
-import { GameTitle } from '@models/enums';
+import { GameTitle, PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 import { PullRequest } from '@models/git-operation';
 import { LocalizedStringsMap } from '@models/localization';
 import { ImageTextTile, WelcomeCenterTile } from '@models/welcome-center';
@@ -75,7 +75,11 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$(true, 'dev', 'daily');
+        return steelheadLocalizationService.getLocalizedStrings$(
+          true,
+          PegasusEnvironment.Dev,
+          PegasusProjectionSlot.Daily,
+        );
       },
     };
   }

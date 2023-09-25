@@ -21,6 +21,7 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { combineLatest, filter, map, pairwise, startWith, takeUntil } from 'rxjs';
 import { SteelheadRivalsService } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
+import { PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 
 /** The deeplink rivals component. */
 @Component({
@@ -65,8 +66,14 @@ export class DeeplinkRivalsComponent
   constructor(steelheadRivalsService: SteelheadRivalsService) {
     super();
 
-    const getRivalsCategories$ = steelheadRivalsService.getRivalsEventCategories$('dev', 'daily');
-    const getRivalsEvents$ = steelheadRivalsService.getRivalsEventReference$('dev', 'daily');
+    const getRivalsCategories$ = steelheadRivalsService.getRivalsEventCategories$(
+      PegasusEnvironment.Dev,
+      PegasusProjectionSlot.Daily,
+    );
+    const getRivalsEvents$ = steelheadRivalsService.getRivalsEventReference$(
+      PegasusEnvironment.Dev,
+      PegasusProjectionSlot.Daily,
+    );
 
     this.referenceDataMonitor = this.referenceDataMonitor.repeat();
     combineLatest([getRivalsCategories$, getRivalsEvents$])

@@ -12,7 +12,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
 import { BetterFormArray } from '@helpers/better-form-array';
 import { collectErrors } from '@helpers/form-group-collect-errors';
-import { GameTitle } from '@models/enums';
+import { GameTitle, PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 import { LocalizedStringsMap } from '@models/localization';
 import {
   TimerReferenceInstance,
@@ -145,7 +145,7 @@ export class GeneralTileComponent extends BaseComponent {
     super();
 
     steelheadWorldOfForzaService
-      .getDisplayConditions$('dev', 'daily')
+      .getDisplayConditions$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
         this.displayConditionReferences = data;
@@ -154,7 +154,11 @@ export class GeneralTileComponent extends BaseComponent {
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$(true, 'dev', 'daily');
+        return steelheadLocalizationService.getLocalizedStrings$(
+          true,
+          PegasusEnvironment.Dev,
+          PegasusProjectionSlot.Daily,
+        );
       },
     };
 
@@ -179,7 +183,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadBuildersCupService
-                .getBuildersCupLadders$('dev', 'daily')
+                .getBuildersCupLadders$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(ladderReferences => {
                   this.ladderReferences = ladderReferences;
@@ -203,12 +207,12 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$(
-                'dev',
-                'daily',
+                PegasusEnvironment.Dev,
+                PegasusProjectionSlot.Daily,
               );
               const getRacersCupSeries$ = steelheadRacersCupService.getRacersCupSeries$(
-                'dev',
-                'daily',
+                PegasusEnvironment.Dev,
+                PegasusProjectionSlot.Daily,
               );
 
               combineLatest([getBuildersCupSeries$, getRacersCupSeries$])
@@ -233,7 +237,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadPegasusService
-                .getDatetimeRanges$('dev', 'daily')
+                .getDatetimeRanges$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(dateRangeReferences => {
                   this.datetimeRangeReferences = dateRangeReferences;
@@ -249,7 +253,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadPegasusService
-                .getChallenges$('dev', 'daily')
+                .getChallenges$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(challengeReferences => {
                   this.challengeReferences = challengeReferences;
@@ -265,7 +269,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadShowroomService
-                .getFeaturedShowcases$('dev', 'daily')
+                .getFeaturedShowcases$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(featuredShowcaseReferences => {
                   this.featuredShowcaseReferences = featuredShowcaseReferences;
@@ -281,7 +285,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadRivalsService
-                .getRivalsEventReference$('dev', 'daily')
+                .getRivalsEventReference$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(rivalsReference => {
                   this.rivalsEventReferences = rivalsReference;
@@ -297,7 +301,7 @@ export class GeneralTileComponent extends BaseComponent {
             } else {
               this.getTimerReferenceMonitor = this.getTimerReferenceMonitor.repeat();
               steelheadShowroomService
-                .getCarSales$('dev', 'daily')
+                .getCarSales$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
                 .pipe(this.getTimerReferenceMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
                 .subscribe(showroomListings => {
                   // Process the list of car sales object into a dictionnary with date added to the listing name to differentiate car sales with the same name

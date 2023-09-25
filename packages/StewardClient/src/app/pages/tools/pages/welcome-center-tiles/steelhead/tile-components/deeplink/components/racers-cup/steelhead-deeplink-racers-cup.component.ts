@@ -16,6 +16,7 @@ import { DeeplinkDestination, DestinationType, RacersCupDestination } from '@mod
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { filter, map, pairwise, startWith, takeUntil } from 'rxjs';
 import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
+import { PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 
 /** The deeplink racers cup component. */
 @Component({
@@ -54,7 +55,7 @@ export class DeeplinkRacersCupComponent
     this.referenceDataMonitor = this.referenceDataMonitor.repeat();
 
     steelheadRacersCupService
-      .getRacersCupSeries$('dev', 'daily')
+      .getRacersCupSeries$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
       .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(series => {
         this.racersCupSeries = series;

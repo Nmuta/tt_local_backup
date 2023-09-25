@@ -3,7 +3,7 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
-import { GameTitle } from '@models/enums';
+import { GameTitle, PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 import { PullRequest, PullRequestSubject } from '@models/git-operation';
 import { LocalizedStringData, LocalizedStringsMap } from '@models/localization';
 import { MessageOfTheDay, FriendlyNameMap } from '@models/message-of-the-day';
@@ -81,7 +81,11 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$(true, 'dev', 'daily');
+        return steelheadLocalizationService.getLocalizedStrings$(
+          true,
+          PegasusEnvironment.Dev,
+          PegasusProjectionSlot.Daily,
+        );
       },
     };
   }

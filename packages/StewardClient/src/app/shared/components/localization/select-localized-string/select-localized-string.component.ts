@@ -72,7 +72,7 @@ export class SelectLocalizedStringComponent
   @Input() label: string = 'Select localized message';
   /** The dropdown mat hint label. (Optional) */
   @Input() hintMessage: string;
-  /** The dropdown mat hint label. (Optional) */
+  /** The dropdown readonly value. Used if a value wants to be displayed that is not part of the dropdown options. (Optional) */
   @Input() readonlyValue: string;
   /** Determines if the language preview display should never show. */
   @Input() disableLanguagePreview: boolean = false;

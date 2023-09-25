@@ -1270,16 +1270,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         // the "base" property set so we are good.
         private async Task MapLocalizedString(object tile)
         {
-            var externalLocalizationStrings = await this.cmsRetrievalHelper
-                    .GetCMSObjectAsync<Dictionary<Guid, string>>(
-                        CMSFileNames.ExternalLocalizationStrings,
-                        environment: "dev",
-                        slot: "daily").ConfigureAwait(false);
-            var localizationIdsMapping = await this.cmsRetrievalHelper
-                    .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
-                        CMSFileNames.LocalizationStringMappings,
-                        environment: "dev",
-                        slot: "daily").ConfigureAwait(false);
+            var externalLocalizationStrings = await this.GetExternalLocalizationStringsAsync(
+                SteelheadPegasusEnvironment.Dev,
+                SteelheadPegasusSlot.Daily).ConfigureAwait(false);
+            var localizationIdsMapping = await this.GetLocalizationStringMappingsAsync(
+                SteelheadPegasusEnvironment.Dev,
+                SteelheadPegasusSlot.Daily).ConfigureAwait(false);
 
             foreach (var property in tile.GetType().GetProperties())
             {
@@ -1297,6 +1293,60 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                     }
                 }
             }
+        }
+
+        private async Task<Dictionary<Guid, string>> GetExternalLocalizationStringsAsync(string environment = null, string slot = null, string snapshot = null)
+        {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
+
+            var externalLocalizationStringsKey = this.BuildCacheKey(environment, slot, snapshot, "ExternalLocalizationStrings");
+
+            async Task<Dictionary<Guid, string>> GetExternalLocalizationStrings()
+            {
+                var externalLocalizationStrings = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, string>>(
+                    CMSFileNames.ExternalLocalizationStrings,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
+
+                if (!string.IsNullOrEmpty(snapshot))
+                {
+                    this.refreshableCacheStore.PutItem(externalLocalizationStringsKey, TimeSpan.FromHours(1), externalLocalizationStrings);
+                }
+
+                return externalLocalizationStrings;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, string>>(externalLocalizationStringsKey)
+                   ?? await GetExternalLocalizationStrings().ConfigureAwait(false);
+        }
+
+        private async Task<Dictionary<Guid, Guid>> GetLocalizationStringMappingsAsync(string environment = null, string slot = null, string snapshot = null)
+        {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
+
+            var localizationStringMappingsKey = this.BuildCacheKey(environment, slot, snapshot, "LocalizationStringMappings");
+
+            async Task<Dictionary<Guid, Guid>> GetLocalizationStringMappings()
+            {
+                var localizationStringMappings = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, Guid>>(
+                    CMSFileNames.LocalizationStringMappings,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
+
+                if (!string.IsNullOrEmpty(snapshot))
+                {
+                    this.refreshableCacheStore.PutItem(localizationStringMappingsKey, TimeSpan.FromHours(1), localizationStringMappings);
+                }
+
+                return localizationStringMappings;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, Guid>>(localizationStringMappingsKey)
+                   ?? await GetLocalizationStringMappings().ConfigureAwait(false);
         }
 
         private static XElement GetXmlElement(Guid id, GitItem item, string typeNamespace)

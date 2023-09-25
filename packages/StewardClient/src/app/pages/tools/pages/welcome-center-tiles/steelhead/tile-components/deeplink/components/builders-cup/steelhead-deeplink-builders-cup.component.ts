@@ -21,6 +21,7 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { combineLatest, filter, map, pairwise, startWith, takeUntil } from 'rxjs';
 import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
+import { PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 
 /** The deeplink builders cup component. */
 @Component({
@@ -69,16 +70,16 @@ export class DeeplinkBuildersCupComponent
 
     if (!this.buildersCupChampionships || !this.buildersCupLadders || !this.buildersCupSeries) {
       const getBuildersCupChampionships$ = steelheadBuildersCupService.getBuildersCupChampionships$(
-        'dev',
-        'daily',
+        PegasusEnvironment.Dev,
+        PegasusProjectionSlot.Daily,
       );
       const getBuildersCupLadders$ = steelheadBuildersCupService.getBuildersCupLadders$(
-        'dev',
-        'daily',
+        PegasusEnvironment.Dev,
+        PegasusProjectionSlot.Daily,
       );
       const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$(
-        'dev',
-        'daily',
+        PegasusEnvironment.Dev,
+        PegasusProjectionSlot.Daily,
       );
 
       this.referenceDataMonitor = this.referenceDataMonitor.repeat();

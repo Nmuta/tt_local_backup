@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 import {
   DeeplinkDestination,
   DestinationType,
@@ -62,7 +63,7 @@ export class DeeplinkStoreComponent
     this.referenceDataMonitor = this.referenceDataMonitor.repeat();
 
     steelheadStoreService
-      .getStoreEntitlements$('dev', 'daily')
+      .getStoreEntitlements$(PegasusEnvironment.Dev, PegasusProjectionSlot.Daily)
       .pipe(this.referenceDataMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(entitlements => {
         this.storeProducts = entitlements;
