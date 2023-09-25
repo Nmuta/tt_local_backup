@@ -101,9 +101,13 @@ export class EditUgcModalBaseComponent extends BaseComponent implements OnInit {
     this.formControls.title.setValue(data.title);
     this.formControls.description.setValue(data.description);
     this.formControls.downloaded.setValue(data.timesDownloaded);
+    this.formControls.downloaded.addValidators(Validators.min(data.timesDownloaded.toNumber()));
     this.formControls.liked.setValue(data.timesLiked);
+    this.formControls.liked.addValidators(Validators.min(data.timesLiked.toNumber()));
     this.formControls.disliked.setValue(data.timesDisliked);
+    this.formControls.disliked.addValidators(Validators.min(data.timesDisliked.toNumber()));
     this.formControls.used.setValue(data.timesUsed);
+    this.formControls.used.addValidators(Validators.min(data.timesUsed.toNumber()));
   }
 
   /** Angular lifecycle hook. */

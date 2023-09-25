@@ -2,11 +2,14 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StewardGitApi;
 using Swashbuckle.AspNetCore.Annotations;
+using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -31,17 +34,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Ugc)]
         [Authorize(Policy = UserAttributeValues.EditUgc)]
-        public async Task<IActionResult> Get(string ugcId, [FromBody] UgcEditInput ugcEditInput)
+        public async Task<IActionResult> EditUgcTitleAndDescription(string ugcId, [FromBody] UgcEditInput ugcEditInput)
         {
-            if (!Guid.TryParse(ugcId, out var parsedUgcId))
-            {
-                throw new BadRequestStewardException($"'{ugcId}' was not parseable as a GUID.");
-            }
-
-            if (ugcEditInput == null)
-            {
-                throw new BadRequestStewardException($"{nameof(ugcEditInput)} not provided.");
-            }
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
+            ugcEditInput.ShouldNotBeNull(nameof(ugcEditInput));
 
             await this.Services.StorefrontManagementService.SetTitleAndDescription(parsedUgcId, ugcEditInput.Title, ugcEditInput.Description).ConfigureAwait(true);
             return this.Ok();
@@ -55,17 +51,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Woodstock.Ugc
         [LogTagDependency(DependencyLogTags.Lsp | DependencyLogTags.Ugc)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Update | ActionAreaLogTags.Ugc)]
         [Authorize(Policy = UserAttributeValues.EditUgc)]
-        public async Task<IActionResult> EditStats(string ugcId, [FromBody] UgcEditStatsInput ugcEditStatsInput)
+        public async Task<IActionResult> EditUgcStats(string ugcId, [FromBody] UgcEditStatsInput ugcEditStatsInput)
         {
-            if (!Guid.TryParse(ugcId, out var parsedUgcId))
-            {
-                throw new BadRequestStewardException($"'{ugcId}' was not parseable as a GUID.");
-            }
-
-            if (ugcEditStatsInput == null)
-            {
-                throw new BadRequestStewardException($"{nameof(ugcEditStatsInput)} not provided.");
-            }
+            var parsedUgcId = ugcId.TryParseGuidElseThrow(nameof(ugcId));
+            ugcEditStatsInput.ShouldNotBeNull(nameof(ugcEditStatsInput));
+            ugcEditStatsInput.Disliked.ShouldBeGreaterThanValue(-1);
+            ugcEditStatsInput.Downloaded.ShouldBeGreaterThanValue(-1);
+            ugcEditStatsInput.Liked.ShouldBeGreaterThanValue(-1);
+            ugcEditStatsInput.Used.ShouldBeGreaterThanValue(-1);
 
             var ugcStatsParameters = new ForzaIncrementUGCStatsParameters[]
             {
