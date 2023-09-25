@@ -256,7 +256,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
             var leaderboard = await this.GetLeaderboardMetadataAsync(scoreboardType, scoreType, trackId, pivotId, environment).ConfigureAwait(true);
 
-            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{leaderboard.TrackId}_{leaderboard.GameScoreboardId}";
+            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{scoreboardType}_{scoreType}_{trackId}_{pivotId}_{environment}";
 
             var jobs = await this.jobTracker.GetInProgressJobsAsync().ConfigureAwait(true);
 
@@ -366,7 +366,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string pegasusEnvironment = null)
         {
             var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
-            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{trackId}_{pivotId}";
+            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{scoreboardType}_{scoreType}_{trackId}_{pivotId}_{environment}";
             var blobInfo = await this.blobStorageProvider.VerifyLeaderboardScoresFileAsync(leaderboardIdentifier).ConfigureAwait(true);
 
             return this.Ok(blobInfo);
@@ -390,7 +390,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             var environment = SteelheadPegasusEnvironment.RetrieveEnvironment(pegasusEnvironment);
             var leaderboard = await this.GetLeaderboardMetadataAsync(scoreboardType, scoreType, trackId, pivotId, environment).ConfigureAwait(true);
 
-            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{leaderboard.TrackId}_{leaderboard.GameScoreboardId}";
+            var leaderboardIdentifier = $"{TitleCodeName.Steelhead}_{scoreboardType}_{scoreType}_{trackId}_{pivotId}_{environment}";
 
             var leaderboardFileUri = await this.blobStorageProvider.GetLeaderboardDataLinkAsync(leaderboardIdentifier);
 
