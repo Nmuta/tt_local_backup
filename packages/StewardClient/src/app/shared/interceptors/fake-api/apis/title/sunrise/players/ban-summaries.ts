@@ -30,13 +30,13 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
     return xuids.map(xuid => {
       return <SunriseBanSummary>{
         banCount: faker.datatype.boolean() ? ZERO : new BigNumber(faker.datatype.number()),
-        bannedAreas: faker.random.arrayElements(Object.values(SunriseBanArea)),
+        bannedAreas: faker.helpers.arrayElements(Object.values(SunriseBanArea)),
         gamertag: faker.random.word(),
         xuid: xuid,
         lastBanDescription: {
           countOfTimesExtended: new BigNumber(faker.datatype.number()),
           expireTimeUtc: toDateTime(faker.date.future()),
-          featureArea: faker.random.arrayElement(Object.values(SunriseBanArea)),
+          featureArea: faker.helpers.arrayElement(Object.values(SunriseBanArea)),
           isActive: faker.datatype.boolean(),
           lastExtendedReason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
           lastExtendedTimeUtc: toDateTime(faker.date.past()),

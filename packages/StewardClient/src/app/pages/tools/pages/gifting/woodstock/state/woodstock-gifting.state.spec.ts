@@ -11,14 +11,18 @@ import {
   SetWoodstockGiftingSelectedPlayerIdentities,
 } from './woodstock-gifting.state.actions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockGiftingState', () => {
   let service: WoodstockGiftingState;
   let store: Store;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([WoodstockGiftingState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([WoodstockGiftingState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(WoodstockGiftingState);
     store = TestBed.inject(Store);
   });

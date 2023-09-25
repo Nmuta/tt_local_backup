@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
-import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunrisePlayerDetails } from '@models/sunrise';
-import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
+import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { SunrisePlayerDetails } from '@models/sunrise';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {

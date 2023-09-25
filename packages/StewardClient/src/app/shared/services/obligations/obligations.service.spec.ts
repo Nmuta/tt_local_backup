@@ -5,6 +5,8 @@ import { ApiService, createMockApiService } from '@services/api';
 import { ObligationsService } from './obligations.service';
 import { PipelineGetFakeApi } from '@interceptors/fake-api/apis/pipeline/get';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ObligationsService', () => {
   let injector: TestBed;
   let service: ObligationsService;
@@ -12,11 +14,13 @@ describe('ObligationsService', () => {
   let nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiService(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiService(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     service = injector.inject(ObligationsService);
     apiServiceMock = injector.inject(ApiService);

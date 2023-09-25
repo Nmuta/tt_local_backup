@@ -11,6 +11,8 @@ import { WoodstockUserFlagsComponent } from './woodstock-user-flags.component';
 import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockUserFlagsComponent', () => {
   let component: WoodstockUserFlagsComponent;
   let fixture: ComponentFixture<WoodstockUserFlagsComponent>;
@@ -19,12 +21,14 @@ describe('WoodstockUserFlagsComponent', () => {
   let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockUserFlagsComponent],
-      imports: [PipesModule],
-      providers: [createMockWoodstockService(), createMockOldPermissionsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockUserFlagsComponent],
+        imports: [PipesModule],
+        providers: [createMockWoodstockService(), createMockOldPermissionsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

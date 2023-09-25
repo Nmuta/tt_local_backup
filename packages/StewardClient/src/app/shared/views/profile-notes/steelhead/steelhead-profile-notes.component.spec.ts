@@ -5,17 +5,21 @@ import { NgxsModule } from '@ngxs/store';
 import { SteelheadProfileNotesComponent } from './steelhead-profile-notes.component';
 import { createMockSteelheadPlayerProfileNotesService } from '@services/api-v2/steelhead/player/profile-notes/steelhead-player-profile-notes.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadProfileNotesComponent', () => {
   let component: SteelheadProfileNotesComponent;
   let fixture: ComponentFixture<SteelheadProfileNotesComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SteelheadProfileNotesComponent],
-      providers: [createMockSteelheadPlayerProfileNotesService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SteelheadProfileNotesComponent],
+        providers: [createMockSteelheadPlayerProfileNotesService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadProfileNotesComponent);
     component = fixture.debugElement.componentInstance;

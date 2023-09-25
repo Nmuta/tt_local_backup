@@ -5,17 +5,21 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockWoodstockPlayerCmsOverrideService } from '@services/api-v2/woodstock/player/cms-override/woodstock-player-cms-override.service.mock';
 import { WoodstockCmsOverrideComponent } from './woodstock-cms-override.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockCmsOverrideComponent', () => {
   let component: WoodstockCmsOverrideComponent;
   let fixture: ComponentFixture<WoodstockCmsOverrideComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockCmsOverrideComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWoodstockPlayerCmsOverrideService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockCmsOverrideComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWoodstockPlayerCmsOverrideService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockCmsOverrideComponent);
     component = fixture.debugElement.componentInstance;

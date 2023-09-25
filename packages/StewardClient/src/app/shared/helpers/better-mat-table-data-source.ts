@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 
 /** A MatTableDataSource that filters the way you'd expect. */

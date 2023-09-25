@@ -7,16 +7,20 @@ import { LspGroup } from '@models/lsp-group';
 import { createMockWoodstockService } from '@services/woodstock/woodstock.service.mock';
 import { WoodstockGiftHistoryResultsComponent } from './woodstock-gift-history-results.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockGiftHistoryResultsComponent', () => {
   let component: WoodstockGiftHistoryResultsComponent;
   let fixture: ComponentFixture<WoodstockGiftHistoryResultsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockGiftHistoryResultsComponent],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockGiftHistoryResultsComponent],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

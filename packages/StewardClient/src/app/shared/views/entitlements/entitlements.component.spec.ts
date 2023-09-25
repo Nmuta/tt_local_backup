@@ -5,6 +5,8 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockKustoService, KustoService } from '@services/kusto';
 import { EntitlementsComponent } from './entitlements.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('EntitlementsComponent', () => {
   let component: EntitlementsComponent;
   let fixture: ComponentFixture<EntitlementsComponent>;
@@ -12,12 +14,14 @@ describe('EntitlementsComponent', () => {
   let mockKustoService: KustoService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [EntitlementsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockKustoService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [EntitlementsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockKustoService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(EntitlementsComponent);
     component = fixture.debugElement.componentInstance;

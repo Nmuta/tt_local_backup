@@ -9,6 +9,8 @@ import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state'
 
 import { TitleMemorySetGuard } from './title-memory-set.guard';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('TitleMemorySetGuard', () => {
   let guard: TitleMemorySetGuard;
   let store: Store;
@@ -27,10 +29,12 @@ describe('TitleMemorySetGuard', () => {
   const testSnapshot: Partial<RouterStateSnapshot> = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([TitleMemoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([TitleMemoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     guard = TestBed.inject(TitleMemorySetGuard);
     store = TestBed.inject(Store);
 

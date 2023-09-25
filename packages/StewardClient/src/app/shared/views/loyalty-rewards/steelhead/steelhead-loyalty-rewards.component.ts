@@ -5,7 +5,7 @@ import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { of, Subject, switchMap, takeUntil, tap } from 'rxjs';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 import { Store } from '@ngxs/store';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { SteelheadLoyaltyRewardsService } from '@services/api-v2/steelhead/player/loyalty-rewards/steelhead-loyalty-rewards.service';

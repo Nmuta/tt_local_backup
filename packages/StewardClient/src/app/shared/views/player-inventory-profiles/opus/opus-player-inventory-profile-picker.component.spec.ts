@@ -8,22 +8,26 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { OpusPlayerInventoryProfilePickerComponent } from './opus-player-inventory-profile-picker.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('OpusPlayerInventoryProfilePickerComponent', () => {
   let component: OpusPlayerInventoryProfilePickerComponent;
   let fixture: ComponentFixture<OpusPlayerInventoryProfilePickerComponent>;
   let mockStore: Store;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [OpusPlayerInventoryProfilePickerComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [OpusPlayerInventoryProfilePickerComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(OpusPlayerInventoryProfilePickerComponent);
     component = fixture.debugElement.componentInstance;

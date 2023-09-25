@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
+import faker from '@faker-js/faker';
 import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
-import faker from '@faker-js/faker';
 
 /** Fake API for gifting to players. */
 export class WoodstockGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBase {

@@ -5,12 +5,14 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { ApolloMakeModelAutocompleteComponent } from './apollo-make-model-autocomplete.component';
 import { ApolloSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/apollo/kusto/cars';
 import { uniqBy } from 'lodash';
 import { SimpleCar } from '@models/cars';
 import faker from '@faker-js/faker';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('ApolloMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<ApolloMakeModelAutocompleteComponent>;
@@ -20,18 +22,20 @@ describe('ApolloMakeModelAutocompleteComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [ApolloMakeModelAutocompleteComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [ApolloMakeModelAutocompleteComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

@@ -2,14 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UtilComponent } from './util.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('UtilComponent', () => {
   let component: UtilComponent;
   let fixture: ComponentFixture<UtilComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [UtilComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [UtilComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

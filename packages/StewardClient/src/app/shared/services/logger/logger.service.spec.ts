@@ -7,16 +7,20 @@ import { MockConsole } from '@mocks/console.mock';
 
 import { LoggerService } from './logger.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('LoggerService', () => {
   let service: LoggerService;
   let mockConsole: MockConsole;
   let mockAppInsights: ApplicationInsights;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [createMockApplicationInsights()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        providers: [createMockApplicationInsights()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(LoggerService);
     mockAppInsights = TestBed.inject(ApplicationInsights);
     mockConsole = new MockConsole();

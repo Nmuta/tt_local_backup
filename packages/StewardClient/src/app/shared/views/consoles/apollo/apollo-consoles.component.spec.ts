@@ -13,6 +13,8 @@ import { ApolloService, createMockApolloService } from '@services/apollo';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { createMockOldPermissionsService, OldPermissionsService } from '@services/old-permissions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloConsolesComponent', () => {
   let component: ApolloConsolesComponent;
   let fixture: ComponentFixture<ApolloConsolesComponent>;
@@ -21,11 +23,13 @@ describe('ApolloConsolesComponent', () => {
   let mockPermissionsService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ApolloConsolesComponent, BigJsonPipe, HumanizePipe],
-      providers: [createMockApolloService(), createMockOldPermissionsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ApolloConsolesComponent, BigJsonPipe, HumanizePipe],
+        providers: [createMockApolloService(), createMockOldPermissionsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -13,6 +13,8 @@ import { SteelheadPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/ap
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadPlayerSidebarDetailsComponent', () => {
   let mockSteelheadService: SteelheadService;
 
@@ -20,21 +22,23 @@ describe('SteelheadPlayerSidebarDetailsComponent', () => {
   let component: SteelheadPlayerSidebarDetailsComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [SteelheadPlayerSidebarDetailsComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockSteelheadService(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [SteelheadPlayerSidebarDetailsComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWindowService(),
+          ...createMockMsalServices(),
+          createMockSteelheadService(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockSteelheadService = injector.inject(SteelheadService);

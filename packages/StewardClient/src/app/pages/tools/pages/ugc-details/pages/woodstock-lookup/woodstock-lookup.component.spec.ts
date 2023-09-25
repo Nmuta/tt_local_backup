@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { OldPermissionsService, createMockOldPermissionsService } from '@services/old-permissions';
@@ -9,24 +9,28 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { WoodstockLookupComponent } from './woodstock-lookup.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockLookupComponent', () => {
   let component: WoodstockLookupComponent;
   let fixture: ComponentFixture<WoodstockLookupComponent>;
   let mockPermissionService: OldPermissionsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockLookupComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        MatDialogModule,
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockOldPermissionsService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockLookupComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          MatDialogModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockOldPermissionsService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

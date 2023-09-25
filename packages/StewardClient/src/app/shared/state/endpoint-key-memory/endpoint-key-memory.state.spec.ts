@@ -8,17 +8,21 @@ import { of } from 'rxjs';
 import { createMockSettingsService, SettingsService } from '@services/settings/settings';
 import { LspEndpoints } from '@models/lsp-endpoints';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('EndpointKeyMemoryState', () => {
   let store: Store;
   let service: EndpointKeyMemoryState;
   let mockSettingsService: SettingsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([EndpointKeyMemoryState])],
-      providers: [createMockSettingsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([EndpointKeyMemoryState])],
+        providers: [createMockSettingsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(EndpointKeyMemoryState);
     store = TestBed.inject(Store);
     mockSettingsService = TestBed.inject(SettingsService);

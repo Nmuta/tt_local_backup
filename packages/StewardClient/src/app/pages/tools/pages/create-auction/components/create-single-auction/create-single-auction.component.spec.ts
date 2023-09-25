@@ -6,20 +6,24 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CreateSingleAuctionComponent } from './create-single-auction.component';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('CreateSingleAuctionComponent', () => {
   let component: CreateSingleAuctionComponent;
   let fixture: ComponentFixture<CreateSingleAuctionComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-      ],
-      declarations: [CreateSingleAuctionComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+        ],
+        declarations: [CreateSingleAuctionComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(CreateSingleAuctionComponent);
     component = fixture.debugElement.componentInstance;

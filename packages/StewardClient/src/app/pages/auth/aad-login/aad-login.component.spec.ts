@@ -4,16 +4,20 @@ import { NgxsModule } from '@ngxs/store';
 
 import { AadLoginComponent } from './aad-login.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('AadLoginComponent', () => {
   let component: AadLoginComponent;
   let fixture: ComponentFixture<AadLoginComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      declarations: [AadLoginComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        declarations: [AadLoginComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -6,9 +6,9 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerAuction } from '@models/player-auction';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { AuctionFilters, DefaultAuctionFilters } from '@models/auction-filters';
 import { ImageModalComponent, ImageModalData } from '@views/image-modal/image-modal.component';
 

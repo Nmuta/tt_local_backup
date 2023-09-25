@@ -46,13 +46,13 @@ export class WoodstockPlayerXuidAuctionsFakeApi extends FakeApiBase {
             max: 500_000,
           }),
         ),
-        bids: new BigNumber(faker.random.number(5)),
+        bids: new BigNumber(faker.datatype.number(5)),
         createdDateUtc: faker.date.past(),
         closingDateUtc: faker.date.future(),
         liveryImageBase64: faker.image.imageUrl(800, 600, 'any', true),
         textureMapImageBase64: faker.image.imageUrl(800, 600, 'any', true),
         reviewState: fakeBigNumber(),
-        totalReports: new BigNumber(faker.random.number(5)),
+        totalReports: new BigNumber(faker.datatype.number(5)),
       } as PlayerAuction;
     });
   }

@@ -1,9 +1,9 @@
 import { environment } from '@environments/environment';
-import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { OpusPlayerDetails } from '@models/opus';
-import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 import { toDateTime } from '@helpers/luxon';
+import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { OpusPlayerDetails } from '@models/opus';
 
 /** Fake API for finding User Flags. */
 export class OpusPlayerGamertagDetailsFakeApi extends FakeApiBase {

@@ -18,6 +18,8 @@ const activatedRouteMock = {
   ] as ActivatedRoute[],
 };
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseGamertagsComponent', () => {
   let component: SunriseGamertagsComponent;
   let fixture: ComponentFixture<SunriseGamertagsComponent>;
@@ -25,17 +27,19 @@ describe('SunriseGamertagsComponent', () => {
   let mockSunriseService: SunriseService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseGamertagsComponent, HumanizePipe],
-      providers: [
-        createMockSunriseService(),
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseGamertagsComponent, HumanizePipe],
+        providers: [
+          createMockSunriseService(),
+          {
+            provide: ActivatedRoute,
+            useValue: activatedRouteMock,
+          },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {
