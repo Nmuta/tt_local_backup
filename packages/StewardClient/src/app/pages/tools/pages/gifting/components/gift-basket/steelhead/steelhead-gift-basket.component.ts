@@ -46,6 +46,7 @@ export class SteelheadGiftBasketComponent
   public title = GameTitle.FM8;
   public allowSettingExpireDate = true;
   public allowSettingLocalizedMessage = true;
+  public allowSetInventoryFromReference = false;
 
   constructor(
     private readonly steelheadPlayersGiftService: SteelheadPlayersGiftService,

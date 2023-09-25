@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting] },
+      uuid: 'd7c4f499-5c52-4a26-a29a-aba8e7de2e16',
+      shortText: 'Remove \'Set Inventory From Reference\' button',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
       shortMarkdown: 'Add **markdown** support',

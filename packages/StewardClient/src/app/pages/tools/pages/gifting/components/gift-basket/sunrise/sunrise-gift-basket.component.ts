@@ -46,6 +46,7 @@ export class SunriseGiftBasketComponent
   public title = GameTitle.FH4;
   public allowSettingExpireDate = false;
   public allowSettingLocalizedMessage = false;
+  public allowSetInventoryFromReference = true;
 
   constructor(
     private readonly sunriseService: SunriseService,
