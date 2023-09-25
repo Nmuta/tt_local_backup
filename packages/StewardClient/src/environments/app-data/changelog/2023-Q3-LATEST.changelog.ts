@@ -9,6 +9,40 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.Internal,
+      uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
+      shortMarkdown: 'Add **markdown** support',
+      longMarkdown: `
+        ## Markdown is now supported in changelogs.
+
+        This includes support for Mermaid JS  
+        
+        \`\`\`mermaid
+        flowchart LR
+          a --> b & c--> d
+        \`\`\`
+
+        Paragraphs!  
+        Newlines!
+
+        ---
+
+        Lines!
+
+        - bullets!
+          1. indented
+          2. lists!
+
+        | tables! | a | b | c | d | e |
+        |---------|---|---|---|---|---|
+        | one     | 1 |   |   |   | ? |
+        | two     |   | 2 |   |   |   |
+        | three   |   |   | 3 |   | ? |
+        | four    |   |   |   | 4 |   |
+        | five    |   |   |   |   | 5 |
+      `,
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: 'e3f27c4f-0a80-4949-a7ed-b92e68e597c2',
       shortText: 'Upgrade to Angular 15',
     },

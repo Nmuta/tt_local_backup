@@ -1679,6 +1679,11 @@
     "@babel/helper-validator-identifier" "^7.22.15"
     to-fast-properties "^2.0.0"
 
+"@braintree/sanitize-url@^6.0.0":
+  version "6.0.4"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@braintree/sanitize-url/-/sanitize-url-6.0.4.tgz#923ca57e173c6b232bbbb07347b1be982f03e783"
+  integrity sha1-kjylfhc8ayMru7BzR7G+mC8D54M=
+
 "@colors/colors@1.5.0":
   version "1.5.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@colors/colors/-/colors-1.5.0.tgz"
@@ -3212,6 +3217,11 @@
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/luxon/-/luxon-3.3.2.tgz"
   integrity sha1-9uNSTCSGuUmk20Rehdk8jpiG3+I=
 
+"@types/marked@^4.3.0":
+  version "4.3.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/marked/-/marked-4.3.1.tgz#45fb6dfd47afb595766c71ed7749ead23f137de3"
+  integrity sha1-Rftt/UevtZV2bHHtd0nq0j8TfeM=
+
 "@types/mime@*":
   version "3.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/@types/mime/-/mime-3.0.1.tgz"
@@ -4698,6 +4708,15 @@ cli-width@^3.0.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/cli-width/-/cli-width-3.0.0.tgz"
   integrity sha1-ovSEN6LKqaIkNueUvwceyeYc7fY=
 
+clipboard@^2.0.11:
+  version "2.0.11"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/clipboard/-/clipboard-2.0.11.tgz#62180360b97dd668b6b3a84ec226975762a70be5"
+  integrity sha1-YhgDYLl91mi2s6hOwiaXV2KnC+U=
+  dependencies:
+    good-listener "^1.2.2"
+    select "^1.1.2"
+    tiny-emitter "^2.0.0"
+
 cliui@^7.0.2:
   version "7.0.4"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/cliui/-/cliui-7.0.4.tgz"
@@ -4789,7 +4808,7 @@ colorette@^2.0.10, colorette@^2.0.14, colorette@^2.0.16:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/colorette/-/colorette-2.0.20.tgz"
   integrity sha1-nreT5oMwZ/cjWQL807CZF6AAqVo=
 
-colors@1.4.0, colors@^1.1.2:
+colors@1.4.0:
   version "1.4.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/colors/-/colors-1.4.0.tgz"
   integrity sha1-xQSRR51MG9rtLJztMs98fcI2D3g=
@@ -4808,6 +4827,11 @@ commander@1.0.4:
   dependencies:
     keypress "0.1.x"
 
+commander@7, commander@^7.2.0:
+  version "7.2.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-7.2.0.tgz"
+  integrity sha1-o2y1fQtQHOEI5NIFWaFQo5HZerc=
+
 commander@^10.0.1:
   version "10.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-10.0.1.tgz#881ee46b4f77d1c1dccc5823433aa39b022cbe06"
@@ -4823,10 +4847,10 @@ commander@^5.1.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-5.1.0.tgz"
   integrity sha1-Rqu9FlL44Fm92u+Zu9yyrZzxea4=
 
-commander@^7.2.0:
-  version "7.2.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-7.2.0.tgz"
-  integrity sha1-o2y1fQtQHOEI5NIFWaFQo5HZerc=
+commander@^8.3.0:
+  version "8.3.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/commander/-/commander-8.3.0.tgz#4837ea1b2da67b9c616a67afbb0fafee567bca66"
+  integrity sha1-SDfqGy2me5xhamevuw+v7lZ7ymY=
 
 comment-parser@1.4.0:
   version "1.4.0"
@@ -5007,6 +5031,20 @@ cors@~2.8.5:
     object-assign "^4"
     vary "^1"
 
+cose-base@^1.0.0:
+  version "1.0.3"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/cose-base/-/cose-base-1.0.3.tgz#650334b41b869578a543358b80cda7e0abe0a60a"
+  integrity sha1-ZQM0tBuGlXilQzWLgM2n4Kvgpgo=
+  dependencies:
+    layout-base "^1.0.0"
+
+cose-base@^2.2.0:
+  version "2.2.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/cose-base/-/cose-base-2.2.0.tgz#1c395c35b6e10bb83f9769ca8b817d614add5c01"
+  integrity sha1-HDlcNbbhC7g/l2nKi4F9YUrdXAE=
+  dependencies:
+    layout-base "^2.0.0"
+
 cosmiconfig@^7.0.0:
   version "7.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/cosmiconfig/-/cosmiconfig-7.1.0.tgz"
@@ -5174,6 +5212,28 @@ cypress@^9.2.0:
     untildify "^4.0.0"
     yauzl "^2.10.0"
 
+cytoscape-cose-bilkent@^4.1.0:
+  version "4.1.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/cytoscape-cose-bilkent/-/cytoscape-cose-bilkent-4.1.0.tgz#762fa121df9930ffeb51a495d87917c570ac209b"
+  integrity sha1-di+hId+ZMP/rUaSV2HkXxXCsIJs=
+  dependencies:
+    cose-base "^1.0.0"
+
+cytoscape-fcose@^2.1.0:
+  version "2.2.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/cytoscape-fcose/-/cytoscape-fcose-2.2.0.tgz#e4d6f6490df4fab58ae9cea9e5c3ab8d7472f471"
+  integrity sha1-5Nb2SQ30+rWK6c6p5cOrjXRy9HE=
+  dependencies:
+    cose-base "^2.2.0"
+
+cytoscape@^3.23.0:
+  version "3.26.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/cytoscape/-/cytoscape-3.26.0.tgz#b4c6961445fd51e1fd3cca83c3ffe924d9a8abc9"
+  integrity sha1-tMaWFEX9UeH9PMqDw//pJNmoq8k=
+  dependencies:
+    heap "^0.2.6"
+    lodash "^4.17.21"
+
 d3-array@2:
   version "2.12.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-array/-/d3-array-2.12.1.tgz"
@@ -5181,14 +5241,19 @@ d3-array@2:
   dependencies:
     internmap "^1.0.0"
 
-"d3-array@2 - 3", "d3-array@2.10.0 - 3", d3-array@^3.1.1:
+"d3-array@2 - 3", "d3-array@2.10.0 - 3", "d3-array@2.5.0 - 3", d3-array@3, d3-array@^3.1.1, d3-array@^3.2.0:
   version "3.2.4"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-array/-/d3-array-3.2.4.tgz"
   integrity sha1-Ff7DOyN/l6xdfJhtx32ic6jtC7U=
   dependencies:
     internmap "1 - 2"
 
-d3-brush@^3.0.0:
+d3-axis@3:
+  version "3.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-axis/-/d3-axis-3.0.0.tgz#c42a4a13e8131d637b745fc2973824cfeaf93322"
+  integrity sha1-xCpKE+gTHWN7dF/Clzgkz+r5MyI=
+
+d3-brush@3, d3-brush@^3.0.0:
   version "3.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-brush/-/d3-brush-3.0.0.tgz"
   integrity sha1-b3Z8Ttjct53n7ePhwPieY+9k0xw=
@@ -5199,17 +5264,38 @@ d3-brush@^3.0.0:
     d3-selection "3"
     d3-transition "3"
 
-"d3-color@1 - 3", d3-color@^3.1.0:
+d3-chord@3:
+  version "3.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-chord/-/d3-chord-3.0.1.tgz#d156d61f485fce8327e6abf339cb41d8cbba6966"
+  integrity sha1-0VbWH0hfzoMn5qvzOctB2Mu6aWY=
+  dependencies:
+    d3-path "1 - 3"
+
+"d3-color@1 - 3", d3-color@3, d3-color@^3.1.0:
   version "3.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-color/-/d3-color-3.1.0.tgz"
   integrity sha1-OVsoM9+scVB/EqwvevI7+BneJOI=
 
-"d3-dispatch@1 - 3":
+d3-contour@4:
+  version "4.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-contour/-/d3-contour-4.0.2.tgz#bb92063bc8c5663acb2422f99c73cbb6c6ae3bcc"
+  integrity sha1-u5IGO8jFZjrLJCL5nHPLtsauO8w=
+  dependencies:
+    d3-array "^3.2.0"
+
+d3-delaunay@6:
+  version "6.0.4"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-delaunay/-/d3-delaunay-6.0.4.tgz#98169038733a0a5babbeda55054f795bb9e4a58b"
+  integrity sha1-mBaQOHM6ClurvtpVBU95W7nkpYs=
+  dependencies:
+    delaunator "5"
+
+"d3-dispatch@1 - 3", d3-dispatch@3:
   version "3.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-dispatch/-/d3-dispatch-3.0.1.tgz"
   integrity sha1-X8dShOnCN1w2yDlBGgz1UMv8TV4=
 
-"d3-drag@2 - 3":
+"d3-drag@2 - 3", d3-drag@3:
   version "3.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-drag/-/d3-drag-3.0.0.tgz"
   integrity sha1-mUqunNI8cZ9TteEOOgphCMaWB7o=
@@ -5217,34 +5303,89 @@ d3-brush@^3.0.0:
     d3-dispatch "1 - 3"
     d3-selection "3"
 
-"d3-ease@1 - 3", d3-ease@^3.0.1:
+"d3-dsv@1 - 3", d3-dsv@3:
+  version "3.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-dsv/-/d3-dsv-3.0.1.tgz#c63af978f4d6a0d084a52a673922be2160789b73"
+  integrity sha1-xjr5ePTWoNCEpSpnOSK+IWB4m3M=
+  dependencies:
+    commander "7"
+    iconv-lite "0.6"
+    rw "1"
+
+"d3-ease@1 - 3", d3-ease@3, d3-ease@^3.0.1:
   version "3.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-ease/-/d3-ease-3.0.1.tgz"
   integrity sha1-llisOKIUDVnTRhYPH2ww/aC9EvQ=
 
-"d3-format@1 - 3", d3-format@^3.1.0:
+d3-fetch@3:
+  version "3.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-fetch/-/d3-fetch-3.0.1.tgz#83141bff9856a0edb5e38de89cdcfe63d0a60a22"
+  integrity sha1-gxQb/5hWoO21443onNz+Y9CmCiI=
+  dependencies:
+    d3-dsv "1 - 3"
+
+d3-force@3:
+  version "3.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-force/-/d3-force-3.0.0.tgz#3e2ba1a61e70888fe3d9194e30d6d14eece155c4"
+  integrity sha1-Piuhph5wiI/j2RlOMNbRTuzhVcQ=
+  dependencies:
+    d3-dispatch "1 - 3"
+    d3-quadtree "1 - 3"
+    d3-timer "1 - 3"
+
+"d3-format@1 - 3", d3-format@3, d3-format@^3.1.0:
   version "3.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-format/-/d3-format-3.1.0.tgz"
   integrity sha1-kmDiOijqXLEJ6TshoG4k4uvVVkE=
 
-d3-hierarchy@^3.1.0:
+d3-geo@3:
+  version "3.1.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-geo/-/d3-geo-3.1.0.tgz#74fd54e1f4cebd5185ac2039217a98d39b0a4c0e"
+  integrity sha1-dP1U4fTOvVGFrCA5IXqY05sKTA4=
+  dependencies:
+    d3-array "2.5.0 - 3"
+
+d3-hierarchy@3, d3-hierarchy@^3.1.0:
   version "3.1.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-hierarchy/-/d3-hierarchy-3.1.2.tgz"
   integrity sha1-sBzULB7tPUbbd6WWbPcm+MCRYMY=
 
-"d3-interpolate@1 - 3", "d3-interpolate@1.2.0 - 3", d3-interpolate@^3.0.1:
+"d3-interpolate@1 - 3", "d3-interpolate@1.2.0 - 3", d3-interpolate@3, d3-interpolate@^3.0.1:
   version "3.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-interpolate/-/d3-interpolate-3.0.1.tgz"
   integrity sha1-PEeqWzLFs9+1bvP9Q0IHimMrQA0=
   dependencies:
     d3-color "1 - 3"
 
-d3-path@^3.1.0:
+"d3-path@1 - 3", d3-path@3, d3-path@^3.1.0:
   version "3.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-path/-/d3-path-3.1.0.tgz"
   integrity sha1-It+TkDL7WnGuixgA1h3beFHEJSY=
 
-d3-scale@^4.0.2:
+d3-polygon@3:
+  version "3.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-polygon/-/d3-polygon-3.0.1.tgz#0b45d3dd1c48a29c8e057e6135693ec80bf16398"
+  integrity sha1-C0XT3RxIopyOBX5hNWk+yAvxY5g=
+
+"d3-quadtree@1 - 3", d3-quadtree@3:
+  version "3.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-quadtree/-/d3-quadtree-3.0.1.tgz#6dca3e8be2b393c9a9d514dabbd80a92deef1a4f"
+  integrity sha1-bco+i+Kzk8mp1RTau9gKkt7vGk8=
+
+d3-random@3:
+  version "3.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-random/-/d3-random-3.0.1.tgz#d4926378d333d9c0bfd1e6fa0194d30aebaa20f4"
+  integrity sha1-1JJjeNMz2cC/0eb6AZTTCuuqIPQ=
+
+d3-scale-chromatic@3:
+  version "3.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-scale-chromatic/-/d3-scale-chromatic-3.0.0.tgz#15b4ceb8ca2bb0dcb6d1a641ee03d59c3b62376a"
+  integrity sha1-FbTOuMorsNy20aZB7gPVnDtiN2o=
+  dependencies:
+    d3-color "1 - 3"
+    d3-interpolate "1 - 3"
+
+d3-scale@4, d3-scale@^4.0.2:
   version "4.0.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-scale/-/d3-scale-4.0.2.tgz"
   integrity sha1-grOOjo/3CAdk+Nzsd71L45Nok5Y=
@@ -5255,19 +5396,19 @@ d3-scale@^4.0.2:
     d3-time "2.1.1 - 3"
     d3-time-format "2 - 4"
 
-d3-selection@3, d3-selection@^3.0.0:
+"d3-selection@2 - 3", d3-selection@3, d3-selection@^3.0.0:
   version "3.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-selection/-/d3-selection-3.0.0.tgz"
   integrity sha1-wlM4IH76csxbm9FFihpBkB8eGzE=
 
-d3-shape@^3.2.0:
+d3-shape@3, d3-shape@^3.2.0:
   version "3.2.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-shape/-/d3-shape-3.2.0.tgz"
   integrity sha1-oag5y9m6RfKGdMadf4Vbz5HfxqU=
   dependencies:
     d3-path "^3.1.0"
 
-"d3-time-format@2 - 4":
+"d3-time-format@2 - 4", d3-time-format@4:
   version "4.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-time-format/-/d3-time-format-4.1.0.tgz"
   integrity sha1-erUlelBB0R7LT+cKXH0WoZW7QIo=
@@ -5288,19 +5429,19 @@ d3-time-format@^3.0.0:
   dependencies:
     d3-array "2"
 
-"d3-time@1 - 3", "d3-time@2.1.1 - 3":
+"d3-time@1 - 3", "d3-time@2.1.1 - 3", d3-time@3:
   version "3.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-time/-/d3-time-3.1.0.tgz"
   integrity sha1-kxDbVumS48AXXh7zheVF5Iqbtcc=
   dependencies:
     d3-array "2 - 3"
 
-"d3-timer@1 - 3":
+"d3-timer@1 - 3", d3-timer@3:
   version "3.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-timer/-/d3-timer-3.0.1.tgz"
   integrity sha1-YoTSonCChbGrt+IB7aQ4CvNeY7A=
 
-d3-transition@3, d3-transition@^3.0.1:
+"d3-transition@2 - 3", d3-transition@3, d3-transition@^3.0.1:
   version "3.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-transition/-/d3-transition-3.0.1.tgz"
   integrity sha1-aGn93hRIhoB3/dWYkgDLYbKhZF8=
@@ -5310,6 +5451,61 @@ d3-transition@3, d3-transition@^3.0.1:
     d3-ease "1 - 3"
     d3-interpolate "1 - 3"
     d3-timer "1 - 3"
+
+d3-zoom@3:
+  version "3.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3-zoom/-/d3-zoom-3.0.0.tgz#d13f4165c73217ffeaa54295cd6969b3e7aee8f3"
+  integrity sha1-0T9BZccyF//qpUKVzWlps+eu6PM=
+  dependencies:
+    d3-dispatch "1 - 3"
+    d3-drag "2 - 3"
+    d3-interpolate "1 - 3"
+    d3-selection "2 - 3"
+    d3-transition "2 - 3"
+
+d3@^7.4.0, d3@^7.8.2:
+  version "7.8.5"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/d3/-/d3-7.8.5.tgz#fde4b760d4486cdb6f0cc8e2cbff318af844635c"
+  integrity sha1-/eS3YNRIbNtvDMjiy/8xivhEY1w=
+  dependencies:
+    d3-array "3"
+    d3-axis "3"
+    d3-brush "3"
+    d3-chord "3"
+    d3-color "3"
+    d3-contour "4"
+    d3-delaunay "6"
+    d3-dispatch "3"
+    d3-drag "3"
+    d3-dsv "3"
+    d3-ease "3"
+    d3-fetch "3"
+    d3-force "3"
+    d3-format "3"
+    d3-geo "3"
+    d3-hierarchy "3"
+    d3-interpolate "3"
+    d3-path "3"
+    d3-polygon "3"
+    d3-quadtree "3"
+    d3-random "3"
+    d3-scale "4"
+    d3-scale-chromatic "3"
+    d3-selection "3"
+    d3-shape "3"
+    d3-time "3"
+    d3-time-format "4"
+    d3-timer "3"
+    d3-transition "3"
+    d3-zoom "3"
+
+dagre-d3-es@7.0.9:
+  version "7.0.9"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/dagre-d3-es/-/dagre-d3-es-7.0.9.tgz#aca12fccd9d09955a4430029ba72ee6934542a8d"
+  integrity sha1-rKEvzNnQmVWkQwApunLuaTRUKo0=
+  dependencies:
+    d3 "^7.8.2"
+    lodash-es "^4.17.21"
 
 damerau-levenshtein@^1.0.4:
   version "1.0.8"
@@ -5348,6 +5544,11 @@ dayjs@^1.10.4:
   version "1.11.9"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/dayjs/-/dayjs-1.11.9.tgz"
   integrity sha1-nKSRkz+t0KYKLBn2wjfANRfXHRo=
+
+dayjs@^1.11.7:
+  version "1.11.10"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/dayjs/-/dayjs-1.11.10.tgz#68acea85317a6e164457d6d6947564029a6a16a0"
+  integrity sha1-aKzqhTF6bhZEV9bWlHVkAppqFqA=
 
 debug@2.6.9, debug@^2.1.3, debug@^2.2.0, debug@^2.6.9:
   version "2.6.9"
@@ -5448,10 +5649,22 @@ define-properties@^1.1.3, define-properties@^1.1.4, define-properties@^1.2.0:
     has-property-descriptors "^1.0.0"
     object-keys "^1.1.1"
 
+delaunator@5:
+  version "5.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/delaunator/-/delaunator-5.0.0.tgz#60f052b28bd91c9b4566850ebf7756efe821d81b"
+  integrity sha1-YPBSsovZHJtFZoUOv3dW7+gh2Bs=
+  dependencies:
+    robust-predicates "^3.0.0"
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/delayed-stream/-/delayed-stream-1.0.0.tgz"
   integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
+
+delegate@^3.1.2:
+  version "3.2.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/delegate/-/delegate-3.2.0.tgz#b66b71c3158522e8ab5744f720d8ca0c2af59166"
+  integrity sha1-tmtxwxWFIuirV0T3INjKDCr1kWY=
 
 delegates@^1.0.0:
   version "1.0.0"
@@ -5569,6 +5782,11 @@ domino@^2.1.2:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/domino/-/domino-2.1.6.tgz"
   integrity sha1-/krOQxBSbl57nRLH3gG39IWlf/4=
 
+dompurify@2.4.3:
+  version "2.4.3"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/dompurify/-/dompurify-2.4.3.tgz#f4133af0e6a50297fc8874e2eaedc13a3c308c03"
+  integrity sha1-9BM68OalApf8iHTi6u3BOjwwjAM=
+
 domutils@^2.8.0:
   version "2.8.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/domutils/-/domutils-2.8.0.tgz"
@@ -5630,6 +5848,11 @@ electron@^1.4.4:
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
 
+elkjs@^0.8.2:
+  version "0.8.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/elkjs/-/elkjs-0.8.2.tgz#c37763c5a3e24e042e318455e0147c912a7c248e"
+  integrity sha1-w3djxaPiTgQuMYRV4BR8kSp8JI4=
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/emoji-regex/-/emoji-regex-8.0.0.tgz"
@@ -5639,6 +5862,11 @@ emoji-regex@^9.2.2:
   version "9.2.2"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/emoji-regex/-/emoji-regex-9.2.2.tgz"
   integrity sha1-hAyIA7DYBH9P8M+WMXazLU7z7XI=
+
+emoji-toolkit@^7.0.0:
+  version "7.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/emoji-toolkit/-/emoji-toolkit-7.0.1.tgz#4ea2a78fe4b40c7cdbe7ef5725c7011299932f09"
+  integrity sha1-TqKnj+S0DHzb5+9XJccBEpmTLwk=
 
 emojis-list@^3.0.0:
   version "3.0.0"
@@ -6766,6 +6994,13 @@ globby@^13.1.1:
     merge2 "^1.4.1"
     slash "^4.0.0"
 
+good-listener@^1.2.2:
+  version "1.2.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/good-listener/-/good-listener-1.2.2.tgz#d53b30cdf9313dffb7dc9a0d477096aa6d145c50"
+  integrity sha1-1TswzfkxPf+33JoNR3CWqm0UXFA=
+  dependencies:
+    delegate "^3.1.2"
+
 gopd@^1.0.1:
   version "1.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/gopd/-/gopd-1.0.1.tgz"
@@ -6872,6 +7107,11 @@ hdr-histogram-percentiles-obj@^3.0.0:
   version "3.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/hdr-histogram-percentiles-obj/-/hdr-histogram-percentiles-obj-3.0.0.tgz"
   integrity sha1-lAn03gwt2njmHeLZ14senzy6KDw=
+
+heap@^0.2.6:
+  version "0.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/heap/-/heap-0.2.7.tgz#1e6adf711d3f27ce35a81fe3b7bd576c2260a8fc"
+  integrity sha1-HmrfcR0/J841qB/jt71XbCJgqPw=
 
 home-path@^1.0.1:
   version "1.0.7"
@@ -7032,7 +7272,7 @@ iconv-lite@0.4.24, iconv-lite@^0.4.24:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-iconv-lite@0.6.3, iconv-lite@^0.6.2, iconv-lite@^0.6.3:
+iconv-lite@0.6, iconv-lite@0.6.3, iconv-lite@^0.6.2, iconv-lite@^0.6.3:
   version "0.6.3"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/iconv-lite/-/iconv-lite-0.6.3.tgz"
   integrity sha1-pS+AvzjaGVLrXGgXkHGYcaGnJQE=
@@ -7824,12 +8064,12 @@ karma-source-map-support@1.4.0:
   dependencies:
     source-map-support "^0.5.5"
 
-karma-spec-reporter@^0.0.32:
-  version "0.0.32"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/karma-spec-reporter/-/karma-spec-reporter-0.0.32.tgz"
-  integrity sha1-LpxyB+pyZ3EmAln4K+y1QyCeRAo=
+karma-spec-reporter@^0.0.36:
+  version "0.0.36"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/karma-spec-reporter/-/karma-spec-reporter-0.0.36.tgz#c54dc155dec2ded1f92ea68dbbdd67fcedbef350"
+  integrity sha1-xU3BVd7C3tH5LqaNu91n/O2+81A=
   dependencies:
-    colors "^1.1.2"
+    colors "1.4.0"
 
 karma@^6.3.9:
   version "6.4.2"
@@ -7861,6 +8101,13 @@ karma@^6.3.9:
     ua-parser-js "^0.7.30"
     yargs "^16.1.1"
 
+katex@^0.16.0:
+  version "0.16.8"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/katex/-/katex-0.16.8.tgz#89b453f40e8557f423f31a1009e9298dd99d5ceb"
+  integrity sha1-ibRT9A6FV/Qj8xoQCekpjdmdXOs=
+  dependencies:
+    commander "^8.3.0"
+
 keypress@0.1.x:
   version "0.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/keypress/-/keypress-0.1.0.tgz"
@@ -7872,6 +8119,11 @@ keyv@^4.5.3:
   integrity sha1-AIc9KwRt9zeWMVe9BPKUyoGMnCU=
   dependencies:
     json-buffer "3.0.1"
+
+khroma@^2.0.0:
+  version "2.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/khroma/-/khroma-2.0.0.tgz#7577de98aed9f36c7a474c4d453d94c0d6c6588b"
+  integrity sha1-dXfemK7Z82x6R0xNRT2UwNbGWIs=
 
 kind-of@^6.0.2:
   version "6.0.3"
@@ -7894,6 +8146,16 @@ klona@^2.0.4, klona@^2.0.5:
   version "2.0.6"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/klona/-/klona-2.0.6.tgz"
   integrity sha1-hb/7+BnAOy9TJwQSQgpFVe+ILiI=
+
+layout-base@^1.0.0:
+  version "1.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/layout-base/-/layout-base-1.0.2.tgz#1291e296883c322a9dd4c5dd82063721b53e26e2"
+  integrity sha1-EpHilog8Miqd1MXdggY3IbU+JuI=
+
+layout-base@^2.0.0:
+  version "2.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/layout-base/-/layout-base-2.0.1.tgz#d0337913586c90f9c2c075292069f5c2da5dd285"
+  integrity sha1-0DN5E1hskPnCwHUpIGn1wtpd0oU=
 
 lazy-ass@^1.6.0:
   version "1.6.0"
@@ -8006,6 +8268,11 @@ locate-path@^6.0.0:
   integrity sha1-VTIeswn+u8WcSAHZMackUqaB0oY=
   dependencies:
     p-locate "^5.0.0"
+
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha1-Q+YmxG5lkbd1C+srUBFzkMYJ4+4=
 
 lodash.debounce@^4.0.8:
   version "4.0.8"
@@ -8204,6 +8471,11 @@ make-runnable@^1.3.10:
     bluebird "^3.5.0"
     yargs "^16.2.0"
 
+marked@^4.3.0:
+  version "4.3.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/marked/-/marked-4.3.0.tgz#796362821b019f734054582038b116481b456cf3"
+  integrity sha1-eWNighsBn3NAVFggOLEWSBtFbPM=
+
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/media-typer/-/media-typer-0.3.0.tgz"
@@ -8230,6 +8502,28 @@ merge2@^1.3.0, merge2@^1.4.1:
   version "1.4.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/merge2/-/merge2-1.4.1.tgz"
   integrity sha1-Q2iJL4hekHRVpv19xVwMnUBJkK4=
+
+mermaid@^9.1.2:
+  version "9.4.3"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/mermaid/-/mermaid-9.4.3.tgz#62cf210c246b74972ea98c19837519b6f03427f2"
+  integrity sha1-Ys8hDCRrdJcuqYwZg3UZtvA0J/I=
+  dependencies:
+    "@braintree/sanitize-url" "^6.0.0"
+    cytoscape "^3.23.0"
+    cytoscape-cose-bilkent "^4.1.0"
+    cytoscape-fcose "^2.1.0"
+    d3 "^7.4.0"
+    dagre-d3-es "7.0.9"
+    dayjs "^1.11.7"
+    dompurify "2.4.3"
+    elkjs "^0.8.2"
+    khroma "^2.0.0"
+    lodash-es "^4.17.21"
+    non-layered-tidy-tree-layout "^2.0.2"
+    stylis "^4.1.2"
+    ts-dedent "^2.2.0"
+    uuid "^9.0.0"
+    web-worker "^1.2.0"
 
 methods@~1.1.2:
   version "1.1.2"
@@ -8481,6 +8775,19 @@ ng-table-virtual-scroll@1.5.x:
   dependencies:
     tslib "^2.0.0"
 
+ngx-markdown@^15:
+  version "15.1.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-markdown/-/ngx-markdown-15.1.2.tgz#e78ffc5f96a79e4775b9cdf09f10d5b1401b5317"
+  integrity sha1-54/8X5annkd1uc3wnxDVsUAbUxc=
+  dependencies:
+    tslib "^2.3.0"
+  optionalDependencies:
+    clipboard "^2.0.11"
+    emoji-toolkit "^7.0.0"
+    katex "^0.16.0"
+    mermaid "^9.1.2"
+    prismjs "^1.28.0"
+
 ngx-material-timepicker@^13.1.1:
   version "13.1.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ngx-material-timepicker/-/ngx-material-timepicker-13.1.1.tgz"
@@ -8590,6 +8897,11 @@ noms@0.0.0:
   dependencies:
     inherits "^2.0.1"
     readable-stream "~1.0.31"
+
+non-layered-tidy-tree-layout@^2.0.2:
+  version "2.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/non-layered-tidy-tree-layout/-/non-layered-tidy-tree-layout-2.0.2.tgz#57d35d13c356643fc296a55fb11ac15e74da7804"
+  integrity sha1-V9NdE8NWZD/ClqVfsRrBXnTaeAQ=
 
 nopt@^6.0.0:
   version "6.0.0"
@@ -9245,6 +9557,11 @@ pretty-bytes@^5.3.0, pretty-bytes@^5.6.0:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/pretty-bytes/-/pretty-bytes-5.6.0.tgz"
   integrity sha1-NWJW9kOAR3PIL2RyP+eMksYr6us=
 
+prismjs@^1.28.0:
+  version "1.29.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/prismjs/-/prismjs-1.29.0.tgz#f113555a8fa9b57c35e637bba27509dcf802dd12"
+  integrity sha1-8RNVWo+ptXw15je7onUJ3PgC3RI=
+
 proc-log@^3.0.0:
   version "3.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/proc-log/-/proc-log-3.0.0.tgz"
@@ -9694,6 +10011,11 @@ rimraf@^3.0.0, rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
+robust-predicates@^3.0.0:
+  version "3.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/robust-predicates/-/robust-predicates-3.0.2.tgz#d5b28528c4824d20fc48df1928d41d9efa1ad771"
+  integrity sha1-1bKFKMSCTSD8SN8ZKNQdnvoa13E=
+
 run-async@^2.4.0:
   version "2.4.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/run-async/-/run-async-2.4.1.tgz"
@@ -9705,6 +10027,11 @@ run-parallel@^1.1.9:
   integrity sha1-ZtE2jae9+SHrnZW9GpIp5/IaQ+4=
   dependencies:
     queue-microtask "^1.2.2"
+
+rw@1:
+  version "1.3.3"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/rw/-/rw-1.3.3.tgz#3f862dfa91ab766b14885ef4d01124bfda074fb4"
+  integrity sha1-P4Yt+pGrdmsUiF700BEkv9oHT7Q=
 
 rxjs-report-usage@^1.0.4:
   version "1.0.6"
@@ -9829,6 +10156,11 @@ select-hose@^2.0.0:
   version "2.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/select-hose/-/select-hose-2.0.0.tgz"
   integrity sha1-Yl2GWPhlr0Psliv8N2o3NZpJlMo=
+
+select@^1.1.2:
+  version "1.1.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"
+  integrity sha1-DnNQrN7ICxEIUoeG7B1EGNEbOW0=
 
 selfsigned@^2.1.1:
   version "2.1.1"
@@ -10391,6 +10723,11 @@ strip-json-comments@~2.0.1:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/strip-json-comments/-/strip-json-comments-2.0.1.tgz"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
+stylis@^4.1.2:
+  version "4.3.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/stylis/-/stylis-4.3.0.tgz#abe305a669fc3d8777e10eefcfc73ad861c5588c"
+  integrity sha1-q+MFpmn8PYd34Q7vz8c62GHFWIw=
+
 sumchecker@^1.2.0:
   version "1.3.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/sumchecker/-/sumchecker-1.3.1.tgz"
@@ -10533,6 +10870,11 @@ thunky@^1.0.2:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/thunky/-/thunky-1.1.0.tgz"
   integrity sha1-Wrr3FKlAXbBQRzK7zNLO3Z75U30=
 
+tiny-emitter@^2.0.0:
+  version "2.1.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
+  integrity sha1-HRpW7fxRxD6GPLtTgqcjMONVVCM=
+
 tmp@0.2.1, tmp@^0.2.1, tmp@~0.2.1:
   version "0.2.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/tmp/-/tmp-0.2.1.tgz"
@@ -10608,6 +10950,11 @@ ts-api-utils@^1.0.1:
   version "1.0.3"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ts-api-utils/-/ts-api-utils-1.0.3.tgz"
   integrity sha1-8SwceB0EQnMT26yAj0U/BQ5UozE=
+
+ts-dedent@^2.2.0:
+  version "2.2.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/ts-dedent/-/ts-dedent-2.2.0.tgz#39e4bd297cd036292ae2394eb3412be63f563bb5"
+  integrity sha1-OeS9KXzQNikq4jlOs0Er5j9WO7U=
 
 ts-essentials@^9.3.0:
   version "9.4.0"
@@ -10929,6 +11276,11 @@ uuid@^8.3.2:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/uuid/-/uuid-8.3.2.tgz"
   integrity sha1-gNW1ztJxu5r2xEXyGhoExgbO++I=
 
+uuid@^9.0.0:
+  version "9.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/uuid/-/uuid-9.0.1.tgz#e188d4c8853cc722220392c424cd637f32293f30"
+  integrity sha1-4YjUyIU8xyIiA5LEJM1jfzIpPzA=
+
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/v8-compile-cache-lib/-/v8-compile-cache-lib-3.0.1.tgz"
@@ -10996,6 +11348,11 @@ wcwidth@^1.0.1:
   integrity sha1-8LDc+RW8X/FSivrbLA4XtTLaL+g=
   dependencies:
     defaults "^1.0.3"
+
+web-worker@^1.2.0:
+  version "1.2.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/web-worker/-/web-worker-1.2.0.tgz#5d85a04a7fbc1e7db58f66595d7a3ac7c9c180da"
+  integrity sha1-XYWgSn+8Hn21j2ZZXXo6x8nBgNo=
 
 webidl-conversions@^3.0.0:
   version "3.0.1"

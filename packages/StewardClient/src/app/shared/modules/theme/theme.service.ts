@@ -11,6 +11,7 @@ import {
   UserSettingsState,
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
+import { MermaidAPI } from 'ngx-markdown';
 import { Observable } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -20,6 +21,31 @@ import { startWith } from 'rxjs/operators';
 })
 export class ThemeService {
   @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
+
+  /** Tracks the currently configured system theme. */
+  private _systemTheme: 'dark' | 'light' = 'light';
+
+  /** Tracks the currently configured system theme. */
+  public get systemTheme(): 'dark' | 'light' {
+    return this._systemTheme;
+  }
+
+  /** Tracks the currently configured theme, taking overrides into account. */
+  public get effectiveTheme(): 'dark' | 'light' {
+    if (this.themeOverride == 'match') {
+      return this.systemTheme;
+    }
+
+    return this.themeOverride;
+  }
+
+  /** A {@see MermaidAPI.Config} object for use with the markdown module. */
+  private _mermaidOptions: MermaidAPI.Config = {};
+
+  /** A {@see MermaidAPI.Config} object for use with the markdown module. */
+  public get mermaidOptions(): MermaidAPI.Config {
+    return this._mermaidOptions;
+  }
 
   /** The theme override setting. */
   public get themeOverride(): ThemeOverrideOptions {
@@ -55,7 +81,25 @@ export class ThemeService {
       this._themeOverride = settings?.themeOverride;
       this._themeEnvironmentWarning = settings?.themeEnvironmentWarning;
       this.syncTheme(settings?.themeOverride);
+      this.updateMermaidOptions();
     });
+
+    const isDarkMode =
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    this._systemTheme = isDarkMode ? 'dark' : 'light';
+    this.updateMermaidOptions();
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+      this._systemTheme = event.matches ? 'dark' : 'light';
+      this.updateMermaidOptions();
+    });
+  }
+
+  private updateMermaidOptions(): void {
+    this._mermaidOptions = {
+      darkMode: this.effectiveTheme === 'dark',
+      theme: this.effectiveTheme === 'dark' ? MermaidAPI.Theme.Dark : MermaidAPI.Theme.Default,
+    };
   }
 
   private syncTheme(option: ThemeOverrideOptions): void {
