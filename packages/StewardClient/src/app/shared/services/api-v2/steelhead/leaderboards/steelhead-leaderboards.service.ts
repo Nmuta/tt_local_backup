@@ -2,7 +2,6 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { addQueryParamArray } from '@helpers/add-query-param-array';
 import { overrideSteelheadEndpointKey } from '@helpers/override-endpoint-key';
-import { BackgroundJob } from '@models/background-job';
 import { DeviceType } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
@@ -141,63 +140,5 @@ export class SteelheadLeaderboardsService {
       undefined,
       headers,
     );
-  }
-
-  /** Generates leaderboard scores file. */
-  public generateLeaderboardScoresFile$(
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    pegasusEnvironment: string,
-  ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('pegasusEnvironment', pegasusEnvironment);
-
-    return this.api.postRequest$<BackgroundJob<void>>(
-      `${this.basePath}/scores/file/generate`,
-      null,
-      params,
-    );
-  }
-
-  /** Retrieve leaderboard scores file. */
-  public retrieveLeaderboardScoresFile$(
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    pegasusEnvironment: string,
-  ): Observable<string> {
-    const params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('pegasusEnvironment', pegasusEnvironment);
-
-    return this.api.getRequest$<string>(`${this.basePath}/scores/file/retrieve`, params);
-  }
-
-  /** Get leaderboard scores file metadata. */
-  public getLeaderboardScoresFileMetadata$(
-    scoreboardTypeId: BigNumber,
-    scoreTypeId: BigNumber,
-    trackId: BigNumber,
-    pivotId: BigNumber,
-    pegasusEnvironment: string,
-  ): Observable<BlobFileInfo> {
-    const params = new HttpParams()
-      .set('scoreboardType', scoreboardTypeId.toString())
-      .set('scoreType', scoreTypeId.toString())
-      .set('trackId', trackId.toString())
-      .set('pivotId', pivotId.toString())
-      .set('pegasusEnvironment', pegasusEnvironment);
-
-    return this.api.getRequest$<BlobFileInfo>(`${this.basePath}/scores/file/metadata`, params);
   }
 }
