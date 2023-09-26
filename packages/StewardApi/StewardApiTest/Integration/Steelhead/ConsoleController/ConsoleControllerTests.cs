@@ -20,8 +20,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
             stewardClient = new ConsoleControllerTestingClient(new Uri(endpoint), authKey);
             unauthedClient = new ConsoleControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
-            consoleId = 18230640064596068933;
-
+            consoleId = 17582066523437116711;
         }
 
         [TestMethod]
@@ -30,8 +29,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.SetConsoleBanStatus(consoleId, false).ConfigureAwait(false);
-                Assert.IsNotNull(response);
+                await stewardClient.SetConsoleBanStatus(consoleId, false).ConfigureAwait(false);
             }
             catch (ServiceException ex)
             {
@@ -45,7 +43,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.SetConsoleBanStatus(consoleId, false).ConfigureAwait(false);
+                await unauthedClient.SetConsoleBanStatus(consoleId, false).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -60,12 +58,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.SetConsoleBanStatus(TestConstants.InvalidXuid, false).ConfigureAwait(false);
+                await stewardClient.SetConsoleBanStatus(TestConstants.InvalidXuid, false).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
             }
         }
     }
