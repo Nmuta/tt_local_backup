@@ -50,8 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetDriverLevel(ulong xuid)
         {
-            ////xuid.IsValidXuid();
-
+            xuid.IsValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             var mappedResponse = await this.RetrieveDriverLevel(xuid).ConfigureAwait(true);
@@ -73,8 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [Authorize(Policy = UserAttributeValues.SetDriverLevel)]
         public async Task<IActionResult> SetDriverLevel(ulong xuid, [FromBody] SteelheadDriverLevel newDriverLevel)
         {
-            ////xuid.IsValidXuid();
-
+            xuid.IsValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
             newDriverLevel.DriverLevel.ShouldBeGreaterThanOrEqual(1, nameof(newDriverLevel.DriverLevel));
@@ -94,9 +92,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         /// </summary>
         private async Task<SteelheadDriverLevel> RetrieveDriverLevel(ulong xuid)
         {
-            LiveOpsService.GetDriverLevelOutput response = null;
-
-            response = await this.Services.LiveOpsService.GetDriverLevel(xuid).ConfigureAwait(true);
+            var response = await this.Services.LiveOpsService.GetDriverLevel(xuid).ConfigureAwait(true);
 
             var mappedResponse = this.mapper.SafeMap<SteelheadDriverLevel>(response);
 

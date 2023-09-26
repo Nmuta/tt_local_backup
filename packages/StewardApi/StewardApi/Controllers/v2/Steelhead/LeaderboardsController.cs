@@ -504,6 +504,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             int maxResults)
         {
             pivotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pivotId));
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             var searchParams = new ForzaSearchLeaderboardsParametersV2()
             {
