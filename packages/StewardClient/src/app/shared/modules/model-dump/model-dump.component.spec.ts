@@ -3,6 +3,8 @@ import BigNumber from 'bignumber.js';
 
 import { ModelDumpComponent } from './model-dump.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ModelDumpComponent', () => {
   let component: ModelDumpComponent;
   let fixture: ComponentFixture<ModelDumpComponent>;
@@ -11,9 +13,11 @@ describe('ModelDumpComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ModelDumpComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ModelDumpComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

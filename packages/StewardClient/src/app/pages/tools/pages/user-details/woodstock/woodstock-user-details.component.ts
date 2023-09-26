@@ -2,7 +2,7 @@ import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
 import { UgcType } from '@models/ugc-filters';
 import { SpecialXuid1 } from '@models/special-identity';
 import { takeUntil } from 'rxjs';

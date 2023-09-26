@@ -1,5 +1,5 @@
 import { Directive, forwardRef, Input, Renderer2 } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { MatLegacyButton as MatButton } from '@angular/material/legacy-button';
 import { BaseDirective } from '@components/base-component/base.directive';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

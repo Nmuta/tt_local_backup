@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatIconModule } from '@angular/material/icon';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
@@ -15,7 +15,7 @@ import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-acti
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { LuxonModule } from 'luxon-angular';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { BountyDetailsRoutingModule } from './bounty-details.routing';
 import { BountyDetailsComponent } from './bounty-details.component';
 import { SteelheadBountyDetailsComponent } from './pages/steelhead/steelhead-bounty-details.component';

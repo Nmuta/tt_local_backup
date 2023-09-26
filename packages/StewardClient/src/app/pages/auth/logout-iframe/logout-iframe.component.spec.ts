@@ -1,14 +1,16 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { of } from 'rxjs';
 import { delay, startWith } from 'rxjs/operators';
-import faker from '@faker-js/faker';
 
 import { LogoutIframeComponent } from './logout-iframe.component';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('LogoutIframeComponent:', () => {
   let component: LogoutIframeComponent;
@@ -22,11 +24,13 @@ describe('LogoutIframeComponent:', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      declarations: [LogoutIframeComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        declarations: [LogoutIframeComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('dispatch');

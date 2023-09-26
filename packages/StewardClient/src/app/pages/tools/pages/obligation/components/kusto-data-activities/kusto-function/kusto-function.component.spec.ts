@@ -2,14 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KustoFunctionComponent } from './kusto-function.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('KustoFunctionComponent', () => {
   let component: KustoFunctionComponent;
   let fixture: ComponentFixture<KustoFunctionComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [KustoFunctionComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [KustoFunctionComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

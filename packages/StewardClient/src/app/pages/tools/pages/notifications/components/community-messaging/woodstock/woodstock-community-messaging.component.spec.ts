@@ -10,18 +10,22 @@ import { of, throwError } from 'rxjs';
 import { WoodstockCommunityMessagingComponent } from './woodstock-community-messaging.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockCommunityMessagingComponent', () => {
   let component: WoodstockCommunityMessagingComponent;
   let fixture: ComponentFixture<WoodstockCommunityMessagingComponent>;
   let mockWoodstockService: WoodstockService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockCommunityMessagingComponent],
-      imports: [PipesModule],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockCommunityMessagingComponent],
+        imports: [PipesModule],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

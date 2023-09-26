@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SunriseUgcTableComponent } from './sunrise-ugc-table.component';
 import { SunriseService } from '@services/sunrise';
@@ -10,7 +10,9 @@ import { UgcType } from '@models/ugc-filters';
 import faker from '@faker-js/faker';
 import { createMockSunriseUgcHideService } from '@services/api-v2/sunrise/ugc/hide/sunrise-ugc-hide.service.mock';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('SunriseUgcTableComponent', () => {
   let component: SunriseUgcTableComponent;
@@ -18,16 +20,18 @@ describe('SunriseUgcTableComponent', () => {
   let mockSunriseService: SunriseService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
-      declarations: [SunriseUgcTableComponent, BigJsonPipe],
-      providers: [
-        createMockSunriseService(),
-        createMockSunriseUgcHideService(),
-        createMockBackgroundJobService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
+        declarations: [SunriseUgcTableComponent, BigJsonPipe],
+        providers: [
+          createMockSunriseService(),
+          createMockSunriseUgcHideService(),
+          createMockBackgroundJobService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseUgcTableComponent);
     component = fixture.componentInstance;

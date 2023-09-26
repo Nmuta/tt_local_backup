@@ -20,7 +20,7 @@ import {
   ValidationErrors,
   Validator,
 } from '@angular/forms';
-import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
 import { isNull, isUndefined } from 'lodash';
 import { DateTime } from 'luxon';
 import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';

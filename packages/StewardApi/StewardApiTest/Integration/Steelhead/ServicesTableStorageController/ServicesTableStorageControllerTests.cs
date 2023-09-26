@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 

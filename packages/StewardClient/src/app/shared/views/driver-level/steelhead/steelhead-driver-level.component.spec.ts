@@ -5,17 +5,21 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockSteelheadPlayerDriverLevelService } from '@services/api-v2/steelhead/player/driver-level/steelhead-player-driver-level.service.mock';
 import { SteelheadDriverLevelComponent } from './steelhead-driver-level.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadDriverLevelComponent', () => {
   let component: SteelheadDriverLevelComponent;
   let fixture: ComponentFixture<SteelheadDriverLevelComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SteelheadDriverLevelComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadPlayerDriverLevelService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SteelheadDriverLevelComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadPlayerDriverLevelService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadDriverLevelComponent);
     component = fixture.debugElement.componentInstance;

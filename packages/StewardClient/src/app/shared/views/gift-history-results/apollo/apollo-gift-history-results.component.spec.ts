@@ -7,16 +7,20 @@ import { LspGroup } from '@models/lsp-group';
 import { createMockApolloService } from '@services/apollo/apollo.service.mock';
 import { ApolloGiftHistoryResultsComponent } from './apollo-gift-history-results.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloGiftHistoryComponent', () => {
   let component: ApolloGiftHistoryResultsComponent;
   let fixture: ComponentFixture<ApolloGiftHistoryResultsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ApolloGiftHistoryResultsComponent],
-      providers: [createMockApolloService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ApolloGiftHistoryResultsComponent],
+        providers: [createMockApolloService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

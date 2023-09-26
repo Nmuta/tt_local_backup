@@ -72,17 +72,32 @@ export class SteelheadBuildersCupService {
   }
 
   /** Gets the Steelhead Builder's Cup championships. */
-  public getBuildersCupChampionships$(): Observable<Map<GuidLikeString, string>> {
-    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/championships`);
+  public getBuildersCupChampionships$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
+    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    return this.api.getRequest$<Map<GuidLikeString, string>>(
+      `${this.basePath}/championships`,
+      params,
+    );
   }
 
   /** Gets the Steelhead Builder's Cup ladders. */
-  public getBuildersCupLadders$(): Observable<Map<GuidLikeString, string>> {
-    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/ladders`);
+  public getBuildersCupLadders$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
+    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/ladders`, params);
   }
 
   /** Gets the Steelhead Builder's Cup series. */
-  public getBuildersCupSeries$(): Observable<Map<string, string>> {
-    return this.api.getRequest$<Map<string, string>>(`${this.basePath}/series`);
+  public getBuildersCupSeries$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<string, string>> {
+    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    return this.api.getRequest$<Map<string, string>>(`${this.basePath}/series`, params);
   }
 }

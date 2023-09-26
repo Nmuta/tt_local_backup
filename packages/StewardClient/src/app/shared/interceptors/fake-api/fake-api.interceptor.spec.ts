@@ -5,13 +5,17 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 import { FakeApiInterceptor } from './fake-api.interceptor';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('FakeApiInterceptor', () => {
   beforeEach(() =>
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      providers: [FakeApiInterceptor, createMockLoggerService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }),
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        providers: [FakeApiInterceptor, createMockLoggerService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ),
   );
 
   it('should be created', () => {

@@ -9,14 +9,18 @@ import {
 
 import { ExternalDropdownComponent } from './external-dropdown.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ExternalDropdownComponent', () => {
   let component: ExternalDropdownComponent;
   let fixture: ComponentFixture<ExternalDropdownComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ExternalDropdownComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ExternalDropdownComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

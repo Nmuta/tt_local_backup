@@ -1,5 +1,5 @@
 import { Directive, Inject, Input } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { MatLegacyButton as MatButton } from '@angular/material/legacy-button';
 import { BaseDirective } from '@components/base-component/base.directive';
 import { isBoolean } from 'lodash';
 import { combineLatest } from 'rxjs';

@@ -9,12 +9,14 @@ import { Subject } from 'rxjs';
 
 import { SteelheadPlayerInventoryComponent } from './steelhead-player-inventory.component';
 import { NgxsModule } from '@ngxs/store';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import BigNumber from 'bignumber.js';
 import faker from '@faker-js/faker';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { SteelheadMasterInventoryFakeApi } from '@interceptors/fake-api/apis/title/steelhead/masterInventory';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('SteelheadPlayerInventoryComponent', () => {
   let component: SteelheadPlayerInventoryComponent;
@@ -25,12 +27,14 @@ describe('SteelheadPlayerInventoryComponent', () => {
   const fakeMasterInventory = SteelheadMasterInventoryFakeApi.make();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([]), MatDialogModule],
-      declarations: [SteelheadPlayerInventoryComponent],
-      providers: [createMockSteelheadPlayerInventoryService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([]), MatDialogModule],
+        declarations: [SteelheadPlayerInventoryComponent],
+        providers: [createMockSteelheadPlayerInventoryService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     mockSteelheadPlayerInventoryService = TestBed.inject(SteelheadPlayerInventoryService);
     waitUntil$ = new Subject<void>();

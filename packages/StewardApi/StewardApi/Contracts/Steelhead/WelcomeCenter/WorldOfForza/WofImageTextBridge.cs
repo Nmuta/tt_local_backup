@@ -69,5 +69,10 @@
         ///     Gets or sets the popup description.
         /// </summary>
         public LocTextBridge PopupDescription { get; set; }
+
+        /// <summary>
+        ///     Gets or sets when tag property.
+        /// </summary>
+        public string When { get; set; }
     }
 }

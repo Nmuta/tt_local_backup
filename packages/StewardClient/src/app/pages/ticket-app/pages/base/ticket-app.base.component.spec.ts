@@ -25,6 +25,8 @@ import { Navigate } from '@ngxs/router-plugin';
 import faker from '@faker-js/faker';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('TicketAppBaseComponent', () => {
   let fixture: ComponentFixture<TicketAppBaseComponent<IdentityResultAlpha>>;
   let component: TicketAppBaseComponent<IdentityResultAlpha>;
@@ -33,22 +35,24 @@ describe('TicketAppBaseComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [TicketAppBaseComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockZendeskService(),
-        createMockScrutineerDataParser(),
-        createMockClipboard(),
-        ...createMockMsalServices(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [TicketAppBaseComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockZendeskService(),
+          createMockScrutineerDataParser(),
+          createMockClipboard(),
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(
       TicketAppBaseComponent as Type<TicketAppBaseComponent<IdentityResultAlpha>>,

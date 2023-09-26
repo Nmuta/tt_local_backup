@@ -40,6 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2.External.Automation
         public async Task<IActionResult> GetStateForAdo()
         {
             var jobs = await this.jobTracker.GetInProgressJobsAsync();
+            var nonTestJobs = jobs.Where(j => !j.IsTestJob);
             if (jobs.Any())
             {
                 return this.BadRequest();

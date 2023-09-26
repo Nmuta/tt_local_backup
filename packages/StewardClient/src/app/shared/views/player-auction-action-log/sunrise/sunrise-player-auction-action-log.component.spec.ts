@@ -5,15 +5,19 @@ import { createMockSunriseService } from '@services/sunrise';
 
 import { SunrisePlayerAuctionActionLogComponent } from './sunrise-player-auction-action-log.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunrisePlayerAuctionActionLogComponent', () => {
   let component: SunrisePlayerAuctionActionLogComponent;
   let fixture: ComponentFixture<SunrisePlayerAuctionActionLogComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunrisePlayerAuctionActionLogComponent],
-      providers: [createMockSunriseService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunrisePlayerAuctionActionLogComponent],
+        providers: [createMockSunriseService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

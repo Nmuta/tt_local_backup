@@ -14,6 +14,8 @@ import { ApolloService } from './apollo.service';
 import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloService', () => {
   let injector: TestBed;
   let service: ApolloService;
@@ -21,11 +23,13 @@ describe('ApolloService', () => {
   let nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiService(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiService(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     service = injector.inject(ApolloService);
     apiServiceMock = injector.inject(ApiService);

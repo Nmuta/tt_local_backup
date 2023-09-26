@@ -4,16 +4,20 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 import { SteelheadPaidEntitlementsComponent } from './steelhead-paid-entitlements.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadPaidEntitlementsComponent', () => {
   let component: SteelheadPaidEntitlementsComponent;
   let fixture: ComponentFixture<SteelheadPaidEntitlementsComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SteelheadPaidEntitlementsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SteelheadPaidEntitlementsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadPaidEntitlementsComponent);
     component = fixture.debugElement.componentInstance;

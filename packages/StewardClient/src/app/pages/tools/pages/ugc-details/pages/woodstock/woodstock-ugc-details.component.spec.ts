@@ -8,22 +8,26 @@ import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.s
 
 import { WoodstockUgcDetailsComponent } from './woodstock-ugc-details.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockUgcDetailsComponent', () => {
   let component: WoodstockUgcDetailsComponent;
   let fixture: ComponentFixture<WoodstockUgcDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockUgcDetailsComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [ScopedSharedLookupService],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockUgcDetailsComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [ScopedSharedLookupService],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

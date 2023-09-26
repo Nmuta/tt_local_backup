@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import {
+  MatLegacyDialogModule as MatDialogModule,
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
 import faker from '@faker-js/faker';
 import { fakePlayerUgcItem, PlayerUgcItem } from '@models/player-ugc-item';
 import { UgcFeaturedStatus } from '@models/ugc-featured-status';
@@ -10,6 +14,8 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { DateTime, Duration } from 'luxon';
 import { of } from 'rxjs';
 import { SunriseFeatureUgcModalComponent } from './sunrise-feature-ugc-modal.component';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('SunriseFeatureUgcModalComponent', () => {
   const model: PlayerUgcItem = fakePlayerUgcItem();
@@ -21,21 +27,23 @@ describe('SunriseFeatureUgcModalComponent', () => {
   let mockSunriseService: SunriseService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [SunriseFeatureUgcModalComponent],
-      imports: [MatButtonModule, MatDialogModule, PipesModule],
-      providers: [
-        createMockSunriseService(),
-        {
-          provide: MatDialogRef,
-          useValue: { close: () => null, beforeClosed: () => of() },
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: model,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseFeatureUgcModalComponent],
+        imports: [MatButtonModule, MatDialogModule, PipesModule],
+        providers: [
+          createMockSunriseService(),
+          {
+            provide: MatDialogRef,
+            useValue: { close: () => null, beforeClosed: () => of() },
+          },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: model,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseFeatureUgcModalComponent);
     component = fixture.componentInstance;

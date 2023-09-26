@@ -479,7 +479,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<MotdEntry, MotdBridge>()
                 .ReverseMap();
             this.CreateMap<LocalizedStringBridge, LocEntry>()
-                .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 512))
+                .ForMember(dest => dest.MaxLength, opt => opt.MapFrom(src => 2000))
                 .ForMember(dest => dest.id, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
                 .ForMember(dest => dest.SubCategory, opt => opt.MapFrom(src => src.SubCategory))

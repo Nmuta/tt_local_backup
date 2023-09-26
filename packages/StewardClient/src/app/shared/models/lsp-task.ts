@@ -1,6 +1,6 @@
+import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { GuidLikeString } from './extended-types';
-import BigNumber from 'bignumber.js';
 
 export enum LspTaskState {
   Pending = 'Pending',

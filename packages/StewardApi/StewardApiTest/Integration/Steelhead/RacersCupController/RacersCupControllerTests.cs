@@ -32,11 +32,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             try
             {
                 var response = await stewardClient.GetRacersCupSchedule().ConfigureAwait(false);
-                Assert.IsNotNull(response);
+                Assert.Fail();
             }
             catch (ServiceException ex)
             {
-                Assert.Fail(ex.ResponseBody);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task GetRivalsEvents_ByXuid_InvalidXuid()
+        public async Task GetRacersCup_ByXuid_InvalidXuid()
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 

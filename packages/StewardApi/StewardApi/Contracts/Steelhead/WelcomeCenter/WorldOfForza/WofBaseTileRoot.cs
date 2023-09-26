@@ -93,6 +93,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public string TelemetryTag { get; set; }
 
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
+        public string when { get; set; }
+
+        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public Guid id { get; set; }
     }
 

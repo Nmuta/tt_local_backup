@@ -8,22 +8,26 @@ import { ScopedSharedLookupService } from '../../services/scoped-shared-lookup.s
 
 import { SteelheadUgcDetailsComponent } from './steelhead-ugc-details.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadUgcDetailsComponent', () => {
   let component: SteelheadUgcDetailsComponent;
   let fixture: ComponentFixture<SteelheadUgcDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadUgcDetailsComponent],
-      imports: [
-        PipesModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-      ],
-      providers: [ScopedSharedLookupService],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadUgcDetailsComponent],
+        imports: [
+          PipesModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        providers: [ScopedSharedLookupService],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

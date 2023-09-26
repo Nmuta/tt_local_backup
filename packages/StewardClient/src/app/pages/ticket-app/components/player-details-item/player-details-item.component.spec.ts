@@ -10,6 +10,8 @@ import {
 import { PlayerDetailsItemComponent } from './player-details-item.component';
 import { createMockClipboard, Clipboard } from '@shared/helpers/clipboard';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('PlayerDetailsItemComponent', () => {
   let fixture: ComponentFixture<PlayerDetailsItemComponent>;
   let component: PlayerDetailsItemComponent;
@@ -17,12 +19,14 @@ describe('PlayerDetailsItemComponent', () => {
   let mockClipboard: Clipboard;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [PlayerDetailsItemComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockClipboard()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        declarations: [PlayerDetailsItemComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockClipboard()],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockClipboard = injector.inject(Clipboard);

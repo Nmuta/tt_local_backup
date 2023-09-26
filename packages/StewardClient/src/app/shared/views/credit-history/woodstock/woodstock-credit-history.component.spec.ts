@@ -7,6 +7,8 @@ import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/t
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { createMockWoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockCreditHistoryComponent', () => {
   let component: WoodstockCreditHistoryComponent;
   let fixture: ComponentFixture<WoodstockCreditHistoryComponent>;
@@ -14,11 +16,13 @@ describe('WoodstockCreditHistoryComponent', () => {
   const testXuid = fakeXuid();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockCreditHistoryComponent],
-      providers: [createMockWoodstockService(), createMockWoodstockPlayerCreditUpdatesService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockCreditHistoryComponent],
+        providers: [createMockWoodstockService(), createMockWoodstockPlayerCreditUpdatesService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -6,20 +6,24 @@ import { NgxsModule } from '@ngxs/store';
 
 import { LocationDetailsComponent } from './location-details.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('LocationDetailsComponent', () => {
   let component: LocationDetailsComponent;
   let fixture: ComponentFixture<LocationDetailsComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-      ],
-      declarations: [LocationDetailsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        declarations: [LocationDetailsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

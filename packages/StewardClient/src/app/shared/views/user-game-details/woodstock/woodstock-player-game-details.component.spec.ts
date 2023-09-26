@@ -8,6 +8,8 @@ import { WoodstockPlayerGameDetailsComponent } from './woodstock-player-game-det
 import { createMockWoodstockPlayerService } from '@services/api-v2/woodstock/player/woodstock-player.service.mock';
 import { WoodstockPlayerService } from '@services/api-v2/woodstock/player/woodstock-player.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockPlayerGameDetailsComponent', () => {
   let component: WoodstockPlayerGameDetailsComponent;
   let fixture: ComponentFixture<WoodstockPlayerGameDetailsComponent>;
@@ -15,12 +17,14 @@ describe('WoodstockPlayerGameDetailsComponent', () => {
   let mockWoodstockPlayerService: WoodstockPlayerService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockPlayerGameDetailsComponent],
-      imports: [PipesModule],
-      providers: [createMockWoodstockPlayerService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockPlayerGameDetailsComponent],
+        imports: [PipesModule],
+        providers: [createMockWoodstockPlayerService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

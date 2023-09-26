@@ -22,6 +22,8 @@ class TestAuctionBlocklistNewEntryService implements AuctionBlocklistNewEntrySer
   }
 }
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('AuctionBlocklistNewEntryComponent', () => {
   let component: AuctionBlocklistNewEntryComponent;
   let fixture: ComponentFixture<AuctionBlocklistNewEntryComponent>;
@@ -30,12 +32,14 @@ describe('AuctionBlocklistNewEntryComponent', () => {
     new TestAuctionBlocklistNewEntryService();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [AuctionBlocklistNewEntryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [TestAuctionBlocklistNewEntryService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [AuctionBlocklistNewEntryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [TestAuctionBlocklistNewEntryService],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(AuctionBlocklistNewEntryComponent);
     component = fixture.debugElement.componentInstance;

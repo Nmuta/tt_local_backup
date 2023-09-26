@@ -34,7 +34,7 @@ export class WoodstockGroupNotificationsFakeApi extends FakeApiBase {
           notificationId: faker.datatype.uuid(),
           expirationDateUtc: toDateTime(faker.date.soon()),
           hasDeviceType: faker.datatype.boolean(),
-          deviceType: faker.random.arrayElement(Object.getOwnPropertyNames(DeviceType)),
+          deviceType: faker.helpers.arrayElement(Object.getOwnPropertyNames(DeviceType)),
           groupId: fakeBigNumber(),
         },
     );

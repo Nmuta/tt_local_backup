@@ -5,12 +5,14 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { WoodstockMakeModelAutocompleteComponent } from './woodstock-make-model-autocomplete.component';
 import { WoodstockSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import { SimpleCar } from '@models/cars';
 import faker from '@faker-js/faker';
 import { uniqBy } from 'lodash';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('WoodstockMakeModelAutocompleteComponent', () => {
   let fixture: ComponentFixture<WoodstockMakeModelAutocompleteComponent>;
@@ -21,18 +23,20 @@ describe('WoodstockMakeModelAutocompleteComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [WoodstockMakeModelAutocompleteComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [WoodstockMakeModelAutocompleteComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

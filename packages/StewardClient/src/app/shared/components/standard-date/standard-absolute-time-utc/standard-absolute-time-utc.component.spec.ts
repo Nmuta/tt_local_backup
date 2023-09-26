@@ -5,15 +5,19 @@ import { DateTime } from 'luxon';
 import { LuxonModule } from 'luxon-angular';
 import { StandardAbsoluteTimeUtcComponent } from './standard-absolute-time-utc.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('StandardAbsoluteTimeUtcComponent', () => {
   let component: StandardAbsoluteTimeUtcComponent;
   let fixture: ComponentFixture<StandardAbsoluteTimeUtcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [StandardAbsoluteTimeUtcComponent],
-      imports: [PipesModule, LuxonModule, StandardCopyModule],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [StandardAbsoluteTimeUtcComponent],
+        imports: [PipesModule, LuxonModule, StandardCopyModule],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

@@ -4,13 +4,13 @@ import { UgcDetailsComponent } from './ugc-details.component';
 import { WoodstockUgcDetailsComponent } from './pages/woodstock/woodstock-ugc-details.component';
 import { SunriseUgcDetailsComponent } from './pages/sunrise/sunrise-ugc-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { RouterModule } from '@angular/router';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
@@ -31,19 +31,19 @@ import { SteelheadUgcDetailsComponent } from './pages/steelhead/steelhead-ugc-de
 import { SteelheadLookupComponent } from './pages/steelhead-lookup/steelhead-lookup.component';
 import { SteelheadRedirectComponent } from './pages/steelhead-redirect/steelhead-redirect.component';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { StandardFormModule } from '@shared/modules/standard-form/standard-form.module';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { UgcOperationSnackbarComponent } from './components/ugc-action-snackbar/ugc-operation-snackbar.component';
 import { PersistUgcModalModule } from '@views/persist-ugc-modal/persist-ugc-modal.module';
 import { EditUgcModalModule } from '@views/edit-ugc-modal/edit-ugc-modal.module';
-import { MatOptionModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 
 /**
  *  Routed module for interacting with UGC Details.

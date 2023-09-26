@@ -1,6 +1,9 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+} from '@angular/material/legacy-dialog';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { PlayerUgcItem } from '@models/player-ugc-item';
@@ -8,11 +11,12 @@ import { UgcType } from '@models/ugc-filters';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { cloneDeep } from 'lodash';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, combineLatest } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { SteelheadEditUgcModalComponent } from './steelhead/steelhead-edit-ugc-modal.component';
 import { WoodstockEditUgcModalComponent } from './woodstock/woodstock-edit-ugc-modal.component';
 import { UgcEditInput } from '@models/ugc-edit-input';
+import { UgcEditStatsInput } from '@models/ugc-edit-stats-input';
 
 /** Edit Ugc contract. */
 export interface EditUgcContract {
@@ -26,6 +30,8 @@ export interface EditUgcContract {
   getUgcItem$(itemId: string, type: UgcType): Observable<PlayerUgcItem>;
   /** Edit ugc item. */
   editUgcItem$(itemId: string, ugcEditInput: UgcEditInput): Observable<void>;
+  /** Edit ugc item stats. */
+  editUgcItemStats$(itemId: string, ugcEditStatsInput: UgcEditStatsInput): Observable<void>;
 }
 
 export type EditUgcModalComponentUnion =
@@ -46,6 +52,10 @@ export class EditUgcModalBaseComponent extends BaseComponent implements OnInit {
   public formControls = {
     title: new UntypedFormControl('', [Validators.required]),
     description: new UntypedFormControl('', [Validators.required]),
+    downloaded: new UntypedFormControl('', [Validators.required]),
+    liked: new UntypedFormControl('', [Validators.required]),
+    disliked: new UntypedFormControl('', [Validators.required]),
+    used: new UntypedFormControl('', [Validators.required]),
   };
   public formGroup = new UntypedFormGroup(this.formControls);
   public postMonitor = new ActionMonitor('POST Edit UGC');
@@ -90,6 +100,14 @@ export class EditUgcModalBaseComponent extends BaseComponent implements OnInit {
 
     this.formControls.title.setValue(data.title);
     this.formControls.description.setValue(data.description);
+    this.formControls.downloaded.setValue(data.timesDownloaded);
+    this.formControls.downloaded.addValidators(Validators.min(data.timesDownloaded.toNumber()));
+    this.formControls.liked.setValue(data.timesLiked);
+    this.formControls.liked.addValidators(Validators.min(data.timesLiked.toNumber()));
+    this.formControls.disliked.setValue(data.timesDisliked);
+    this.formControls.disliked.addValidators(Validators.min(data.timesDisliked.toNumber()));
+    this.formControls.used.setValue(data.timesUsed);
+    this.formControls.used.addValidators(Validators.min(data.timesUsed.toNumber()));
   }
 
   /** Angular lifecycle hook. */
@@ -107,19 +125,40 @@ export class EditUgcModalBaseComponent extends BaseComponent implements OnInit {
 
   /** Edit ugc. */
   public editUgc(): void {
-    if (!this.formGroup.valid) {
+    if (!this.formGroup.valid && !this.isUgcInfoDirty() && !this.isUgcStatsDirty()) {
       return;
     }
 
-    const ugcEditInput: UgcEditInput = {
-      title: this.formControls.title.value,
-      description: this.formControls.description.value,
-    };
+    const editObservables: Observable<void>[] = [];
+
+    if (this.isUgcInfoDirty()) {
+      const ugcEditInput: UgcEditInput = {
+        title: this.formControls.title.value,
+        description: this.formControls.description.value,
+      };
+      editObservables.push(this.service.editUgcItem$(this.ugcItem.id, ugcEditInput));
+    }
+
+    if (this.isUgcStatsDirty()) {
+      const ugcEditStatsInput: UgcEditStatsInput = {
+        downloaded: Math.max(
+          this.formControls.downloaded.value - this.ugcItem.timesDownloaded.toNumber(),
+          0,
+        ),
+        liked: Math.max(this.formControls.liked.value - this.ugcItem.timesLiked.toNumber(), 0),
+        disliked: Math.max(
+          this.formControls.disliked.value - this.ugcItem.timesDisliked.toNumber(),
+          0,
+        ),
+        used: Math.max(this.formControls.used.value - this.ugcItem.timesUsed.toNumber(), 0),
+      };
+      editObservables.push(this.service.editUgcItemStats$(this.ugcItem.id, ugcEditStatsInput));
+    }
+
     this.postMonitor = this.postMonitor.repeat();
     this.dialogRef.disableClose = true;
 
-    this.service
-      .editUgcItem$(this.ugcItem.id, ugcEditInput)
+    combineLatest(editObservables)
       .pipe(
         this.postMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
@@ -132,5 +171,20 @@ export class EditUgcModalBaseComponent extends BaseComponent implements OnInit {
         this.dialogRef.disableClose = false;
         this.ugcItem = ugcItem;
       });
+  }
+
+  /** Checks if general ugc info are dirty. */
+  public isUgcInfoDirty(): boolean {
+    return this.formControls.title.dirty || this.formControls.description.dirty;
+  }
+
+  /** Checks if ugc stats are dirty. */
+  public isUgcStatsDirty(): boolean {
+    return (
+      this.formControls.downloaded.dirty ||
+      this.formControls.liked.dirty ||
+      this.formControls.disliked.dirty ||
+      this.formControls.used.dirty
+    );
   }
 }

@@ -4,7 +4,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { takeUntil } from 'rxjs/operators';
 import { filter } from 'rxjs';
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
-import { TooltipPosition } from '@angular/material/tooltip';
+import { LegacyTooltipPosition as TooltipPosition } from '@angular/material/legacy-tooltip';
 
 /** Produces a questionmark icon which contains helpful text and an optional link to the docs. */
 @Component({
