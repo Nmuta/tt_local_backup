@@ -135,6 +135,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             ulong xuid,
             int profileId)
         {
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
+
             var inventory = await this.GetPlayerInventoryByProfileId(xuid, profileId).ConfigureAwait(true);
 
             return this.Ok(inventory);
@@ -153,6 +156,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             string vin)
         {
             var parsedVin = vin.TryParseGuidElseThrow(nameof(vin));
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
             var inventory = await this.GetPlayerInventoryByProfileId(xuid, profileId).ConfigureAwait(true);
 
             var car = inventory.Cars.FirstOrDefault(car => car.Vin == parsedVin);

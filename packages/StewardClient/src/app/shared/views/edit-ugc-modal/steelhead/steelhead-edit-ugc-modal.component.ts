@@ -8,6 +8,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
 import { SteelheadUgcEditService } from '@services/api-v2/steelhead/ugc/edit/steelhead-ugc-edit.service';
 import { UgcEditInput } from '@models/ugc-edit-input';
+import { UgcEditStatsInput } from '@models/ugc-edit-stats-input';
 
 /** Steelhead modal to edit a UGC item. */
 @Component({
@@ -32,6 +33,9 @@ export class SteelheadEditUgcModalComponent extends BaseComponent {
       },
       editUgcItem$(itemId: string, ugcEditInput: UgcEditInput): Observable<void> {
         return steelheadUgcEditService.editUgc$(itemId, ugcEditInput);
+      },
+      editUgcItemStats$(itemId: string, ugcEditStatsInput: UgcEditStatsInput): Observable<void> {
+        return steelheadUgcEditService.editUgcStats$(itemId, ugcEditStatsInput);
       },
     };
   }

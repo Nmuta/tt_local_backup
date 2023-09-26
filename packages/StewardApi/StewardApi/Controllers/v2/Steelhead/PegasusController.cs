@@ -39,9 +39,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetDateTimeRanges()
+        public async Task<IActionResult> GetDateTimeRanges(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var datetimeRanges = await this.steelheadPegasusService.GetDateTimeRangesAsync();
+            var datetimeRanges = await this.steelheadPegasusService.GetDateTimeRangesAsync(environment, slot);
 
             return this.Ok(datetimeRanges);
         }
@@ -53,9 +55,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetChallenges()
+        public async Task<IActionResult> GetChallenges(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var challenges = await this.steelheadPegasusService.GetChallengesAsync();
+            var challenges = await this.steelheadPegasusService.GetChallengesAsync(environment, slot);
 
             return this.Ok(challenges);
         }
