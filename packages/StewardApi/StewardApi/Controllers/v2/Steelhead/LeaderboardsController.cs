@@ -147,6 +147,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             var scores = await this.leaderboardProvider.GetLeaderboardScoresAsync(
                 this.Services,
