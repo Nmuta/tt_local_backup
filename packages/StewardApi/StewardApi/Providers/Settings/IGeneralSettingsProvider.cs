@@ -3,7 +3,8 @@
 namespace Turn10.LiveOps.StewardApi.Providers.Settings
 {
     /// <summary>
-    ///     Exposes methods for getting general settings.
+    ///     Exposes methods for access general Steward settings.
+    ///     Example: LSP Endpoints
     /// </summary>
     public interface IGeneralSettingsProvider
     {
