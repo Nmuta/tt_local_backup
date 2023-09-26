@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '01800946-07d7-4f1f-a386-1225555f05cb',
+      shortText: 'Bugfixes and improvements',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
       shortMarkdown: 'Add **markdown** support',
