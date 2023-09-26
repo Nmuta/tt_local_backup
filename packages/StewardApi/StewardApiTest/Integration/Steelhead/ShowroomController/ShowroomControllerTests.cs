@@ -60,12 +60,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetFeaturedCarShowcase(TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await stewardClient.GetFeaturedCarShowcase(TestConstants.InvalidXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -105,12 +105,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetFeaturedDivision(TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await stewardClient.GetFeaturedDivision(TestConstants.InvalidXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -150,12 +150,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetFeaturedManufacturer(TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await stewardClient.GetFeaturedManufacturer(TestConstants.InvalidXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -195,12 +195,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetCarSales(TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await stewardClient.GetCarSales(TestConstants.InvalidXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 

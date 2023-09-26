@@ -53,25 +53,25 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             return await ServiceClient.SendRequestAsync<LspGroup>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<IList<BasicPlayer>> PostAddUsersToGroup(ulong groupId)
+        public async Task<IList<BasicPlayer>> PostAddUsersToGroup(ulong groupId, UpdateUserGroupInput userList)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/usergroup/{groupId}/add");
 
-            return await ServiceClient.SendRequestAsync<IList<BasicPlayer>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<BasicPlayer>>(HttpMethod.Post, path, this.authKey, Version, requestBody: userList, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<IList<BasicPlayer>> PostRemoveUsersFromGroup(ulong groupId)
+        public async Task<IList<BasicPlayer>> PostRemoveUsersFromGroup(ulong groupId, UpdateUserGroupInput userList)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/usergroup/{groupId}/remove");
 
-            return await ServiceClient.SendRequestAsync<IList<BasicPlayer>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<BasicPlayer>>(HttpMethod.Post, path, this.authKey, Version, requestBody: userList, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<OkResult> PostRemoveAllUsersFromGroup(ulong groupId)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/usergroup/{groupId}/removeAllUsers");
 
-            return await ServiceClient.SendRequestAsync<OkResult>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<OkResult>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
     }
 }

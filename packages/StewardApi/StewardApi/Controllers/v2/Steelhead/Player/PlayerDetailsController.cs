@@ -53,9 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            Forza.WebServices.FM8.Generated.LiveOpsService.GetLiveOpsUserDataByGamerTagOutput response = null;
-
-            response = await this.Services.LiveOpsService.GetLiveOpsUserDataByGamerTag(gamertag)
+            var response = await this.Services.LiveOpsService.GetLiveOpsUserDataByGamerTag(gamertag)
                 .ConfigureAwait(false);
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
@@ -76,9 +74,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetPlayerDetails(
             ulong xuid)
         {
-            Forza.WebServices.FM8.Generated.LiveOpsService.GetLiveOpsUserDataByXuidOutput response = null;
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
-            response = await this.Services.LiveOpsService.GetLiveOpsUserDataByXuid(xuid)
+            var response = await this.Services.LiveOpsService.GetLiveOpsUserDataByXuid(xuid)
                 .ConfigureAwait(false);
 
             var result = this.mapper.SafeMap<SteelheadPlayerDetails>(response.userData);
@@ -99,9 +98,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetPlayerGameDetails(
             ulong xuid)
         {
-            GetUserDetailsOutput response;
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
-            response = await this.Services.UserManagementService.GetUserDetails(xuid)
+            var response = await this.Services.UserManagementService.GetUserDetails(xuid)
                 .ConfigureAwait(false);
 
             var result = this.mapper.SafeMap<PlayerGameDetails>(response.forzaUser);
