@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         public async Task<IEnumerable<CarFeaturedShowcase>> GetFeaturedCarShowcase()
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}/showroom/car-featured");
+            var path = new Uri(this.baseUri, $"{TitlePath}/showroom/carFeatured");
 
             return await ServiceClient.SendRequestAsync<IEnumerable<CarFeaturedShowcase>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }

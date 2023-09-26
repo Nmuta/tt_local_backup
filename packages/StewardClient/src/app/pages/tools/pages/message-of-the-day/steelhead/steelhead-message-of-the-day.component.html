@@ -53,6 +53,7 @@
               <select-localized-string
                 [service]="localizationSelectServiceContract"
                 [formControl]="formControls.localizedTitleHeader"
+                [readonlyValue]="titleValue"
                 label="Title Header"
                 formControlName="localizedTitleHeader"
               ></select-localized-string>
@@ -72,6 +73,7 @@
               <select-localized-string
                 [service]="localizationSelectServiceContract"
                 [formControl]="formControls.localizedContentHeader"
+                [readonlyValue]="headerValue"
                 label="Content Header"
                 hintMessage="Optional"
                 formControlName="localizedContentHeader"
@@ -79,6 +81,7 @@
               <select-localized-string
                 [service]="localizationSelectServiceContract"
                 [formControl]="formControls.localizedContentBody"
+                [readonlyValue]="bodyValue"
                 label="Content Body"
                 formControlName="localizedContentBody"
               ></select-localized-string>

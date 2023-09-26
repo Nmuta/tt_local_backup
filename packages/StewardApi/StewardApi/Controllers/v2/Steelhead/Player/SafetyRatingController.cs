@@ -55,6 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> GetSafetyRatingAsync(
             ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var getSafetyRatingConfig = this.GetPlayerSafetyRatingConfigAsync(xuid);
@@ -81,6 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> ClearSafetyRatingAsync(
             ulong xuid)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid);
@@ -103,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> SetSafetyRatingAsync(
             ulong xuid, [FromBody] SafetyRatingInput safetyRating)
         {
+            xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
             var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid);
 

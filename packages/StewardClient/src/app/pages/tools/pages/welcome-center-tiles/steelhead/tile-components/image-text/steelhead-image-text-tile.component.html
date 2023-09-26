@@ -5,24 +5,28 @@
     <select-localized-string
       [service]="localizationSelectServiceContract"
       [formControl]="formControls.localizedPopupTitle"
+      [readonlyValue]="popupTitleValue"
       label="Popup Title"
       formControlName="localizedPopupTitle"
     ></select-localized-string>
     <select-localized-string
       [service]="localizationSelectServiceContract"
       [formControl]="formControls.localizedPopupHeader"
+      [readonlyValue]="popupHeaderValue"
       label="Popup Header"
       formControlName="localizedPopupHeader"
     ></select-localized-string>
     <select-localized-string
       [service]="localizationSelectServiceContract"
       [formControl]="formControls.localizedPopupSubHeader"
+      [readonlyValue]="popupSubHeaderValue"
       label="Popup Subheader"
       formControlName="localizedPopupSubHeader"
     ></select-localized-string>
     <select-localized-string
       [service]="localizationSelectServiceContract"
       [formControl]="formControls.localizedPopupDescription"
+      [readonlyValue]="popupDescriptionValue"
       label="Popup Description"
       formControlName="localizedPopupDescription"
     ></select-localized-string>

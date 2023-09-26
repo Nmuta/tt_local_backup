@@ -8,6 +8,7 @@ import { EditUgcContract } from '../edit-ugc-modal.component';
 import { BaseComponent } from '@components/base-component/base.component';
 import { WoodstockUgcEditService } from '@services/api-v2/woodstock/ugc/edit/woodstock-ugc-edit.service';
 import { UgcEditInput } from '@models/ugc-edit-input';
+import { UgcEditStatsInput } from '@models/ugc-edit-stats-input';
 
 /** Woodstock modal to edit a UGC item. */
 @Component({
@@ -32,6 +33,9 @@ export class WoodstockEditUgcModalComponent extends BaseComponent {
       },
       editUgcItem$(itemId: string, ugcEditInput: UgcEditInput): Observable<void> {
         return woodstockUgcEditService.editUgc$(itemId, ugcEditInput);
+      },
+      editUgcItemStats$(itemId: string, ugcEditStatsInput: UgcEditStatsInput): Observable<void> {
+        return woodstockUgcEditService.editUgcStats$(itemId, ugcEditStatsInput);
       },
     };
   }
