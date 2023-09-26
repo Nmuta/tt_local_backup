@@ -13,6 +13,24 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: "Remove 'Set Inventory From Reference' button",
     },
     {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.WelcomeCenterTiles, NavbarTool.MessageOfTheDay],
+      },
+      uuid: '2fbd3ca3-6c67-429b-8936-b40a78e9ed1b',
+      shortText: 'Order tiles by name and display "when" tag',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '835421f0-d6c1-45dc-b6c7-6eb26c9bef81',
+      shortText: 'Add ability to modify UGC stats',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '01800946-07d7-4f1f-a386-1225555f05cb',
+      shortText: 'Bugfixes and improvements',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
       shortMarkdown: 'Add **markdown** support',
