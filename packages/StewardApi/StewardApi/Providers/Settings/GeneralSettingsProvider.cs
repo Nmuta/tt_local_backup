@@ -31,6 +31,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Settings
             };
         }
 
+        /// <summary>
+        ///     Determines priority of endpoints returned to client.
+        ///     Priority goes lowest to highest with Retail always first (1)
+        /// </summary>
         private int MapEndpointPriority(string priority)
         {
             switch (priority.ToUpperInvariant())
@@ -42,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Settings
                 case "FLIGHT":
                     return 3;
                 default:
-                    return 4;
+                    return int.MaxValue;
             }
         }
     }
