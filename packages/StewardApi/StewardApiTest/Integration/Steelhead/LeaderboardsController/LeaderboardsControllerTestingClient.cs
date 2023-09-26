@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             string pivotId,
             string deviceTypes)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}/leaderboards/near-player/{xuid}?scoreboardType={scoreboardType}&scoreType={scoreType}&trackId={trackId}&pivotId={pivotId}&deviceTypes={deviceTypes}");
+            var path = new Uri(this.baseUri, $"{TitlePath}/leaderboards/scores/near-player/{xuid}?scoreboardType={scoreboardType}&scoreType={scoreType}&trackId={trackId}&pivotId={pivotId}&deviceTypes={deviceTypes}");
 
             return await ServiceClient.SendRequestAsync<IEnumerable<LeaderboardScore>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }

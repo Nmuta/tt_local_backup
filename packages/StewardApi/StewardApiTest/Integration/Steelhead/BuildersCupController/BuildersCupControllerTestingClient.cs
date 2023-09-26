@@ -16,11 +16,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<BuildersCupFeaturedTour> GetCmsBuildersCupSchedule()
+        public async Task<IList<BuildersCupFeaturedTour>> GetCmsBuildersCupSchedule()
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/buildersCup/schedule");
 
-            return await ServiceClient.SendRequestAsync<BuildersCupFeaturedTour>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<BuildersCupFeaturedTour>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<Dictionary<Guid, string>> GetBuildersCupChampionships()
