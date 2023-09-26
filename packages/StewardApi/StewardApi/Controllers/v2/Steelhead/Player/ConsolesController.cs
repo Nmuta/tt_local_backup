@@ -50,10 +50,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
-            Services.LiveOps.FM8.Generated.UserManagementService.GetConsolesOutput response = null;
-
-            response = await this.Services.UserManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(true);
+            var response = await this.Services.UserManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(true);
 
             var result = this.mapper.SafeMap<IList<ConsoleDetails>>(response.consoles);
 
@@ -72,10 +72,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
-            Services.LiveOps.FM8.Generated.UserManagementService.GetSharedConsoleUsersOutput response = null;
-
-            response = await this.Services.UserManagementService.GetSharedConsoleUsers(
+            var response = await this.Services.UserManagementService.GetSharedConsoleUsers(
                     xuid,
                     startIndex,
                     maxResults).ConfigureAwait(true);

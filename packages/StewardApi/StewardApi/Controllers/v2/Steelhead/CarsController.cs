@@ -44,9 +44,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetCarsAsync()
+        public async Task<IActionResult> GetCarsAsync(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var cars = await this.pegasusService.GetCarsReferenceAsync().ConfigureAwait(true);
+            var cars = await this.pegasusService.GetCarsReferenceAsync(environment, slot).ConfigureAwait(true);
 
             return this.Ok(cars);
         }
@@ -58,9 +60,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetCarManufacturersAsync()
+        public async Task<IActionResult> GetCarManufacturersAsync(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var carMakes = await this.pegasusService.GetCarMakesAsync().ConfigureAwait(true);
+            var carMakes = await this.pegasusService.GetCarMakesAsync(environment, slot).ConfigureAwait(true);
 
             return this.Ok(carMakes);
         }

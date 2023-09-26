@@ -10,7 +10,7 @@ import {
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
-import { GameTitle } from '@models/enums';
+import { GameTitle, PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 import { PullRequest } from '@models/git-operation';
 import { LocalizedStringsMap } from '@models/localization';
 import { GenericPopupTile, WelcomeCenterTile } from '@models/welcome-center';
@@ -60,6 +60,9 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
+  public popupTitleValue: string;
+  public popupDescriptionValue: string;
+
   public readonly permAttribute = PermAttributeName.UpdateWelcomeCenterTiles;
 
   constructor(
@@ -71,7 +74,11 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(
+          true,
+          PegasusEnvironment.Dev,
+          PegasusProjectionSlot.Daily,
+        );
       },
     };
   }
@@ -109,7 +116,7 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
     this.generalTileComponent.mapFormToWelcomeCenterTile(this.genericPopupTile);
 
     this.steelheadGenericPopupTileService
-      .submitGenericPopupTileModification$(this.tileId, this.genericPopupTile)
+      .submitGenericPopupTileModification$(this.tileId.key, this.genericPopupTile)
       .pipe(this.submitWelcomeCenterTileMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(pullrequest => {
         this.pullRequestUrl = pullrequest.webUrl;
@@ -130,6 +137,9 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
         id: genericPopupTile.popupDescription.locref,
       });
     }
+
+    this.popupTitleValue = genericPopupTile.popupTitle.base;
+    this.popupDescriptionValue = genericPopupTile.popupDescription.base;
 
     const baseTile = {
       tileImagePath: genericPopupTile.tileImagePath,
