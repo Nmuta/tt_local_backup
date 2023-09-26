@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
       uuid: 'n01a43al-0uui-d1wr-01ei-3yha7dha4ah4',
-      shortText: `Prevent featured UGC from being reported.`
+      shortText: `Prevent featured UGC from being reported.`,
     },
     {
       tag: {
