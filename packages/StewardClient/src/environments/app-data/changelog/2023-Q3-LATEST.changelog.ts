@@ -8,6 +8,14 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.WelcomeCenterTiles, NavbarTool.MessageOfTheDay],
+      },
+      uuid: '2fbd3ca3-6c67-429b-8936-b40a78e9ed1b',
+      shortText: 'Order tiles by name and display "when" tag',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
       uuid: '835421f0-d6c1-45dc-b6c7-6eb26c9bef81',
       shortText: 'Add ability to modify UGC stats',

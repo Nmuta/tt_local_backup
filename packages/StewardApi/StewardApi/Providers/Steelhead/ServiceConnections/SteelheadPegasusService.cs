@@ -1019,7 +1019,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var choices = new Dictionary<Guid, string>();
             foreach (var entry in root.Entries)
             {
-                choices.Add(entry.idAttribute, entry.FriendlyMessageName);
+                choices.Add(entry.idAttribute, entry.when == null ? entry.FriendlyMessageName : $"{entry.FriendlyMessageName} ({entry.when})");
             }
 
             return choices;
@@ -1364,7 +1364,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var choices = new Dictionary<Guid, string>();
             foreach (var entry in entries)
             {
-                choices.Add(entry.id, entry.FriendlyName);
+                choices.Add(entry.id, entry.when == null ? entry.FriendlyName : $"{entry.FriendlyName} ({entry.when})");
             }
 
             return choices;

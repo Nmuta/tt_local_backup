@@ -45,5 +45,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
             get => this.InternalDateUtc.ToString("O");
             set => this.InternalDateUtc = DateTime.Parse(value, CultureInfo.InvariantCulture).ToUniversalTime();
         }
+
+        /// <summary>
+        ///     Gets or sets when tag property.
+        /// </summary>
+        public string When { get; set; }
     }
 }
