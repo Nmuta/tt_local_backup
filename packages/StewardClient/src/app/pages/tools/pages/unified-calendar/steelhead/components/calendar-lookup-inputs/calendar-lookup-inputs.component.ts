@@ -3,6 +3,7 @@ import { AugmentedCompositeIdentity } from '@views/player-selection/player-selec
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
+import { Observable, map, startWith } from 'rxjs';
 
 export type CalendarLookupInputs = {
   identity?: IdentityResultAlpha;
@@ -42,12 +43,26 @@ export class CalendarLookupInputsComponent implements OnInit {
     this.pegasusFormControls,
   );
 
+  public environmentOptions: string[] = ['Prod', 'Dev'];
+  public slotOptions: string[] = ['Daily', 'Default', 'Live', 'Staging'];
+  public filteredSlots: Observable<string[]>;
+
   /** Lifecycle hook. */
   public ngOnInit(): void {
     if (this.requireDaysForward) {
       this.identityFormControls.daysForward.addValidators([Validators.required]);
       this.pegasusFormControls.daysForward.addValidators([Validators.required]);
     }
+
+    this.filteredSlots = this.pegasusFormControls.pegasusSlot.valueChanges.pipe(
+      startWith(''),
+      map(state => (state ? this.filterSlots(state) : this.slotOptions.slice())),
+    );
+  }
+
+  /** Filter slot selection based on input into pegasusSlot formcontrol. */
+  public filterSlots(input: string): string[] {
+    return this.slotOptions.filter(slot => slot.toLowerCase().indexOf(input.toLowerCase()) === 0);
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

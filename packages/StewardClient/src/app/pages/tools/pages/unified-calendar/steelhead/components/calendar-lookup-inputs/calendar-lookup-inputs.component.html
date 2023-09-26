@@ -32,11 +32,34 @@
         <form [formGroup]="pegasusCalendarScheduleForm">
           <mat-form-field>
             <mat-label> Pegasus Environment </mat-label>
-            <input matInput type="text" [formControl]="pegasusFormControls.pegasusEnvironment" />
+            <input
+              matInput
+              type="text"
+              [formControl]="pegasusFormControls.pegasusEnvironment"
+              [matAutocomplete]="autoEnvironment"
+            />
+            <mat-autocomplete #autoEnvironment="matAutocomplete">
+              <mat-option *ngFor="let option of environmentOptions" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
           <mat-form-field>
             <mat-label> Pegasus Slot </mat-label>
-            <input matInput type="text" [formControl]="pegasusFormControls.pegasusSlot" />
+            <input
+              matInput
+              type="text"
+              [formControl]="pegasusFormControls.pegasusSlot"
+              [matAutocomplete]="autoSlot"
+            />
+            <mat-autocomplete #autoSlot="matAutocomplete">
+              <mat-option *ngFor="let slot of filteredSlots | async" [value]="slot">
+                {{ slot }}
+              </mat-option>
+              <!-- <mat-option *ngFor="let option of slotOptions" [value]="option">
+                {{option}}
+              </mat-option> -->
+            </mat-autocomplete>
           </mat-form-field>
           <mat-form-field>
             <mat-label> Pegasus Snapshot </mat-label>
