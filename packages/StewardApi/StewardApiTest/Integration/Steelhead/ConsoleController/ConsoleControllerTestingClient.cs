@@ -14,11 +14,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
+        public async Task SetConsoleBanStatus(ulong consoleId, bool isBanned)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})");
+            var path = new Uri(this.baseUri, $"{TitlePath}/console/{consoleId}/banStatus");
 
-            return await ServiceClient.SendRequestAsync<IActionResult>(HttpMethod.Put, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            await ServiceClient.SendRequestAsync(HttpMethod.Put, path, this.authKey, Version, requestBody: isBanned, headers: this.headers).ConfigureAwait(false);
         }
     }
 }

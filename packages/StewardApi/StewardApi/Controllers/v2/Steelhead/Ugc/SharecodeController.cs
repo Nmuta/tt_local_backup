@@ -82,7 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Ugc
         // Generate sharecode(s) for UGC identified by UGC ID(s).
         private async Task<IList<BulkGenerateSharecodeResponse>> GenerateSharecodes(IStorefrontManagementService storefrontManagementService, Guid[] ugcIds)
         {
-            List<BulkGenerateSharecodeResponse> response = new List<BulkGenerateSharecodeResponse>();
+            var response = new List<BulkGenerateSharecodeResponse>();
 
             foreach (var ugcId in ugcIds)
             {
