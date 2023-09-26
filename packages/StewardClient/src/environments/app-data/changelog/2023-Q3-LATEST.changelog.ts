@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting] },
       uuid: 'd7c4f499-5c52-4a26-a29a-aba8e7de2e16',
-      shortText: 'Remove \'Set Inventory From Reference\' button',
+      shortText: "Remove 'Set Inventory From Reference' button",
     },
     {
       tag: ChangelogTag.Internal,
