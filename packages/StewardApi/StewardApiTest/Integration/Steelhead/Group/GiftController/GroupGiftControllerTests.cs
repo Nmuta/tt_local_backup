@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
             try
             {
-                var response = await unauthedClient.GiftLiveryToUserGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId,bulkgift).ConfigureAwait(false);
+                var response = await unauthedClient.GiftLiveryToUserGroup(TestConstants.LiveOpsLeaderboardTalentedPlayersGroupId, bulkgift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
