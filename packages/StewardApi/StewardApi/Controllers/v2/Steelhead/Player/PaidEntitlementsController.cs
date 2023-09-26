@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Helpers.Swagger;
 using Turn10.Services.LiveOps.FM8.Generated;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
@@ -52,7 +53,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
         public async Task<IActionResult> GetPaidEntitlementsAsync(ulong xuid)
         {
-            await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             AdminForzaProfile currentProfile = null;
             var userProfiles = await this.Services.UserInventoryManagementService.GetAdminUserProfiles(xuid, uint.MaxValue).ConfigureAwait(true);

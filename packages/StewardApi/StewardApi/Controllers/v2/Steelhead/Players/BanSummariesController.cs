@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -49,12 +50,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             [FromBody] IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
-            await this.EnsurePlayersExist(this.Services, xuids).ConfigureAwait(true);
 
             if (xuids.Count == 0)
             {
                 return this.Ok(new List<BanSummary>());
             }
+
+            await this.Services.EnsurePlayersExistAsync(xuids);
 
             UserManagementService.GetUserBanSummariesOutput result = null;
 
