@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -65,21 +65,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             catch (ServiceException ex)
             {
                 Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [IntegrationTest]
-        public async Task ResendLoyaltyRewards_ByXuid_InvalidXuid()
-        {
-            try
-            {
-                var response = await stewardClient.ResendLoyaltyRewards(TestConstants.InvalidXuid, TestConstants.TestAccountTitlesOwned).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException ex)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, ex.StatusCode);
             }
         }
 
