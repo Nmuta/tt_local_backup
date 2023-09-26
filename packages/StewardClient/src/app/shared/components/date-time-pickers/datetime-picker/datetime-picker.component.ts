@@ -13,7 +13,10 @@ import { collectErrors } from '@helpers/form-group-collect-errors';
 import { renderDelay } from '@helpers/rxjs';
 import { isEqual } from 'lodash';
 import { DateTime } from 'luxon';
-import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateAdapterOptions } from 'ngx-material-luxon';
+import {
+  MAT_LUXON_DATE_ADAPTER_OPTIONS,
+  MatLuxonDateAdapterOptions,
+} from '@angular/material-luxon-adapter';
 import { Subject } from 'rxjs';
 import { map, retry, startWith, tap } from 'rxjs/operators';
 

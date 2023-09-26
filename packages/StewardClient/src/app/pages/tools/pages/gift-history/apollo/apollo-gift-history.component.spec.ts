@@ -13,6 +13,8 @@ import { ApolloGiftHistoryComponent } from './apollo-gift-history.component';
 import { ApolloGiftHistoryState } from './state/apollo-gift-history.state';
 import { SetApolloGiftHistoryMatTabIndex } from './state/apollo-gift-history.state.actions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloGiftHistoryComponent', () => {
   let component: ApolloGiftHistoryComponent;
   let fixture: ComponentFixture<ApolloGiftHistoryComponent>;
@@ -20,16 +22,18 @@ describe('ApolloGiftHistoryComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState, ApolloGiftHistoryState]),
-      ],
-      declarations: [ApolloGiftHistoryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState, ApolloGiftHistoryState]),
+        ],
+        declarations: [ApolloGiftHistoryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(ApolloGiftHistoryComponent);
     component = fixture.debugElement.componentInstance;

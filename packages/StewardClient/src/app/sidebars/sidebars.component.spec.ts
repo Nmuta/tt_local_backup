@@ -5,7 +5,7 @@ import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-me
 import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import { TourState } from '@shared/state/tours/tours.state';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 
 describe('SidebarsComponent', () => {

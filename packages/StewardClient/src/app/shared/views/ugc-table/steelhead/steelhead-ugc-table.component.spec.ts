@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA, SimpleChanges } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { fakePlayerUgcItem } from '@models/player-ugc-item';
 import { SteelheadUgcTableComponent } from './steelhead-ugc-table.component';
@@ -10,9 +10,11 @@ import faker from '@faker-js/faker';
 import { GameTitle } from '@models/enums';
 import { createMockSteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service.mock';
 import { SteelheadUgcLookupService } from '@services/api-v2/steelhead/ugc/lookup/steelhead-ugc-lookup.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 import { createMockSteelheadUgcSharecodeService } from '@services/api-v2/steelhead/ugc/sharecode/steelhead-ugc-sharecode.service.mock';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 import { createMockSteelheadUgcHideStatusService } from '@services/api-v2/steelhead/ugc/hide-status/steelhead-ugc-hide-status.service.mock';
 
 describe('SteelheadUgcTableComponent', () => {
@@ -21,17 +23,19 @@ describe('SteelheadUgcTableComponent', () => {
   let mockSteelheadUgcLookupService: SteelheadUgcLookupService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
-      declarations: [SteelheadUgcTableComponent, BigJsonPipe],
-      providers: [
-        createMockSteelheadUgcLookupService(),
-        createMockBackgroundJobService(),
-        createMockSteelheadUgcHideStatusService(),
-        createMockSteelheadUgcSharecodeService(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatPaginatorModule, BrowserAnimationsModule, MatSnackBarModule],
+        declarations: [SteelheadUgcTableComponent, BigJsonPipe],
+        providers: [
+          createMockSteelheadUgcLookupService(),
+          createMockBackgroundJobService(),
+          createMockSteelheadUgcHideStatusService(),
+          createMockSteelheadUgcSharecodeService(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadUgcTableComponent);
     component = fixture.componentInstance;

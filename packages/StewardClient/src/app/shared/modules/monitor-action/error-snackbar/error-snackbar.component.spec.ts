@@ -1,9 +1,15 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule, MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import {
+  MatLegacySnackBarModule as MatSnackBarModule,
+  MatLegacySnackBarRef as MatSnackBarRef,
+  MAT_LEGACY_SNACK_BAR_DATA as MAT_SNACK_BAR_DATA,
+} from '@angular/material/legacy-snack-bar';
 import { ActionMonitor } from '../action-monitor';
 
 import { ErrorSnackbarComponent } from './error-snackbar.component';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('ErrorSnackbarComponent', () => {
   let component: ErrorSnackbarComponent;
@@ -12,15 +18,17 @@ describe('ErrorSnackbarComponent', () => {
 
   beforeEach(async () => {
     snackBarRefSpy = jasmine.createSpyObj('MatSnackBarRef', ['dismiss']);
-    await TestBed.configureTestingModule({
-      declarations: [ErrorSnackbarComponent],
-      imports: [MatSnackBarModule],
-      providers: [
-        { provide: MAT_SNACK_BAR_DATA, useValue: new ActionMonitor('GET') },
-        { provide: MatSnackBarRef, useValue: snackBarRefSpy },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ErrorSnackbarComponent],
+        imports: [MatSnackBarModule],
+        providers: [
+          { provide: MAT_SNACK_BAR_DATA, useValue: new ActionMonitor('GET') },
+          { provide: MatSnackBarRef, useValue: snackBarRefSpy },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

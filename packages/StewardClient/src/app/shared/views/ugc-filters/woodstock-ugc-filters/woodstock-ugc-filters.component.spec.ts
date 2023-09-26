@@ -6,12 +6,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WoodstockUgcFiltersComponent } from './woodstock-ugc-filters.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { UgcAccessLevel, UgcFilters, UgcOrderBy, UgcType } from '@models/ugc-filters';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { SimpleCar } from '@models/cars';
 import { WoodstockSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 import faker from '@faker-js/faker';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('WoodstockUgcFiltersComponent', () => {
   let fixture: ComponentFixture<WoodstockUgcFiltersComponent>;
@@ -22,18 +24,20 @@ describe('WoodstockUgcFiltersComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [WoodstockUgcFiltersComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [WoodstockUgcFiltersComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

@@ -9,6 +9,8 @@ import { Subject } from 'rxjs';
 
 import { WoodstockPlayerInventoryComponent } from './woodstock-player-inventory.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockPlayerInventoryComponent', () => {
   let component: WoodstockPlayerInventoryComponent;
   let fixture: ComponentFixture<WoodstockPlayerInventoryComponent>;
@@ -16,11 +18,13 @@ describe('WoodstockPlayerInventoryComponent', () => {
   let waitUntil$: Subject<void>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockPlayerInventoryComponent],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockPlayerInventoryComponent],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     service = TestBed.inject(WoodstockService);
     waitUntil$ = new Subject<void>();

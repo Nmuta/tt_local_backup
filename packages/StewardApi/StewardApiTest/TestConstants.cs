@@ -27,15 +27,22 @@ namespace Turn10.LiveOps.StewardTest
         public const string InvalidGamertag = "Invalid Gamertag";
         public const string InvalidT10Id = "9876543210123456789";
         public const string InvalidAuthKey = "Bearer ThisIsNotAnApiKeyAtAll";
-        public const ulong InvalidXuid = 9223372036854775806;
+        public const ulong InvalidXuid = 9223372036854775809;
         public const ulong InvalidXuidBelow100 = 1;
         public const int InvalidProfileId = 987654321;
         public const int MaxLoopTimeInMilliseconds = 120000;
         public const int DefaultStartIndex = 0;
         public const int DefaultMaxResults = 100;
+        public const int LiveOpsLeaderboardTalentedPlayersGroupId = 31;
+        public const int InvalidGrouId = 99999;
+        public const string ValidProductId = "9P2LBL48Q0LS";
 
         // Test account Plink
         public const ulong TestAccountXuid = 2675352635783107;
         public const string TestAccountGamertag = "Plink";
+        public const string TestAccountExternalProfileId = "941a0a72-8a47-4149-8df9-304fcd927a05";
+        public const string TestAccountMessageId = "a8ac87e2-cb4c-4418-8681-84241abee5c6";
+        public const ulong TestAccountProfileId = 1442;
+        public const string TestAccountKnownVin = "05c5e205-f139-4504-91d3-9c451c1a992f";
     }
 }

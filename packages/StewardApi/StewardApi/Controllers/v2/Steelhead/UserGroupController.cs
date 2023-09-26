@@ -117,6 +117,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///    Get a user group users.
         /// </summary>
+        /// <remarks>
+        /// Will not return users if the user group contains more than 20,000 users
+        /// </remarks>
         [HttpGet("{userGroupId}")]
         [SwaggerResponse(200, type: typeof(GetUserGroupUsersResponse))]
         [LogTagDependency(DependencyLogTags.Lsp)]
@@ -128,6 +131,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             if (LargeUserGroups.Contains(userGroupId))
             {
                 throw new InvalidArgumentsStewardException($"User group provided is part of large user group list. (userGroupId: {userGroupId})");
+            }
+
+            var userCount = await this.Services.UserManagementService.GetUserGroupMemberCount(userGroupId).ConfigureAwait(true);
+
+            // If the user count is higher than 20000, only return the count and do not get the actual users to avoid a potential timeout
+            if (userCount.count > 20000)
+            {
+                return this.Ok(new GetUserGroupUsersResponse() { PlayerCount = (int)userCount.count });
             }
 
             var users = await this.Services.UserManagementService.GetUserGroupUsers(userGroupId, startIndex, maxResults).ConfigureAwait(true);

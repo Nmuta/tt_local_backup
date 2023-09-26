@@ -1,13 +1,13 @@
 import { ComponentType } from '@angular/cdk/portal';
-import { TemplateRef, EmbeddedViewRef, Injectable, OnDestroy } from '@angular/core';
+import { EmbeddedViewRef, Injectable, OnDestroy, TemplateRef } from '@angular/core';
 import {
-  MatSnackBar,
-  MatSnackBarConfig,
-  MatSnackBarContainer,
-  MatSnackBarRef,
-  SimpleSnackBar,
-  TextOnlySnackBar,
-} from '@angular/material/snack-bar';
+  MatLegacySnackBar as MatSnackBar,
+  MatLegacySnackBarConfig as MatSnackBarConfig,
+  MatLegacySnackBarContainer as MatSnackBarContainer,
+  MatLegacySnackBarRef as MatSnackBarRef,
+  LegacySimpleSnackBar as SimpleSnackBar,
+  LegacyTextOnlySnackBar as TextOnlySnackBar,
+} from '@angular/material/legacy-snack-bar';
 import { PublicInterface } from '@helpers/types';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

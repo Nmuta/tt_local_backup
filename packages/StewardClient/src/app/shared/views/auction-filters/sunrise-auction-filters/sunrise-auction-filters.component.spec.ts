@@ -6,13 +6,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SunriseAuctionFiltersComponent } from './sunrise-auction-filters.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { SimpleCar } from '@models/cars';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
 import { MakeModelFilterGroup } from '@views/ugc-filters/ugc-filters.base.component';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { AuctionFilters, AuctionSort, AuctionStatus } from '@models/auction-filters';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('SunriseAuctionFiltersComponent', () => {
   let fixture: ComponentFixture<SunriseAuctionFiltersComponent>;
@@ -23,18 +25,20 @@ describe('SunriseAuctionFiltersComponent', () => {
   let mockSunriseService: SunriseService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [SunriseAuctionFiltersComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSunriseService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [SunriseAuctionFiltersComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSunriseService()],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

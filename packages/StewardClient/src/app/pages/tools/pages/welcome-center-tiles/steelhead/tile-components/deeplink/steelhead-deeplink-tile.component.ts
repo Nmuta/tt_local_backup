@@ -11,7 +11,7 @@ import {
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
-import { GameTitle } from '@models/enums';
+import { GameTitle, PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 import { PullRequest } from '@models/git-operation';
 import { LocalizedStringsMap } from '@models/localization';
 import { DeeplinkTile, WelcomeCenterTile, DestinationType } from '@models/welcome-center';
@@ -80,7 +80,11 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(
+          true,
+          PegasusEnvironment.Dev,
+          PegasusProjectionSlot.Daily,
+        );
       },
     };
   }
@@ -121,7 +125,7 @@ export class DeeplinkTileComponent extends BaseComponent implements OnChanges {
     this.generalTileComponent.mapFormToWelcomeCenterTile(this.deeplinkTile);
 
     this.steelheadDeeplinkTileService
-      .submitDeeplinkTileModification$(this.tileId, this.deeplinkTile)
+      .submitDeeplinkTileModification$(this.tileId.key, this.deeplinkTile)
       .pipe(this.submitWelcomeCenterTileMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(pullrequest => {
         this.pullRequestUrl = pullrequest.webUrl;

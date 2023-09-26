@@ -1,14 +1,21 @@
 import { AfterViewInit, Component, Input, ViewChild, ViewChildren } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 import { MatAccordion, MatExpansionPanel } from '@angular/material/expansion';
 import { BaseComponent } from '@components/base-component/base.component';
-import { ChangelogEntry, ChangelogGroup, ChangelogTag } from '@environments/app-data/changelog';
+import {
+  ChangelogEntry,
+  ChangelogGroup,
+  ChangelogTag,
+  MarkdownChangelogEntry,
+  OldChangelogEntry,
+} from '@environments/app-data/changelog';
 import { renderDelay } from '@helpers/rxjs';
 import { Select } from '@ngxs/store';
 import { ChangelogService } from '@services/changelog/changelog.service';
 import { ChangelogModel } from '@shared/state/changelog/changelog.model';
 import { ChangelogState } from '@shared/state/changelog/changelog.state';
 import { Observable, takeUntil } from 'rxjs';
+import { has } from 'lodash';
 
 /** Displays a single changelog group. */
 @Component({
@@ -20,8 +27,6 @@ export class ChangelogGroupComponent extends BaseComponent implements AfterViewI
   @Select(ChangelogState) public changelogState$: Observable<ChangelogModel>;
   /** Changelog group to be displayed. */
   @Input() public group: ChangelogGroup;
-  /** Show internal changelog entries. */
-  @Input() public showInternal: boolean;
   @ViewChild(MatAccordion) public accordion: MatAccordion;
   @ViewChildren(MatExpansionPanel) public panels: MatExpansionPanel[];
 
@@ -39,6 +44,34 @@ export class ChangelogGroupComponent extends BaseComponent implements AfterViewI
     this.changelogService.changed$
       .pipe(renderDelay(), takeUntil(this.onDestroy$))
       .subscribe(() => this.syncGroupState());
+  }
+
+  /** True when given entry is a {@see MarkdownChangelogEntry}. */
+  public isMarkdownEntry(entry: ChangelogEntry): entry is MarkdownChangelogEntry {
+    return has(entry, 'shortMarkdown');
+  }
+
+  /** True when given entry is an {@see OldChangelogEntry}. */
+  public isOldEntry(entry: ChangelogEntry): entry is OldChangelogEntry {
+    return has(entry, 'shortText');
+  }
+
+  /** Casts a changelog entry to a {@see MarkdownChangelogEntry} if safe. Otherwise throws. */
+  public toMarkdownEntry(entry: ChangelogEntry): MarkdownChangelogEntry {
+    if (!this.isMarkdownEntry(entry)) {
+      throw new Error('Given entry is not a markdown changelog entry.');
+    }
+
+    return entry as MarkdownChangelogEntry;
+  }
+
+  /** Casts a changelog entry to a {@see OldChangelogEntry} if safe. Otherwise throws. */
+  public toOldEntry(entry: ChangelogEntry): OldChangelogEntry {
+    if (!this.isOldEntry(entry)) {
+      throw new Error('Given entry is not an old-style changelog entry.');
+    }
+
+    return entry as OldChangelogEntry;
   }
 
   /** True if the uuid is acknowledged. */

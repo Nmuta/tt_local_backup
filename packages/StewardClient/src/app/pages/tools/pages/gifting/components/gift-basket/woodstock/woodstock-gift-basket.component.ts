@@ -19,7 +19,7 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
 import { ZERO } from '@helpers/bignumbers';
 import { cloneDeep } from 'lodash';
 import { WOODSTOCK_UNIQUE_CAR_IDS_LOOKUP } from '@environments/app-data/item-lists/woodstock-special-cars';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { HCI } from '@environments/environment';
 import { pluralize, PLURALIZE_CONFIG } from '@helpers/pluralize';
 import { WoodstockGroupGiftService } from '@services/api-v2/woodstock/group/gift/woodstock-group-gift.service';

@@ -6,14 +6,18 @@ import { EMPTY } from 'rxjs';
 
 import { GiftSpecialLiveriesComponent } from './gift-special-liveries.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('GiftSpecialLiveryComponent', () => {
   let component: GiftSpecialLiveriesComponent;
   let fixture: ComponentFixture<GiftSpecialLiveriesComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [GiftSpecialLiveriesComponent],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [GiftSpecialLiveriesComponent],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

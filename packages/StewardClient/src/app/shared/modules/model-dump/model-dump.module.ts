@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModelDumpComponent } from './model-dump.component';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { ModelDumpFlagsComponent } from './model-dump-flags/model-dump-flags.component';
@@ -18,9 +18,9 @@ import { StandardDateModule } from '@components/standard-date/standard-date.modu
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 import { ModelDumpHumanizeArrayTableComponent } from './model-dump-simple/model-dump-humanize-array-table/model-dump-humanize-array-table.component';
 import { ModelDumpImagesComponent } from './model-dump-images/model-dump-images.component';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { RouterModule } from '@angular/router';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 /** A collection of utilities for rapidly outputting a raw model onto a page. */
 @NgModule({

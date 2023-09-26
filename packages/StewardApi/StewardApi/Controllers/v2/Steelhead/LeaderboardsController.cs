@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
     {
         private const int DefaultMaxResults = 100;
         private const int LeaderboardTalentMaxResults = 500;
-        private const int LeaderboardTalentGroupId = 23; // This is currently pointing at Studio user group Live Ops Devs. We will need to replace this with actual prod usergroup once we have a prod LSP
+        private const int LeaderboardTalentGroupId = 31;
 
         private readonly ISteelheadPegasusService pegasusService;
         private readonly ILoggingService loggingService;
@@ -504,6 +504,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             int maxResults)
         {
             pivotId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pivotId));
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             var searchParams = new ForzaSearchLeaderboardsParametersV2()
             {

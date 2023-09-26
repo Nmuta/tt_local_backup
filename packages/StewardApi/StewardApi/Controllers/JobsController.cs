@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] object postBody)
         {
             var objectId = this.User?.UserClaims()?.ObjectId;
-            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response, isTestJob: true).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] object postBody)
         {
             var objectId = this.User?.UserClaims()?.ObjectId;
-            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response, isTestJob: true).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -142,7 +142,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] object postBody)
         {
             var objectId = this.User?.UserClaims()?.ObjectId;
-            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(postBody.ToJson(), objectId, "Fake Job", this.Response, isTestJob: true).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {

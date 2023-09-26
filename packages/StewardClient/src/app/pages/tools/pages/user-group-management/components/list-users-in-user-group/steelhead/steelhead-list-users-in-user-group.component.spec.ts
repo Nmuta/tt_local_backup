@@ -6,17 +6,21 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { SteelheadListUsersInGroupComponent } from './steelhead-list-users-in-user-group.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadListUsersInGroupComponent', () => {
   let component: SteelheadListUsersInGroupComponent;
   let fixture: ComponentFixture<SteelheadListUsersInGroupComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      declarations: [SteelheadListUsersInGroupComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        declarations: [SteelheadListUsersInGroupComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadListUsersInGroupComponent);
     component = fixture.debugElement.componentInstance;

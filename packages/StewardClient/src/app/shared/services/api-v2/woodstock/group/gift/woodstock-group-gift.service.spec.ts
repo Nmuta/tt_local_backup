@@ -10,17 +10,21 @@ import { of } from 'rxjs';
 
 import { WoodstockGroupGiftService } from './woodstock-group-gift.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockGroupGiftService', () => {
   const nextReturnValue: unknown = {};
   let mockService: WoodstockGroupGiftService;
   let mockApiService: ApiV2Service;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiV2Service(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiV2Service(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     mockService = TestBed.inject(WoodstockGroupGiftService);
     mockApiService = TestBed.inject(ApiV2Service);
   });

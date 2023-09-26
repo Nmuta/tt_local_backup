@@ -5,16 +5,20 @@ import { NgPipesModule } from 'ngx-pipes';
 
 import { SelectorHelperComponent } from './selector-helper.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SelectorHelperComponent', () => {
   let component: SelectorHelperComponent;
   let fixture: ComponentFixture<SelectorHelperComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SelectorHelperComponent],
-      imports: [NgPipesModule, PipesModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SelectorHelperComponent],
+        imports: [NgPipesModule, PipesModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

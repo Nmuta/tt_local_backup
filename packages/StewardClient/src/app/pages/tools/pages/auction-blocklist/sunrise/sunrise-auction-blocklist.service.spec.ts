@@ -4,17 +4,21 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 import { SunriseAuctionBlocklistService } from './sunrise-auction-blocklist.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseAuctionBlocklistService', () => {
   let service: SunriseAuctionBlocklistService;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let mockSunriseAuctionBlocklistService: SunriseAuctionBlocklistService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [SunriseAuctionBlocklistService],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [SunriseAuctionBlocklistService],
+      }),
+    ).compileComponents();
 
     service = TestBed.inject(SunriseAuctionBlocklistService);
 

@@ -5,17 +5,21 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import { ServicesTableStorageComponent } from './services-table-storage.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ServicesTableStorageComponent', () => {
   let component: ServicesTableStorageComponent;
   let fixture: ComponentFixture<ServicesTableStorageComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
-      declarations: [ServicesTableStorageComponent],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([])],
+        declarations: [ServicesTableStorageComponent],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

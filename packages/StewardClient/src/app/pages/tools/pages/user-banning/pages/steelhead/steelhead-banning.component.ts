@@ -31,10 +31,10 @@ import { SteelheadPlayerBanService } from '@services/api-v2/steelhead/player/ban
 import { BanDuration } from '@models/ban-duration';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 import { Duration } from 'luxon';
 import { DurationOption } from '../../components/duration-picker/duration-picker.component';
-import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatLegacyOptionSelectionChange as MatOptionSelectionChange } from '@angular/material/legacy-core';
 
 export const BanOverrideDurationOptions: DurationOption[] = [
   { duration: Duration.fromObject({ days: 1 }), humanized: '1 day' },

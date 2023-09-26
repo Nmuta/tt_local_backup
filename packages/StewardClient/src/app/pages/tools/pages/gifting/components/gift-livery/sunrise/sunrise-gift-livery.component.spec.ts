@@ -23,6 +23,8 @@ import { GiftIdentityAntecedent } from '@shared/constants';
 import { PlayerUgcItem } from '@models/player-ugc-item';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseGiftLiveryComponent', () => {
   let fixture: ComponentFixture<SunriseGiftLiveryComponent>;
   let component: SunriseGiftLiveryComponent;
@@ -32,17 +34,19 @@ describe('SunriseGiftLiveryComponent', () => {
   const liveryId = faker.datatype.uuid();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-      ],
-      declarations: [SunriseGiftLiveryComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSunriseService(), createMockBackgroundJobService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+        ],
+        declarations: [SunriseGiftLiveryComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSunriseService(), createMockBackgroundJobService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseGiftLiveryComponent);
     component = fixture.debugElement.componentInstance;

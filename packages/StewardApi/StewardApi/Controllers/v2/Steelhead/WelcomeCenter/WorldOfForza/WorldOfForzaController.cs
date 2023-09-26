@@ -43,9 +43,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.WelcomeCenter.World
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Meta)]
-        public async Task<IActionResult> GetDisplayConditions()
+        public async Task<IActionResult> GetDisplayConditions(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var conditions = await this.steelheadPegasusService.GetDisplayConditionsAsync().ConfigureAwait(true);
+            var conditions = await this.steelheadPegasusService.GetDisplayConditionsAsync(environment, slot).ConfigureAwait(true);
 
             var outputDictionary = conditions.ToDictionary(kv => kv.Key, kv => kv.Value.FriendlyName);
 

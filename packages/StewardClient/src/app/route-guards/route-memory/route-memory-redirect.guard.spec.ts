@@ -2,10 +2,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, NgxsModule } from '@ngxs/store';
+import { NgxsModule, Store } from '@ngxs/store';
 import { RouteMemoryState } from '@shared/state/route-memory/route-memory.state';
 
 import { RouteMemoryRedirectGuard } from './route-memory-redirect.guard';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('RouteMemoryRedirectGuard', () => {
   let guard: RouteMemoryRedirectGuard;
@@ -29,10 +31,12 @@ describe('RouteMemoryRedirectGuard', () => {
   const testSnapshot: Partial<RouterStateSnapshot> = { url: 'tools/ugc-details/woodstock' };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([RouteMemoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), NgxsModule.forRoot([RouteMemoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     guard = TestBed.inject(RouteMemoryRedirectGuard);
     store = TestBed.inject(Store);
 

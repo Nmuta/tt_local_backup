@@ -6,28 +6,28 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 import { RouterModule } from '@angular/router';
 import { AuctionRoutingModule } from './auction.routing';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { WoodstockAuctionComponent } from './woodstock-auction/woodstock-auction.component';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { WaitingForInputComponent } from './waiting-for-input/waiting-for-input.component';
 import { AuctionDataComponent } from './components/auction-data/auction-data.component';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
 import { ModelDumpModule } from '@shared/modules/model-dump/model-dump.module';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { CacheModule } from '@shared/modules/cache/cache.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 
 /**
  *  Routed module for interacting with auctions.

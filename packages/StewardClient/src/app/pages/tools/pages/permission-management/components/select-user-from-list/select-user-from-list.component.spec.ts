@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import faker from '@faker-js/faker';
@@ -15,6 +15,8 @@ import { createMockUserService } from '@services/user';
 import { UserState } from '@shared/state/user/user.state';
 import { SelectUserFromListComponent } from './select-user-from-list.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SelectUserFromListComponent', () => {
   let component: SelectUserFromListComponent;
   let fixture: ComponentFixture<SelectUserFromListComponent>;
@@ -22,23 +24,25 @@ describe('SelectUserFromListComponent', () => {
   let mockStore: Store;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-        MatDialogModule,
-      ],
-      declarations: [SelectUserFromListComponent],
-      providers: [
-        createMockBackgroundJobService(),
-        createMockUserService(),
-        createMockOldPermissionsService(),
-        createMockMsalServices(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+          MatDialogModule,
+        ],
+        declarations: [SelectUserFromListComponent],
+        providers: [
+          createMockBackgroundJobService(),
+          createMockUserService(),
+          createMockOldPermissionsService(),
+          createMockMsalServices(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SelectUserFromListComponent);
     component = fixture.componentInstance;

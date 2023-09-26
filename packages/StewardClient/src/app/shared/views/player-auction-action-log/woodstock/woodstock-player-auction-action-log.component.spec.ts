@@ -5,15 +5,19 @@ import { createMockWoodstockService } from '@services/woodstock';
 
 import { WoodstockPlayerAuctionActionLogComponent } from './woodstock-player-auction-action-log.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockPlayerAuctionActionLogComponent', () => {
   let component: WoodstockPlayerAuctionActionLogComponent;
   let fixture: ComponentFixture<WoodstockPlayerAuctionActionLogComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockPlayerAuctionActionLogComponent],
-      providers: [createMockWoodstockService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockPlayerAuctionActionLogComponent],
+        providers: [createMockWoodstockService()],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

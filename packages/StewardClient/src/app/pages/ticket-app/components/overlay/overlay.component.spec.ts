@@ -3,15 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OverlayComponent } from './overlay.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('OverlayComponent', () => {
   let component: OverlayComponent;
   let fixture: ComponentFixture<OverlayComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [OverlayComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [OverlayComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

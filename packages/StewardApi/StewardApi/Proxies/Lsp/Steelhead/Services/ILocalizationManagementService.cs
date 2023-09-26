@@ -1,6 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Turn10.Services.LiveOps.FM8.Generated;
 using LocalizationManagementService = Turn10.Services.LiveOps.FM8.Generated.LocalizationManagementService;
+using Test = Turn10.Services.LiveOps.FM8.Generated.StorefrontManagementService;
+using LiveOpsService = Forza.WebServices.FM8.Generated.PlayerStatsService;
+
+
 
 #pragma warning disable VSTHRD200 // Use  Suffix
 #pragma warning disable SA1516 // Blank lines

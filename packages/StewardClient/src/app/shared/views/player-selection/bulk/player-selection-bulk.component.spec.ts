@@ -18,7 +18,7 @@ import { switchMap } from 'rxjs/operators';
 import { AugmentedCompositeIdentity } from '../player-selection-base.component';
 
 import { PlayerSelectionBulkComponent } from './player-selection-bulk.component';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
 
 describe('PlayerSelectionBulkComponent', () => {
   let component: PlayerSelectionBulkComponent;

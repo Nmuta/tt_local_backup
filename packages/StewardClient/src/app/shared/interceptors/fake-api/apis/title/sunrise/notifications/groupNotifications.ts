@@ -35,7 +35,7 @@ export class SunriseGroupNotificationsFakeApi extends FakeApiBase {
           sentDateUtc: toDateTime(faker.date.soon()),
           expirationDateUtc: toDateTime(faker.date.soon()),
           hasDeviceType: faker.datatype.boolean(),
-          deviceType: faker.random.arrayElement(Object.getOwnPropertyNames(DeviceType)),
+          deviceType: faker.helpers.arrayElement(Object.getOwnPropertyNames(DeviceType)),
           notificationType: 'CommunityMessageNotification',
           groupId: fakeBigNumber(),
         },

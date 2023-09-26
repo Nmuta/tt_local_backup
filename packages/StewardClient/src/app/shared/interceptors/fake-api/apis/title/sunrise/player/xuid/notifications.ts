@@ -32,7 +32,7 @@ export class SunrisePlayerXuidNotificationsFakeApi extends FakeApiBase {
         message: faker.datatype.string(),
         isRead: faker.datatype.boolean(),
         notificationId: faker.datatype.uuid(),
-        notificationType: faker.random.arrayElement([
+        notificationType: faker.helpers.arrayElement([
           'AuctionHouseFailed',
           'AuctionHouseOutbid',
           'CurationPayout',

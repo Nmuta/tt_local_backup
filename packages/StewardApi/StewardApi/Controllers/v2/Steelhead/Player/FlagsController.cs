@@ -68,13 +68,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
         public async Task<IActionResult> GetFlags(ulong xuid)
         {
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             var service = this.Services.UserManagementService;
             try
             {
                 var results = await this.BuildUserFlags(xuid, service).ConfigureAwait(true);
-                results.IsCommunityManager.HasConflict = true;
+
                 return this.Ok(results);
             }
             catch (Exception ex)
@@ -97,7 +98,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         public async Task<IActionResult> SetFlags(ulong xuid, [FromBody] SteelheadUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
-            await this.EnsurePlayerExist(this.Services, xuid).ConfigureAwait(true);
+            xuid.EnsureValidXuid();
+            await this.Services.EnsurePlayerExistAsync(xuid);
 
             this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
             if (!this.ModelState.IsValid)

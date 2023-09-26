@@ -15,6 +15,8 @@ import {
   PlayerProfileManagementServiceContract,
 } from './player-profile-management.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('PlayerProfileManagementComponent', () => {
   let component: PlayerProfileManagementComponent;
   let fixture: ComponentFixture<PlayerProfileManagementComponent>;
@@ -32,12 +34,14 @@ describe('PlayerProfileManagementComponent', () => {
   };
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [PlayerProfileManagementComponent],
-      imports: [NgxsModule.forRoot([UserState]), HttpClientTestingModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [PlayerProfileManagementComponent],
+        imports: [NgxsModule.forRoot([UserState]), HttpClientTestingModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(PlayerProfileManagementComponent);
     component = fixture.componentInstance;

@@ -4,16 +4,20 @@ import { ThemeService } from '../theme.service';
 
 import { ToggleDarkmodeComponent } from './toggle-darkmode.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ToggleDarkmodeComponent', () => {
   let component: ToggleDarkmodeComponent;
   let fixture: ComponentFixture<ToggleDarkmodeComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ToggleDarkmodeComponent],
-      imports: [NgxsModule.forRoot()],
-      providers: [ThemeService],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ToggleDarkmodeComponent],
+        imports: [NgxsModule.forRoot()],
+        providers: [ThemeService],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

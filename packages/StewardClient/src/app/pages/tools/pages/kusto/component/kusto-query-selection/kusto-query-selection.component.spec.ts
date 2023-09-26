@@ -4,13 +4,15 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UntypedFormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { KustoQueryGroup, KustoQuerySelectionComponent } from './kusto-query-selection.component';
 import faker from '@faker-js/faker';
 import { KustoQuery } from '@models/kusto';
 import { GameTitleCodeName } from '@models/enums';
 import { createMockKustoService, KustoService } from '@services/kusto';
 import { of, throwError } from 'rxjs';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('KustoQuerySelectionComponent', () => {
   let fixture: ComponentFixture<KustoQuerySelectionComponent>;
@@ -20,18 +22,23 @@ describe('KustoQuerySelectionComponent', () => {
   let mockKustoService: KustoService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [KustoQuerySelectionComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: UntypedFormBuilder, useValue: formBuilder }, createMockKustoService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [KustoQuerySelectionComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          { provide: UntypedFormBuilder, useValue: formBuilder },
+          createMockKustoService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(KustoQuerySelectionComponent);
     component = fixture.debugElement.componentInstance;
