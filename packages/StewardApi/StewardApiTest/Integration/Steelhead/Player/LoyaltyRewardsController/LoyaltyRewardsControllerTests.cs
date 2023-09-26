@@ -70,6 +70,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
+        public async Task ResendLoyaltyRewards_ByXuid_InvalidXuid()
+        {
+            try
+            {
+                var response = await stewardClient.ResendLoyaltyRewards(TestConstants.InvalidXuid, TestConstants.TestAccountTitlesOwned).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task ResendLoyaltyRewards_ByXuid_InvalidAuth()
         {
             try
