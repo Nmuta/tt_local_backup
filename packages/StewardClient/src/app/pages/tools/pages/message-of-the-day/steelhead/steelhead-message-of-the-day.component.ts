@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -173,6 +174,11 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.formControls.localizedContentBody.enable();
     this.pullRequestUrl = '';
   }
+
+  // Order by ascending property value
+  public valueAscOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => {
+    return a.value.localeCompare(b.value);
+  };
 
   /** Set form fields using the MessageOfTheDay parameter. */
   private setFields(messageOfTheDayDetail: MessageOfTheDay): void {

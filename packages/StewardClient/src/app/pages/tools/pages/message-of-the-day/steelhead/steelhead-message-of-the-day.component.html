@@ -18,7 +18,7 @@
                     [disabled]="isInEditMode"
                   >
                     <mat-option
-                      *ngFor="let friendlyName of friendlyNameList | keyvalue"
+                      *ngFor="let friendlyName of friendlyNameList | keyvalue : valueAscOrder"
                       [value]="friendlyName.key"
                     >
                       {{ friendlyName.value | humanize }}

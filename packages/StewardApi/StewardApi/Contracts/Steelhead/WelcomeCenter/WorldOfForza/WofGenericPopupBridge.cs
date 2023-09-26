@@ -54,5 +54,10 @@
         ///     Gets or sets the display conditions bridge.
         /// </summary>
         public WofDisplayConditionsBridge DisplayConditions { get; set; }
+
+        /// <summary>
+        ///     Gets or sets when tag property.
+        /// </summary>
+        public string When { get; set; }
     }
 }
