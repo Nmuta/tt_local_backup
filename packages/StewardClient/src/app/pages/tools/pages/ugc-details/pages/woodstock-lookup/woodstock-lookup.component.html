@@ -85,7 +85,11 @@
                 appearance="fill"
               >
                 <mat-label>Report reason</mat-label>
-                <mat-select matInput [(ngModel)]="selectedReason" [disabled]="ugcItem?.featuredByT10">
+                <mat-select
+                  matInput
+                  [(ngModel)]="selectedReason"
+                  [disabled]="ugcItem?.featuredByT10"
+                >
                   <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
                     {{ reason.description }}
                   </mat-option>
@@ -97,7 +101,7 @@
                 #verifyReportBtn
                 [permissionAttribute]="reportPermAttribute"
                 [permissionTitle]="gameTitle"
-                [disabled]="!selectedReason"
+                [disabled]="ugcItem?.featuredByT10"
               ></verify-button>
               <button
                 class="sf-action-list-margins"
