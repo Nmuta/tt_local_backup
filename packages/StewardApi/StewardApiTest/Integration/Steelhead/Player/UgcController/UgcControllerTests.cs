@@ -72,6 +72,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
+        public async Task GetUgcItems_InvalidAuth()
+        {
+            try
+            {
+                var response = await unauthedClient.GetUgcItems(TestConstants.TestAccountXuid, "Livery").ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task GetHiddenUgcItems()
         {
             try
@@ -112,21 +127,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             catch (ServiceException ex)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [IntegrationTest]
-        public async Task GetUgcItems_InvalidAuth()
-        {
-            try
-            {
-                var response = await unauthedClient.GetUgcItems(TestConstants.TestAccountXuid, "Livery").ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException ex)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
             }
         }
 
