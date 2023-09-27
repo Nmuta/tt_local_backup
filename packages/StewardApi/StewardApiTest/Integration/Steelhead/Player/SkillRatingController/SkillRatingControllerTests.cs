@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetSkillRating(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
+                var response = await stewardClient.GetSkillRating(TestConstants.TestAccountXuid, TestConstants.InvalidExternalProfileId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.DeleteSkillRating(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
+                var response = await stewardClient.DeleteSkillRating(TestConstants.TestAccountXuid, TestConstants.InvalidExternalProfileId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.PostSetSkillRating(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
+                var response = await stewardClient.PostSetSkillRating(TestConstants.TestAccountXuid, TestConstants.InvalidExternalProfileId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
