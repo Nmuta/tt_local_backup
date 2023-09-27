@@ -474,7 +474,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             // Code below waits a few seconds and then retries sending failed gifts. This is in place to resolve an intermittent failure that LiveOps/Services have yet to diagnose and fix.
             if (failedRequests.Count > 0)
             {
-               await Task.Delay(3_000);
+               await Task.Delay(TimeSpan.FromSeconds(3));
             }
 
             foreach (var request in failedRequests)

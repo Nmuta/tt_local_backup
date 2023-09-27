@@ -3,13 +3,14 @@
     /// <summary>
     ///     Represents a failed request to send an item to a user.
     /// </summary>
-    /// <typeparam name="T">The title specific InventoryItemType</typeparam>
-    public sealed class FailedGiftRequest<T>
+    /// <typeparam name="TInventoryItemType">The title specific InventoryItemType enum</typeparam>
+    public sealed class FailedGiftRequest<TInventoryItemType>
+        where TInventoryItemType : System.Enum
     {
         /// <summary>
         ///     Gets or sets the type.
         /// </summary>
-        public T Type { get; set; }
+        public TInventoryItemType Type { get; set; }
 
         /// <summary>
         ///     Gets or sets the item.
