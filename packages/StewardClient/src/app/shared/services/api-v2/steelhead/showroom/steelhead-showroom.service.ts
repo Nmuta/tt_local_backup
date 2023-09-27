@@ -6,6 +6,7 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
+import { addEnvironmentAndSlotHttpParams } from '@helpers/query-param-helpers';
 
 /** Interface that represents a Car Featured Showcase. */
 export interface CarFeaturedShowcase {
@@ -168,7 +169,7 @@ export class SteelheadShowroomService {
 
   /** Gets Showroom Car Sales. */
   public getCarSales$(environment: string = null, slot: string = null): Observable<CarSale[]> {
-    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
     return this.api.getRequest$<CarSale[]>(`${this.basePath}/carSales`, params);
   }
 
@@ -201,7 +202,7 @@ export class SteelheadShowroomService {
     environment: string = null,
     slot: string = null,
   ): Observable<FriendlyNameMap> {
-    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
     return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/featuredShowcases`, params);
   }
 }

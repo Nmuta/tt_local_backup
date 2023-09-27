@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { addEnvironmentAndSlotHttpParams } from '@helpers/query-param-helpers';
 import { GuidLikeString } from '@models/extended-types';
 import { LeaderboardScoreType } from '@models/leaderboards';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
@@ -57,7 +58,7 @@ export class SteelheadRivalsService {
     environment: string = null,
     slot: string = null,
   ): Observable<Map<GuidLikeString, string>> {
-    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
     return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/reference`, params);
   }
 
@@ -66,7 +67,7 @@ export class SteelheadRivalsService {
     environment: string = null,
     slot: string = null,
   ): Observable<Map<GuidLikeString, string>> {
-    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
     return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/categories`, params);
   }
 }
