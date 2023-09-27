@@ -31,11 +31,20 @@ export function isChangelogArea(source: unknown): source is ChangelogArea {
 export interface OldChangelogEntry {
   /** The tag for the change. */
   tag: ChangelogArea | ChangelogTag;
+
   /** ID used for determining latest seen update. */
   uuid: string;
-  /** Short text explaining the change. */
+
+  /**
+   * Short text explaining the change.
+   * @deprecated Use `shortMarkdown`
+   */
   shortText: string;
-  /** Paragraphs explaining the change. */
+
+  /**
+   * Paragraphs explaining the change.
+   * @deprecated Use `longMarkdown`
+   */
   longText?: string[];
 }
 

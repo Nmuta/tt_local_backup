@@ -13,12 +13,17 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: 'Add dropdowns for Pegasus environment and slot selectors',
     },
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'af60d88e-78f4-448a-8238-b755626726bb',
+      shortText: 'Fix bug causing errors when Pegasus environment and slot are missing',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [NavbarTool.WelcomeCenterTiles, NavbarTool.MessageOfTheDay],
       },
       uuid: '2fbd3ca3-6c67-429b-8936-b40a78e9ed1b',
-      shortText: 'Order tiles by name and display "when" tag',
+      shortMarkdown: 'Order tiles by name and display "when" tag',
     },
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
@@ -63,6 +68,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
         | four    |   |   |   | 4 |   |
         | five    |   |   |   |   | 5 |
       `,
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '361fff59-388c-4612-9471-36116fb1e3d6',
+      shortText: 'Add ability to search leaderboard scores by gamertag',
     },
     {
       tag: ChangelogTag.Internal,
