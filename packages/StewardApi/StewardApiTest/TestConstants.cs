@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardTest
         public const string TestAccountMessageId = "a8ac87e2-cb4c-4418-8681-84241abee5c6";
         public const ulong TestAccountProfileId = 1442;
         public const string TestAccountKnownVin = "05c5e205-f139-4504-91d3-9c451c1a992f";
+        public const string TestAccountUgcId = "4fcbe4e9-4dad-493c-ad08-3a4ab7ee3b0e";
         public static readonly string[] TestAccountTitlesOwned = { "FH", "FH2", "FH3", "FH4", "FH5", "FM2", "FM3", "FM4", "FM5", "FM6", "FM7" };
-        public static string TestAccountUgcId = "4fcbe4e9-4dad-493c-ad08-3a4ab7ee3b0e";
     }
 }
