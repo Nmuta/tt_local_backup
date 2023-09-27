@@ -13,6 +13,7 @@ import {
 } from '@models/leaderboards';
 import { WoodstockLeaderboardService } from '@services/api-v2/woodstock/leaderboard/woodstock-leaderboard.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { catchError, filter, map, of, switchMap, takeUntil, tap } from 'rxjs';
 
 /** The Woodstock leaderboards page. */
@@ -22,6 +23,7 @@ import { catchError, filter, map, of, switchMap, takeUntil, tap } from 'rxjs';
 })
 export class WoodstockLeaderboardsComponent extends BaseComponent implements OnInit {
   public statsSelectedScore: LeaderboardScore;
+  public selectedIdentity: AugmentedCompositeIdentity;
   public scoresDeleted: LeaderboardScore[];
   public activeLeaderboard: LeaderboardMetadataAndQuery;
   public temporaryLeaderboard: LeaderboardMetadataAndQuery;
@@ -44,6 +46,11 @@ export class WoodstockLeaderboardsComponent extends BaseComponent implements OnI
   /** Logic when stats score is selected. */
   public onStatsScoreSelected(score: LeaderboardScore): void {
     this.statsSelectedScore = score;
+  }
+
+  /** Logic when an identity is selected. */
+  public onIdentitySelected(identity: AugmentedCompositeIdentity): void {
+    this.selectedIdentity = identity;
   }
 
   /** Logic when scores are deleted from leaderboard-scores. */

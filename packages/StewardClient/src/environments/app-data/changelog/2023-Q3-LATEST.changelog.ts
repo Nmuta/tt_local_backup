@@ -65,6 +65,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       `,
     },
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '361fff59-388c-4612-9471-36116fb1e3d6',
+      shortText: 'Add ability to search leaderboard scores by gamertag',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'e3f27c4f-0a80-4949-a7ed-b92e68e597c2',
       shortText: 'Upgrade to Angular 15',
