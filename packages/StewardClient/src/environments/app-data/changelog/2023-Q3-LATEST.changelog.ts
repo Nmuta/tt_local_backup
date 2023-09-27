@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: 'af60d88e-78f4-448a-8238-b755626726bb',
+      shortText: 'Fix bug causing errors when Pegasus environment and slot are missing',
+    },
+    {
       tag: {
         title: [GameTitle.FM8],
         tool: [NavbarTool.WelcomeCenterTiles, NavbarTool.MessageOfTheDay],
