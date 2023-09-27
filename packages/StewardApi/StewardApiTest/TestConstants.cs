@@ -37,6 +37,7 @@ namespace Turn10.LiveOps.StewardTest
         public const int InvalidGrouId = 99999;
         public const string ValidProductId = "9P2LBL48Q0LS";
         public const string InvalidExternalProfileId = "VeryRealExternalProfileId";
+        public const string InvalidUgcId = "VeryRealUgcId";
 
         // Test account Plink
         public const ulong TestAccountXuid = 2675352635783107;
@@ -46,5 +47,6 @@ namespace Turn10.LiveOps.StewardTest
         public const ulong TestAccountProfileId = 1442;
         public const string TestAccountKnownVin = "05c5e205-f139-4504-91d3-9c451c1a992f";
         public static readonly string[] TestAccountTitlesOwned = { "FH", "FH2", "FH3", "FH4", "FH5", "FM2", "FM3", "FM4", "FM5", "FM6", "FM7" };
+        public static string TestAccountUgcId = "4fcbe4e9-4dad-493c-ad08-3a4ab7ee3b0e";
     }
 }
