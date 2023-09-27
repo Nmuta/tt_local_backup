@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.PlayFab
     {
         [Description("default")]
         Default,
-        [Description("GDK")]
+        [Description("gdk")]
         GDK,
         [Description("steam")]
         Steam,
