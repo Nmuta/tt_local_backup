@@ -39,6 +39,7 @@ jobs:
             sed -i 's/ADO_VERSION_TO_REPLACE/$(Build.BuildNumber)/g' *.ts
       - task: CmdLine@2
         displayName: Build (prod)
+        retryCountOnTaskFailure: 2
         inputs:
           script: yarn run build:prod
           workingDirectory: packages/StewardClient/

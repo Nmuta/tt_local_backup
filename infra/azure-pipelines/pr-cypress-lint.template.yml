@@ -63,6 +63,7 @@ jobs:
           workingDirectory: packages/StewardClient-Cypress/
 
       - task: CmdLine@2
+        retryCountOnTaskFailure: 2
         displayName: Build Check (ESLint)
         condition: succeededOrFailed()
         inputs:
