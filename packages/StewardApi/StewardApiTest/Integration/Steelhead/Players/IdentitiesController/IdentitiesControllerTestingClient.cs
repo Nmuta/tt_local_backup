@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<IList<IdentityResultAlpha>> GetPlayersIdentities()
+        public async Task<IList<IdentityResultAlpha>> PostSearchPlayersIdentities()
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/players/identities");
 

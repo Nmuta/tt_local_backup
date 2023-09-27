@@ -27,11 +27,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task GetPlayersIdentities_InvalidAuth()
+        public async Task PostSearchPlayersIdentities_InvalidAuth()
         {
             try
             {
-                var response = await unauthedClient.GetPlayersIdentities().ConfigureAwait(false);
+                var response = await unauthedClient.PostSearchPlayersIdentities().ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
