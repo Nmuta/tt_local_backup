@@ -3,12 +3,20 @@ import { AugmentedCompositeIdentity } from '@views/player-selection/player-selec
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
+import { Observable, map, startWith } from 'rxjs';
+import { GameTitle } from '@models/enums';
+import { SteelheadPegasusSlotsService } from '@services/api-v2/steelhead/pegasus-slots/steelhead-pegasus-slots.service';
 
 export type CalendarLookupInputs = {
   identity?: IdentityResultAlpha;
   pegasusInfo?: PegasusPathInfo;
   daysForward?: number;
 };
+
+export interface CalendarLookupInputsServiceContract {
+  title: GameTitle;
+  getPegasusSlots$(environment: string): Observable<string[]>;
+}
 
 /** Inputs for calendar lookup. */
 @Component({
@@ -42,12 +50,34 @@ export class CalendarLookupInputsComponent implements OnInit {
     this.pegasusFormControls,
   );
 
+  public environmentOptions: string[] = ['Prod', 'Dev'];
+  public slotOptions: string[];
+  public filteredSlots: Observable<string[]>;
+
+  constructor(private readonly slotsService: SteelheadPegasusSlotsService) {}
+
   /** Lifecycle hook. */
   public ngOnInit(): void {
     if (this.requireDaysForward) {
       this.identityFormControls.daysForward.addValidators([Validators.required]);
       this.pegasusFormControls.daysForward.addValidators([Validators.required]);
     }
+
+    this.pegasusFormControls.pegasusEnvironment.valueChanges.subscribe(environment => {
+      this.slotsService.getPegasusSlots$(environment).subscribe(slotsResponse => {
+        this.slotOptions = slotsResponse;
+
+        this.filteredSlots = this.pegasusFormControls.pegasusSlot.valueChanges.pipe(
+          startWith(''),
+          map(state => (state ? this.filterSlots(state) : this.slotOptions.slice())),
+        );
+      });
+    });
+  }
+
+  /** Filter slot selection based on input into pegasusSlot formcontrol. */
+  public filterSlots(input: string): string[] {
+    return this.slotOptions.filter(slot => slot.toLowerCase().indexOf(input.toLowerCase()) === 0);
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */
