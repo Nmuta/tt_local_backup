@@ -54,6 +54,12 @@
       flex-grow: 1;
     }
 
+    // fill items; override later per-control
+    > .sf-fill {
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+
     /** This gives a bit more clearance for hints/names that are near each other. */
     > mat-form-field:not(.sf-default-hint) {
       margin-bottom: $mat-form-field-bottom-spacing;
@@ -277,7 +283,7 @@ help-popover-icon.sf-menu-top-right {
   list-style-type: none;
 }
 
-.sf-icon-between {
+.sf-icon-between.sf-icon-between {
   font-size: 2rem;
   height: 2rem;
   width: 2rem;
