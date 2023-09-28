@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// </param>
         [HttpGet]
         [SwaggerResponse(200, type: typeof(IList<string>))]
-        public async Task<IActionResult> GetPegasusSlots([FromQuery] string environment)
+        public IActionResult GetPegasusSlots([FromQuery] string environment)
         {
             return this.Ok(this.commonSlots);
         }
