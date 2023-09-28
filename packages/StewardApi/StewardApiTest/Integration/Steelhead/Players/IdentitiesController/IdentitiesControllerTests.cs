@@ -27,11 +27,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task PostSearchPlayersIdentities()
+        public async Task PostSearchPlayersIdentities_ByXuid()
         {
             try
             {
-                var response = await stewardClient.PostSearchPlayersIdentities(TestConstants.TestAccountGamertag, TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await stewardClient.PostSearchPlayersIdentitiesByXuid(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -42,12 +42,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task PostSearchPlayersIdentities_InvalidXuid()
+        public async Task PostSearchPlayersIdentities_ByXuid_InvalidXuid()
         {
             try
             {
-                var response = await stewardClient.PostSearchPlayersIdentities(TestConstants.TestAccountGamertag, TestConstants.InvalidXuid).ConfigureAwait(false);
-                Assert.Fail();
+                var response = await stewardClient.PostSearchPlayersIdentitiesByXuid(TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.IsTrue(response.Any(x => x.Error != null));
             }
             catch (ServiceException ex)
             {
@@ -57,12 +57,42 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task PostSearchPlayersIdentities_InvalidGamerTag()
+        public async Task PostSearchPlayersIdentities_ByXuid_InvalidAuth()
         {
             try
             {
-                var response = await stewardClient.PostSearchPlayersIdentities("VeryRealGamerTag", TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await unauthedClient.PostSearchPlayersIdentitiesByXuid(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task PostSearchPlayersIdentities_ByGamerTag()
+        {
+            try
+            {
+                var response = await stewardClient.PostSearchPlayersIdentitiesByGamerTag(TestConstants.TestAccountGamertag).ConfigureAwait(false);
+                Assert.IsNotNull(response);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.Fail(ex.ResponseBody);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task PostSearchPlayersIdentities_ByGamerTag_InvalidGamerTag()
+        {
+            try
+            {
+                var response = await stewardClient.PostSearchPlayersIdentitiesByGamerTag(TestConstants.InvalidGamertag).ConfigureAwait(false);
+                Assert.IsTrue(response.Any(x => x.Error != null));
             }
             catch (ServiceException ex)
             {
@@ -72,11 +102,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task PostSearchPlayersIdentities_InvalidAuth()
+        public async Task PostSearchPlayersIdentities_ByGamerTag_InvalidAuth()
         {
             try
             {
-                var response = await unauthedClient.PostSearchPlayersIdentities(TestConstants.TestAccountGamertag, TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await unauthedClient.PostSearchPlayersIdentitiesByGamerTag(TestConstants.TestAccountGamertag).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)

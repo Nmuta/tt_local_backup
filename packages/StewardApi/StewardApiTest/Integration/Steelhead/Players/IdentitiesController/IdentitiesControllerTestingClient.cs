@@ -17,10 +17,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<IList<IdentityResultAlpha>> PostSearchPlayersIdentities(string gamerTag, ulong xuid)
+        public async Task<IList<IdentityResultAlpha>> PostSearchPlayersIdentitiesByXuid(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/players/identities");
-            IList<IdentityQueryAlpha> requestBody = new List<IdentityQueryAlpha>() { new IdentityQueryAlpha() { Gamertag = gamerTag, Xuid = xuid} };
+            IList<IdentityQueryAlpha> requestBody = new List<IdentityQueryAlpha>() { new IdentityQueryAlpha() { Xuid = xuid} };
+
+            return await ServiceClient.SendRequestAsync<IList<IdentityResultAlpha>>(HttpMethod.Post, path, this.authKey, Version, requestBody, headers: this.headers).ConfigureAwait(false);
+        }
+
+        public async Task<IList<IdentityResultAlpha>> PostSearchPlayersIdentitiesByGamerTag(string gamerTag)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}/players/identities");
+            IList<IdentityQueryAlpha> requestBody = new List<IdentityQueryAlpha>() { new IdentityQueryAlpha() { Gamertag = gamerTag } };
 
             return await ServiceClient.SendRequestAsync<IList<IdentityResultAlpha>>(HttpMethod.Post, path, this.authKey, Version, requestBody, headers: this.headers).ConfigureAwait(false);
         }
