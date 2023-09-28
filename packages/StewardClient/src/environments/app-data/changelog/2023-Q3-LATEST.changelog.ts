@@ -10,7 +10,8 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
     {
       tag: ChangelogTag.Internal,
       uuid: '4e265673-61b2-49cb-a7df-775967a6ca19',
-      shortText: 'Fix bug in calendar lookup input sending API pegasus environment with incorrect casing',
+      shortText:
+        'Fix bug in calendar lookup input sending API pegasus environment with incorrect casing',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
