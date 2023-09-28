@@ -17,21 +17,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<Dictionary<Guid, string>> GetWorldOfForzaDeeplinkSelectionOptionsAsync()
+        public async Task<Dictionary<Guid, string>> GetWorldOfForzaGenericPopupSelectionOptionsAsync()
         {
             var path = new Uri(this.baseUri, $"{TitlePath}welcomecenter/worldofforza/genericpopup/options");
 
             return await ServiceClient.SendRequestAsync<Dictionary<Guid, string>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<WofGenericPopupBridge> GetWorldOfForzaDeeplinkCurrentValuesAsync(string id)
+        public async Task<WofGenericPopupBridge> GetWorldOfForzaGenericCurrentValuesAsync(string id)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}welcomecenter/worldofforza/genericpopup/{id}");
 
             return await ServiceClient.SendRequestAsync<WofGenericPopupBridge>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<PullRequest> EditAndSubmitGenericPopupTitle(string id, [FromBody] WofGenericPopupBridge wofTileBridge)
+        public async Task<PullRequest> EditAndSubmitGenericPopupTile(string id, [FromBody] WofGenericPopupBridge wofTileBridge)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}welcomecenter/worldofforza/genericpopup/{id}");
 

@@ -13,7 +13,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         private static DeeplinkTileControllerTestingClient stewardClient;
         private static DeeplinkTileControllerTestingClient unauthedClient;
         private static WofDeeplinkBridge bridge;
-        private static id;
+        private static string id;
+        private static string invalidId;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -24,9 +25,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             unauthedClient = new DeeplinkTileControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
 
             bridge = new WofDeeplinkBridge();
-            id = "someIdtobedetermined"
-            
-
+            id = "[COMMUNITY] Patch Notes";
+            invalidId = "invalid";
         }
 
         [TestMethod]
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetWorldOfForzaDeeplinkCurrentValuesAsync("invalidID").ConfigureAwait(false);
+                var response = await stewardClient.GetWorldOfForzaDeeplinkCurrentValuesAsync(invalidId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)

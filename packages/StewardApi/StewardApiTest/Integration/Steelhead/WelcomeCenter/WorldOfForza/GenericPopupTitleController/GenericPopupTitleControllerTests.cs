@@ -8,25 +8,25 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
     [TestClass]
-    public sealed class GenericPopupTitleTests : SteelheadControllerTestsBase
+    public sealed class GenericPopupTitleControllerTests : SteelheadControllerTestsBase
     {
-        private static GenericPopupTitleTestingClient stewardClient;
-        private static GenericPopupTitleTestingClient unauthedClient;
+        private static GenericPopupTitleControllerTestingClient stewardClient;
+        private static GenericPopupTitleControllerTestingClient unauthedClient;
         private static WofGenericPopupBridge bridge;
-        private static id;
+        private static string id;
+        private static string invalidId;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
         {
             await PrepareAuthAsync(testContext);
 
-            stewardClient = new GenericPopupTitleTestingClient(new Uri(endpoint), authKey);
-            unauthedClient = new GenericPopupTitleTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
+            stewardClient = new GenericPopupTitleControllerTestingClient(new Uri(endpoint), authKey);
+            unauthedClient = new GenericPopupTitleControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
 
             bridge = new WofGenericPopupBridge();
-            id = "someIdtobedetermined"
-            
-
+            id = "[TEST] Pop-up Test";
+            invalidId = "invalid";
         }
 
         [TestMethod]
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetWorldOfForzaGenericCurrentValuesAsync("invalidID").ConfigureAwait(false);
+                var response = await stewardClient.GetWorldOfForzaGenericCurrentValuesAsync(invalidId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
