@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
       shortText: `Prevent featured UGC from being reported.`,
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '26bc1f7b-829f-4842-bdfc-4d6165944a57',
+      shortText: 'Add dropdowns for Pegasus environment and slot selectors',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: 'af60d88e-78f4-448a-8238-b755626726bb',
       shortText: 'Fix bug causing errors when Pegasus environment and slot are missing',

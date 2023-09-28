@@ -10,6 +10,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
@@ -150,6 +151,7 @@ import { CalendarLookupInputsComponent } from './steelhead/components/calendar-l
     PlayerSelectionModule,
     StandardDateModule,
     MatTreeModule,
+    MatAutocompleteModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: angularCalendarCustomFactory }),
   ],
 })
