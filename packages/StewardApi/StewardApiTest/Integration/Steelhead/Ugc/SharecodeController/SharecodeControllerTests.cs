@@ -12,7 +12,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
     [TestClass]
     public sealed class SharecodeControllerTests : SteelheadControllerTestsBase
     {
-        private static SharecodeControllerTestingClient stewardClient;
         private static SharecodeControllerTestingClient unauthedClient;
 
         [ClassInitialize]
@@ -20,7 +19,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             await PrepareAuthAsync(testContext);
 
-            stewardClient = new SharecodeControllerTestingClient(new Uri(endpoint), authKey);
             unauthedClient = new SharecodeControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
 
         }
