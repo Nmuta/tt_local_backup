@@ -10,9 +10,9 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
-    public sealed class GenericPopupTitleControllerTestingClient : SteelheadStewardBaseTestingClient
+    public sealed class GenericPopupTileControllerTestingClient : SteelheadStewardBaseTestingClient
     {
-        public GenericPopupTitleControllerTestingClient(Uri baseUri, string authKey) : base(baseUri, authKey)
+        public GenericPopupTileControllerTestingClient(Uri baseUri, string authKey) : base(baseUri, authKey)
         {
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }

@@ -8,10 +8,10 @@ using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 {
     [TestClass]
-    public sealed class GenericPopupTitleControllerTests : SteelheadControllerTestsBase
+    public sealed class GenericPopupTileControllerTests : SteelheadControllerTestsBase
     {
-        private static GenericPopupTitleControllerTestingClient stewardClient;
-        private static GenericPopupTitleControllerTestingClient unauthedClient;
+        private static GenericPopupTileControllerTestingClient stewardClient;
+        private static GenericPopupTileControllerTestingClient unauthedClient;
         private static WofGenericPopupBridge bridge;
         private static string id;
         private static string invalidId;
@@ -21,11 +21,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             await PrepareAuthAsync(testContext);
 
-            stewardClient = new GenericPopupTitleControllerTestingClient(new Uri(endpoint), authKey);
-            unauthedClient = new GenericPopupTitleControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
+            stewardClient = new GenericPopupTileControllerTestingClient(new Uri(endpoint), authKey);
+            unauthedClient = new GenericPopupTileControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
 
             bridge = new WofGenericPopupBridge();
-            id = "[TEST] Pop-up Test";
+            // "[TEST] Pop-up Test"
+            id = "a32f4e4f-1e9d-4e9d-9925-12d99e898c14";
             invalidId = "invalid";
         }
 

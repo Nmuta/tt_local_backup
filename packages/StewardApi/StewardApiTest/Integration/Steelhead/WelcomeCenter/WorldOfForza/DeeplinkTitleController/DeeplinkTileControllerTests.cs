@@ -25,7 +25,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             unauthedClient = new DeeplinkTileControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
 
             bridge = new WofDeeplinkBridge();
-            id = "[COMMUNITY] Patch Notes";
+
+            // "[COMMUNITY] Patch Notes"
+            id = "1b2bb45e-6829-4bc6-87c2-7b13b20753f4";
             invalidId = "invalid";
         }
 
