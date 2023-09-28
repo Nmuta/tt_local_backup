@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.PostSavePlayerProfile(TestConstants.InvalidXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
+                await stewardClient.PostSavePlayerProfile(TestConstants.InvalidXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.PostSavePlayerProfile(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
+                await stewardClient.PostSavePlayerProfile(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.PostLoadPlayerProfile(TestConstants.InvalidXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
+                await stewardClient.PostLoadPlayerProfile(TestConstants.InvalidXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.PostLoadPlayerProfile(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
+                await stewardClient.PostLoadPlayerProfile(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.PostResetPlayerProfile(TestConstants.InvalidXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
+                await stewardClient.PostResetPlayerProfile(TestConstants.InvalidXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.PostResetPlayerProfile(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
+                await stewardClient.PostResetPlayerProfile(TestConstants.TestAccountXuid, "VeryRealProfileId").ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostSavePlayerProfile(TestConstants.TestAccountXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
+                await unauthedClient.PostSavePlayerProfile(TestConstants.TestAccountXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -136,7 +136,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostLoadPlayerProfile(TestConstants.TestAccountXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
+                await unauthedClient.PostLoadPlayerProfile(TestConstants.TestAccountXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -151,7 +151,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostResetPlayerProfile(TestConstants.TestAccountXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
+                await unauthedClient.PostResetPlayerProfile(TestConstants.TestAccountXuid, TestConstants.TestAccountProfileId.ToString()).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
