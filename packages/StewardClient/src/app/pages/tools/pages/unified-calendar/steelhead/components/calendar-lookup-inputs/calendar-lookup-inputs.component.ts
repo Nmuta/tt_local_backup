@@ -54,7 +54,7 @@ export class CalendarLookupInputsComponent implements OnInit {
   public slotOptions: string[];
   public filteredSlots: Observable<string[]>;
 
-  constructor(private readonly slotsService: SteelheadPegasusSlotsService){}
+  constructor(private readonly slotsService: SteelheadPegasusSlotsService) {}
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
@@ -66,15 +66,13 @@ export class CalendarLookupInputsComponent implements OnInit {
     this.pegasusFormControls.pegasusEnvironment.valueChanges.subscribe(environment => {
       this.slotsService.getPegasusSlots$(environment).subscribe(slotsResponse => {
         this.slotOptions = slotsResponse;
-  
+
         this.filteredSlots = this.pegasusFormControls.pegasusSlot.valueChanges.pipe(
           startWith(''),
           map(state => (state ? this.filterSlots(state) : this.slotOptions.slice())),
         );
       });
-    })
-
-
+    });
   }
 
   /** Filter slot selection based on input into pegasusSlot formcontrol. */

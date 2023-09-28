@@ -12,9 +12,7 @@ export class SteelheadPegasusSlotsService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets Datetime ranges mapped to Guid. */
-  public getPegasusSlots$(
-    environment: string = null,
-  ): Observable<string[]> {
+  public getPegasusSlots$(environment: string = null): Observable<string[]> {
     const params = addEnvironmentAndSlotHttpParams(environment, null);
     return this.api.getRequest$<string[]>(`${this.basePath}`, params);
   }
