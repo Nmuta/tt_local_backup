@@ -25,6 +25,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         /// <summary>
         ///    Gets pegasus slots for a given environment.
         /// </summary>
+        /// <param name="environment">
+        ///     Unused currently, for use when we have an API to lookup Pegasus slots based on environment.
+        /// </param>
         [HttpGet]
         [SwaggerResponse(200, type: typeof(IList<string>))]
         public async Task<IActionResult> GetPegasusSlots([FromQuery] string environment)

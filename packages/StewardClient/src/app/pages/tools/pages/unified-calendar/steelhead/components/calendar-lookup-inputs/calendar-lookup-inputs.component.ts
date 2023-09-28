@@ -63,14 +63,18 @@ export class CalendarLookupInputsComponent implements OnInit {
       this.pegasusFormControls.daysForward.addValidators([Validators.required]);
     }
 
-    this.slotsService.getPegasusSlots$().subscribe(slotsResponse => {
-      this.slotOptions = slotsResponse
+    this.pegasusFormControls.pegasusEnvironment.valueChanges.subscribe(environment => {
+      this.slotsService.getPegasusSlots$(environment).subscribe(slotsResponse => {
+        this.slotOptions = slotsResponse;
+  
+        this.filteredSlots = this.pegasusFormControls.pegasusSlot.valueChanges.pipe(
+          startWith(''),
+          map(state => (state ? this.filterSlots(state) : this.slotOptions.slice())),
+        );
+      });
+    })
 
-      this.filteredSlots = this.pegasusFormControls.pegasusSlot.valueChanges.pipe(
-        startWith(''),
-        map(state => (state ? this.filterSlots(state) : this.slotOptions.slice())),
-      );
-    });
+
   }
 
   /** Filter slot selection based on input into pegasusSlot formcontrol. */
