@@ -21,18 +21,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             return await ServiceClient.SendRequestAsync<ForzaCMSOverride>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<OkResult> SetPlayerCmsOverride(ulong xuid, [FromBody] ForzaCMSOverride cmsOverride)
+        public async Task<IActionResult> SetPlayerCmsOverride(ulong xuid, [FromBody] ForzaCMSOverride cmsOverride)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/player/{xuid}/cmsOverride");
 
-            return await ServiceClient.SendRequestAsync<OkResult>(HttpMethod.Post, path, this.authKey, Version, cmsOverride, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IActionResult>(HttpMethod.Post, path, this.authKey, Version, cmsOverride, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<OkResult> DeletePlayerCmsOverride(ulong xuid)
+        public async Task<IActionResult> DeletePlayerCmsOverride(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/player/{xuid}/cmsOverride");
 
-            return await ServiceClient.SendRequestAsync<OkResult>(HttpMethod.Delete, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IActionResult>(HttpMethod.Delete, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
     }
 }
