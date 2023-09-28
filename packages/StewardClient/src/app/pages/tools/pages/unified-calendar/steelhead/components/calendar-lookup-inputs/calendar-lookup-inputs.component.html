@@ -40,7 +40,7 @@
             />
             <mat-autocomplete #autoEnvironment="matAutocomplete">
               <mat-option *ngFor="let option of environmentOptions" [value]="option">
-                {{ option }}
+                {{ option | titlecase}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
