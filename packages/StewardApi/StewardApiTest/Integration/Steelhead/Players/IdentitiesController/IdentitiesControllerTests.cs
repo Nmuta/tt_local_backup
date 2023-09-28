@@ -27,11 +27,56 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
+        public async Task PostSearchPlayersIdentities()
+        {
+            try
+            {
+                var response = await stewardClient.PostSearchPlayersIdentities(TestConstants.TestAccountGamertag, TestConstants.TestAccountXuid).ConfigureAwait(false);
+                Assert.IsNotNull(response);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.Fail(ex.ResponseBody);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task PostSearchPlayersIdentities_InvalidXuid()
+        {
+            try
+            {
+                var response = await stewardClient.PostSearchPlayersIdentities(TestConstants.TestAccountGamertag, TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task PostSearchPlayersIdentities_InvalidGamerTag()
+        {
+            try
+            {
+                var response = await stewardClient.PostSearchPlayersIdentities("VeryRealGamerTag", TestConstants.TestAccountXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task PostSearchPlayersIdentities_InvalidAuth()
         {
             try
             {
-                var response = await unauthedClient.PostSearchPlayersIdentities().ConfigureAwait(false);
+                var response = await unauthedClient.PostSearchPlayersIdentities(TestConstants.TestAccountGamertag, TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
