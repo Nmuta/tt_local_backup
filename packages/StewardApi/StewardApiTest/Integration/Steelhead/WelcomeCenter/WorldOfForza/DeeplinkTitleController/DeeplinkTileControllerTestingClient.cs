@@ -19,21 +19,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         public async Task<Dictionary<Guid, string>> GetWorldOfForzaDeeplinkSelectionOptionsAsync()
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}welcomecenter/worldofforza/deeplink/options");
+            var path = new Uri(this.baseUri, $"{TitlePath}/welcomecenter/worldofforza/deeplink/options");
 
             return await ServiceClient.SendRequestAsync<Dictionary<Guid, string>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<WofDeeplinkBridge> GetWorldOfForzaDeeplinkCurrentValuesAsync(string id)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}welcomecenter/worldofforza/deeplink/{id}");
+            var path = new Uri(this.baseUri, $"{TitlePath}/welcomecenter/worldofforza/deeplink/{id}");
 
             return await ServiceClient.SendRequestAsync<WofDeeplinkBridge>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<PullRequest> EditAndSubmitDeeplinkTile(string id, [FromBody] WofDeeplinkBridge wofTileBridge)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}welcomecenter/worldofforza/deeplink/{id}");
+            var path = new Uri(this.baseUri, $"{TitlePath}/welcomecenter/worldofforza/deeplink/{id}");
 
             return await ServiceClient.SendRequestAsync<PullRequest>(HttpMethod.Post, path, this.authKey, Version, wofTileBridge, headers: this.headers).ConfigureAwait(false);
         }
