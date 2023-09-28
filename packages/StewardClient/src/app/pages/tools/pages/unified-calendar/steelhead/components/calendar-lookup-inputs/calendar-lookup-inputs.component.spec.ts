@@ -3,6 +3,7 @@ import { CalendarLookupInputsComponent } from './calendar-lookup-inputs.componen
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { createMockSteelheadPegasusSlotsService } from '@services/api-v2/steelhead/pegasus-slots/steelhead-pegasus-slots.service.mock';
 
 describe('CalendarLookupInputsComponent', () => {
   let component: CalendarLookupInputsComponent;
@@ -13,6 +14,7 @@ describe('CalendarLookupInputsComponent', () => {
       createStandardTestModuleMetadataMinimal({
         imports: [MatAutocompleteModule],
         declarations: [CalendarLookupInputsComponent],
+        providers: [createMockSteelheadPegasusSlotsService()],
       }),
     ).compileComponents();
   });
