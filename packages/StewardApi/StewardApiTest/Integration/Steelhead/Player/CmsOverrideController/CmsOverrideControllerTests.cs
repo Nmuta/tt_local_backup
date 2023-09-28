@@ -81,7 +81,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.SetPlayerCmsOverride(TestConstants.TestAccountXuid, cms).ConfigureAwait(false);
+                await unauthedClient.SetPlayerCmsOverride(TestConstants.TestAccountXuid, cms).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.DeletePlayerCmsOverride(TestConstants.TestAccountXuid).ConfigureAwait(false);
+                await unauthedClient.DeletePlayerCmsOverride(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
