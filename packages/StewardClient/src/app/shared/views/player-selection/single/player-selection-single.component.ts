@@ -39,9 +39,6 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
   /** Additional text to display in the usual hint. */
   @Input() public extraHint: string | undefined;
 
-  /** Additional error to display alongside the usual hint. */
-  @Input() public extraError: string | undefined;
-
   protected selectedValue: AugmentedCompositeIdentity = null;
   public maxFoundIndentities: number = 1;
 

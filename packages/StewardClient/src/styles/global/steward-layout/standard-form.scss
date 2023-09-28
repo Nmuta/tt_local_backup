@@ -276,3 +276,29 @@ help-popover-icon.sf-menu-top-right {
 .sf-no-bullet {
   list-style-type: none;
 }
+
+.sf-icon-between {
+  font-size: 2rem;
+  height: 2rem;
+  width: 2rem;
+  align-self: center;
+  border-radius: 100%;
+  margin: 1em;
+
+  background-color: app-color-darker($app-background, 0.5);
+  color: app-color-darker-contrast($app-background, 0.5);
+  border: 1px solid app-color-darker($app-background, 0.5);
+
+  flex-grow: 0;
+  cursor: unset;
+}
+
+.sf-vertical.sf-aside {
+  background-color: app-color-default-contrast($app-background, 0.05);
+  border-left: 1px solid app-color-default-contrast($app-background, 0.2);
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
+  align-self: stretch;
+  padding: 0.5em 1em;
+  margin-left: 2em;
+}
