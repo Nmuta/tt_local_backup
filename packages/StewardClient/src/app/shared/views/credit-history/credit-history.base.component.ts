@@ -196,7 +196,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
 
   /** Lifecycle hook */
   public ngOnInit(): void {
-    this.isRetail = this.getEndpoint() == "Retail";
+    this.isRetail = this.getEndpoint() == 'Retail';
     this.getCreditUpdates$
       .pipe(
         switchMap(() => {

@@ -1,20 +1,19 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { createMockWoodstockService } from '@services/woodstock/woodstock.service.mock';
-import { WoodstockCreditHistoryComponent } from './woodstock-credit-history.component';
 import { first } from 'lodash';
-import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
-import { createMockWoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.mock';
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import { createMockSteelheadPlayerCreditUpdatesService } from '@services/api-v2/steelhead/player/credit-updates/steelhead-credit-updates.mock';
+import { SteelheadCreditHistoryComponent } from './steelhead-credit-history.component';
+import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
 import { NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
-describe('WoodstockCreditHistoryComponent', () => {
-  let component: WoodstockCreditHistoryComponent;
-  let fixture: ComponentFixture<WoodstockCreditHistoryComponent>;
+describe('SteelheadCreditHistoryComponent', () => {
+  let component: SteelheadCreditHistoryComponent;
+  let fixture: ComponentFixture<SteelheadCreditHistoryComponent>;
 
   const testXuid = fakeXuid();
 
@@ -26,15 +25,15 @@ describe('WoodstockCreditHistoryComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot([]),
         ],
-        declarations: [WoodstockCreditHistoryComponent, HumanizePipe],
-        providers: [createMockWoodstockService(), createMockWoodstockPlayerCreditUpdatesService()],
+        declarations: [SteelheadCreditHistoryComponent, HumanizePipe],
+        providers: [createMockSteelheadPlayerCreditUpdatesService()],
         schemas: [NO_ERRORS_SCHEMA],
       }),
     ).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WoodstockCreditHistoryComponent);
+    fixture = TestBed.createComponent(SteelheadCreditHistoryComponent);
     component = fixture.componentInstance;
     component.getEndpoint = jasmine.createSpy('getEndpoint').and.returnValue('');
     fixture.detectChanges();
@@ -59,7 +58,7 @@ describe('WoodstockCreditHistoryComponent', () => {
 
     describe('When there is a valid identity in the component', () => {
       beforeEach(() => {
-        component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
+        component.identity = first(SteelheadPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
       });
 
       it('should call getCreditUpdates$.next()', () => {
@@ -89,7 +88,7 @@ describe('WoodstockCreditHistoryComponent', () => {
 
     describe('When there is a valid identity in the component', () => {
       beforeEach(() => {
-        component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
+        component.identity = first(SteelheadPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
       });
 
       it('should call getCreditUpdates$.next()', () => {

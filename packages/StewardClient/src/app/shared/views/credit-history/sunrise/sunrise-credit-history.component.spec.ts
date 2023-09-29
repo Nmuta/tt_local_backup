@@ -6,8 +6,11 @@ import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/tit
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { createMockSunrisePlayerService } from '@services/api-v2/sunrise/sunrise-player.service.mock';
 import { createMockSunrisePlayerCreditUpdatesService } from '@services/api-v2/sunrise/player/credit-updates/sunrise-credit-updates.mock';
-
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import { NgxsModule } from '@ngxs/store';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
 describe('SunriseCreditHistoryComponent', () => {
   let component: SunriseCreditHistoryComponent;
@@ -18,7 +21,12 @@ describe('SunriseCreditHistoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadataMinimal({
-        declarations: [SunriseCreditHistoryComponent],
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        declarations: [SunriseCreditHistoryComponent, HumanizePipe],
         providers: [
           createMockSunrisePlayerCreditUpdatesService(),
           createMockSunrisePlayerService(),
@@ -31,6 +39,7 @@ describe('SunriseCreditHistoryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SunriseCreditHistoryComponent);
     component = fixture.componentInstance;
+    component.getEndpoint = jasmine.createSpy('getEndpoint').and.returnValue('');
     fixture.detectChanges();
   });
 

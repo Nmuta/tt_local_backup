@@ -12,7 +12,10 @@ import { ProfileRollbackHistory } from '@models/profile-rollback-history.model';
 import { SunrisePlayerService } from '@services/api-v2/sunrise/sunrise-player.service';
 import { SunrisePlayerCreditUpdatesService } from '@services/api-v2/sunrise/player/credit-updates/sunrise-credit-updates.service';
 import { Store } from '@ngxs/store';
-import { UserSettingsStateModel, UserSettingsState } from '@shared/state/user-settings/user-settings.state';
+import {
+  UserSettingsStateModel,
+  UserSettingsState,
+} from '@shared/state/user-settings/user-settings.state';
 
 /** Retreives and displays Sunrise credit history by XUID. */
 @Component({
@@ -48,6 +51,7 @@ export class SunriseCreditHistoryComponent extends CreditHistoryBaseComponent<Su
     return this.sunrisePlayerService.getProfileRollbackHistoryXuid$(xuid);
   }
 
+  /** Gets the current selected endpoint */
   public getEndpoint(): string {
     return this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState).sunriseEndpointKey;
   }

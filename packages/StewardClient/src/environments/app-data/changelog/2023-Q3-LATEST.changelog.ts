@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.UserDetails] },
+      uuid: '07c21994-1791-40fb-b5df-593179f15225',
+      shortText: `Add deep dive tab to player details.`,
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
       uuid: 'n01a43al-0uui-d1wr-01ei-3yha7dha4ah4',
       shortText: `Prevent featured UGC from being reported.`,

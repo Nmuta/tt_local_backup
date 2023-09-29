@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header class="sf-header">
     <mat-card-title>Credit History</mat-card-title>
-    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
     <ng-container *ngIf="isRetail">
       <button

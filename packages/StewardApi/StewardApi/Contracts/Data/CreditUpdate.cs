@@ -72,9 +72,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                     break;
 
                 case TitleCodeName.Steelhead:
-                    unorderedQuery = $"external_table(\"Game_CreditsUpdate\") " +
-                                     $"| take 10 " +
-                                     $"| project Timestamp, CreditsAfter, EventId";
+                    unorderedQuery = $"Game_CreditsUpdate " +
+                                     $"| where Xuid == {xuid} " +
+                                     $"| project Timestamp, CreditsAfter, CreditAmount, SceneName, DeviceType = ActualPlatform, TotalXp = TotalXPEarned";
                     break;
 
                 default:
