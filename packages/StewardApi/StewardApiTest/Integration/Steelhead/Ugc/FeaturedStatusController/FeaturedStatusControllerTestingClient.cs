@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -17,11 +14,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<OkResult> PostSetUgcGeoFlags(string ugcId)
+        public async Task<GenerateSharecodeResponse> SetUgcFeaturedStatus(string ugcId, [FromBody] UgcFeaturedStatus status)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}/ugc/{ugcId}/geoFlags");
+            var path = new Uri(this.baseUri, $"{TitlePath}/ugc/{ugcId}/featuredStatus");
 
-            return await ServiceClient.SendRequestAsync<OkResult>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<GenerateSharecodeResponse>(
+                HttpMethod.Post,
+                path,
+                this.authKey,
+                Version,
+                status,
+                headers: this.headers
+            ).ConfigureAwait(false);
         }
     }
 }

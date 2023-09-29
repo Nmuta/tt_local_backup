@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -17,11 +14,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<OkResult> PostSetUgcGeoFlags(string ugcId)
+        public async Task EditUgcTitleAndDescription(string ugcId, [FromBody] UgcEditInput ugcEditInput)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}/ugc/{ugcId}/geoFlags");
+            var path = new Uri(this.baseUri, $"{TitlePath}/ugc/{ugcId}/edit");
 
-            return await ServiceClient.SendRequestAsync<OkResult>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, ugcEditInput, headers: this.headers).ConfigureAwait(false);
+        }
+
+        public async Task EditUgcStats(string ugcId, [FromBody] UgcEditStatsInput ugcEditStatsInput)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}/ugc/{ugcId}/edit/stats");
+
+            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, ugcEditStatsInput, headers: this.headers).ConfigureAwait(false);
         }
     }
 }

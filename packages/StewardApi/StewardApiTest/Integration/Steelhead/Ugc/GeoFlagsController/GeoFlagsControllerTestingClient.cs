@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/ugc/{ugcId}/geoFlags");
 
-            return await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
     }
 }
