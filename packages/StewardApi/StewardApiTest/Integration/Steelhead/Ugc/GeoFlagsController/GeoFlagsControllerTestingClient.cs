@@ -17,11 +17,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<OkResult> PostSetUgcGeoFlags(string ugcId)
+        public async Task PostSetUgcGeoFlags(string ugcId)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/ugc/{ugcId}/geoFlags");
 
-            return await ServiceClient.SendRequestAsync<OkResult>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
     }
 }
