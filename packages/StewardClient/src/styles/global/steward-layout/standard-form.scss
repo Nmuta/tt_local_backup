@@ -223,7 +223,7 @@
 
 .sf-spacer {
   flex-grow: 1;
-  
+
   &.sf-spacer-collapse {
     // TODO: There may be an angular variable for this?
     @media (max-width: 1600px) {

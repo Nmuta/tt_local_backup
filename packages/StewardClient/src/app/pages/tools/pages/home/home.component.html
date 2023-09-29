@@ -3,15 +3,25 @@
     <mat-form-field class="tile-filter-chip-list sf-default-hint" appearance="fill">
       <mat-label>Filter Tiles</mat-label>
       <mat-chip-list #chipList aria-label="Filter selection">
-        <mat-chip *ngFor="let filter of filters" class="filter-type-{{ filter.type }}" (removed)="removeFilter(filter)">
+        <mat-chip
+          *ngFor="let filter of filters"
+          class="filter-type-{{ filter.type }}"
+          (removed)="removeFilter(filter)"
+        >
           {{ filter.type | humanize }}:{{ filter.value | gameTitleAbbreviation : true }}
           <button matChipRemove>
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-chip>
-        <input placeholder="Select filter..." #filterInput [formControl]="filterControl" [matAutocomplete]="auto"
-          [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          (matChipInputTokenEnd)="addFilter($event)" />
+        <input
+          placeholder="Select filter..."
+          #filterInput
+          [formControl]="filterControl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addFilter($event)"
+        />
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedFilter($event)">
         <mat-optgroup *ngIf="userRole === roleToLoadPermissionFilterFor" label="Permission">
@@ -25,15 +35,31 @@
           </mat-option>
         </mat-optgroup>
       </mat-autocomplete>
-      <button clickStop matSuffix mat-icon-button (click)="clearFilters()" matTooltip="Clear search filters"
-        type="button">
+      <button
+        clickStop
+        matSuffix
+        mat-icon-button
+        (click)="clearFilters()"
+        matTooltip="Clear search filters"
+        type="button"
+      >
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-    <button class="sf-no-grow" mat-raised-button (click)="clearTools()" matTooltip="Remove all tools from your toolbar">
+    <button
+      class="sf-no-grow"
+      mat-raised-button
+      (click)="clearTools()"
+      matTooltip="Remove all tools from your toolbar"
+    >
       Clear Tools
     </button>
-    <button class="sf-no-grow" mat-raised-button (click)="resetTools()" matTooltip="Reset toolbar to the default">
+    <button
+      class="sf-no-grow"
+      mat-raised-button
+      (click)="resetTools()"
+      matTooltip="Reset toolbar to the default"
+    >
       Reset Tools
     </button>
   </div>
@@ -45,15 +71,20 @@
       Your Tools
       <mat-chip color="accent" [selected]="availableTiles.filtered?.length > 0">{{
         availableTiles.filtered?.length
-        }}</mat-chip>
+      }}</mat-chip>
     </ng-template>
 
-    <home-tile-grid *ngIf="availableTiles.filtered?.length > 0; else noAvailableResultsTemplate"
-      [tiles]="availableTiles.filtered"></home-tile-grid>
+    <home-tile-grid
+      *ngIf="availableTiles.filtered?.length > 0; else noAvailableResultsTemplate"
+      [tiles]="availableTiles.filtered"
+    ></home-tile-grid>
     <div *ngIf="availableTiles.rejected?.length > 0" class="horizontal-divider">
       <span>Tools below do not match filters</span>
     </div>
-    <home-tile-grid *ngIf="availableTiles.rejected?.length > 0" [tiles]="availableTiles.rejected"></home-tile-grid>
+    <home-tile-grid
+      *ngIf="availableTiles.rejected?.length > 0"
+      [tiles]="availableTiles.rejected"
+    ></home-tile-grid>
   </mat-tab>
 
   <mat-tab>
@@ -61,16 +92,20 @@
       Disabled Tools
       <mat-chip color="accent" [selected]="unauthorizedTiles.filtered?.length > 0">{{
         unauthorizedTiles.filtered?.length
-        }}</mat-chip>
+      }}</mat-chip>
     </ng-template>
     <div class="disabled-tools-info">Tools below are disabled due to lack of permissions.</div>
-    <home-tile-grid *ngIf="unauthorizedTiles.filtered?.length > 0; else noUnauthorizedResultsTemplate"
-      [tiles]="unauthorizedTiles.filtered"></home-tile-grid>
+    <home-tile-grid
+      *ngIf="unauthorizedTiles.filtered?.length > 0; else noUnauthorizedResultsTemplate"
+      [tiles]="unauthorizedTiles.filtered"
+    ></home-tile-grid>
     <div *ngIf="unauthorizedTiles.rejected?.length > 0" class="horizontal-divider">
       <span>Tools below do not match filters</span>
     </div>
-    <home-tile-grid *ngIf="unauthorizedTiles.rejected?.length > 0"
-      [tiles]="unauthorizedTiles.rejected"></home-tile-grid>
+    <home-tile-grid
+      *ngIf="unauthorizedTiles.rejected?.length > 0"
+      [tiles]="unauthorizedTiles.rejected"
+    ></home-tile-grid>
   </mat-tab>
 </mat-tab-group>
 
