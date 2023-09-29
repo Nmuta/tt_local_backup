@@ -11,6 +11,10 @@ export class MockSteelheadUgcEditService {
     .createSpy('editUgc$')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
 
+  public editUgcStats$ = jasmine
+    .createSpy('editUgcStats$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of([]))));
+
   constructor(private readonly generator$: () => unknown) {}
 }
 

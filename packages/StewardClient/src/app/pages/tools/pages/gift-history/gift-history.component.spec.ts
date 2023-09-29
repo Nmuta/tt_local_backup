@@ -9,6 +9,8 @@ import { UserState } from '@shared/state/user/user.state';
 
 import { GiftHistoryComponent } from './gift-history.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('GiftHistoryComponent', () => {
   let component: GiftHistoryComponent;
   let fixture: ComponentFixture<GiftHistoryComponent>;
@@ -16,16 +18,18 @@ describe('GiftHistoryComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [GiftHistoryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [GiftHistoryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(GiftHistoryComponent);
     component = fixture.debugElement.componentInstance;

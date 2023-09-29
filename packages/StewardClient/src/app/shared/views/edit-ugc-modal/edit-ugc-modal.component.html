@@ -5,10 +5,40 @@
     <mat-form-field>
       <mat-label> Title </mat-label>
       <input matInput type="text" [formControl]="formControls.title" />
+      <mat-error *ngIf="formControls.title?.hasError('maxlength')">
+        Title must be {{ service.titleMaxLength }} characters or less.
+      </mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label> Description </mat-label>
       <input matInput type="text" [formControl]="formControls.description" />
+      <mat-error *ngIf="formControls.description?.hasError('maxlength')">
+        Description must be {{ service.descriptionMaxLength }} characters or less.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label> Times Disliked </mat-label>
+      <input matInput type="number" [formControl]="formControls.disliked" />
+      <mat-error *ngIf="formControls.disliked.hasError('min')"
+        >Stats can not be decreased</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label> Times Downloaded </mat-label>
+      <input matInput type="number" [formControl]="formControls.downloaded" />
+      <mat-error *ngIf="formControls.downloaded.hasError('min')"
+        >Stats can not be decreased</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label> Times Liked </mat-label>
+      <input matInput type="number" [formControl]="formControls.liked" />
+      <mat-error *ngIf="formControls.liked.hasError('min')">Stats can not be decreased</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label> Times Used </mat-label>
+      <input matInput type="number" [formControl]="formControls.used" />
+      <mat-error *ngIf="formControls.used.hasError('min')">Stats can not be decreased</mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>

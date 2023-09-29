@@ -7,16 +7,20 @@ import { LspGroup } from '@models/lsp-group';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import { SunriseGiftHistoryResultsCompactComponent } from './sunrise-gift-history-results-compact.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseGiftHistoryResultsCompactComponent', () => {
   let component: SunriseGiftHistoryResultsCompactComponent;
   let fixture: ComponentFixture<SunriseGiftHistoryResultsCompactComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseGiftHistoryResultsCompactComponent],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseGiftHistoryResultsCompactComponent],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

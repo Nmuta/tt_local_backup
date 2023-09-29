@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { HCI } from '@environments/environment';
 import { pairwiseSkip } from '@helpers/rxjs';
-import { DeviceType } from '@models/enums';
+import { DeviceType, GameTitle } from '@models/enums';
+import { IdentityResultAlpha } from '@models/identity-query.model';
 import {
   paramsToLeadboardQuery,
   isValidLeaderboardQuery,
@@ -13,7 +14,7 @@ import {
   LeaderboardEnvironment,
 } from '@models/leaderboards';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { BigNumberValidators } from '@shared/validators/bignumber-validators';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import BigNumber from 'bignumber.js';
 import { isObject, isString, keys, unionBy } from 'lodash';
 import { Observable } from 'rxjs';
@@ -21,6 +22,7 @@ import { map, startWith, takeUntil, debounceTime, tap } from 'rxjs/operators';
 
 /** Available filter types for leaderboards. */
 enum LeaderboardFilterType {
+  ScoreboardType = 'ScoreboardType',
   ScoreType = 'ScoreType',
   CarClass = 'CarClass',
 }
@@ -40,8 +42,11 @@ interface LeaderboardFilterGroup {
 
 /** Service contract for search leaderboards. */
 export interface SearchLeaderboardsContract {
+  gameTitle: GameTitle;
   /** Gets list of all leaderboards. */
   getLeaderboards$(pegasusEnvironment: string): Observable<Leaderboard[]>;
+  foundFn: (identity: AugmentedCompositeIdentity) => IdentityResultAlpha | null;
+  rejectionFn: (identity: AugmentedCompositeIdentity) => string | null;
 }
 
 /** Displays the search leaderboards tool. */
@@ -53,6 +58,8 @@ export interface SearchLeaderboardsContract {
 export class SearchLeaderboardsComponent extends BaseComponent implements OnInit {
   /** The search leaderboard service contract. */
   @Input() public service: SearchLeaderboardsContract;
+  /** Output when an identity is selected. */
+  @Output() selectedIdentityChange = new EventEmitter<AugmentedCompositeIdentity>();
 
   /** The object to build leaderboard filters multi-select. */
   public leaderboardFilterGroups: LeaderboardFilterGroup[] = keys(LeaderboardFilterType).map(
@@ -83,10 +90,12 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
 
   public getLeaderboards = new ActionMonitor('GET leaderboards');
 
+  public playerNotFound: boolean = false;
+
   public formControls = {
     filters: new UntypedFormControl([]),
     leaderboard: new UntypedFormControl(''),
-    xuid: new UntypedFormControl('', [BigNumberValidators.isBigNumber()]),
+    identity: new UntypedFormControl(null),
     deviceTypes: new UntypedFormControl([]),
     leaderboardEnvironment: new UntypedFormControl('Prod', [Validators.required]),
   };
@@ -100,7 +109,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
 
   /** Getter for selected leaderboard */
   public get xuid(): BigNumber {
-    return this.formControls.xuid.value as BigNumber;
+    return (this.formControls.identity.value as IdentityResultAlpha)?.xuid;
   }
 
   /** Getter for selected device types */
@@ -133,6 +142,9 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     const scoreFilters = allFilters.filter(
       filter => filter.type === LeaderboardFilterType.ScoreType,
     );
+    const scoreboardFilters = allFilters.filter(
+      filter => filter.type === LeaderboardFilterType.ScoreboardType,
+    );
     const carClassFilters = allFilters.filter(
       filter => filter.type === LeaderboardFilterType.CarClass,
     );
@@ -145,6 +157,13 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         );
       }
 
+      let inScoreboardFilters = true;
+      if (scoreboardFilters.length > 0) {
+        inScoreboardFilters = !!scoreboardFilters.find(filter =>
+          filter.id.isEqualTo(leaderboard.scoreboardTypeId),
+        );
+      }
+
       let inCarClassFilters = true;
       if (carClassFilters.length > 0) {
         inCarClassFilters = !!carClassFilters.find(filter =>
@@ -152,7 +171,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
         );
       }
 
-      return inScoreFilters && inCarClassFilters;
+      return inScoreFilters && inScoreboardFilters && inCarClassFilters;
     });
 
     this.autocompleteLeadeboards = this.filterLeaderboards(this.formControls.leaderboard.value);
@@ -194,15 +213,19 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
       }
     }
 
-    const xuid = new BigNumber(this.formControls.xuid.value);
-    if (!xuid.isNaN()) {
-      queryParams['xuid'] = xuid;
-    }
-
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: queryParams,
     });
+  }
+
+  /** Player identity selected */
+  public playerIdentityFound(newIdentity: AugmentedCompositeIdentity): void {
+    const titleSpecificIdentity = this.service.foundFn(newIdentity);
+
+    this.playerNotFound = !!newIdentity?.result && !titleSpecificIdentity;
+    this.formControls.identity.setValue(titleSpecificIdentity);
+    this.selectedIdentityChange.emit(newIdentity);
   }
 
   private setupLeaderboards(prefillParams: boolean): void {
@@ -263,7 +286,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
       .subscribe(() => {
         this.formControls.leaderboard.setValue('');
         this.formControls.filters.setValue([]);
-        this.formControls.xuid.setValue('');
+        this.formControls.identity.setValue(null);
         this.setupLeaderboards(false);
       });
   }
@@ -274,7 +297,8 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     return this.filteredLeaderboards.filter(
       option =>
         option.name.toLowerCase().includes(filterValue) ||
-        option.scoreType.toLowerCase().includes(filterValue),
+        option.scoreType.toLowerCase().includes(filterValue) ||
+        option.scoreboardType.toLowerCase().includes(filterValue),
     );
   }
 
@@ -306,11 +330,6 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
 
   private prefillOptionalFiltersWithParams(params: Params): void {
     const query = paramsToLeadboardQuery(params);
-    const xuidParamExists = params['xuid'];
-
-    if (xuidParamExists && !query.xuid.isNaN()) {
-      this.formControls.xuid.setValue(query.xuid.toString());
-    }
 
     if (query.deviceTypes?.trim().length > 0) {
       const foundDeviceTypes: DeviceType[] = query.deviceTypes
@@ -351,6 +370,22 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
       },
     );
 
+    const scoreboardTypeGroup = this.leaderboardFilterGroups.find(
+      group => group.name === LeaderboardFilterType.ScoreboardType,
+    );
+    const scoreboardTypeFilter = unionBy(
+      this.filteredLeaderboards.map(board => {
+        return {
+          type: LeaderboardFilterType.ScoreboardType,
+          id: board.scoreboardTypeId,
+          name: board.scoreboardType,
+        } as LeaderboardFilter;
+      }),
+      filter => {
+        return filter.id.toString();
+      },
+    );
+
     const carClasseGroup = this.leaderboardFilterGroups.find(
       group => group.name === LeaderboardFilterType.CarClass,
     );
@@ -370,6 +405,7 @@ export class SearchLeaderboardsComponent extends BaseComponent implements OnInit
     ).reverse();
 
     scoreTypeGroup.items = scoreTypeFilter;
+    scoreboardTypeGroup.items = scoreboardTypeFilter;
     carClasseGroup.items = carClassFilter;
   }
 

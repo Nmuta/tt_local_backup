@@ -1,9 +1,9 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import {
-  MatCheckboxDefaultOptions,
-  MAT_CHECKBOX_DEFAULT_OPTIONS,
-} from '@angular/material/checkbox';
+  MatLegacyCheckboxDefaultOptions as MatCheckboxDefaultOptions,
+  MAT_LEGACY_CHECKBOX_DEFAULT_OPTIONS as MAT_CHECKBOX_DEFAULT_OPTIONS,
+} from '@angular/material/legacy-checkbox';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
 /**

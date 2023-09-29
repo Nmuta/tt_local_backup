@@ -8,7 +8,7 @@ import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { Observable, takeUntil } from 'rxjs';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { SafetyRating, SafetyRatingUpdate } from '@models/player-safety-rating.model';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 
 /** Safety Rating service contract. */
 export interface SafetyRatingServiceContract {

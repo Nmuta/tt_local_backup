@@ -12,19 +12,21 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { of, throwError } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GiftResponse } from '@models/gift-response';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { SunriseMasterInventory } from '@models/sunrise';
-import { MatSelectChange } from '@angular/material/select';
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import faker from '@faker-js/faker';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { toDateTime } from '@helpers/luxon';
 import { createMockPermAttributesService } from '@services/perm-attributes/perm-attributes.service.mock';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<
@@ -38,17 +40,19 @@ describe('GiftBasketBaseComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-      ],
-      declarations: [GiftBasketBaseComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockPermAttributesService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+        ],
+        declarations: [GiftBasketBaseComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockPermAttributesService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(
       GiftBasketBaseComponent as Type<
@@ -610,6 +614,7 @@ describe('GiftBasketBaseComponent', () => {
       result: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -662,6 +667,7 @@ describe('GiftBasketBaseComponent', () => {
           ],
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatLegacyAutocomplete as MatAutocomplete } from '@angular/material/legacy-autocomplete';
 import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 import { GameTitle } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';

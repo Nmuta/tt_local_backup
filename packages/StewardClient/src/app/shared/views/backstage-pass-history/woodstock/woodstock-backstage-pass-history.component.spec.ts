@@ -7,6 +7,8 @@ import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/t
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockBackstagePassHistoryComponent', () => {
   let component: WoodstockBackstagePassHistoryComponent;
   let fixture: ComponentFixture<WoodstockBackstagePassHistoryComponent>;
@@ -14,11 +16,13 @@ describe('WoodstockBackstagePassHistoryComponent', () => {
   const testXuid = fakeXuid();
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [WoodstockBackstagePassHistoryComponent, HumanizePipe],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [WoodstockBackstagePassHistoryComponent, HumanizePipe],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

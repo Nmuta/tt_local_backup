@@ -24,11 +24,16 @@ form {
   flex-flow: row wrap;
   align-items: flex-start;
 
-  mat-form-field {
+  mat-form-field,
+  .player-selection-container {
     max-width: 500px;
     width: 100%;
     flex-grow: 1;
     margin-right: $gap-medium;
+  }
+
+  .player-selection-container > mat-hint {
+    font-size: 75%;
   }
 
   .line-break {

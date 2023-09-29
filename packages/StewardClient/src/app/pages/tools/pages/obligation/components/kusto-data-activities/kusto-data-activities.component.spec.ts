@@ -4,16 +4,20 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { KustoDataActivitiesComponent } from './kusto-data-activities.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('KustoDataActivitiesComponent', () => {
   let component: KustoDataActivitiesComponent;
   let fixture: ComponentFixture<KustoDataActivitiesComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [KustoDataActivitiesComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [PipesModule],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [KustoDataActivitiesComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [PipesModule],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

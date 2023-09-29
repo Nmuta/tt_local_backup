@@ -8,15 +8,19 @@ import { TourState } from './tours.state';
 import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('UserTourService', () => {
   let store: Store;
   let service: TourState;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([TourState]), TourMatMenuModule],
-      providers: [createMockUserTourService()],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([TourState]), TourMatMenuModule],
+        providers: [createMockUserTourService()],
+      }),
+    );
     service = TestBed.inject(TourState);
     store = TestBed.inject(Store);
   });

@@ -7,21 +7,25 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { WoodstockUserGroupManagementComponent } from './woodstock-user-group-management.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockUserGroupManagementComponent', () => {
   let component: WoodstockUserGroupManagementComponent;
   let fixture: ComponentFixture<WoodstockUserGroupManagementComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([]),
-      ],
-      declarations: [WoodstockUserGroupManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([]),
+        ],
+        declarations: [WoodstockUserGroupManagementComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockUserGroupManagementComponent);
     component = fixture.debugElement.componentInstance;

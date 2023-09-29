@@ -40,7 +40,7 @@ export class SteelheadPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
         } as FullPlayerInventoryProfile;
       });
 
-    faker.random.arrayElement(items).isCurrentByTitleId = true;
+    faker.helpers.arrayElement(items).isCurrentByTitleId = true;
 
     return items;
   }

@@ -1,5 +1,5 @@
 import { Directive, ElementRef, forwardRef, Optional, ViewContainerRef } from '@angular/core';
-import { MatTooltip } from '@angular/material/tooltip';
+import { MatLegacyTooltip as MatTooltip } from '@angular/material/legacy-tooltip';
 import { PermAttributesService } from '@services/perm-attributes/perm-attributes.service';
 import { STEWARD_DISABLE_STATE_PROVIDER } from '@shared/modules/state-managers/injection-tokens';
 import { BasePermissionAttributeDirective } from './permission-attribute.base.directive';

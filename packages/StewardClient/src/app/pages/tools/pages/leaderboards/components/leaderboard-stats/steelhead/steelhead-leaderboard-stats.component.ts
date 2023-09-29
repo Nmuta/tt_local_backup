@@ -22,7 +22,7 @@ export class SteelheadLeaderboardStatsComponent {
   public readonly gameTitle = GameTitle.FM8;
 
   public serviceContract: LeaderboardStatsContract = {
-    talentUserGroupId: 23, //This is currently pointing at Studio user group Live Ops Devs. We will need to replace this with actual prod usergroup once we have a prod LSP
+    talentUserGroupId: 31,
     getLeaderboardScores$: (
       scoreboardTypeId,
       scoreTypeId,
@@ -43,7 +43,7 @@ export class SteelheadLeaderboardStatsComponent {
         maxResults,
         endpointKeyOverride,
       ),
-    getLeaderboardTalentIdentities$: () => this.service.getLeaderboardTalentIdentities$(),
+    getLeaderboardTalentIdentities$: () => this.service.getRetailLeaderboardTalentIdentities$(),
   };
 
   constructor(public readonly service: SteelheadLeaderboardsService) {}

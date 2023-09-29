@@ -116,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             ////groupGift.Xuids.EnsureValidXuids();
 
-            await this.EnsurePlayersExist(this.Services, groupGift.Xuids).ConfigureAwait(true);
+            await this.Services.EnsurePlayersExistAsync(groupGift.Xuids);
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
             this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Players
             groupGift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(groupGift.GiftReason));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-            await this.Services.EnsurePlayersExistAsync(groupGift.Xuids).ConfigureAwait(true);
+            await this.Services.EnsurePlayersExistAsync(groupGift.Xuids);
 
             var liveries = await LiveryLookupHelpers.LookupSteelheadLiveriesAsync(
                 gift.LiveryIds,

@@ -21,6 +21,8 @@ import { HttpParams } from '@angular/common/http';
 import { UgcType } from '@models/ugc-filters';
 import { PegasusProjectionSlot } from '@models/enums';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockService', () => {
   let injector: TestBed;
   let service: WoodstockService;
@@ -28,11 +30,13 @@ describe('WoodstockService', () => {
   let nextReturnValue: unknown = {};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [createMockApiService(() => nextReturnValue)],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [createMockApiService(() => nextReturnValue)],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     injector = getTestBed();
     service = injector.inject(WoodstockService);
     apiServiceMock = injector.inject(ApiService);

@@ -119,6 +119,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         /// </summary>
         [JsonConverter(typeof(DeeplinkDestinationConverter))]
         public DeeplinkDestination Destination { get; set; }
+
+        /// <summary>
+        ///     Gets or sets when tag property.
+        /// </summary>
+        public string When { get; set; }
     }
 
     /// <summary>

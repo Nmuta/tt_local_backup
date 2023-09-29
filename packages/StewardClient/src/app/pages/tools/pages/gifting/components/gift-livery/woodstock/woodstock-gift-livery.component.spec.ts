@@ -27,6 +27,8 @@ import { WoodstockPlayersGiftService } from '@services/api-v2/woodstock/players/
 import { ZERO } from '@helpers/bignumbers';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockGiftLiveryComponent', () => {
   let fixture: ComponentFixture<WoodstockGiftLiveryComponent>;
   let component: WoodstockGiftLiveryComponent;
@@ -38,22 +40,24 @@ describe('WoodstockGiftLiveryComponent', () => {
   const liveryId = faker.datatype.uuid();
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-      ],
-      declarations: [WoodstockGiftLiveryComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockBackgroundJobService(),
-        createMockWoodstockService(),
-        createMockWoodstockPlayersGiftService(),
-        createMockWoodstockGroupGiftService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+        ],
+        declarations: [WoodstockGiftLiveryComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockBackgroundJobService(),
+          createMockWoodstockService(),
+          createMockWoodstockPlayersGiftService(),
+          createMockWoodstockGroupGiftService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockGiftLiveryComponent);
     component = fixture.debugElement.componentInstance;
@@ -334,6 +338,7 @@ describe('WoodstockGiftLiveryComponent', () => {
       result: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -393,6 +398,7 @@ describe('WoodstockGiftLiveryComponent', () => {
           ],
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

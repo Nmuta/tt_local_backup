@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Graph;
+using Microsoft.Graph.ExternalConnectors;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
 using SteelheadLiveOpsContent;
@@ -22,6 +25,7 @@ using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.Services.CMSRetrieval;
+using Turn10.Services.Orm;
 using BanConfiguration = SteelheadLiveOpsContent.BanConfiguration;
 using CarClass = Turn10.LiveOps.StewardApi.Contracts.Common.CarClass;
 using LiveOpsContracts = Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -34,7 +38,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
     {
         private const string PegasusBaseCacheKey = "SteelheadPegasus_";
         private const string LocalizationFileAntecedent = "LiveOps_LocalizationStrings-";
-        private const string LocalizationStringIdsMappings = "LiveOps_LocalizationStringMappings";
         private readonly string defaultCmsSlot = SteelheadPegasusSlot.Live;
 
         private static readonly IList<string> RequiredSettings = new List<string>
@@ -605,7 +608,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
                 var localizationIdsMapping = await this.cmsRetrievalHelper
                     .GetCMSObjectAsync<Dictionary<Guid, Guid>>(
-                        LocalizationStringIdsMappings,
+                        CMSFileNames.LocalizationStringMappings,
                         environment: environment,
                         slot: slot,
                         snapshot: snapshot).ConfigureAwait(false);
@@ -1002,6 +1005,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var subset = this.mapper.SafeMap<MotdBridge>(entry);
 
+            await this.MapLocalizedString(subset);
+
             return subset;
         }
 
@@ -1014,7 +1019,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var choices = new Dictionary<Guid, string>();
             foreach (var entry in root.Entries)
             {
-                choices.Add(entry.idAttribute, entry.FriendlyMessageName);
+                choices.Add(entry.idAttribute, entry.when == null ? entry.FriendlyMessageName : $"{entry.FriendlyMessageName} ({entry.when})");
             }
 
             return choices;
@@ -1053,6 +1058,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var entry = root.Entries.Where(wof => wof.id == id).First();
 
             var subset = this.mapper.SafeMap<WofImageTextBridge>(entry);
+            await this.MapLocalizedString(subset);
 
             return subset;
         }
@@ -1066,6 +1072,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var entry = root.Entries.Where(wof => wof.id == id).First();
 
             var subset = this.mapper.SafeMap<WofGenericPopupBridge>(entry);
+            await this.MapLocalizedString(subset);
 
             return subset;
         }
@@ -1079,6 +1086,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var entry = root.Entries.Where(wof => wof.id == id).First();
 
             var subset = this.mapper.SafeMap<WofDeeplinkBridge>(entry);
+            await this.MapLocalizedString(subset);
 
             return subset;
         }
@@ -1257,6 +1265,90 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             return change;
         }
 
+        // There are 3 possible scenarios. A reference to a loc string (what we support and want), a reference to a loc string inside another object,
+        // and a loc string defined inside the object. This function cleans up data from the second scenarios. For the last scenario, we already have
+        // the "base" property set so we are good.
+        private async Task MapLocalizedString(object tile)
+        {
+            var externalLocalizationStrings = await this.GetExternalLocalizationStringsAsync(
+                SteelheadPegasusEnvironment.Dev,
+                SteelheadPegasusSlot.Daily).ConfigureAwait(false);
+            var localizationIdsMapping = await this.GetLocalizationStringMappingsAsync(
+                SteelheadPegasusEnvironment.Dev,
+                SteelheadPegasusSlot.Daily).ConfigureAwait(false);
+
+            foreach (var property in tile.GetType().GetProperties())
+            {
+                if (property.PropertyType == typeof(LocTextBridge))
+                {
+                    var value = (LocTextBridge)property.GetValue(tile);
+
+                    // If locref exist but the localized string can't be find in the mappings that will be the dropdown in the UI,
+                    // we set it to null because the value is useless to us and we set "base" to the actual value.
+                    if (value.Locref != null && !localizationIdsMapping.ContainsKey(value.Locref.Value))
+                    {
+                        externalLocalizationStrings.TryGetValue(value.Locref.Value, out var stringBaseValue);
+                        value.Base = stringBaseValue;
+                        value.Locref = null;
+                    }
+                }
+            }
+        }
+
+        private async Task<Dictionary<Guid, string>> GetExternalLocalizationStringsAsync(string environment = null, string slot = null, string snapshot = null)
+        {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
+
+            var externalLocalizationStringsKey = this.BuildCacheKey(environment, slot, snapshot, "ExternalLocalizationStrings");
+
+            async Task<Dictionary<Guid, string>> GetExternalLocalizationStrings()
+            {
+                var externalLocalizationStrings = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, string>>(
+                    CMSFileNames.ExternalLocalizationStrings,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
+
+                if (!string.IsNullOrEmpty(snapshot))
+                {
+                    this.refreshableCacheStore.PutItem(externalLocalizationStringsKey, TimeSpan.FromHours(1), externalLocalizationStrings);
+                }
+
+                return externalLocalizationStrings;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, string>>(externalLocalizationStringsKey)
+                   ?? await GetExternalLocalizationStrings().ConfigureAwait(false);
+        }
+
+        private async Task<Dictionary<Guid, Guid>> GetLocalizationStringMappingsAsync(string environment = null, string slot = null, string snapshot = null)
+        {
+            environment ??= this.defaultCmsEnvironment;
+            slot ??= this.defaultCmsSlot;
+
+            var localizationStringMappingsKey = this.BuildCacheKey(environment, slot, snapshot, "LocalizationStringMappings");
+
+            async Task<Dictionary<Guid, Guid>> GetLocalizationStringMappings()
+            {
+                var localizationStringMappings = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, Guid>>(
+                    CMSFileNames.LocalizationStringMappings,
+                    environment: environment,
+                    slot: slot,
+                    snapshot: snapshot).ConfigureAwait(false);
+
+                if (!string.IsNullOrEmpty(snapshot))
+                {
+                    this.refreshableCacheStore.PutItem(localizationStringMappingsKey, TimeSpan.FromHours(1), localizationStringMappings);
+                }
+
+                return localizationStringMappings;
+            }
+
+            return this.refreshableCacheStore.GetItem<Dictionary<Guid, Guid>>(localizationStringMappingsKey)
+                   ?? await GetLocalizationStringMappings().ConfigureAwait(false);
+        }
+
         private static XElement GetXmlElement(Guid id, GitItem item, string typeNamespace)
         {
             var doc = XDocument.Parse(item.Content);
@@ -1272,7 +1364,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var choices = new Dictionary<Guid, string>();
             foreach (var entry in entries)
             {
-                choices.Add(entry.id, entry.FriendlyName);
+                choices.Add(entry.id, entry.when == null ? entry.FriendlyName : $"{entry.FriendlyName} ({entry.when})");
             }
 
             return choices;

@@ -1,5 +1,5 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ImageModalComponent, ImageModalData } from '@views/image-modal/image-modal.component';
 
 /** Utility directive to enlarge an image on click. */

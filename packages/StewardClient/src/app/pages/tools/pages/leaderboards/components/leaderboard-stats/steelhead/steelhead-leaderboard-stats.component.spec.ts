@@ -5,17 +5,21 @@ import { NgxsModule } from '@ngxs/store';
 import { createMockWoodstockService } from '@services/woodstock';
 import { SteelheadLeaderboardStatsComponent } from './steelhead-leaderboard-stats.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadLeaderboardStatsComponent', () => {
   let component: SteelheadLeaderboardStatsComponent;
   let fixture: ComponentFixture<SteelheadLeaderboardStatsComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SteelheadLeaderboardStatsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWoodstockService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [SteelheadLeaderboardStatsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWoodstockService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadLeaderboardStatsComponent);
     component = fixture.debugElement.componentInstance;

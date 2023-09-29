@@ -32,6 +32,8 @@ import { GameTitle } from '@models/enums';
 import { LocalizedStringsMap } from '@models/localization';
 import { GuidLikeString } from '@models/extended-types';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('BulkGiftLiveryComponent', () => {
   let fixture: ComponentFixture<BulkGiftLiveryComponent<IdentityResultBeta>>;
   let component: BulkGiftLiveryComponent<IdentityResultAlpha>;
@@ -44,22 +46,24 @@ describe('BulkGiftLiveryComponent', () => {
   const liveryIds = [faker.datatype.uuid(), faker.datatype.uuid()];
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-      ],
-      declarations: [BulkGiftLiveryComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockBackgroundJobService(),
-        createMockWoodstockPlayersGiftService(),
-        createMockWoodstockGroupGiftService(),
-        createMockWoodstockService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+        ],
+        declarations: [BulkGiftLiveryComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockBackgroundJobService(),
+          createMockWoodstockPlayersGiftService(),
+          createMockWoodstockGroupGiftService(),
+          createMockWoodstockService(),
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(
       BulkGiftLiveryComponent as Type<BulkGiftLiveryComponent<IdentityResultBeta>>,
@@ -425,6 +429,7 @@ describe('BulkGiftLiveryComponent', () => {
       result: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -488,6 +493,7 @@ describe('BulkGiftLiveryComponent', () => {
           ],
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

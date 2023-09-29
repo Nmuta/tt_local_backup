@@ -13,6 +13,8 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { SteelheadWelcomeCenterTilesComponent } from './steelhead-welcome-center-tiles.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadWelcomeCenterTilesComponent', () => {
   let component: SteelheadWelcomeCenterTilesComponent;
   let fixture: ComponentFixture<SteelheadWelcomeCenterTilesComponent>;
@@ -21,22 +23,24 @@ describe('SteelheadWelcomeCenterTilesComponent', () => {
   let mockSteelheadDeeplinkTileService: SteelheadDeeplinkTileService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        PipesModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [SteelheadWelcomeCenterTilesComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockSteelheadImageTextTileService(),
-        createMockSteelheadGenericPopupTileService(),
-        createMockSteelheadDeeplinkTileService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          PipesModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [SteelheadWelcomeCenterTilesComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockSteelheadImageTextTileService(),
+          createMockSteelheadGenericPopupTileService(),
+          createMockSteelheadDeeplinkTileService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockSteelheadImageTextTileService = injector.inject(SteelheadImageTextTileService);

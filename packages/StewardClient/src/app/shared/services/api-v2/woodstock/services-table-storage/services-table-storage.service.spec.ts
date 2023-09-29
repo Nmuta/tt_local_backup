@@ -2,13 +2,17 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { WoodstockServicesTableStorageService } from './services-table-storage.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockServicesTableStorageService', () => {
   let service: WoodstockServicesTableStorageService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule],
+      }),
+    );
     service = TestBed.inject(WoodstockServicesTableStorageService);
   });
 

@@ -8,6 +8,8 @@ import { GameTitleCodeName } from '@models/enums';
 import { SunriseLspGroupSelectionComponent } from './sunrise-lsp-group-selection.component';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseLspGroupSelectionComponent', () => {
   let fixture: ComponentFixture<SunriseLspGroupSelectionComponent>;
   let component: SunriseLspGroupSelectionComponent;
@@ -15,12 +17,18 @@ describe('SunriseLspGroupSelectionComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [SunriseLspGroupSelectionComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        declarations: [SunriseLspGroupSelectionComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

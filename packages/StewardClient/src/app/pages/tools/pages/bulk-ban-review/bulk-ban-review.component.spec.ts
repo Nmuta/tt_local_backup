@@ -3,10 +3,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BanSummariesTableData, BulkBanReviewComponent } from './bulk-ban-review.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { BrowserModule } from '@angular/platform-browser';
@@ -26,6 +26,8 @@ const activatedRouteMock = {
   ] as ActivatedRoute[],
 };
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('BulkBanReviewComponent', () => {
   let component: BulkBanReviewComponent;
   let fixture: ComponentFixture<BulkBanReviewComponent>;
@@ -35,27 +37,29 @@ describe('BulkBanReviewComponent', () => {
   let mockApolloService: ApolloService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        MatPaginatorModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-      ],
-      declarations: [BulkBanReviewComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWoodstockService(),
-        createMockSunriseService(),
-        createMockApolloService(),
-        {
-          provide: ActivatedRoute,
-          useValue: activatedRouteMock,
-        },
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          MatPaginatorModule,
+          BrowserModule,
+          BrowserAnimationsModule,
+        ],
+        declarations: [BulkBanReviewComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWoodstockService(),
+          createMockSunriseService(),
+          createMockApolloService(),
+          {
+            provide: ActivatedRoute,
+            useValue: activatedRouteMock,
+          },
+        ],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(BulkBanReviewComponent);
     component = fixture.debugElement.componentInstance;

@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SunriseSimpleCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
 import faker from '@faker-js/faker';
@@ -14,6 +14,8 @@ import { of } from 'rxjs';
 
 import { MakeModelAutocompleteComponent } from './make-model-autocomplete.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('MakeModelAutocompleteComponent', () => {
   let component: MakeModelAutocompleteComponent;
   let fixture: ComponentFixture<MakeModelAutocompleteComponent>;
@@ -23,17 +25,19 @@ describe('MakeModelAutocompleteComponent', () => {
   let fakeSimpleCars: SimpleCar[];
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot(),
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-      ],
-      declarations: [MakeModelAutocompleteComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
+        ],
+        declarations: [MakeModelAutocompleteComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockStore = injector.inject(Store);

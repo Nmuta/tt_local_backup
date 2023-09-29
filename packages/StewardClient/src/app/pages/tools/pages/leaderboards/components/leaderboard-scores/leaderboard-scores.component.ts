@@ -9,9 +9,12 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  MatLegacyPaginator as MatPaginator,
+  LegacyPageEvent as PageEvent,
+} from '@angular/material/legacy-paginator';
+import { MatLegacySlideToggle as MatSlideToggle } from '@angular/material/legacy-slide-toggle';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base.component';
 import { DateRangePickerFormValue } from '@components/date-time-pickers/datetime-range-picker/date-range-picker/date-range-picker.component';
@@ -37,8 +40,9 @@ import {
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import BigNumber from 'bignumber.js';
-import { cloneDeep, first, last } from 'lodash';
+import { first, last } from 'lodash';
 import { DateTime } from 'luxon';
 import { EMPTY, merge, Observable, Subject } from 'rxjs';
 import { switchMap, takeUntil, tap, catchError, filter, debounceTime } from 'rxjs/operators';
@@ -114,6 +118,8 @@ export class LeaderboardScoresComponent
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   /** REVIEW-COMMENT: Selected score. */
   @Input() externalSelectedScore: LeaderboardScore;
+  /** Selected identity. */
+  @Input() externalSelectedIdentity: AugmentedCompositeIdentity;
   /** The game title. */
   @Input() gameTitle: GameTitle;
   /** REVIEW-COMMENT: Output when leaderboard scores are deleted. */
@@ -268,14 +274,8 @@ export class LeaderboardScoresComponent
 
   /** Removes the XUID query param from URL. */
   public switchToTopOfListView(): void {
-    const params = cloneDeep(this.route.snapshot.queryParams);
-    params['xuid'] = null;
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: params,
-      queryParamsHandling: 'merge',
-    });
+    this.externalSelectedIdentity = undefined;
+    this.getLeaderboardScores$.next(this.leaderboard.query);
   }
 
   /** Logic when row is clicked on. */
@@ -420,8 +420,10 @@ export class LeaderboardScoresComponent
         }),
         switchMap(query => {
           let newObs: Observable<LeaderboardScore[]>;
-          if (!!query.xuid) {
-            this.activeXuid = query.xuid;
+          // Using externalSelectedIdentity instead of queryParams because of conflict between the player selection component
+          // use of 'xuid' as a query param
+          if (!!this.externalSelectedIdentity?.general?.xuid) {
+            this.activeXuid = this.externalSelectedIdentity?.general.xuid;
             newObs = this.getLeaderboardScoresNearPlayer$(query);
           } else {
             newObs = this.getLeaderboardScoresFromTop$(query);
@@ -456,7 +458,7 @@ export class LeaderboardScoresComponent
     this.activeLeaderboardView = LeaderboardView.Player;
     return this.service
       .getLeaderboardScoresNearPlayer$(
-        query.xuid,
+        this.externalSelectedIdentity?.general.xuid,
         query.scoreboardTypeId,
         query.scoreTypeId,
         query.trackId,

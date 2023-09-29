@@ -17,6 +17,8 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { BanResultsUnion } from '../base/user-banning.base.component';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloBanningComponent', () => {
   let component: ApolloBanningComponent;
   let fixture: ComponentFixture<ApolloBanningComponent>;
@@ -25,11 +27,13 @@ describe('ApolloBanningComponent', () => {
   let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ApolloBanningComponent],
-      providers: [createMockApolloService(), createMockBackgroundJobService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [ApolloBanningComponent],
+        providers: [createMockApolloService(), createMockBackgroundJobService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     apollo = TestBed.inject(ApolloService);
   });
@@ -85,6 +89,7 @@ describe('ApolloBanningComponent', () => {
       rawResult: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -115,6 +120,7 @@ describe('ApolloBanningComponent', () => {
           },
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

@@ -8,20 +8,24 @@ import { createMockSunriseService } from '@services/sunrise';
 import { createMockWoodstockService } from '@services/woodstock';
 import { NgxsModule } from '@ngxs/store';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('MultiEnvironmentService', () => {
   let service: MultiEnvironmentService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
-      providers: [
-        createMockSunriseService(),
-        createMockApolloService(),
-        createMockOpusService(),
-        createMockSteelheadService(),
-        createMockWoodstockService(),
-      ],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([])],
+        providers: [
+          createMockSunriseService(),
+          createMockApolloService(),
+          createMockOpusService(),
+          createMockSteelheadService(),
+          createMockWoodstockService(),
+        ],
+      }),
+    );
     service = TestBed.inject(MultiEnvironmentService);
   });
 

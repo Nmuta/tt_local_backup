@@ -19,8 +19,6 @@ import { ChangelogGroupComponent } from './changelog-group/changelog-group.compo
 export class ChangelogComponent {
   @ViewChildren(ChangelogGroupComponent) public changelogs: ChangelogGroupComponent[];
 
-  public showInternalChangelogEntries: boolean = true;
-
   public readonly changelog = environment.changelog;
 
   /** True when all known entries are pending. */
@@ -35,7 +33,7 @@ export class ChangelogComponent {
 
   /** Produces the app version. */
   public get appVersion(): string {
-    return this.userSettingsService.appVersion;
+    return this.userSettingsService.lastSeenAppVersion;
   }
 
   constructor(

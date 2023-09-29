@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
@@ -440,12 +441,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ProviderTests
 
             public INotificationHistoryProvider NotificationHistoryProvider { get; set; } = Substitute.For<INotificationHistoryProvider>();
 
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+
             public WoodstockPlayerInventoryProvider Build() => new WoodstockPlayerInventoryProvider(
                 this.WoodstockService,
                 this.Mapper,
                 this.RefreshableCacheStore,
                 this.GiftHistoryProvider,
-                this.NotificationHistoryProvider);
+                this.NotificationHistoryProvider,
+                this.LoggingService);
         }
     }
 }

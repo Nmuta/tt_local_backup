@@ -28,16 +28,47 @@ export function isChangelogArea(source: unknown): source is ChangelogArea {
 }
 
 /** Represents a change to the code. */
-export interface ChangelogEntry {
+export interface OldChangelogEntry {
   /** The tag for the change. */
   tag: ChangelogArea | ChangelogTag;
+
   /** ID used for determining latest seen update. */
   uuid: string;
-  /** Short text explaining the change. */
+
+  /**
+   * Short text explaining the change.
+   * @deprecated Use `shortMarkdown`
+   */
   shortText: string;
-  /** Paragraphs explaining the change. */
+
+  /**
+   * Paragraphs explaining the change.
+   * @deprecated Use `longMarkdown`
+   */
   longText?: string[];
 }
+
+/** A changelog entry meant to be processed as markdown. */
+export interface MarkdownChangelogEntry {
+  /** The tag for the change. */
+  tag: ChangelogArea | ChangelogTag;
+
+  /** ID used for determining latest seen update. */
+  uuid: string;
+
+  /** Short markdown blurb explaining the change. */
+  shortMarkdown: string;
+
+  /**
+   * Long/Paragraphs of markdown explaining the change.
+   * Displayed in expando.
+   * Leading whitespace is evaluated based on the first line and truncated.
+   */
+  longMarkdown?: string;
+}
+
+/** Either old or new (markdown) types of changelog entry. */
+export type ChangelogEntry = MarkdownChangelogEntry | OldChangelogEntry;
 
 /** A group of changelogs. */
 export interface ChangelogGroup {

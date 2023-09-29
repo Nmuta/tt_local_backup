@@ -6,17 +6,21 @@ import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { SteelheadBulkGiftLiveryComponent } from './steelhead-bulk-gift-livery.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadBulkGiftLiveryComponent', () => {
   let component: SteelheadBulkGiftLiveryComponent;
   let fixture: ComponentFixture<SteelheadBulkGiftLiveryComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
-      declarations: [SteelheadBulkGiftLiveryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
+        declarations: [SteelheadBulkGiftLiveryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SteelheadBulkGiftLiveryComponent);
     component = fixture.debugElement.componentInstance;

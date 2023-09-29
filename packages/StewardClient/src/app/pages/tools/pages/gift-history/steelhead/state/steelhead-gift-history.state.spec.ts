@@ -9,15 +9,19 @@ import {
   SetSteelheadGiftHistorySelectedPlayerIdentities,
 } from './steelhead-gift-history.state.actions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadGiftHistoryState', () => {
   let store: Store;
   let service: SteelheadGiftHistoryState;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([SteelheadGiftHistoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([SteelheadGiftHistoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(SteelheadGiftHistoryState);
     store = TestBed.inject(Store);
   });

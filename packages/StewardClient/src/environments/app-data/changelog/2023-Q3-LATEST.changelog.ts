@@ -8,6 +8,138 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: 'n01a43al-0uui-d1wr-01ei-3yha7dha4ah4',
+      shortText: `Prevent featured UGC from being reported.`,
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '26bc1f7b-829f-4842-bdfc-4d6165944a57',
+      shortText: 'Add dropdowns for Pegasus environment and slot selectors',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'af60d88e-78f4-448a-8238-b755626726bb',
+      shortText: 'Fix bug causing errors when Pegasus environment and slot are missing',
+    },
+    {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.WelcomeCenterTiles, NavbarTool.MessageOfTheDay],
+      },
+      uuid: '2fbd3ca3-6c67-429b-8936-b40a78e9ed1b',
+      shortMarkdown: 'Order tiles by name and display "when" tag',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '835421f0-d6c1-45dc-b6c7-6eb26c9bef81',
+      shortText: 'Add ability to modify UGC stats',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '01800946-07d7-4f1f-a386-1225555f05cb',
+      shortText: 'Bugfixes and improvements',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
+      shortMarkdown: 'Add **markdown** support',
+      longMarkdown: `
+        ## Markdown is now supported in changelogs.
+
+        This includes support for Mermaid JS  
+        
+        \`\`\`mermaid
+        flowchart LR
+          a --> b & c--> d
+        \`\`\`
+
+        Paragraphs!  
+        Newlines!
+
+        ---
+
+        Lines!
+
+        - bullets!
+          1. indented
+          2. lists!
+
+        | tables! | a | b | c | d | e |
+        |---------|---|---|---|---|---|
+        | one     | 1 |   |   |   | ? |
+        | two     |   | 2 |   |   |   |
+        | three   |   |   | 3 |   | ? |
+        | four    |   |   |   | 4 |   |
+        | five    |   |   |   |   | 5 |
+      `,
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '361fff59-388c-4612-9471-36116fb1e3d6',
+      shortText: 'Add ability to search leaderboard scores by gamertag',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'e3f27c4f-0a80-4949-a7ed-b92e68e597c2',
+      shortText: 'Upgrade to Angular 15',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'ef93bf86-0143-4460-9770-42e5490b11f9',
+      shortText: 'Target correct LSP group for Steelhead Talented Players',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '4a899681-244c-45c2-a02c-4d1801366057',
+      shortText: 'Track "test" Background Jobs separately',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '01d14c44-c274-4329-9708-2e66c7307a70',
+      shortText: 'Add ability to mark UGC items as public or private',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '26e5ce44-0472-4b85-b1f9-cc2629b0e8b9',
+      shortText: 'Fixed bug preventing hide and unhide of UGC',
+    },
+    {
+      tag: { title: [GameTitle.FH4, GameTitle.FH5, GameTitle.FM7], tool: NavbarTool.Zendesk },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Avoid User Flags error when loading Zendesk sidebar',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.UgcDetails },
+      uuid: '3fceecf9-9020-4044-9857-d49978fc6e8f',
+      shortText: 'Add UGC Title and Description length validation',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: 'e2450ffa-7ebc-47ec-a05b-4fba09be9d4d',
+      shortText: 'Leaderboard updates',
+      longText: [
+        'Add scoreboard type as a filter when searching leaderboards.',
+        'Use more specific track name for attack time leaderboards.',
+      ],
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: 'd9513283-4f67-4286-99fb-18a1f6952b3c',
+      shortText: 'Misc Fixes',
+      longText: [
+        'Correct automatic changelog-opening behavior.',
+        'Reduce console errors.',
+        'Correct missing icon font.',
+        'Mimic hourly releases when running localhost development environment.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UserDetails },
+      uuid: '96d27822-17ba-4839-860b-49ed55aaeb33',
+      shortText: 'Display warning beside user flag when lookup provides conflicting data',
+    },
+    {
       tag: {
         title: GameTitle.FH5,
         tool: [NavbarTool.UserDetails, NavbarTool.SearchUGC, NavbarTool.UgcDetails],

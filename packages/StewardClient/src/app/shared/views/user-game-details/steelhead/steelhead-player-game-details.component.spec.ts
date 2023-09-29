@@ -8,6 +8,8 @@ import { SteelheadPlayerGameDetailsComponent } from './steelhead-player-game-det
 import { SteelheadPlayerGameDetailsService } from '@services/api-v2/steelhead/player/game-details/steelhead-player-game-details.service';
 import { createMockSteelheadPlayerGameDetailsService } from '@services/api-v2/steelhead/player/game-details/steelhead-player-game-details.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadPlayerGameDetailsComponent', () => {
   let component: SteelheadPlayerGameDetailsComponent;
   let fixture: ComponentFixture<SteelheadPlayerGameDetailsComponent>;
@@ -15,12 +17,14 @@ describe('SteelheadPlayerGameDetailsComponent', () => {
   let mockSteelheadPlayerGameDetailsService: SteelheadPlayerGameDetailsService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SteelheadPlayerGameDetailsComponent],
-      imports: [PipesModule],
-      providers: [createMockSteelheadPlayerGameDetailsService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SteelheadPlayerGameDetailsComponent],
+        imports: [PipesModule],
+        providers: [createMockSteelheadPlayerGameDetailsService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

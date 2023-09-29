@@ -6,17 +6,25 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { JsonTableResultsComponent } from './json-table-results.component';
 import { JsonTableResult } from '@models/json-table-result';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('JsonTableResultsComponent', () => {
   let fixture: ComponentFixture<JsonTableResultsComponent>;
   let component: JsonTableResultsComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [JsonTableResultsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        declarations: [JsonTableResultsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(JsonTableResultsComponent);
     component = fixture.debugElement.componentInstance;

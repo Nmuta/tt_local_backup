@@ -15,6 +15,8 @@ import { SunriseGiftingState } from './state/sunrise-gifting.state';
 import { SetSunriseGiftingMatTabIndex } from './state/sunrise-gifting.state.actions';
 import { SunriseGiftingComponent } from './sunrise-gifting.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseGiftingComponent', () => {
   let component: SunriseGiftingComponent;
   let fixture: ComponentFixture<SunriseGiftingComponent>;
@@ -22,16 +24,18 @@ describe('SunriseGiftingComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState, SunriseGiftingState]),
-      ],
-      declarations: [SunriseGiftingComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState, SunriseGiftingState]),
+        ],
+        declarations: [SunriseGiftingComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(SunriseGiftingComponent);
     component = fixture.debugElement.componentInstance;

@@ -1,9 +1,14 @@
 import { EventEmitter, NO_ERRORS_SCHEMA, Renderer2 } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatButton, MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  MatLegacyButton as MatButton,
+  MatLegacyButtonModule as MatButtonModule,
+} from '@angular/material/legacy-button';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { VerifyWithV2ButtonDirective } from './verify-with-v2.directive';
 import { VerifyButtonComponent } from './verify-button/verify-button.component';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('VerifyWithV2ButtonDirective', () => {
   let button: MatButton;
@@ -14,32 +19,34 @@ describe('VerifyWithV2ButtonDirective', () => {
   let mockRenderer2: Renderer2;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatButtonModule, MatCheckboxModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        {
-          provide: Renderer2,
-          useValue: {
-            listen: () => {
-              return;
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatButtonModule, MatCheckboxModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          {
+            provide: Renderer2,
+            useValue: {
+              listen: () => {
+                return;
+              },
             },
           },
-        },
-        {
-          provide: MatButton,
-          useValue: {
-            _elementRef: {
-              nativeElement: {
-                click: () => {
-                  return;
+          {
+            provide: MatButton,
+            useValue: {
+              _elementRef: {
+                nativeElement: {
+                  click: () => {
+                    return;
+                  },
                 },
               },
             },
           },
-        },
-      ],
-    }).compileComponents();
+        ],
+      }),
+    ).compileComponents();
 
     mockRenderer2 = TestBed.inject(Renderer2);
     button = TestBed.inject(MatButton);

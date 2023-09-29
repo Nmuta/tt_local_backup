@@ -20,15 +20,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         /// <summary>
         ///     Initializes a new instance of the <see cref="BackgroundJobInternal"/> class.
         /// </summary>
-        public BackgroundJobInternal(string jobId, string userObjectId, string reason, BackgroundJobStatus backgroundJobStatus)
-            : this(jobId, userObjectId, reason, backgroundJobStatus, string.Empty)
+        public BackgroundJobInternal(string jobId, string userObjectId, string reason, bool isLocalJob, BackgroundJobStatus backgroundJobStatus)
+            : this(jobId, userObjectId, reason, isLocalJob, backgroundJobStatus, string.Empty)
         {
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BackgroundJobInternal"/> class.
         /// </summary>
-        public BackgroundJobInternal(string jobId, string userObjectId, string reason, BackgroundJobStatus backgroundJobStatus, string result)
+        public BackgroundJobInternal(string jobId, string userObjectId, string reason, bool isLocalJob, BackgroundJobStatus backgroundJobStatus, string result)
         {
             jobId.ShouldNotBeNull(nameof(jobId));
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
@@ -38,6 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
             this.PartitionKey = userObjectId;
             this.RowKey = jobId;
             this.Reason = reason;
+            this.IsTestJob = isLocalJob;
             this.Status = backgroundJobStatus.ToString();
             this.Result = result;
             this.IsRead = false;
@@ -69,6 +70,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the reason.
         /// </summary>
         public string Reason { get; set; }
+
+        /// <summary>
+        ///     True when this job was created for testing.
+        ///     Typically determined by whether it was created on a locally-running IDE.
+        /// </summary>
+        public bool IsTestJob { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the job has been read.

@@ -5,17 +5,21 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
 import { createMockWoodstockPlayerProfileNotesService } from '@services/api-v2/woodstock/player/profile-notes/woodstock-player-profile-notes.service.mock';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('WoodstockProfileNotesComponent', () => {
   let component: WoodstockProfileNotesComponent;
   let fixture: ComponentFixture<WoodstockProfileNotesComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [WoodstockProfileNotesComponent],
-      providers: [createMockWoodstockPlayerProfileNotesService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot()],
+        declarations: [WoodstockProfileNotesComponent],
+        providers: [createMockWoodstockPlayerProfileNotesService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockProfileNotesComponent);
     component = fixture.debugElement.componentInstance;

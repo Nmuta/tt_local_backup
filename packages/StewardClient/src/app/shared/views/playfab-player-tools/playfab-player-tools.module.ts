@@ -1,30 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { PermissionsModule } from '@shared/modules/permissions/permissions.module';
 import { PlayFabPlayerToolsComponent } from './playfab-player-tools.component';
 import { WoodstockPlayFabPlayerToolsComponent } from './woodstock/woodstock-playfab-player-tools.component';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { StandardCopyModule } from '@shared/modules/standard-copy/standard-copy.module';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { PlayFabInventoryComponent } from './components/playfab-inventory/playfab-inventory.component';
 import { PlayFabTransactionHistoryComponent } from './components/playfab-transaction-history/playfab-transaction-history.component';
 import { StandardDateModule } from '@components/standard-date/standard-date.module';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 
 /** Module for getting and setting a player's cms override. */
 @NgModule({

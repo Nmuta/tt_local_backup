@@ -16,6 +16,8 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { BanResultsUnion } from '../base/user-banning.base.component';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunriseBanningComponent', () => {
   let component: SunriseBanningComponent;
   let fixture: ComponentFixture<SunriseBanningComponent>;
@@ -24,11 +26,13 @@ describe('SunriseBanningComponent', () => {
   let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunriseBanningComponent],
-      providers: [createMockSunriseService(), createMockBackgroundJobService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunriseBanningComponent],
+        providers: [createMockSunriseService(), createMockBackgroundJobService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     sunrise = TestBed.inject(SunriseService);
   });
@@ -84,6 +88,7 @@ describe('SunriseBanningComponent', () => {
       rawResult: undefined,
       isMarkingRead: false,
       isRead: false,
+      isTestJob: false,
       reason: 'test',
     };
 
@@ -114,6 +119,7 @@ describe('SunriseBanningComponent', () => {
           },
           isMarkingRead: false,
           isRead: false,
+          isTestJob: false,
           reason: 'test',
         };
         beforeEach(() => {

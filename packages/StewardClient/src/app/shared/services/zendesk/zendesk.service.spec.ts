@@ -5,17 +5,21 @@ import { createMockZafClientService } from './zaf-client.service.mock';
 import { ZafClient } from '@shared/definitions/zaf-client';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('service: UserService', () => {
   let service: ZendeskService;
   let mockZafClientService: ZafClientService;
   let mockZafClient: ZafClient;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      providers: [ZendeskService, createMockZafClientService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [],
+        providers: [ZendeskService, createMockZafClientService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(ZendeskService);
 
     mockZafClientService = TestBed.inject(ZafClientService);

@@ -25,15 +25,16 @@ import {
   EMPTY,
   throwError,
 } from 'rxjs';
-import { SteelheadUgcVisibilityService } from '@services/api-v2/steelhead/ugc/visibility/steelhead-ugc-visibility.service';
 import { ToggleListEzContract } from '@shared/modules/standard-form/toggle-list-ez/toggle-list-ez.component';
 import { generateLookupRecord as toCompleteRecord } from '@helpers/generate-lookup-record';
 import { ToggleListOptions } from '@shared/modules/standard-form/toggle-list/toggle-list.component';
 import { SteelheadUgcGeoFlagsService } from '@services/api-v2/steelhead/ugc/geo-flags/steelhead-ugc-geo-flags.service';
 import { SteelheadEditUgcModalComponent } from '@views/edit-ugc-modal/steelhead/steelhead-edit-ugc-modal.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SteelheadFeatureUgcModalComponent } from '@views/feature-ugc-modal/steelhead/steelhead-feature-ugc-modal.component';
+import { SteelheadUgcHideStatusService } from '@services/api-v2/steelhead/ugc/hide-status/steelhead-ugc-hide-status.service';
 import { UgcReportReason } from '@models/ugc-report-reason';
+import { SteelheadUgcVisibilityStatusService } from '@services/api-v2/steelhead/ugc/visibility-status/steelhead-ugc-visibility-status.service';
 
 const GEO_FLAGS_ORDER = chain(SteelheadGeoFlags).sortBy().value();
 
@@ -47,6 +48,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public getMonitor = new ActionMonitor('GET UGC Monitor');
   public hideMonitor = new ActionMonitor('Post Hide UGC');
   public unhideMonitor = new ActionMonitor('POST Unhide UGC');
+  public visibilityMonitor = new ActionMonitor('POST Update UGC Visibility');
   public reportMonitor = new ActionMonitor('Post Report UGC');
   public generateSharecodeMonitor = new ActionMonitor('POST Generate Sharecode for UGC');
   public getReportReasonsMonitor: ActionMonitor = new ActionMonitor('GET Report Reasons');
@@ -80,6 +82,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
   public hidePermAttribute = PermAttributeName.HideUgc;
   public unhidePermAttribute = PermAttributeName.UnhideUgc;
   public editPermAttribute = PermAttributeName.EditUgc;
+  public visibilityPermAttribute = PermAttributeName.UpdateUgcVisibility;
   public gameTitle = GameTitle.FM8;
 
   constructor(
@@ -88,7 +91,8 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     private readonly permissionsService: OldPermissionsService,
     private readonly ugcReportService: SteelheadUgcReportService,
     private readonly ugcSharecodeService: SteelheadUgcSharecodeService,
-    private readonly ugcVisibilityService: SteelheadUgcVisibilityService,
+    private readonly ugcHideStatusService: SteelheadUgcHideStatusService,
+    private readonly ugcVisibilityStatusService: SteelheadUgcVisibilityStatusService,
     private readonly ugcGeoFlagsService: SteelheadUgcGeoFlagsService,
     private readonly dialog: MatDialog,
   ) {
@@ -177,8 +181,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
         } else {
           this.generateSharecodeMatTooltip = this.generateSharecodeTooltip;
         }
-
-        this.canReportUgc = !this.isReplayUgcItem();
+        this.canReportUgc = !this.ugcItem?.featuredByT10 && !this.isReplayUgcItem();
         this.canHideUgc = !this.isReplayUgcItem();
       });
 
@@ -210,7 +213,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       });
   }
 
-  /** Edits a UGC item in Woodstock */
+  /** Edits a UGC item in Steelhead */
   public editUgcItem(): void {
     if (!this.ugcItem) {
       return;
@@ -237,7 +240,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
     }
     this.hideMonitor = this.hideMonitor.repeat();
 
-    this.ugcVisibilityService
+    this.ugcHideStatusService
       .hideUgcItems$([this.ugcItem.id])
       .pipe(this.hideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
@@ -247,20 +250,51 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
       });
   }
 
-  /** Unhide a UGC item in Woodstock */
+  /** Unhide a UGC item in Steelhead */
   public unhideUgcItem(): void {
     if (!this.ugcItem) {
       return;
     }
     this.unhideMonitor = this.unhideMonitor.repeat();
 
-    this.ugcVisibilityService
+    this.ugcHideStatusService
       .unhideUgcItems$([this.ugcItem.id])
       .pipe(this.unhideMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.canFeatureUgc = true;
         this.ugcItem.isHidden = false;
+        this.canFeatureUgc = this.ugcItem.isPublic && !this.ugcItem.isHidden;
+      });
+  }
+
+  /** Mark a UGC item private in Steelhead */
+  public markUgcItemPrivate(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.visibilityMonitor = this.visibilityMonitor.repeat();
+
+    this.ugcVisibilityStatusService
+      .markUgcItemsPrivate$([this.ugcItem.id])
+      .pipe(this.visibilityMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.canFeatureUgc = false;
+        this.ugcItem.isPublic = false;
+      });
+  }
+
+  /** Mark a UGC item public in Steelhead */
+  public markUgcItemPublic(): void {
+    if (!this.ugcItem) {
+      return;
+    }
+    this.visibilityMonitor = this.visibilityMonitor.repeat();
+
+    this.ugcVisibilityStatusService
+      .markUgcItemsPublic$([this.ugcItem.id])
+      .pipe(this.visibilityMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(() => {
         this.ugcItem.isPublic = true;
+        this.canFeatureUgc = this.ugcItem.isPublic && !this.ugcItem.isHidden;
       });
   }
 

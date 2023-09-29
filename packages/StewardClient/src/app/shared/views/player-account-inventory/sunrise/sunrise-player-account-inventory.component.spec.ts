@@ -10,6 +10,8 @@ import { first } from 'lodash';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SunrisePlayerAccountInventoryComponent', () => {
   let injector: TestBed;
   let service: SunriseService;
@@ -17,11 +19,13 @@ describe('SunrisePlayerAccountInventoryComponent', () => {
   let fixture: ComponentFixture<SunrisePlayerAccountInventoryComponent>;
 
   beforeEach(waitForAsync(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunrisePlayerAccountInventoryComponent],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        declarations: [SunrisePlayerAccountInventoryComponent],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     injector = getTestBed();
     service = injector.inject(SunriseService);

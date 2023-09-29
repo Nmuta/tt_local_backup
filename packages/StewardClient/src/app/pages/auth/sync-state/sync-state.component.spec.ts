@@ -5,16 +5,20 @@ import { NgxsModule } from '@ngxs/store';
 
 import { SyncStateComponent } from './sync-state.component';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SyncStateComponent', () => {
   let component: SyncStateComponent;
   let fixture: ComponentFixture<SyncStateComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([]), RouterTestingModule.withRoutes([])],
-      declarations: [SyncStateComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([]), RouterTestingModule.withRoutes([])],
+        declarations: [SyncStateComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
   });
 
   beforeEach(() => {

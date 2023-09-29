@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -15,7 +15,7 @@ import { ApolloUserFlagsComponent } from './apollo/apollo-user-flags.component';
 import { SteelheadUserFlagsComponent } from './steelhead/steelhead-user-flags.component';
 import { MatIconModule } from '@angular/material/icon';
 import { WoodstockUserFlagsComponent } from './woodstock/woodstock-user-flags.component';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { VerifyButtonModule } from '@shared/modules/verify/verify-button.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
@@ -51,6 +51,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     StateManagersModule,
     MonitorActionModule,
     PermissionsModule,
+    MatIconModule,
   ],
   exports: [
     WoodstockUserFlagsComponent,

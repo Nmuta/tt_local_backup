@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
@@ -32,6 +33,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
         private readonly INotificationHistoryProvider notificationHistoryProvider;
+        private readonly ILoggingService loggingService;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayerInventoryProvider"/> class.
@@ -41,19 +43,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             IMapper mapper,
             IRefreshableCacheStore refreshableCacheStore,
             IWoodstockGiftHistoryProvider giftHistoryProvider,
-            INotificationHistoryProvider notificationHistoryProvider)
+            INotificationHistoryProvider notificationHistoryProvider,
+            ILoggingService loggingService)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             mapper.ShouldNotBeNull(nameof(mapper));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             notificationHistoryProvider.ShouldNotBeNull(nameof(notificationHistoryProvider));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
 
             this.woodstockService = woodstockService;
             this.mapper = mapper;
             this.refreshableCacheStore = refreshableCacheStore;
             this.giftHistoryProvider = giftHistoryProvider;
             this.notificationHistoryProvider = notificationHistoryProvider;
+            this.loggingService = loggingService;
         }
 
         /// <inheritdoc />
@@ -406,23 +411,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, MasterInventoryItem> currencyGifts)
         {
+            var failedRequests = new List<FailedGiftRequest<InventoryItemType>>();
             var errors = new List<StewardError>();
             foreach (var (key, value) in inventoryGifts)
             {
                 foreach (var item in value)
                 {
-                    try
+                    var failedQuantity = 0;
+                    for (var i = 0; i < item.Quantity; i++)
                     {
-                        for (var i = 0; i < item.Quantity; i++)
+                        try
                         {
                             await serviceCall(key, item.Id).ConfigureAwait(false);
                         }
+                        catch
+                        {
+                             failedQuantity++;
+                        }
                     }
-                    catch
+
+                    if (failedQuantity > 0)
                     {
-                        var error = new FailedToSendStewardError($"Failed to send item of type: {key} with ID: {item.Id}");
-                        item.Error = error;
-                        errors.Add(error);
+                        this.loggingService.LogException(new AppInsightsException($"Failed to gift item to player. (type: {key}) (itemId: {item.Id})"));
+                        failedRequests.Add(new FailedGiftRequest<InventoryItemType> { Type = key, Item = new MasterInventoryItem { Id = item.Id, Quantity = failedQuantity } });
                     }
                 }
             }
@@ -454,9 +465,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                 if (failedToSendAmount > 0)
                 {
-                    var error = new FailedToSendStewardError($"Failed to send {failedToSendAmount} of type: {key}");
+                    var error = new FailedToSendStewardError($"Failed to send currency (Quantity: {failedToSendAmount}) (Type: {key})");
                     value.Error = error;
                     errors.Add(error);
+                }
+            }
+
+            // Code below waits a few seconds and then retries sending failed gifts. This is in place to resolve an intermittent failure that LiveOps/Services have yet to diagnose and fix.
+            if (failedRequests.Count > 0)
+            {
+               await Task.Delay(TimeSpan.FromSeconds(3));
+            }
+
+            foreach (var request in failedRequests)
+            {
+                for (var i = 0; i < request.Item.Quantity; i++)
+                {
+                    try
+                    {
+                        await serviceCall(request.Type, request.Item.Id).ConfigureAwait(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.loggingService.LogException(new AppInsightsException($"Failed to gift item to player on retry. (type: {request.Type}) (itemId: {request.Item.Id})", ex));
+                        var error = new FailedToSendStewardError($"Failed to send item. (Type: {request.Type}) (ID: {request.Item.Id})", ex);
+                        errors.Add(error);
+                    }
                 }
             }
 

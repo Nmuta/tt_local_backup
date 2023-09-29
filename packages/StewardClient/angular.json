@@ -43,7 +43,10 @@
               }
             ],
             "styles": ["src/global.scss"],
-            "scripts": [],
+            "scripts": [
+              "node_modules/marked/marked.min.js",
+              "node_modules/mermaid/dist/mermaid.min.js"
+            ],
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
@@ -67,6 +70,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-dev/",
@@ -96,6 +102,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-dev/",
@@ -125,6 +134,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-dev-pr/",
@@ -154,6 +166,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-prod/",
@@ -183,6 +198,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-dev/",
@@ -212,6 +230,9 @@
                 }
               ],
               "assets": [
+                "src/assets",
+                "src/translations",
+                "src/manifest.json",
                 {
                   "glob": "**/*",
                   "input": "src/assets-root-prod/",
@@ -300,12 +321,15 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": ["src/polyfills.ts", "zone.js", "zone.js/testing"],
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": ["src/global.scss"],
-            "scripts": [],
-            "sourceMap": false,
+            "scripts": [
+              "node_modules/marked/marked.min.js",
+              "node_modules/mermaid/dist/mermaid.min.js"
+            ],
+            "sourceMap": true,
             "watch": true,
             "assets": ["src/assets"],
             "codeCoverageExclude": [
@@ -340,5 +364,13 @@
   },
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }

@@ -24,6 +24,8 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { setUserProfile } from '@mocks/standard-test-module-helpers';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ProfileComponent', () => {
   let mockRouter: Router;
   let mockStore: Store;
@@ -32,20 +34,22 @@ describe('ProfileComponent', () => {
   let component: ProfileComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [ProfileComponent, HumanizePipe],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        ...createMockMsalServices(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [ProfileComponent, HumanizePipe],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockWindowService(),
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+        ],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockRouter = injector.inject(Router);

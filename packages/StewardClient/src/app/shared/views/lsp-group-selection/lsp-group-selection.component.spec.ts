@@ -10,17 +10,25 @@ import { throwError } from 'rxjs';
 import { LspGroup } from '@models/lsp-group';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('LspGroupSelectionBaseComponent', () => {
   let fixture: ComponentFixture<LspGroupSelectionBaseComponent>;
   let component: LspGroupSelectionBaseComponent;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot()],
-      declarations: [LspGroupSelectionBaseComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot(),
+        ],
+        declarations: [LspGroupSelectionBaseComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(
       LspGroupSelectionBaseComponent as Type<LspGroupSelectionBaseComponent>,

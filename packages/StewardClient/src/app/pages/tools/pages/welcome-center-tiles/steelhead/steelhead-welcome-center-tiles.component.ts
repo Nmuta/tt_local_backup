@@ -1,6 +1,7 @@
+import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatLegacyOptionSelectionChange as MatOptionSelectionChange } from '@angular/material/legacy-core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { HCI } from '@environments/environment';
@@ -161,6 +162,11 @@ export class SteelheadWelcomeCenterTilesComponent extends BaseComponent implemen
     if (!welcomeCenterTile) return '';
     return welcomeCenterTile.value;
   }
+
+  // Order by ascending property value
+  public valueAscOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => {
+    return a.value.localeCompare(b.value);
+  };
 
   // Function to filter options based on user input
   private filterOptions(value: string): void {

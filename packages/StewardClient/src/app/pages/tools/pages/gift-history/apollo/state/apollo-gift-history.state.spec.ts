@@ -1,23 +1,27 @@
-import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
+import BigNumber from 'bignumber.js';
 import { ApolloGiftHistoryState } from './apollo-gift-history.state';
 import {
   SetApolloGiftHistoryMatTabIndex,
   SetApolloGiftHistorySelectedPlayerIdentities,
 } from './apollo-gift-history.state.actions';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('ApolloGiftHistoryState', () => {
   let store: Store;
   let service: ApolloGiftHistoryState;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([ApolloGiftHistoryState])],
-      schemas: [NO_ERRORS_SCHEMA],
-    });
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [NgxsModule.forRoot([ApolloGiftHistoryState])],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    );
     service = TestBed.inject(ApolloGiftHistoryState);
     store = TestBed.inject(Store);
   });

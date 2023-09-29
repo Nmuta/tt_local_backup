@@ -1,9 +1,9 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { StewardErrorCode } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { GiftIdentityAntecedent } from '@shared/constants';
-import { StewardErrorCode } from '@models/enums';
+import BigNumber from 'bignumber.js';
 
 /** Fake API for gifting to players. */
 export class ApolloGiftingPlayersFakeApi extends FakeApiBase {

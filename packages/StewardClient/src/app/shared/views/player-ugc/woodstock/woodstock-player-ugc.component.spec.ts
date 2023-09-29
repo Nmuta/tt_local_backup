@@ -7,22 +7,26 @@ import { of, throwError } from 'rxjs';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { WoodstockPlayerUgcComponent } from './woodstock-player-ugc.component';
 import { WoodstockPlayerXuidUgcFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { createMockWoodstockService } from '@services/woodstock';
+
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 
 describe('WoodstockPlayerUgcComponent', () => {
   let component: WoodstockPlayerUgcComponent;
   let fixture: ComponentFixture<WoodstockPlayerUgcComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
-      declarations: [WoodstockPlayerUgcComponent, BigJsonPipe],
-      providers: [createMockWoodstockService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    await TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [MatDialogModule, MatPaginatorModule, BrowserAnimationsModule],
+        declarations: [WoodstockPlayerUgcComponent, BigJsonPipe],
+        providers: [createMockWoodstockService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(WoodstockPlayerUgcComponent);
     component = fixture.componentInstance;

@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
@@ -14,24 +14,28 @@ import faker from '@faker-js/faker';
 import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 import BigNumber from 'bignumber.js';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('SteelheadBuildersCupCalendarViewComponent', () => {
   let component: SteelheadBuildersCupCalendarViewComponent;
   let fixture: ComponentFixture<SteelheadBuildersCupCalendarViewComponent>;
   let mockSteelheadService: SteelheadBuildersCupService;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule,
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
-      ],
-      declarations: [SteelheadBuildersCupCalendarViewComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockSteelheadBuildersCupService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          MatDialogModule,
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+        ],
+        declarations: [SteelheadBuildersCupCalendarViewComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockSteelheadBuildersCupService()],
+      }),
+    ).compileComponents();
 
     const injector = getTestBed();
     mockSteelheadService = injector.inject(SteelheadBuildersCupService);
@@ -67,14 +71,15 @@ describe('SteelheadBuildersCupCalendarViewComponent', () => {
   });
 
   describe('When tourCount is referenced', () => {
-    beforeEach(waitForAsync(() => {
-      const testArray = ['Decades', 'Touring'];
-      component.uniqueTours = testArray;
+    const testArray = ['Decades', 'Touring'];
 
-      it('should return length', () => {
-        expect(component.tourCount).toEqual(max([testArray.length, 5]));
-      });
+    beforeEach(waitForAsync(() => {
+      component.uniqueTours = testArray;
     }));
+
+    it('should return length', () => {
+      expect(component.tourCount).toEqual(max([testArray.length, 5]));
+    });
   });
 
   describe('When a view is clicked', () => {

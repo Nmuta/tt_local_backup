@@ -10,6 +10,8 @@ import { UserState } from '@shared/state/user/user.state';
 import { GiftHistoryBaseComponent } from './gift-history.base.component';
 import { PlayerInventoryProfile } from '@models/player-inventory-profile';
 
+import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+
 describe('GiftHistoryBaseComponent', () => {
   let component: GiftHistoryBaseComponent<PlayerInventoryProfile>;
   let fixture: ComponentFixture<GiftHistoryBaseComponent<PlayerInventoryProfile>>;
@@ -17,16 +19,18 @@ describe('GiftHistoryBaseComponent', () => {
   let mockStore: Store;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [GiftHistoryBaseComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [...createMockMsalServices(), createMockLoggerService()],
-    }).compileComponents();
+    TestBed.configureTestingModule(
+      createStandardTestModuleMetadataMinimal({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [GiftHistoryBaseComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
+      }),
+    ).compileComponents();
 
     fixture = TestBed.createComponent(
       GiftHistoryBaseComponent as Type<GiftHistoryBaseComponent<PlayerInventoryProfile>>,
