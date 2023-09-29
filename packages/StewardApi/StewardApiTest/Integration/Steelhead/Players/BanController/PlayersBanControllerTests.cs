@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         private static PlayersBanControllerTestingClient stewardClient;
         private static PlayersBanControllerTestingClient unauthedClient;
 
-        private V2BanParametersInput defaultBanParameters = new V2BanParametersInput()
+        private static V2BanParametersInput defaultBanParameters = new V2BanParametersInput()
         {
             ReasonGroupName = "Developer",
             Reason = "Testing",
@@ -26,6 +26,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             OverrideDurationPermanent = false,
             OverrideBanConsoles = false
         };
+
+        private static List<V2BanParametersInput> defaultBanInput = new List<V2BanParametersInput>() { defaultBanParameters };
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -101,14 +103,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [IntegrationTest]
         public async Task BanPlayers_InvalidAuth()
         {
-            var banParameters = this.defaultBanParameters;
-            banParameters.Xuid = TestConstants.InvalidXuid;
-
-            var banInput = new List<V2BanParametersInput> { banParameters };
-
             try
             {
-                var response = await unauthedClient.BanPlayers(banInput).ConfigureAwait(false);
+                var response = await unauthedClient.BanPlayers(defaultBanInput).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -121,14 +118,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [IntegrationTest]
         public async Task BanPlayers_InvalidXuid()
         {
-            var banParameters = this.defaultBanParameters;
-            banParameters.Xuid = TestConstants.InvalidXuid;
-
-            var banInput = new List<V2BanParametersInput> { banParameters };
-
             try
             {
-                var response = await stewardClient.BanPlayers(banInput).ConfigureAwait(false);
+                var response = await stewardClient.BanPlayers(defaultBanInput).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -141,14 +133,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [IntegrationTest]
         public async Task BanPlayersBackground_InvalidAuth()
         {
-            var banParameters = this.defaultBanParameters;
-            banParameters.Xuid = TestConstants.InvalidXuid;
-
-            var banInput = new List<V2BanParametersInput> { banParameters };
-
             try
             {
-                var response = await unauthedClient.BanPlayersBackground(banInput).ConfigureAwait(false);
+                var response = await unauthedClient.BanPlayersBackground(defaultBanInput).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -161,14 +148,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         [IntegrationTest]
         public async Task BanPlayersBackground_InvalidXuid()
         {
-            var banParameters = this.defaultBanParameters;
-            banParameters.Xuid = TestConstants.InvalidXuid;
-
-            var banInput = new List<V2BanParametersInput> { banParameters };
-
             try
             {
-                var response = await stewardClient.BanPlayersBackground(banInput).ConfigureAwait(false);
+                var response = await stewardClient.BanPlayersBackground(defaultBanInput).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
