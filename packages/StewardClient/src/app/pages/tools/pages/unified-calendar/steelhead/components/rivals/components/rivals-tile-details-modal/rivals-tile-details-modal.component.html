@@ -1,6 +1,13 @@
 <section>
   <h2 mat-dialog-title>
     <span>Rivals Event Details</span>
+    <button
+      mat-icon-button
+      mat-button
+      color="primary"
+      [routerLink]="routerLink"
+      [queryParams]="queryParams"
+    ><mat-icon>link</mat-icon></button>
     <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
   </h2>
 
@@ -47,5 +54,6 @@
         </table>
       </div>
     </div>
+    
   </mat-dialog-content>
 </section>

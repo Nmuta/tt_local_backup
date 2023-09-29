@@ -1,6 +1,7 @@
 import { NavbarTool } from '@environments/app-data/tool-list';
 import { GameTitle } from '@models/enums';
 import { UgcType } from '@models/ugc-filters';
+import BigNumber from 'bignumber.js';
 
 /** Make component base route from a component name and game title. */
 function getComponentBaseRoute(componentName: NavbarTool, gameTitle: GameTitle) {
@@ -105,4 +106,9 @@ export function getBountySearchRoute(gameTitle: GameTitle) {
 /** Make bounty details route. */
 export function getBountyDetailsRoute(gameTitle: GameTitle, bountyId: string) {
   return ['/app/tools/bounty-details/', gameTitle, bountyId];
+}
+
+/** Make leaderboards route. */
+export function getLeaderboardsRoute(gameTitle: GameTitle, ) {
+  return ['/app/tools/leaderboards/', gameTitle];
 }

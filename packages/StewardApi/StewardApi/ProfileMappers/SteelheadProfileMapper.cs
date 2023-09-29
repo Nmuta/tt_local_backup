@@ -554,6 +554,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<SteelheadLiveOpsContent.RivalEvent, Contracts.Common.RivalsEvent>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RivalEventId))
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Track))
+                .ForMember(dest => dest.ScoreTypeId, opt => opt.MapFrom(src => src.ScoreType))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.EventCategory))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartEndDate.From))
                 .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.StartEndDate.To))

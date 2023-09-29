@@ -9,7 +9,7 @@ import {
   RivalsEvent,
   SteelheadRivalsService,
 } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
-import { RivalsTileDetailsModalComponent } from '../rivals-tile-details-modal/rivals-tile-details-modal.component';
+import { RivalsEventWithEnvironment, RivalsTileDetailsModalComponent } from '../rivals-tile-details-modal/rivals-tile-details-modal.component';
 import { indexOf, uniq } from 'lodash';
 import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 
@@ -29,6 +29,7 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
 
   public events: CalendarEvent[];
 
+  private searchPegasusEnvironment: string = null;
   private readonly getSchedule$ = new Subject<void>();
   private retrieveSchedule$: Observable<RivalsEvent[]>;
 
@@ -90,6 +91,7 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
         return;
       }
 
+      this.searchPegasusEnvironment = inputs.pegasusInfo.environment;
       this.retrieveSchedule$ = this.steelheadRivalsService.getRivalsEventsByPegasus$(
         inputs.pegasusInfo,
       );
@@ -105,8 +107,11 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
 
   /** Opens modal to display day group's tiles with more detail. */
   public eventClicked(event: CalendarEvent<RivalsEvent>): void {
+    const eventWithEnvironment = event.meta as RivalsEventWithEnvironment;
+    eventWithEnvironment.leaderboardEnvironmnet = this.searchPegasusEnvironment;
+
     this.dialog.open(RivalsTileDetailsModalComponent, {
-      data: event.meta,
+      data: eventWithEnvironment,
     });
   }
 
