@@ -26,11 +26,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task PostSetUgcGeoFlags_InvalidUgcId()
+        public async Task SetUgcFeaturedStatus_InvalidUgcId()
         {
             try
             {
-                var response = await stewardClient.PostSetUgcGeoFlags(TestConstants.InvalidUgcId).ConfigureAwait(false);
+                var response = await stewardClient.SetUgcFeaturedStatus(TestConstants.InvalidUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -41,11 +41,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        public async Task PostSetUgcGeoFlags_InvalidAuth()
+        public async Task SetUgcFeaturedStatus_InvalidAuth()
         {
             try
             {
-                var response = await unauthedClient.PostSetUgcGeoFlags(TestConstants.TestAccountUgcId).ConfigureAwait(false);
+                var response = await unauthedClient.SetUgcFeaturedStatus(TestConstants.TestAccountUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
