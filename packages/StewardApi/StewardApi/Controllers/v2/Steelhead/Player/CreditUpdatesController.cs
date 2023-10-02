@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -24,10 +23,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
     [AuthorizeRoles(
         UserRole.GeneralUser,
         UserRole.LiveOpsAdmin)]
-    //[SuppressMessage(
-    //    "Microsoft.Maintainability",
-    //    "CA1506:AvoidExcessiveClassCoupling",
-    //    Justification = "This can't be avoided.")]
     [LogTagTitle(TitleLogTags.Steelhead)]
     [StandardTags(Title.Steelhead, Target.Player, Topic.CreditUpdates)]
     public sealed class CreditUpdatesController : V2SteelheadControllerBase
