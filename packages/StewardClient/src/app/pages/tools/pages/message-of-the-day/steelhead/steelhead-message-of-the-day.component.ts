@@ -1,9 +1,10 @@
+import { KeyValue } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { CreateLocalizedStringContract } from '@components/localization/create-localized-string/create-localized-string.component';
 import { SelectLocalizedStringContract } from '@components/localization/select-localized-string/select-localized-string.component';
-import { GameTitle } from '@models/enums';
+import { GameTitle, PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 import { PullRequest, PullRequestSubject } from '@models/git-operation';
 import { LocalizedStringData, LocalizedStringsMap } from '@models/localization';
 import { MessageOfTheDay, FriendlyNameMap } from '@models/message-of-the-day';
@@ -56,6 +57,10 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
 
+  public titleValue: string;
+  public headerValue: string;
+  public bodyValue: string;
+
   public readonly permAttribute = PermAttributeName.UpdateMessageOfTheDay;
   public readonly permAttributeLocString = PermAttributeName.AddLocalizedString;
 
@@ -77,7 +82,11 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.localizationSelectServiceContract = {
       gameTitle: this.gameTitle,
       getLocalizedStrings$(): Observable<LocalizedStringsMap> {
-        return steelheadLocalizationService.getLocalizedStrings$();
+        return steelheadLocalizationService.getLocalizedStrings$(
+          true,
+          PegasusEnvironment.Dev,
+          PegasusProjectionSlot.Daily,
+        );
       },
     };
   }
@@ -166,6 +175,11 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.pullRequestUrl = '';
   }
 
+  // Order by ascending property value
+  public valueAscOrder = (a: KeyValue<string, string>, b: KeyValue<string, string>): number => {
+    return a.value.localeCompare(b.value);
+  };
+
   /** Set form fields using the MessageOfTheDay parameter. */
   private setFields(messageOfTheDayDetail: MessageOfTheDay): void {
     this.formControls.contentImagePath.setValue(messageOfTheDayDetail.contentImagePath);
@@ -191,5 +205,9 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
         id: messageOfTheDayDetail.contentBody.locref,
       });
     }
+
+    this.titleValue = messageOfTheDayDetail.titleHeader.base;
+    this.headerValue = messageOfTheDayDetail.contentHeader.base;
+    this.bodyValue = messageOfTheDayDetail.contentBody.base;
   }
 }

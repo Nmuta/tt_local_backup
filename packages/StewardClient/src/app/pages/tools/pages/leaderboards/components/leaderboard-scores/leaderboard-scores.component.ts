@@ -47,8 +47,9 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import BigNumber from 'bignumber.js';
-import { cloneDeep, first, last } from 'lodash';
+import { first, last } from 'lodash';
 import { DateTime } from 'luxon';
 import { EMPTY, merge, Observable, of, Subject, throwError, timer } from 'rxjs';
 import {
@@ -158,6 +159,8 @@ export class LeaderboardScoresComponent
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   /** REVIEW-COMMENT: Selected score. */
   @Input() externalSelectedScore: LeaderboardScore;
+  /** Selected identity. */
+  @Input() externalSelectedIdentity: AugmentedCompositeIdentity;
   /** The game title. */
   @Input() gameTitle: GameTitle;
   /** Determines if component supports generating and downloading leaderboard score files. */
@@ -322,14 +325,8 @@ export class LeaderboardScoresComponent
 
   /** Removes the XUID query param from URL. */
   public switchToTopOfListView(): void {
-    const params = cloneDeep(this.route.snapshot.queryParams);
-    params['xuid'] = null;
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: params,
-      queryParamsHandling: 'merge',
-    });
+    this.externalSelectedIdentity = undefined;
+    this.getLeaderboardScores$.next(this.leaderboard.query);
   }
 
   /** Logic when row is clicked on. */
@@ -552,8 +549,10 @@ export class LeaderboardScoresComponent
         }),
         switchMap(query => {
           let newObs: Observable<LeaderboardScore[]>;
-          if (!!query.xuid) {
-            this.activeXuid = query.xuid;
+          // Using externalSelectedIdentity instead of queryParams because of conflict between the player selection component
+          // use of 'xuid' as a query param
+          if (!!this.externalSelectedIdentity?.general?.xuid) {
+            this.activeXuid = this.externalSelectedIdentity?.general.xuid;
             newObs = this.getLeaderboardScoresNearPlayer$(query);
           } else {
             newObs = this.getLeaderboardScoresFromTop$(query);
@@ -590,7 +589,7 @@ export class LeaderboardScoresComponent
     this.activeLeaderboardView = LeaderboardView.Player;
     return this.service
       .getLeaderboardScoresNearPlayer$(
-        query.xuid,
+        this.externalSelectedIdentity?.general.xuid,
         query.scoreboardTypeId,
         query.scoreTypeId,
         query.trackId,

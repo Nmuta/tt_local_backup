@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { addEnvironmentAndSlotHttpParams } from '@helpers/query-param-helpers';
 import { GuidLikeString } from '@models/extended-types';
 import { LeaderboardScoreType } from '@models/leaderboards';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
@@ -53,12 +54,20 @@ export class SteelheadRivalsService {
   }
 
   /** Gets the Rivals Event reference. */
-  public getRivalsEventReference$(): Observable<Map<GuidLikeString, string>> {
-    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/reference`);
+  public getRivalsEventReference$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
+    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/reference`, params);
   }
 
   /** Gets the Rivals Categories. */
-  public getRivalsEventCategories$(): Observable<Map<GuidLikeString, string>> {
-    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/categories`);
+  public getRivalsEventCategories$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<Map<GuidLikeString, string>> {
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
+    return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/categories`, params);
   }
 }

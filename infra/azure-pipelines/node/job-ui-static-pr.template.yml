@@ -2,85 +2,86 @@
 # It is intended to be run only after a `yarn` cache is made.
 
 parameters:
-- name: 'workingDirectory'
-  displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."
-  type: string
-- name: 'distDirectory'
-  displayName: "Path to a directory where files will be after build. Like 'packages/StewardClient/dist'."
-  type: string
-- name: 'distArtifactName'
-  displayName: "Name of artifact to publish from dist directory. Like 'ui-drop-dev'."
-  type: string
+  - name: "workingDirectory"
+    displayName: "Path to a working directory where yarn can be run. Like 'packages/StewardClient'."
+    type: string
+  - name: "distDirectory"
+    displayName: "Path to a directory where files will be after build. Like 'packages/StewardClient/dist'."
+    type: string
+  - name: "distArtifactName"
+    displayName: "Name of artifact to publish from dist directory. Like 'ui-drop-dev'."
+    type: string
 
 jobs:
-- job: UI_Static_Build
-  displayName: Static Build
-  steps:
-  - template: load-yarn-project.template.yml
-    parameters:
-      workingDirectory: ${{parameters.workingDirectory}}
-  
-  - task: Bash@3
-    displayName: Determine target environment
-    inputs:
-      workingDirectory: ${{parameters.workingDirectory}}
-      targetType: 'inline'
-      script: |
-        STATIC_ENV=$(echo "$(System.PullRequest.SourceBranch)" | grep -Po '(?<=refs/heads/).*?(?=/)')
-        echo "$(System.PullRequest.SourceBranch) -> $STATIC_ENV"
-        echo "##vso[task.setvariable variable=static_env]$STATIC_ENV"
+  - job: UI_Static_Build
+    displayName: Static Build
+    steps:
+      - template: load-yarn-project.template.yml
+        parameters:
+          workingDirectory: ${{parameters.workingDirectory}}
 
-  - task: Bash@3
-    displayName: Static Build (Dev)
-    inputs:
-      workingDirectory: ${{parameters.workingDirectory}}
-      targetType: 'inline'
-      script: yarn run build:dev-static-pr
+      - task: Bash@3
+        displayName: Determine target environment
+        inputs:
+          workingDirectory: ${{parameters.workingDirectory}}
+          targetType: "inline"
+          script: |
+            STATIC_ENV=$(echo "$(System.PullRequest.SourceBranch)" | grep -Po '(?<=refs/heads/).*?(?=/)')
+            echo "$(System.PullRequest.SourceBranch) -> $STATIC_ENV"
+            echo "##vso[task.setvariable variable=static_env]$STATIC_ENV"
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: ${{parameters.distArtifactName}}'
-    inputs:
-      PathtoPublish: ${{parameters.distDirectory}}
-      ArtifactName: ${{parameters.distArtifactName}}
+      - task: Bash@3
+        displayName: Static Build (Dev)
+        retryCountOnTaskFailure: 2
+        inputs:
+          workingDirectory: ${{parameters.workingDirectory}}
+          targetType: "inline"
+          script: yarn run build:dev-static-pr
 
-  - task: AzureStaticWebApp@0
-    displayName: Publish Dev to Static Staging Environment
-    continueOnError: true
-    inputs:
-      app_location: ${{parameters.distDirectory}}
-      azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
-      deployment_environment: $(static_env)
-      skip_app_build: true
-      skip_api_build: true
+      - task: PublishBuildArtifacts@1
+        displayName: "Publish Artifact: ${{parameters.distArtifactName}}"
+        inputs:
+          PathtoPublish: ${{parameters.distDirectory}}
+          ArtifactName: ${{parameters.distArtifactName}}
 
-  - task: PowerShell@2
-    condition: and(eq(variables['Build.Reason'], 'PullRequest'), succeeded())
-    displayName: Post link to PR (successful deploy)
-    continueOnError: true
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-      DEPLOYMENT_ENVIRONMENT: $(static_env)
-      ACCESS_URL: https://gentle-cliff-004fcc01e-$(static_env).westus2.3.azurestaticapps.net/
-      DOCS_URL: https://confluence.turn10studios.com/display/FT/New+Dev+Staging+Environment+Setup
-      MANAGE_ENVIRONMENTS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments
-      MANAGE_AUTH_URL: https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Authentication/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp~/false
-      MANAGE_CORS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/sites/steward-api-dev/apiCors
-    inputs:
-      targetType: filePath
-      filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.staging-environment-success.ps1
+      - task: AzureStaticWebApp@0
+        displayName: Publish Dev to Static Staging Environment
+        continueOnError: true
+        inputs:
+          app_location: ${{parameters.distDirectory}}
+          azure_static_web_apps_api_token: $(azure_static_web_apps_api_token)
+          deployment_environment: $(static_env)
+          skip_app_build: true
+          skip_api_build: true
 
-  - task: PowerShell@2
-    condition: and(eq(variables['Build.Reason'], 'PullRequest'), failed())
-    displayName: Post link to PR (failed deploy)
-    continueOnError: true
-    env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-      DEPLOYMENT_ENVIRONMENT: $(static_env)
-      ACCESS_URL: https://gentle-cliff-004fcc01e-$(static_env).westus2.3.azurestaticapps.net/
-      DOCS_URL: https://confluence.turn10studios.com/display/FT/New+Dev+Staging+Environment+Setup
-      MANAGE_ENVIRONMENTS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments
-      MANAGE_AUTH_URL: https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Authentication/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp~/false
-      MANAGE_CORS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/sites/steward-api-dev/apiCors
-    inputs:
-      targetType: filePath
-      filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.staging-environment-failure.ps1
+      - task: PowerShell@2
+        condition: and(eq(variables['Build.Reason'], 'PullRequest'), succeeded())
+        displayName: Post link to PR (successful deploy)
+        continueOnError: true
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+          DEPLOYMENT_ENVIRONMENT: $(static_env)
+          ACCESS_URL: https://gentle-cliff-004fcc01e-$(static_env).westus2.3.azurestaticapps.net/
+          DOCS_URL: https://confluence.turn10studios.com/display/FT/New+Dev+Staging+Environment+Setup
+          MANAGE_ENVIRONMENTS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments
+          MANAGE_AUTH_URL: https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Authentication/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp~/false
+          MANAGE_CORS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/sites/steward-api-dev/apiCors
+        inputs:
+          targetType: filePath
+          filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.staging-environment-success.ps1
+
+      - task: PowerShell@2
+        condition: and(eq(variables['Build.Reason'], 'PullRequest'), failed())
+        displayName: Post link to PR (failed deploy)
+        continueOnError: true
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+          DEPLOYMENT_ENVIRONMENT: $(static_env)
+          ACCESS_URL: https://gentle-cliff-004fcc01e-$(static_env).westus2.3.azurestaticapps.net/
+          DOCS_URL: https://confluence.turn10studios.com/display/FT/New+Dev+Staging+Environment+Setup
+          MANAGE_ENVIRONMENTS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/staticSites/steward-ui-static-dev/environments
+          MANAGE_AUTH_URL: https://ms.portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/Authentication/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp~/false
+          MANAGE_CORS_URL: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.Web/sites/steward-api-dev/apiCors
+        inputs:
+          targetType: filePath
+          filePath: $(Build.SourcesDirectory)/infra/scripts/post-to-pr.staging-environment-failure.ps1

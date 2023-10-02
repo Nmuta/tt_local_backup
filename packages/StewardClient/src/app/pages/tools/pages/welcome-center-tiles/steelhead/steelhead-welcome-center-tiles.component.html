@@ -26,7 +26,7 @@
                   >
                     <mat-optgroup label="Image Text Tile">
                       <mat-option
-                        *ngFor="let friendlyName of filterImageTextTiles | keyvalue"
+                        *ngFor="let friendlyName of filterImageTextTiles | keyvalue : valueAscOrder"
                         [value]="friendlyName"
                         (onSelectionChange)="welcomeCenterTileChanged($event, tileTypes.ImageText)"
                       >
@@ -35,7 +35,9 @@
                     </mat-optgroup>
                     <mat-optgroup label="Generic Popup Tile">
                       <mat-option
-                        *ngFor="let friendlyName of filterGenericPopupTiles | keyvalue"
+                        *ngFor="
+                          let friendlyName of filterGenericPopupTiles | keyvalue : valueAscOrder
+                        "
                         [value]="friendlyName"
                         (onSelectionChange)="
                           welcomeCenterTileChanged($event, tileTypes.GenericPopup)
@@ -46,7 +48,7 @@
                     </mat-optgroup>
                     <mat-optgroup label="Deeplink">
                       <mat-option
-                        *ngFor="let friendlyName of filterDeeplinkTiles | keyvalue"
+                        *ngFor="let friendlyName of filterDeeplinkTiles | keyvalue : valueAscOrder"
                         [value]="friendlyName"
                         (onSelectionChange)="welcomeCenterTileChanged($event, tileTypes.Deeplink)"
                       >

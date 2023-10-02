@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addQueryParamArray } from '@helpers/add-query-param-array';
+import { addQueryParamArray } from '@helpers/query-param-helpers';
 import { overrideSteelheadEndpointKey } from '@helpers/override-endpoint-key';
 import { DeviceType } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';

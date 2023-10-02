@@ -87,9 +87,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetBuildersCupChampionships()
+        public async Task<IActionResult> GetBuildersCupChampionships(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var buildersCupChampionships = await this.pegasusService.GetBuildersCupChampionshipsAsync();
+            var buildersCupChampionships = await this.pegasusService.GetBuildersCupChampionshipsAsync(environment, slot);
 
             return this.Ok(buildersCupChampionships);
         }
@@ -101,9 +103,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetBuildersCupLadders()
+        public async Task<IActionResult> GetBuildersCupLadders(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var buildersCupLadders = await this.pegasusService.GetBuildersCupLaddersAsync();
+            var buildersCupLadders = await this.pegasusService.GetBuildersCupLaddersAsync(environment, slot);
 
             return this.Ok(buildersCupLadders);
         }
@@ -115,9 +119,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetBuildersCupSeries()
+        public async Task<IActionResult> GetBuildersCupSeries(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var buildersCupSeries = await this.pegasusService.GetBuildersCupSeriesAsync();
+            var buildersCupSeries = await this.pegasusService.GetBuildersCupSeriesAsync(environment, slot);
 
             return this.Ok(buildersCupSeries);
         }

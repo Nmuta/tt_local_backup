@@ -8,15 +8,6 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
-      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Leaderboards] },
-      uuid: '832849f8-67a7-4f18-a70a-84d5c27310fe',
-      shortText: 'Added ability to generate and download leaderboard score files',
-      longText: [
-        'Leaderboard score files are used for 3rd party Rival\'s events.',
-        'They are sent to partners to verify participation.',
-      ],
-    },
-    {
       tag: ChangelogTag.Internal,
       uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
       shortMarkdown: 'Add **markdown** support',
@@ -49,6 +40,11 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
         | four    |   |   |   | 4 |   |
         | five    |   |   |   |   | 5 |
       `,
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '361fff59-388c-4612-9471-36116fb1e3d6',
+      shortText: 'Add ability to search leaderboard scores by gamertag',
     },
     {
       tag: ChangelogTag.Internal,

@@ -3,6 +3,7 @@ import { GameTitle } from '@models/enums';
 import { LeaderboardMetadataAndQuery, LeaderboardScore } from '@models/leaderboards';
 import { SteelheadLeaderboardScoresFileService } from '@services/api-v2/steelhead/leaderboard-scores-file/steelhead-leaderboard-scores-file.service';
 import { SteelheadLeaderboardsService } from '@services/api-v2/steelhead/leaderboards/steelhead-leaderboards.service';
+import { AugmentedCompositeIdentity } from '@views/player-selection/player-selection-base.component';
 import { LeaderboardScoresContract } from '../leaderboard-scores.component';
 
 /**
@@ -17,6 +18,8 @@ export class SteelheadLeaderboardScoresComponent {
   @Input() leaderboard: LeaderboardMetadataAndQuery;
   /** Selected leaderboard score. */
   @Input() externalSelectedScore: LeaderboardScore;
+  /** Selected identity. */
+  @Input() externalSelectedIdentity: AugmentedCompositeIdentity;
   /** Output scores for deletion. */
   @Output() scoresDeleted = new EventEmitter<LeaderboardScore[]>();
 
