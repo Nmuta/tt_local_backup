@@ -48,6 +48,15 @@ describe('LeaderboardScoresComponent', () => {
     deleteLeaderboardScores$: () => {
       return of();
     },
+    generateLeaderboardScoresFile$: () => {
+      return of();
+    },
+    getLeaderboardScoresFileMetadata$: () => {
+      return of();
+    },
+    retrieveLeaderboardScoresFile$: () => {
+      return of();
+    },
   };
 
   const testLeaderboardScores: LeaderboardScore[] = [
