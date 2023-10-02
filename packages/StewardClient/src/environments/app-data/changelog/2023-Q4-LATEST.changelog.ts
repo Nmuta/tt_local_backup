@@ -11,7 +11,7 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
       uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
       shortText:
-        "Add link from Rival's Event calendar selection to leaderboard scores for the event.",
+        "Add link from Rival's Event calendar selection to leaderboard scores for the event",
     },
     {
       tag: ChangelogTag.Internal,
