@@ -42,6 +42,7 @@ export class ApolloGiftBasketComponent
   public title = GameTitle.FM7;
   public allowSettingExpireDate = false;
   public allowSettingLocalizedMessage = false;
+  public allowSetInventoryFromReference = true;
 
   constructor(
     private readonly apolloService: ApolloService,

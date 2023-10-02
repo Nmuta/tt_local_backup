@@ -47,6 +47,7 @@ export class WoodstockGiftBasketComponent
   public title = GameTitle.FH5;
   public allowSettingExpireDate = true;
   public allowSettingLocalizedMessage = false;
+  public allowSetInventoryFromReference = true;
 
   constructor(
     private readonly woodstockPlayersGiftService: WoodstockPlayersGiftService,
