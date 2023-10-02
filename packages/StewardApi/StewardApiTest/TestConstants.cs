@@ -38,6 +38,7 @@ namespace Turn10.LiveOps.StewardTest
         public const string ValidProductId = "9P2LBL48Q0LS";
         public const string InvalidExternalProfileId = "VeryRealExternalProfileId";
         public const string InvalidUgcId = "VeryRealUgcId";
+        public const string TestMessageOfTheDayId = "40b18822-eaa9-4c10-b468-b8460527c66b";
 
         // Test account Plink
         public const ulong TestAccountXuid = 2675352635783107;
