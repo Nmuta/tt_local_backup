@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
@@ -33,5 +35,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// </summary>
         /// <remarks>The csv string contains all scores for a given leaderboard</remarks>
         Task SetLeaderboardDataAsync(string leaderboardIdentifier, string csv);
+
+        /// <summary>
+        ///     Verifies leaderboard file exists and returns last modified time.
+        /// </summary>
+        Task<BlobFileInfo> VerifyLeaderboardScoresFileAsync(string leaderboardIdentifier);
+
+        /// <summary>
+        ///     Generate a SAS uri to download the leaderboard file.
+        /// </summary>
+        Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier);
     }
 }

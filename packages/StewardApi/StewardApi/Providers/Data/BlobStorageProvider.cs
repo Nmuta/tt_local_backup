@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
+using Azure.Storage.Sas;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Turn10.Data.Common;
@@ -160,19 +163,73 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <inheritdoc />
         public async Task SetLeaderboardDataAsync(string leaderboardIdentifier, string csv)
         {
-            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(leaderboardIdentifier);
+            var blobFileName = leaderboardIdentifier + ".csv";
+            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(blobFileName);
 
             try
             {
                 var dataBytes = Encoding.UTF8.GetBytes(csv);
-                await leaderboardClient.UploadAsync(new BinaryData(dataBytes)).ConfigureAwait(false);
+                await leaderboardClient.UploadAsync(new BinaryData(dataBytes), overwrite: true).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                throw new UnknownFailureStewardException($"Could not upload leaderboard scores to blob storage. Container name: {LeaderboardContainerName}. Blob name: {leaderboardIdentifier}.", ex);
+                throw new UnknownFailureStewardException($"Could not upload leaderboard scores to blob storage. Container name: {LeaderboardContainerName}. Blob name: {blobFileName}.", ex);
             }
 
             return;
+        }
+
+        /// <inheritdoc />
+        public async Task<BlobFileInfo> VerifyLeaderboardScoresFileAsync(string leaderboardIdentifier)
+        {
+            var blobFileName = leaderboardIdentifier + ".csv";
+            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(blobFileName);
+
+            var exists = await leaderboardClient.ExistsAsync();
+            if (!exists.Value)
+            {
+                return new BlobFileInfo { LastModifiedUtc = null, Exists = false };
+            }
+
+            var metadata = await leaderboardClient.GetPropertiesAsync();
+
+            return new BlobFileInfo { LastModifiedUtc = metadata.Value.LastModified, Exists = true };
+        }
+
+        /// <inheritdoc />
+        public async Task<Uri> GetLeaderboardDataLinkAsync(string leaderboardIdentifier)
+        {
+            var blobFileName = leaderboardIdentifier + ".csv";
+            var leaderboardClient = this.leaderboardsContainerClient.GetBlobClient(blobFileName);
+
+            var exists = await leaderboardClient.ExistsAsync();
+            if (!exists.Value)
+            {
+                throw new NotFoundStewardException($"Leaderboard score file with name {blobFileName} does not exist.");
+            }
+
+            if (leaderboardClient.CanGenerateSasUri)
+            {
+                // Create a SAS token that's valid for a short time
+                var sasBuilder = new BlobSasBuilder()
+                {
+                    StartsOn = DateTime.UtcNow.AddMinutes(-2),
+                    ExpiresOn = DateTime.UtcNow.AddMinutes(2),
+                    BlobContainerName = leaderboardClient.GetParentBlobContainerClient().Name,
+                    BlobName = leaderboardClient.Name,
+                    Resource = "b", // b = blob, c = container
+                };
+
+                sasBuilder.SetPermissions(BlobSasPermissions.Read);
+
+                var sasURI = leaderboardClient.GenerateSasUri(sasBuilder);
+
+                return sasURI;
+            }
+            else
+            {
+                throw new BadRequestStewardException($"Failed to generate SAS for leaderboard file with identifier {blobFileName}");
+            }
         }
 
         private async Task<bool> EnsureBlobClientExistsAsync(BlobClient blobClient)
