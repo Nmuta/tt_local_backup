@@ -10,7 +10,7 @@ import { RivalsEvent } from '@services/api-v2/steelhead/rivals/steelhead-rivals.
 
 export type RivalsEventWithEnvironment = RivalsEvent & {
   leaderboardEnvironmnet: string;
-}
+};
 
 /** Modal component to display a rivals event. */
 @Component({
@@ -26,8 +26,7 @@ export class RivalsTileDetailsModalComponent extends BaseComponent {
   ) {
     super();
 
-    console.log(data)
-    const x = getLeaderboardsRoute(GameTitle.FM8)
+    const x = getLeaderboardsRoute(GameTitle.FM8);
     this.routerLink = x;
     this.queryParams = {
       leaderboardEnvironment: data.leaderboardEnvironmnet,
@@ -35,8 +34,6 @@ export class RivalsTileDetailsModalComponent extends BaseComponent {
       scoreTypeId: data.scoreTypeId.toNumber(),
       gameScoreboardId: data.id.toNumber(),
       trackId: data.trackId.toNumber(),
-    }
-    console.log(this.queryParams)
-    console.log(x)
+    };
   }
 }

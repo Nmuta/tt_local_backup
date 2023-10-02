@@ -9,7 +9,10 @@ import {
   RivalsEvent,
   SteelheadRivalsService,
 } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
-import { RivalsEventWithEnvironment, RivalsTileDetailsModalComponent } from '../rivals-tile-details-modal/rivals-tile-details-modal.component';
+import {
+  RivalsEventWithEnvironment,
+  RivalsTileDetailsModalComponent,
+} from '../rivals-tile-details-modal/rivals-tile-details-modal.component';
 import { indexOf, uniq } from 'lodash';
 import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
 
