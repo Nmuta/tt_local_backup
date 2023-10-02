@@ -8,6 +8,48 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Leaderboards] },
+      uuid: '832849f8-67a7-4f18-a70a-84d5c27310fe',
+      shortText: 'Added ability to generate and download leaderboard score files',
+      longText: [
+        "Leaderboard score files are used for 3rd party Rival's events.",
+        'They are sent to partners to verify participation.',
+      ],
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: 'n01a43al-0uui-d1wr-01ei-3yha7dha4ah4',
+      shortText: `Prevent featured UGC from being reported.`,
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '26bc1f7b-829f-4842-bdfc-4d6165944a57',
+      shortText: 'Add dropdowns for Pegasus environment and slot selectors',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: 'af60d88e-78f4-448a-8238-b755626726bb',
+      shortText: 'Fix bug causing errors when Pegasus environment and slot are missing',
+    },
+    {
+      tag: {
+        title: [GameTitle.FM8],
+        tool: [NavbarTool.WelcomeCenterTiles, NavbarTool.MessageOfTheDay],
+      },
+      uuid: '2fbd3ca3-6c67-429b-8936-b40a78e9ed1b',
+      shortMarkdown: 'Order tiles by name and display "when" tag',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: '835421f0-d6c1-45dc-b6c7-6eb26c9bef81',
+      shortText: 'Add ability to modify UGC stats',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '01800946-07d7-4f1f-a386-1225555f05cb',
+      shortText: 'Bugfixes and improvements',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '53c564fb-40d3-432b-bd8a-214811a8238f',
       shortMarkdown: 'Add **markdown** support',
