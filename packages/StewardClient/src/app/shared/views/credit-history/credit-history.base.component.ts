@@ -151,7 +151,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public getCreditUpdatesMonitor = new ActionMonitor('Get credit updates');
   public saveRollbackMonitor = new ActionMonitor('GET save rollback');
 
-  //public columnOptions = CreditUpdateColumn;
   public directionOptions = SortDirection;
 
   /** A list of player credit events. */

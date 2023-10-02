@@ -6,11 +6,8 @@ import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { createMockWoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.mock';
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
-import { NgxsModule } from '@ngxs/store';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('WoodstockCreditHistoryComponent', () => {
   let component: WoodstockCreditHistoryComponent;
@@ -20,12 +17,7 @@ describe('WoodstockCreditHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
-      createStandardTestModuleMetadataMinimal({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([]),
-        ],
+      createStandardTestModuleMetadata({
         declarations: [WoodstockCreditHistoryComponent, HumanizePipe],
         providers: [createMockWoodstockService(), createMockWoodstockPlayerCreditUpdatesService()],
         schemas: [NO_ERRORS_SCHEMA],

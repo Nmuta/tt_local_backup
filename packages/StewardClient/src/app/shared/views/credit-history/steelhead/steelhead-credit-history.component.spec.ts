@@ -2,14 +2,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { first } from 'lodash';
 import { fakeXuid } from '@interceptors/fake-api/utility';
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 import { createMockSteelheadPlayerCreditUpdatesService } from '@services/api-v2/steelhead/player/credit-updates/steelhead-credit-updates.mock';
 import { SteelheadCreditHistoryComponent } from './steelhead-credit-history.component';
 import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
-import { NgxsModule } from '@ngxs/store';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('SteelheadCreditHistoryComponent', () => {
   let component: SteelheadCreditHistoryComponent;
@@ -19,12 +16,7 @@ describe('SteelheadCreditHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
-      createStandardTestModuleMetadataMinimal({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          HttpClientTestingModule,
-          NgxsModule.forRoot([]),
-        ],
+      createStandardTestModuleMetadata({
         declarations: [SteelheadCreditHistoryComponent, HumanizePipe],
         providers: [createMockSteelheadPlayerCreditUpdatesService()],
         schemas: [NO_ERRORS_SCHEMA],

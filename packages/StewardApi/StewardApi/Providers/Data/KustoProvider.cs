@@ -562,7 +562,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
                     using (var reader = await this.cslQueryProvider
                         .ExecuteQueryAsync(databaseName, query, new ClientRequestProperties())
-                        .ConfigureAwait(true))
+                        .ConfigureAwait(false))
                     {
                         while (startAt > 0 && reader.Read())
                         {
