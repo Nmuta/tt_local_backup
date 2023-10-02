@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.UserDetails] },
+      uuid: '07c21994-1791-40fb-b5df-593179f15225',
+      shortText: `Add deep dive tab to player details.`,
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Leaderboards] },
       uuid: '832849f8-67a7-4f18-a70a-84d5c27310fe',
       shortText: 'Added ability to generate and download leaderboard score files',
