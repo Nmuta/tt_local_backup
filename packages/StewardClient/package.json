@@ -92,7 +92,7 @@
     "humanize-duration": "^3.27.1",
     "json-bigint": "^1.0.0",
     "jszip": "^3.10.0",
-    "luxon": "^3.4.3",
+    "luxon": "^2.5.2",
     "luxon-angular": "^5.0.0",
     "marked": "^4.3.0",
     "mermaid": "^9.1.2",
