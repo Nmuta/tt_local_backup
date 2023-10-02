@@ -80,6 +80,16 @@ export interface ChangelogGroup {
   entries: ChangelogEntry[];
 }
 
+/** A group of changelogs. Same as {@link ChangelogGroup}, but non-markdown entries are disallowed. */
+export interface MarkdownChangelogGroup extends ChangelogGroup {
+  /** The title to display. */
+  title: string;
+  /** ID used for determining latest seen update. */
+  id: string;
+  /** The entries to display. */
+  entries: MarkdownChangelogEntry[];
+}
+
 /** Stores UI-known changelogs. */
 export interface Changelog {
   /** Changelogs considered "active". These are checked against on each log in. */
