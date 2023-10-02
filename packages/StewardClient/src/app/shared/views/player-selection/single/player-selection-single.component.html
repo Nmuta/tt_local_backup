@@ -88,8 +88,8 @@
       (matChipInputTokenEnd)="add($event)"
     />
   </mat-chip-list>
-  <mat-hint *ngIf="!displayInSingleLine"
-    >{{ foundIdentities?.length }}/{{ maxFoundIndentities }} Identities</mat-hint
+  <mat-hint *ngIf="!displayInSingleLine" class="sf-mat-hint-multiline"
+    >{{ foundIdentities?.length }}/{{ maxFoundIndentities }} Identities {{ extraHint }}</mat-hint
   >
 </mat-form-field>
 <div *ngIf="!displayInSingleLine && cutLookupList?.length > 0" class="cut-lookup-list-error">
