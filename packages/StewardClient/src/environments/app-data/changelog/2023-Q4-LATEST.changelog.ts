@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting] },
+      uuid: 'd7c4f499-5c52-4a26-a29a-aba8e7de2e16',
+      shortText: "Remove 'Set Inventory From Reference' button",
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Leaderboards] },
       uuid: '832849f8-67a7-4f18-a70a-84d5c27310fe',
       shortText: 'Added ability to generate and download leaderboard score files',
