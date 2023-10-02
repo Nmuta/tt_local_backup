@@ -8,9 +8,14 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
-      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting] },
-      uuid: 'd7c4f499-5c52-4a26-a29a-aba8e7de2e16',
-      shortText: "Remove 'Set Inventory From Reference' button",
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
+      uuid: 'n01a43al-0uui-d1wr-01ei-3yha7dha4ah4',
+      shortText: `Prevent featured UGC from being reported.`,
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
+      uuid: '26bc1f7b-829f-4842-bdfc-4d6165944a57',
+      shortText: 'Add dropdowns for Pegasus environment and slot selectors',
     },
     {
       tag: ChangelogTag.Internal,

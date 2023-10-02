@@ -485,6 +485,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<SteelheadV2Providers.SteelheadGiftHistoryProvider>().As<SteelheadV2Providers.ISteelheadGiftHistoryProvider>().SingleInstance();
             builder.RegisterType<SteelheadV2Providers.SteelheadPlayerInventoryProvider>().As<SteelheadV2Providers.ISteelheadPlayerInventoryProvider>().SingleInstance();
             builder.RegisterType<SteelheadV2Providers.SteelheadServiceManagementProvider>().As<SteelheadV2Providers.ISteelheadServiceManagementProvider>().SingleInstance();
+            builder.RegisterType<SteelheadV2Providers.SteelheadLeaderboardProvider>().As<SteelheadV2Providers.ISteelheadLeaderboardProvider>().SingleInstance();
 
             builder.RegisterType<SteelheadGroupGiftRequestValidator>().As<IRequestValidator<SteelheadGroupGift>>().SingleInstance();
             builder.RegisterType<SteelheadGiftRequestValidator>().As<IRequestValidator<SteelheadGift>>().SingleInstance();
