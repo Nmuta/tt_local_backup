@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '4e265673-61b2-49cb-a7df-775967a6ca19',
+      shortText:
+        'Fix bug in calendar lookup input sending API pegasus environment with incorrect casing',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting] },
       uuid: 'd7c4f499-5c52-4a26-a29a-aba8e7de2e16',
       shortText: "Remove 'Set Inventory From Reference' button",
