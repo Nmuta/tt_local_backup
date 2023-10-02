@@ -6,6 +6,7 @@ import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
+import { addEnvironmentAndSlotHttpParams } from '@helpers/query-param-helpers';
 
 /** Interface that represents a Car Featured Showcase. */
 export interface CarFeaturedShowcase {
@@ -167,8 +168,9 @@ export class SteelheadShowroomService {
   }
 
   /** Gets Showroom Car Sales. */
-  public getCarSales$(): Observable<CarSale[]> {
-    return this.api.getRequest$<CarSale[]>(`${this.basePath}/carSales`);
+  public getCarSales$(environment: string = null, slot: string = null): Observable<CarSale[]> {
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
+    return this.api.getRequest$<CarSale[]>(`${this.basePath}/carSales`, params);
   }
 
   /** Gets Showroom Car Sales. */
@@ -196,7 +198,11 @@ export class SteelheadShowroomService {
   }
 
   /** Gets featured showcases mapped to Guid. */
-  public getFeaturedShowcases$(): Observable<FriendlyNameMap> {
-    return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/featuredShowcases`);
+  public getFeaturedShowcases$(
+    environment: string = null,
+    slot: string = null,
+  ): Observable<FriendlyNameMap> {
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
+    return this.api.getRequest$<FriendlyNameMap>(`${this.basePath}/featuredShowcases`, params);
   }
 }

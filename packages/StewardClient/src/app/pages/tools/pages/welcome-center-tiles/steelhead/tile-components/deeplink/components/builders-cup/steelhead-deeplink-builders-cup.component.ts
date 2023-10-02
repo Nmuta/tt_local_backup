@@ -21,6 +21,7 @@ import {
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { combineLatest, filter, map, pairwise, startWith, takeUntil } from 'rxjs';
 import { SteelheadBuildersCupService } from '@services/api-v2/steelhead/builders-cup/steelhead-builders-cup.service';
+import { PegasusEnvironment, PegasusProjectionSlot } from '@models/enums';
 
 /** The deeplink builders cup component. */
 @Component({
@@ -68,10 +69,18 @@ export class DeeplinkBuildersCupComponent
     super();
 
     if (!this.buildersCupChampionships || !this.buildersCupLadders || !this.buildersCupSeries) {
-      const getBuildersCupChampionships$ =
-        steelheadBuildersCupService.getBuildersCupChampionships$();
-      const getBuildersCupLadders$ = steelheadBuildersCupService.getBuildersCupLadders$();
-      const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$();
+      const getBuildersCupChampionships$ = steelheadBuildersCupService.getBuildersCupChampionships$(
+        PegasusEnvironment.Dev,
+        PegasusProjectionSlot.Daily,
+      );
+      const getBuildersCupLadders$ = steelheadBuildersCupService.getBuildersCupLadders$(
+        PegasusEnvironment.Dev,
+        PegasusProjectionSlot.Daily,
+      );
+      const getBuildersCupSeries$ = steelheadBuildersCupService.getBuildersCupSeries$(
+        PegasusEnvironment.Dev,
+        PegasusProjectionSlot.Daily,
+      );
 
       this.referenceDataMonitor = this.referenceDataMonitor.repeat();
       combineLatest([getBuildersCupChampionships$, getBuildersCupLadders$, getBuildersCupSeries$])
@@ -108,7 +117,7 @@ export class DeeplinkBuildersCupComponent
   public writeValue(data: DeeplinkDestination): void {
     const buildersCupDestination = data as BuildersCupDestination;
     if (
-      Object.values(BuildersCupDestination).includes(
+      Object.values(BuildersCupSettingType).includes(
         buildersCupDestination.settingType as BuildersCupSettingType,
       )
     ) {

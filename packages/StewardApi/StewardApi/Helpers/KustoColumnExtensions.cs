@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using Newtonsoft.Json.Linq;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -58,6 +59,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     break;
                 case "System.Byte":
                     jObj.Add(column.ColumnName, reader.GetByte(column.ColumnOrdinal));
+                    break;
+                case "System.SByte":
+                    jObj.Add(column.ColumnName, JToken.FromObject(reader.GetValue(column.ColumnOrdinal)));
                     break;
                 case "System.Object":
                     jObj.Add(column.ColumnName, JToken.FromObject(reader.GetValue(column.ColumnOrdinal)));
