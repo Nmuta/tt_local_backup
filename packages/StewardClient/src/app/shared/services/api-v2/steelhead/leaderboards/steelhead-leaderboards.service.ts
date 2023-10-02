@@ -13,7 +13,13 @@ import {
 } from '@models/leaderboards';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
+import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
+
+export interface BlobFileInfo {
+  lastModifiedUtc: DateTime;
+  exists: boolean;
+}
 
 /** The /v2/title/steelhead/leaderboards endpoints. */
 @Injectable({

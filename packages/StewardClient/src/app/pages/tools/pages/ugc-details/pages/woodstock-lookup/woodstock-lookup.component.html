@@ -79,12 +79,17 @@
               <span [matTooltip]="generateSharecodeMatTooltip">Generate Sharecode</span>
             </button>
             <div *waitForMonitor="getReportReasonsMonitor">
+              <mat-error *ngIf="ugcItem?.featuredByT10">Cannot report Featured item</mat-error>
               <mat-form-field
                 class="sf-full-width sf-default-hint sf-action-list"
                 appearance="fill"
               >
                 <mat-label>Report reason</mat-label>
-                <mat-select matInput [(ngModel)]="selectedReason">
+                <mat-select
+                  matInput
+                  [(ngModel)]="selectedReason"
+                  [disabled]="ugcItem?.featuredByT10"
+                >
                   <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
                     {{ reason.description }}
                   </mat-option>
@@ -96,7 +101,7 @@
                 #verifyReportBtn
                 [permissionAttribute]="reportPermAttribute"
                 [permissionTitle]="gameTitle"
-                [disabled]="!selectedReason"
+                [disabled]="ugcItem?.featuredByT10"
               ></verify-button>
               <button
                 class="sf-action-list-margins"
@@ -110,14 +115,12 @@
                 monitorWarn
                 monitorWarnSnackbar
                 monitorCompleteSnackbar
-                [disabled]="!selectedReason"
+                [disabled]="ugcItem?.featuredByT10 || !selectedReason"
               >
                 <span>Report</span>
               </button>
             </div>
-
             <ng-content select="button"></ng-content>
-
             <div *ngIf="!ugcItem?.isHidden" class="sf-horizontal do-not-manipulate-margin">
               <verify-button
                 #verifyHideBtn

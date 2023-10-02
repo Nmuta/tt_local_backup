@@ -1,8 +1,9 @@
 <leaderboard-scores
-  [service]="service"
+  [service]="serviceContract"
   [leaderboard]="leaderboard"
   [externalSelectedScore]="externalSelectedScore"
   [externalSelectedIdentity]="externalSelectedIdentity"
   [gameTitle]="gameTitle"
+  [allowFileGeneration]="true"
   (scoresDeleted)="scoresDeleted.emit($event)"
 ></leaderboard-scores>
