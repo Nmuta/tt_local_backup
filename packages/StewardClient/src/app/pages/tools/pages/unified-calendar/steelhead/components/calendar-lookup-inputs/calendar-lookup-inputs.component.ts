@@ -50,7 +50,7 @@ export class CalendarLookupInputsComponent implements OnInit {
     this.pegasusFormControls,
   );
 
-  public environmentOptions: string[] = ['Prod', 'Dev'];
+  public environmentOptions: string[] = ['prod', 'dev'];
   public slotOptions: string[];
   public filteredSlots: Observable<string[]>;
 

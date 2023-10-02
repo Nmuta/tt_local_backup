@@ -8,20 +8,6 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
-      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Leaderboards] },
-      uuid: '832849f8-67a7-4f18-a70a-84d5c27310fe',
-      shortText: 'Added ability to generate and download leaderboard score files',
-      longText: [
-        "Leaderboard score files are used for 3rd party Rival's events.",
-        'They are sent to partners to verify participation.',
-      ],
-    },
-    {
-      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UgcDetails] },
-      uuid: 'n01a43al-0uui-d1wr-01ei-3yha7dha4ah4',
-      shortText: `Prevent featured UGC from being reported.`,
-    },
-    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
       uuid: '26bc1f7b-829f-4842-bdfc-4d6165944a57',
       shortText: 'Add dropdowns for Pegasus environment and slot selectors',
