@@ -405,7 +405,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetSharecodeUgc(TestConstants.ValidSharecode).ConfigureAwait(false);
+                var response = await stewardClient.GetSharecodeUgc(TestConstants.ValidSharecode, "Livery").ConfigureAwait(false);
                 Assert.IsNotNull(response);
             }
             catch (ServiceException ex)
@@ -420,7 +420,22 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetSharecodeUgc(TestConstants.InvalidSharecode).ConfigureAwait(false);
+                var response = await stewardClient.GetSharecodeUgc(TestConstants.InvalidSharecode, "Livery").ConfigureAwait(false);
+                Assert.IsTrue(response.Count == 0);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task GetSharecodeUgc_InvalidUgcType()
+        {
+            try
+            {
+                var response = await stewardClient.GetSharecodeUgc(TestConstants.ValidSharecode, TestConstants.InvalidUgcType).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -435,7 +450,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetSharecodeUgc(TestConstants.ValidSharecode).ConfigureAwait(false);
+                var response = await unauthedClient.GetSharecodeUgc(TestConstants.ValidSharecode, "Livery").ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)

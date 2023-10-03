@@ -41,7 +41,7 @@ namespace Turn10.LiveOps.StewardTest
         public const string InvalidUgcType = "VeryRealUgcType";
         public const string ValidCuratedUgcType = "Featured";
         public const string InvalidCuratedUgcType = "VeryRealCuratedUgcType";
-        public const string ValidSharecode = "";
+        public const string ValidSharecode = "103756890";
         public const string InvalidSharecode = "VeryRealSharecode";
 
         // Test account Plink

@@ -79,9 +79,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             return await ServiceClient.SendRequestAsync<SteelheadUgcItem>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<IList<SteelheadUgcItem>> GetSharecodeUgc(string shareCode)
+        public async Task<IList<SteelheadUgcItem>> GetSharecodeUgc(string shareCode, string ugcType)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}/ugc/lookup/sharecode/{shareCode}");
+            var path = new Uri(this.baseUri, $"{TitlePath}/ugc/lookup/sharecode/{shareCode}?ugcType={ugcType}");
 
             return await ServiceClient.SendRequestAsync<IList<SteelheadUgcItem>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
