@@ -86,7 +86,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
-        [Ignore]
         public async Task SetFlags()
         {
             try
