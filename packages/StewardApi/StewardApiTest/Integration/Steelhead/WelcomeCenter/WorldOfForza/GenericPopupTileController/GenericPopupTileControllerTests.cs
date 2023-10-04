@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             unauthedClient = new GenericPopupTileControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
 
             bridge = new WofGenericPopupBridge();
-            // "[TEST] Pop-up Test"
+            // Below id refers to - "[TEST] Pop-up Test"
             id = "a32f4e4f-1e9d-4e9d-9925-12d99e898c14";
             invalidId = "invalid";
         }
@@ -97,6 +97,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             try
             {
                 var response = await unauthedClient.GetWorldOfForzaGenericCurrentValuesAsync(id).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task EditAndSubmitGenericPopupTile_InvalidId()
+        {
+            try
+            {
+                var response = await unauthedClient.EditAndSubmitGenericPopupTile(invalidId, bridge).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)

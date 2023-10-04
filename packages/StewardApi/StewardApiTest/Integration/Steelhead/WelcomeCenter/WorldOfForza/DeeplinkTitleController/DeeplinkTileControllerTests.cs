@@ -26,7 +26,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
             bridge = new WofDeeplinkBridge();
 
-            // "[COMMUNITY] Patch Notes"
+            // Below id refers to - "[COMMUNITY] Patch Notes"
             id = "1b2bb45e-6829-4bc6-87c2-7b13b20753f4";
             invalidId = "invalid";
         }
@@ -98,6 +98,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             try
             {
                 var response = await unauthedClient.GetWorldOfForzaDeeplinkCurrentValuesAsync(id).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task EditAndSubmitDeeplinkTile_InvalidId()
+        {
+            try
+            {
+                var response = await unauthedClient.EditAndSubmitDeeplinkTile(invalidId, bridge).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
