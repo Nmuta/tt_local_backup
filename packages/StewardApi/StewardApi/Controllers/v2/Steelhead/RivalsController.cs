@@ -85,9 +85,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetRivalsEventsReference()
+        public async Task<IActionResult> GetRivalsEventsReference(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var rivalEvents = await this.steelheadPegasusService.GetRivalsEventsReferenceAsync();
+            var rivalEvents = await this.steelheadPegasusService.GetRivalsEventsReferenceAsync(environment, slot);
 
             return this.Ok(rivalEvents);
         }
@@ -99,9 +101,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         [SwaggerResponse(200, type: typeof(Dictionary<Guid, string>))]
         [LogTagDependency(DependencyLogTags.Pegasus)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup)]
-        public async Task<IActionResult> GetRivalsEventCategories()
+        public async Task<IActionResult> GetRivalsEventCategories(
+            [FromQuery] string environment = null,
+            [FromQuery] string slot = null)
         {
-            var rivalCategories = await this.steelheadPegasusService.GetRivalsEventCategoriesAsync();
+            var rivalCategories = await this.steelheadPegasusService.GetRivalsEventCategoriesAsync(environment, slot);
 
             return this.Ok(rivalCategories);
         }

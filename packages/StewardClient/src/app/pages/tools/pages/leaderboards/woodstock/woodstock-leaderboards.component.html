@@ -15,7 +15,9 @@
     </ng-template>
 
     <!-- Tab Content -->
-    <woodstock-search-leaderboards></woodstock-search-leaderboards>
+    <woodstock-search-leaderboards
+      (selectedIdentityChange)="onIdentitySelected($event)"
+    ></woodstock-search-leaderboards>
     <woodstock-leaderboard-stats
       [leaderboard]="activeLeaderboard"
       [scoresDeleted]="scoresDeleted"
@@ -25,6 +27,7 @@
     <woodstock-leaderboard-scores
       [leaderboard]="activeLeaderboard"
       [externalSelectedScore]="statsSelectedScore"
+      [externalSelectedIdentity]="selectedIdentity"
       (scoresDeleted)="onScoresDeleted($event)"
     ></woodstock-leaderboard-scores>
   </mat-tab>

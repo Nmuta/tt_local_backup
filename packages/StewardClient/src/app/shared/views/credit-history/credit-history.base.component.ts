@@ -4,7 +4,7 @@ import { WoodstockCreditDetailsEntry } from '@models/woodstock';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import BigNumber from 'bignumber.js';
 import { SunriseCreditDetailsEntry } from '@models/sunrise';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
@@ -151,7 +151,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public getCreditUpdatesMonitor = new ActionMonitor('Get credit updates');
   public saveRollbackMonitor = new ActionMonitor('GET save rollback');
 
-  public columnOptions = CreditUpdateColumn;
   public directionOptions = SortDirection;
 
   /** A list of player credit events. */
@@ -176,10 +175,11 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public loadingMore = false;
   public showLoadMoreAndLoadAll: boolean;
   public displayTrendAnalysisDisabled: boolean;
+  public isRetail: boolean;
 
   public xpAnalysisDates: (CreditDetailsEntryUnion & CreditDetailsEntryMixin)[] = null;
 
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
   public abstract isSaveRollbackSupported: boolean;
   public abstract getCreditHistoryByXuid$(
     xuid: BigNumber,
@@ -191,9 +191,11 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public abstract getSaveRollbackHistoryByXuid$(
     xuid: BigNumber,
   ): Observable<ProfileRollbackHistory[]>;
+  public abstract getEndpoint(): string;
 
   /** Lifecycle hook */
   public ngOnInit(): void {
+    this.isRetail = this.getEndpoint() == 'Retail';
     this.getCreditUpdates$
       .pipe(
         switchMap(() => {

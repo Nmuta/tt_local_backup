@@ -115,12 +115,12 @@
       },
       "Azure.Storage.Blobs": {
         "type": "Direct",
-        "requested": "[12.10.0, )",
-        "resolved": "12.10.0",
-        "contentHash": "yaijs9DPfn34C/X4TX+0TAxANEhuKSrFE650gkF9g1pz/nQljv86zOOtDwNwD5UsAY5LyrOiCASGo2dhuIxvdg==",
+        "requested": "[12.18.0, )",
+        "resolved": "12.18.0",
+        "contentHash": "IUqHRXnabXCzmmvkzqPK4FuGzLxmKSugDEt5Hm5B/JlJFR+aHDsPW4nCLbG0txThqBSKPqcBBU/oA6c5TaFJgA==",
         "dependencies": {
-          "Azure.Storage.Common": "12.9.0",
-          "System.Text.Json": "4.6.0"
+          "Azure.Storage.Common": "12.17.0",
+          "System.Text.Json": "4.7.2"
         }
       },
       "Castle.Core": {
@@ -369,9 +369,9 @@
       },
       "SteelheadLiveOpsContent": {
         "type": "Direct",
-        "requested": "[1.7.41, )",
-        "resolved": "1.7.41",
-        "contentHash": "/r38RWz5HdqYcE90WGPTK4mtWJHOC2Ain188+xaKo7ZSp4rHwcbwzRFA4WtC13Sw1ExGji++twzBaLUvcQG+eA==",
+        "requested": "[1.8.1, )",
+        "resolved": "1.8.1",
+        "contentHash": "30PWbBmbp6zy9PufNW4HXzc4AWD7ccJnDCjcs0HITi0XdzRil6FUrNQ8h0Cx0krI6WwpAhL7lcAQsnN1Ie1rnQ==",
         "dependencies": {
           "Newtonsoft.Json": "13.0.1"
         }
@@ -649,11 +649,11 @@
       },
       "Azure.Core": {
         "type": "Transitive",
-        "resolved": "1.32.0",
-        "contentHash": "NmnJxaNqKjPwnHXngVg63SrkwbJXrkT0mcK8uCx9rSq0nK6Q3Q+/GZRCaTWcdcECoRP5XK0lr3Ce8PZkHkuHNg==",
+        "resolved": "1.35.0",
+        "contentHash": "hENcx03Jyuqv05F4RBEPbxz29UrM3Nbhnr6Wl6NQpoU9BCIbL3XLentrxDCTrH54NLS11Exxi/o8MYgT/cnKFA==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "1.1.1",
-          "System.Diagnostics.DiagnosticSource": "4.6.0",
+          "System.Diagnostics.DiagnosticSource": "6.0.1",
           "System.Memory.Data": "1.0.2",
           "System.Numerics.Vectors": "4.5.0",
           "System.Text.Encodings.Web": "4.7.2",
@@ -663,10 +663,11 @@
       },
       "Azure.Storage.Common": {
         "type": "Transitive",
-        "resolved": "12.9.0",
-        "contentHash": "GuoigTmzz9HrCGdcdu7LyjD4pDr2XPt72LlWWTDyno+nYrjyuNwpwRFBvK/brxJvQFRHofQcBskf8vOxVxnI8g==",
+        "resolved": "12.17.0",
+        "contentHash": "/h8SpUkxMuQy/MbNFeJQGmhYt3JnYfEiGeDojtNgLNzzhyDnRYgjF3ZKYgjORYQpn0Spr+4+v2MZy+0GNJBLrg==",
         "dependencies": {
-          "Azure.Core": "1.19.0"
+          "Azure.Core": "1.35.0",
+          "System.IO.Hashing": "6.0.0"
         }
       },
       "CsvHelper": {
@@ -2207,6 +2208,11 @@
         "dependencies": {
           "System.Runtime": "4.3.0"
         }
+      },
+      "System.IO.Hashing": {
+        "type": "Transitive",
+        "resolved": "6.0.0",
+        "contentHash": "Rfm2jYCaUeGysFEZjDe7j1R4x6Z6BzumS/vUT5a1AA/AWJuGX71PoGB0RmpyX3VmrGqVnAwtfMn39OHR8Y/5+g=="
       },
       "System.IO.Pipelines": {
         "type": "Transitive",
