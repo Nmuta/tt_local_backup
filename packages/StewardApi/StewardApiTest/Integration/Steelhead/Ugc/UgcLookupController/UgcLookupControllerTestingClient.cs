@@ -16,11 +16,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             this.headers.Add("Endpoint-Steelhead", nameof(SteelheadEndpoint.Retail));
         }
 
-        public async Task<IList<SteelheadUgcItem>> PostSearchUgc(string ugcType)
+        public async Task<IList<SteelheadUgcItem>> PostSearchUgc(string ugcType, ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/ugc/lookup/{ugcType}");
+            var requestBody = new UgcSearchFilters();
+            requestBody.Xuid = xuid;
 
-            return await ServiceClient.SendRequestAsync<IList<SteelheadUgcItem>>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<SteelheadUgcItem>>(HttpMethod.Post, path, this.authKey, Version, requestBody, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<IList<SteelheadUgcItem>> GetSearchCuratedUgc(string ugcType, string curationType)

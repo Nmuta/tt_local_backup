@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
@@ -26,16 +27,46 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
 
         [TestMethod]
         [IntegrationTest]
+        public async Task PostSearchUgc()
+        {
+            try
+            {
+                var response = await stewardClient.PostSearchUgc("Livery", TestConstants.TestAccountXuid).ConfigureAwait(false);
+                Assert.IsNotNull(response);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.Fail(ex.ResponseBody);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
+        public async Task PostSearchUgc_InvalidXuid()
+        {
+            try
+            {
+                var response = await stewardClient.PostSearchUgc("Livery", TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.IsTrue(response.Count == 0);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [IntegrationTest]
         public async Task PostSearchUgc_InvalidUgcType()
         {
             try
             {
-                var response = await stewardClient.PostSearchUgc(TestConstants.InvalidUgcType).ConfigureAwait(false);
+                var response = await stewardClient.PostSearchUgc(TestConstants.InvalidUgcType, TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.UnsupportedMediaType, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
@@ -45,7 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostSearchUgc("Livery").ConfigureAwait(false);
+                var response = await unauthedClient.PostSearchUgc("Livery", TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -120,8 +151,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetLiveryUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
-                Assert.IsNotNull(response);
+                var response = await stewardClient.GetLiveryUgc(TestConstants.ValidLiveryUgcId).ConfigureAwait(false);
+                Assert.IsTrue(response.Type == UgcType.Livery);
             }
             catch (ServiceException ex)
             {
@@ -150,7 +181,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetLiveryUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
+                var response = await unauthedClient.GetLiveryUgc(TestConstants.ValidLiveryUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -165,8 +196,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetPhotoUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
-                Assert.IsNotNull(response);
+                var response = await stewardClient.GetPhotoUgc(TestConstants.ValidPhotoUgcId).ConfigureAwait(false);
+                Assert.IsTrue(response.Type == UgcType.Photo);
             }
             catch (ServiceException ex)
             {
@@ -195,7 +226,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetPhotoUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
+                var response = await unauthedClient.GetPhotoUgc(TestConstants.ValidPhotoUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -225,8 +256,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetTuneBlobUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
-                Assert.IsNotNull(response);
+                var response = await stewardClient.GetTuneBlobUgc(TestConstants.ValidTuneBlobUgcId).ConfigureAwait(false);
+                Assert.IsTrue(response.Type == UgcType.TuneBlob);
             }
             catch (ServiceException ex)
             {
@@ -255,7 +286,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetTuneBlobUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
+                var response = await unauthedClient.GetTuneBlobUgc(TestConstants.ValidTuneBlobUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -270,8 +301,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetLayerGroupUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
-                Assert.IsNotNull(response);
+                var response = await stewardClient.GetLayerGroupUgc(TestConstants.ValidLayerGroupUgcId).ConfigureAwait(false);
+                Assert.IsTrue(response.Type == UgcType.LayerGroup);
             }
             catch (ServiceException ex)
             {
@@ -300,7 +331,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetLayerGroupUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
+                var response = await unauthedClient.GetLayerGroupUgc(TestConstants.ValidLayerGroupUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -315,8 +346,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetLayerGroupUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
-                Assert.IsNotNull(response);
+                var response = await stewardClient.GetLayerGroupUgc(TestConstants.ValidGameOptionsUgcId).ConfigureAwait(false);
+                Assert.IsTrue(response.Type == UgcType.GameOptions);
             }
             catch (ServiceException ex)
             {
@@ -345,7 +376,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetGameOptionsUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
+                var response = await unauthedClient.GetGameOptionsUgc(TestConstants.ValidGameOptionsUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -360,8 +391,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.GetReplayUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
-                Assert.IsNotNull(response);
+                var response = await stewardClient.GetReplayUgc(TestConstants.ValidReplayUgcId).ConfigureAwait(false);
+                Assert.IsTrue(response.Type == UgcType.Replay);
             }
             catch (ServiceException ex)
             {
@@ -390,7 +421,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.GetReplayUgc(TestConstants.TestAccountUgcId).ConfigureAwait(false);
+                var response = await unauthedClient.GetReplayUgc(TestConstants.ValidReplayUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
