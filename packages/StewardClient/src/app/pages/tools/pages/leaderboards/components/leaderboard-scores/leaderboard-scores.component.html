@@ -82,6 +82,59 @@
       </div>
       <!-- Actions for multi-selection of scores. -->
       <div class="multi-select-options">
+        <div *ngIf="allowFileGeneration">
+          <verify-button
+            #verifyScoresFileGenerationBtn
+            [permissionAttribute]="generateScoresFilePermAttribute"
+            [permissionTitle]="gameTitle"
+            [disabled]="!this.hasScores"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="primary"
+            [verifyWithV2]="verifyScoresFileGenerationBtn"
+            (click)="generateLeaderboardScoresFile()"
+            stateManager
+            [monitor]="generateLeaderboardScoresMonitor"
+            monitorSuccess
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+          >
+            Generate Leaderboard Scores
+            <button-spinner
+              [monitor]="generateLeaderboardScoresMonitor"
+              defaultIcon="post_add"
+            ></button-spinner>
+          </button>
+          <div *ngIf="this.scoresFileExists">
+            Last updated on
+            <standard-absolute-time class="last-modified" [timeUtc]="this.scoresFileLastModified">
+            </standard-absolute-time>
+          </div>
+          <div *ngIf="!this.scoresFileExists">{{ 'No Scores file exists' }}</div>
+
+          <verify-button
+            #verifyScoresFileRetrieveBtn
+            [permissionAttribute]="generateScoresFilePermAttribute"
+            [permissionTitle]="gameTitle"
+            [disabled]="!this.scoresFileExists"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="primary"
+            [verifyWithV2]="verifyScoresFileRetrieveBtn"
+            (click)="retrieveLeaderboardScoresFile()"
+            stateManager
+            [monitor]="retrieveLeaderboardScoresMonitor"
+            monitorSuccess
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+          >
+            Retrieve Leaderboard Scores
+          </button>
+        </div>
         <span>Click on a row to select</span>
         <button
           mat-stroked-button
@@ -94,7 +147,7 @@
         <verify-button
           #verifyMultiDeleteScoresBtn
           [disabled]="selectedScores?.length <= 0"
-          [permissionAttribute]="permAttribute"
+          [permissionAttribute]="deleteScoresPermAttribute"
           [permissionTitle]="gameTitle"
         ></verify-button>
         <button
@@ -120,11 +173,11 @@
           mat-raised-button
           color="primary"
           [disabled]="disableExport"
-          matTooltip="Export Scores"
+          matTooltip="Export Currently Loaded Scores (max 5000)"
           [downloadCsv]="exportableScores"
           [filename]="exportFileName"
         >
-          Export
+          Export Currently Loaded Scores
         </button>
       </div>
     </div>
@@ -240,7 +293,7 @@
                 <verify-button
                   #verifyDeleteScoresBtn
                   [disabled]="selectedScores?.length > 0"
-                  [permissionAttribute]="permAttribute"
+                  [permissionAttribute]="deleteScoresPermAttribute"
                   [permissionTitle]="gameTitle"
                 ></verify-button>
                 <button

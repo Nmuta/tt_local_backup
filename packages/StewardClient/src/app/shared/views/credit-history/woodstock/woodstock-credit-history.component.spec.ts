@@ -6,8 +6,8 @@ import { first } from 'lodash';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { createMockWoodstockPlayerCreditUpdatesService } from '@services/api-v2/woodstock/player/credit-updates/woodstock-credit-updates.mock';
-
-import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import { HumanizePipe } from '@shared/pipes/humanize.pipe';
+import { createStandardTestModuleMetadata } from '@mocks/standard-test-module-metadata';
 
 describe('WoodstockCreditHistoryComponent', () => {
   let component: WoodstockCreditHistoryComponent;
@@ -17,8 +17,8 @@ describe('WoodstockCreditHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule(
-      createStandardTestModuleMetadataMinimal({
-        declarations: [WoodstockCreditHistoryComponent],
+      createStandardTestModuleMetadata({
+        declarations: [WoodstockCreditHistoryComponent, HumanizePipe],
         providers: [createMockWoodstockService(), createMockWoodstockPlayerCreditUpdatesService()],
         schemas: [NO_ERRORS_SCHEMA],
       }),
@@ -28,6 +28,7 @@ describe('WoodstockCreditHistoryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WoodstockCreditHistoryComponent);
     component = fixture.componentInstance;
+    component.getEndpoint = jasmine.createSpy('getEndpoint').and.returnValue('');
     fixture.detectChanges();
   });
 
