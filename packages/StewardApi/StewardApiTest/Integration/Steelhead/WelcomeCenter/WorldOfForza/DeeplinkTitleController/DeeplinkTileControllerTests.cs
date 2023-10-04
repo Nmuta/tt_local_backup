@@ -112,12 +112,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.EditAndSubmitDeeplinkTile(invalidId, bridge).ConfigureAwait(false);
+                var response = await stewardClient.EditAndSubmitDeeplinkTile(invalidId, bridge).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
             {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, ex.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
             }
         }
 
