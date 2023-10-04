@@ -1034,6 +1034,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
             var element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
+            // deleted elements will be rewritten.
+            foreach (var target in new List<string>() { "DisplayConditions", "Cooldowns" })
+            {
+                element.Elements().Where(k => k.Name.LocalName == target).Remove();
+            }
+
             WelcomeCenterHelpers.FillXml(element, tree);
 
             var newXml = element.Document.ToXmlString();
@@ -1285,7 +1291,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
                     // If locref exist but the localized string can't be find in the mappings that will be the dropdown in the UI,
                     // we set it to null because the value is useless to us and we set "base" to the actual value.
-                    if (value.Locref != null && !localizationIdsMapping.ContainsKey(value.Locref.Value))
+                    if (value.Locref != null && !localizationIdsMapping.ContainsValue(value.Locref.Value))
                     {
                         externalLocalizationStrings.TryGetValue(value.Locref.Value, out var stringBaseValue);
                         value.Base = stringBaseValue;

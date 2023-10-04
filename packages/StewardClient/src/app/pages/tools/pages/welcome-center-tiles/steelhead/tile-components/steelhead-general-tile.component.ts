@@ -383,6 +383,7 @@ export class GeneralTileComponent extends BaseComponent {
       if (data.timer.customRange) {
         this.formControls.timerCustomFromDate.setValue(data.timer.customRange.from.dateUtc);
         this.formControls.timerCustomToDate.setValue(data.timer.customRange.to.dateUtc);
+        this.formControls.timerCustomName.setValue(data.timer.customRange.name);
       }
       if (data.timer.timerReference) {
         this.formControls.timerReferenceId.setValue(data.timer.timerReference.refId);
@@ -390,7 +391,7 @@ export class GeneralTileComponent extends BaseComponent {
 
       // Display conditions
       this.formControls.displayConditions.clear();
-      if (data.displayConditions.item) {
+      if (data.displayConditions) {
         for (const displayCondition of data.displayConditions.item) {
           this.addDisplayCondition(displayCondition.refId, displayCondition.when);
         }
@@ -462,10 +463,12 @@ export class GeneralTileComponent extends BaseComponent {
           from: {
             dateUtc: this.formControls.timerCustomFromDate.value,
             when: undefined,
+            displayName: { text: undefined },
           },
           to: {
             dateUtc: this.formControls.timerCustomToDate.value,
             when: undefined,
+            displayName: { text: undefined },
           },
           name: this.formControls.timerCustomName.value,
         };
@@ -485,10 +488,14 @@ export class GeneralTileComponent extends BaseComponent {
         welcomeCenterTile.displayConditions.item.push({
           refId: element.reference.value,
           when: element.when.value,
+          dateSettings: undefined,
+          friendlyName: undefined,
+          id: undefined,
+          type: undefined,
         });
       });
     } else {
-      welcomeCenterTile.displayConditions.item = null;
+      welcomeCenterTile.displayConditions = null;
     }
   }
 
