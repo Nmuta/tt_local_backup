@@ -20,7 +20,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             await PrepareAuthAsync(testContext);
 
             unauthedClient = new PlayersMessagesControllerTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
-
         }
 
         [TestMethod]
