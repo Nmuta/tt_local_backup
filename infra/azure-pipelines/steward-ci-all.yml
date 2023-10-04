@@ -2,14 +2,13 @@
 # Variable 'DEV_CLIENT_ID' was defined in the Variables tab
 # Variable 'PROD_CLIENT_ID' was defined in the Variables tab
 trigger:
-- main
+  - main
 
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
 
 jobs:
-- template: infra/azure-pipelines/original-ci-angular-build-dev.template.yml
-- template: infra/azure-pipelines/original-ci-angular-build-prod.template.yml
-- template: infra/azure-pipelines/original-ci-package-cypress.template.yml
-- template: infra/azure-pipelines/original-ci-angular-lint-and-test.template.yml
-- template: infra/azure-pipelines/original-ci-api-build.template.yml
-
+  - template: original-ci-angular-build-dev.template.yml
+  - template: original-ci-angular-build-prod.template.yml
+  - template: original-ci-package-cypress.template.yml
+  - template: original-ci-angular-lint-and-test.template.yml
+  - template: original-ci-api-build.template.yml
