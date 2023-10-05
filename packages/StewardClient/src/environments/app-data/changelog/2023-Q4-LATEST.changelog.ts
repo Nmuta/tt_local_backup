@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '406999a7-40fc-4970-bcfe-4042864963e1',
+      shortMarkdown: 'Fix auto lookup deep dive',
+    },
+    {
       tag: ChangelogTag.General,
       uuid: '61118503-8151-4a65-9217-62a1d2d49729',
       shortMarkdown: 'Fix bug to allow support for FM sidebar app in Zendesk',

@@ -7,6 +7,7 @@ import { GuidLikeString } from '@models/extended-types';
 import { SteelheadPlayerProfileManagementComponent } from '@views/player-profile-management/steelhead/steelhead-player-profile-management.component';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 import { SteelheadReportWeightComponent } from '@views/report-weight/steelhead/steelhead-report-weight.component';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 /** Component for displaying routed Steelhead user details. */
 @Component({
@@ -65,5 +66,14 @@ export class SteelheadUserDetailsComponent {
   public flagsUpdated(): void {
     this.profileManager.checkUserGroupMembership();
     this.reportWeight.reloadReportWeight();
+  }
+
+  /** Hook when mat-tab changes. */
+  public tabChanged($event: MatTabChangeEvent): void {
+    // DO NOT REMOVE - our virtual scroller on mat-table is finnicky
+    // and only displays data after resize event occurs
+    if ($event.tab.textLabel === 'Deep Dive') {
+      window.dispatchEvent(new Event('resize'));
+    }
   }
 }
