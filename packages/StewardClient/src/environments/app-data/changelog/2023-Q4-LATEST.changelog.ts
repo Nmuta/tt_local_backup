@@ -9,6 +9,11 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
   entries: [
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: 'd4b1ac97-7488-42c3-b56b-66b76334846d',
+      shortMarkdown: 'Fix bug causing safety rating component to fail to load',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '406999a7-40fc-4970-bcfe-4042864963e1',
       shortMarkdown: 'Fix auto lookup deep dive',
     },
@@ -36,7 +41,7 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.UserDetails] },
       uuid: '07c21994-1791-40fb-b5df-593179f15225',
-      shortText: `Add deep dive tab to player details.`,
+      shortText: `Add deep dive tab to player details`,
     },
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Leaderboards] },
