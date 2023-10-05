@@ -7,4 +7,4 @@ trigger: none
 name: $(date:yyyyMMdd)$(rev:.r)_$(SourceBranchName)
 
 jobs:
-- template: infra/azure-pipelines/original-pr-angular-lint-and-test.template.yml
+  - template: original-pr-angular-lint-and-test.template.yml
