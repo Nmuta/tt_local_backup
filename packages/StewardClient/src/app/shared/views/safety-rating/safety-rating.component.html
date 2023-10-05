@@ -19,9 +19,10 @@
           stateManager
           monitorDisable
           [monitor]="postMonitor"
-          [disabled]="!manualFormGroup.dirty || !manualFormGroup.valid"
+          
           [verifyWithV2]="verifyApplyBtn"
         >
+        <!-- [disabled]="!manualFormGroup.dirty || !manualFormGroup.valid" -->
           Apply Rating
           <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
         </button>
@@ -127,8 +128,10 @@
         </mat-form-field>
       </div>
     </form> -->
-    <form class="sf-wrapper" [formGroup]="manualFormGroup">
-      <ng-container *ngFor="let key of manualFormGroup.controls | keys; let i = index">
+
+
+    <!-- <form class="sf-wrapper" [formGroup]="manualFormGroup">
+      <ng-container *ngFor="let key of formArray.controls | keys; let i = index">
         <mat-form-field
           *ngIf="i <= displayCount"
           class="safety-rating-score-input"
@@ -140,7 +143,28 @@
       </mat-form-field>
       </ng-container>
       <button mat-button matSuffix mat-icon-button class="more-inputs" (click)="incrementDisplayCount()"><mat-icon>add</mat-icon></button>
+    </form> -->
+
+    <form class="sf-wrapper" [formGroup]="formGroup">
+      <ng-container *ngFor="let control of formArray.controls| keys; let i = index">
+        <mat-form-field
+          class="safety-rating-score-input"
+          [class.in-probation]="i < probationRaceCount"
+          appearance="fill"
+        >
+          <input
+            matInput
+            type="number"
+            [formControl]="control"
+            [min]="minimumScoreValue"
+            [max]="maximumScoreValue"
+          />
+          <mat-hint *ngIf="i < probationRaceCount">Probation</mat-hint>
+        </mat-form-field>
+      </ng-container>
     </form>
+    <button mat-button matSuffix mat-icon-button class="more-inputs" (click)="incrementDisplayCount()"><mat-icon>add</mat-icon></button>
+
     <mat-error *ngIf="valueUnderMin"
       >All Safety Rating scores must be greater than or equal to
       {{ safetyRating?.configuration.minScore }}.</mat-error

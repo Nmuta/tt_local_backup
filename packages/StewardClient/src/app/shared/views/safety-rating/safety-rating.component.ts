@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormArray, UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -8,7 +8,6 @@ import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { Observable, takeUntil } from 'rxjs';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { SafetyRating, SafetyRatingUpdate } from '@models/player-safety-rating.model';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 
 /** Safety Rating service contract. */
 export interface SafetyRatingServiceContract {
@@ -31,34 +30,13 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
   /** Player xuid. */
   @Input() xuid: BigNumber;
 
-  public formControls = {
-    safetyRatingScore: new UntypedFormControl('', [Validators.required]),
-    probationarySafetyRatingScore: new UntypedFormControl('', [Validators.required]),
-    isInProbation: new UntypedFormControl(false),
-    grade: new UntypedFormControl({ value: null, disabled: true }),
-  };
-
-  public manualFormControls = {
-    score0: new UntypedFormControl(''),
-    score1: new UntypedFormControl(''),
-    score2: new UntypedFormControl(''),
-    score3: new UntypedFormControl(''),
-    score4: new UntypedFormControl(''),
-    score5: new UntypedFormControl(''),
-    score6: new UntypedFormControl(''),
-    score7: new UntypedFormControl(''),
-    score8: new UntypedFormControl(''),
-    score9: new UntypedFormControl(''),
-  }
+  public formArray = new FormArray([]);
+  public formGroup = new UntypedFormGroup({ scores: this.formArray });
 
   public safetyRating: SafetyRating;
-  public formGroup = new UntypedFormGroup(this.formControls);
-  public manualFormGroup = new UntypedFormGroup(this.manualFormControls);
 
   public getMonitor = new ActionMonitor('Get safety rating');
-
   public postMonitor = new ActionMonitor('Update safety rating');
-
   public deleteMonitor = new ActionMonitor('Clear safety rating');
 
   public permAttribute = PermAttributeName.UpdateSafetyRating;
@@ -68,8 +46,7 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
   public probationRaceCount: number;
   public valueUnderMin: boolean = false;
   public valueOverMax: boolean = false;
-  public displayCount: number = 0;
-  private displayCountMax = 9;
+  private displayCountMax = 10;
 
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
@@ -86,10 +63,6 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
       throw new Error('No service is defined for safety rating component.');
     }
 
-    this.manualFormGroup.valueChanges.subscribe(_ => {
-      this.computeChanges();
-    })
-
     if (!!changes.xuid) {
       this.getMonitor = this.getMonitor.repeat();
 
@@ -104,34 +77,43 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
 
   /** Increments display count. */
   public incrementDisplayCount(): void {
-    if(this.displayCount >= this.displayCountMax)
+    if(this.formArray.length === this.displayCountMax)
     {
       return;
     }
 
-    this.displayCount = this.displayCount + 1;
-    console.log(this.displayCount);
+    const formControlAdd = new UntypedFormControl(0, [
+      Validators.min(this.minimumScoreValue),
+      Validators.max(this.maximumScoreValue),
+    ]);
+
+    formControlAdd.valueChanges.subscribe(_ => {
+      this.computeChanges();
+    });
+
+    this.formArray.insert(this.formArray.length, formControlAdd);
+    this.formArray.updateValueAndValidity();
   }
 
   /** Sets a user's safety rating. */
   public setSafetyRating(): void {
-    this.postMonitor = this.postMonitor.repeat();
-    const inProbation = this.formControls.isInProbation.value;
-    const score = inProbation
-      ? this.formControls.probationarySafetyRatingScore.value
-      : this.formControls.safetyRatingScore.value;
+    // this.postMonitor = this.postMonitor.repeat();
+    // const inProbation = this.formControls.isInProbation.value;
+    // const score = inProbation
+    //   ? this.formControls.probationarySafetyRatingScore.value
+    //   : this.formControls.safetyRatingScore.value;
 
-    const safetyRatingUpdate = {
-      isInProbationaryPeriod: inProbation,
-      score: score,
-    };
+    // const safetyRatingUpdate = {
+    //   isInProbationaryPeriod: inProbation,
+    //   score: score,
+    // };
 
-    this.service
-      .setSafetyRating$(this.xuid, safetyRatingUpdate)
-      .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-      .subscribe(newRating => {
-        this.setupSafetyRating(newRating);
-      });
+    // this.service
+    //   .setSafetyRating$(this.xuid, safetyRatingUpdate)
+    //   .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+    //   .subscribe(newRating => {
+    //     this.setupSafetyRating(newRating);
+    //   });
   }
 
   /** Clears a user's safety rating. */
@@ -146,23 +128,13 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
       });
   }
 
-  /** Event when ban override checkbox is toggled. */
-  public onInProbationChange(value: MatCheckboxChange): void {
-    if (value.checked) {
-      this.formControls.safetyRatingScore.disable();
-      this.formControls.probationarySafetyRatingScore.enable();
-    } else {
-      this.formControls.safetyRatingScore.enable();
-      this.formControls.probationarySafetyRatingScore.disable();
-    }
-  }
-
   private computeChanges(): void {
+    console.log('COMPUTE CHANGES TRIGGERED')
     this.valueUnderMin = false;
     this.valueOverMax = false;
 
-    Object.keys(this.manualFormGroup.controls).forEach(key => {
-      const controlErrors: ValidationErrors = this.manualFormGroup.get(key).errors;
+    Object.keys(this.formArray.controls).forEach(key => {
+      const controlErrors: ValidationErrors = this.formArray.get(key).errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
           if(keyError === 'min')
@@ -177,6 +149,7 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
         });
       }
     });
+
   }
 
   private setupSafetyRating(safetyRating: SafetyRating) {
@@ -185,40 +158,22 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
     this.minimumScoreValue = safetyRating.configuration.minScore.toNumber();
     this.maximumScoreValue = safetyRating.configuration.maxScore.toNumber();
 
-    this.formControls.safetyRatingScore.setValue(safetyRating.score);
-    this.formControls.probationarySafetyRatingScore.setValue(
-      safetyRating.probationaryScoreEstimate,
-    );
-    this.formControls.isInProbation.setValue(safetyRating.isInProbationaryPeriod);
-    this.formControls.grade.setValue(safetyRating.grade);
-
-    if (safetyRating.configuration.probationRaceCount.isLessThanOrEqualTo(1)) {
-      this.formControls.isInProbation.setValue(false);
-      this.formControls.isInProbation.disable();
-      this.formControls.probationarySafetyRatingScore.disable();
-      this.formControls.probationarySafetyRatingScore.setValue(false);
-    } else {
-      this.formControls.isInProbation.value
-        ? this.formControls.safetyRatingScore.disable()
-        : this.formControls.probationarySafetyRatingScore.disable();
-    }
-
-    this.formControls.probationarySafetyRatingScore.addValidators([
+    const firstScoreControl = new UntypedFormControl(0, [
       Validators.min(safetyRating.configuration.minScore.toNumber()),
       Validators.max(safetyRating.configuration.maxScore.toNumber()),
-    ]);
+    ])
 
-    this.formControls.safetyRatingScore.addValidators([
-      Validators.min(safetyRating.configuration.minScore.toNumber()),
-      Validators.max(safetyRating.configuration.maxScore.toNumber()),
-    ]);
+    firstScoreControl.valueChanges.subscribe(_ => this.computeChanges())
 
-    Object.keys(this.manualFormControls).forEach(key => {
-      const control = this.manualFormControls[key];
-      control.addValidators([
-        Validators.min(safetyRating.configuration.minScore.toNumber()),
-        Validators.max(safetyRating.configuration.maxScore.toNumber()),
-      ]);
-    });
+    this.formArray.controls = [firstScoreControl];
+
+    // Object.keys(this.formArray.controls).forEach(key => {
+    //   const control = this.formArray.controls[key] as UntypedFormControl;
+
+    //   control.setValidators([
+    //     Validators.min(safetyRating.configuration.minScore.toNumber()),
+    //     Validators.max(safetyRating.configuration.maxScore.toNumber()),
+    //   ]);
+    // });
   }
 }
