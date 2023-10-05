@@ -3,26 +3,52 @@
     <mat-card-title>Safety Rating</mat-card-title>
     <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
-    <verify-button
-      #verifyApplyBtn
-      [disabled]="!formGroup.dirty || !formGroup.valid"
-      [permissionAttribute]="permAttribute"
-      [permissionTitle]="gameTitle"
-    ></verify-button>
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="setSafetyRating()"
-      clickStop
-      stateManager
-      monitorDisable
-      [monitor]="postMonitor"
-      [disabled]="!formGroup.dirty || !formGroup.valid"
-      [verifyWithV2]="verifyApplyBtn"
-    >
-      Apply
-      <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
-    </button>
+    <div class="sf-vertical">
+      <div>
+        <verify-button
+          #verifyApplyBtn
+          [disabled]="!formGroup.dirty || !formGroup.valid"
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="setSafetyRating()"
+          clickStop
+          stateManager
+          monitorDisable
+          [monitor]="postMonitor"
+          [disabled]="!manualFormGroup.dirty || !manualFormGroup.valid"
+          [verifyWithV2]="verifyApplyBtn"
+        >
+          Apply Rating
+          <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+        </button>
+      </div>
+      <div>
+        <verify-button
+          #verifyDeleteBtn
+          [disabled]="!formGroup.dirty || !formGroup.valid"
+          [permissionAttribute]="permAttribute"
+          [permissionTitle]="gameTitle"
+        ></verify-button>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="clearSafetyRating()"
+          clickStop
+          stateManager
+          monitorDisable
+          [monitor]="deleteMonitor"
+          [verifyWithV2]="verifyDeleteBtn"
+        >
+          Clear Rating
+          <button-spinner [monitor]="deleteMonitor" defaultIcon="delete"></button-spinner>
+        </button>
+      </div>
+    
+    </div>
     <help-popover-icon cardTitle="Safety Rating">
       <p>
         Safety Rating is a measure of how safely a player drives. It is used in matchmaking to avoid
@@ -45,7 +71,10 @@
   </mat-card-header>
 
   <div *waitForMonitor="getMonitor" class="update-section">
-    <mat-checkbox
+    <div>Currently In Probation: {{safetyRating.isInProbationaryPeriod}}</div>
+    <div>Current Safety Rating: {{safetyRating.isInProbationaryPeriod? safetyRating.probationaryScoreEstimate : safetyRating.score}}</div>
+    <div>Current Grade: {{safetyRating.grade}}</div>
+    <!-- <mat-checkbox
       class="probation-toggle"
       [formControl]="formControls.isInProbation"
       (change)="onInProbationChange($event)"
@@ -97,6 +126,28 @@
           <mat-hint>Grade is auto calculated based on Safety Rating.</mat-hint>
         </mat-form-field>
       </div>
+    </form> -->
+    <form class="sf-wrapper" [formGroup]="manualFormGroup">
+      <ng-container *ngFor="let key of manualFormGroup.controls | keys; let i = index">
+        <mat-form-field
+          *ngIf="i <= displayCount"
+          class="safety-rating-score-input"
+          [class.in-probation]="i < probationRaceCount"
+          appearance="fill"
+        >
+        <input matInput [formControl]="manualFormControls[key]" type="number" [min]="minimumScoreValue" [max]="maximumScoreValue"/>
+        <mat-hint *ngIf="i < probationRaceCount">Probation</mat-hint>
+      </mat-form-field>
+      </ng-container>
+      <button mat-button matSuffix mat-icon-button class="more-inputs" (click)="incrementDisplayCount()"><mat-icon>add</mat-icon></button>
     </form>
+    <mat-error *ngIf="valueUnderMin"
+      >All Safety Rating scores must be greater than or equal to
+      {{ safetyRating?.configuration.minScore }}.</mat-error
+    >
+    <mat-error *ngIf="valueOverMax"
+      >All Safety Rating scores must be less than or equal to
+      {{ safetyRating?.configuration.maxScore }}.</mat-error
+    >
   </div>
 </mat-card>

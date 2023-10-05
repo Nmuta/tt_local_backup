@@ -25,6 +25,7 @@ export class SteelheadSafetyRatingComponent {
       getSafetyRating$: xuid => steelheadPlayerSafetyRatingService.getSafetyRatingByXuid$(xuid),
       setSafetyRating$: (xuid: BigNumber, safetyRatingUpdate: SafetyRatingUpdate) =>
         steelheadPlayerSafetyRatingService.setSafetyRatingByXuid$(xuid, safetyRatingUpdate),
+      deleteSafetyRating$: xuid => steelheadPlayerSafetyRatingService.deleteSafetyRatingByXuid$(xuid),
     };
   }
 }

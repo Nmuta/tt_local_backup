@@ -21,3 +21,17 @@ form {
 .no-wrap {
   white-space: pre-line;
 }
+
+.safety-rating-score-input {
+  max-width: 4.5em;
+  margin-right: $gap-micro;
+}
+
+.more-inputs {
+  background-color: app-color-default($app-primary);
+  margin-bottom: 2em;
+}
+
+.in-probation {
+  background-color: app-color-lighter($app-accent);
+}

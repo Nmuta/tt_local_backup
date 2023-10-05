@@ -21,6 +21,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { SafetyRatingComponent } from './safety-rating.component';
 import { SteelheadSafetyRatingComponent } from './steelhead/steelhead-safety-rating.component';
 import { HelpModule } from '@shared/modules/help/help.module';
+import { NgPipesModule } from 'ngx-pipes';
 
 /** Module for getting and setting a player's driver level. */
 @NgModule({
@@ -48,6 +49,7 @@ import { HelpModule } from '@shared/modules/help/help.module';
     VerifyButtonModule,
     ErrorSpinnerModule,
     HelpModule,
+    NgPipesModule,
   ],
   exports: [SteelheadSafetyRatingComponent],
 })
