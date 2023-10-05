@@ -29,67 +29,67 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         public IActionResult TestAllServiceProxies()
         {
             var services = this.SteelheadServices.Value;
-            var failedServiceProcies = new StringBuilder();
+            var failedServiceProxies = new StringBuilder();
 
             Exception exception;
             if (!this.VerifyServiceProxy(() => services.AuctionManagementService, "AuctionManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.ConfigurationManagementService, "ConfigurationManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.GiftingManagementService, "GiftingManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.LiveOpsService, "LiveOpsService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.LocalizationManagementService, "LocalizationManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.NotificationManagementService, "NotificationManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.ScoreboardManagementService, "ScoreboardManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.UserManagementService, "UserManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.UserInventoryManagementService, "UserInventoryManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
-            if (failedServiceProcies.Length > 0)
+            if (failedServiceProxies.Length > 0)
             {
-                throw new ServiceProxyStewardException(failedServiceProcies.ToString());
+                throw new ServiceProxyStewardException(failedServiceProxies.ToString());
             }
 
             return this.Ok();
