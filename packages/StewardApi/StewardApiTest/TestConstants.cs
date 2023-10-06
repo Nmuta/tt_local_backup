@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardTest
         public const string ValidPhotoUgcId = "453f9135-6ac6-485e-a0cc-d3f1c11dc5d6";
         public const string ValidTuneBlobUgcId = "f20a984b-5e41-451d-8810-4c9a94581be5";
         public const string ValidLayerGroupUgcId = "13650d54-0ce8-4d97-b8b1-e7fe5d14728b";
-        public const string ValidGameOptionsUgcId = "";
+        public const string ValidGameOptionsUgcId = "TempId";
         public const string ValidReplayUgcId = "cd957724-e560-418e-ae8d-199d5720fb34";
 
         // Test account Plink

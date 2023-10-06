@@ -340,20 +340,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             }
         }
 
-        [TestMethod]
-        [IntegrationTest]
-        public async Task GetGameOptionsUgc()
-        {
-            try
-            {
-                var response = await stewardClient.GetLayerGroupUgc(TestConstants.ValidGameOptionsUgcId).ConfigureAwait(false);
-                Assert.IsTrue(response.Type == UgcType.GameOptions);
-            }
-            catch (ServiceException ex)
-            {
-                Assert.Fail(ex.ResponseBody);
-            }
-        }
+        // TODO: Needs a Valid GameOptions UGC
+        //[TestMethod]
+        //[IntegrationTest]
+        //public async Task GetGameOptionsUgc()
+        //{
+        //    try
+        //    {
+        //        var response = await stewardClient.GetLayerGroupUgc(TestConstants.ValidGameOptionsUgcId).ConfigureAwait(false);
+        //        Assert.IsTrue(response.Type == UgcType.GameOptions);
+        //    }
+        //    catch (ServiceException ex)
+        //    {
+        //        Assert.Fail(ex.ResponseBody);
+        //    }
+        //}
 
         [TestMethod]
         [IntegrationTest]
