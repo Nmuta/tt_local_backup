@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '636cbaf0-6230-4c32-ae27-34fd5109f174',
-      shortText: 'Adjust layout of leaderboards search component for clarity',
+      shortMarkdown: 'Adjust layout of leaderboards search component for clarity',
     },
     {
       tag: ChangelogTag.Internal,
