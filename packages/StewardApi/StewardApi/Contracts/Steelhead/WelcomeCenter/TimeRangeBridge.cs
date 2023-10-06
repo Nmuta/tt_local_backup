@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Xml.Serialization;
 
 #pragma warning disable SA1402 // File may only contain a single type
+#pragma warning disable SA1306 // Field names should begin with lower-case letter
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
 {
@@ -44,6 +45,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter
         public NullableDisplayNameBridge DisplayName { get; set; }
     }
 
+    /// <summary>
+    ///     Nullable Display Name Bridge
+    /// </summary>
     public partial class NullableDisplayNameBridge
     {
         public string Text { get; set; }
