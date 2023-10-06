@@ -38,6 +38,17 @@ namespace Turn10.LiveOps.StewardTest
         public const string ValidProductId = "9P2LBL48Q0LS";
         public const string InvalidExternalProfileId = "VeryRealExternalProfileId";
         public const string InvalidUgcId = "VeryRealUgcId";
+        public const string InvalidUgcType = "VeryRealUgcType";
+        public const string ValidCuratedUgcType = "Featured";
+        public const string InvalidCuratedUgcType = "VeryRealCuratedUgcType";
+        public const string ValidSharecode = "103756890";
+        public const string InvalidSharecode = "VeryRealSharecode";
+        public const string ValidLiveryUgcId = "4fcbe4e9-4dad-493c-ad08-3a4ab7ee3b0e";
+        public const string ValidPhotoUgcId = "453f9135-6ac6-485e-a0cc-d3f1c11dc5d6";
+        public const string ValidTuneBlobUgcId = "f20a984b-5e41-451d-8810-4c9a94581be5";
+        public const string ValidLayerGroupUgcId = "13650d54-0ce8-4d97-b8b1-e7fe5d14728b";
+        public const string ValidGameOptionsUgcId = "TempId";
+        public const string ValidReplayUgcId = "cd957724-e560-418e-ae8d-199d5720fb34";
         public const string TestMessageOfTheDayId = "40b18822-eaa9-4c10-b468-b8460527c66b";
         public const string ValidTextTileId = "b1341039-313f-4f6a-a261-b7185f7177a0";
 
