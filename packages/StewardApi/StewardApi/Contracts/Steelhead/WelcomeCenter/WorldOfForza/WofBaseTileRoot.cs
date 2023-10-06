@@ -275,6 +275,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public NullableDisplayName DisplayName { get; set; }
     }
 
+    /// <summary>
+    ///     Nullable Display Name
+    /// </summary>
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
