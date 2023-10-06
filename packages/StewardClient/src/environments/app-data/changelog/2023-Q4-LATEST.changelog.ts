@@ -29,6 +29,14 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
     },
     {
       tag: ChangelogTag.Internal,
+      uuid: '988719c8-9f93-4d1f-9755-c176f6762835',
+      shortMarkdown: 'Fix issue with timepicker forms',
+      longMarkdown: `
+        - Revert Luxon to previous major version
+      `,
+    },
+    {
+      tag: ChangelogTag.Internal,
       uuid: '4e265673-61b2-49cb-a7df-775967a6ca19',
       shortText:
         'Fix bug in calendar lookup input sending API pegasus environment with incorrect casing',
