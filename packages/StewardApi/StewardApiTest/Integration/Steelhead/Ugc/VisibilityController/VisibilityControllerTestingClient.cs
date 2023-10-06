@@ -21,28 +21,28 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/ugc/visibility/private?useBackgroundProcessing=false");
 
-            return await ServiceClient.SendRequestAsync<IList<Guid>>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<Guid>>(HttpMethod.Post, path, this.authKey, Version, ugcIds, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<IList<Guid>> MakeUgcPrivateBackground(string[] ugcIds)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/ugc/visibility/private?useBackgroundProcessing=true");
 
-            return await ServiceClient.SendRequestAsync<IList<Guid>>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<Guid>>(HttpMethod.Post, path, this.authKey, Version, ugcIds, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<IList<Guid>> MakeUgcPublic(string[] ugcIds)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/ugc/visibility/public?useBackgroundProcessing=false");
 
-            return await ServiceClient.SendRequestAsync<IList<Guid>>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<Guid>>(HttpMethod.Post, path, this.authKey, Version, ugcIds, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<IList<Guid>> MakeUgcPublicBackground(string[] ugcIds)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/ugc/visibility/public?useBackgroundProcessing=true");
 
-            return await ServiceClient.SendRequestAsync<IList<Guid>>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<Guid>>(HttpMethod.Post, path, this.authKey, Version, ugcIds, headers: this.headers).ConfigureAwait(false);
         }
     }
 }
