@@ -71,6 +71,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                                      $"| project Timestamp = Time, CreditsAfter = tolong(CreditsAfter), CreditAmount = tolong(CreditAmount), SceneName, DeviceType = MappedPlatform, TotalXp = TotalXPEarned";
                     break;
 
+                case TitleCodeName.Steelhead:
+                    unorderedQuery = $"Game_CreditsUpdate " +
+                                     $"| where Xuid == {xuid} " +
+                                     $"| project Timestamp, CreditsAfter, CreditAmount, SceneName, DeviceType = ActualPlatform, TotalXp = TotalXPEarned";
+                    break;
+
                 default:
                     throw new ConversionFailedStewardException($"No credit update query available. (Title: {title})");
             }

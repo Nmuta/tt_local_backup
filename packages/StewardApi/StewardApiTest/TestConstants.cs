@@ -49,15 +49,17 @@ namespace Turn10.LiveOps.StewardTest
         public const string ValidLayerGroupUgcId = "13650d54-0ce8-4d97-b8b1-e7fe5d14728b";
         public const string ValidGameOptionsUgcId = "TempId";
         public const string ValidReplayUgcId = "cd957724-e560-418e-ae8d-199d5720fb34";
+        public const string TestMessageOfTheDayId = "40b18822-eaa9-4c10-b468-b8460527c66b";
+        public const string ValidTextTileId = "b1341039-313f-4f6a-a261-b7185f7177a0";
 
-        // Test account Plink
-        public const ulong TestAccountXuid = 2675352635783107;
-        public const string TestAccountGamertag = "Plink";
-        public const string TestAccountExternalProfileId = "941a0a72-8a47-4149-8df9-304fcd927a05";
-        public const string TestAccountMessageId = "a8ac87e2-cb4c-4418-8681-84241abee5c6";
-        public const ulong TestAccountProfileId = 1442;
-        public const string TestAccountKnownVin = "05c5e205-f139-4504-91d3-9c451c1a992f";
-        public const string TestAccountUgcId = "4fcbe4e9-4dad-493c-ad08-3a4ab7ee3b0e";
+        // Test account, removed until we have valid test account setup
+        public const ulong TestAccountXuid = 2535405314408422;
+        public const string TestAccountGamertag = "testing 01001";
+        public const string TestAccountExternalProfileId = "00000000-0000-0000-0000-000000000000";
+        public const string TestAccountMessageId = "00000000-0000-0000-0000-000000000000";
+        public const ulong TestAccountProfileId = 0000;
+        public const string TestAccountKnownVin = "00000000-0000-0000-0000-000000000000";
+        public const string TestAccountUgcId = "00000000-0000-0000-0000-000000000000";
         public static readonly string[] TestAccountTitlesOwned = { "FH", "FH2", "FH3", "FH4", "FH5", "FM2", "FM3", "FM4", "FM5", "FM6", "FM7" };
     }
 }

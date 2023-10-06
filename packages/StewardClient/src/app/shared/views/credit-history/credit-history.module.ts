@@ -27,12 +27,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { SteelheadCreditHistoryComponent } from './steelhead/steelhead-credit-history.component';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
   declarations: [
     WoodstockCreditHistoryComponent,
     SunriseCreditHistoryComponent,
+    SteelheadCreditHistoryComponent,
     CreditUpdateSortOptionsComponent,
   ],
   imports: [
@@ -64,6 +66,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatSelectModule,
     MatButtonToggleModule,
   ],
-  exports: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
+  exports: [
+    WoodstockCreditHistoryComponent,
+    SunriseCreditHistoryComponent,
+    SteelheadCreditHistoryComponent,
+  ],
 })
 export class CreditHistoryModule {}

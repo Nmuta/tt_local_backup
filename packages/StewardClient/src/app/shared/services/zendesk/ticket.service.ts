@@ -63,6 +63,8 @@ export class TicketService {
         return GameTitleCodeName.FM7;
       case 'FORZA_HORIZON_3':
         return GameTitleCodeName.FH3;
+      case 'FORZA_MOTORSPORT_2023':
+        return GameTitleCodeName.FM8;
       default:
         return null;
     }
