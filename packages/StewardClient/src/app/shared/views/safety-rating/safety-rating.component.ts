@@ -1,5 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FormArray, UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  FormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitle } from '@models/enums';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -30,10 +36,8 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
   /** Player xuid. */
   @Input() xuid: BigNumber;
 
-  public formArray = new FormArray([]);
+  public formArray = new FormArray([], [Validators.required, Validators.minLength(1)]);
   public formGroup = new UntypedFormGroup({ scores: this.formArray });
-
-  public safetyRating: SafetyRating;
 
   public getMonitor = new ActionMonitor('Get safety rating');
   public postMonitor = new ActionMonitor('Update safety rating');
@@ -41,12 +45,15 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
 
   public permAttribute = PermAttributeName.UpdateSafetyRating;
 
+  public safetyRating: SafetyRating;
   public minimumScoreValue: number;
   public maximumScoreValue: number;
   public probationRaceCount: number;
   public valueUnderMin: boolean = false;
   public valueOverMax: boolean = false;
-  private displayCountMax = 10;
+  public displayCountMax = 10;
+  public editMode: boolean = false;
+  public estimateSafetyScore: number = 0;
 
   /** Gets the service contract game title. */
   public get gameTitle(): GameTitle {
@@ -74,11 +81,15 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
         });
     }
   }
+  
+  /** Set edit mode on component. */
+  public setEditMode(value: boolean): void {
+    this.editMode = value;
+  }
 
-  /** Increments display count. */
-  public incrementDisplayCount(): void {
-    if(this.formArray.length === this.displayCountMax)
-    {
+  /** Add score to end of array, and wire it up. */
+  public addScore(): void {
+    if (this.formArray.length === this.displayCountMax) {
       return;
     }
 
@@ -95,24 +106,46 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
     this.formArray.updateValueAndValidity();
   }
 
+  /** Remove score from end of array. */
+  public removeLastScore(): void {
+    this.formArray.removeAt(this.formArray.length - 1);
+  }
+
+  /** Remove score from given index in array. */
+  public removeScore(index: number): void {
+    this.formArray.removeAt(index);
+  }
+
+  /** Increase score array length to maximum size. */
+  public maxScoreArray(): void {
+    while (this.formArray.length < this.displayCountMax) {
+      this.addScore();
+    }
+  }
+
+  /** Reducy score array length to minimum size.  */
+  public minScoreArray(): void {
+    while (this.formArray.length > 1) {
+      this.removeLastScore();
+    }
+  }
+
   /** Sets a user's safety rating. */
   public setSafetyRating(): void {
+    const safetyScores = [];
+    this.formArray.controls.forEach(control => {
+      safetyScores.push(control.value);
+    });
+
+    console.log(safetyScores);
+
     // this.postMonitor = this.postMonitor.repeat();
-    // const inProbation = this.formControls.isInProbation.value;
-    // const score = inProbation
-    //   ? this.formControls.probationarySafetyRatingScore.value
-    //   : this.formControls.safetyRatingScore.value;
-
-    // const safetyRatingUpdate = {
-    //   isInProbationaryPeriod: inProbation,
-    //   score: score,
-    // };
-
     // this.service
     //   .setSafetyRating$(this.xuid, safetyRatingUpdate)
     //   .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
     //   .subscribe(newRating => {
     //     this.setupSafetyRating(newRating);
+    //     this.computeChanges();
     //   });
   }
 
@@ -125,11 +158,18 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
       .pipe(this.deleteMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(newRating => {
         this.setupSafetyRating(newRating);
+        this.computeChanges();
       });
   }
 
   private computeChanges(): void {
-    console.log('COMPUTE CHANGES TRIGGERED')
+    let sum = 0;
+    this.formArray.controls.forEach(control => {
+      sum = sum + control.value
+    });
+
+    this.estimateSafetyScore = sum / this.formArray.length;
+
     this.valueUnderMin = false;
     this.valueOverMax = false;
 
@@ -137,19 +177,16 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
       const controlErrors: ValidationErrors = this.formArray.get(key).errors;
       if (controlErrors) {
         Object.keys(controlErrors).forEach(keyError => {
-          if(keyError === 'min')
-          {
+          if (keyError === 'min') {
             this.valueUnderMin = true;
           }
 
-          if(keyError === 'max')
-          {
+          if (keyError === 'max') {
             this.valueOverMax = true;
           }
         });
       }
     });
-
   }
 
   private setupSafetyRating(safetyRating: SafetyRating) {
@@ -161,19 +198,12 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
     const firstScoreControl = new UntypedFormControl(0, [
       Validators.min(safetyRating.configuration.minScore.toNumber()),
       Validators.max(safetyRating.configuration.maxScore.toNumber()),
-    ])
+    ]);
 
-    firstScoreControl.valueChanges.subscribe(_ => this.computeChanges())
+    firstScoreControl.valueChanges.subscribe(_ => this.computeChanges());
 
     this.formArray.controls = [firstScoreControl];
 
-    // Object.keys(this.formArray.controls).forEach(key => {
-    //   const control = this.formArray.controls[key] as UntypedFormControl;
-
-    //   control.setValidators([
-    //     Validators.min(safetyRating.configuration.minScore.toNumber()),
-    //     Validators.max(safetyRating.configuration.maxScore.toNumber()),
-    //   ]);
-    // });
+    this.formArray.valueChanges.subscribe(_ => this.computeChanges());
   }
 }

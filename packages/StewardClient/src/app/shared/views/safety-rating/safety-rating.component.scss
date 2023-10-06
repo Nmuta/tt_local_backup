@@ -27,10 +27,35 @@ form {
   margin-right: $gap-micro;
 }
 
-.more-inputs {
+.resize-action {
   margin-bottom: 2em;
 }
 
 .in-probation {
   background-color: app-color-lighter($app-accent);
+}
+
+.removable-form-wrapper {
+  position: relative;
+  display: block;
+}
+
+.form-removal-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+
+  mat-icon {
+    height: 18px;
+    width: 18px;
+    line-height: 18px;
+    font-size: 18px;
+  }
+}
+
+.button-without-lock {
+  display: contents;
 }

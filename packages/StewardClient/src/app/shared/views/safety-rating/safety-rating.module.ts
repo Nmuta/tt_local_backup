@@ -22,6 +22,7 @@ import { SafetyRatingComponent } from './safety-rating.component';
 import { SteelheadSafetyRatingComponent } from './steelhead/steelhead-safety-rating.component';
 import { HelpModule } from '@shared/modules/help/help.module';
 import { NgPipesModule } from 'ngx-pipes';
+import { StandardFlagModule } from '@components/standard-flag/standard-flag.module';
 
 /** Module for getting and setting a player's driver level. */
 @NgModule({
@@ -50,6 +51,7 @@ import { NgPipesModule } from 'ngx-pipes';
     ErrorSpinnerModule,
     HelpModule,
     NgPipesModule,
+    StandardFlagModule,
   ],
   exports: [SteelheadSafetyRatingComponent],
 })

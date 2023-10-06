@@ -3,53 +3,41 @@
     <mat-card-title>Safety Rating</mat-card-title>
     <mat-card-subtitle>{{ gameTitle | humanize }}</mat-card-subtitle>
     <div class="sf-spacer"></div>
-    <div class="sf-vertical">
-      <div>
-        <verify-button
-          #verifyApplyBtn
-          [disabled]="!formGroup.dirty || !formGroup.valid"
-          [permissionAttribute]="permAttribute"
-          [permissionTitle]="gameTitle"
-        ></verify-button>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="setSafetyRating()"
-          clickStop
-          stateManager
-          monitorDisable
-          [monitor]="postMonitor"
-          
-          [verifyWithV2]="verifyApplyBtn"
-        >
-        <!-- [disabled]="!manualFormGroup.dirty || !manualFormGroup.valid" -->
-          Apply Rating
-          <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
-        </button>
+    <ng-container *ngIf="editMode; else nonEditActions">
+      <div class="sf-vertical">
+        <div>
+          <verify-button
+            #verifyApplyBtn
+            [disabled]="!formArray.valid"
+            [permissionAttribute]="permAttribute"
+            [permissionTitle]="gameTitle"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="setSafetyRating()"
+            clickStop
+            stateManager
+            monitorDisable
+            [monitor]="postMonitor"
+            [verifyWithV2]="verifyApplyBtn"
+          >
+            Apply Rating
+            <button-spinner [monitor]="postMonitor" defaultIcon="save"></button-spinner>
+          </button>
+        </div>
+        <div class="button-without-lock">
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="setEditMode(false)"
+            clickStop
+          >
+            Cancel Edit
+          </button>
+        </div>
       </div>
-      <div>
-        <verify-button
-          #verifyDeleteBtn
-          [disabled]="!formGroup.dirty || !formGroup.valid"
-          [permissionAttribute]="permAttribute"
-          [permissionTitle]="gameTitle"
-        ></verify-button>
-        <button
-          mat-raised-button
-          color="warn"
-          (click)="clearSafetyRating()"
-          clickStop
-          stateManager
-          monitorDisable
-          [monitor]="deleteMonitor"
-          [verifyWithV2]="verifyDeleteBtn"
-        >
-          Clear Rating
-          <button-spinner [monitor]="deleteMonitor" defaultIcon="delete"></button-spinner>
-        </button>
-      </div>
-    
-    </div>
+    </ng-container>
     <help-popover-icon cardTitle="Safety Rating">
       <p>
         Safety Rating is a measure of how safely a player drives. It is used in matchmaking to avoid
@@ -72,106 +60,141 @@
   </mat-card-header>
 
   <div *waitForMonitor="getMonitor" class="update-section">
-    <div>Currently In Probation: {{safetyRating.isInProbationaryPeriod}}</div>
-    <div>Current Safety Rating: {{safetyRating.isInProbationaryPeriod? safetyRating.probationaryScoreEstimate : safetyRating.score}}</div>
-    <div>Current Grade: {{safetyRating.grade}}</div>
-    <!-- <mat-checkbox
-      class="probation-toggle"
-      [formControl]="formControls.isInProbation"
-      (change)="onInProbationChange($event)"
-      >In Probation?
-    </mat-checkbox>
-    <mat-error *ngIf="formControls.isInProbation.disabled"
-      >Probation Race Count is {{ safetyRating?.configuration.probationRaceCount }}. Too low to set
-      probationary status.</mat-error
-    >
-    <form [formGroup]="formGroup" class="sf-wrapper">
-      <div class="sf-vertical">
-        <mat-form-field appearance="fill" class="sf-default-hint">
-          <mat-label>Safety Rating</mat-label>
-          <input type="number" matInput [formControl]="formControls.safetyRatingScore" />
-          <mat-hint *ngIf="formControls.isInProbation.value"
-            >Only used while player is out of probation.</mat-hint
+    <ng-container *ngIf="editMode; else nonEditModeTemplate">
+      <div class="sf-wrapper">
+        <div>Will Be In Probation: <standard-flag [value]="formArray.length <= probationRaceCount"></standard-flag></div>
+        <div>Safety Rating Estimate: {{estimateSafetyScore}} </div>
+        <div class="sf-horizontal">
+          <button
+            [disabled]="formArray.length <= 1"
+            mat-button
+            matSuffix
+            mat-icon-button
+            class="resize-action sf-no-grow"
+            (click)="minScoreArray()"
           >
-          <mat-error *ngIf="formControls.safetyRatingScore.hasError('min')"
-            >Safety Rating must be greater than or equal to
-            {{ safetyRating?.configuration.minScore }}.</mat-error
+            <mat-icon>first_page</mat-icon>
+          </button>
+          <button
+            [disabled]="formArray.length <= 1"
+            mat-button
+            matSuffix
+            mat-icon-button
+            class="resize-action sf-no-grow"
+            (click)="removeLastScore()"
           >
-          <mat-error *ngIf="formControls.safetyRatingScore.hasError('max')"
-            >Safety Rating must be less than or equal to
-            {{ safetyRating?.configuration.maxScore }}.</mat-error
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button
+            [disabled]="formArray.length === displayCountMax"
+            mat-button
+            matSuffix
+            mat-icon-button
+            class="resize-action sf-no-grow"
+            (click)="addScore()"
           >
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="sf-default-hint">
-          <mat-label>Probationary Safety Rating</mat-label>
-          <input
-            type="number"
-            matInput
-            [formControl]="formControls.probationarySafetyRatingScore"
-          />
-          <mat-hint *ngIf="!formControls.isInProbation.value"
-            >Only used while player is in probation.</mat-hint
+            <mat-icon>add</mat-icon>
+          </button>
+          <button
+            [disabled]="formArray.length === displayCountMax"
+            mat-button
+            matSuffix
+            mat-icon-button
+            class="resize-action sf-no-grow"
+            (click)="maxScoreArray()"
           >
-          <mat-error *ngIf="formControls.probationarySafetyRatingScore.hasError('min')"
-            >Probationary Safety Rating must be greater than or equal to
-            {{ safetyRating?.configuration.minScore }}.</mat-error
-          >
-          <mat-error *ngIf="formControls.probationarySafetyRatingScore.hasError('max')"
-            >Probationary Safety Rating must be less than or equal to
-            {{ safetyRating?.configuration.maxScore }}.</mat-error
-          >
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="sf-default-hint">
-          <mat-label>Grade</mat-label>
-          <input matInput [formControl]="formControls.grade" />
-          <mat-hint>Grade is auto calculated based on Safety Rating.</mat-hint>
-        </mat-form-field>
+            <mat-icon>last_page</mat-icon>
+          </button>
+        </div>
+        <form [formGroup]="formGroup">
+          <ng-container *ngFor="let control of formArray.controls | keys; let i = index">
+            <div class="removable-form-wrapper">
+              <mat-form-field
+                class="safety-rating-score-input"
+                [class.in-probation]="i < probationRaceCount"
+                appearance="fill"
+              >
+                <input
+                  matInput
+                  type="number"
+                  [formControl]="control"
+                  [min]="minimumScoreValue"
+                  [max]="maximumScoreValue"
+                />
+                <mat-hint *ngIf="i < probationRaceCount">Probation</mat-hint>
+              </mat-form-field>
+              <button
+                type="button"
+                class="form-removal-action"
+                color="warn"
+                [disabled]="formArray.length <= 1"
+                mat-button
+                mat-icon-button
+                (click)="removeScore(i)"
+              >
+                <mat-icon>remove</mat-icon>
+              </button>
+            </div>
+          </ng-container>
+        </form>
       </div>
-    </form> -->
 
-
-    <!-- <form class="sf-wrapper" [formGroup]="manualFormGroup">
-      <ng-container *ngFor="let key of formArray.controls | keys; let i = index">
-        <mat-form-field
-          *ngIf="i <= displayCount"
-          class="safety-rating-score-input"
-          [class.in-probation]="i < probationRaceCount"
-          appearance="fill"
-        >
-        <input matInput [formControl]="manualFormControls[key]" type="number" [min]="minimumScoreValue" [max]="maximumScoreValue"/>
-        <mat-hint *ngIf="i < probationRaceCount">Probation</mat-hint>
-      </mat-form-field>
-      </ng-container>
-      <button mat-button matSuffix mat-icon-button class="more-inputs" (click)="incrementDisplayCount()"><mat-icon>add</mat-icon></button>
-    </form> -->
-
-    <form class="sf-wrapper" [formGroup]="formGroup">
-      <ng-container *ngFor="let control of formArray.controls| keys; let i = index">
-        <mat-form-field
-          class="safety-rating-score-input"
-          [class.in-probation]="i < probationRaceCount"
-          appearance="fill"
-        >
-          <input
-            matInput
-            type="number"
-            [formControl]="control"
-            [min]="minimumScoreValue"
-            [max]="maximumScoreValue"
-          />
-          <mat-hint *ngIf="i < probationRaceCount">Probation</mat-hint>
-        </mat-form-field>
-      </ng-container>
-    </form>
-    <button mat-button matSuffix mat-icon-button class="more-inputs" (click)="incrementDisplayCount()"><mat-icon>add</mat-icon></button>
-
-    <mat-error *ngIf="valueUnderMin"
-      >All Safety Rating scores must be greater than or equal to
-      {{ safetyRating?.configuration.minScore }}.</mat-error
-    >
-    <mat-error *ngIf="valueOverMax"
-      >All Safety Rating scores must be less than or equal to
-      {{ safetyRating?.configuration.maxScore }}.</mat-error
-    >
+      <mat-error *ngIf="valueUnderMin"
+        >All Safety Rating scores must be greater than or equal to
+        {{ safetyRating?.configuration.minScore }}.</mat-error
+      >
+      <mat-error *ngIf="valueOverMax"
+        >All Safety Rating scores must be less than or equal to
+        {{ safetyRating?.configuration.maxScore }}.</mat-error
+      >
+    </ng-container>
   </div>
 </mat-card>
+
+<ng-template #nonEditModeTemplate>
+  <div>Currently In Probation: <standard-flag [value]="safetyRating.isInProbationaryPeriod"></standard-flag></div>
+  <div>
+    Current Safety Rating:
+    {{
+      safetyRating.isInProbationaryPeriod
+        ? safetyRating.probationaryScoreEstimate
+        : safetyRating.score
+    }}
+  </div>
+  <div>Current Grade: {{ safetyRating.grade }}</div>
+</ng-template>
+
+<ng-template #nonEditActions>
+  <div class="sf-vertical">
+    <div class="button-without-lock">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="setEditMode(true)"
+        clickStop
+      >
+        Edit Rating
+      </button>
+    </div>
+    <div>
+      <verify-button
+        #verifyDeleteBtn
+        [permissionAttribute]="permAttribute"
+        [permissionTitle]="gameTitle"
+      ></verify-button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="clearSafetyRating()"
+        clickStop
+        stateManager
+        monitorDisable
+        [monitor]="deleteMonitor"
+        [verifyWithV2]="verifyDeleteBtn"
+      >
+        Clear Rating
+        <button-spinner [monitor]="deleteMonitor" defaultIcon="delete"></button-spinner>
+      </button>
+    </div>
+  </div>
+</ng-template>
