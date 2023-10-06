@@ -111,8 +111,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<SupportedLocale>> GetSupportedLocalesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var locales =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<IEnumerable<SupportedLocale>>(
@@ -127,8 +128,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, UGCReportingCategory>> GetUgcReportingReasonsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var ugcReportingCategoryKey = this.BuildCacheKey(environment, slot, snapshot, "UGCReportingCategory");
 
@@ -155,8 +157,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<LiveOpsContracts.CarFeaturedShowcase>> GetCarFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             IEnumerable<LiveOpsContracts.CarFeaturedShowcase> carFeaturedShowcases = new List<LiveOpsContracts.CarFeaturedShowcase>();
 
@@ -208,8 +211,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase>> GetDivisionFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             IEnumerable<LiveOpsContracts.DivisionFeaturedShowcase> divisionFeaturedShowcases = new List<LiveOpsContracts.DivisionFeaturedShowcase>();
 
@@ -253,8 +257,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase>> GetManufacturerFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             IEnumerable<LiveOpsContracts.ManufacturerFeaturedShowcase> manufacturerFeaturedShowcases = new List<LiveOpsContracts.ManufacturerFeaturedShowcase>();
 
@@ -298,8 +303,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<CarSale>> GetCarSalesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             IEnumerable<CarSale> carSales = new List<CarSale>();
 
@@ -349,8 +355,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<LiveOpsContracts.RivalsEvent>> GetRivalsEventsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var pegasusRivalEvents =
@@ -376,8 +383,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetRivalsEventsReferenceAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.RivalEvents.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -396,8 +404,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetRivalsEventCategoriesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.RivalCategories.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -416,8 +425,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetStoreEntitlementsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.StoreEntitlements;
@@ -436,8 +446,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetDateTimeRangesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.DateTimeRanges;
@@ -456,8 +467,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetChallengesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.ChallengeData.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -476,8 +488,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetFeaturedShowcasesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.FeaturedShowcases.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -496,8 +509,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetRacersCupSeriesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.RacersCupSeries.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -516,8 +530,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetBuildersCupChampionshipsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.BuildersCupChampionships.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -536,8 +551,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetBuildersCupLaddersAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.BuildersCupLadders.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -556,8 +572,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetBuildersCupSeriesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.BuildersCupSeries.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -576,8 +593,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, DisplayCondition>> GetDisplayConditionsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var displayConditions =
                 await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, DisplayCondition>>(
@@ -592,8 +610,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, List<LiveOpsContracts.LocalizedString>>> GetLocalizedStringsAsync(bool useInternalIds = true, string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var localizedStringCacheKey = this.BuildCacheKey(environment, slot, snapshot, "LocalizedStrings");
 
@@ -670,8 +689,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<CarClass>> GetCarClassesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var carClassKey = this.BuildCacheKey(environment, slot, snapshot, "CarClasses");
 
@@ -701,8 +721,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<Leaderboard>> GetLeaderboardsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
@@ -733,8 +754,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<DataCar>> GetCarsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
@@ -763,8 +785,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetCarsReferenceAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var filename = CMSFileNames.DataCars.Replace("{:loc}", "en-US", StringComparison.Ordinal);
@@ -783,8 +806,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, string>> GetCarMakesAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             // No caching due to small data size
             var pegasusCarMakes =
@@ -802,8 +826,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<VanityItem>> GetVanityItemsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
@@ -832,8 +857,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<SafetyRatingConfiguration> GetSafetyRatingConfig(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
@@ -849,8 +875,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<IEnumerable<Track>> GetTracksAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             await this.VerifySlotStatus(environment, slot).ConfigureAwait(false);
 
@@ -879,8 +906,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, ChampionshipPlaylistDataV3>> GetRacersCupPlaylistDataV3Async(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var playlists = await this.cmsRetrievalHelper.GetCMSObjectAsync<Dictionary<Guid, ChampionshipPlaylistDataV3>>(
                 CMSFileNames.PlaylistData,
@@ -894,8 +922,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<RacersCupChampionships> GetRacersCupChampionshipScheduleV4Async(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var scheduleData = await this.cmsRetrievalHelper.GetCMSObjectAsync<RacersCupChampionships>(
                 CMSFileNames.RacersCupV4,
@@ -909,8 +938,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<BuildersCupCupDataV3> GetBuildersCupFeaturedCupLadderAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var fileName = CMSFileNames.BuildersCup.Replace("{:loc}", "en-US", StringComparison.Ordinal);
 
@@ -926,8 +956,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc />
         public async Task<Dictionary<Guid, SteelheadLiveOpsContent.BanConfiguration>> GetBanConfigurationsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var banConfigurationKey = this.BuildCacheKey(environment, slot, snapshot, "BanConfiguration");
 
@@ -951,8 +982,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<WorldOfForzaConfigV3> GetWelcomeCenterDataAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var filename = CMSFileNames.WorldOfForzaConfig;
             var wofConfig = await this.cmsRetrievalHelper.GetCMSObjectAsync<WorldOfForzaConfigV3>(
@@ -967,8 +999,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         /// <inheritdoc/>
         public async Task<WorldOfForzaTileCMSCollection> GetWelcomeCenterTileDataAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var filename = CMSFileNames.WorldOfForzaTileCMSData.Replace("{:loc}", "en-US", StringComparison.Ordinal);
             var wofTileCollection = await this.cmsRetrievalHelper.GetCMSObjectAsync<WorldOfForzaTileCMSCollection>(
@@ -1297,8 +1330,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private async Task<Dictionary<Guid, string>> GetExternalLocalizationStringsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var externalLocalizationStringsKey = this.BuildCacheKey(environment, slot, snapshot, "ExternalLocalizationStrings");
 
@@ -1324,8 +1358,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private async Task<Dictionary<Guid, Guid>> GetLocalizationStringMappingsAsync(string environment = null, string slot = null, string snapshot = null)
         {
-            environment ??= this.defaultCmsEnvironment;
-            slot ??= this.defaultCmsSlot;
+            environment = this.CoalesceNullEmptyOrWhitespace(environment, this.defaultCmsEnvironment);
+            slot = this.CoalesceNullEmptyOrWhitespace(slot, this.defaultCmsSlot);
+            snapshot = this.DefaultNullFromEmptyOrWhitespace(snapshot);
 
             var localizationStringMappingsKey = this.BuildCacheKey(environment, slot, snapshot, "LocalizationStringMappings");
 
@@ -1411,6 +1446,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private string BuildCacheKey(string environment, string slot, string snapshot, string topic)
         {
             return $"{PegasusBaseCacheKey}{environment}_{slot}_{snapshot ?? "current"}_{topic}";
+        }
+
+        private string CoalesceNullEmptyOrWhitespace(string input, string defaultValue)
+        {
+            return string.IsNullOrWhiteSpace(input) ? defaultValue : input;
+        }
+
+        private string DefaultNullFromEmptyOrWhitespace(string input)
+        {
+            return string.IsNullOrWhiteSpace(input) ? null : input;
         }
     }
 }

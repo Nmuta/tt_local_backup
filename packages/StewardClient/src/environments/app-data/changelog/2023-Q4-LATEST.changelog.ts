@@ -8,9 +8,40 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: ChangelogTag.Internal,
+      uuid: '988719c8-9f93-4d1f-9755-c176f6762835',
+      shortMarkdown: 'Fix issue with timepicker forms',
+      longMarkdown: `
+        - Revert Luxon to previous major version
+      `,
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: 'd4b1ac97-7488-42c3-b56b-66b76334846d',
+      shortMarkdown: 'Fix bug causing safety rating component to fail to load',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '406999a7-40fc-4970-bcfe-4042864963e1',
+      shortMarkdown: 'Fix auto lookup deep dive',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '61118503-8151-4a65-9217-62a1d2d49729',
+      shortMarkdown: 'Fix bug to allow support for FM sidebar app in Zendesk',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '636cbaf0-6230-4c32-ae27-34fd5109f174',
       shortMarkdown: 'Adjust layout of leaderboards search component for clarity',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '988719c8-9f93-4d1f-9755-c176f6762835',
+      shortMarkdown: 'Fix issue with timepicker forms',
+      longMarkdown: `
+        - Revert Luxon to previous major version
+      `,
     },
     {
       tag: ChangelogTag.Internal,
