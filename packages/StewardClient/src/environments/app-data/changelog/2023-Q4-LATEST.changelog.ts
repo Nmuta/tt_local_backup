@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
+      uuid: '636cbaf0-6230-4c32-ae27-34fd5109f174',
+      shortText: 'Adjust layout of leaderboards search component for clarity',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '4e265673-61b2-49cb-a7df-775967a6ca19',
       shortMarkdown:

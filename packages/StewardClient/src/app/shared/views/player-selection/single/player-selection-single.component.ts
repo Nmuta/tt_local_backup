@@ -36,6 +36,9 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
   /** List of Special Identities that are allowed in the parent component. */
   @Input() public specialIdentitiesAllowed: SpecialIdentity[];
 
+  /** Additional text to display in the usual hint. */
+  @Input() public extraHint: string | undefined;
+
   protected selectedValue: AugmentedCompositeIdentity = null;
   public maxFoundIndentities: number = 1;
 
