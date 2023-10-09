@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '8287bbe8-c385-408d-b28a-83019506b774',
+      shortMarkdown: 'Fix bug causing livery gifting to fail',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '988719c8-9f93-4d1f-9755-c176f6762835',
       shortMarkdown: 'Fix issue with timepicker forms',
