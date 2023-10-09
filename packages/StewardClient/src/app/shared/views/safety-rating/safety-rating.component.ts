@@ -137,16 +137,18 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
       safetyScores.push(control.value);
     });
 
-    console.log(safetyScores);
+    const safetyRatingUpdate = {
+      safetyScores: safetyScores,
+    }
 
-    // this.postMonitor = this.postMonitor.repeat();
-    // this.service
-    //   .setSafetyRating$(this.xuid, safetyRatingUpdate)
-    //   .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
-    //   .subscribe(newRating => {
-    //     this.setupSafetyRating(newRating);
-    //     this.computeChanges();
-    //   });
+    this.postMonitor = this.postMonitor.repeat();
+    this.service
+      .setSafetyRating$(this.xuid, safetyRatingUpdate)
+      .pipe(this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(newRating => {
+        this.setupSafetyRating(newRating);
+        this.computeChanges();
+      });
   }
 
   /** Clears a user's safety rating. */

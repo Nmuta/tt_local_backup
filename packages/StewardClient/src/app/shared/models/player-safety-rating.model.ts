@@ -34,8 +34,7 @@ export interface SafetyRating {
 
 /** Interface for a safety rating update. */
 export interface SafetyRatingUpdate {
-  score: BigNumber;
-  isInProbationaryPeriod: boolean;
+  safetyScores: number[];
 }
 
 /** Interface for a safety rating configuration. */
