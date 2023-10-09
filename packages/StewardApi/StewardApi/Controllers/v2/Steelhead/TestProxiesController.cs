@@ -29,67 +29,67 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         public IActionResult TestAllServiceProxies()
         {
             var services = this.SteelheadServices.Value;
-            var failedServiceProcies = new StringBuilder();
+            var failedServiceProxies = new StringBuilder();
 
             Exception exception;
             if (!this.VerifyServiceProxy(() => services.AuctionManagementService, "AuctionManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.ConfigurationManagementService, "ConfigurationManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.GiftingManagementService, "GiftingManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.LiveOpsService, "LiveOpsService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.LocalizationManagementService, "LocalizationManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.NotificationManagementService, "NotificationManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.PermissionsManagementService, "PermissionsManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.ScoreboardManagementService, "ScoreboardManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.StorefrontManagementService, "StorefrontManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.UserManagementService, "UserManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
             if (!this.VerifyServiceProxy(() => services.UserInventoryManagementService, "UserInventoryManagementService", out exception))
             {
-                failedServiceProcies.Append($"{exception.Message}, ");
+                failedServiceProxies.Append($"{exception.Message}, ");
             }
 
-            if (failedServiceProcies.Length > 0)
+            if (failedServiceProxies.Length > 0)
             {
-                throw new ServiceProxyStewardException(failedServiceProcies.ToString());
+                throw new ServiceProxyStewardException(failedServiceProxies.ToString());
             }
 
             return this.Ok();
@@ -116,7 +116,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verifies gifting management service proxy.
         /// </summary>
         [HttpGet("GiftingManagementService")]
-        [SwaggerResponse(200, type: typeof(bool))]
+        [SwaggerResponse(200)]
         public IActionResult TestGiftingManagementServiceProxy()
         {
             var services = this.SteelheadServices.Value;
@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verifies live ops service proxy.
         /// </summary>
         [HttpGet("LiveOpsService")]
-        [SwaggerResponse(200, type: typeof(bool))]
+        [SwaggerResponse(200)]
         public IActionResult TestLiveOpsServiceProxy()
         {
             var services = this.SteelheadServices.Value;
@@ -150,7 +150,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verifies localization management service proxy.
         /// </summary>
         [HttpGet("LocalizationManagementService")]
-        [SwaggerResponse(200, type: typeof(bool))]
+        [SwaggerResponse(200)]
         public IActionResult TestLocalizationManagementServiceProxy()
         {
             var services = this.SteelheadServices.Value;
@@ -167,7 +167,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verifies user management service proxy.
         /// </summary>
         [HttpGet("UserManagementService")]
-        [SwaggerResponse(200, type: typeof(bool))]
+        [SwaggerResponse(200)]
         public IActionResult TestUserManagementServiceProxy()
         {
             var services = this.SteelheadServices.Value;
@@ -184,7 +184,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verifies user inventory management service proxy.
         /// </summary>
         [HttpGet("UserInventoryManagementService")]
-        [SwaggerResponse(200, type: typeof(bool))]
+        [SwaggerResponse(200)]
         public IActionResult TestUserInventoryManagementServiceProxy()
         {
             var services = this.SteelheadServices.Value;
@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verifies storefront management service proxy.
         /// </summary>
         [HttpGet("StorefrontManagementService")]
-        [SwaggerResponse(200, type: typeof(bool))]
+        [SwaggerResponse(200)]
         public IActionResult TestStorefrontManagementServiceProxy()
         {
             var services = this.SteelheadServices.Value;
@@ -218,7 +218,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verifies notification management service proxy.
         /// </summary>
         [HttpGet("NotificationManagementService")]
-        [SwaggerResponse(200, type: typeof(bool))]
+        [SwaggerResponse(200)]
         public IActionResult TestNotificationManagementServiceProxy()
         {
             var services = this.SteelheadServices.Value;
@@ -235,7 +235,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
         ///     Verifies permissions management service proxy.
         /// </summary>
         [HttpGet("PermissionsManagementService")]
-        [SwaggerResponse(200, type: typeof(bool))]
+        [SwaggerResponse(200)]
         public IActionResult TestPermissionsManagementServiceProxy()
         {
             var services = this.SteelheadServices.Value;
