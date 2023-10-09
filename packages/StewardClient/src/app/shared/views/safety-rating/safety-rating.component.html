@@ -19,6 +19,8 @@
             clickStop
             stateManager
             monitorDisable
+            monitorCompleteSnackbar
+            monitorWarnSnackbar
             [monitor]="postMonitor"
             [verifyWithV2]="verifyApplyBtn"
           >
@@ -188,6 +190,8 @@
         (click)="clearSafetyRating()"
         clickStop
         stateManager
+        monitorCompleteSnackbar
+        monitorWarnSnackbar
         monitorDisable
         [monitor]="deleteMonitor"
         [verifyWithV2]="verifyDeleteBtn"

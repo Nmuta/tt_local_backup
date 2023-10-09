@@ -148,6 +148,7 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
       .subscribe(newRating => {
         this.setupSafetyRating(newRating);
         this.computeChanges();
+        this.editMode = false;
       });
   }
 
