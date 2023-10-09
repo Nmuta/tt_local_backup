@@ -29,12 +29,7 @@
           </button>
         </div>
         <div class="button-without-lock">
-          <button
-            mat-raised-button
-            color="warn"
-            (click)="setEditMode(false)"
-            clickStop
-          >
+          <button mat-raised-button color="warn" (click)="setEditMode(false)" clickStop>
             Cancel Edit
           </button>
         </div>
@@ -64,8 +59,11 @@
   <div *waitForMonitor="getMonitor" class="update-section">
     <ng-container *ngIf="editMode; else nonEditModeTemplate">
       <div class="sf-wrapper">
-        <div>Will Be In Probation: <standard-flag [value]="formArray.length <= probationRaceCount"></standard-flag></div>
-        <div>Safety Rating Estimate: {{estimateSafetyScore}} </div>
+        <div>
+          Will Be In Probation:
+          <standard-flag [value]="formArray.length <= probationRaceCount"></standard-flag>
+        </div>
+        <div>Safety Rating Estimate: {{ estimateSafetyScore }}</div>
         <div class="sf-horizontal">
           <button
             [disabled]="formArray.length <= 1"
@@ -154,7 +152,10 @@
 </mat-card>
 
 <ng-template #nonEditModeTemplate>
-  <div>Currently In Probation: <standard-flag [value]="safetyRating.isInProbationaryPeriod"></standard-flag></div>
+  <div>
+    Currently In Probation:
+    <standard-flag [value]="safetyRating.isInProbationaryPeriod"></standard-flag>
+  </div>
   <div>
     Current Safety Rating:
     {{
@@ -169,12 +170,7 @@
 <ng-template #nonEditActions>
   <div class="sf-vertical">
     <div class="button-without-lock">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="setEditMode(true)"
-        clickStop
-      >
+      <button mat-raised-button color="primary" (click)="setEditMode(true)" clickStop>
         Edit Rating
       </button>
     </div>

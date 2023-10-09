@@ -81,7 +81,7 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
         });
     }
   }
-  
+
   /** Set edit mode on component. */
   public setEditMode(value: boolean): void {
     this.editMode = value;
@@ -139,7 +139,7 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
 
     const safetyRatingUpdate = {
       safetyScores: safetyScores,
-    }
+    };
 
     this.postMonitor = this.postMonitor.repeat();
     this.service
@@ -168,7 +168,7 @@ export class SafetyRatingComponent extends BaseComponent implements OnChanges {
   private computeChanges(): void {
     let sum = 0;
     this.formArray.controls.forEach(control => {
-      sum = sum + control.value
+      sum = sum + control.value;
     });
 
     this.estimateSafetyScore = sum / this.formArray.length;
