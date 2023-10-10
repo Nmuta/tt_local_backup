@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
       shortMarkdown: 'Fix bug causing livery gifting to fail',
     },
     {
+      tag: ChangelogTag.General,
+      uuid: '08a52f50-ebea-44f5-9817-1a093aa2661c',
+      shortMarkdown: 'Fix some buttons appearing too big throughout the application',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '988719c8-9f93-4d1f-9755-c176f6762835',
       shortMarkdown: 'Fix issue with timepicker forms',
