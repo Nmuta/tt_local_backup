@@ -635,23 +635,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Error, opt => opt.Ignore());
 
             this.CreateMap<PlayerInventoryCarItem, AdminForzaCarUserInventoryItem>()
-                .ForMember(dest => dest.inventoryItemSource, opt => opt.MapFrom(source => ForzaInventoryItemSource.Steward))
-                .ForMember(dest => dest.acquisitionType, opt => opt.MapFrom(source => ForzaItemAcquisitionType.NA))
                 .ForMember(dest => dest.itemId, opt => opt.MapFrom(source => source.Id))
-                .ForMember(dest => dest.carId, opt => opt.MapFrom(source => source.Id))
-                .ForMember(dest => dest.clientCarInfo, opt => opt.MapFrom(source => Array.Empty<byte>()))
                 .ForMember(dest => dest.versionedLiveryId, opt => opt.MapFrom(source => source.VersionedLiveryId.HasValue ? source.VersionedLiveryId.Value : Guid.Empty))
                 .ForMember(dest => dest.versionedTuneId, opt => opt.MapFrom(source => source.VersionedTuneId.HasValue ? source.VersionedTuneId.Value : Guid.Empty))
-                .ForMember(dest => dest.acquisitionTime, opt => opt.MapFrom(source => source.AcquiredUtc))
-                .ForMember(dest => dest.lastUsedTime, opt => opt.Ignore())
-                .ForMember(dest => dest.collectorScore, opt => opt.Ignore())
-                .ForMember(dest => dest.productionNumber, opt => opt.Ignore())
-                .ForMember(dest => dest.isOnlineOnly, opt => opt.Ignore())
-                .ForMember(dest => dest.carPointsTotal, opt => opt.Ignore())
-                .ForMember(dest => dest.unredeemed, opt => opt.Ignore())
-                .ForMember(dest => dest.baseCost, opt => opt.Ignore())
-                .ForMember(dest => dest.carId, opt => opt.Ignore())
-                .ForMember(dest => dest.purchaseTimestamp, opt => opt.Ignore());
+                .ForMember(dest => dest.acquisitionTime, opt => opt.MapFrom(source => source.AcquiredUtc));
 
             this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryCarItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))

@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '5fc188e4-ab03-46a8-8a9c-15fc649a095d',
+      shortMarkdown: 'Fix editing car defaulting car points and upgrades',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
       uuid: '8287bbe8-c385-408d-b28a-83019506b774',
       shortMarkdown: 'Fix bug causing livery gifting to fail',

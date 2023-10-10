@@ -11,11 +11,49 @@ export interface PlayerInventoryCarItem extends PlayerInventoryItem {
   versionedTuneId: GuidLikeString;
   currentLevel: BigNumber;
   experiencePoints: BigNumber;
+  carPointsTotal: BigNumber;
   flags: BigNumber;
+  inventoryItemSource: SteelheadInventoryItemSource;
+  acquisitionType: SteelheadItemAcquisitionType;
   clientCarInfo: BigNumber[];
   purchasePrice: BigNumber;
   entitlementId: string;
   tiersAchieved: BigNumber[];
+
+  // Unused properties (for now). We hold references to the data to pass back to LSP
+  lastUsedTime: DateTime;
+  collectorScore: BigNumber;
+  productionNumber: BigNumber;
+  isOnlineOnly: boolean;
+  unredeemed: boolean;
+  baseCost: BigNumber;
+  carId: BigNumber;
+  purchaseTimestamp: DateTime;
+}
+
+/** List of Steelhead item acquisition types. */
+export enum SteelheadItemAcquisitionType {
+  NA = 'NA',
+  Gift = 'Gift',
+  PDLC = 'PDLC',
+  ForzaFaithful = 'ForzaFaithful',
+  Reward = 'Reward',
+  ShowroomPurchase = 'ShowroomPurchase',
+}
+
+/** List of Steelhead inventory item sources. */
+export enum SteelheadInventoryItemSource {
+  Unknown = 'Unknown',
+  MicrosoftStore = 'MicrosoftStore',
+  Steam = 'Steam',
+  Steward = 'Steward',
+  Gameplay = 'Gameplay',
+  Gift = 'Gift',
+  Debug = 'Debug',
+  DriverProgression = 'DriverProgression',
+  CarProgression = 'CarProgression',
+  ForzaFaithful = 'ForzaFaithful',
+  FirstCarSelect = 'FirstCarSelect',
 }
 
 /** Interface for a player inventory item. */
