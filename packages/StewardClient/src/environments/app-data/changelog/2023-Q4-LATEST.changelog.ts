@@ -10,7 +10,7 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '2fc44ca8-e289-4d99-ba37-3b4f0d0c8bb4',
-      shortMarkdown: 'Change input design for safety rating component',
+      shortMarkdown: 'Change input design for safety rating tool',
     },
     {
       tag: ChangelogTag.Internal,
