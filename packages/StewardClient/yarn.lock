@@ -8389,10 +8389,10 @@ luxon-angular@^5.0.0:
   dependencies:
     tslib "^2.0.0"
 
-luxon@^3.4.3:
-  version "3.4.3"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/luxon/-/luxon-3.4.3.tgz#8ddf0358a9492267ffec6a13675fbaab5551315d"
-  integrity sha1-jd8DWKlJImf/7GoTZ1+6q1VRMV0=
+luxon@^2.5.2:
+  version "2.5.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-LiveOps/npm/registry/luxon/-/luxon-2.5.2.tgz#17ed497f0277e72d58a4756d6a9abee4681457b6"
+  integrity sha1-F+1JfwJ35y1YpHVtapq+5GgUV7Y=
 
 magic-string@0.29.0:
   version "0.29.0"

@@ -1,16 +1,34 @@
 import { GameTitle } from '@models/enums';
-import { ChangelogGroup, ChangelogTag } from './types';
+import { MarkdownChangelogGroup, ChangelogTag } from './types';
 import { NavbarTool } from '../tool-list';
 
 /** A changelog targeted at end-users. */
-export const CHANGELOG_2023_Q4: ChangelogGroup = {
+export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   title: '2023 Q4',
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
       uuid: 'a05517ac-18b4-4250-ad44-63a94887bb38',
-      shortText: 'Add start/end date fields',
+      shortMarkdown: 'Add start/end date fields',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '8287bbe8-c385-408d-b28a-83019506b774',
+      shortMarkdown: 'Fix bug causing livery gifting to fail',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '08a52f50-ebea-44f5-9817-1a093aa2661c',
+      shortMarkdown: 'Fix some buttons appearing too big throughout the application',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '988719c8-9f93-4d1f-9755-c176f6762835',
+      shortMarkdown: 'Fix issue with timepicker forms',
+      longMarkdown: `
+        - Revert Luxon to previous major version
+      `,
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
@@ -30,37 +48,46 @@ export const CHANGELOG_2023_Q4: ChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: NavbarTool.Leaderboards },
       uuid: '636cbaf0-6230-4c32-ae27-34fd5109f174',
-      shortText: 'Adjust layout of leaderboards search component for clarity',
+      shortMarkdown: 'Adjust layout of leaderboards search component for clarity',
+    },
+    {
+      tag: ChangelogTag.Internal,
+      uuid: '988719c8-9f93-4d1f-9755-c176f6762835',
+      shortMarkdown: 'Fix issue with timepicker forms',
+      longMarkdown: `
+        - Revert Luxon to previous major version
+      `,
     },
     {
       tag: ChangelogTag.Internal,
       uuid: '4e265673-61b2-49cb-a7df-775967a6ca19',
-      shortText:
+      shortMarkdown:
         'Fix bug in calendar lookup input sending API pegasus environment with incorrect casing',
     },
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Gifting] },
       uuid: 'd7c4f499-5c52-4a26-a29a-aba8e7de2e16',
-      shortText: "Remove 'Set Inventory From Reference' button",
+      shortMarkdown: "Remove 'Set Inventory From Reference' button",
     },
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.UserDetails] },
       uuid: '07c21994-1791-40fb-b5df-593179f15225',
-      shortText: `Add deep dive tab to player details`,
+      shortMarkdown: `Add deep dive tab to player details.`,
     },
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Leaderboards] },
       uuid: '832849f8-67a7-4f18-a70a-84d5c27310fe',
-      shortText: 'Added ability to generate and download leaderboard score files',
-      longText: [
-        "Leaderboard score files are used for 3rd party Rival's events.",
-        'They are sent to partners to verify participation.',
-      ],
+      shortMarkdown: 'Added ability to generate and download leaderboard score files',
+      longMarkdown: `
+        Leaderboard score files are used for 3rd party Rival's events.
+
+        They are sent to partners to verify participation.
+      `,
     },
     {
       tag: ChangelogTag.Internal,
       uuid: '1562db7d-e132-4170-81b3-e30e23ea6106',
-      shortText: 'Update changelog version',
+      shortMarkdown: 'Update changelog version',
     },
   ],
 };
