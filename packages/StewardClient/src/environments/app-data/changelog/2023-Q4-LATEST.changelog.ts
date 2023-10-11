@@ -7,13 +7,13 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   title: '2023 Q4',
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
-      {
-          tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
-          uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
-          shortMarkdown:
-              "Add link from Rival's Event calendar selection to leaderboard scores for the event",
-      },
-      {
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
+      uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
+      shortMarkdown:
+        "Add link from Rival's Event calendar selection to leaderboard scores for the event",
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '5fc188e4-ab03-46a8-8a9c-15fc649a095d',
       shortMarkdown: 'Fix editing car defaulting car points and upgrades',
