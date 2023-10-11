@@ -13,14 +13,14 @@ import BigNumber from 'bignumber.js';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { Observable, takeUntil } from 'rxjs';
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
-import { SafetyRating, SafetyRatingUpdate } from '@models/player-safety-rating.model';
+import { SafetyRating, SafetyRatingInput } from '@models/player-safety-rating.model';
 
 /** Safety Rating service contract. */
 export interface SafetyRatingServiceContract {
   /** Game title the service contract is associated with. */
   gameTitle: GameTitle;
   getSafetyRating$(xuid: BigNumber): Observable<SafetyRating>;
-  setSafetyRating$(xuid: BigNumber, safetyRating: SafetyRatingUpdate): Observable<SafetyRating>;
+  setSafetyRating$(xuid: BigNumber, safetyRating: SafetyRatingInput): Observable<SafetyRating>;
   deleteSafetyRating$(xuid: BigNumber): Observable<SafetyRating>;
 }
 

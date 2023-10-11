@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SafetyRating, SafetyRatingUpdate } from '@models/player-safety-rating.model';
+import { SafetyRating, SafetyRatingInput } from '@models/player-safety-rating.model';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -25,7 +25,7 @@ export class SteelheadPlayerSafetyRatingService {
   /** Sets player safety rating. */
   public setSafetyRatingByXuid$(
     xuid: BigNumber,
-    safetyRatingUpdate: SafetyRatingUpdate,
+    safetyRatingUpdate: SafetyRatingInput,
   ): Observable<SafetyRating> {
     return this.api.postRequest$<SafetyRating>(
       `${this.basePath}/${xuid}/safetyRating`,
