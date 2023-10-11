@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await stewardClient.PostSetUgcGeoFlags(TestConstants.InvalidUgcId).ConfigureAwait(false);
+                await stewardClient.PostSetUgcGeoFlags(TestConstants.InvalidUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
         {
             try
             {
-                var response = await unauthedClient.PostSetUgcGeoFlags(TestConstants.TestAccountUgcId).ConfigureAwait(false);
+                await unauthedClient.PostSetUgcGeoFlags(TestConstants.TestAccountUgcId).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)

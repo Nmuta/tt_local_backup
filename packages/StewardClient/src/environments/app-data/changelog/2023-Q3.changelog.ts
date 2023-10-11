@@ -8,12 +8,6 @@ export const CHANGELOG_2023_Q3: ChangelogGroup = {
   id: 'd519bdc3-1704-4d33-a637-3cb7a5929522',
   entries: [
     {
-      tag: ChangelogTag.Internal,
-      uuid: '4e265673-61b2-49cb-a7df-775967a6ca19',
-      shortText:
-        'Fix bug in calendar lookup input sending API pegasus environment with incorrect casing',
-    },
-    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.UnifiedCalendar },
       uuid: '26bc1f7b-829f-4842-bdfc-4d6165944a57',
       shortText: 'Add dropdowns for Pegasus environment and slot selectors',

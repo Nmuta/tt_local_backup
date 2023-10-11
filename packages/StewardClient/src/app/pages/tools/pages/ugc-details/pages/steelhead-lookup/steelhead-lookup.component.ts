@@ -181,8 +181,7 @@ export class SteelheadLookupComponent extends BaseComponent implements OnInit {
         } else {
           this.generateSharecodeMatTooltip = this.generateSharecodeTooltip;
         }
-
-        this.canReportUgc = !this.isReplayUgcItem();
+        this.canReportUgc = !this.ugcItem?.featuredByT10 && !this.isReplayUgcItem();
         this.canHideUgc = !this.isReplayUgcItem();
       });
 
