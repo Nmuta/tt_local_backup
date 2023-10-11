@@ -8,8 +8,10 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import faker from '@faker-js/faker';
-import { RivalsEventWithEnvironment, RivalsTileDetailsModalComponent } from './rivals-tile-details-modal.component';
-import { RivalsEvent } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
+import {
+  RivalsEventWithEnvironment,
+  RivalsTileDetailsModalComponent,
+} from './rivals-tile-details-modal.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 import BigNumber from 'bignumber.js';
