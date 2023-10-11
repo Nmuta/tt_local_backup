@@ -50,7 +50,7 @@
     }
 
     // fill items; override later per-control
-    > *:not(.sf-no-grow) {
+    > * {
       flex-grow: 1;
     }
 
@@ -70,7 +70,8 @@
     > button,
     > help-popover-icon,
     > mat-button-toggle-group,
-    > label {
+    > label,
+    > .sf-no-grow {
       flex-grow: 0;
     }
 

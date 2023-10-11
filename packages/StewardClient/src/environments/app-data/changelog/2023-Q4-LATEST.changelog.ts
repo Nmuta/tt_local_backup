@@ -13,6 +13,21 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
       shortMarkdown: 'Change input design for safety rating tool',
     },
     {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '5fc188e4-ab03-46a8-8a9c-15fc649a095d',
+      shortMarkdown: 'Fix editing car defaulting car points and upgrades',
+    },
+    {
+      tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
+      uuid: '8287bbe8-c385-408d-b28a-83019506b774',
+      shortMarkdown: 'Fix bug causing livery gifting to fail',
+    },
+    {
+      tag: ChangelogTag.General,
+      uuid: '08a52f50-ebea-44f5-9817-1a093aa2661c',
+      shortMarkdown: 'Fix some buttons appearing too big throughout the application',
+    },
+    {
       tag: ChangelogTag.Internal,
       uuid: '988719c8-9f93-4d1f-9755-c176f6762835',
       shortMarkdown: 'Fix issue with timepicker forms',

@@ -39,6 +39,7 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent {
     versionedLiveryId: new UntypedFormControl(null, Validators.required),
     versionedTuneId: new UntypedFormControl(null, Validators.required),
     experiencePoints: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
+    carPointsTotal: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
     flags: new UntypedFormControl(null, Validators.required),
     purchasePrice: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
   };
@@ -61,6 +62,7 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent {
     this.formControls.versionedTuneId.setValue(data.car.versionedTuneId);
     this.formControls.experiencePoints.setValue(data.car.experiencePoints);
     this.formControls.flags.setValue(data.car.flags);
+    this.formControls.carPointsTotal.setValue(data.car.carPointsTotal);
     this.formControls.purchasePrice.setValue(data.car.purchasePrice);
 
     dialogRef
@@ -83,6 +85,7 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent {
     updatedCar.experiencePoints = new BigNumber(this.formControls.experiencePoints.value);
     updatedCar.flags = new BigNumber(this.formControls.flags.value);
     updatedCar.purchasePrice = new BigNumber(this.formControls.purchasePrice.value);
+    updatedCar.carPointsTotal = new BigNumber(this.formControls.carPointsTotal.value);
 
     this.editCarItem$(updatedCar)
       .pipe(
