@@ -15,6 +15,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '2fc44ca8-e289-4d99-ba37-3b4f0d0c8bb4',
+      shortMarkdown: 'Change input design for safety rating tool',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '5fc188e4-ab03-46a8-8a9c-15fc649a095d',
       shortMarkdown: 'Fix editing car defaulting car points and upgrades',
     },
