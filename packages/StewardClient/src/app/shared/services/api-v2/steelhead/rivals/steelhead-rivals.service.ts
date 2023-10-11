@@ -17,7 +17,9 @@ export interface RivalsEvent {
   startTime: string;
   endTime: string;
   scoreType: LeaderboardScoreType;
+  scoreTypeId: BigNumber;
   trackName: string;
+  trackId: BigNumber;
   carRestrictions: string[];
 }
 
