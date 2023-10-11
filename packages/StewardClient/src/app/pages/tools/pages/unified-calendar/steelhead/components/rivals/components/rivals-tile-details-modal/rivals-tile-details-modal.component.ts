@@ -26,8 +26,7 @@ export class RivalsTileDetailsModalComponent extends BaseComponent {
   ) {
     super();
 
-    const x = getLeaderboardsRoute(GameTitle.FM8);
-    this.routerLink = x;
+    this.routerLink = getLeaderboardsRoute(GameTitle.FM8);
     this.queryParams = {
       leaderboardEnvironment: data.leaderboardEnvironmnet,
       scoreboardTypeId: 3, //Rivals is 3
