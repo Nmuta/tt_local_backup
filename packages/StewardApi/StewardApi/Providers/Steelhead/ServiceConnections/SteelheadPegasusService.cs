@@ -1068,7 +1068,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var element = await this.GetMessageOfTheDayElementAsync(id).ConfigureAwait(false);
 
             // deleted elements will be rewritten.
-            foreach (var target in new List<string>() { "DisplayConditions", "Cooldowns" })
+            var removedElements = new List<string>() { "DisplayConditions", "Cooldowns" };
+            foreach (var target in removedElements)
             {
                 element.Elements().Where(k => k.Name.LocalName == target).Remove();
             }
@@ -1418,7 +1419,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             var tree = WelcomeCenterHelpers.BuildMetaData(entry, new Node(), locstrings, displayConditions);
 
             // deleted elements will be rewritten.
-            foreach (var target in new List<string>() { "Timer", "DisplayConditions", "Destination" })
+            var removedElements = new List<string>() { "Timer", "DisplayConditions", "Destination" };
+            foreach (var target in removedElements)
             {
                 element.Elements().Where(k => k.Name.LocalName == target).Remove();
             }
