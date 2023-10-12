@@ -21,6 +21,7 @@ import {
   Validator,
 } from '@angular/forms';
 import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
+import { time } from 'console';
 import { isNull, isUndefined } from 'lodash';
 import { DateTime } from 'luxon';
 import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
@@ -112,10 +113,14 @@ export class TimepickerComponent
 
   /** Gets or sets the value of the input. Designed to translate for ngx-material-timepicker. */
   public set valueInternal(input: string) {
+   
     const parsed = DateTime.fromFormat(input, 'HH:mm', { zone: 'utc' });
+    const UTCTime = this.translateToUTC(input);
+    const utcParsed = DateTime.fromFormat(UTCTime, 'HH:mm', { zone: 'utc' });
+
     if (parsed && parsed.isValid) {
-      this._valueInternal = input;
-      this._value = parsed;
+      this._valueInternal = UTCTime;
+      this._value = utcParsed;
     } else {
       this._valueInternal = input;
       this._value = null;
@@ -280,4 +285,28 @@ export class TimepickerComponent
   public onValueChange($event: string): void {
     this.valueInternal = $event;
   }
+
+  /** User chosen time should be local time for user. Add the UTC offset. */
+  private translateToUTC(userLocalTimePicked: string): string {
+    
+    const timeZoneOffset = new Date().getTimezoneOffset();
+
+    const hoursDifference = Math.floor(timeZoneOffset/60);
+    const minutesDifference = (timeZoneOffset % 60);
+
+    const userChosenHour = parseInt(userLocalTimePicked.split(':')[0]);
+    const userChosenMinute = parseInt(userLocalTimePicked.split(':')[1]);
+
+    const hours = this.leftPadTimeValue(userChosenHour+hoursDifference);
+    const minutes = this.leftPadTimeValue(userChosenMinute+minutesDifference);
+
+    const UTCtime= `${hours}:${minutes}`;    
+    return UTCtime;
+  } 
+
+  private leftPadTimeValue(val): string{
+    return val.toString().padStart(2,'0');
+  }
+
+
 }
