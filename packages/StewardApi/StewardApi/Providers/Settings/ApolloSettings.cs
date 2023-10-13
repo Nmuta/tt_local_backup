@@ -32,8 +32,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
             this.AdminXuid = Convert.ToUInt64(
                 configuration[ConfigurationKeyConstants.ApolloAdminXuid],
                 CultureInfo.InvariantCulture);
-            this.CertificateKeyVaultName = configuration[ConfigurationKeyConstants.ApolloCertificateKeyVaultName];
-            this.CertificateSecretName = KeyVaultNameConstants.ApolloCertificateSecretName;
         }
 
         /// <summary>
@@ -45,15 +43,5 @@ namespace Turn10.LiveOps.StewardApi.Providers
         ///     Gets the admin xuid.
         /// </summary>
         public ulong AdminXuid { get; }
-
-        /// <summary>
-        ///     Gets the certificate key vault name.
-        /// </summary>
-        public string CertificateKeyVaultName { get; }
-
-        /// <summary>
-        ///     Gets the certificate secret name.
-        /// </summary>
-        public string CertificateSecretName { get; }
     }
 }
