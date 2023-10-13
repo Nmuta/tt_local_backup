@@ -109,8 +109,11 @@ export class DatetimeRangePickerComponent
   });
 
   public currentDates = this.mergeDates(this.formGroup.value);
-  public startTimeSlot = 'startTimeSlot'
-  public endTimeSlot = 'endTimeSlot'
+  public startTimeSlot = 'startTimeSlot';
+  public endTimeSlot = 'endTimeSlot';
+
+  public userPickedStartDate: unknown = null;
+  public userPickedEndDate: unknown = null;
 
 
   private readonly onChanges$ = new Subject<DatetimeRangePickerFormValueInternal>();
@@ -135,6 +138,13 @@ export class DatetimeRangePickerComponent
       .subscribe(value => {
         const valueStringified = stringifyDateTimeRange(value);
         const hasChanges = !isEqual(valueStringified, lastValueStringified);
+
+        /* save the user picked start date and end date 
+        in case we need to increment this choice when UTC bumps time to the next day */ 
+        if(value.start && value.end){
+          this.userPickedStartDate = value.start['c']['day'];
+          this.userPickedEndDate = value.end['c']['day'];
+        }
 
         // when there are changes and the values do not match, revalidate everything
         if (hasChanges) {
@@ -214,8 +224,21 @@ export class DatetimeRangePickerComponent
     return null;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   bumpDay = (e: unknown)=>{
-    console.log("bumped !  is ", e)
+    
+    console.log('bump')
+    const timeSlotToBeAltered = (e == 'startTimeSlot' ? 'start' : 'end');
+
+    let alteredFormValue = {...this.formGroup.value}
+    alteredFormValue.dateRange[timeSlotToBeAltered].c.day += 1;
+
+    console.log('alteredFormValue', alteredFormValue);
+
+    
+    this.onChanges$.next(alteredFormValue);
+    this.formGroup.updateValueAndValidity();
+    
   }
 
   /**
