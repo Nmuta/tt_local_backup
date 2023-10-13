@@ -4,11 +4,13 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   HostBinding,
   Input,
   OnChanges,
   OnDestroy,
   Optional,
+  Output,
   Self,
   ViewChild,
 } from '@angular/core';
@@ -21,7 +23,6 @@ import {
   Validator,
 } from '@angular/forms';
 import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
-import { time } from 'console';
 import { isNull, isUndefined } from 'lodash';
 import { DateTime } from 'luxon';
 import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
@@ -58,10 +59,20 @@ export class TimepickerComponent
   @HostBinding()
   public id = `steward-timepicker-${TimepickerComponent.nextId++}`;
 
+   /** If the time picked when converted wraps to UTC day +1, notify date picker */
+   @Output() public bumpDay = new EventEmitter<unknown>();
+
+
   /** MatFormFieldControl hook. */
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('aria-describedby')
   public userAriaDescribedBy: string;
+
+    /**
+     get the corresponding timeSlot
+     */
+   // eslint-disable-next-line @angular-eslint/no-input-rename
+   @Input('timeSlot') public timeSlot: string;
 
   /** Minimum datetime allowed. */
   @Input()
@@ -70,6 +81,8 @@ export class TimepickerComponent
 
   public _value: DateTime = DateTime.utc().startOf('day');
   public _valueInternal: string = this._value.toFormat('HH:mm');
+  public startTimeIsNextDay: boolean = false;
+  public endTimeIsNextDay: boolean = false;
 
   /** MatFormFieldControl hook. */
   public focused = false;
@@ -289,6 +302,7 @@ export class TimepickerComponent
   /** User chosen time should be local time for user. Add the UTC offset. */
   private translateToUTC(userLocalTimePicked: string): string {
     
+     
     const timeZoneOffset = new Date().getTimezoneOffset();
 
     const hoursDifference = Math.floor(timeZoneOffset/60);
@@ -297,10 +311,16 @@ export class TimepickerComponent
     const userChosenHour = parseInt(userLocalTimePicked.split(':')[0]);
     const userChosenMinute = parseInt(userLocalTimePicked.split(':')[1]);
 
-    const hours = this.leftPadTimeValue(userChosenHour+hoursDifference);
-    const minutes = this.leftPadTimeValue(userChosenMinute+minutesDifference);
+    let hours = userChosenHour+hoursDifference;
+    if(hours > 24){
+      hours = hours - 24;
+      this.bumpDay.emit(this.timeSlot);
+    }
 
-    const UTCtime= `${hours}:${minutes}`;    
+    const hoursString = this.leftPadTimeValue(`${hours}`);
+    const minutesString = this.leftPadTimeValue(userChosenMinute+minutesDifference);
+
+    const UTCtime= `${hoursString}:${minutesString}`;    
     return UTCtime;
   } 
 
