@@ -105,6 +105,8 @@ export class TimepickerComponent
   private _required = false;
   private _disabled = false;
 
+  localTime = '';
+
   /** Gets or sets the value of the input. MatFormFieldControl hook. */
   @Input()
   public get value(): DateTime {
@@ -128,12 +130,9 @@ export class TimepickerComponent
   public set valueInternal(input: string) {
    
     const parsed = DateTime.fromFormat(input, 'HH:mm', { zone: 'utc' });
-    const UTCTime = this.translateToUTC(input);
-    const utcParsed = DateTime.fromFormat(UTCTime, 'HH:mm', { zone: 'utc' });
-
     if (parsed && parsed.isValid) {
-      this._valueInternal = UTCTime;
-      this._value = utcParsed;
+      this._valueInternal = input;
+      this._value = parsed;
     } else {
       this._valueInternal = input;
       this._value = null;
@@ -297,31 +296,44 @@ export class TimepickerComponent
   /** Called when the value changes. */
   public onValueChange($event: string): void {
     this.valueInternal = $event;
+    const local = this.translateToLocal($event);
+    this.localTime = local;
   }
 
+  /** Called when the dynamic value changes within the picker. */
+  public onRealTimeValueChange($event: unknown): void {
+    console.log("eventi ", $event)
+    this.valueInternal = $event.toString();
+    const local = this.translateToLocal($event.toString());
+    this.localTime = local;
+  }
+
+
   /** User chosen time should be local time for user. Add the UTC offset. */
-  private translateToUTC(userLocalTimePicked: string): string {
+  private translateToLocal(utcTime: string): string {
     
-     
     const timeZoneOffset = new Date().getTimezoneOffset();
 
     const hoursDifference = Math.floor(timeZoneOffset/60);
     const minutesDifference = (timeZoneOffset % 60);
 
-    const userChosenHour = parseInt(userLocalTimePicked.split(':')[0]);
-    const userChosenMinute = parseInt(userLocalTimePicked.split(':')[1]);
+    const userChosenHour = parseInt(utcTime.split(':')[0]);
+    const userChosenMinute = parseInt(utcTime.split(':')[1]);
 
-    let hours = userChosenHour+hoursDifference;
-    if(hours > 24){
-      hours = hours - 24;
-      this.bumpDay.emit(this.timeSlot);
+    let suffix = '';
+
+    let hours = userChosenHour-hoursDifference;
+
+    if(hours < 0){
+      hours = 24 - Math.abs(hours);
+      suffix = ' (-1 day)';
     }
 
     const hoursString = this.leftPadTimeValue(`${hours}`);
     const minutesString = this.leftPadTimeValue(userChosenMinute+minutesDifference);
 
-    const UTCtime= `${hoursString}:${minutesString}`;    
-    return UTCtime;
+    const result= `${hoursString}:${minutesString}` + ' local time' + suffix; 
+    return result;
   } 
 
   private leftPadTimeValue(val): string{

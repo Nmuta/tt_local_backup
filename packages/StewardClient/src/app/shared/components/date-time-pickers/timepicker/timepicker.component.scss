@@ -1,0 +1,10 @@
+.timepicker-wrapper{
+  position: relative;
+  background-color: purple;
+  .localTime{
+    position: absolute;
+  }
+  ngx-material-timepicker{
+    position: absolute;
+  }
+}
