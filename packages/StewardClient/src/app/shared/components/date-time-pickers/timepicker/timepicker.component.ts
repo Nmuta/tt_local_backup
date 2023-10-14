@@ -301,8 +301,9 @@ export class TimepickerComponent
     const hoursDifference = Math.floor(timeZoneOffset/60);
     const minutesDifference = (timeZoneOffset % 60);
 
-    const userChosenHour = parseInt(utcTime.split(':')[0]);
-    const userChosenMinute = parseInt(utcTime.split(':')[1]);
+    const timeSegments = utcTime.split(':');
+    const userChosenHour = +timeSegments[0];
+    const userChosenMinute = +timeSegments[1];
 
     let suffix = '';
 
