@@ -4,13 +4,11 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
   HostBinding,
   Input,
   OnChanges,
   OnDestroy,
   Optional,
-  Output,
   Self,
   ViewChild,
 } from '@angular/core';
@@ -59,20 +57,10 @@ export class TimepickerComponent
   @HostBinding()
   public id = `steward-timepicker-${TimepickerComponent.nextId++}`;
 
-   /** If the time picked when converted wraps to UTC day +1, notify date picker */
-   @Output() public bumpDay = new EventEmitter<unknown>();
-
-
   /** MatFormFieldControl hook. */
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('aria-describedby')
   public userAriaDescribedBy: string;
-
-    /**
-     get the corresponding timeSlot
-     */
-   // eslint-disable-next-line @angular-eslint/no-input-rename
-   @Input('timeSlot') public timeSlot: string;
 
   /** Minimum datetime allowed. */
   @Input()
@@ -81,8 +69,6 @@ export class TimepickerComponent
 
   public _value: DateTime = DateTime.utc().startOf('day');
   public _valueInternal: string = this._value.toFormat('HH:mm');
-  public startTimeIsNextDay: boolean = false;
-  public endTimeIsNextDay: boolean = false;
 
   /** MatFormFieldControl hook. */
   public focused = false;
@@ -128,7 +114,6 @@ export class TimepickerComponent
 
   /** Gets or sets the value of the input. Designed to translate for ngx-material-timepicker. */
   public set valueInternal(input: string) {
-   
     const parsed = DateTime.fromFormat(input, 'HH:mm', { zone: 'utc' });
     if (parsed && parsed.isValid) {
       this._valueInternal = input;
@@ -338,6 +323,4 @@ export class TimepickerComponent
   private leftPadTimeValue(val): string{
     return val.toString().padStart(2,'0');
   }
-
-
 }

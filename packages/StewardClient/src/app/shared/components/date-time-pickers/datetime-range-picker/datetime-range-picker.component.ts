@@ -109,13 +109,6 @@ export class DatetimeRangePickerComponent
   });
 
   public currentDates = this.mergeDates(this.formGroup.value);
-  public startTimeSlot = 'startTimeSlot';
-  public endTimeSlot = 'endTimeSlot';
-
-  public userPickedStartDate: unknown = null;
-  public userPickedEndDate: unknown = null;
-
-
   private readonly onChanges$ = new Subject<DatetimeRangePickerFormValueInternal>();
 
   constructor() {
@@ -217,7 +210,6 @@ export class DatetimeRangePickerComponent
     return null;
   }
 
-
   /**
    * Blocks selection of dates prior to defined minimum.
    * @param {DateTime} comparisonTime should either be dateRange.start or dateRange.end
@@ -261,5 +253,4 @@ export class DatetimeRangePickerComponent
   private onChangeFn = (_data: DatetimeRangePickerFormValue) => {
     /* empty */
   };
-
 }
