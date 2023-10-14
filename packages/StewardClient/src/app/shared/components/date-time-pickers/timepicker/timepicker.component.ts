@@ -286,9 +286,9 @@ export class TimepickerComponent
   }
 
   /** Called when the dynamic value changes within the picker. */
-  public onRealTimeValueChange($event: unknown): void {
-    this.valueInternal = $event.toString();
-    const local = this.translateToLocal($event.toString());
+  public onRealTimeValueChange($event: string): void {
+    this.valueInternal = $event;
+    const local = this.translateToLocal($event);
     this.localTime = local;
   }
 
