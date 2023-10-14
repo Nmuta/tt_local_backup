@@ -29,8 +29,6 @@
           #startPicker
           [beforeDate]="currentDates.end"
           [actualDate]="currentDates.start"
-          [timeSlot]="startTimeSlot"
-          (bumpDay)="bumpDay($event)"
         ></timepicker>
         <button
           [disabled]="disableStartTime"
@@ -60,8 +58,6 @@
           #endPicker
           [afterDate]="currentDates.start"
           [actualDate]="currentDates.end"
-          [timeSlot]="endTimeSlot"
-          (bumpDay)="bumpDay($event)"
         ></timepicker>
         <button
           mat-button
