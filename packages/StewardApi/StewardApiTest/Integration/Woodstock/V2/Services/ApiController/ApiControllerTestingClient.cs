@@ -24,11 +24,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V2
             return await ServiceClient.SendRequestAsync<PermissionsManagementService.GetApiPermissionsOutput>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<IList<ForzaPermissionUpdateResult>> PostSetApiPermissions()
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}/services/apiPermissions");
-
-            return await ServiceClient.SendRequestAsync<IList<ForzaPermissionUpdateResult>>(HttpMethod.Post, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
-        }
+        //We DO NOT want to run the Post endpoint in testing for safety reasons
     }
 }
