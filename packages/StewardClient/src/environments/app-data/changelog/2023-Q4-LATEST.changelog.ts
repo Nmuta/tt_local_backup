@@ -8,6 +8,14 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '48e426ca-8f1a-43d2-a089-642d12ef912f',
+      shortMarkdown: 'Content updates now point to retail playtest branch',
+    },
+    {
       tag: { title: '', tool: NavbarTool.PermissionManagement },
       uuid: 'f0f7eeb5-cc19-453c-80a8-193948c72cc8',
       shortMarkdown: `Display user's Object ID`,

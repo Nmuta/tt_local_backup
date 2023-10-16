@@ -14,6 +14,9 @@ namespace StewardGitApi
     internal static class GitHelper
     {
         private const string AutogenBranchName = "steward-api-autogen";
+        // TODO: This is a hotfix. Currently we only integrate with Steelhead repo but in the future this helper SHOULD NOT know anything title-specific (lugeiken 10/16/2023)
+        // https://dev.azure.com/t10motorsport/ForzaTech/_workitems/edit/1634273
+        private const string SteelheadPlaytestBranch = "refs/heads/steelhead-playtest";
         private const int GitCommitHashLength = 40;
 
         /// <summary>
@@ -182,7 +185,7 @@ namespace StewardGitApi
         /// </summary>
         internal static async Task<IEnumerable<PullRequestStatus>> GetPullRequestStatusAsync(AzureContext context, int? mostRecent = null)
         {
-            IEnumerable<GitPullRequest> gitPullRequests = await GetPullRequestsIntoDefaultBranchAsync(context, mostRecent: mostRecent).ConfigureAwait(false);
+            IEnumerable<GitPullRequest> gitPullRequests = await GetPullRequestsIntoPlaytestBranchAsync(context, mostRecent: mostRecent).ConfigureAwait(false);
             return gitPullRequests.Select(pr => pr.Status);
         }
 
@@ -222,7 +225,7 @@ namespace StewardGitApi
                 new GitPullRequest()
                 {
                     SourceRefName = push.RefUpdates.First().Name,
-                    TargetRefName = repo.DefaultBranch,
+                    TargetRefName = SteelheadPlaytestBranch,
                     Title = $"{title}",
                     Description = $"{description}",
                 },
@@ -233,11 +236,11 @@ namespace StewardGitApi
         }
 
         /// <summary>
-        ///     Get pull requests scheduled for merge into the default branch.
+        ///     Get pull requests scheduled for merge into the playtest branch.
         ///     A <c>null</c> <paramref name="mostRecent"/> will
         ///     retrieve all matching pull requests.
         /// </summary>
-        internal static async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(
+        internal static async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoPlaytestBranchAsync(
             AzureContext context,
             PullRequestStatus status = PullRequestStatus.NotSet,
             int? mostRecent = null)
@@ -247,14 +250,12 @@ namespace StewardGitApi
             TeamProjectReference project = await GetProjectAsync(context).ConfigureAwait(false);
             GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
 
-            string branchName = repo.DefaultBranch;
-
             List<GitPullRequest> prs = await gitClient.GetPullRequestsAsync(
                 project.Id,
                 repo.Id,
                 new GitPullRequestSearchCriteria()
                 {
-                    TargetRefName = branchName,
+                    TargetRefName = SteelheadPlaytestBranch,
                     Status = status,
                 },
                 top: mostRecent).ConfigureAwait(false);
@@ -274,15 +275,14 @@ namespace StewardGitApi
 
             GitRepository repo = await GetRepositoryAsync(context).ConfigureAwait(false);
 
-            // Find the default branch
-            string defaultBranchName = WithoutRefsPrefix(repo.DefaultBranch);
-            GitRef defaultBranch = (await gitClient.GetRefsAsync(repo.Id, filter: defaultBranchName).ConfigureAwait(false)).First();
+            // Find the playtest branch
+            GitRef playtestBranch = await GetBranchAsync(context, SteelheadPlaytestBranch).ConfigureAwait(false);
 
             // Craft the new branch that we'll push. Based on name of author.
             GitRefUpdate newBranch = new()
             {
                 Name = $"refs/heads/{BuildBranchName(context, proxyChanges.First().AuthorName ?? AutogenBranchName)}",
-                OldObjectId = defaultBranch.ObjectId,
+                OldObjectId = playtestBranch.ObjectId,
             };
 
             // Create the push with the new branch and commit

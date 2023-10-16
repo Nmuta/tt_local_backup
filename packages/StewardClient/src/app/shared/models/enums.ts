@@ -163,6 +163,7 @@ export enum StewardErrorCode {
 export enum PegasusProjectionSlot {
   Live = 'live',
   LiveSteward = 'live-steward',
+  Playtest = 'playtest',
   Daily = 'daily',
 }
 

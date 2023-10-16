@@ -77,7 +77,7 @@ export class GenericPopupTileComponent extends BaseComponent implements OnChange
         return steelheadLocalizationService.getLocalizedStrings$(
           true,
           PegasusEnvironment.Dev,
-          PegasusProjectionSlot.Daily,
+          PegasusProjectionSlot.Playtest,
         );
       },
     };
