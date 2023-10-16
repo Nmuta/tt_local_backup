@@ -8,6 +8,19 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: '', tool: NavbarTool.PermissionManagement },
+      uuid: 'f0f7eeb5-cc19-453c-80a8-193948c72cc8',
+      shortMarkdown: `Display user's Object ID`,
+      longMarkdown: `
+        Manage User Permissions -> Selected User view, header
+        - User's Object ID is displayed
+        - Sub-title fields now auto-highlight (name, email, object id)
+
+        User icon -> Profile view
+        - User's \`ID\` is now called \`Object ID\`
+      `,
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
       uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
       shortMarkdown:
