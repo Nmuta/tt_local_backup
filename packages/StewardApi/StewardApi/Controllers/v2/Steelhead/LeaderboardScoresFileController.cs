@@ -86,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
             [FromQuery] string pivotId,
             [FromQuery] string pegasusEnvironment = null)
         {
-            const int scoresToPull = 100_000;
+            const int scoresToPull = 8_000;
 
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -151,7 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                     while (retry);
 
                     // Successfully pulling scores, now pull them all.
-                    var scoreIndex = 0;
+                    var scoreIndex = 1; // Leaderboards are indexed by ranking, which starts at 1.
                     var keepQuerying = true;
 
                     while (keepQuerying)
@@ -171,7 +171,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                             keepQuerying = false;
                         }
 
-                        scoreIndex = +scoresToPull;
+                        scoreIndex += scoresToPull;
                         scores.AddRange(scoreResults);
                     }
 

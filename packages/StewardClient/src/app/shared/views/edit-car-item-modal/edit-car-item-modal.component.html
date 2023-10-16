@@ -21,6 +21,14 @@
       <td>{{ carItem.vin }}</td>
     </tr>
     <tr>
+      <th>Item Source</th>
+      <td>{{ carItem.inventoryItemSource }}</td>
+    </tr>
+    <tr>
+      <th>Acquisition Type</th>
+      <td>{{ carItem.acquisitionType }}</td>
+    </tr>
+    <tr>
       <th>Entitlement Id</th>
       <td>{{ carItem.entitlementId }}</td>
     </tr>
@@ -65,6 +73,14 @@
       <mat-label>Experience Points</mat-label>
       <input matInput [formControl]="formControls.experiencePoints" />
       <mat-hint>Experience points determine the car's current level</mat-hint>
+      <mat-error *ngIf="formControls.experiencePoints.hasError('min')"
+        >Cannot be below 0
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Total Car Points</mat-label>
+      <input matInput [formControl]="formControls.carPointsTotal" />
       <mat-error *ngIf="formControls.experiencePoints.hasError('min')"
         >Cannot be below 0
       </mat-error>

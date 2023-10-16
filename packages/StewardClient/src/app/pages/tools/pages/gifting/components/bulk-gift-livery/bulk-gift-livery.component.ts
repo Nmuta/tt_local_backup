@@ -338,14 +338,21 @@ export class BulkGiftLiveryComponent<IdentityT extends IdentityResultUnion>
   }
 
   private sendLiveryRequest$(): Observable<BackgroundJob<unknown> | GiftResponse<BigNumber>> {
+    const localizedTitleId = this.service.allowSettingLocalizedMessage
+      ? this.formControls.localizedTitleMessageInfo.value?.id
+      : null;
+    const localizedBodyId = this.service.allowSettingLocalizedMessage
+      ? this.formControls.localizedBodyMessageInfo.value?.id
+      : null;
+
     if (this.usingPlayerIdentities) {
       return this.service.giftLiveriesToPlayers$(
         this.liveries.map(x => x.id),
         this.playerIdentities.map(identity => identity.xuid),
         this.formControls.giftReason.value,
         this.getExpireDateInDays(),
-        this.formControls.localizedTitleMessageInfo.value.id,
-        this.formControls.localizedBodyMessageInfo.value.id,
+        localizedTitleId,
+        localizedBodyId,
       );
     } else {
       return this.service.giftLiveriesToLspGroup$(
@@ -353,8 +360,8 @@ export class BulkGiftLiveryComponent<IdentityT extends IdentityResultUnion>
         this.lspGroup,
         this.formControls.giftReason.value,
         this.getExpireDateInDays(),
-        this.formControls.localizedTitleMessageInfo.value.id,
-        this.formControls.localizedBodyMessageInfo.value.id,
+        localizedTitleId,
+        localizedBodyId,
       );
     }
   }

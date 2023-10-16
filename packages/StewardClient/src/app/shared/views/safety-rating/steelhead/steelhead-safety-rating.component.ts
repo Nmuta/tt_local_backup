@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { GameTitle } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { SafetyRatingUpdate } from '@models/player-safety-rating.model';
+import { SafetyRatingInput } from '@models/player-safety-rating.model';
 import { SteelheadPlayerSafetyRatingService } from '@services/api-v2/steelhead/player/safety-rating/steelhead-player-safety-rating.service';
 import BigNumber from 'bignumber.js';
 import { SafetyRatingServiceContract } from '../safety-rating.component';
@@ -23,8 +23,10 @@ export class SteelheadSafetyRatingComponent {
     this.service = {
       gameTitle: GameTitle.FM8,
       getSafetyRating$: xuid => steelheadPlayerSafetyRatingService.getSafetyRatingByXuid$(xuid),
-      setSafetyRating$: (xuid: BigNumber, safetyRatingUpdate: SafetyRatingUpdate) =>
+      setSafetyRating$: (xuid: BigNumber, safetyRatingUpdate: SafetyRatingInput) =>
         steelheadPlayerSafetyRatingService.setSafetyRatingByXuid$(xuid, safetyRatingUpdate),
+      deleteSafetyRating$: xuid =>
+        steelheadPlayerSafetyRatingService.deleteSafetyRatingByXuid$(xuid),
     };
   }
 }

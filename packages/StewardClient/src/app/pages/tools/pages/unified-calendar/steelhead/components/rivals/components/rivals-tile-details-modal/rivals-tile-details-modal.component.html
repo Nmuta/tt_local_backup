@@ -1,6 +1,18 @@
 <section>
   <h2 mat-dialog-title>
     <span>Rivals Event Details</span>
+    <div class="sf-spacer"></div>
+    <button
+      mat-raised-button
+      mat-button
+      color="primary"
+      [routerLink]="routerLink"
+      [queryParams]="queryParams"
+      matTooltip="Navigate to leaderboard scores view"
+      mat-dialog-close
+    >
+      Leaderboard Scores
+    </button>
     <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
   </h2>
 
