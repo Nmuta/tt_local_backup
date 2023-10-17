@@ -31,8 +31,7 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
       uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
-      shortMarkdown:
-        "Add link from Rival's Event calendar selection to leaderboard scores for the event",
+      shortMarkdown: `Add link from Rival's Event calendar selection to leaderboard scores for the event`,
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
