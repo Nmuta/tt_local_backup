@@ -9,8 +9,8 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   entries: [
     {
       tag: { title: GameTitle.FM8, tool: [NavbarTool.UserDetails] },
-      uuid: '93505355-a276-4bd1-843c-0f0ff2cc5bf1',
-      shortMarkdown: 'Hotfix to avoid Out-of-memory error on Player Details -> Inventory',
+      uuid: '74048714-0464-4154-9f42-96d121b22f25',
+      shortMarkdown: 'Avoid Out-of-memory error on Player Details -> Inventory',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
