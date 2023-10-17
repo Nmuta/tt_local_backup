@@ -4,7 +4,10 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SteelheadPlayerInventory, SteelheadPlayerInventoryItem } from '@models/steelhead';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { SteelheadInventoryItemSource, SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
+import {
+  SteelheadInventoryItemSource,
+  SteelheadPlayerInventoryCarItem,
+} from '@models/player-inventory-item';
 import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for steelhead player inventory. */

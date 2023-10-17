@@ -52,7 +52,7 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent implem
   public vin: string;
   public externalProfileId: string;
 
-    public carItem: SteelheadPlayerInventoryCarItem;
+  public carItem: SteelheadPlayerInventoryCarItem;
 
   public editCardPermission = PermAttributeName.ManagePlayerInventory;
 

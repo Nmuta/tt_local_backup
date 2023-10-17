@@ -3,7 +3,10 @@ import faker from '@faker-js/faker';
 import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { SteelheadInventoryItemSource, SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
+import {
+  SteelheadInventoryItemSource,
+  SteelheadPlayerInventoryCarItem,
+} from '@models/player-inventory-item';
 import { SteelheadPlayerInventory, SteelheadPlayerInventoryItem } from '@models/steelhead';
 import BigNumber from 'bignumber.js';
 

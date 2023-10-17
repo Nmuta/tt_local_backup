@@ -40,7 +40,9 @@ export class SteelheadEditCarItemModalComponent extends EditCarItemModalBaseComp
   }
 
   /** Edits car item. */
-  public editCarItem$(updatedCar: SteelheadPlayerInventoryCarItem): Observable<SteelheadPlayerInventory> {
+  public editCarItem$(
+    updatedCar: SteelheadPlayerInventoryCarItem,
+  ): Observable<SteelheadPlayerInventory> {
     const inventoryUpdates = cloneDeep(EMPTY_STEELHEAD_PLAYER_INVENTORY);
     inventoryUpdates.cars.push(updatedCar);
 
