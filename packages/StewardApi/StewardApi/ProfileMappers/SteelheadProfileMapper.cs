@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
-                .ForMember(dest => dest.Error, opt => opt.Ignore());
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => !src.Success ? new StewardError("Failed to send message") : null));
 
             this.CreateMap<AuctionFilters, ForzaAuctionFilters>()
                 .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))
@@ -517,16 +517,28 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<TextOverrideBridge, TextOverride>()
                 .ReverseMap();
-            this.CreateMap<WofDisplayConditionsBridge, WofBaseDisplayConditions>()
+            this.CreateMap<DisplayConditionBridge, DisplayConditionItem>()
                 .ReverseMap();
-            this.CreateMap<ItemBridge, BaseItem>()
+            this.CreateMap<DisplayConditionWrapper, WofDisplayConditions>()
+                .ReverseMap();
+            this.CreateMap<DateSettingsBridge, DateSettings>()
                 .ReverseMap();
             this.CreateMap<WofBaseTimerReference, TimerReferenceBridge>().ConvertUsing<XmlToBridgeConverterTimerReference>();
             this.CreateMap<TimerReferenceBridge, WofBaseTimerReference>().ConvertUsing<BridgeToXmlConverterTimerReference>();
-            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRangeBridge>()
+            this.CreateMap<WofBaseCustomRange, CustomRangeBridge>()
                 .ReverseMap();
             this.CreateMap<WofBaseRangePoint, RangePointBridge>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.Text))
+                .ReverseMap();
+            this.CreateMap<NullableDisplayName, NullableDisplayNameBridge>()
+                .ReverseMap();
+            this.CreateMap<CooldownsWrapper, WofCooldowns>()
+                .ReverseMap();
+            this.CreateMap<CooldownBridge, CooldownItem>()
+                .ReverseMap();
+            this.CreateMap<CooldownSettingsBridge, CooldownSettings>()
+                .ReverseMap();
+            this.CreateMap<ResetDatesBridge, ResetDates>()
                 .ReverseMap();
 
             this.CreateMap<ForzaUserIds, BasicPlayer>()

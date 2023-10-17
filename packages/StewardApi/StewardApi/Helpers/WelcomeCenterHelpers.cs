@@ -313,7 +313,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 {
                     object value = property.GetValue(target);
 
-                    XNamespace xnamespace = property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
+                    XNamespace xnamespace = property.GetCustomAttributes<XmlElementAttribute>().FirstOrDefault()?.Namespace
+                        ?? property.GetCustomAttribute<XmlAttributeAttribute>()?.Namespace
+                        ?? property.DeclaringType.GetCustomAttribute<XmlTypeAttribute>().Namespace;
 
                     // If value is null take the base name.
                     // If the property is a non-null multi-element base type, use the derived name.
@@ -397,6 +399,12 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                     bool isXmlTx = property.GetCustomAttribute<XmlTextAttribute>() != null;
 
                     object value = property.GetValue(target);
+
+                    // Special case when an object can be a ref or an inline object. If it's a ref, we don't want any childrens.
+                    if (root.Children.Any(x => x.Path.LocalName == "ref") && value is null)
+                    {
+                        continue;
+                    }
 
                     root.Children.Add(new Node()
                     {

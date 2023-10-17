@@ -24,7 +24,7 @@ import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { InventoryItemListDisplayComponentContract } from '@views/inventory-item-list-display/inventory-item-list-display.component';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
-import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
 import { SteelheadEditCarItemModalComponent } from '@views/edit-car-item-modal/steelhead/steelhead-edit-car-item-modal.component';
 import { EditCarItemModalData } from '@views/edit-car-item-modal/edit-car-item-modal.component';
 
@@ -73,7 +73,12 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
         this.playerInventoryService.getInventoryByXuid$(identity.xuid),
       getPlayerInventoryByIdentityAndProfileId$: (identity, profileId) =>
         this.playerInventoryService.getInventoryByProfileId$(identity.xuid, profileId as BigNumber),
-      makewhatToShowList: inventory => this.makewhatToShowList(inventory),
+      makewhatToShowList: inventory => {
+        for (const car of inventory.cars) {
+          (car as PlayerInventoryCarItem).clientCarInfo = undefined;
+        }
+        return this.makewhatToShowList(inventory);
+      },
       inventoryFound: inventory => this.inventoryFound.emit(inventory),
     };
   }

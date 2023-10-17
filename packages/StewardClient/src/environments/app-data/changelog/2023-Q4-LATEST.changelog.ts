@@ -8,10 +8,48 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: [NavbarTool.UserDetails] },
+      uuid: '93505355-a276-4bd1-843c-0f0ff2cc5bf1',
+      shortMarkdown: 'Hotfix to avoid Out-of-memory error on Player Details -> Inventory',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
+      uuid: 'a05517ac-18b4-4250-ad44-63a94887bb38',
+      shortMarkdown: 'Add start/end date fields',
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
+        tool: NavbarTool.Messaging,
+      },
+      uuid: '465dc266-7e4e-415b-a1b4-097249eebe5e',
+      shortMarkdown: 'Display error when player messaging fails',
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '48e426ca-8f1a-43d2-a089-642d12ef912f',
+      shortMarkdown: 'Content updates now point to retail playtest branch',
+    },
+    {
+      tag: { title: '', tool: NavbarTool.PermissionManagement },
+      uuid: 'f0f7eeb5-cc19-453c-80a8-193948c72cc8',
+      shortMarkdown: `Display user's Object ID`,
+      longMarkdown: `
+        Manage User Permissions -> Selected User view, header
+        - User's Object ID is displayed
+        - Sub-title fields now auto-highlight (name, email, object id)
+
+        User icon -> Profile view
+        - User's \`ID\` is now called \`Object ID\`
+      `,
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
       uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
-      shortMarkdown:
-        "Add link from Rival's Event calendar selection to leaderboard scores for the event",
+      shortMarkdown: `Add link from Rival's Event calendar selection to leaderboard scores for the event`,
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },

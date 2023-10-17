@@ -1,3 +1,8 @@
 .text-center {
   text-align: center;
 }
+
+// Automatically highlight the contents of this element when clicked
+.click-highlight {
+  user-select: all;
+}

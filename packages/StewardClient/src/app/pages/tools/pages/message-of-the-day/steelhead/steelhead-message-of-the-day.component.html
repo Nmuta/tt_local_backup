@@ -63,7 +63,7 @@
                   <input
                     matInput
                     [matDatepicker]="picker"
-                    [formControl]="formControls.date"
+                    [formControl]="formControls.dateUtc"
                     [disabled]="!isInEditMode"
                   />
                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -105,6 +105,24 @@
                   <mat-icon>close</mat-icon>
                 </button>
               </mat-form-field>
+              <div class="sf-horizontal">
+                <div class="timer-date">
+                  <mat-label>Start Date (mm/dd/yyyy)</mat-label>
+                  <datetime-picker
+                    [min]="minDate"
+                    [formControl]="formControls.fromDateUtc"
+                    [disabled]="!isInEditMode"
+                  ></datetime-picker>
+                </div>
+                <div class="timer-date">
+                  <mat-label>End Date (mm/dd/yyyy)</mat-label>
+                  <datetime-picker
+                    [min]="minDate"
+                    [formControl]="formControls.toDateUtc"
+                    [disabled]="!isInEditMode"
+                  ></datetime-picker>
+                </div>
+              </div>
               <div>
                 <verify-button
                   #verifyBtn
