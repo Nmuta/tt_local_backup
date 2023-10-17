@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
+      uuid: 'a05517ac-18b4-4250-ad44-63a94887bb38',
+      shortMarkdown: 'Add start/end date fields',
+    },
+    {
       tag: {
         title: GameTitle.FM8,
         tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
