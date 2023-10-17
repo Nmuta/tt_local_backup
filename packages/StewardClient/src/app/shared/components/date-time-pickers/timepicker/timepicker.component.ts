@@ -296,32 +296,20 @@ export class TimepickerComponent
   /** User chosen time should be local time for user. Add the UTC offset. */
   private translateToLocal(utcTime: string): string {
     
-    const timeZoneOffset = new Date().getTimezoneOffset();
-
-    const hoursDifference = Math.floor(timeZoneOffset/60);
-    const minutesDifference = (timeZoneOffset % 60);
-
-    const timeSegments = utcTime.split(':');
-    const userChosenHour = +timeSegments[0];
-    const userChosenMinute = +timeSegments[1];
+    const parsedTime = DateTime.fromFormat(utcTime, 'HH:mm', {zone: 'utc'});
+    const projectedLocalTime = parsedTime.setZone(DateTime.local().zoneName);
+    const localTimeString = projectedLocalTime.toFormat('HH:mm');
 
     let suffix = '';
+    // get the days to track previous or next day after conversion from UTC
+    const utcDay = parsedTime.day;
+    const localDay = projectedLocalTime.day;
 
-    let hours = userChosenHour-hoursDifference;
-
-    if(hours < 0){
-      hours = 24 - Math.abs(hours);
+    if(utcDay > localDay){
       suffix = ' (-1 day)';
+    } else if (localDay > utcDay){
+      suffix = ' (+1 day)';
     }
-
-    const hoursString = this.leftPadTimeValue(`${hours}`);
-    const minutesString = this.leftPadTimeValue(userChosenMinute+minutesDifference);
-
-    const result= `${hoursString}:${minutesString}` + ' local time' + suffix; 
-    return result;
+    return localTimeString + suffix;
   } 
-
-  private leftPadTimeValue(val): string{
-    return val.toString().padStart(2,'0');
-  }
 }
