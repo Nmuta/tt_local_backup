@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: GameTitle.FM8, tool: [NavbarTool.UserDetails] },
+      uuid: '93505355-a276-4bd1-843c-0f0ff2cc5bf1',
+      shortMarkdown: 'Hotfix to avoid Out-of-memory error on Player Details -> Inventory',
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
       uuid: 'a05517ac-18b4-4250-ad44-63a94887bb38',
       shortMarkdown: 'Add start/end date fields',
