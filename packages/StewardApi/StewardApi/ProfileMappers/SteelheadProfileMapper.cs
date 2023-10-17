@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
-                .ForMember(dest => dest.Error, opt => opt.Ignore());
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => !src.Success ? new StewardError("Failed to send message") : null));
 
             this.CreateMap<AuctionFilters, ForzaAuctionFilters>()
                 .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))
