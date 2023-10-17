@@ -8,6 +8,12 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.Leaderboards] },
+      uuid: '02a287c0-26dc-4ada-af5f-58fe0fe42dfd',
+      shortMarkdown:
+        'Organize verify buttons so that they are next to associated action instead of on line above',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: [NavbarTool.UserDetails] },
       uuid: '93505355-a276-4bd1-843c-0f0ff2cc5bf1',
       shortMarkdown: 'Hotfix to avoid Out-of-memory error on Player Details -> Inventory',
