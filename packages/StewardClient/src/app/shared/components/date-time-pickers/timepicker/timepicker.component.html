@@ -10,7 +10,7 @@
   (ngModelChange)="onValueChange($event)"
   [min]="minFormatted"
 />
-<mat-hint>{{_localTime}}</mat-hint>
+<span>{{_localTime}}</span>
 <div class="timepicker-wrapper">
   <ngx-material-timepicker #customHint #picker 
      [editableHintTmpl]="dialHint"
