@@ -51,6 +51,7 @@ namespace Turn10.LiveOps.StewardTest
         public const string ValidReplayUgcId = "cd957724-e560-418e-ae8d-199d5720fb34";
         public const string TestMessageOfTheDayId = "40b18822-eaa9-4c10-b468-b8460527c66b";
         public const string ValidTextTileId = "b1341039-313f-4f6a-a261-b7185f7177a0";
+        public const string ValidWoodstockLiveryUgcId = "c5329e63-3c1f-4d60-b251-9e69cb2aeda7";
 
         // Test account, removed until we have valid test account setup
         public const ulong TestAccountXuid = 2535405314408422;

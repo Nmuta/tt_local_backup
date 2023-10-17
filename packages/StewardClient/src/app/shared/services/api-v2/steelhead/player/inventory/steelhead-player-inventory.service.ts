@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
 import { SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
@@ -16,17 +17,27 @@ export class SteelheadPlayerInventoryService {
   constructor(private readonly api: ApiV2Service) {}
 
   /** Gets user inventory by a XUID. */
-  public getInventoryByXuid$(xuid: BigNumber): Observable<SteelheadPlayerInventory> {
-    return this.api.getRequest$<SteelheadPlayerInventory>(`${this.basePath}/${xuid}/inventory`);
+  public getInventoryByXuid$(
+    xuid: BigNumber,
+    includeClientCarInfo: boolean = true,
+  ): Observable<SteelheadPlayerInventory> {
+    const params = new HttpParams().set('includeClientCarInfo', includeClientCarInfo);
+    return this.api.getRequest$<SteelheadPlayerInventory>(
+      `${this.basePath}/${xuid}/inventory`,
+      params,
+    );
   }
 
   /** Gets user inventory by a profile ID. */
   public getInventoryByProfileId$(
     xuid: BigNumber,
     profileId: BigNumber,
+    includeClientCarInfo: boolean = true,
   ): Observable<SteelheadPlayerInventory> {
+    const params = new HttpParams().set('includeClientCarInfo', includeClientCarInfo);
     return this.api.getRequest$<SteelheadPlayerInventory>(
       `${this.basePath}/${xuid}/inventory/profile/${profileId}`,
+      params,
     );
   }
 

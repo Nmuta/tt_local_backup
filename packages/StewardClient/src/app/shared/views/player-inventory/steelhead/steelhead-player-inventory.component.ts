@@ -25,6 +25,7 @@ import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { InventoryItemListDisplayComponentContract } from '@views/inventory-item-list-display/inventory-item-list-display.component';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
 import { SteelheadEditCarItemModalComponent } from '@views/edit-car-item-modal/steelhead/steelhead-edit-car-item-modal.component';
 import { EditCarItemModalData } from '@views/edit-car-item-modal/edit-car-item-modal.component';
 import { SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
@@ -71,15 +72,14 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
     this.playerInventoryComponentService = {
       gameTitle: this.gameTitle,
       getPlayerInventoryByIdentity$: identity =>
-        this.playerInventoryService.getInventoryByXuid$(identity.xuid),
+        this.playerInventoryService.getInventoryByXuid$(identity.xuid, false),
       getPlayerInventoryByIdentityAndProfileId$: (identity, profileId) =>
-        this.playerInventoryService.getInventoryByProfileId$(identity.xuid, profileId as BigNumber),
-      makewhatToShowList: inventory => {
-        for (const car of inventory.cars) {
-          (car as SteelheadPlayerInventoryCarItem).clientCarInfo = undefined;
-        }
-        return this.makewhatToShowList(inventory);
-      },
+        this.playerInventoryService.getInventoryByProfileId$(
+          identity.xuid,
+          profileId as BigNumber,
+          false,
+        ),
+      makewhatToShowList: inventory => this.makewhatToShowList(inventory),
       inventoryFound: inventory => this.inventoryFound.emit(inventory),
     };
   }

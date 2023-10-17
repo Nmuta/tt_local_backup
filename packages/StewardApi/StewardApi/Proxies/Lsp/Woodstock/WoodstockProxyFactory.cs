@@ -22,7 +22,6 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock
             this.Settings = settingsProvider;
             this.ForgedCredentialProvider = forgedCredentialProvider;
 
-            // TODO: This should also be injected
             this.ForzaClient = client;
         }
 
