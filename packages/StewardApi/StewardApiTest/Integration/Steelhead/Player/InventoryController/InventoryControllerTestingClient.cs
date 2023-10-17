@@ -30,11 +30,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Steelhead
             return await ServiceClient.SendRequestAsync<SteelheadPlayerInventory>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<PlayerInventoryCarItem> GetPlayerInventorySpecificCar(ulong xuid, ulong profileId, string vin)
+        public async Task<SteelheadPlayerInventoryCarItem> GetPlayerInventorySpecificCar(ulong xuid, ulong profileId, string vin)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/player/{xuid}/inventory/profile/{profileId}/car/{vin}");
 
-            return await ServiceClient.SendRequestAsync<PlayerInventoryCarItem>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<SteelheadPlayerInventoryCarItem>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<IList<SteelheadInventoryProfile>> GetPlayerInventoryProfiles(ulong xuid)

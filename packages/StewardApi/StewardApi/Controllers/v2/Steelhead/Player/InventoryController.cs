@@ -147,7 +147,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         ///     Gets a specific car from player inventory based on profile id.
         /// </summary>
         [HttpGet("profile/{profileId}/car/{vin}")]
-        [SwaggerResponse(200, type: typeof(PlayerInventoryCarItem))]
+        [SwaggerResponse(200, type: typeof(SteelheadPlayerInventoryCarItem))]
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
         public async Task<IActionResult> GetPlayerInventoryCar(
@@ -278,10 +278,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
 
             var results = new SteelheadPlayerInventory
             {
-                CreditRewards = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.Credits)) : new List<PlayerInventoryItem>(),
-                VanityItems = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.VanityItem)) : new List<PlayerInventoryItem>(),
-                DriverSuits = rawResults != null ? this.mapper.SafeMap<PlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.DriverSuit)) : new List<PlayerInventoryItem>(),
-                Cars = carRawResults != null ? this.mapper.SafeMap<PlayerInventoryCarItem[]>(carRawResults.carOutput) : new List<PlayerInventoryCarItem>(),
+                CreditRewards = rawResults != null ? this.mapper.SafeMap<SteelheadPlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.Credits)) : new List<SteelheadPlayerInventoryItem>(),
+                VanityItems = rawResults != null ? this.mapper.SafeMap<SteelheadPlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.VanityItem)) : new List<SteelheadPlayerInventoryItem>(),
+                DriverSuits = rawResults != null ? this.mapper.SafeMap<SteelheadPlayerInventoryItem[]>(rawResults.itemResults.Where(item => item.ItemType == InventoryItemType.DriverSuit)) : new List<SteelheadPlayerInventoryItem>(),
+                Cars = carRawResults != null ? this.mapper.SafeMap<SteelheadPlayerInventoryCarItem[]>(carRawResults.carOutput) : new List<SteelheadPlayerInventoryCarItem>(),
                 Errors = exceptions,
             };
 

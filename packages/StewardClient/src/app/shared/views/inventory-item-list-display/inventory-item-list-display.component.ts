@@ -10,7 +10,7 @@ import {
   PlayerInventoryItemListEntry,
 } from '@models/master-inventory-item-list';
 import {
-  PlayerInventoryCarItem,
+  SteelheadPlayerInventoryCarItem,
   PlayerInventoryItem,
   isPlayerInventoryItem,
   toPlayerInventoryCarItem,
@@ -22,7 +22,7 @@ import { Observable, filter, take, takeUntil } from 'rxjs';
 /** Service contract for InventoryItemListDisplayComponent. */
 export interface InventoryItemListDisplayComponentContract {
   /** Optional: Allows editing of inventory car items. */
-  openCarEditModal$(item: PlayerInventoryItem): Observable<PlayerInventoryCarItem>;
+  openCarEditModal$(item: PlayerInventoryItem): Observable<SteelheadPlayerInventoryCarItem>;
   /** Optional: Allows editing of inventory items. */
   editItemQuantity$(item: PlayerInventoryItem, quantityChange: number): Observable<unknown>;
   /** Optional: Allows deleting of inventory items. */
@@ -120,7 +120,7 @@ export class InventoryItemListDisplayComponent extends BaseComponent implements 
   }
 
   /** Edits a car item. */
-  public editCarItem(item: PlayerInventoryCarItem, index: number): void {
+  public editCarItem(item: SteelheadPlayerInventoryCarItem, index: number): void {
     if (!this.isCarItem(item)) {
       throw new Error(
         'Non-car items should not support car property changes. Verify InventoryItemListDisplayComponentContract is implementing editItemQuantity$ instead of openCarEditModal$',

@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { WoodstockPlayerInventory } from '@models/woodstock';
+import { WoodstockPlayerInventory, WoodstockPlayerInventoryItem } from '@models/woodstock';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { WoodstockInventoryItemSource } from '@models/player-inventory-item';
 import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for woodstock player inventory. */
@@ -37,7 +37,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(_xuid: BigNumber): WoodstockPlayerInventory {
-    function makeFakeItems(count: number): PlayerInventoryItem[] {
+    function makeFakeItems(count: number): WoodstockPlayerInventoryItem[] {
       return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
@@ -46,6 +46,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
+            inventoryItemSource: WoodstockInventoryItemSource.Unknown,
             acquiredUtc: toDateTime(faker.date.past()),
             error: undefined,
           };
@@ -59,6 +60,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'Credits',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          inventoryItemSource: WoodstockInventoryItemSource.Unknown,
           error: undefined,
         },
         {
@@ -66,6 +68,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'WheelSpins',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          inventoryItemSource: WoodstockInventoryItemSource.Unknown,
           error: undefined,
         },
         {
@@ -73,6 +76,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'SuperWheelSpins',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          inventoryItemSource: WoodstockInventoryItemSource.Unknown,
           error: undefined,
         },
         {
@@ -80,6 +84,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'SkillPoints',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          inventoryItemSource: WoodstockInventoryItemSource.Unknown,
           error: undefined,
         },
         {
@@ -87,6 +92,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'ForzathonPoints',
           quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
+          inventoryItemSource: WoodstockInventoryItemSource.Unknown,
           error: undefined,
         },
       ],

@@ -64,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
             throw new NotImplementedException();
         }
 
-        private async Task ValidateItemsAsync(IList<PlayerInventoryItem> items, ModelStateDictionary modelState, string propertyName)
+        private async Task ValidateItemsAsync(IList<SteelheadPlayerInventoryItem> items, ModelStateDictionary modelState, string propertyName)
         {
             var pegasusVanityItems = await this.pegasusService.GetVanityItemsAsync().ConfigureAwait(false);
             var stringBuilder = new StringBuilder();
@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
             }
         }
 
-        private async Task ValidateCarsAsync(IList<PlayerInventoryCarItem> cars, ModelStateDictionary modelState)
+        private async Task ValidateCarsAsync(IList<SteelheadPlayerInventoryCarItem> cars, ModelStateDictionary modelState)
         {
             var pegasusCars = await this.pegasusService.GetCarsAsync().ConfigureAwait(true);
             var stringBuilder = new StringBuilder();

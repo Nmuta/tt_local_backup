@@ -35,25 +35,28 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public WoodstockProfileMapper()
         {
-            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
+            this.CreateMap<InventoryItemSource, WoodstockInventoryItemSource>();
+            this.CreateMap<AdminForzaCarUserInventoryItem, WoodstockPlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(dest => dest.InventoryItemSource, opt => opt.MapFrom(src => src.itemSource))
                 .ForMember(des => des.Error, opt => opt.Ignore())
                 .ReverseMap();
-            this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
+            this.CreateMap<AdminForzaUserInventoryItem, WoodstockPlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(dest => dest.InventoryItemSource, opt => opt.MapFrom(src => src.itemSource))
                 .ForMember(des => des.Error, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, WoodstockPlayerInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<WoodstockPlayerInventoryItem>
                 {
-                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
-                    new PlayerInventoryItem { Id = -1, Description = "WheelSpins", Quantity = src.wheelSpins },
-                    new PlayerInventoryItem { Id = -1, Description = "SuperWheelSpins", Quantity = src.superWheelSpins },
-                    new PlayerInventoryItem { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints },
+                    new WoodstockPlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
+                    new WoodstockPlayerInventoryItem { Id = -1, Description = "WheelSpins", Quantity = src.wheelSpins },
+                    new WoodstockPlayerInventoryItem { Id = -1, Description = "SuperWheelSpins", Quantity = src.superWheelSpins },
+                    new WoodstockPlayerInventoryItem { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints },
                 }))
                 .ReverseMap();
             this.CreateMap<ServicesLiveOps.AdminForzaProfile, WoodstockInventoryProfile>()

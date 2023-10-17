@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// <summary>
     ///     Represents a Steelhead master inventory.
     /// </summary>
-    public sealed class SteelheadPlayerInventory : SteelheadBaseInventory<PlayerInventoryItem, PlayerInventoryCarItem>
+    public sealed class SteelheadPlayerInventory : SteelheadBaseInventory<SteelheadPlayerInventoryItem, SteelheadPlayerInventoryCarItem>
     {
         public IEnumerable<Exception> Errors { get; set; }
     }
