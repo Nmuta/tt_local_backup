@@ -20,6 +20,14 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
     {
       tag: {
         title: GameTitle.FM8,
+        tool: NavbarTool.Messaging,
+      },
+      uuid: '465dc266-7e4e-415b-a1b4-097249eebe5e',
+      shortMarkdown: 'Display error when player messaging fails',
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
         tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
       },
       uuid: '48e426ca-8f1a-43d2-a089-642d12ef912f',
