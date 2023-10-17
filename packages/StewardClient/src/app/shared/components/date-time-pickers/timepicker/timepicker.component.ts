@@ -300,15 +300,15 @@ export class TimepickerComponent
     const projectedLocalTime = parsedTime.setZone(DateTime.local().zoneName);
     const localTimeString = projectedLocalTime.toFormat('HH:mm');
 
-    let suffix = '';
+    let suffix = ' local time ';
     // get the days to track previous or next day after conversion from UTC
     const utcDay = parsedTime.day;
     const localDay = projectedLocalTime.day;
 
     if(utcDay > localDay){
-      suffix = ' (-1 day)';
+      suffix += ' (-1 day)';
     } else if (localDay > utcDay){
-      suffix = ' (+1 day)';
+      suffix += ' (+1 day)';
     }
     return localTimeString + suffix;
   } 
