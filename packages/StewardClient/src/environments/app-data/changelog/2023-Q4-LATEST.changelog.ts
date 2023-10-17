@@ -13,6 +13,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
       shortMarkdown: 'Hotfix to avoid Out-of-memory error on Player Details -> Inventory',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
+      uuid: 'a05517ac-18b4-4250-ad44-63a94887bb38',
+      shortMarkdown: 'Add start/end date fields',
+    },
+    {
       tag: {
         title: GameTitle.FM8,
         tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
@@ -36,8 +41,7 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
     {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
       uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
-      shortMarkdown:
-        "Add link from Rival's Event calendar selection to leaderboard scores for the event",
+      shortMarkdown: `Add link from Rival's Event calendar selection to leaderboard scores for the event`,
     },
     {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },

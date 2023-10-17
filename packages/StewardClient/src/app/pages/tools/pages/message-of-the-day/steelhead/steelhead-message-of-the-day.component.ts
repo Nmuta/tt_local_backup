@@ -13,7 +13,9 @@ import { SteelheadMessageOfTheDayService } from '@services/api-v2/steelhead/mess
 import { PermAttributeName } from '@services/perm-attributes/perm-attributes';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { VerifyButtonComponent } from '@shared/modules/verify/verify-button/verify-button.component';
+import { DateTime } from 'luxon';
 import { Observable, takeUntil } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 /** The Steelhead message of the day page. */
 @Component({
@@ -41,18 +43,22 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   // Loc string active PRs display
   public newLocStringActivePullRequest: PullRequest;
   public locStringActivePrSubject = PullRequestSubject.LocalizationString;
+  // Min date is needed for datetime picker to not crash. We use epoch time
+  public minDate = DateTime.fromSeconds(0);
 
   public formControls = {
     selectedMessageOfTheDay: new UntypedFormControl(null, [Validators.required]),
     localizedTitleHeader: new UntypedFormControl({ value: {}, disabled: true }, [
       Validators.required,
     ]),
-    date: new UntypedFormControl({}, [Validators.required]),
+    dateUtc: new UntypedFormControl({}, [Validators.required]),
     localizedContentHeader: new UntypedFormControl({ value: {}, disabled: true }),
     localizedContentBody: new UntypedFormControl({ value: {}, disabled: true }, [
       Validators.required,
     ]),
     contentImagePath: new UntypedFormControl(null, [Validators.required]),
+    fromDateUtc: new UntypedFormControl(null, [Validators.required]),
+    toDateUtc: new UntypedFormControl(null, [Validators.required]),
   };
 
   public formGroup: UntypedFormGroup = new UntypedFormGroup(this.formControls);
@@ -141,7 +147,7 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
     this.verifyBtn.isVerified = false;
 
     this.currentMessageOfTheDay.contentImagePath = this.formControls.contentImagePath.value;
-    this.currentMessageOfTheDay.date = this.formControls.date.value;
+    this.currentMessageOfTheDay.date = this.formControls.dateUtc.value;
     // Localization data
     this.currentMessageOfTheDay.titleHeader.locref =
       this.formControls.localizedTitleHeader.value?.id;
@@ -149,6 +155,49 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
       this.formControls.localizedContentHeader.value?.id;
     this.currentMessageOfTheDay.contentBody.locref =
       this.formControls.localizedContentBody.value?.id;
+
+    this.currentMessageOfTheDay.displayConditions.item = [];
+    this.currentMessageOfTheDay.displayConditions.item.push({
+      refId: undefined,
+      when: undefined,
+      friendlyName: '',
+      id: uuidv4(),
+      type: 'LiveConditions.DateRangeDisplayCondition',
+      dateSettings: {
+        range: {
+          from: {
+            dateUtc: this.formControls.fromDateUtc.value,
+            when: undefined,
+            displayName: { text: undefined },
+          },
+          to: {
+            dateUtc: this.formControls.toDateUtc.value,
+            when: undefined,
+            displayName: { text: undefined },
+          },
+          name: '',
+        },
+      },
+    });
+    this.currentMessageOfTheDay.cooldowns.item = [];
+    this.currentMessageOfTheDay.cooldowns.item.push({
+      refId: undefined,
+      when: undefined,
+      friendlyName: '',
+      id: uuidv4(),
+      type: 'LiveConditions.CalendarDayResetCooldown',
+      settings: {
+        resetDates: {
+          item: [
+            {
+              dateUtc: this.formControls.fromDateUtc.value,
+              when: undefined,
+              displayName: { text: undefined },
+            },
+          ],
+        },
+      },
+    });
 
     this.steelheadMessageOfTheDayService
       .submitModification$(
@@ -183,12 +232,24 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
   /** Set form fields using the MessageOfTheDay parameter. */
   private setFields(messageOfTheDayDetail: MessageOfTheDay): void {
     this.formControls.contentImagePath.setValue(messageOfTheDayDetail.contentImagePath);
-    this.formControls.date.setValue(messageOfTheDayDetail.date);
+    this.formControls.dateUtc.setValue(messageOfTheDayDetail.date);
 
     // Localization data
     this.formControls.localizedTitleHeader.reset();
     this.formControls.localizedContentHeader.reset();
     this.formControls.localizedContentBody.reset();
+
+    if (
+      messageOfTheDayDetail.displayConditions.item &&
+      messageOfTheDayDetail.displayConditions.item.length > 0
+    ) {
+      this.formControls.fromDateUtc.setValue(
+        messageOfTheDayDetail.displayConditions.item[0].dateSettings?.range?.from?.dateUtc,
+      );
+      this.formControls.toDateUtc.setValue(
+        messageOfTheDayDetail.displayConditions.item[0].dateSettings?.range?.to?.dateUtc,
+      );
+    }
 
     if (messageOfTheDayDetail.titleHeader.locref) {
       this.formControls.localizedTitleHeader.setValue({

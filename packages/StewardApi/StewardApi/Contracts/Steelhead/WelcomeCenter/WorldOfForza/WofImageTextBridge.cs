@@ -48,7 +48,7 @@
         /// <summary>
         ///     Gets or sets the display conditions bridge.
         /// </summary>
-        public WofDisplayConditionsBridge DisplayConditions { get; set; }
+        public DisplayConditionWrapper DisplayConditions { get; set; }
 
         /// <summary>
         ///     Gets or sets the popup title.
