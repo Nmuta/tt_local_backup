@@ -14,7 +14,21 @@
     <mat-card class="steward-layout-sticky-scroll">
       <mat-card-header class="sf-header">
         <mat-card-title>Manage Permissions</mat-card-title>
-        <mat-card-subtitle>{{ managePermissionCardSubtitle }}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="!selectedUser"
+          >Select user to view & manage their permissions</mat-card-subtitle
+        >
+        <mat-card-subtitle *ngIf="selectedUser">
+          <div>
+            <span class="click-highlight" matTooltip="Display Name">{{ selectedUser.name }}</span>
+            (<span class="click-highlight" matTooltip="Primary Email">{{
+              selectedUser.emailAddress
+            }}</span
+            >)
+          </div>
+          <div class="click-highlight" matTooltip="User's Object ID">
+            {{ selectedUser.objectId }}
+          </div>
+        </mat-card-subtitle>
         <div class="sf-spacer"></div>
         <button
           mat-raised-button

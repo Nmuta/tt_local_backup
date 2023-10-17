@@ -13,6 +13,43 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
       shortMarkdown: 'Add start/end date fields',
     },
     {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '48e426ca-8f1a-43d2-a089-642d12ef912f',
+      shortMarkdown: 'Content updates now point to retail playtest branch',
+    },
+    {
+      tag: { title: '', tool: NavbarTool.PermissionManagement },
+      uuid: 'f0f7eeb5-cc19-453c-80a8-193948c72cc8',
+      shortMarkdown: `Display user's Object ID`,
+      longMarkdown: `
+        Manage User Permissions -> Selected User view, header
+        - User's Object ID is displayed
+        - Sub-title fields now auto-highlight (name, email, object id)
+
+        User icon -> Profile view
+        - User's \`ID\` is now called \`Object ID\`
+      `,
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
+      uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
+      shortMarkdown:
+        "Add link from Rival's Event calendar selection to leaderboard scores for the event",
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '2fc44ca8-e289-4d99-ba37-3b4f0d0c8bb4',
+      shortMarkdown: 'Change input design for safety rating tool',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '5fc188e4-ab03-46a8-8a9c-15fc649a095d',
+      shortMarkdown: 'Fix editing car defaulting car points and upgrades',
+    },
+    {
       tag: { title: GameTitle.FH5, tool: NavbarTool.Gifting },
       uuid: '8287bbe8-c385-408d-b28a-83019506b774',
       shortMarkdown: 'Fix bug causing livery gifting to fail',

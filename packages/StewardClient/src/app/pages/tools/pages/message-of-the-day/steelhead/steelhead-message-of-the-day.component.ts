@@ -91,7 +91,7 @@ export class SteelheadMessageOfTheDayComponent extends BaseComponent implements 
         return steelheadLocalizationService.getLocalizedStrings$(
           true,
           PegasusEnvironment.Dev,
-          PegasusProjectionSlot.Daily,
+          PegasusProjectionSlot.Playtest,
         );
       },
     };

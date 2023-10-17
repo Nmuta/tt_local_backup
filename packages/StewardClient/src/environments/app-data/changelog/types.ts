@@ -4,7 +4,7 @@ import { NavbarTool } from '../tool-list';
 
 export interface ChangelogArea {
   tool: NavbarTool | NavbarTool[];
-  title: GameTitle | GameTitle[] | 'all';
+  title: GameTitle | GameTitle[] | 'all' | '';
 }
 
 export enum ChangelogTag {

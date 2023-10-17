@@ -157,7 +157,7 @@ export class GeneralTileComponent extends BaseComponent {
         return steelheadLocalizationService.getLocalizedStrings$(
           true,
           PegasusEnvironment.Dev,
-          PegasusProjectionSlot.Daily,
+          PegasusProjectionSlot.Playtest,
         );
       },
     };

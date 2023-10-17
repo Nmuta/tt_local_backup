@@ -102,11 +102,11 @@ namespace StewardGitApi
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecent = null)
+        public async Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoPlaytestBranchAsync(PullRequestStatus status, int? mostRecent = null)
         {
             mostRecent.CheckForGreaterThanZero(nameof(mostRecent));
             await this.AzureContext.Connection.ConnectAsync().ConfigureAwait(false);
-            return await GitHelper.GetPullRequestsIntoDefaultBranchAsync(this.AzureContext, status, mostRecent).ConfigureAwait(false);
+            return await GitHelper.GetPullRequestsIntoPlaytestBranchAsync(this.AzureContext, status, mostRecent).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
