@@ -7,11 +7,10 @@ import { createMockApiV2Service } from '@services/api-v2/api-v2.service.mock';
 import { of } from 'rxjs';
 import { EMPTY_STEELHEAD_PLAYER_INVENTORY } from '@models/steelhead';
 import BigNumber from 'bignumber.js';
-import { PlayerInventoryCarItem } from '@models/player-inventory-item';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
-
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
 import { HttpParams } from '@angular/common/http';
+import { SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
 
 describe('SteelheadPlayerInventoryService', () => {
   let service: SteelheadPlayerInventoryService;
@@ -103,7 +102,7 @@ describe('SteelheadPlayerInventoryService', () => {
           `${service.basePath}/${xuid}/inventory/profile/${profileId}/car/${carVin}`,
         );
 
-        expect(response).toEqual(fakeInventoryCarItem as PlayerInventoryCarItem);
+        expect(response).toEqual(fakeInventoryCarItem as SteelheadPlayerInventoryCarItem);
         done();
       });
     });

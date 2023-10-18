@@ -49,6 +49,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(des => des.InventoryItemSource, opt => opt.MapFrom(src => SteelheadInventoryItemSource.Unknown)) //Is this correct? Should I just ignore this value instead?
                 .ForMember(des => des.Error, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()

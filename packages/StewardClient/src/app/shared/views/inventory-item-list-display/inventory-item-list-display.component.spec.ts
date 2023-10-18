@@ -7,7 +7,7 @@ import {
   InventoryItemListDisplayComponentContract,
 } from './inventory-item-list-display.component';
 import faker from '@faker-js/faker';
-import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
+import { PlayerInventoryItem, SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { toDateTime } from '@helpers/luxon';
@@ -211,17 +211,17 @@ describe('InventoryItemListDisplayComponent', () => {
   });
 
   describe('Method: editCarItem', () => {
-    let carItem: Partial<PlayerInventoryCarItem>;
+    let carItem: Partial<SteelheadPlayerInventoryCarItem>;
     beforeEach(() => {
       carItem = {
         ...listEntry,
         vin: faker.datatype.uuid(),
       };
-      component.itemListTableSource.data = [carItem as PlayerInventoryCarItem];
+      component.itemListTableSource.data = [carItem as SteelheadPlayerInventoryCarItem];
     });
 
     it('should invoke service.openCarEditModal$', () => {
-      component.editCarItem(carItem as PlayerInventoryCarItem, 0);
+      component.editCarItem(carItem as SteelheadPlayerInventoryCarItem, 0);
 
       expect(component.service.openCarEditModal$).toHaveBeenCalled();
     });

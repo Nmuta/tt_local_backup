@@ -38,16 +38,10 @@ export interface InventoryItemListDisplayComponentContract {
 export class InventoryItemListDisplayComponent extends BaseComponent implements OnInit, OnChanges {
   /** Player inventory list to show. */
   @Input() public whatToShow: PlayerInventoryItemList;
-  /** Serivce contract for InventoryItemListDisplayComponent. */
+  /** Service contract for InventoryItemListDisplayComponent. */
   @Input() public service: InventoryItemListDisplayComponentContract;
 
-  public inventoryColumns: string[] = [
-    'quantity',
-    'description',
-    'errors',
-    'dateAquired',
-    'actions',
-  ];
+  public inventoryColumns: string[] = ['quantity', 'description', 'errors', 'actions'];
   public errors: MSError[];
 
   public nonCarFormControls = {
