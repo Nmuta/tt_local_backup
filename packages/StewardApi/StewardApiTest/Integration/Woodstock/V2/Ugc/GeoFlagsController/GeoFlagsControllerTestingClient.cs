@@ -8,7 +8,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V2
 {
-    internal class GeoFlagsControllerTestingClient : WoodstockStewardBaseTestingClient
+    public sealed class GeoFlagsControllerTestingClient : WoodstockStewardBaseTestingClient
     {
         public GeoFlagsControllerTestingClient(Uri baseUri, string authKey) : base(baseUri, authKey)
         {
