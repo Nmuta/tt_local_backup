@@ -72,7 +72,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V2
 
         [TestMethod]
         [IntegrationTest]
-        public async Task PostSetReportWeight_InvalidXuid()
+        public async Task SetReportWeight_InvalidXuid()
         {
             try
             {
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V2
 
         [TestMethod]
         [IntegrationTest]
-        public async Task PostSetReportWeight_InvalidAuth()
+        public async Task SetReportWeight_InvalidAuth()
         {
             try
             {
