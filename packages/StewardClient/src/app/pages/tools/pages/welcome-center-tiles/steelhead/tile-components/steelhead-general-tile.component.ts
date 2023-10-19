@@ -391,7 +391,7 @@ export class GeneralTileComponent extends BaseComponent {
 
       // Display conditions
       this.formControls.displayConditions.clear();
-      if (data.displayConditions) {
+      if (data.displayConditions?.item) {
         for (const displayCondition of data.displayConditions.item) {
           this.addDisplayCondition(displayCondition.refId, displayCondition.when);
         }
