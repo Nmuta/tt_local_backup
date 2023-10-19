@@ -61,6 +61,7 @@ using Turn10.LiveOps.StewardApi.Providers.MsTeams;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Pipelines;
+using Turn10.LiveOps.StewardApi.Providers.Settings;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
@@ -348,6 +349,7 @@ namespace Turn10.LiveOps.StewardApi
             builder.RegisterType<StsClientWrapper>().As<IStsClient>().SingleInstance();
             builder.RegisterType<LoggingService>().As<ILoggingService>().SingleInstance();
 
+            builder.RegisterType<GeneralSettingsProvider>().As<IGeneralSettingsProvider>().SingleInstance();
             builder.RegisterType<TaskExecutionScheduler>().As<IScheduler>().SingleInstance();
             builder.RegisterType<LocalCacheStore>().As<IRefreshableCacheStore>().SingleInstance();
             builder.RegisterType<KeyVaultClientFactory>().As<IKeyVaultClientFactory>().SingleInstance();

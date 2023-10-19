@@ -92,9 +92,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead
                 throw new BadRequestStewardException($"The selected category is invalid: {localizedStringBridge.Category})");
             }
 
-            CommitRefProxy change = await this.pegasusService.WriteLocalizedStringToPegasusAsync(localizedStringBridge).ConfigureAwait(true);
-
-            GitPush pushed = await this.pegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
+            var change = await this.pegasusService.WriteLocalizedStringToPegasusAsync(localizedStringBridge).ConfigureAwait(true);
+            var pushed = await this.pegasusService.CommitAndPushAsync(new CommitRefProxy[] { change }).ConfigureAwait(true);
             await this.pegasusService.RunFormatPipelineAsync(pushed).ConfigureAwait(true);
 
             var user = this.User.UserClaims();
