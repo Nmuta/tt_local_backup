@@ -14,9 +14,14 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
         'Organize verify buttons so that they are next to associated action instead of on line above',
     },
     {
+      tag: { title: 'all', tool: [NavbarTool.PermissionManagement] },
+      uuid: 'f603744e-d212-4213-ae52-86319f6a3608',
+      shortMarkdown: 'Ignore permissions from removed titles & environments',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: [NavbarTool.UserDetails] },
-      uuid: '93505355-a276-4bd1-843c-0f0ff2cc5bf1',
-      shortMarkdown: 'Hotfix to avoid Out-of-memory error on Player Details -> Inventory',
+      uuid: '74048714-0464-4154-9f42-96d121b22f25',
+      shortMarkdown: 'Avoid Out-of-memory error on Player Details -> Inventory',
     },
     {
       tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },

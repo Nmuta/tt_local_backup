@@ -21,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Controllers.V2;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Providers.Settings;
 using static Turn10.LiveOps.StewardApi.Helpers.Swagger.KnownTags;
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -38,19 +39,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
     public sealed class PermissionsController : V2ControllerBase
     {
         private readonly IStewardUserProvider userProvider;
+        private readonly IGeneralSettingsProvider generalSettingsProvider;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PermissionsController"/> class.
         /// </summary>
-        public PermissionsController(IStewardUserProvider userProvider, IRefreshableCacheStore refreshableCacheStore, IMapper mapper)
+        public PermissionsController(IStewardUserProvider userProvider, IGeneralSettingsProvider generalSettingsProvider, IRefreshableCacheStore refreshableCacheStore, IMapper mapper)
         {
             userProvider.ShouldNotBeNull(nameof(userProvider));
+            generalSettingsProvider.ShouldNotBeNull(nameof(generalSettingsProvider));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             mapper.ShouldNotBeNull(nameof(mapper));
 
             this.userProvider = userProvider;
+            this.generalSettingsProvider = generalSettingsProvider;
             this.refreshableCacheStore = refreshableCacheStore;
             this.mapper = mapper;
         }
@@ -197,6 +201,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             }
 
             var newAttributeList = user.Attributes.ToList();
+
+            // Check for any invalid perms from old titles/environments
+            var titleEndpoints = this.GetLspEndpointsAsDict();
+            foreach (var existingAttribute in user.Attributes)
+            {
+                var endpoints = titleEndpoints.GetValueOrDefault(existingAttribute.Title.ToLowerInvariant());
+                var endpoint = endpoints?.FirstOrDefault(endpoint => existingAttribute.Environment == endpoint.Name) ?? null;
+                if (endpoint == default(LspEndpoint))
+                {
+                    newAttributeList.Remove(existingAttribute);
+                }
+            }
+
             foreach (var attribute in permChanges.AttributesToAdd)
             {
                 var foundAttribute = newAttributeList.FirstOrDefault(existingAttribute => existingAttribute.Matches(attribute));
@@ -220,6 +237,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers.v2
             await this.userProvider.UpdateStewardUserAsync(user).ConfigureAwait(true);
 
             return await this.GetUserPermissionsAsync(userId).ConfigureAwait(true);
+        }
+
+        private Dictionary<string, IEnumerable<LspEndpoint>> GetLspEndpointsAsDict()
+        {
+            // Check for any invalid perms from old titles/environments
+            var titleEndpoints = this.generalSettingsProvider.GetLspEndpoints();
+            var titleEndpointDict = new Dictionary<string, IEnumerable<LspEndpoint>>();
+            foreach (var prop in titleEndpoints.GetType().GetProperties())
+            {
+                var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                if (type == typeof(IEnumerable<LspEndpoint>))
+                {
+                    var value = (IEnumerable<LspEndpoint>)prop.GetValue(titleEndpoints, null);
+                    titleEndpointDict.Add(prop.Name.ToLowerInvariant(), value);
+                }
+            }
+
+            return titleEndpointDict;
         }
     }
 }

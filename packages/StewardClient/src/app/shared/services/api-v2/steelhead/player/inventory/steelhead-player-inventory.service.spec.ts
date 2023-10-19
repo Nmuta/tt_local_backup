@@ -11,6 +11,7 @@ import { PlayerInventoryCarItem } from '@models/player-inventory-item';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import { HttpParams } from '@angular/common/http';
 
 describe('SteelheadPlayerInventoryService', () => {
   let service: SteelheadPlayerInventoryService;
@@ -36,6 +37,7 @@ describe('SteelheadPlayerInventoryService', () => {
   describe('Method: getInventoryByXuid$', () => {
     const xuid = fakeXuid();
     const fakeInventory = EMPTY_STEELHEAD_PLAYER_INVENTORY;
+    const includeClientCarInfo = false;
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine
@@ -44,9 +46,10 @@ describe('SteelheadPlayerInventoryService', () => {
     });
 
     it('should call service.getRequest$ with correct params', done => {
-      service.getInventoryByXuid$(xuid).subscribe(response => {
+      service.getInventoryByXuid$(xuid, includeClientCarInfo).subscribe(response => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/${xuid}/inventory`,
+          new HttpParams().set('includeClientCarInfo', includeClientCarInfo),
         );
 
         expect(response).toEqual(fakeInventory);
@@ -59,6 +62,7 @@ describe('SteelheadPlayerInventoryService', () => {
     const xuid = fakeXuid();
     const profileId = new BigNumber(faker.datatype.number());
     const fakeInventory = EMPTY_STEELHEAD_PLAYER_INVENTORY;
+    const includeClientCarInfo = false;
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine
@@ -67,14 +71,17 @@ describe('SteelheadPlayerInventoryService', () => {
     });
 
     it('should call service.getRequest$ with correct params', done => {
-      service.getInventoryByProfileId$(xuid, profileId).subscribe(response => {
-        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/${xuid}/inventory/profile/${profileId}`,
-        );
+      service
+        .getInventoryByProfileId$(xuid, profileId, includeClientCarInfo)
+        .subscribe(response => {
+          expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+            `${service.basePath}/${xuid}/inventory/profile/${profileId}`,
+            new HttpParams().set('includeClientCarInfo', includeClientCarInfo),
+          );
 
-        expect(response).toEqual(fakeInventory);
-        done();
-      });
+          expect(response).toEqual(fakeInventory);
+          done();
+        });
     });
   });
 

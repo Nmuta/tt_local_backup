@@ -27,15 +27,15 @@ export class MockSteelheadPlayerInventoryService {
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerInventoryProfilesFakeApi.make()))),
     );
 
-  constructor(private readonly generator$: () => unknown) {}
+  public getInventoryCarByProfileId$ = jasmine
+    .createSpy('getInventoryCarByProfileId$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
 }
 
 /** Creates an injectable mock for Steelhead Player Inventory Service. */
-export function createMockSteelheadPlayerInventoryService(
-  returnValueGenerator: () => unknown = () => new Object(),
-): ValueProvider {
+export function createMockSteelheadPlayerInventoryService(): ValueProvider {
   return {
     provide: SteelheadPlayerInventoryService,
-    useValue: new MockSteelheadPlayerInventoryService(returnValueGenerator),
+    useValue: new MockSteelheadPlayerInventoryService(),
   };
 }

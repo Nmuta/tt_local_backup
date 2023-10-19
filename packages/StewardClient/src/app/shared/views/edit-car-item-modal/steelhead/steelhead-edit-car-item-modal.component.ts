@@ -33,9 +33,9 @@ export class SteelheadEditCarItemModalComponent extends EditCarItemModalBaseComp
   /** Gets car item */
   public getCarItem$(): Observable<PlayerInventoryCarItem> {
     return this.playerInventoryService.getInventoryCarByProfileId$(
-      this.data.xuid,
-      this.data.profileId,
-      this.data.car.vin,
+      this.xuid,
+      this.profileId,
+      this.vin,
     );
   }
 
@@ -45,8 +45,8 @@ export class SteelheadEditCarItemModalComponent extends EditCarItemModalBaseComp
     inventoryUpdates.cars.push(updatedCar);
 
     return this.playerInventoryService.editPlayerProfileItems$(
-      this.data.xuid,
-      this.data.externalProfileId,
+      this.xuid,
+      this.externalProfileId,
       inventoryUpdates,
     );
   }

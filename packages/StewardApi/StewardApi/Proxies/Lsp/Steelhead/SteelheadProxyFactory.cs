@@ -1,4 +1,5 @@
 ﻿using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Settings;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead.Services;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.LiveOps.FM8.Generated;
@@ -23,17 +24,14 @@ namespace Turn10.LiveOps.StewardApi.Proxies.Lsp.Steelhead
         ///     Initializes a new instance of the <see cref="SteelheadProxyFactory"/> class.
         /// </summary>
         public SteelheadProxyFactory(
+            Client client,
             SteelheadSettings settingsProvider,
             ForgedCredentialProvider forgedCredentialProvider)
         {
             this.Settings = settingsProvider;
             this.ForgedCredentialProvider = forgedCredentialProvider;
 
-            // TODO: This should also be injected
-            this.ForzaClient = new Client(
-                new CleartextMessageCryptoProvider(),
-                new CleartextMessageCryptoProvider(),
-                clientVersion: this.Settings.ClientVersion);
+            this.ForzaClient = client;
         }
 
         /// <summary>
