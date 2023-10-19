@@ -10,14 +10,17 @@
   (ngModelChange)="onValueChange($event)"
   [min]="minFormatted"
 />
-<span>{{_localTime}}</span>
+<span>{{ _localTime }}</span>
 <div class="timepicker-wrapper">
-  <ngx-material-timepicker #customHint #picker 
-     [editableHintTmpl]="dialHint"
-     (timeSet)="onValueChange($event)"
-     (timeChanged)="onRealTimeValueChange($event)">
+  <ngx-material-timepicker
+    #customHint
+    #picker
+    [editableHintTmpl]="dialHint"
+    (timeSet)="onValueChange($event)"
+    (timeChanged)="onRealTimeValueChange($event)"
+  >
   </ngx-material-timepicker>
   <ng-template #dialHint>
-      {{_localTime}} 
-  </ng-template>  
+    {{ _localTime }}
+  </ng-template>
 </div>

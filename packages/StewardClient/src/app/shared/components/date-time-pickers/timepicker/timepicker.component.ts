@@ -292,11 +292,9 @@ export class TimepickerComponent
     this._localTime = local;
   }
 
-
   /** User chosen time should be local time for user. Add the UTC offset. */
   private translateToLocal(utcTime: string): string {
-    
-    const parsedTime = DateTime.fromFormat(utcTime, 'HH:mm', {zone: 'utc'});
+    const parsedTime = DateTime.fromFormat(utcTime, 'HH:mm', { zone: 'utc' });
     const projectedLocalTime = parsedTime.setZone(DateTime.local().zoneName);
     const localTimeString = projectedLocalTime.toFormat('HH:mm');
 
@@ -305,11 +303,11 @@ export class TimepickerComponent
     const utcDay = parsedTime.day;
     const localDay = projectedLocalTime.day;
 
-    if(utcDay > localDay){
+    if (utcDay > localDay) {
       suffix += ' (-1 day)';
-    } else if (localDay > utcDay){
+    } else if (localDay > utcDay) {
       suffix += ' (+1 day)';
     }
     return localTimeString + suffix;
-  } 
+  }
 }
