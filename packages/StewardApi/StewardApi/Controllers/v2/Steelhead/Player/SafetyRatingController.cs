@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -109,21 +110,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
             await this.Services.EnsurePlayerExistAsync(xuid);
             var safetyRatingConfig = await this.GetPlayerSafetyRatingConfigAsync(xuid);
 
-            safetyRating.Score.ShouldBeGreaterThanOrEqual(safetyRatingConfig.MinScore, nameof(safetyRating.Score));
-            safetyRating.Score.ShouldBeLessThanOrEqual(safetyRatingConfig.MaxScore, nameof(safetyRating.Score));
-
-            // If they want to be in probation, their safety rating must have fewer than 'ProbationRaceCount' entries.
-            // If they don't want to be in probation, we must make their safety rating more than 'ProbationRaceCount' entries.
-            if (safetyRatingConfig.ProbationRaceCount <= 1 && safetyRating.IsInProbationaryPeriod == true)
+            foreach (var score in safetyRating.SafetyScores)
             {
-                throw new BadRequestStewardException($"Cannot set probationary period for player. Probation Race Count is too low. {safetyRatingConfig.ProbationRaceCount}");
+                score.ShouldBeGreaterThanOrEqual(safetyRatingConfig.MinScore, nameof(score));
+                score.ShouldBeLessThanOrEqual(safetyRatingConfig.MaxScore, nameof(score));
             }
 
-            var arrayLength = safetyRating.IsInProbationaryPeriod ? safetyRatingConfig.ProbationRaceCount - 1 : safetyRatingConfig.ProbationRaceCount + 1;
-            var scoreArray = new double[arrayLength];
-            Array.Fill<double>(scoreArray, safetyRating.Score);
-
-            await this.Services.LiveOpsService.SetLiveOpsSafetyRatingHistory(xuid, scoreArray);
+            await this.Services.LiveOpsService.SetLiveOpsSafetyRatingHistory(xuid, safetyRating.SafetyScores);
 
             var response = await this.Services.LiveOpsService.GetLiveOpsSafetyRatingByXuid(xuid);
 

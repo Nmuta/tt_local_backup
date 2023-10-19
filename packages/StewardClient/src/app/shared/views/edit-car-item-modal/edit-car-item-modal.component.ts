@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {
   MatLegacyDialogRef as MatDialogRef,
@@ -32,18 +32,26 @@ type EditCarItemModalComponentUnion = SteelheadEditCarItemModalComponent;
   template: '',
   providers: [],
 })
-export abstract class EditCarItemModalBaseComponent extends BaseComponent {
+export abstract class EditCarItemModalBaseComponent extends BaseComponent implements OnInit {
   // We have the ability to also edit clientCarInfo, entitlementId, & tiersAchieved for a car
   // But have not implemented it yet
   public formControls = {
     versionedLiveryId: new UntypedFormControl(null, Validators.required),
     versionedTuneId: new UntypedFormControl(null, Validators.required),
     experiencePoints: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
+    carPointsTotal: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
     flags: new UntypedFormControl(null, Validators.required),
     purchasePrice: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
   };
   public formGroup = new UntypedFormGroup(this.formControls);
+  public getMonitor = new ActionMonitor('Get car from player inventory');
   public postMonitor = new ActionMonitor('Save car data');
+
+  public xuid: BigNumber;
+  public profileId: BigNumber;
+  public vin: string;
+  public externalProfileId: string;
+
   public carItem: PlayerInventoryCarItem;
 
   public editCardPermission = PermAttributeName.ManagePlayerInventory;
@@ -56,12 +64,10 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent {
   ) {
     super();
 
-    this.carItem = data.car;
-    this.formControls.versionedLiveryId.setValue(data.car.versionedLiveryId);
-    this.formControls.versionedTuneId.setValue(data.car.versionedTuneId);
-    this.formControls.experiencePoints.setValue(data.car.experiencePoints);
-    this.formControls.flags.setValue(data.car.flags);
-    this.formControls.purchasePrice.setValue(data.car.purchasePrice);
+    this.xuid = data.xuid;
+    this.profileId = data.profileId;
+    this.vin = data.car.vin;
+    this.externalProfileId = data.externalProfileId;
 
     dialogRef
       .beforeClosed()
@@ -73,6 +79,23 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent {
 
   public abstract editCarItem$(item: unknown): Observable<SteelheadPlayerInventory>;
 
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    this.getMonitor = this.getMonitor.repeat();
+    this.getCarItem$()
+      .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
+      .subscribe(car => {
+        this.carItem = car;
+
+        this.formControls.versionedLiveryId.setValue(car.versionedLiveryId);
+        this.formControls.versionedTuneId.setValue(car.versionedTuneId);
+        this.formControls.experiencePoints.setValue(car.experiencePoints);
+        this.formControls.flags.setValue(car.flags);
+        this.formControls.carPointsTotal.setValue(car.carPointsTotal);
+        this.formControls.purchasePrice.setValue(car.purchasePrice);
+      });
+  }
+
   /** Saves updated car properties */
   public saveCarUpdates(): void {
     this.postMonitor = this.postMonitor.repeat();
@@ -83,6 +106,7 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent {
     updatedCar.experiencePoints = new BigNumber(this.formControls.experiencePoints.value);
     updatedCar.flags = new BigNumber(this.formControls.flags.value);
     updatedCar.purchasePrice = new BigNumber(this.formControls.purchasePrice.value);
+    updatedCar.carPointsTotal = new BigNumber(this.formControls.carPointsTotal.value);
 
     this.editCarItem$(updatedCar)
       .pipe(

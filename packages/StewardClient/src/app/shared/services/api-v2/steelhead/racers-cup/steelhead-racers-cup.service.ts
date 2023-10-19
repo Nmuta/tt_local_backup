@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { addEnvironmentAndSlotHttpParams } from '@helpers/query-param-helpers';
 import { GuidLikeString } from '@models/extended-types';
 import { PegasusPathInfo } from '@models/pegasus-path-info';
 import { RacersCupChampionship } from '@models/racers-cup.model';
@@ -74,7 +75,7 @@ export class SteelheadRacersCupService {
     environment: string = null,
     slot: string = null,
   ): Observable<Map<GuidLikeString, string>> {
-    const params = new HttpParams().set('environment', environment).set('slot', slot);
+    const params = addEnvironmentAndSlotHttpParams(environment, slot);
     return this.api.getRequest$<Map<GuidLikeString, string>>(`${this.basePath}/series`, params);
   }
 }

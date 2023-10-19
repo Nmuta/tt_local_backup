@@ -70,9 +70,13 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
     this.playerInventoryComponentService = {
       gameTitle: this.gameTitle,
       getPlayerInventoryByIdentity$: identity =>
-        this.playerInventoryService.getInventoryByXuid$(identity.xuid),
+        this.playerInventoryService.getInventoryByXuid$(identity.xuid, false),
       getPlayerInventoryByIdentityAndProfileId$: (identity, profileId) =>
-        this.playerInventoryService.getInventoryByProfileId$(identity.xuid, profileId as BigNumber),
+        this.playerInventoryService.getInventoryByProfileId$(
+          identity.xuid,
+          profileId as BigNumber,
+          false,
+        ),
       makewhatToShowList: inventory => this.makewhatToShowList(inventory),
       inventoryFound: inventory => this.inventoryFound.emit(inventory),
     };

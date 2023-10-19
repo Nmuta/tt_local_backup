@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         /// <summary>
         ///     Gets or sets the display conditions bridge.
         /// </summary>
-        public WofDisplayConditionsBridge DisplayConditions { get; set; }
+        public DisplayConditionWrapper DisplayConditions { get; set; }
 
         /// <summary>
         ///     Gets or sets the destination.

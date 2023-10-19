@@ -8,10 +8,13 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import faker from '@faker-js/faker';
-import { RivalsTileDetailsModalComponent } from './rivals-tile-details-modal.component';
-import { RivalsEvent } from '@services/api-v2/steelhead/rivals/steelhead-rivals.service';
+import {
+  RivalsEventWithEnvironment,
+  RivalsTileDetailsModalComponent,
+} from './rivals-tile-details-modal.component';
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import BigNumber from 'bignumber.js';
 
 describe('RivalsTileDetailsModalComponent', () => {
   let component: RivalsTileDetailsModalComponent;
@@ -31,13 +34,19 @@ describe('RivalsTileDetailsModalComponent', () => {
             provide: MAT_DIALOG_DATA,
             useValue: {
               name: faker.datatype.string(),
+              id: new BigNumber(faker.datatype.number(0)),
               description: faker.datatype.string(),
               category: faker.datatype.string(),
               startTime: faker.datatype.datetime().toISOString(),
               endTime: faker.datatype.datetime().toISOString(),
               scoreType: undefined,
+              scoreTypeId: new BigNumber(faker.datatype.number(0)),
+              gameScoreboardId: new BigNumber(faker.datatype.number(0)),
               trackName: faker.datatype.string(),
-            } as RivalsEvent,
+              trackId: new BigNumber(faker.datatype.number(0)),
+              carRestrictions: [],
+              leaderboardEnvironmnet: faker.datatype.string(),
+            } as RivalsEventWithEnvironment,
           },
         ],
       }),

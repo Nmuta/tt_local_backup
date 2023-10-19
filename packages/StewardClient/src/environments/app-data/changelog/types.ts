@@ -4,7 +4,7 @@ import { NavbarTool } from '../tool-list';
 
 export interface ChangelogArea {
   tool: NavbarTool | NavbarTool[];
-  title: GameTitle | GameTitle[] | 'all';
+  title: GameTitle | GameTitle[] | 'all' | '';
 }
 
 export enum ChangelogTag {
@@ -31,11 +31,20 @@ export function isChangelogArea(source: unknown): source is ChangelogArea {
 export interface OldChangelogEntry {
   /** The tag for the change. */
   tag: ChangelogArea | ChangelogTag;
+
   /** ID used for determining latest seen update. */
   uuid: string;
-  /** Short text explaining the change. */
+
+  /**
+   * Short text explaining the change.
+   * @deprecated Use `shortMarkdown`
+   */
   shortText: string;
-  /** Paragraphs explaining the change. */
+
+  /**
+   * Paragraphs explaining the change.
+   * @deprecated Use `longMarkdown`
+   */
   longText?: string[];
 }
 
@@ -69,6 +78,16 @@ export interface ChangelogGroup {
   id: string;
   /** The entries to display. */
   entries: ChangelogEntry[];
+}
+
+/** A group of changelogs. Same as {@link ChangelogGroup}, but non-markdown entries are disallowed. */
+export interface MarkdownChangelogGroup extends ChangelogGroup {
+  /** The title to display. */
+  title: string;
+  /** ID used for determining latest seen update. */
+  id: string;
+  /** The entries to display. */
+  entries: MarkdownChangelogEntry[];
 }
 
 /** Stores UI-known changelogs. */

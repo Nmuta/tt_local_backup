@@ -93,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
-                .ForMember(dest => dest.Error, opt => opt.Ignore());
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(src => !src.Success ? new StewardError("Failed to send message") : null));
 
             this.CreateMap<AuctionFilters, ForzaAuctionFilters>()
                 .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))
@@ -517,16 +517,28 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<TextOverrideBridge, TextOverride>()
                 .ReverseMap();
-            this.CreateMap<WofDisplayConditionsBridge, WofBaseDisplayConditions>()
+            this.CreateMap<DisplayConditionBridge, DisplayConditionItem>()
                 .ReverseMap();
-            this.CreateMap<ItemBridge, BaseItem>()
+            this.CreateMap<DisplayConditionWrapper, WofDisplayConditions>()
+                .ReverseMap();
+            this.CreateMap<DateSettingsBridge, DateSettings>()
                 .ReverseMap();
             this.CreateMap<WofBaseTimerReference, TimerReferenceBridge>().ConvertUsing<XmlToBridgeConverterTimerReference>();
             this.CreateMap<TimerReferenceBridge, WofBaseTimerReference>().ConvertUsing<BridgeToXmlConverterTimerReference>();
-            this.CreateMap<WofBaseTimerCustomRange, TimerCustomRangeBridge>()
+            this.CreateMap<WofBaseCustomRange, CustomRangeBridge>()
                 .ReverseMap();
             this.CreateMap<WofBaseRangePoint, RangePointBridge>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.Text))
+                .ReverseMap();
+            this.CreateMap<NullableDisplayName, NullableDisplayNameBridge>()
+                .ReverseMap();
+            this.CreateMap<CooldownsWrapper, WofCooldowns>()
+                .ReverseMap();
+            this.CreateMap<CooldownBridge, CooldownItem>()
+                .ReverseMap();
+            this.CreateMap<CooldownSettingsBridge, CooldownSettings>()
+                .ReverseMap();
+            this.CreateMap<ResetDatesBridge, ResetDates>()
                 .ReverseMap();
 
             this.CreateMap<ForzaUserIds, BasicPlayer>()
@@ -554,6 +566,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<SteelheadLiveOpsContent.RivalEvent, Contracts.Common.RivalsEvent>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RivalEventId))
                 .ForMember(dest => dest.TrackId, opt => opt.MapFrom(src => src.Track))
+                .ForMember(dest => dest.ScoreTypeId, opt => opt.MapFrom(src => src.ScoreType))
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.EventCategory))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartEndDate.From))
                 .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.StartEndDate.To))
@@ -635,23 +648,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Error, opt => opt.Ignore());
 
             this.CreateMap<PlayerInventoryCarItem, AdminForzaCarUserInventoryItem>()
-                .ForMember(dest => dest.inventoryItemSource, opt => opt.MapFrom(source => ForzaInventoryItemSource.Steward))
-                .ForMember(dest => dest.acquisitionType, opt => opt.MapFrom(source => ForzaItemAcquisitionType.NA))
                 .ForMember(dest => dest.itemId, opt => opt.MapFrom(source => source.Id))
-                .ForMember(dest => dest.carId, opt => opt.MapFrom(source => source.Id))
-                .ForMember(dest => dest.clientCarInfo, opt => opt.MapFrom(source => Array.Empty<byte>()))
                 .ForMember(dest => dest.versionedLiveryId, opt => opt.MapFrom(source => source.VersionedLiveryId.HasValue ? source.VersionedLiveryId.Value : Guid.Empty))
                 .ForMember(dest => dest.versionedTuneId, opt => opt.MapFrom(source => source.VersionedTuneId.HasValue ? source.VersionedTuneId.Value : Guid.Empty))
-                .ForMember(dest => dest.acquisitionTime, opt => opt.MapFrom(source => source.AcquiredUtc))
-                .ForMember(dest => dest.lastUsedTime, opt => opt.Ignore())
-                .ForMember(dest => dest.collectorScore, opt => opt.Ignore())
-                .ForMember(dest => dest.productionNumber, opt => opt.Ignore())
-                .ForMember(dest => dest.isOnlineOnly, opt => opt.Ignore())
-                .ForMember(dest => dest.carPointsTotal, opt => opt.Ignore())
-                .ForMember(dest => dest.unredeemed, opt => opt.Ignore())
-                .ForMember(dest => dest.baseCost, opt => opt.Ignore())
-                .ForMember(dest => dest.carId, opt => opt.Ignore())
-                .ForMember(dest => dest.purchaseTimestamp, opt => opt.Ignore());
+                .ForMember(dest => dest.acquisitionTime, opt => opt.MapFrom(source => source.AcquiredUtc));
 
             this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryCarItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))

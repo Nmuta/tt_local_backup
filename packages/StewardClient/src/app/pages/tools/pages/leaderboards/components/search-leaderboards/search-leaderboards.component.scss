@@ -19,28 +19,11 @@ div.selected-filters {
   margin: $gap-small 0;
 }
 
-form {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: flex-start;
-
-  mat-form-field {
-    max-width: 500px;
-    width: 100%;
-    flex-grow: 1;
-    margin-right: $gap-medium;
-  }
-
-  .line-break {
-    flex-basis: 100%;
-  }
-}
-
-mat-icon {
-  cursor: pointer;
-}
-
 mat-chip > mat-icon,
 button mat-icon {
   top: unset;
+}
+
+.player-selection-container {
+  width: 20em;
 }

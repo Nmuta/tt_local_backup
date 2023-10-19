@@ -137,6 +137,8 @@ export abstract class GiftBasketBaseComponent<
   /** Sets whether the title supports expiration date on gift. */
   public abstract allowSettingExpireDate: boolean;
 
+  public abstract allowSetInventoryFromReference: boolean;
+
   /**
    * Sets whether the title supports localized title and body ids.
    * Make sure selectLocalizedStringService is correctly implemented if setting this to true.
