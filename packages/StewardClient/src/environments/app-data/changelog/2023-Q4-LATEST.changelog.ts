@@ -13,6 +13,12 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
       shortMarkdown: 'Fix some tiles not loading properly',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging] },
+      uuid: '9d1ddfe8-0c45-4180-88a4-d2ab315483b0',
+      shortMarkdown:
+        'Switch Select Localized String from dropdown to autocomplete with grouped dropdown',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.PermissionManagement] },
       uuid: 'f603744e-d212-4213-ae52-86319f6a3608',
       shortMarkdown: 'Ignore permissions from removed titles & environments',

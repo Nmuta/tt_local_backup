@@ -10,6 +10,7 @@ import { MatLegacySelectModule as MatSelectModule } from '@angular/material/lega
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { StateManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
@@ -46,6 +47,7 @@ import { PermissionsModule } from '@shared/modules/permissions/permissions.modul
     MatChipsModule,
     MatTooltipModule,
     PermissionsModule,
+    MatAutocompleteModule,
   ],
   exports: [CreateLocalizedStringComponent, SelectLocalizedStringComponent],
 })
