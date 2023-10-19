@@ -538,10 +538,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [IntegrationTest]
         public async Task GetBanHistoryByXuid_InvalidXuid()
         {
-            var result = await stewardClient.GetBanHistoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result.Any());
+            try
+            {
+                await stewardClient.GetBanHistoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
+            }
         }
 
         [TestMethod]

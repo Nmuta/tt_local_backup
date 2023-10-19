@@ -25,6 +25,7 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.LiveOps.StewardTest.Utilities;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
 {
@@ -546,7 +547,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo.ControllerTests
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = TestUtilities.GenerateValidTestXuid(); ;
             var gamertag = Fixture.Create<string>();
 
             // Act.

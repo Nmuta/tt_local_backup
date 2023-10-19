@@ -948,6 +948,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetBanHistory(
             ulong xuid)
         {
+            xuid.EnsureValidXuid();
             var endpoint = WoodstockEndpoint.GetV1EndpointFromHeader(this.Request.Headers);
             var result = await this.GetBanHistoryAsync(xuid, endpoint).ConfigureAwait(true);
 

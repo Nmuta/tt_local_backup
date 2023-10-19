@@ -19,12 +19,14 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Controllers;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.LiveOps.StewardTest.Utilities;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 {
@@ -812,9 +814,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         [UnitTest]
         public async Task GetBanHistory_WithValidParameters_ReturnsCorrectType()
         {
+            var random = new Random();
+
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = TestUtilities.GenerateValidTestXuid();
             var gamertag = Fixture.Create<string>();
 
             // Act.
