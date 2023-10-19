@@ -82,7 +82,15 @@
             </button>
             <div *waitForMonitor="getReportReasonsMonitor">
               <mat-error *ngIf="!canReportUgc">Cannot report Featured or Replay UGC item</mat-error>
-              <mat-form-field
+              <div class="sf-horizontal do-not-manipulate-margin report-row">
+                <verify-button
+                  #verifyReportBtn
+                  [permissionAttribute]="reportPermAttribute"
+                  [permissionTitle]="gameTitle"
+                  [disabled]="!canReportUgc"
+                ></verify-button>
+               <div class="report-reason-box">
+                <mat-form-field
                 class="sf-full-width sf-default-hint sf-action-list"
                 appearance="fill"
               >
@@ -92,14 +100,8 @@
                     {{ reason.description }}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
-              <div class="sf-horizontal do-not-manipulate-margin">
-                <verify-button
-                  #verifyReportBtn
-                  [permissionAttribute]="reportPermAttribute"
-                  [permissionTitle]="gameTitle"
-                  [disabled]="!canReportUgc"
-                ></verify-button>
+              </mat-form-field> 
+               </div>
                 <button
                   class="sf-action-list-margins"
                   mat-raised-button

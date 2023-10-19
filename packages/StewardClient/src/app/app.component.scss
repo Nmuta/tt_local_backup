@@ -25,3 +25,17 @@ mat-drawer-container {
   // these values were selected to roughly center typical ngx-ui-tour cards
   transform: translate(-140px, -78px);
 }
+
+
+.report-row{
+  flex-direction: row;
+  align-items: center;
+  .mat-form-field-infix{
+    border: 0;
+    background: green !important;
+  }
+  justify-content: center;
+  mat-form-field{
+    margin: 0;
+  }
+ }

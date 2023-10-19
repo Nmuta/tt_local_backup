@@ -46,3 +46,16 @@ p {
 button {
   min-width: $button-min-size;
 }
+
+.report-row{
+ flex-direction: row;
+ align-items: center;
+ justify-content: center;
+ mat-form-field{
+   margin: 0;
+   .mat-form-field-infix{
+     border: 0;
+     background: green !important;
+   }
+ }
+}
