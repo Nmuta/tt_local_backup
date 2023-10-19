@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '46f3919e-ae1d-4cf6-8536-b6a1aa34e6ca',
+      shortMarkdown: 'Fix some tiles not loading properly',
+    },
+    {
       tag: { title: 'all', tool: [NavbarTool.PermissionManagement] },
       uuid: 'f603744e-d212-4213-ae52-86319f6a3608',
       shortMarkdown: 'Ignore permissions from removed titles & environments',
