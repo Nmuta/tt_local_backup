@@ -7,7 +7,10 @@ import {
   InventoryItemListDisplayComponentContract,
 } from './inventory-item-list-display.component';
 import faker from '@faker-js/faker';
-import { PlayerInventoryItem, SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
+import {
+  PlayerInventoryItem,
+  SteelheadPlayerInventoryCarItem,
+} from '@models/player-inventory-item';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { toDateTime } from '@helpers/luxon';

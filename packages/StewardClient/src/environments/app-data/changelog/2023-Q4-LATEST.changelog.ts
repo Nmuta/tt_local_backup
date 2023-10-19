@@ -8,7 +8,10 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
-      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.UserDetails, NavbarTool.GiftHistory, NavbarTool.Gifting] },
+      tag: {
+        title: [GameTitle.FM8, GameTitle.FH5],
+        tool: [NavbarTool.UserDetails, NavbarTool.GiftHistory, NavbarTool.Gifting],
+      },
       uuid: '80db4db8-cbfb-4d63-a08d-48e403c6dbb1',
       shortMarkdown: 'Display source of items alongside acquisition time',
     },

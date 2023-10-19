@@ -44,6 +44,5 @@ mat-panel-description {
 }
 
 .metadata {
-  //color: app-color-default($app-foreground, .6);
-  opacity: 0.6;
+  color: app-color-default($app-foreground, 0.6);
 }
