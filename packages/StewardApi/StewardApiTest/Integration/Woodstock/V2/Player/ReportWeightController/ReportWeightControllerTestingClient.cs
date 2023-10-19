@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V2
             return await ServiceClient.SendRequestAsync<UserReportWeight>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
         }
 
-        public async Task<UserReportWeight> PostSetReportWeight(ulong xuid)
+        public async Task<UserReportWeight> SetReportWeight(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}/player/{xuid}/reportWeight");
 
