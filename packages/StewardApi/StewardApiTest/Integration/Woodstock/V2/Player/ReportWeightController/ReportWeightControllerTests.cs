@@ -76,7 +76,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V2
         {
             try
             {
-                var response = await stewardClient.PostSetReportWeight(TestConstants.InvalidXuid).ConfigureAwait(false);
+                var response = await stewardClient.SetReportWeight(TestConstants.InvalidXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V2
         {
             try
             {
-                var response = await unauthedClient.PostSetReportWeight(TestConstants.TestAccountXuid).ConfigureAwait(false);
+                var response = await unauthedClient.SetReportWeight(TestConstants.TestAccountXuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException ex)
