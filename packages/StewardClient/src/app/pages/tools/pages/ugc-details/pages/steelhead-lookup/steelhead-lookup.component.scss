@@ -54,19 +54,17 @@ button {
  justify-content: center;
  .report-reason-box{
   width: 45%;
- }
- mat-form-field{
-   margin-top: 14px;
-    ::ng-deep .mat-form-field-infix {
+  mat-form-field{
+    margin-top: 14px;
+     ::ng-deep .mat-form-field-infix {
+       margin: 0;
+       padding-bottom: 5px;
+    }
+    ::ng-deep .mat-form-field-flex {
+      text-align: center;
       margin: 0;
-      padding-bottom: 5px;
-   }
-   ::ng-deep .mat-form-field-flex {
-     text-align: center;
-     margin: 0;
-     padding: 0;
- }
-
-  
+      padding: 0;
+    }
+  }
  }
 }
