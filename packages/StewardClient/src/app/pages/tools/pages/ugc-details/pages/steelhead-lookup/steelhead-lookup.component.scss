@@ -51,11 +51,21 @@ button {
  flex-direction: row;
  align-items: center;
  justify-content: center;
+ .report-reason-box{
+  width: 45%;
+ }
  mat-form-field{
-   margin: 0;
-   .mat-form-field-infix{
-     border: 0;
-     background: green !important;
+   margin-top: 15px;
+    ::ng-deep .mat-form-field-infix {
+      margin: 0;
+      padding-bottom: 5px;
    }
+   ::ng-deep .mat-form-field-flex {
+     text-align: center;
+     margin: 0;
+     padding: 0;
+ }
+
+  
  }
 }
