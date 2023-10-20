@@ -68,9 +68,12 @@ button {
     }
   }
   .verify-button-container {
-    border: 1px solid purple;
     display: flex;
+    flex-direction: row;
     align-items: flex-end;
     justify-content: flex-end;
+    ::ng-deep verify-button button{
+      margin-right: 0px;
+    }
   }
 }
