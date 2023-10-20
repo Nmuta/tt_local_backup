@@ -8,6 +8,11 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging] },
+      uuid: '22a779b2-df4e-4c6b-a1de-2954580c4793',
+      shortMarkdown: 'Update Steward api to send subcategory field for get localized strings',
+    },
+    {
       tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.Leaderboards] },
       uuid: '02a287c0-26dc-4ada-af5f-58fe0fe42dfd',
       shortMarkdown:
