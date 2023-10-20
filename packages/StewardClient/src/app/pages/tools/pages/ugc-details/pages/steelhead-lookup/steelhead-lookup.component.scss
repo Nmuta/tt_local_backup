@@ -48,12 +48,12 @@ button {
 }
 
 /* styles for the UGC Actions reporting row */
-.report-row {
-  flex-direction: row;
+.ugc-action-row {
+  display: grid;
+  grid-template-columns: 55% 15% 30%;
   align-items: center;
   justify-content: center;
   .report-reason-box {
-    width: 45%;
     mat-form-field {
       margin-top: 14px;
       ::ng-deep .mat-form-field-infix {
@@ -66,5 +66,11 @@ button {
         padding: 0;
       }
     }
+  }
+  .verify-button-container {
+    border: 1px solid purple;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
   }
 }

@@ -82,13 +82,7 @@
             </button>
             <div *waitForMonitor="getReportReasonsMonitor">
               <mat-error *ngIf="!canReportUgc">Cannot report Featured or Replay UGC item</mat-error>
-              <div class="sf-horizontal do-not-manipulate-margin report-row">
-                <verify-button
-                  #verifyReportBtn
-                  [permissionAttribute]="reportPermAttribute"
-                  [permissionTitle]="gameTitle"
-                  [disabled]="!canReportUgc"
-                ></verify-button>
+              <div class="sf-horizontal do-not-manipulate-margin ugc-action-row">
                 <div class="report-reason-box">
                   <mat-form-field
                     class="sf-full-width sf-default-hint sf-action-list"
@@ -101,6 +95,14 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
+                </div>
+                <div class="verify-button-container">
+                  <verify-button
+                    #verifyReportBtn
+                    [permissionAttribute]="reportPermAttribute"
+                    [permissionTitle]="gameTitle"
+                    [disabled]="!canReportUgc"
+                  ></verify-button>
                 </div>
                 <button
                   class="sf-action-list-margins"
@@ -120,13 +122,18 @@
               </div>
             </div>
             <div *ngIf="!ugcItem?.isHidden">
-              <div class="sf-horizontal do-not-manipulate-margin">
-                <verify-button
-                  #verifyHideBtn
-                  [permissionAttribute]="hidePermAttribute"
-                  [permissionTitle]="gameTitle"
-                  [disabled]="ugcItem?.isHidden || !canHideUgc"
-                ></verify-button>
+              <div class="sf-horizontal do-not-manipulate-margin ugc-action-row">
+                <div>
+                  <!-- css grid placeholder-->
+                </div>
+                <div class="verify-button-container">
+                  <verify-button
+                    #verifyHideBtn
+                    [permissionAttribute]="hidePermAttribute"
+                    [permissionTitle]="gameTitle"
+                    [disabled]="ugcItem?.isHidden || !canHideUgc"
+                  ></verify-button>
+                </div>
                 <button
                   class="sf-action-list-margins"
                   mat-raised-button
@@ -147,12 +154,17 @@
             </div>
 
             <div *ngIf="ugcItem.isHidden">
-              <div class="sf-horizontal do-not-manipulate-margin">
-                <verify-button
-                  #verifyUnhideBtn
-                  [permissionAttribute]="unhidePermAttribute"
-                  [permissionTitle]="gameTitle"
-                ></verify-button>
+              <div class="sf-horizontal do-not-manipulate-margin ugc-action-row">
+                <div>
+                  <!-- css grid placeholder-->
+                </div>
+                <div class="verify-button-container">
+                  <verify-button
+                    #verifyUnhideBtn
+                    [permissionAttribute]="unhidePermAttribute"
+                    [permissionTitle]="gameTitle"
+                  ></verify-button>
+                </div>
                 <button
                   class="sf-action-list-margins"
                   mat-raised-button
@@ -172,13 +184,18 @@
               <mat-error *ngIf="!canHideUgc">Cannot unhide Replay UGC item</mat-error>
             </div>
 
-            <div class="sf-horizontal do-not-manipulate-margin">
-              <verify-button
-                #verifyVisibilityBtn
-                [permissionAttribute]="visibilityPermAttribute"
-                [permissionTitle]="gameTitle"
-                [disabled]="!ugcItem?.isPublic ? ugcItem?.isHidden : false"
-              ></verify-button>
+            <div class="sf-horizontal do-not-manipulate-margin ugc-action-row">
+              <div>
+                <!-- css grid placeholder-->
+              </div>
+              <div class="verify-button-container">
+                <verify-button
+                  #verifyVisibilityBtn
+                  [permissionAttribute]="visibilityPermAttribute"
+                  [permissionTitle]="gameTitle"
+                  [disabled]="!ugcItem?.isPublic ? ugcItem?.isHidden : false"
+                ></verify-button>
+              </div>
               <button
                 class="sf-action-list-margins"
                 mat-raised-button
