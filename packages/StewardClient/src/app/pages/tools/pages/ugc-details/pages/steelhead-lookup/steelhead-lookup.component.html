@@ -94,13 +94,13 @@
                 class="sf-full-width sf-default-hint sf-action-list"
                 appearance="fill"
               >
-                <mat-label>Report reason</mat-label>
-                <mat-select matInput [(ngModel)]="selectedReason" [disabled]="!canReportUgc">
-                  <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
-                    {{ reason.description }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field> 
+                  <mat-label>Report reason</mat-label>
+                  <mat-select matInput [(ngModel)]="selectedReason" [disabled]="!canReportUgc">
+                    <mat-option *ngFor="let reason of reportReasons" [value]="reason.id">
+                      {{ reason.description }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> 
                </div>
                 <button
                   class="sf-action-list-margins"
