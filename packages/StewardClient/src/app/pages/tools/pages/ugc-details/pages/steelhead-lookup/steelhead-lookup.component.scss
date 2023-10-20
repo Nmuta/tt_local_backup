@@ -47,6 +47,7 @@ button {
   min-width: $button-min-size;
 }
 
+/* styles for the UGC Actions reporting row */ 
 .report-row{
  flex-direction: row;
  align-items: center;
@@ -55,7 +56,7 @@ button {
   width: 45%;
  }
  mat-form-field{
-   margin-top: 15px;
+   margin-top: 14px;
     ::ng-deep .mat-form-field-infix {
       margin: 0;
       padding-bottom: 5px;
