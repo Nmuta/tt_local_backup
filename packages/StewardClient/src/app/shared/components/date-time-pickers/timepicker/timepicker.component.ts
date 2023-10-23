@@ -91,6 +91,8 @@ export class TimepickerComponent
   private _required = false;
   private _disabled = false;
 
+  protected localTime = '';
+
   /** Gets or sets the value of the input. MatFormFieldControl hook. */
   @Input()
   public get value(): DateTime {
@@ -279,5 +281,33 @@ export class TimepickerComponent
   /** Called when the value changes. */
   public onValueChange($event: string): void {
     this.valueInternal = $event;
+    const local = this.translateToLocal($event);
+    this.localTime = local;
+  }
+
+  /** Called when the dynamic value changes within the picker. */
+  public onRealTimeValueChange($event: string): void {
+    this.valueInternal = $event;
+    const local = this.translateToLocal($event);
+    this.localTime = local;
+  }
+
+  /** User chosen time should be local time for user. Add the UTC offset. */
+  private translateToLocal(utcTime: string): string {
+    const parsedTime = DateTime.fromFormat(utcTime, 'HH:mm', { zone: 'utc' });
+    const projectedLocalTime = parsedTime.setZone(DateTime.local().zoneName);
+    const localTimeString = projectedLocalTime.toFormat('HH:mm');
+
+    let suffix = ' local time ';
+    // get the days to track previous or next day after conversion from UTC
+    const utcDay = parsedTime.day;
+    const localDay = projectedLocalTime.day;
+
+    if (utcDay > localDay) {
+      suffix += ' (-1 day)';
+    } else if (localDay > utcDay) {
+      suffix += ' (+1 day)';
+    }
+    return localTimeString + suffix;
   }
 }
