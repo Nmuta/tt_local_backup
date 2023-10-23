@@ -9,6 +9,15 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   entries: [
     {
       tag: ChangelogTag.General,
+      uuid: '599d9273-97c0-46db-9e20-c534605bd2f3',
+      shortMarkdown: 'Group UGC "report reason" and report buttons',
+      longMarkdown: `
+        When submitting a UGC report, all reporting buttons
+        have been grouped together for a cleaner user experience
+      `,
+    },
+    {
+      tag: ChangelogTag.General,
       uuid: '5aade718-686a-4dbc-952c-fc5248e1081e',
       shortMarkdown: 'Added local time to time picker',
       longMarkdown: `
