@@ -12,7 +12,6 @@ import {
 import {
   SteelheadPlayerInventoryCarItem,
   PlayerInventoryItem,
-  isPlayerInventoryItem,
   toPlayerInventoryCarItem,
 } from '@models/player-inventory-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
