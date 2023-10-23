@@ -91,7 +91,7 @@ export class TimepickerComponent
   private _required = false;
   private _disabled = false;
 
-  protected _localTime = '';
+  protected localTime = '';
 
   /** Gets or sets the value of the input. MatFormFieldControl hook. */
   @Input()
@@ -282,14 +282,14 @@ export class TimepickerComponent
   public onValueChange($event: string): void {
     this.valueInternal = $event;
     const local = this.translateToLocal($event);
-    this._localTime = local;
+    this.localTime = local;
   }
 
   /** Called when the dynamic value changes within the picker. */
   public onRealTimeValueChange($event: string): void {
     this.valueInternal = $event;
     const local = this.translateToLocal($event);
-    this._localTime = local;
+    this.localTime = local;
   }
 
   /** User chosen time should be local time for user. Add the UTC offset. */
