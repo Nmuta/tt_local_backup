@@ -83,57 +83,60 @@
       <!-- Actions for multi-selection of scores. -->
       <div class="multi-select-options">
         <div *ngIf="allowFileGeneration">
-          <verify-button
-            #verifyScoresFileGenerationBtn
-            [permissionAttribute]="generateScoresFilePermAttribute"
-            [permissionTitle]="gameTitle"
-            [disabled]="!this.hasScores"
-          ></verify-button>
-          <button
-            mat-raised-button
-            color="primary"
-            [verifyWithV2]="verifyScoresFileGenerationBtn"
-            (click)="generateLeaderboardScoresFile()"
-            stateManager
-            [monitor]="generateLeaderboardScoresMonitor"
-            monitorSuccess
-            monitorDisable
-            monitorWarn
-            monitorWarnSnackbar
-          >
-            Generate Leaderboard Scores
-            <button-spinner
+          <div class="action-with-verify">
+            <verify-button
+              #verifyScoresFileGenerationBtn
+              [permissionAttribute]="generateScoresFilePermAttribute"
+              [permissionTitle]="gameTitle"
+              [disabled]="!this.hasScores"
+            ></verify-button>
+            <button
+              mat-raised-button
+              color="primary"
+              [verifyWithV2]="verifyScoresFileGenerationBtn"
+              (click)="generateLeaderboardScoresFile()"
+              stateManager
               [monitor]="generateLeaderboardScoresMonitor"
-              defaultIcon="post_add"
-            ></button-spinner>
-          </button>
+              monitorSuccess
+              monitorDisable
+              monitorWarn
+              monitorWarnSnackbar
+            >
+              Generate Leaderboard Scores
+              <button-spinner
+                [monitor]="generateLeaderboardScoresMonitor"
+                defaultIcon="post_add"
+              ></button-spinner>
+            </button>
+          </div>
           <div *ngIf="this.scoresFileExists">
             Last updated on
             <standard-absolute-time class="last-modified" [timeUtc]="this.scoresFileLastModified">
             </standard-absolute-time>
           </div>
           <div *ngIf="!this.scoresFileExists">{{ 'No Scores file exists' }}</div>
-
-          <verify-button
-            #verifyScoresFileRetrieveBtn
-            [permissionAttribute]="generateScoresFilePermAttribute"
-            [permissionTitle]="gameTitle"
-            [disabled]="!this.scoresFileExists"
-          ></verify-button>
-          <button
-            mat-raised-button
-            color="primary"
-            [verifyWithV2]="verifyScoresFileRetrieveBtn"
-            (click)="retrieveLeaderboardScoresFile()"
-            stateManager
-            [monitor]="retrieveLeaderboardScoresMonitor"
-            monitorSuccess
-            monitorDisable
-            monitorWarn
-            monitorWarnSnackbar
-          >
-            Retrieve Leaderboard Scores
-          </button>
+          <div class="action-with-verify">
+            <verify-button
+              #verifyScoresFileRetrieveBtn
+              [permissionAttribute]="generateScoresFilePermAttribute"
+              [permissionTitle]="gameTitle"
+              [disabled]="!this.scoresFileExists"
+            ></verify-button>
+            <button
+              mat-raised-button
+              color="primary"
+              [verifyWithV2]="verifyScoresFileRetrieveBtn"
+              (click)="retrieveLeaderboardScoresFile()"
+              stateManager
+              [monitor]="retrieveLeaderboardScoresMonitor"
+              monitorSuccess
+              monitorDisable
+              monitorWarn
+              monitorWarnSnackbar
+            >
+              Retrieve Leaderboard Scores
+            </button>
+          </div>
         </div>
         <span>Click on a row to select</span>
         <button
@@ -144,31 +147,33 @@
         >
           Unselect all
         </button>
-        <verify-button
-          #verifyMultiDeleteScoresBtn
-          [disabled]="selectedScores?.length <= 0"
-          [permissionAttribute]="deleteScoresPermAttribute"
-          [permissionTitle]="gameTitle"
-        ></verify-button>
-        <button
-          mat-raised-button
-          color="warn"
-          [disabled]="selectedScores?.length <= 0"
-          [verifyWithV2]="verifyMultiDeleteScoresBtn"
-          (click)="deleteScores(selectedScores)"
-          clickStop
-          stateManager
-          [monitor]="deleteLeaderboardScoresMonitor"
-          monitorDisable
-          monitorWarn
-          monitorWarnSnackbar
-        >
-          <span [ngPlural]="selectedScores?.length">
-            Delete {{ selectedScores?.length }}
-            <ng-template ngPluralCase="=1">score</ng-template>
-            <ng-template ngPluralCase="other">scores</ng-template>
-          </span>
-        </button>
+        <div class="action-with-verify">
+          <verify-button
+            #verifyMultiDeleteScoresBtn
+            [disabled]="selectedScores?.length <= 0"
+            [permissionAttribute]="deleteScoresPermAttribute"
+            [permissionTitle]="gameTitle"
+          ></verify-button>
+          <button
+            mat-raised-button
+            color="warn"
+            [disabled]="selectedScores?.length <= 0"
+            [verifyWithV2]="verifyMultiDeleteScoresBtn"
+            (click)="deleteScores(selectedScores)"
+            clickStop
+            stateManager
+            [monitor]="deleteLeaderboardScoresMonitor"
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+          >
+            <span [ngPlural]="selectedScores?.length">
+              Delete {{ selectedScores?.length }}
+              <ng-template ngPluralCase="=1">score</ng-template>
+              <ng-template ngPluralCase="other">scores</ng-template>
+            </span>
+          </button>
+        </div>
         <button
           mat-raised-button
           color="primary"

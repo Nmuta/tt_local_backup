@@ -1,16 +1,31 @@
 <div class="sf-wrapper">
   <div class="sf-vertical">
-    <mat-form-field [formGroup]="formGroup" class="sf-full-width sf-default-hint">
+    <mat-form-field
+      class="sf-full-width sf-default-hint select-localized-string-input"
+      [formGroup]="formGroup"
+    >
       <mat-label>{{ label }}</mat-label>
-      <mat-select
+      <input
+        type="text"
+        aria-label="Text"
+        matInput
         [required]="isRequired"
         [formControl]="formControls.selectedLocalizedStringInfo"
-        [compareWith]="comparisonFunction"
-      >
-        <mat-option *ngFor="let stringDetails of localizedStringDetails" [value]="stringDetails">
-          {{ stringDetails.englishText | deppoh }}
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-optgroup
+          *ngFor="let group of locStringGroups | async"
+          [label]="group.category + ' - ' + group.subCategory"
+        >
+          <mat-option *ngFor="let option of group.locOptions" [value]="option">
+            {{ option.englishText | deppoh }}
+          </mat-option>
+        </mat-optgroup>
+        <mat-option *ngIf="isLocStringsGroupsEmpty" [value]="null">
+          No Matching Messages
         </mat-option>
-      </mat-select>
+      </mat-autocomplete>
       <button
         matSuffix
         mat-icon-button
@@ -27,6 +42,9 @@
       <mat-hint *ngIf="hintMessage">{{ hintMessage }}</mat-hint>
       <mat-error *ngIf="formControls.selectedLocalizedStringInfo.hasError('required')"
         >Required</mat-error
+      >
+      <mat-error *ngIf="formControls.selectedLocalizedStringInfo.hasError('isMatchingType')"
+        >Pick From Dropdown</mat-error
       >
     </mat-form-field>
     <div

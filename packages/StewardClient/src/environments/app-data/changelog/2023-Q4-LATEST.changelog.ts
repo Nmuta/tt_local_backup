@@ -8,6 +8,87 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging] },
+      uuid: '43900b8e-5c19-4b44-8558-8b97ea7473aa',
+      shortMarkdown: 'Select Loc Strings group with subcategory',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging] },
+      uuid: '22a779b2-df4e-4c6b-a1de-2954580c4793',
+      shortMarkdown: 'Update Steward api to send subcategory field for get localized strings',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.Leaderboards] },
+      uuid: '02a287c0-26dc-4ada-af5f-58fe0fe42dfd',
+      shortMarkdown:
+        'Organize verify buttons so that they are next to associated action instead of on line above',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '46f3919e-ae1d-4cf6-8536-b6a1aa34e6ca',
+      shortMarkdown: 'Fix some tiles not loading properly',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging] },
+      uuid: '9d1ddfe8-0c45-4180-88a4-d2ab315483b0',
+      shortMarkdown:
+        'Switch Select Localized String from dropdown to autocomplete with grouped dropdown',
+    },
+    {
+      tag: { title: 'all', tool: [NavbarTool.PermissionManagement] },
+      uuid: 'f603744e-d212-4213-ae52-86319f6a3608',
+      shortMarkdown: 'Ignore permissions from removed titles & environments',
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: [NavbarTool.UserDetails] },
+      uuid: '74048714-0464-4154-9f42-96d121b22f25',
+      shortMarkdown: 'Avoid Out-of-memory error on Player Details -> Inventory',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.MessageOfTheDay },
+      uuid: 'a05517ac-18b4-4250-ad44-63a94887bb38',
+      shortMarkdown: 'Add start/end date fields',
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
+        tool: NavbarTool.Messaging,
+      },
+      uuid: '465dc266-7e4e-415b-a1b4-097249eebe5e',
+      shortMarkdown: 'Display error when player messaging fails',
+    },
+    {
+      tag: {
+        title: GameTitle.FM8,
+        tool: [NavbarTool.MessageOfTheDay, NavbarTool.WelcomeCenterTiles],
+      },
+      uuid: '48e426ca-8f1a-43d2-a089-642d12ef912f',
+      shortMarkdown: 'Content updates now point to retail playtest branch',
+    },
+    {
+      tag: { title: '', tool: NavbarTool.PermissionManagement },
+      uuid: 'f0f7eeb5-cc19-453c-80a8-193948c72cc8',
+      shortMarkdown: `Display user's Object ID`,
+      longMarkdown: `
+        Manage User Permissions -> Selected User view, header
+        - User's Object ID is displayed
+        - Sub-title fields now auto-highlight (name, email, object id)
+
+        User icon -> Profile view
+        - User's \`ID\` is now called \`Object ID\`
+      `,
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.UnifiedCalendar, NavbarTool.Leaderboards] },
+      uuid: 'd7ca15e7-7193-442f-ab72-3f773d81ff53',
+      shortMarkdown: `Add link from Rival's Event calendar selection to leaderboard scores for the event`,
+    },
+    {
+      tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
+      uuid: '2fc44ca8-e289-4d99-ba37-3b4f0d0c8bb4',
+      shortMarkdown: 'Change input design for safety rating tool',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: NavbarTool.UserDetails },
       uuid: '5fc188e4-ab03-46a8-8a9c-15fc649a095d',
       shortMarkdown: 'Fix editing car defaulting car points and upgrades',

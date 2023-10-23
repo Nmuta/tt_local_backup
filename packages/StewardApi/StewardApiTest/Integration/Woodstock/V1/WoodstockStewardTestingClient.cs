@@ -9,7 +9,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
-namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
+namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V1
 {
     public sealed class WoodstockStewardTestingClient
     {
@@ -241,22 +241,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             var path = new Uri(this.baseUri, $"{TitlePath}notifications/send/groupId({groupId})");
 
             return await ServiceClient.SendRequestAsync<MessageSendResult<int>>(HttpMethod.Post, path, this.authKey, Version, message, headers: this.headers).ConfigureAwait(false);
-        }
-
-        public async Task<IList<ProfileNote>> GetProfileNotesAsync(ulong xuid)
-        {
-            var path = new Uri(this.baseUri, $"{V2TitlePath}player/{xuid}/profileNotes");
-
-            return await ServiceClient.SendRequestAsync<IList<ProfileNote>>(HttpMethod.Get, path, this.authKey, Version, headers: this.headers).ConfigureAwait(false);
-        }
-
-        public async Task<IList<ProfileNote>> SendProfileNotesAsync(ulong xuid, ProfileNote message)
-        {
-            message.ShouldNotBeNull(nameof(message));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/profileNotes");
-
-            return await ServiceClient.SendRequestAsync<IList<ProfileNote>>(HttpMethod.Post, path, this.authKey, Version, message, headers: this.headers).ConfigureAwait(false);
         }
 
         public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, short carId, short makeId, string status, string sort)

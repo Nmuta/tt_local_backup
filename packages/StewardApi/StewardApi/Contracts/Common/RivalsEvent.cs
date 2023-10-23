@@ -26,6 +26,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public string ScoreType { get; set; }
 
+        public int ScoreTypeId { get; set; }
+
         public string TrackName { get; set; }
 
         public IEnumerable<string> CarRestrictions { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Identity.Client;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
@@ -10,6 +11,16 @@ namespace Turn10.LiveOps.StewardTest.Utilities
     /// </summary>
     public static class TestUtilities
     {
+        /// <summary>
+        ///     Xuid minimum provided by Xbox Live team. This could change in the future.
+        /// </summary>
+        private static ulong XuidMinimum = 0x0009000000000000UL;
+
+        /// <summary>
+        ///     Xuid maximum provided by Xbox Live team. This could change in the future.
+        /// </summary>
+        private static ulong XuidMaximum = 0x0009FFFFFFFFFFFFUL;
+
         /// <summary>
         ///     Disables SSL validation.
         /// </summary>
@@ -36,6 +47,12 @@ namespace Turn10.LiveOps.StewardTest.Utilities
             var response = await confidentialClientApplication.AcquireTokenForClient(scopes).ExecuteAsync().ConfigureAwait(false);
 
             return $"bearer {response.AccessToken}";
+        }
+
+        public static ulong GenerateValidTestXuid()
+        {
+            var random = new Random();
+            return (ulong)random.NextInt64((long)XuidMinimum, (long)XuidMaximum);
         }
     }
 }

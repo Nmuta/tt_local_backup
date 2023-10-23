@@ -14,6 +14,10 @@ mat-card {
   width: 100%;
 }
 
+.action-with-verify {
+  display: flex;
+}
+
 .above-leaderboard-scores {
   display: flex;
   flex-flow: row wrap;

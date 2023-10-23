@@ -13,10 +13,16 @@ import {
 import { MatLegacyChipListChange as MatChipListChange } from '@angular/material/legacy-chips';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
-import { GameTitle, SupportedLocalizationLanguageCodes } from '@models/enums';
+import {
+  GameTitle,
+  LocalizationCategory,
+  LocalizationSubCategory,
+  SupportedLocalizationLanguageCodes,
+} from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { LocalizedString, LocalizedStringsMap } from '@models/localization';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { TypeValidator } from '@shared/validators/type-validators';
 import { orderBy } from 'lodash';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import {
@@ -39,6 +45,14 @@ export interface SelectLocalizedStringContract {
 export interface LocalizationOptions {
   englishText: string;
   id: GuidLikeString;
+  category: LocalizationCategory;
+  subCategory: LocalizationSubCategory;
+}
+
+export interface LocalizationOptionsGroup {
+  category: string;
+  subCategory: string;
+  locOptions: LocalizationOptions[];
 }
 
 /** Lookup and display localized strings for selection. */
@@ -94,6 +108,9 @@ export class SelectLocalizedStringComponent
   public getMonitor = new ActionMonitor('GET localized strings');
   public readonly messageMaxLength: number = 512;
 
+  public locStringGroups: Observable<LocalizationOptionsGroup[]>;
+  public isLocStringsGroupsEmpty = false;
+
   private readonly getLocalizedStrings$ = new Subject<void>();
 
   constructor(@Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {
@@ -106,9 +123,26 @@ export class SelectLocalizedStringComponent
       throw new Error('No service defined for Select Localized String component.');
     }
 
+    this.locStringGroups = this.formControls.selectedLocalizedStringInfo.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const list = this.filterOptions(value || '');
+        return list;
+      }),
+    );
+
     // Get the validators from the parent formControl and add them to this component validators
     const parentControl = this.controlContainer?.control.get(this.formControlName);
     this.formControls.selectedLocalizedStringInfo.setValidators(parentControl?.validator);
+    const emptyValue: LocalizationOptions = {
+      id: '',
+      englishText: '',
+      category: null,
+      subCategory: null,
+    };
+    this.formControls.selectedLocalizedStringInfo.addValidators(
+      TypeValidator.isMatchingType(emptyValue),
+    );
 
     // isRequired will set the [required] property of the mat-select in the UI
     // By default, the [required] property will use hasValidator(Validators.required) to verify if the field is required
@@ -150,6 +184,8 @@ export class SelectLocalizedStringComponent
           return {
             id: x,
             englishText: record.message,
+            category: record.category,
+            subCategory: record.subCategory,
           };
         });
         this.formControls.selectedLocalizedStringInfo.updateValueAndValidity();
@@ -250,5 +286,55 @@ export class SelectLocalizedStringComponent
     this.readonlyValue = undefined;
     this.selectedLocalizedStringCollection = [];
     this.formControls.selectedLocalizedStringInfo.patchValue(null, { emitEvent: true });
+  }
+
+  /** Displays string in Autocorrect Input. */
+  public displayFn(option: LocalizationOptions): string {
+    return option !== null ? option.englishText : '';
+  }
+
+  /** Filter LocalizationOptionsGroup for Autocorrect */
+  private filterOptions(value: LocalizationOptions | string): LocalizationOptionsGroup[] {
+    const filterValue =
+      typeof value === 'object' ? value.englishText.toLowerCase() : value.toLowerCase();
+
+    const filterValues = filterValue.split('+').map(v => v.trim());
+
+    const list = Object.values(LocalizationCategory)
+      .map(category => {
+        return Object.values(LocalizationSubCategory).map(subCategory => ({
+          category,
+          subCategory,
+          locOptions: [],
+        }));
+      })
+      .flat();
+
+    const filteredList = this.localizedStringDetails.filter(option => {
+      if (filterValues.length > 1) {
+        return filterValues.every(
+          v =>
+            option.englishText.toLowerCase().includes(v) ||
+            option.category.toLowerCase().includes(v) ||
+            option.subCategory.toLowerCase().includes(v),
+        );
+      }
+      return (
+        option.englishText.toLowerCase().includes(filterValue) ||
+        option.category.toLowerCase().includes(filterValue) ||
+        option.subCategory.toLowerCase().includes(filterValue)
+      );
+    });
+
+    this.isLocStringsGroupsEmpty = filteredList.length === 0;
+
+    filteredList.forEach(d => {
+      const c = list.find(
+        group => group.category === d.category && group.subCategory === d.subCategory,
+      );
+      c.locOptions.push(d);
+    });
+
+    return list.filter(group => group.locOptions.length > 0);
   }
 }

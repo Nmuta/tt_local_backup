@@ -51,24 +51,9 @@
         public const string KustoLoggerDatabase = "KustoLoggerConfiguration:Database";
 
         /// <summary>
-        ///     The Kusto client secret name.
-        /// </summary>
-        public const string KustoClientSecretName = "KustoClientSecretName";
-
-        /// <summary>
-        ///     The blob connection string secret name.
-        /// </summary>
-        public const string BlobConnectionSecretName = "BlobConnectionSecretName";
-
-        /// <summary>
         ///     The group gift password secret name.
         /// </summary>
         public const string GroupGiftPasswordSecretName = "GroupGiftingPasswordSecretName";
-
-        /// <summary>
-        ///     Secret name to get cosmos DB connection string.
-        /// </summary>
-        public const string CosmosTableSecretName = "CosmosTableSecretName";
 
         /// <summary>
         ///     Secret name to get shared cosmos DB connection string.
@@ -101,11 +86,6 @@
         public const string ApolloCertificateKeyVaultName = "ApolloEnvironment:CertificateKeyVaultName";
 
         /// <summary>
-        ///     The Apollo certificate secret name.
-        /// </summary>
-        public const string ApolloCertificateSecretName = "ApolloEnvironment:CertificateSecretName";
-
-        /// <summary>
         ///     The Opus uri.
         /// </summary>
         public const string OpusUri = "OpusEnvironment:Uri";
@@ -124,11 +104,6 @@
         ///     The Opus certificate key vault name.
         /// </summary>
         public const string OpusCertificateKeyVaultName = "OpusEnvironment:CertificateKeyVaultName";
-
-        /// <summary>
-        ///     The Opus certificate secret name.
-        /// </summary>
-        public const string OpusCertificateSecretName = "OpusEnvironment:CertificateSecretName";
 
         /// <summary>
         ///     The Sunrise uri.
@@ -259,45 +234,5 @@
         ///     The Steelhead format pipeline build definitoin key.
         /// </summary>
         public const string SteelheadFormatPipelineBuildDefinition = "Git:SteelheadFormatPipelineBuildDefinition";
-
-        /// <summary>
-        ///    The Woodstock PlayFab dev title id.
-        /// </summary>
-        public const string WoodstockPlayFabDevTitleId = "WoodstockEnvironment:PlayFab:Dev:TitleId";
-
-        /// <summary>
-        ///    The Woodstock PlayFab dev key.
-        /// </summary>
-        public const string WoodstockPlayFabDevKey = "WoodstockEnvironment:PlayFab:Dev:Key";
-
-        /// <summary>
-        ///    The Woodstock PlayFab dev title id.
-        /// </summary>
-        public const string WoodstockPlayFabProdTitleId = "WoodstockEnvironment:PlayFab:Prod:TitleId";
-
-        /// <summary>
-        ///    The Woodstock PlayFab dev key.
-        /// </summary>
-        public const string WoodstockPlayFabProdKey = "WoodstockEnvironment:PlayFab:Prod:Key";
-
-        /// <summary>
-        ///    The Forte PlayFab dev title id.
-        /// </summary>
-        public const string FortePlayFabDevTitleId = "ForteEnvironment:PlayFab:Dev:TitleId";
-
-        /// <summary>
-        ///    The Forte PlayFab dev key.
-        /// </summary>
-        public const string FortePlayFabDevKey = "ForteEnvironment:PlayFab:Dev:Key";
-
-        /// <summary>
-        ///    The Teams Help Channel Webhook Secret Name.
-        /// </summary>
-        public const string TeamsHelpChannelWebhook = "TeamsHelpChannelWebhookSecretName";
-
-        /// <summary>
-        ///    The Obligation Client Secret Name.
-        /// </summary>
-        public const string ObligationClientSecretName = "ObligationClientSecretName";
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Turn10.LiveOps.StewardApi.Providers.Settings;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {

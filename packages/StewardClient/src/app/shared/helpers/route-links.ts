@@ -106,3 +106,8 @@ export function getBountySearchRoute(gameTitle: GameTitle) {
 export function getBountyDetailsRoute(gameTitle: GameTitle, bountyId: string) {
   return ['/app/tools/bounty-details/', gameTitle, bountyId];
 }
+
+/** Make leaderboards route. */
+export function getLeaderboardsRoute(gameTitle: GameTitle) {
+  return ['/app/tools/leaderboards/', gameTitle];
+}

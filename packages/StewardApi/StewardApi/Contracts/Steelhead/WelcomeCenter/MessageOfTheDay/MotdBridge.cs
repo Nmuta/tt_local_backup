@@ -50,5 +50,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
         ///     Gets or sets when tag property.
         /// </summary>
         public string When { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the display conditions bridge.
+        /// </summary>
+        public DisplayConditionWrapper DisplayConditions { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the cooldowns bridge.
+        /// </summary>
+        public CooldownsWrapper Cooldowns { get; set; }
     }
 }

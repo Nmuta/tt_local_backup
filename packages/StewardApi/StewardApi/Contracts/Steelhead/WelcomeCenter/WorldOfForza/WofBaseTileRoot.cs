@@ -72,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
         public WofBaseTimer Timer { get; set; }
 
         [WriteToPegasus]
-        public WofBaseDisplayConditions DisplayConditions { get; set; }
+        public WofDisplayConditions DisplayConditions { get; set; }
 
         public object Cooldowns { get; set; }
 
@@ -122,7 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         [WriteToPegasus]
         [XmlElement("CustomRange")]
-        public WofBaseTimerCustomRange CustomRange { get; set; }
+        public WofBaseCustomRange CustomRange { get; set; }
 
         [XmlElement(Namespace = "scribble:x")]
         public object @null { get; set; }
@@ -235,7 +235,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
-    public partial class WofBaseTimerCustomRange
+    public partial class WofBaseCustomRange
     {
         [WriteToPegasus]
         [XmlElement("From")]
@@ -263,43 +263,33 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.WorldOfFor
 
         // TODO Check if this property can be DateTime.
         [WriteToPegasus]
-        [XmlText]
+        [XmlElement("WrappedValue")]
         public string Text { get; set; }
 
         [WriteToPegasus]
         [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
         public string when { get; set; }
+
+        [WriteToPegasus]
+        [XmlElement("DisplayName")]
+        public NullableDisplayName DisplayName { get; set; }
     }
 
     /// <summary>
-    ///     Display conditions World of Forza tile
+    ///     Nullable Display Name
     /// </summary>
     [Serializable]
     [DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "scribble:x")]
-    public partial class WofBaseDisplayConditions
+    [XmlType(AnonymousType = true, Namespace = "scribble:title-content")]
+    public partial class NullableDisplayName
     {
-        [WriteToPegasus(CreateIfNull = true)]
-        [Required]
+        [WriteToPegasus]
         [XmlElement(Namespace = "scribble:x")]
-        public BaseItem[] item { get; set; }
-    }
-
-    /// <summary>
-    ///     Item for display in World of Forza tile
-    /// </summary>
-    [Serializable]
-    [DesignerCategory("code")]
-    [XmlType(AnonymousType = true, Namespace = "scribble:x")]
-    public partial class BaseItem
-    {
-        [WriteToPegasus]
-        [XmlAttribute("ref", Form = XmlSchemaForm.Qualified)]
-        public Guid RefId { get; set; }
+        public object @null { get; set; }
 
         [WriteToPegasus]
-        [XmlAttribute(Form = XmlSchemaForm.Qualified, Namespace = "scribble:x")]
-        public string when { get; set; }
+        [XmlText]
+        public string Text { get; set; }
     }
 
     /// <summary>

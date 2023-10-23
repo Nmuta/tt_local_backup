@@ -78,7 +78,7 @@ export class ImageTextTileComponent extends BaseComponent implements OnChanges {
         return steelheadLocalizationService.getLocalizedStrings$(
           true,
           PegasusEnvironment.Dev,
-          PegasusProjectionSlot.Daily,
+          PegasusProjectionSlot.Playtest,
         );
       },
     };

@@ -40,6 +40,9 @@ describe('SafetyRatingComponent', () => {
     setSafetyRating$: () => {
       return of(mockSafetyRating);
     },
+    deleteSafetyRating$: () => {
+      return of(mockSafetyRating);
+    },
   };
 
   beforeEach(async () => {

@@ -19,6 +19,7 @@ class TestSelectLocalizedStringContract implements SelectLocalizedStringContract
 }
 
 import { createStandardTestModuleMetadataMinimal } from '@mocks/standard-test-module-metadata-minimal';
+import { MatLegacyAutocomplete as MatAutocomplete } from '@angular/material/legacy-autocomplete';
 
 describe('SelectLocalizedStringComponent', () => {
   let component: SelectLocalizedStringComponent;
@@ -29,7 +30,7 @@ describe('SelectLocalizedStringComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadataMinimal({
-        declarations: [SelectLocalizedStringComponent],
+        declarations: [SelectLocalizedStringComponent, MatAutocomplete],
         imports: [PipesModule],
         schemas: [NO_ERRORS_SCHEMA],
       }),

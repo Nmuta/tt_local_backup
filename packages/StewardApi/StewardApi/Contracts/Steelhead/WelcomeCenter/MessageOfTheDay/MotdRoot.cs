@@ -47,11 +47,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead.WelcomeCenter.MessageOfT
 
         public MotdUserGroups UserGroups { get; set; }
 
-        public object Cooldowns { get; set; }
+        [WriteToPegasus]
+        public WofCooldowns Cooldowns { get; set; }
 
         public object CooldownDataList { get; set; }
 
-        public object DisplayConditions { get; set; }
+        [WriteToPegasus]
+        public WofDisplayConditions DisplayConditions { get; set; }
 
         public object DisplayConditionDataList { get; set; }
 

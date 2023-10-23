@@ -13,6 +13,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
 
         public LocCategory Category { get; set; }
 
+        public LocSubCategory SubCategory { get; set; }
+
         public string LanguageCode { get; set; }
 
         public bool IsTranslated { get; set; }
