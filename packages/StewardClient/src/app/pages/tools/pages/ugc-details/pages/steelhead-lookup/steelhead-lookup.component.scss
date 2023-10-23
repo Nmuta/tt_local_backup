@@ -46,3 +46,34 @@ p {
 button {
   min-width: $button-min-size;
 }
+
+/* styles for the UGC Actions reporting row */
+.ugc-action-row {
+  display: grid;
+  grid-template-columns: 55% 15% 30%;
+  align-items: center;
+  justify-content: center;
+  .report-reason-box {
+    mat-form-field {
+      margin-top: 14px;
+      ::ng-deep .mat-form-field-infix {
+        margin: 0;
+        padding-bottom: 5px;
+      }
+      ::ng-deep .mat-form-field-flex {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+  .verify-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    ::ng-deep verify-button button {
+      margin-right: 0px;
+    }
+  }
+}
