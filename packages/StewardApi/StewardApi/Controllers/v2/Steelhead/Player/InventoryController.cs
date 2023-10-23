@@ -7,6 +7,7 @@ using Forza.UserInventory.FM8.Generated;
 using Forza.WebServices.FM8.Generated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -78,7 +79,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagDependency(DependencyLogTags.Lsp)]
         [LogTagAction(ActionTargetLogTags.Player, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
         public async Task<IActionResult> GetPlayerInventory(
-            ulong xuid)
+            ulong xuid,
+            [FromQuery] bool includeClientCarInfo = true)
         {
             await this.Services.EnsurePlayerExistAsync(xuid).ConfigureAwait(true);
 
@@ -116,6 +118,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.");
             }
 
+            if (!includeClientCarInfo)
+            {
+                foreach (var car in playerInventory.Cars)
+                {
+                    car.ClientCarInfo = Array.Empty<byte>();
+                }
+            }
+
             playerInventory.SetItemDescriptions(
                 masterInventory,
                 $"XUID: {xuid}",
@@ -133,12 +143,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers.V2.Steelhead.Player
         [LogTagAction(ActionTargetLogTags.System, ActionAreaLogTags.Lookup | ActionAreaLogTags.Inventory)]
         public async Task<IActionResult> GetPlayerInventory(
             ulong xuid,
-            int profileId)
+            int profileId,
+            [FromQuery] bool includeClientCarInfo = true)
         {
             xuid.EnsureValidXuid();
             await this.Services.EnsurePlayerExistAsync(xuid);
 
             var inventory = await this.GetPlayerInventoryByProfileId(xuid, profileId).ConfigureAwait(true);
+
+            if (!includeClientCarInfo)
+            {
+                foreach (var car in inventory.Cars)
+                {
+                    car.ClientCarInfo = Array.Empty<byte>();
+                }
+            }
 
             return this.Ok(inventory);
         }

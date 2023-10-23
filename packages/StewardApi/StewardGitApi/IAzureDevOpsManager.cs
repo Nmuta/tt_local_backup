@@ -73,11 +73,11 @@ namespace StewardGitApi
         Task<GitPullRequest> GetPullRequestAsync(int pullRequestId);
 
         /// <summary>
-        ///     Get pull requests scheduled for merge into the default branch.
+        ///     Get pull requests scheduled for merge into the playtest branch.
         ///     A <c>null</c> <paramref name="mostRecent"/> will
         ///     retrieve all matching pull requests.
         /// </summary>
-        Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoDefaultBranchAsync(PullRequestStatus status, int? mostRecent);
+        Task<IEnumerable<GitPullRequest>> GetPullRequestsIntoPlaytestBranchAsync(PullRequestStatus status, int? mostRecent);
 
         /// <summary>
         ///     Creates a pull request.

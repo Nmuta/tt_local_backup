@@ -13,7 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardTest.Utilities;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
-namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
+namespace Turn10.LiveOps.StewardTest.Integration.Woodstock.V1
 {
     [TestClass]
     public sealed class WoodstockIntegrationTests
@@ -711,10 +711,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
         [IntegrationTest]
         public async Task GetBanHistoryByXuid_InvalidXuid()
         {
-            var result = await stewardClient.GetBanHistoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result.Any());
+            try
+            {
+                await stewardClient.GetBanHistoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException ex)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, ex.StatusCode);
+            }
         }
 
         [TestMethod]
@@ -1340,48 +1345,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
             try
             {
                 await stewardClient.SendGroupNotificationsAsync(TestConstants.InvalidProfileId, message).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [IntegrationTest]
-        public async Task GetProfileNotes()
-        {
-            var result = await stewardClient.GetProfileNotesAsync(xuid).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.Any());
-        }
-
-        [TestMethod]
-        [IntegrationTest]
-        public async Task GetProfileNotes_InvalidXuid()
-        {
-            try
-            {
-                await stewardClient.GetProfileNotesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [IntegrationTest]
-        public async Task SendProfileNotes_InvalidXuid()
-        {
-            var message = new ProfileNote { Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow };
-
-            try
-            {
-                await stewardClient.SendProfileNotesAsync(TestConstants.InvalidXuid, message).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)

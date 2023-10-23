@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 
-namespace Turn10.LiveOps.StewardApi.Providers
+namespace Turn10.LiveOps.StewardApi.Providers.Settings
 {
     /// <summary>
     ///     Provides title specific settings for Woodstock.

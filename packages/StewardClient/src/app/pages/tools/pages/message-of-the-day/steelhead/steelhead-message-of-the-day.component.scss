@@ -17,3 +17,12 @@ mat-tab-group {
 ::ng-deep mat-card {
   margin-bottom: $gap-medium;
 }
+
+.timer-date {
+  flex-grow: 0;
+  margin: 1em;
+  mat-label,
+  datetime-picker {
+    flex-grow: 0;
+  }
+}

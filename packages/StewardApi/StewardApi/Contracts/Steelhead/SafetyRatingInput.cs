@@ -7,8 +7,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// </summary>
     public sealed class SafetyRatingInput
     {
-        public double Score { get; set; }
-
-        public bool IsInProbationaryPeriod { get; set; }
+        public double[] SafetyScores { get; set; }
     }
 }

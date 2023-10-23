@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Common;
 
-namespace Turn10.LiveOps.StewardApi.Providers
+namespace Turn10.LiveOps.StewardApi.Providers.Settings
 {
     /// <summary>
     ///     Provides title specific settings for Apollo.
@@ -17,7 +17,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
             ConfigurationKeyConstants.ApolloClientVersion,
             ConfigurationKeyConstants.ApolloAdminXuid,
             ConfigurationKeyConstants.ApolloCertificateKeyVaultName,
-            ConfigurationKeyConstants.ApolloCertificateSecretName,
         };
 
         /// <summary>
@@ -33,8 +32,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
             this.AdminXuid = Convert.ToUInt64(
                 configuration[ConfigurationKeyConstants.ApolloAdminXuid],
                 CultureInfo.InvariantCulture);
-            this.CertificateKeyVaultName = configuration[ConfigurationKeyConstants.ApolloCertificateKeyVaultName];
-            this.CertificateSecretName = configuration[ConfigurationKeyConstants.ApolloCertificateSecretName];
         }
 
         /// <summary>
@@ -46,15 +43,5 @@ namespace Turn10.LiveOps.StewardApi.Providers
         ///     Gets the admin xuid.
         /// </summary>
         public ulong AdminXuid { get; }
-
-        /// <summary>
-        ///     Gets the certificate key vault name.
-        /// </summary>
-        public string CertificateKeyVaultName { get; }
-
-        /// <summary>
-        ///     Gets the certificate secret name.
-        /// </summary>
-        public string CertificateSecretName { get; }
     }
 }

@@ -102,6 +102,11 @@ export interface TextOverride {
 export interface CustomRangePoint {
   dateUtc: string;
   when: string;
+  displayName: DisplayName;
+}
+
+export interface DisplayName {
+  text: string;
 }
 
 /** Interface for a custom timer instance */
@@ -129,8 +134,17 @@ export interface Timer {
 
 /** Base interface for a display condition. */
 export interface DisplayConditionItem {
+  id: string;
   refId: string;
   when: string;
+  type: string;
+  friendlyName: string;
+  dateSettings: DateSettings;
+}
+
+/** Base interface for a date setting. */
+export interface DateSettings {
+  range: CustomRange;
 }
 
 /** Base interface for a display conditions wrapper. */

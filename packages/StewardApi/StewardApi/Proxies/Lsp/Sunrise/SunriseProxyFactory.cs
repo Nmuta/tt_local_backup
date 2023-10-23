@@ -1,6 +1,7 @@
 ﻿using Forza.LiveOps.FH4.Generated;
 using Forza.WebServices.FH4.Generated;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Settings;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Sunrise.Services;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;

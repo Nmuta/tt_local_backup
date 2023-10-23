@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 
 /** Enum for a player's safety rating grade. */
-enum SafetyRatingGrade {
+export enum SafetyRatingGrade {
   SPlus = 'SPlus',
   S = 'S',
   SMinus = 'SMinus',
@@ -32,10 +32,9 @@ export interface SafetyRating {
   probationaryScoreEstimate: BigNumber;
 }
 
-/** Interface for a safety rating update. */
-export interface SafetyRatingUpdate {
-  score: BigNumber;
-  isInProbationaryPeriod: boolean;
+/** Interface for a safety rating input. */
+export interface SafetyRatingInput {
+  safetyScores: number[];
 }
 
 /** Interface for a safety rating configuration. */
