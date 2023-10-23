@@ -42,14 +42,6 @@
           {{ item.description }}
           <span class="item-id-text" *ngIf="item.id >= 0">[{{ item.id }}]</span>
         </div>
-        <div class="metadata">
-          Acquired on
-          <span *ngIf="item.acquiredUtc">{{ item.acquiredUtc | date : 'shortDate' }}</span>
-          <span *ngIf="!item.acquiredUtc">N/A</span>
-          <span *ngIf="item.inventoryItemSource">
-            from {{ item.inventoryItemSource | deppoh }}</span
-          >
-        </div>
       </td>
     </ng-container>
     <ng-container matColumnDef="metadata">

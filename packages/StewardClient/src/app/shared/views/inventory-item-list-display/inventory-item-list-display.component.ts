@@ -67,11 +67,6 @@ export class InventoryItemListDisplayComponent extends BaseComponent implements 
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    const dateAquiredIndex = this.inventoryColumns.findIndex(v => v === 'dateAquired');
-    if (this.whatToShow.items.length <= 0 || !isPlayerInventoryItem(this.whatToShow.items[0])) {
-      this.inventoryColumns.splice(dateAquiredIndex, 1);
-    }
-
     this.errors = this.whatToShow.items.map(v => v.error).filter(error => !!error);
   }
 

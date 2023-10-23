@@ -51,7 +51,7 @@ export class DomainEnumPrettyPrintPipe implements PipeTransform {
         break;
 
       case WoodstockInventoryItemSource.PlayFabUserInventory:
-        return 'Play Fab';
+        return 'PlayFab';
         break;
 
       case WoodstockInventoryItemSource.Unknown:

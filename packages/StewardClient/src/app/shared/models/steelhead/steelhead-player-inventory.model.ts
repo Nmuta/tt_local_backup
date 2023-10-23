@@ -5,6 +5,7 @@ import {
 } from '@models/player-inventory-item';
 import { SteelheadBaseInventory } from './steelhead-base-inventory.model';
 
+/** Type for Steelhead player inventory item. */
 export type SteelheadPlayerInventoryItem = PlayerInventoryItem & {
   inventoryItemSource: SteelheadInventoryItemSource;
 };
