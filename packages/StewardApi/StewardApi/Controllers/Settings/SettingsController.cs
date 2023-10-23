@@ -14,7 +14,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
+using Turn10.LiveOps.StewardApi.Providers.Settings;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -28,15 +30,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     public sealed class SettingsController : ControllerBase
     {
         private readonly IBlobStorageProvider blobStorageProvider;
+        private readonly IGeneralSettingsProvider generalSettingsProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SettingsController"/> class.
         /// </summary>
-        public SettingsController(IBlobStorageProvider blobStorageProvider)
+        public SettingsController(IBlobStorageProvider blobStorageProvider, IGeneralSettingsProvider generalSettingsProvider)
         {
             blobStorageProvider.ShouldNotBeNull(nameof(blobStorageProvider));
+            generalSettingsProvider.ShouldNotBeNull(nameof(generalSettingsProvider));
 
             this.blobStorageProvider = blobStorageProvider;
+            this.generalSettingsProvider = generalSettingsProvider;
         }
 
         /// <summary>
@@ -46,20 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(TitleEndpoints))]
         public IActionResult GetLspEndpoints()
         {
-            var validEndpoints = new TitleEndpoints
-            {
-                Apollo = typeof(ApolloEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
-                Sunrise = typeof(SunriseEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
-                Woodstock = typeof(WoodstockEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
-                Steelhead = typeof(SteelheadEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
-                Forte = typeof(ForteEndpoint).GetProperties()
-                    .Where(p => p.GetValue(p.Name) != null).Select(p => new LspEndpoint(p.Name)).OrderBy(p => this.MapEndpointPriority(p.Name)),
-                Forum = new List<LspEndpoint>() { new LspEndpoint("Retail") },
-            };
+            var validEndpoints = this.generalSettingsProvider.GetLspEndpoints();
 
             return this.Ok(validEndpoints);
         }
@@ -95,21 +87,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var results = await this.blobStorageProvider.SetStewardPlayFabSettingsAsync(updatedPlayfabSettings).ConfigureAwait(true);
 
             return this.Ok(results);
-        }
-
-        private int MapEndpointPriority(string priority)
-        {
-            switch (priority.ToUpperInvariant())
-            {
-                case "RETAIL":
-                    return 1;
-                case "STUDIO":
-                    return 2;
-                case "FLIGHT":
-                    return 3;
-                default:
-                    return 4;
-            }
         }
     }
 }

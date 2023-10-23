@@ -26,6 +26,7 @@ using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Proxies.Lsp.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.LiveOps.StewardTest.Utilities;
 using Turn10.Services.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
@@ -725,7 +726,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock.ControllerTests
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var xuid = TestUtilities.GenerateValidTestXuid(); ;
             var gamertag = Fixture.Create<string>();
 
             // Act.

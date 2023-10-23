@@ -16,6 +16,33 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
       shortMarkdown: 'Display source of items alongside acquisition time',
     },
     {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging] },
+      uuid: '22a779b2-df4e-4c6b-a1de-2954580c4793',
+      shortMarkdown: 'Update Steward api to send subcategory field for get localized strings',
+    },
+    {
+      tag: { title: [GameTitle.FM8, GameTitle.FH5], tool: [NavbarTool.Leaderboards] },
+      uuid: '02a287c0-26dc-4ada-af5f-58fe0fe42dfd',
+      shortMarkdown:
+        'Organize verify buttons so that they are next to associated action instead of on line above',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: NavbarTool.WelcomeCenterTiles },
+      uuid: '46f3919e-ae1d-4cf6-8536-b6a1aa34e6ca',
+      shortMarkdown: 'Fix some tiles not loading properly',
+    },
+    {
+      tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging] },
+      uuid: '9d1ddfe8-0c45-4180-88a4-d2ab315483b0',
+      shortMarkdown:
+        'Switch Select Localized String from dropdown to autocomplete with grouped dropdown',
+    },
+    {
+      tag: { title: 'all', tool: [NavbarTool.PermissionManagement] },
+      uuid: 'f603744e-d212-4213-ae52-86319f6a3608',
+      shortMarkdown: 'Ignore permissions from removed titles & environments',
+    },
+    {
       tag: { title: GameTitle.FM8, tool: [NavbarTool.UserDetails] },
       uuid: '74048714-0464-4154-9f42-96d121b22f25',
       shortMarkdown: 'Avoid Out-of-memory error on Player Details -> Inventory',
