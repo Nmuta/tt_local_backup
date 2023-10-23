@@ -1,6 +1,9 @@
 <div class="sf-wrapper">
   <div class="sf-vertical">
-    <mat-form-field class="sf-full-width sf-default-hint" [formGroup]="formGroup">
+    <mat-form-field
+      class="sf-full-width sf-default-hint select-localized-string-input"
+      [formGroup]="formGroup"
+    >
       <mat-label>{{ label }}</mat-label>
       <input
         type="text"
@@ -11,7 +14,10 @@
         [matAutocomplete]="auto"
       />
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-optgroup *ngFor="let group of locStringGroups | async" [label]="group.category">
+        <mat-optgroup
+          *ngFor="let group of locStringGroups | async"
+          [label]="group.category + ' - ' + group.subCategory"
+        >
           <mat-option *ngFor="let option of group.locOptions" [value]="option">
             {{ option.englishText | deppoh }}
           </mat-option>

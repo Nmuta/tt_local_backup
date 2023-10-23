@@ -13,7 +13,12 @@ import {
 import { MatLegacyChipListChange as MatChipListChange } from '@angular/material/legacy-chips';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
-import { GameTitle, LocalizationCategory, SupportedLocalizationLanguageCodes } from '@models/enums';
+import {
+  GameTitle,
+  LocalizationCategory,
+  LocalizationSubCategory,
+  SupportedLocalizationLanguageCodes,
+} from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { LocalizedString, LocalizedStringsMap } from '@models/localization';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -41,10 +46,12 @@ export interface LocalizationOptions {
   englishText: string;
   id: GuidLikeString;
   category: LocalizationCategory;
+  subCategory: LocalizationSubCategory;
 }
 
 export interface LocalizationOptionsGroup {
   category: string;
+  subCategory: string;
   locOptions: LocalizationOptions[];
 }
 
@@ -131,6 +138,7 @@ export class SelectLocalizedStringComponent
       id: '',
       englishText: '',
       category: null,
+      subCategory: null,
     };
     this.formControls.selectedLocalizedStringInfo.addValidators(
       TypeValidator.isMatchingType(emptyValue),
@@ -177,6 +185,7 @@ export class SelectLocalizedStringComponent
             id: x,
             englishText: record.message,
             category: record.category,
+            subCategory: record.subCategory,
           };
         });
         this.formControls.selectedLocalizedStringInfo.updateValueAndValidity();
@@ -289,22 +298,43 @@ export class SelectLocalizedStringComponent
     const filterValue =
       typeof value === 'object' ? value.englishText.toLowerCase() : value.toLowerCase();
 
-    const list: LocalizationOptionsGroup[] = Object.values(LocalizationCategory).map(v => ({
-      category: v,
-      locOptions: [],
-    }));
+    const filterValues = filterValue.split('+').map(v => v.trim());
 
-    const filteredList = this.localizedStringDetails.filter(option =>
-      option.englishText.toLowerCase().includes(filterValue),
-    );
+    const list = Object.values(LocalizationCategory)
+      .map(category => {
+        return Object.values(LocalizationSubCategory).map(subCategory => ({
+          category,
+          subCategory,
+          locOptions: [],
+        }));
+      })
+      .flat();
+
+    const filteredList = this.localizedStringDetails.filter(option => {
+      if (filterValues.length > 1) {
+        return filterValues.every(
+          v =>
+            option.englishText.toLowerCase().includes(v) ||
+            option.category.toLowerCase().includes(v) ||
+            option.subCategory.toLowerCase().includes(v),
+        );
+      }
+      return (
+        option.englishText.toLowerCase().includes(filterValue) ||
+        option.category.toLowerCase().includes(filterValue) ||
+        option.subCategory.toLowerCase().includes(filterValue)
+      );
+    });
 
     this.isLocStringsGroupsEmpty = filteredList.length === 0;
 
     filteredList.forEach(d => {
-      const c = list.find(group => group.category === d.category);
+      const c = list.find(
+        group => group.category === d.category && group.subCategory === d.subCategory,
+      );
       c.locOptions.push(d);
     });
 
-    return list;
+    return list.filter(group => group.locOptions.length > 0);
   }
 }
