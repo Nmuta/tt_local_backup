@@ -8,6 +8,15 @@ export const CHANGELOG_2023_Q4: MarkdownChangelogGroup = {
   id: 'e8b072e3-8238-4d23-a89e-ab266bc9b882',
   entries: [
     {
+      tag: ChangelogTag.General,
+      uuid: '5aade718-686a-4dbc-952c-fc5248e1081e',
+      shortMarkdown: 'Added local time to time picker',
+      longMarkdown: `
+        When selecting a time in time picker, local time is now shown
+        in conjunction with UTC time to make time selection choices more clear
+      `,
+    },
+    {
       tag: { title: [GameTitle.FM8], tool: [NavbarTool.Messaging] },
       uuid: '43900b8e-5c19-4b44-8558-8b97ea7473aa',
       shortMarkdown: 'Select Loc Strings group with subcategory',
