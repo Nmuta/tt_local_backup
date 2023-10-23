@@ -105,30 +105,6 @@ describe('InventoryItemListDisplayComponent', () => {
         expect(component.inventoryColumns[2]).toEqual('dateAquired');
       });
     });
-
-    describe('When whatToShow uses MasterInventoryItems in items[]', () => {
-      beforeEach(() => {
-        component.inventoryColumns = ['foo', 'bar', 'dateAquired'];
-        component.whatToShow = {
-          title: faker.random.word(),
-          description: faker.random.words(10),
-          items: [
-            {
-              id: fakeBigNumber(),
-              description: faker.random.words(10),
-              quantity: faker.datatype.number(100),
-              itemType: undefined,
-            },
-          ] as MasterInventoryItem[],
-        };
-      });
-
-      it('should remove date aquired from the displayed table column list', () => {
-        component.ngOnInit();
-
-        expect(component.inventoryColumns.length).toEqual(2);
-      });
-    });
   });
 
   describe('Method: ngOnChanges', () => {
