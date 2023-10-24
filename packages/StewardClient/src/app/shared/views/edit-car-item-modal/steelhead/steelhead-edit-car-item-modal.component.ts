@@ -9,7 +9,7 @@ import {
   EditCarItemModalData,
 } from '../edit-car-item-modal.component';
 import { GameTitle } from '@models/enums';
-import { PlayerInventoryCarItem } from '@models/player-inventory-item';
+import { SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
 import { SteelheadPlayerInventoryService } from '@services/api-v2/steelhead/player/inventory/steelhead-player-inventory.service';
 import { EMPTY_STEELHEAD_PLAYER_INVENTORY, SteelheadPlayerInventory } from '@models/steelhead';
 import { cloneDeep } from 'lodash';
@@ -31,7 +31,7 @@ export class SteelheadEditCarItemModalComponent extends EditCarItemModalBaseComp
   }
 
   /** Gets car item */
-  public getCarItem$(): Observable<PlayerInventoryCarItem> {
+  public getCarItem$(): Observable<SteelheadPlayerInventoryCarItem> {
     return this.playerInventoryService.getInventoryCarByProfileId$(
       this.xuid,
       this.profileId,
@@ -40,7 +40,9 @@ export class SteelheadEditCarItemModalComponent extends EditCarItemModalBaseComp
   }
 
   /** Edits car item. */
-  public editCarItem$(updatedCar: PlayerInventoryCarItem): Observable<SteelheadPlayerInventory> {
+  public editCarItem$(
+    updatedCar: SteelheadPlayerInventoryCarItem,
+  ): Observable<SteelheadPlayerInventory> {
     const inventoryUpdates = cloneDeep(EMPTY_STEELHEAD_PLAYER_INVENTORY);
     inventoryUpdates.cars.push(updatedCar);
 

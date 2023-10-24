@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { SteelheadEditCarItemModalComponent } from './steelhead/steelhead-edit-car-item-modal.component';
 import { GameTitle } from '@models/enums';
-import { PlayerInventoryCarItem } from '@models/player-inventory-item';
+import { SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
 import BigNumber from 'bignumber.js';
 import { GuidLikeString } from '@models/extended-types';
 import { SteelheadPlayerInventory } from '@models/steelhead';
@@ -22,7 +22,7 @@ export interface EditCarItemModalData {
   xuid: BigNumber;
   profileId: BigNumber;
   externalProfileId: GuidLikeString;
-  car: PlayerInventoryCarItem;
+  car: SteelheadPlayerInventoryCarItem;
 }
 
 type EditCarItemModalComponentUnion = SteelheadEditCarItemModalComponent;
@@ -52,7 +52,7 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent implem
   public vin: string;
   public externalProfileId: string;
 
-  public carItem: PlayerInventoryCarItem;
+  public carItem: SteelheadPlayerInventoryCarItem;
 
   public editCardPermission = PermAttributeName.ManagePlayerInventory;
 
@@ -75,7 +75,7 @@ export abstract class EditCarItemModalBaseComponent extends BaseComponent implem
       .subscribe(() => dialogRef.close(this.carItem));
   }
 
-  public abstract getCarItem$(): Observable<PlayerInventoryCarItem>;
+  public abstract getCarItem$(): Observable<SteelheadPlayerInventoryCarItem>;
 
   public abstract editCarItem$(item: unknown): Observable<SteelheadPlayerInventory>;
 

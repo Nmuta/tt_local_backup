@@ -3,6 +3,7 @@ import {
   EMPTY_STEELHEAD_PLAYER_INVENTORY,
   SteelheadMasterInventory,
   SteelheadPlayerInventory,
+  SteelheadPlayerInventoryItem,
 } from '@models/steelhead';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { PlayerInventoryItemListWithService } from '@models/master-inventory-item-list';
@@ -24,7 +25,6 @@ import { BetterSimpleChanges } from '@helpers/simple-changes';
 import { InventoryItemListDisplayComponentContract } from '@views/inventory-item-list-display/inventory-item-list-display.component';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
-import { PlayerInventoryItem } from '@models/player-inventory-item';
 import { SteelheadEditCarItemModalComponent } from '@views/edit-car-item-modal/steelhead/steelhead-edit-car-item-modal.component';
 import { EditCarItemModalData } from '@views/edit-car-item-modal/edit-car-item-modal.component';
 
@@ -146,7 +146,7 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
         inventoryUpdates.creditRewards.push({
           id: item.id,
           quantity: Math.abs(quantityChange),
-        } as PlayerInventoryItem);
+        } as SteelheadPlayerInventoryItem);
 
         return this.editInventory(inventoryUpdates, quantityChange > 0);
       };
@@ -169,7 +169,7 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
         inventoryUpdates.vanityItems.push({
           id: item.id,
           quantity: Math.abs(quantityChange),
-        } as PlayerInventoryItem);
+        } as SteelheadPlayerInventoryItem);
 
         return this.editInventory(inventoryUpdates, quantityChange > 0);
       };
@@ -178,7 +178,7 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
         inventoryUpdates.vanityItems.push({
           id: item.id,
           quantity: item.quantity,
-        } as PlayerInventoryItem);
+        } as SteelheadPlayerInventoryItem);
 
         return this.editInventory(inventoryUpdates, false);
       };
@@ -188,7 +188,7 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
         inventoryUpdates.driverSuits.push({
           id: item.id,
           quantity: Math.abs(quantityChange),
-        } as PlayerInventoryItem);
+        } as SteelheadPlayerInventoryItem);
 
         return this.editInventory(inventoryUpdates, quantityChange > 0);
       };
@@ -197,7 +197,7 @@ export class SteelheadPlayerInventoryComponent extends BaseComponent implements 
         inventoryUpdates.driverSuits.push({
           id: item.id,
           quantity: item.quantity,
-        } as PlayerInventoryItem);
+        } as SteelheadPlayerInventoryItem);
 
         return this.editInventory(inventoryUpdates, false);
       };

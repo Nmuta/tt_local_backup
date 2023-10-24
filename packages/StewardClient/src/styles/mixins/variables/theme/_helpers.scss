@@ -131,6 +131,10 @@
   --#{makeLookupName('foreground', 'secondary-text-opacity')}: #{alpha($secondary-text-color)};
 
   // foreground-based vars
+  @include colorToVars(
+    makeLookupName('foreground', 'default'),
+    map-get($theme-foreground-palette, 'base')
+  );
   @include colorToVars(makeLookupName('foreground', 'secondary-text'), $secondary-text-color);
   @include colorToVars(
     makeLookupName('background', 'default-contrast'),

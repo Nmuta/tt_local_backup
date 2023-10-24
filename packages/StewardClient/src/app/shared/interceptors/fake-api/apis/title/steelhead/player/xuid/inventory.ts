@@ -1,10 +1,13 @@
 import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SteelheadPlayerInventory } from '@models/steelhead';
+import { SteelheadPlayerInventory, SteelheadPlayerInventoryItem } from '@models/steelhead';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from '@faker-js/faker';
-import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
+import {
+  SteelheadInventoryItemSource,
+  SteelheadPlayerInventoryCarItem,
+} from '@models/player-inventory-item';
 import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for steelhead player inventory. */
@@ -37,7 +40,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(_xuid: BigNumber): SteelheadPlayerInventory {
-    function makeFakeItems(count: number): PlayerInventoryItem[] {
+    function makeFakeItems(count: number): SteelheadPlayerInventoryItem[] {
       return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
@@ -46,6 +49,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(1_000),
             description: faker.lorem.sentences(2),
             itemType: undefined,
+            inventoryItemSource: SteelheadInventoryItemSource.Unknown,
             acquiredUtc: toDateTime(faker.date.past()),
             error: undefined,
           };
@@ -61,7 +65,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
         versionedTuneId: faker.datatype.uuid(),
         currentLevel: new BigNumber(faker.datatype.number()),
         experiencePoints: new BigNumber(faker.datatype.number()),
-      } as PlayerInventoryCarItem;
+      } as SteelheadPlayerInventoryCarItem;
     });
 
     return {
@@ -71,6 +75,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
           description: 'Credits',
           quantity: faker.datatype.number(100_000_000),
           itemType: undefined,
+          inventoryItemSource: SteelheadInventoryItemSource.Unknown,
           error: undefined,
         },
       ],

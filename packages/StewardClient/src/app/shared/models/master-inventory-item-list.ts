@@ -2,7 +2,8 @@ import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { InventoryItemListDisplayComponentContract } from '@views/inventory-item-list-display/inventory-item-list-display.component';
 import { MasterInventoryItem } from './master-inventory-item';
-import { PlayerInventoryCarItem, PlayerInventoryItem } from './player-inventory-item';
+import { SteelheadPlayerInventoryCarItem, PlayerInventoryItem } from './player-inventory-item';
+import { WoodstockPlayerInventoryItem } from './woodstock';
 
 /** Represents a warning symbol to display next to a warning */
 export interface ItemWarning {
@@ -23,7 +24,8 @@ export interface PlayerInventoryItemListEntryExtras {
 
 /** Composite type for player inventory item list */
 export type PlayerInventoryItemListEntry = (
-  | PlayerInventoryCarItem
+  | SteelheadPlayerInventoryCarItem
+  | WoodstockPlayerInventoryItem
   | PlayerInventoryItem
   | MasterInventoryItem
 ) &

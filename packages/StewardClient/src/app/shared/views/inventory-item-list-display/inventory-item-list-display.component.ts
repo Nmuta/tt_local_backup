@@ -10,9 +10,8 @@ import {
   PlayerInventoryItemListEntry,
 } from '@models/master-inventory-item-list';
 import {
-  PlayerInventoryCarItem,
+  SteelheadPlayerInventoryCarItem,
   PlayerInventoryItem,
-  isPlayerInventoryItem,
   toPlayerInventoryCarItem,
 } from '@models/player-inventory-item';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -22,7 +21,7 @@ import { Observable, filter, take, takeUntil } from 'rxjs';
 /** Service contract for InventoryItemListDisplayComponent. */
 export interface InventoryItemListDisplayComponentContract {
   /** Optional: Allows editing of inventory car items. */
-  openCarEditModal$(item: PlayerInventoryItem): Observable<PlayerInventoryCarItem>;
+  openCarEditModal$(item: PlayerInventoryItem): Observable<SteelheadPlayerInventoryCarItem>;
   /** Optional: Allows editing of inventory items. */
   editItemQuantity$(item: PlayerInventoryItem, quantityChange: number): Observable<unknown>;
   /** Optional: Allows deleting of inventory items. */
@@ -38,16 +37,10 @@ export interface InventoryItemListDisplayComponentContract {
 export class InventoryItemListDisplayComponent extends BaseComponent implements OnInit, OnChanges {
   /** Player inventory list to show. */
   @Input() public whatToShow: PlayerInventoryItemList;
-  /** Serivce contract for InventoryItemListDisplayComponent. */
+  /** Service contract for InventoryItemListDisplayComponent. */
   @Input() public service: InventoryItemListDisplayComponentContract;
 
-  public inventoryColumns: string[] = [
-    'quantity',
-    'description',
-    'errors',
-    'dateAquired',
-    'actions',
-  ];
+  public inventoryColumns: string[] = ['quantity', 'description', 'errors', 'actions'];
   public errors: MSError[];
 
   public nonCarFormControls = {
@@ -73,11 +66,6 @@ export class InventoryItemListDisplayComponent extends BaseComponent implements 
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    const dateAquiredIndex = this.inventoryColumns.findIndex(v => v === 'dateAquired');
-    if (this.whatToShow.items.length <= 0 || !isPlayerInventoryItem(this.whatToShow.items[0])) {
-      this.inventoryColumns.splice(dateAquiredIndex, 1);
-    }
-
     this.errors = this.whatToShow.items.map(v => v.error).filter(error => !!error);
   }
 
@@ -120,7 +108,7 @@ export class InventoryItemListDisplayComponent extends BaseComponent implements 
   }
 
   /** Edits a car item. */
-  public editCarItem(item: PlayerInventoryCarItem, index: number): void {
+  public editCarItem(item: SteelheadPlayerInventoryCarItem, index: number): void {
     if (!this.isCarItem(item)) {
       throw new Error(
         'Non-car items should not support car property changes. Verify InventoryItemListDisplayComponentContract is implementing editItemQuantity$ instead of openCarEditModal$',

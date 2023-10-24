@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 
 #pragma warning disable SA1600 // Elements should be documented
-namespace Turn10.LiveOps.StewardApi.Contracts.Common
+namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
 {
     /// <summary>
-    ///     Represents a player inventory car item.
+    ///     Represents a Steelhead player inventory car item.
     /// </summary>
-    public class PlayerInventoryCarItem : PlayerInventoryItem
+    public class SteelheadPlayerInventoryCarItem : SteelheadPlayerInventoryItem
     {
         public Guid Vin { get; set; }
 
@@ -23,8 +22,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public uint CarPointsTotal { get; set; }
 
         public ulong Flags { get; set; }
-
-        public SteelheadInventoryItemSource InventoryItemSource { get; set; }
 
         public SteelheadItemAcquisitionType AcquisitionType { get; set; }
 

@@ -1,5 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DeviceType } from '@models/enums';
+import {
+  SteelheadInventoryItemSource,
+  WoodstockInventoryItemSource,
+} from '@models/player-inventory-item';
 import { UgcOrderBy } from '@models/ugc-filters';
 import _ from 'lodash';
 
@@ -44,6 +48,18 @@ export class DomainEnumPrettyPrintPipe implements PipeTransform {
 
       case UgcOrderBy.PopularityScoreDesc:
         return 'Most Popular First';
+        break;
+
+      case WoodstockInventoryItemSource.PlayFabUserInventory:
+        return 'PlayFab';
+        break;
+
+      case WoodstockInventoryItemSource.Unknown:
+        return '???';
+        break;
+
+      case SteelheadInventoryItemSource.Unknown:
+        return '???';
         break;
 
       default:

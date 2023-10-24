@@ -3,8 +3,11 @@ import faker from '@faker-js/faker';
 import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
-import { SteelheadPlayerInventory } from '@models/steelhead';
+import {
+  SteelheadInventoryItemSource,
+  SteelheadPlayerInventoryCarItem,
+} from '@models/player-inventory-item';
+import { SteelheadPlayerInventory, SteelheadPlayerInventoryItem } from '@models/steelhead';
 import BigNumber from 'bignumber.js';
 
 /** Fake API for steelhead player inventory. */
@@ -37,7 +40,7 @@ export class SteelheadPlayerInventoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(_xuid?: BigNumber): SteelheadPlayerInventory {
-    function makeFakeItems(count: number): PlayerInventoryItem[] {
+    function makeFakeItems(count: number): SteelheadPlayerInventoryItem[] {
       return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
@@ -46,6 +49,7 @@ export class SteelheadPlayerInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(1_000),
             description: faker.lorem.sentences(2),
             itemType: undefined,
+            inventoryItemSource: SteelheadInventoryItemSource.Unknown,
             acquiredUtc: toDateTime(faker.date.past()),
             error: undefined,
           };
@@ -61,7 +65,7 @@ export class SteelheadPlayerInventoryFakeApi extends FakeApiBase {
         versionedTuneId: faker.datatype.uuid(),
         currentLevel: new BigNumber(faker.datatype.number()),
         experiencePoints: new BigNumber(faker.datatype.number()),
-      } as PlayerInventoryCarItem;
+      } as SteelheadPlayerInventoryCarItem;
     });
 
     return {
@@ -71,6 +75,7 @@ export class SteelheadPlayerInventoryFakeApi extends FakeApiBase {
           description: 'Credits',
           quantity: faker.datatype.number(100_000_000),
           itemType: undefined,
+          inventoryItemSource: SteelheadInventoryItemSource.Unknown,
           error: undefined,
         },
       ],

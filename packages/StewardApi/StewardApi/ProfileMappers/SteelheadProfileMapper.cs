@@ -44,17 +44,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public SteelheadProfileMapper()
         {
-            this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
+            this.CreateMap<ForzaInventoryItemSource, SteelheadInventoryItemSource>();
+            this.CreateMap<AdminForzaUserInventoryItem, SteelheadPlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(des => des.InventoryItemSource, opt => opt.MapFrom(src => SteelheadInventoryItemSource.Unknown))
                 .ForMember(des => des.Error, opt => opt.Ignore())
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
                 .ForMember(des => des.Errors, opt => opt.Ignore())
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<SteelheadPlayerInventoryItem>
                 {
-                    new PlayerInventoryItem { Id = 0, Description = "Credits", Quantity = src.credits },
+                    new SteelheadPlayerInventoryItem { Id = 0, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>()
@@ -632,7 +634,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<SteelheadLoyaltyRewardsTitle, ForzaLoyaltyRewardsSupportedTitles>().ReverseMap();
 
-            this.CreateMap<(PlayerInventoryItem item, InventoryItemType itemType), ForzaUserInventoryItemWrapper>()
+            this.CreateMap<(SteelheadPlayerInventoryItem item, InventoryItemType itemType), ForzaUserInventoryItemWrapper>()
                 .ForMember(dest => dest.ItemType, opt => opt.MapFrom(source => source.itemType))
                 .ForPath(dest => dest.Item.quantity, opt => opt.MapFrom(source => source.item.Quantity))
                 .ForPath(dest => dest.Item.itemId, opt => opt.MapFrom(source => source.item.Id))
@@ -640,22 +642,25 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForPath(dest => dest.Item.acquisitionTime, opt => opt.MapFrom(source => DateTime.UtcNow))
                 .ForPath(dest => dest.Item.lastUsedTime, opt => opt.MapFrom(source => DateTime.UtcNow));
 
-            this.CreateMap<ForzaUserInventoryItemWrapper, PlayerInventoryItem>()
+            this.CreateMap<ForzaUserInventoryItemWrapper, SteelheadPlayerInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Item.itemId))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(source => source.Item.quantity))
                 .ForMember(dest => dest.AcquiredUtc, opt => opt.MapFrom(source => source.Item.acquisitionTime))
+                .ForMember(dest => dest.InventoryItemSource, opt => opt.MapFrom(source => source.Item.itemSource))
                 .ForMember(dest => dest.Description, opt => opt.Ignore())
                 .ForMember(dest => dest.Error, opt => opt.Ignore());
 
-            this.CreateMap<PlayerInventoryCarItem, AdminForzaCarUserInventoryItem>()
+            this.CreateMap<SteelheadPlayerInventoryCarItem, AdminForzaCarUserInventoryItem>()
                 .ForMember(dest => dest.itemId, opt => opt.MapFrom(source => source.Id))
                 .ForMember(dest => dest.versionedLiveryId, opt => opt.MapFrom(source => source.VersionedLiveryId.HasValue ? source.VersionedLiveryId.Value : Guid.Empty))
                 .ForMember(dest => dest.versionedTuneId, opt => opt.MapFrom(source => source.VersionedTuneId.HasValue ? source.VersionedTuneId.Value : Guid.Empty))
+                .ForMember(dest => dest.inventoryItemSource, opt => opt.MapFrom(source => source.InventoryItemSource))
                 .ForMember(dest => dest.acquisitionTime, opt => opt.MapFrom(source => source.AcquiredUtc));
 
-            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryCarItem>()
+            this.CreateMap<AdminForzaCarUserInventoryItem, SteelheadPlayerInventoryCarItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.AcquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+                .ForMember(des => des.InventoryItemSource, opt => opt.MapFrom(src => src.inventoryItemSource))
                 .ForMember(des => des.Error, opt => opt.Ignore());
 
             this.CreateMap<ForzaProfile, SteelheadInventoryProfile>()

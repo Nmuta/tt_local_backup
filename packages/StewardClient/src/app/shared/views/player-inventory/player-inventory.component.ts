@@ -10,7 +10,7 @@ import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operato
 import { PlayerInventoryItemListWithService } from '@models/master-inventory-item-list';
 import { GameTitle } from '@models/enums';
 import { BetterSimpleChanges } from '@helpers/simple-changes';
-import { WoodstockMasterInventory } from '@models/woodstock';
+import { WoodstockPlayerInventory } from '@models/woodstock';
 import { SteelheadMasterInventory } from '@models/steelhead';
 import { OldPlayerInventoryProfile } from '@models/player-inventory-profile';
 
@@ -18,7 +18,7 @@ export type AcceptablePlayerInventoryTypeUnion =
   | SunriseMasterInventory
   | ApolloMasterInventory
   | OpusMasterInventory
-  | WoodstockMasterInventory
+  | WoodstockPlayerInventory
   | SteelheadMasterInventory;
 
 /** A model for identifying a property of an object and mapping that to a title & description for a simple expando. */

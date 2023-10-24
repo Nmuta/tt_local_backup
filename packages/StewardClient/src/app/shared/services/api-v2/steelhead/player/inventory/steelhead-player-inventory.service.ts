@@ -1,9 +1,9 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
-import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
+import { SteelheadPlayerInventoryCarItem } from '@models/player-inventory-item';
 import { FullPlayerInventoryProfile } from '@models/player-inventory-profile';
-import { SteelheadPlayerInventory } from '@models/steelhead';
+import { SteelheadPlayerInventory, SteelheadPlayerInventoryItem } from '@models/steelhead';
 import { ApiV2Service } from '@services/api-v2/api-v2.service';
 import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
@@ -46,8 +46,8 @@ export class SteelheadPlayerInventoryService {
     xuid: BigNumber,
     profileId: BigNumber,
     vin: GuidLikeString,
-  ): Observable<PlayerInventoryCarItem> {
-    return this.api.getRequest$<PlayerInventoryCarItem>(
+  ): Observable<SteelheadPlayerInventoryCarItem> {
+    return this.api.getRequest$<SteelheadPlayerInventoryCarItem>(
       `${this.basePath}/${xuid}/inventory/profile/${profileId}/car/${vin}`,
     );
   }
@@ -76,8 +76,8 @@ export class SteelheadPlayerInventoryService {
     xuid: BigNumber,
     externalProfileId: GuidLikeString,
     inventoryUpdate: SteelheadPlayerInventory,
-  ): Observable<PlayerInventoryItem[]> {
-    return this.api.deleteRequest$<PlayerInventoryItem[]>(
+  ): Observable<SteelheadPlayerInventoryItem[]> {
+    return this.api.deleteRequest$<SteelheadPlayerInventoryItem[]>(
       `${this.basePath}/${xuid}/inventory/externalProfileId/${externalProfileId}/items`,
       null,
       inventoryUpdate,

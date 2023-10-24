@@ -7,9 +7,11 @@ import {
   InventoryItemListDisplayComponentContract,
 } from './inventory-item-list-display.component';
 import faker from '@faker-js/faker';
-import { PlayerInventoryCarItem, PlayerInventoryItem } from '@models/player-inventory-item';
+import {
+  PlayerInventoryItem,
+  SteelheadPlayerInventoryCarItem,
+} from '@models/player-inventory-item';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { MasterInventoryItem } from '@models/master-inventory-item';
 import { toDateTime } from '@helpers/luxon';
 import { PlayerInventoryItemListEntry } from '@models/master-inventory-item-list';
 import BigNumber from 'bignumber.js';
@@ -102,30 +104,6 @@ describe('InventoryItemListDisplayComponent', () => {
         expect(component.inventoryColumns[2]).toEqual('dateAquired');
       });
     });
-
-    describe('When whatToShow uses MasterInventoryItems in items[]', () => {
-      beforeEach(() => {
-        component.inventoryColumns = ['foo', 'bar', 'dateAquired'];
-        component.whatToShow = {
-          title: faker.random.word(),
-          description: faker.random.words(10),
-          items: [
-            {
-              id: fakeBigNumber(),
-              description: faker.random.words(10),
-              quantity: faker.datatype.number(100),
-              itemType: undefined,
-            },
-          ] as MasterInventoryItem[],
-        };
-      });
-
-      it('should remove date aquired from the displayed table column list', () => {
-        component.ngOnInit();
-
-        expect(component.inventoryColumns.length).toEqual(2);
-      });
-    });
   });
 
   describe('Method: ngOnChanges', () => {
@@ -211,17 +189,17 @@ describe('InventoryItemListDisplayComponent', () => {
   });
 
   describe('Method: editCarItem', () => {
-    let carItem: Partial<PlayerInventoryCarItem>;
+    let carItem: Partial<SteelheadPlayerInventoryCarItem>;
     beforeEach(() => {
       carItem = {
         ...listEntry,
         vin: faker.datatype.uuid(),
       };
-      component.itemListTableSource.data = [carItem as PlayerInventoryCarItem];
+      component.itemListTableSource.data = [carItem as SteelheadPlayerInventoryCarItem];
     });
 
     it('should invoke service.openCarEditModal$', () => {
-      component.editCarItem(carItem as PlayerInventoryCarItem, 0);
+      component.editCarItem(carItem as SteelheadPlayerInventoryCarItem, 0);
 
       expect(component.service.openCarEditModal$).toHaveBeenCalled();
     });
