@@ -12,7 +12,6 @@ import {
   SteelheadPlayerInventoryCarItem,
 } from '@models/player-inventory-item';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { MasterInventoryItem } from '@models/master-inventory-item';
 import { toDateTime } from '@helpers/luxon';
 import { PlayerInventoryItemListEntry } from '@models/master-inventory-item-list';
 import BigNumber from 'bignumber.js';
