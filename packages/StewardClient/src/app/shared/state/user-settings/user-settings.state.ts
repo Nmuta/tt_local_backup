@@ -26,9 +26,17 @@ import {
   ConfigureShowVerifyCheckboxPopup,
   ResetNavbarTools,
 } from './user-settings.actions';
+import { DateTime } from 'luxon';
 
 /** Interface to store user configured time zone */
-export interface timeConfig {zone: string, offset: string}
+export interface TimeConfig {zone: string;  offset: string}
+
+const userLocalTimeZone = DateTime.local();
+const myzone =  userLocalTimeZone.zone['ianaName'];
+const myoffset = `${userLocalTimeZone.offset/60}`;
+
+
+const defaultTimeZone: TimeConfig = {zone: myzone, offset: myoffset}
 
 /** Configuration model for tools displayed in the navbar. */
 export type NavbarToolsConfig = Partial<Record<NavbarTool, number>>;
@@ -48,6 +56,7 @@ export class UserSettingsStateModel {
   public navbarTools: NavbarToolsConfig;
   public themeOverride: ThemeOverrideOptions;
   public themeEnvironmentWarning: ThemeEnvironmentWarningOptions;
+  public timeConfiguration: TimeConfig;
 }
 
 /** The default tools that appear in the navbar. */
@@ -74,6 +83,7 @@ export const defaultToolsConfig: NavbarToolsConfig = chain(
     showVerifyCheckboxPopup: true,
     themeOverride: undefined,
     themeEnvironmentWarning: !environment.production ? 'warn' : undefined,
+    timeConfiguration: defaultTimeZone
   },
 })
 @Injectable({
