@@ -1,7 +1,9 @@
+import { J } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { Select, Store } from '@ngxs/store';
 import { ChangelogService } from '@services/changelog/changelog.service';
+import { TimeService } from '@services/time/time.service';
 import { ConfigureShowVerifyCheckboxPopup } from '@shared/state/user-settings/user-settings.actions';
 import {
   TimeConfig,
@@ -24,6 +26,8 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   
   public showVerifyCheckboxPopup: boolean;
   protected timeZoneOffsetLookupTable = {};
+
+  latest:string = '';
   
    
   localTimeConfig: TimeConfig;
@@ -32,6 +36,7 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
     private readonly store: Store,
     private readonly changelogService: ChangelogService,
     private readonly userTourService: UserTourService,
+    private timeService: TimeService,
   ) {
     super();
   }
@@ -42,6 +47,7 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
       this.localTimeConfig = latest.timeConfiguration;
+      this.latest = JSON.stringify(latest);
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,6 +91,10 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   public selectZone(e : Event): void{
     const selectValue = (e.target as HTMLSelectElement).value;
     // eslint-disable-next-line no-console
-    console.log('you have selected ',  selectValue)
+    console.log('you have selected ', selectValue);
+    const offset = this.timeZoneOffsetLookupTable[selectValue];
+    const timeConfig: TimeConfig = {zone: selectValue, offset: offset}
+    this.timeService.setLocalTimeConfig(timeConfig);
+
   } 
 }

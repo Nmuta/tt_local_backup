@@ -41,15 +41,19 @@
     
     <div>
       Your current time config: 
-      <div *ngIf="localTimeConfig | async">
-        {{localTimeConfig.zone}} | 
-        {{localTimeConfig.offset}}
+       
+      <div *ngIf="userSettings$ | async">
+         
+        {{localTimeConfig.zone }}   
+        (GMT {{localTimeConfig.offset }}) 
       </div>
+
     </div>
 
 
     <select name="timeZoneSelect" class="timeZoneSelect" (change)="selectZone($event)">
-      <option *ngFor='let zone of timeZoneOffsetLookupTable | keyvalue' [value]='zone.value'>{{zone.key}} (GMT {{zone.value}})</option>
+      <option *ngFor='let zone of timeZoneOffsetLookupTable | keyvalue' 
+      [value]="zone.key">{{zone.key}} (GMT {{zone.value}})</option>
    </select>
 
   </mat-card-content>
