@@ -84,8 +84,6 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
    */
   public selectZone(e: Event): void {
     const selectValue = (e.target as HTMLSelectElement).value;
-    // eslint-disable-next-line no-console
-    console.log('you have selected ', selectValue);
     const offset = this.timeZoneOffsetLookupTable[selectValue];
     const timeConfig: TimeConfig = { zone: selectValue, offset: offset };
     this.timeService.setLocalTimeConfig(timeConfig);
