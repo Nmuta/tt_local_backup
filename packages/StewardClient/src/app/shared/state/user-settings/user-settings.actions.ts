@@ -102,10 +102,8 @@ export class SetThemeEnvironmentWarning {
   constructor(public readonly themeEnvironmentWarning: ThemeEnvironmentWarningOptions) {}
 }
 
-
 /** Sets the time configuration. */
 export class SetTimeConfig {
   public static readonly type = '[Settings] Set Time Zone';
   constructor(public readonly timeConfiguration: TimeConfig) {}
 }
-

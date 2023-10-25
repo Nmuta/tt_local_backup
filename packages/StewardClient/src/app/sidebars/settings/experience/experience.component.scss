@@ -25,7 +25,13 @@ mat-slide-toggle + mat-slide-toggle {
   margin-top: 1em;
 }
 
-
-.timeZoneSelect{
+.timeZoneSelect {
   width: 300px;
+}
+
+mat-card-content {
+  .current-time-zone-selection {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
 }

@@ -30,14 +30,16 @@ import {
 import { DateTime } from 'luxon';
 
 /** Interface to store user configured time zone */
-export interface TimeConfig {zone: string;  offset: string}
+export interface TimeConfig {
+  zone: string;
+  offset: string;
+}
 
 const userLocalTimeZone = DateTime.local();
-const myzone =  userLocalTimeZone.zone['ianaName'];
-const myoffset = `${userLocalTimeZone.offset/60}`;
+const myzone = userLocalTimeZone.zone['ianaName'];
+const myoffset = `${userLocalTimeZone.offset / 60}`;
 
-
-const defaultTimeZone: TimeConfig = {zone: myzone, offset: myoffset}
+const defaultTimeZone: TimeConfig = { zone: myzone, offset: myoffset };
 
 /** Configuration model for tools displayed in the navbar. */
 export type NavbarToolsConfig = Partial<Record<NavbarTool, number>>;
@@ -84,7 +86,7 @@ export const defaultToolsConfig: NavbarToolsConfig = chain(
     showVerifyCheckboxPopup: true,
     themeOverride: undefined,
     themeEnvironmentWarning: !environment.production ? 'warn' : undefined,
-    timeConfiguration: defaultTimeZone
+    timeConfiguration: defaultTimeZone,
   },
 })
 @Injectable({
@@ -164,15 +166,14 @@ export class UserSettingsState {
     return of(ctx.patchState({ themeEnvironmentWarning: action.themeEnvironmentWarning }));
   }
 
-   /** Sets the time config */
-   @Action(SetTimeConfig, { cancelUncompleted: true })
-   public setTimeConfig$(
-     ctx: StateContext<UserSettingsStateModel>,
-     action: SetTimeConfig,
-   ): Observable<UserSettingsStateModel> {
-     return of(ctx.patchState({ timeConfiguration: action.timeConfiguration }));
-   }
- 
+  /** Sets the time config */
+  @Action(SetTimeConfig, { cancelUncompleted: true })
+  public setTimeConfig$(
+    ctx: StateContext<UserSettingsStateModel>,
+    action: SetTimeConfig,
+  ): Observable<UserSettingsStateModel> {
+    return of(ctx.patchState({ timeConfiguration: action.timeConfiguration }));
+  }
 
   /** Sets the state of the current Apollo endpoint key. */
   @Action(SetApolloEndpointKey, { cancelUncompleted: true })

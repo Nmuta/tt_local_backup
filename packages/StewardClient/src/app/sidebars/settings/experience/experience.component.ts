@@ -1,4 +1,3 @@
-import { J } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { Select, Store } from '@ngxs/store';
@@ -20,18 +19,15 @@ import { Observable, takeUntil } from 'rxjs';
   styleUrls: ['./experience.component.scss'],
 })
 export class ExperienceComponent extends BaseComponent implements OnInit {
-  
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
-   
-  
+
   public showVerifyCheckboxPopup: boolean;
   protected timeZoneOffsetLookupTable = {};
 
-  latest:string = '';
-  
-   
+  latest: string = '';
+
   localTimeConfig: TimeConfig;
-  
+
   constructor(
     private readonly store: Store,
     private readonly changelogService: ChangelogService,
@@ -43,7 +39,6 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
       this.localTimeConfig = latest.timeConfiguration;
@@ -52,12 +47,11 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const timezones = (Intl as any).supportedValuesOf('timeZone');
-     
 
-    timezones.forEach(zone =>{
+    timezones.forEach(zone => {
       const offset = DateTime.local({ zone: zone }).toFormat('Z');
       this.timeZoneOffsetLookupTable[zone] = offset;
-    })
+    });
   }
 
   /** Sets the show verify checkbox popup value in settings. */
@@ -88,13 +82,12 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   /**
    Select time zone 
    */
-  public selectZone(e : Event): void{
+  public selectZone(e: Event): void {
     const selectValue = (e.target as HTMLSelectElement).value;
     // eslint-disable-next-line no-console
     console.log('you have selected ', selectValue);
     const offset = this.timeZoneOffsetLookupTable[selectValue];
-    const timeConfig: TimeConfig = {zone: selectValue, offset: offset}
+    const timeConfig: TimeConfig = { zone: selectValue, offset: offset };
     this.timeService.setLocalTimeConfig(timeConfig);
-
-  } 
+  }
 }
