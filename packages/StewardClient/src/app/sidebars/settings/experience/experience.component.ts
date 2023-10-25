@@ -18,11 +18,16 @@ import { Observable, takeUntil } from 'rxjs';
   styleUrls: ['./experience.component.scss'],
 })
 export class ExperienceComponent extends BaseComponent implements OnInit {
+  
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
+   
+  
   public showVerifyCheckboxPopup: boolean;
   protected timeZoneOffsetLookupTable = {};
+  
+   
   localTimeConfig: TimeConfig;
-
+  
   constructor(
     private readonly store: Store,
     private readonly changelogService: ChangelogService,
@@ -34,10 +39,9 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
 
-    this.localTimeConfig = this.store.selectSnapshot(UserSettingsState.timeConfiguration);
-
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
+      this.localTimeConfig = latest.timeConfiguration;
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
