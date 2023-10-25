@@ -21,6 +21,7 @@ import {
   ThemeOverrideOptions,
   ThemeEnvironmentWarningOptions,
   SetThemeEnvironmentWarning,
+  SetTimeConfig,
   RefreshEndpointKeys,
   SetForteEndpointKey,
   ConfigureShowVerifyCheckboxPopup,
@@ -162,6 +163,16 @@ export class UserSettingsState {
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ themeEnvironmentWarning: action.themeEnvironmentWarning }));
   }
+
+   /** Sets the time config */
+   @Action(SetTimeConfig, { cancelUncompleted: true })
+   public setTimeConfig$(
+     ctx: StateContext<UserSettingsStateModel>,
+     action: SetTimeConfig,
+   ): Observable<UserSettingsStateModel> {
+     return of(ctx.patchState({ timeConfiguration: action.timeConfiguration }));
+   }
+ 
 
   /** Sets the state of the current Apollo endpoint key. */
   @Action(SetApolloEndpointKey, { cancelUncompleted: true })
@@ -374,9 +385,9 @@ export class UserSettingsState {
     return state.forteEndpointKey;
   }
 
-  /** Selector for app's forte endpoint. */
+  /** Selector for app's time configuration. */
   @Selector()
-  public static forumEndpointKey(state: UserSettingsStateModel): string {
-    return state.forumEndpointKey;
+  public static timeConfiguration(state: UserSettingsStateModel): TimeConfig {
+    return state.timeConfiguration;
   }
 }

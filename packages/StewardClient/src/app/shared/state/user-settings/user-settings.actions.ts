@@ -1,4 +1,5 @@
 import { NavbarTool } from '@environments/environment';
+import { TimeConfig } from './user-settings.state';
 
 /** Sets the Fake API to on or off. Only available in non-prod environments. */
 export class SetFakeApi {
@@ -100,3 +101,11 @@ export class SetThemeEnvironmentWarning {
   public static readonly type = '[Settings] Set Environment Warning';
   constructor(public readonly themeEnvironmentWarning: ThemeEnvironmentWarningOptions) {}
 }
+
+
+/** Sets the time configuration. */
+export class SetTimeConfig {
+  public static readonly type = '[Settings] Set Time Zone';
+  constructor(public readonly timeConfiguration: TimeConfig) {}
+}
+

@@ -34,6 +34,13 @@
 
 <mat-card>
   <mat-card-title-group>
+    <div>
+      Your current time config: 
+      <div *ngIf="localTimeConfig | async">
+        {{localTimeConfig.zone}} | 
+        {{localTimeConfig.offset}}
+      </div>
+    </div>
     <mat-card-title>Select Time Zone</mat-card-title>
     <mat-card-subtitle>Select your local time zone</mat-card-subtitle>
   </mat-card-title-group>

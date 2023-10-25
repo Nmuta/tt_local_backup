@@ -4,6 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { ChangelogService } from '@services/changelog/changelog.service';
 import { ConfigureShowVerifyCheckboxPopup } from '@shared/state/user-settings/user-settings.actions';
 import {
+  TimeConfig,
   UserSettingsState,
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
@@ -20,6 +21,7 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   public showVerifyCheckboxPopup: boolean;
   protected timeZoneOffsetLookupTable = {};
+  localTimeConfig: TimeConfig;
 
   constructor(
     private readonly store: Store,
@@ -31,6 +33,9 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
+
+    this.localTimeConfig = this.store.selectSnapshot(UserSettingsState.timeConfiguration);
+
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
     });
