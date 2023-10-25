@@ -31,3 +31,18 @@
     >
   </mat-card-content>
 </mat-card>
+
+<mat-card>
+  <mat-card-title-group>
+    <mat-card-title>Select Time Zone</mat-card-title>
+    <mat-card-subtitle>Select your local time zone</mat-card-subtitle>
+  </mat-card-title-group>
+  <mat-card-content>
+    <select name="timeZoneSelect" class="timeZoneSelect" (change)="selectZone($event)">
+      <option *ngFor='let zone of timeZoneOffsetLookupTable | keyvalue' [value]='zone.value'>{{zone.key}} (GMT {{zone.value}})</option>
+   </select>
+
+  </mat-card-content>
+</mat-card>
+ 
+    

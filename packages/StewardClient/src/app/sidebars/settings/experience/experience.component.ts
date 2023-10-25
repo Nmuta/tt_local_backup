@@ -8,6 +8,7 @@ import {
   UserSettingsStateModel,
 } from '@shared/state/user-settings/user-settings.state';
 import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
+import { DateTime } from 'luxon';
 import { Observable, takeUntil } from 'rxjs';
 
 /** Basic UX settings. */
@@ -18,6 +19,7 @@ import { Observable, takeUntil } from 'rxjs';
 export class ExperienceComponent extends BaseComponent implements OnInit {
   @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
   public showVerifyCheckboxPopup: boolean;
+  protected timeZoneOffsetLookupTable = {};
 
   constructor(
     private readonly store: Store,
@@ -32,6 +34,15 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
     });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const timezones = (Intl as any).supportedValuesOf('timeZone');
+     
+
+    timezones.forEach(zone =>{
+      const offset = DateTime.local({ zone: zone }).toFormat('Z');
+      this.timeZoneOffsetLookupTable[zone] = offset;
+    })
   }
 
   /** Sets the show verify checkbox popup value in settings. */
@@ -58,4 +69,13 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   public set enableAutomaticTours(value: boolean) {
     this.userTourService.enableTours = value;
   }
+
+  /**
+   Select time zone 
+   */
+  public selectZone(e : Event): void{
+    const selectValue = (e.target as HTMLSelectElement).value;
+    // eslint-disable-next-line no-console
+    console.log('you have selected ',  selectValue)
+  } 
 }

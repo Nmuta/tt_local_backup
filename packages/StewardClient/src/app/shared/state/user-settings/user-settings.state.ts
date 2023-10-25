@@ -27,6 +27,9 @@ import {
   ResetNavbarTools,
 } from './user-settings.actions';
 
+/** Interface to store user configured time zone */
+export interface timeConfig {zone: string, offset: string}
+
 /** Configuration model for tools displayed in the navbar. */
 export type NavbarToolsConfig = Partial<Record<NavbarTool, number>>;
 
