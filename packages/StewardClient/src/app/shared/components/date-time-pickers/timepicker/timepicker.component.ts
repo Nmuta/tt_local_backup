@@ -21,6 +21,7 @@ import {
   Validator,
 } from '@angular/forms';
 import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
+import { TimeService } from '@services/time/time.service';
 import { isNull, isUndefined } from 'lodash';
 import { DateTime } from 'luxon';
 import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
@@ -176,6 +177,7 @@ export class TimepickerComponent
     formBuilder: UntypedFormBuilder,
     private readonly focusMonitor: FocusMonitor,
     private readonly elementRef: ElementRef<HTMLElement>,
+    private timeService: TimeService,
     /** The bound angular control. MatFormFieldControl hook. */
     @Optional() @Self() public ngControl: NgControl,
   ) {
@@ -295,7 +297,11 @@ export class TimepickerComponent
   /** User chosen time should be local time for user. Add the UTC offset. */
   private translateToLocal(utcTime: string): string {
     const parsedTime = DateTime.fromFormat(utcTime, 'HH:mm', { zone: 'utc' });
-    const projectedLocalTime = parsedTime.setZone(DateTime.local().zoneName);
+
+    const userSelectedTimeConfig= this.timeService.getLocalTimeConfig();
+    const userTimeZone = userSelectedTimeConfig.zone;
+    const projectedLocalTime = parsedTime.setZone(userTimeZone);
+
     const localTimeString = projectedLocalTime.toFormat('HH:mm');
 
     let suffix = ' local time ';

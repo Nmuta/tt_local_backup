@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { SetTimeConfig } from '@shared/state/user-settings/user-settings.actions';
-import { TimeConfig } from '@shared/state/user-settings/user-settings.state';
+import { TimeConfig, UserSettingsState, UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
+import { Observable, take } from 'rxjs';
 
 /**
  *Manages time across the app.
@@ -10,14 +11,22 @@ import { TimeConfig } from '@shared/state/user-settings/user-settings.state';
   providedIn: 'root',
 })
 export class TimeService {
+  @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
+  
   localTimeConfig: TimeConfig = { zone: '', offset: '' };
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+    this.userSettings$.pipe(take(1)).subscribe(latest => {
+      this.localTimeConfig = latest.timeConfiguration;
+    });
+  }
 
   /**
    *convert local time to UTC time
    */
   public getLocalTimeConfig(): TimeConfig {
-    return { zone: '', offset: '' };
+    // eslint-disable-next-line no-console
+    console.log('getting the local time config', this.localTimeConfig)
+    return this.localTimeConfig;
   }
 
   /**

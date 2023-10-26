@@ -8,6 +8,7 @@ import { GameTitle, UserRole } from '@models/enums';
 import { Select, Store } from '@ngxs/store';
 import { V2UsersService } from '@services/api-v2/users/users.service';
 import { WoodstockPlayerNotificationsService } from '@services/api-v2/woodstock/player/notifications/woodstock-player-notifications.service';
+import { TimeService } from '@services/time/time.service';
 import { WindowService } from '@services/window';
 import { EmailAddresses } from '@shared/constants';
 import { UserModel } from '@shared/models/user.model';
@@ -65,6 +66,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     private readonly woodstockPlayerNotificationsService: WoodstockPlayerNotificationsService,
     private readonly v2UsersService: V2UsersService,
     private readonly windowService: WindowService,
+    private timeService: TimeService,
   ) {
     super();
   }

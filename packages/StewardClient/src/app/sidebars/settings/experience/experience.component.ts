@@ -24,8 +24,6 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
   public showVerifyCheckboxPopup: boolean;
   protected timeZoneOffsetLookupTable = {};
 
-  latest: string = '';
-
   localTimeConfig: TimeConfig;
 
   constructor(
@@ -42,7 +40,6 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
     this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.showVerifyCheckboxPopup = latest.showVerifyCheckboxPopup;
       this.localTimeConfig = latest.timeConfiguration;
-      this.latest = JSON.stringify(latest);
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
