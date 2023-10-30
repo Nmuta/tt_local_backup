@@ -8,11 +8,13 @@ import { ToolsAvailability } from '@models/blob-storage';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { BlobStorageService } from '@services/blob-storage';
 import { SettingsService } from '@services/settings/settings';
+import { TimeService } from '@services/time/time.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { TimeConfig } from '@shared/state/user-settings/user-settings.state';
 import { sortBy } from 'lodash';
 import { DateTime } from 'luxon';
-import { EMPTY, Subject } from 'rxjs';
-import { catchError, switchMap, takeUntil, map, tap } from 'rxjs/operators';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { catchError, switchMap, takeUntil, map, tap, combineLatestWith } from 'rxjs/operators';
 
 /** Displays the release management tool. */
 @Component({
@@ -39,6 +41,7 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
     private readonly blobStorageService: BlobStorageService,
     private readonly settingsService: SettingsService,
     private readonly backgroundJobService: BackgroundJobService,
+    private timeService: TimeService,
   ) {
     super();
   }
@@ -82,6 +85,9 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
   }
 
   private setupGetInProgressJobs(): void {
+    // const userConfigZone$: Observable<TimeConfig> = this.timeService.getDynamicLocalTimeConfig();
+    const zoni = ""
+
     this.getInProgressJobs$
       .pipe(
         switchMap(() => {
@@ -90,7 +96,7 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
             .getInProgressBackgroundJob$()
             .pipe(this.getInProgressJobsMonitor.monitorSingleFire());
         }),
-        tap(() => (this.jobsTableLastUpdated = DateTime.local())),
+        tap(() => (this.jobsTableLastUpdated = DateTime.local({zone: zoni}))),
         map(jobs =>
           jobs.filter(
             job => job?.createdDateUtc?.isValid && !!job.reason && !job.reason.includes('Fake Job'),

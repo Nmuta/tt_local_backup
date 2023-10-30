@@ -21,16 +21,23 @@ export class TimeService {
   }
 
   /**
-   *convert local time to UTC time
+   * return a static time config
    */
   public getLocalTimeConfig(): TimeConfig {
-    // eslint-disable-next-line no-console
-    console.log('getting the local time config', this.localTimeConfig)
     return this.localTimeConfig;
   }
 
   /**
-   *f
+   * return and observable time config 
+   */
+  public getDynamicLocalTimeConfig(): Observable<UserSettingsStateModel> {
+    return this.userSettings$;
+  }
+
+
+  /**
+   * Take the time config set by the user in the experience tab of the side panel
+   * and set that variable in the application state.
    */
   public setLocalTimeConfig(timeConfig: TimeConfig): void {
     this.localTimeConfig = timeConfig;

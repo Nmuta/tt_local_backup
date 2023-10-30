@@ -15,13 +15,14 @@ import { collectErrors } from '@helpers/form-group-collect-errors';
 import { isEqual } from 'lodash';
 import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
-import { map, retry, startWith, tap } from 'rxjs/operators';
+import { map, retry, startWith, takeUntil, tap } from 'rxjs/operators';
 import { DateTimeRange, stringifyDateTimeRange } from '@models/datetime-range';
 import {
   MAT_LUXON_DATE_ADAPTER_OPTIONS,
   MatLuxonDateAdapterOptions,
 } from '@angular/material-luxon-adapter';
 import { renderDelay } from '@helpers/rxjs';
+import { TimeService } from '@services/time/time.service';
 
 /** Outputted form value of the date range picker. */
 export type DateRangePickerFormValue = DateTimeRange;
@@ -88,15 +89,22 @@ export class DateRangePickerComponent
 
   public disabled: boolean;
   public currentDates = this.mergeDates(this.formGroup.value);
-  public timezone = DateTime.local().toFormat('ZZZZ');
+  public timezone: string;
   private readonly onChanges$ = new Subject<DateRangePickerFormValueInternal>();
-
-  constructor() {
+  
+  constructor(private timeService: TimeService) {
     super();
     let lastValueStringified: { start: string; end: string } = null;
 
+    const userConfigTimeZoneObs$ = this.timeService.getDynamicLocalTimeConfig();
+    const userConfigPipe$ = userConfigTimeZoneObs$.pipe(takeUntil(this.onDestroy$));
+    userConfigPipe$.subscribe(latest => {
+      const zn = latest.timeConfiguration.zone;
+      this.timezone =  DateTime.local({zone: zn}).toFormat('ZZZZ');
+    });
+    
     this.onChanges$
-      .pipe(
+    .pipe(
         map((data: DateRangePickerFormValueInternal) => {
           // when there are changes, convert the date and forward it onward
           // must occur before revalidation
@@ -109,7 +117,7 @@ export class DateRangePickerComponent
           this.onChangeFn(value);
         }),
         renderDelay(),
-      )
+        )
       .subscribe(value => {
         const valueStringified = stringifyDateTimeRange(value);
         const hasChanges = !isEqual(valueStringified, lastValueStringified);
@@ -119,25 +127,25 @@ export class DateRangePickerComponent
           this.formControls.dateRange.start.updateValueAndValidity();
           this.formControls.dateRange.end.updateValueAndValidity();
         }
-
+        
         // prep for next iteration
         lastValueStringified = valueStringified;
       });
-
-    // when anything in the form group changes, trigger a change event
-    this.formGroup.valueChanges
+      
+      // when anything in the form group changes, trigger a change event
+      this.formGroup.valueChanges
       .pipe(
         startWith({ initial: true, ...this.formGroup.value }), // start with the initial value, so pairwise will work on every new value
       )
       .subscribe(this.onChanges$);
+    }
+    
+    /** Angular lifecycle hook. */
+    public ngAfterViewInit(): void {
+      this.onChanges$.next(this.formGroup.value);
+      this.formGroup.updateValueAndValidity();
   }
-
-  /** Angular lifecycle hook. */
-  public ngAfterViewInit(): void {
-    this.onChanges$.next(this.formGroup.value);
-    this.formGroup.updateValueAndValidity();
-  }
-
+  
   /** Form control hook. */
   public writeValue(data: DateRangePickerFormValue): void {
     if (data) {
@@ -147,17 +155,17 @@ export class DateRangePickerComponent
           end: data.end,
         },
       };
-
+      
       this.formGroup.patchValue(dataInternal, { emitEvent: false });
     }
   }
-
+  
   /** Form control hook. */
   public registerOnChange(fn: (data: DateRangePickerFormValue) => void): void {
     this.onChangeFn = fn;
     this.onChanges$.next(this.formGroup.value);
   }
-
+  
   /** Form control hook. */
   public registerOnTouched(_fn: () => void): void {
     /** empty */
