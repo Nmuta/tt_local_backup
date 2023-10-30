@@ -13,7 +13,6 @@ export class UserConfigDatePipe implements PipeTransform {
   /** Pipe hook. */
   public transform(value: DateTime | Date | string, format?: string): unknown {
     const offset = this.timeService.getLocalTimeConfig().offset;
-    console.log("my offset is ", offset)
     return new DatePipe('en-US').transform(toDateTime(value).toJSDate(), format, offset);
   }
 }
