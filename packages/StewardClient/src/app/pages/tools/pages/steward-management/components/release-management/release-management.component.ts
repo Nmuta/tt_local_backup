@@ -85,9 +85,7 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
   }
 
   private setupGetInProgressJobs(): void {
-    // const userConfigZone$: Observable<TimeConfig> = this.timeService.getDynamicLocalTimeConfig();
-    const zoni = ""
-
+    const userConfigZone$ = this.timeService.getDynamicLocalTimeConfig();
     this.getInProgressJobs$
       .pipe(
         switchMap(() => {
@@ -96,17 +94,24 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
             .getInProgressBackgroundJob$()
             .pipe(this.getInProgressJobsMonitor.monitorSingleFire());
         }),
-        tap(() => (this.jobsTableLastUpdated = DateTime.local({zone: zoni}))),
-        map(jobs =>
+        combineLatestWith(userConfigZone$),
+        tap(([_,label]) => { 
+          const zone =  label.timeConfiguration.zone;
+           (this.jobsTableLastUpdated = DateTime.local({zone: zone}))
+      }),
+        map(([jobs, _]) =>
           jobs.filter(
             job => job?.createdDateUtc?.isValid && !!job.reason && !job.reason.includes('Fake Job'),
+            // job => job 
           ),
         ),
         map(jobs => sortBy(jobs, j => j.createdDateUtc).reverse()),
+        // map(jobs => jobs),
         takeUntil(this.onDestroy$),
       )
       .subscribe(jobs => {
         this.jobsTable.data = jobs;
+        // this.jobsTable.data = jobs;
       });
   }
 
