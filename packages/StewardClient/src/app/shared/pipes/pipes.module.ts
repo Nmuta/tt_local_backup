@@ -8,6 +8,7 @@ import { FormGroupErrorsPipe } from './form-group-errors.pipe';
 import { ImpureJsonPipe } from './impure-json.pipe';
 import { UtcDatePipe } from './utc-date.pipe';
 import { UserConfigDatePipe } from './user-config-date.pipe';
+import { DateTimeToUserConfigDatePipe } from  './date-time-to-user-config-date.pipe';
 import { DomainEnumPrettyPrintPipe } from './domain-enum-pretty-print.pipe';
 import { DomainEnumPrettyPrintOrHumanizePipe } from './domain-enum-pretty-print-or-humanize.pipe';
 import { DateTimeToRelativePurePipe } from './date-time-to-relative-pure.pipe';
@@ -32,6 +33,7 @@ import { GameTitleFullNamePipe } from './game-title-full-name.pipe';
     ImpureBigJsonPipe,
     UtcDatePipe,
     UserConfigDatePipe,
+    DateTimeToUserConfigDatePipe,
     DomainEnumPrettyPrintPipe,
     DomainEnumPrettyPrintOrHumanizePipe,
     DateTimeToRelativePurePipe,
@@ -53,6 +55,7 @@ import { GameTitleFullNamePipe } from './game-title-full-name.pipe';
     ImpureBigJsonPipe,
     UtcDatePipe,
     UserConfigDatePipe,
+    DateTimeToUserConfigDatePipe,
     DomainEnumPrettyPrintPipe,
     DomainEnumPrettyPrintOrHumanizePipe,
     DateTimeToRelativePurePipe,
