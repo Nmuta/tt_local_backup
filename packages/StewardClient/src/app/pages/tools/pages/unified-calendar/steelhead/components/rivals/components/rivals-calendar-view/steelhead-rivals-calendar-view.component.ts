@@ -15,6 +15,7 @@ import {
 } from '../rivals-tile-details-modal/rivals-tile-details-modal.component';
 import { indexOf, uniq } from 'lodash';
 import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
+import { TimeService } from '@services/time/time.service';
 
 /** The Steelhead Rivals Calendar View page. */
 @Component({
@@ -28,7 +29,7 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
 
   public view: CalendarView = CalendarView.Month;
   public CalendarView = CalendarView;
-  public viewDate: Date = new Date();
+  public viewDate: Date = this.timeService.getUserConfigLocalJSDate();
 
   public events: CalendarEvent[];
 
@@ -38,6 +39,7 @@ export class SteelheadRivalsCalendarViewComponent extends BaseComponent implemen
 
   constructor(
     private readonly steelheadRivalsService: SteelheadRivalsService,
+    private timeService: TimeService,
     private readonly dialog: MatDialog,
   ) {
     super();

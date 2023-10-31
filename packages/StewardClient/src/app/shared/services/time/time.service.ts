@@ -3,6 +3,7 @@ import { Select, Store } from '@ngxs/store';
 import { SetTimeConfig } from '@shared/state/user-settings/user-settings.actions';
 import { TimeConfig, UserSettingsState, UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 import { Observable, take } from 'rxjs';
+import { DateTime } from 'luxon';
 
 /**
  *Manages time across the app.
@@ -42,5 +43,16 @@ export class TimeService {
   public setLocalTimeConfig(timeConfig: TimeConfig): void {
     this.localTimeConfig = timeConfig;
     this.store.dispatch(new SetTimeConfig(timeConfig));
+  }
+
+  
+  /**
+   * convert current local user config DateTime to JS Date
+   */
+  public getUserConfigLocalJSDate(): Date {
+    const localUserConfigTimeZone:string = this.localTimeConfig.zone;
+    const dt = DateTime.local({zone: localUserConfigTimeZone});
+    const dtISO = dt.toISO();
+    return new Date(dtISO);
   }
 }

@@ -27,7 +27,7 @@
   <mat-card-header>
     <mat-card-title>Verify In Progress Jobs</mat-card-title>
     <mat-card-subtitle *ngIf="!!jobsTableLastUpdated">
-      Last Checked: {{ jobsTableLastUpdated | dateTimeToJsDate | date : 'short' }}
+      Last Checked: {{ jobsTableLastUpdated | dateTimeToJsDate | userConfigDate : 'short' }}
       <button
         mat-icon-button
         matTooltip="Get the latest background job data"

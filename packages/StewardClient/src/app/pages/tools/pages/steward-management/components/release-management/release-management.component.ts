@@ -12,7 +12,7 @@ import { TimeService } from '@services/time/time.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { sortBy } from 'lodash';
 import { DateTime } from 'luxon';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { EMPTY, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, map, tap, combineLatestWith } from 'rxjs/operators';
 
 /** Displays the release management tool. */

@@ -25,6 +25,7 @@ import {
   WelcomeCenterTileDetailsModalData,
 } from '../../welcome-center-tile-details-modal/steelhead/welcome-center-tile-details-modal.component';
 import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
+import { TimeService } from '@services/time/time.service';
 
 export interface WelcomeCenterMeta {
   column: WelcomeCenterColumn;
@@ -63,7 +64,7 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
 
   public view: CalendarView = CalendarView.Month;
   public CalendarView = CalendarView;
-  public viewDate: Date = new Date();
+  public viewDate: Date = this.timeService.getUserConfigLocalJSDate();
 
   public events: CalendarEvent[];
 
@@ -74,6 +75,7 @@ export class SteelheadWelcomeCenterCalendarViewComponent extends BaseComponent i
   private retrieveSchedule$: Observable<WelcomeCenter>;
 
   constructor(
+    private timeService: TimeService,
     private readonly welcomeCenterService: SteelheadWelcomeCenterService,
     private readonly deppoh: DomainEnumPrettyPrintOrHumanizePipe,
     private readonly dialog: MatDialog,

@@ -38,7 +38,7 @@
             <td mat-cell *matCellDef="let entry">
               <span *ngIf="!!entry.timeFlagged" class="auction-flagged"
                 ><b>Auction/Livery Flagged On:</b>
-                {{ entry.timeFlagged | dateTimeToJsDate | date : 'short' }}</span
+                {{ entry.timeFlagged | dateTimeToJsDate | userConfigDate : 'short' }}</span
               >
               <span><b>Review State:</b> {{ entry.reviewState }}</span>
               <span><b>Total Reports:</b> {{ entry.totalReports }}</span>

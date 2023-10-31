@@ -25,6 +25,7 @@ import {
 } from '../../builders-cup-ladder-modal/steelhead/steelhead-builders-cup-ladder-modal.component';
 import { MIN_CALENDAR_DATETIME, MAX_CALENDAR_DATETIME } from '@shared/constants';
 import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
+import { TimeService } from '@services/time/time.service';
 
 type TourGroup<T> = {
   tourName: string;
@@ -64,8 +65,8 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
 
   public view: CalendarView = CalendarView.Month;
   public CalendarView = CalendarView;
-  public viewDate: Date = new Date();
-
+  public viewDate: Date = this.timeService.getUserConfigLocalJSDate();
+  
   public events: CalendarEvent[];
   public filteredEvents: CalendarEvent<BuildersCupMeta>[] = [];
 
@@ -82,6 +83,7 @@ export class SteelheadBuildersCupCalendarViewComponent extends BaseComponent imp
   constructor(
     private readonly buildersCupService: SteelheadBuildersCupService,
     private readonly dialog: MatDialog,
+    private timeService: TimeService
   ) {
     super();
   }

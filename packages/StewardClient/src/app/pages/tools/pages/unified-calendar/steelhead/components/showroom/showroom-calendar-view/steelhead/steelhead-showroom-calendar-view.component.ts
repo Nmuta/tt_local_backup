@@ -27,6 +27,7 @@ import { ShowroomDivisionFeaturedTileDetailsModalComponent } from '../../showroo
 import { ShowroomManufacturerFeaturedTileDetailsModalComponent } from '../../showroom-manufacturer-featured-tile-details-modal/steelhead/showroom-manufacturer-featured-tile-details-modal.component';
 import { MIN_CALENDAR_DATETIME, MAX_CALENDAR_DATETIME } from '@shared/constants';
 import { CalendarLookupInputs } from '../../../calendar-lookup-inputs/calendar-lookup-inputs.component';
+import { TimeService } from '@services/time/time.service';
 
 export enum ShowroomEventType {
   CarSale = 'Car Sale',
@@ -55,7 +56,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
 
   public view: CalendarView = CalendarView.Month;
   public CalendarView = CalendarView;
-  public viewDate: Date = new Date();
+  public viewDate: Date = this.timeService.getUserConfigLocalJSDate();
 
   public events: CalendarEvent[];
   public filteredEvents: CalendarEvent<ShowroomMeta>[] = [];
@@ -68,6 +69,7 @@ export class SteelheadShowroomCalendarViewComponent extends BaseComponent implem
 
   constructor(
     private readonly steelheadShowroomService: SteelheadShowroomService,
+    private timeService: TimeService,
     private readonly dialog: MatDialog,
   ) {
     super();

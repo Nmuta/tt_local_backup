@@ -30,6 +30,7 @@ import {
 import { keys } from 'lodash';
 import { SteelheadRacersCupService } from '@services/api-v2/steelhead/racers-cup/steelhead-racers-cup.service';
 import { CalendarLookupInputs } from '../../calendar-lookup-inputs/calendar-lookup-inputs.component';
+import { TimeService } from '@services/time/time.service';
 
 export type EventGroup<T> = {
   name: string;
@@ -79,13 +80,14 @@ export class RacersCupCalendarComponent extends BaseComponent implements OnInit 
   public uniqueSeries: string[];
   public view: CalendarView = CalendarView.Month;
   public CalendarView = CalendarView;
-  public viewDate: Date = new Date();
+  public viewDate: Date = this.timeService.getUserConfigLocalJSDate();    
   public events: CalendarEvent[] = [];
   public filteredEvents: CalendarEvent<RacersCupMeta>[] = [];
   public getMonitor = new ActionMonitor('GET Racers Cup Schedule');
 
   constructor(
     private readonly steelheadService: SteelheadRacersCupService,
+    private timeService: TimeService,
     private readonly dialog: MatDialog,
   ) {
     super();
