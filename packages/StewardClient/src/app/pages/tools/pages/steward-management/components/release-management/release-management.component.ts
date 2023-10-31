@@ -10,7 +10,6 @@ import { BlobStorageService } from '@services/blob-storage';
 import { SettingsService } from '@services/settings/settings';
 import { TimeService } from '@services/time/time.service';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
-import { TimeConfig } from '@shared/state/user-settings/user-settings.state';
 import { sortBy } from 'lodash';
 import { DateTime } from 'luxon';
 import { EMPTY, Observable, Subject } from 'rxjs';
@@ -95,8 +94,8 @@ export class ReleaseManagementComponent extends BaseComponent implements OnInit,
             .pipe(this.getInProgressJobsMonitor.monitorSingleFire());
         }),
         combineLatestWith(userConfigZone$),
-        tap(([_,label]) => { 
-          const zone =  label.timeConfiguration.zone;
+        tap(([_,userSettings]) => { 
+          const zone =  userSettings.timeConfiguration.zone;
            (this.jobsTableLastUpdated = DateTime.local({zone: zone}))
       }),
         map(([jobs, _]) =>

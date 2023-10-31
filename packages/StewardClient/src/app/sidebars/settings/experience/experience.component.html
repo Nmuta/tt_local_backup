@@ -51,5 +51,28 @@
         {{ zone.key }} (GMT {{ zone.value }})
       </option>
     </select>
+
+    
   </mat-card-content>
+
+  <!-- TODO : fix namespace collision re: mat-option 
+  Error: NG0300: Multiple components match node with
+   tagname mat-option: MatLegacyOption and MatOption.-->
+  <!-- <mat-form-field class="example-full-width">
+    <mat-form-field class="example-full-width">
+      <mat-label>Time Zone</mat-label>
+      <input type="text"
+             placeholder="Pick one"
+             aria-label="time zone"
+             matInput
+             [formControl]="myControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </mat-form-field> -->
+
 </mat-card>

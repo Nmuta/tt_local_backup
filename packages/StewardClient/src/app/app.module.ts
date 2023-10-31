@@ -83,6 +83,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { TourStepComponent } from './shared/components/tour-step/tour-step.component';
 import { MatIconModule } from '@angular/material/icon';
 
+
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
     return [

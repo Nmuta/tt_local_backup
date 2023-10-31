@@ -5,6 +5,7 @@ import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoi
 import { TourState } from '@shared/state/tours/tours.state';
 import { createMockUserTourService } from '@tools-app/pages/home/tour/tour.service.mock';
 import { ExperienceComponent } from './experience.component';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 describe('ExperienceComponent', () => {
   let component: ExperienceComponent;
@@ -13,7 +14,7 @@ describe('ExperienceComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule(
       createStandardTestModuleMetadata({
-        declarations: [ExperienceComponent],
+        declarations: [ExperienceComponent, MatAutocomplete ],
         ngxsModules: [EndpointKeyMemoryState, TourState],
         imports: [],
         providers: [createMockUserTourService()],

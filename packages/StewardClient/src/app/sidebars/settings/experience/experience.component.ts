@@ -12,6 +12,9 @@ import {
 import { UserTourService } from '@tools-app/pages/home/tour/tour.service';
 import { DateTime } from 'luxon';
 import { Observable, takeUntil } from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
+
 
 /** Basic UX settings. */
 @Component({
@@ -23,8 +26,11 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
 
   public showVerifyCheckboxPopup: boolean;
   protected timeZoneOffsetLookupTable = {};
+  myControl = new FormControl();
+  internationalTimeZones: string[] = [];
 
   localTimeConfig: TimeConfig;
+  filteredOptions: Observable<string[]>;
 
   constructor(
     private readonly store: Store,
@@ -42,8 +48,15 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
       this.localTimeConfig = latest.timeConfiguration;
     });
 
+    this.filteredOptions = this.myControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const timezones = (Intl as any).supportedValuesOf('timeZone');
+    this.internationalTimeZones = timezones;
 
     timezones.forEach(zone => {
       const offset = DateTime.local({ zone: zone }).toFormat('Z');
@@ -84,5 +97,12 @@ export class ExperienceComponent extends BaseComponent implements OnInit {
     const offset = this.timeZoneOffsetLookupTable[selectValue];
     const timeConfig: TimeConfig = { zone: selectValue, offset: offset };
     this.timeService.setLocalTimeConfig(timeConfig);
+  }
+
+  /* filter autocomplete options */ 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.internationalTimeZones.filter(option => option.toLowerCase().includes(filterValue));
   }
 }

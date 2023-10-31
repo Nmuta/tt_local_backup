@@ -22,7 +22,7 @@
                   >
                   <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
                   <span [matTooltip]="history.giftSendDateUtc | dateTimeToJsDate | date : 'long'">
-                    {{ history.giftSendDateUtc | dateTimeToJsDate | date : 'short' }}
+                    {{ history.giftSendDateUtc | dateTimeToJsDate | userConfigDate : 'short' }}
                   </span>
                 </mat-panel-title>
                 <mat-panel-description>

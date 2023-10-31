@@ -47,6 +47,7 @@ import { ToursComponent } from './settings/tours/tours.component';
 import { ChangelogEntryOldComponent } from './changelog/changelog-entry-old/changelog-entry-old.component';
 import { ChangelogEntryMarkdownComponent } from './changelog/changelog-entry-markdown/changelog-entry-markdown.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 /** Module containing all routable sidebar components. */
 @NgModule({
@@ -103,6 +104,7 @@ import { MarkdownModule } from 'ngx-markdown';
     MatSidenavModule,
     MatListModule,
     MatBadgeModule,
+    MatAutocompleteModule,
   ],
   exports: [RouterModule],
 })

@@ -32,12 +32,12 @@
               <span class="truncate">
                 {{
                   getFormValue(dataActivityFormControl).dataActivity.dateRange.start?.toJSDate()
-                    | utcDate : 'short'
+                    | userConfigDate : 'short'
                 }}
                 -
                 {{
                   getFormValue(dataActivityFormControl).dataActivity.dateRange.end?.toJSDate()
-                    | utcDate : 'short'
+                    | userConfigDate : 'short'
                 }}
               </span>
             </div>

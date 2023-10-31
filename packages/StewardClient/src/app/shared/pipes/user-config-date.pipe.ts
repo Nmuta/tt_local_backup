@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 /** A pipe that prints a nice date in UTC time zone. */
 @Pipe({
   name: 'userConfigDate',
+  pure: false,
 })
 export class UserConfigDatePipe implements PipeTransform {
   constructor(private timeService: TimeService){}

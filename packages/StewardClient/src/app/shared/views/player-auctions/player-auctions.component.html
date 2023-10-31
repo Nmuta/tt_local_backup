@@ -19,7 +19,7 @@
               <span><b>Item Name:</b> {{ entry.itemName }}</span>
               <span
                 ><b>Closing Date UTC:</b>
-                {{ entry.closingDateUtc | dateTimeToJsDate | date : 'short' }}</span
+                {{ entry.closingDateUtc | dateTimeToJsDate | userConfigDate : 'short' }}</span
               >
             </td>
           </ng-container>
